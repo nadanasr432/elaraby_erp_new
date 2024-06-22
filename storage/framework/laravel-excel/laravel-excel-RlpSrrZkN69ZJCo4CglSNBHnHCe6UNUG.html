@@ -1,0 +1,1169 @@
+<style>
+</style>
+<script src="http://localhost:8000/app-assets/js/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+    });
+</script>
+
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="rtl">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <title> {{$system->name}} </title>
+    <meta name="_token" content="AcMyAFFJANxLeSKW01q8x8GxhaWHJDK2Qd06UuTP" />
+    <meta name="csrf-token" content="AcMyAFFJANxLeSKW01q8x8GxhaWHJDK2Qd06UuTP" />
+    <link rel="apple-touch-icon" href="http://localhost:8000/app-assets/images/apple-icon-120.png">
+<link rel="shortcut icon" type="image/x-icon" href="http://localhost:8000/app-assets/images/favicon.ico">
+<link rel="stylesheet" type="text/css" href="http://localhost:8000/app-assets/css-rtl/vendors.css">
+<link href="http://localhost:8000/app-assets/css-rtl/datatables.min.css" rel="stylesheet" type="text/css">
+<link href="http://localhost:8000/app-assets/css-rtl/bootstrap.css" rel="stylesheet"/>
+<link rel="stylesheet" type="text/css" href="http://localhost:8000/app-assets/css-rtl/app.css">
+<link rel="stylesheet" type="text/css" href="http://localhost:8000/app-assets/css-rtl/custom-rtl.css">
+<link rel="stylesheet" type="text/css" href="http://localhost:8000/app-assets/css-rtl/vertical-menu-modern.css">
+<link rel="stylesheet" type="text/css" href="http://localhost:8000/app-assets/css-rtl/line-awesome.css">
+<link rel="stylesheet" type="text/css" href="http://localhost:8000/app-assets/css-rtl/line-awesome-font-awesome.css">
+<link rel="stylesheet" type="text/css" href="http://localhost:8000/app-assets/css-rtl/style-rtl.css">
+<link href="http://localhost:8000/app-assets/css-rtl/bootstrap-select.css" rel="stylesheet"/>
+<style>
+    div#DataTables_Table_0_filter {
+        text-align: left !important;
+        float: left !important;
+        display: inline !important;
+    }
+    div#DataTables_Table_0_length {
+        text-align: right !important;
+        float: right !important;
+        display: inline !important;
+    }
+    select[name='DataTables_Table_0_length'] {
+        height: 40px !important;
+        padding: 10px !important;
+        margin-top: 20px;
+    }
+</style>
+
+    <style type="text/css" media="print">
+        @media  print {
+            .app-content,.content{
+                margin-right: 0 !important;
+            }
+            body {
+                -webkit-print-color-adjust: exact;
+                -moz-print-color-adjust: exact;
+                print-color-adjust: exact;
+                -o-print-color-adjust: exact;
+            }
+            .no-print {display:none;}
+            .printy {display: block !important;}
+        }
+    </style>
+    <style>
+        .tx-20{
+            font-size: 20px!important;
+        }
+        .tx-18{
+            font-size: 18px!important;
+        }
+        .tx-16{
+            font-size: 16px!important;
+        }
+        .img-icon{
+            width: 15px; height: 15px; margin-left: 10px;
+        }
+        @font-face {
+            font-family: 'Cairo';
+            src: url("http://localhost:8000/fonts/Cairo.ttf");
+        }
+        label{
+            font-size: 13px !important;
+        }
+
+        table {
+            font-size: 13px !important;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cairo' !important;
+        }
+        .dropdown-menu.dropdown-menu-right.show{
+            width: 200px !important;
+        }
+        body, html {
+            font-family: 'Cairo' !important;
+        }
+        *{
+            font-size: 12px !important;
+        }
+        .navigation.navigation-main{
+            padding-bottom: 50px !important;
+        }
+
+        .btn.dropdown-toggle.bs-placeholder,.btn.dropdown-toggle{
+            height: 40px !important;
+        }
+
+        .alarm-upgrade {
+            font-family: 'Cairo' !important;
+            font-size: 14px; padding-top: 10px;
+        }
+
+    </style>
+</head>
+
+<body class="vertical-layout vertical-menu-modern 2-columns menu-expanded fixed-navbar"
+      data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+<nav
+    class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-dark navbar-shadow no-print">
+    <div class="navbar-wrapper navbar-dark">
+        <div class="navbar-header">
+            <ul class="nav navbar-nav flex-row">
+                <li class="nav-item mobile-menu d-md-none mr-auto">
+                    <a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#">
+                        <i class="fa fa-bars fa-2x"></i>
+                    </a>
+                </li>
+                <li class="nav-item mr-auto  text-center" style="margin-top: -10px!important; margin-right: 20px !important;">
+                    <a class="navbar-brand text-center" href="http://localhost:8000/client/home">
+                        <h6 class="brand-text  text-center" style="font-size: 14px!important;line-height: 2;top: 10px;" dir="rtl">
+                            شركة شاور
+                        </h6>
+                    </a>
+                </li>
+                <li class="nav-item d-none d-md-block float-right">
+                    <a class="nav-link modern-nav-toggle pr-0" data-toggle="collapse">
+                        <i class="fa fa-toggle-on fa2-x" style="color: #ddd;font-size: 22px !important;"
+                           data-ticon="fa fa-toggle-right"></i>
+                    </a></li>
+                <li class="nav-item d-md-none">
+                    <a class="nav-link open-navbar-container" data-toggle="collapse" data-target="#navbar-mobile"><i
+                            class="la la-ellipsis-v"></i></a>
+                </li>
+            </ul>
+        </div>
+        <div class="navbar-container content">
+            <div class="collapse navbar-collapse" id="navbar-mobile">
+                <p class="mr-auto float-left">
+                </p>
+                <ul class="nav navbar-nav float-left">
+                    <li class="dropdown dropdown-user nav-item">
+                        <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
+                                <span class="mr-1">
+                                  <span class="user-name text-bold-700"
+                                        style="color: #ddd;">مهندس عبده</span>
+                                </span>
+                            <span class="avatar avatar-online">
+                                                                        <img src="http://localhost:8000/images/guest.png" alt="avatar"><i></i>
+                                                            </span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="http://localhost:8000/client/profile/edit/2">
+                                <i class="fa fa-user"></i> تعديل البيانات
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="http://localhost:8000/client/logout"
+                               onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                <i class="fa fa-power-off"></i> تسجيل الخروج
+                            </a>
+                            <form id="logout-form" action="http://localhost:8000/client/logout" method="POST"
+                                  style="display: none;">
+                                <input type="hidden" name="_token" value="AcMyAFFJANxLeSKW01q8x8GxhaWHJDK2Qd06UuTP">                            </form>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow no-print" data-scroll-to-active="true">
+    <div class="main-menu-content">
+        <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+            <li class="nav-item ">
+                <a href="http://localhost:8000/client/home"><i class="sidebar-item-icon fa fa-dashboard"></i>
+                    <span class="menu-title text-center">
+                      لوحة تحكم العملاء
+                    </span>
+                </a>
+            </li>
+                                                <li class="nav-item ">
+                        <a href="javascript:;">
+                            <img class="img-icon" src="http://localhost:8000/app-assets/images/icons/products.png" alt="">
+                            <span class="menu-title">
+                     المنتجات
+                    </span>
+                        </a>
+                        <ul class="menu-content">
+                            <li class="nav-item ">
+                                <a href="javascript:;">
+                                    <i class="fa fa-plus text-success tx-20"></i>
+                                    <span class="menu-title">
+                                 الفروع
+                                </span>
+                                </a>
+                                <ul class="menu-content">
+                                                                            <li class="">
+                                            <a href="http://localhost:8000/client/branches/create">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                اضافة فرع جديد
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a href="http://localhost:8000/client/branches">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                قائمة فروع الشركة
+                                            </a>
+                                        </li>
+                                                                    </ul>
+                            </li>
+                            <li class="nav-item ">
+                                <a href="javascript:;">
+                                    <i class="fa fa-plus text-success tx-20"></i>
+                                    <span class="menu-title">
+                                 المخازن
+                                </span>
+                                </a>
+                                <ul class="menu-content">
+                                                                            <li class="">
+                                            <a href="http://localhost:8000/client/stores/create">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                اضافة مخزن جديد
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a href="http://localhost:8000/client/stores">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                قائمة مخازن الشركة
+                                            </a>
+                                        </li>
+                                        <li class="">
+                                            <a href="http://localhost:8000/client/clients-stores-inventory-get">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                جرد مخازن الشركة
+                                            </a>
+                                        </li>
+                                                                    </ul>
+                            </li>
+                            <li class="nav-item ">
+                                <a href="javascript:;">
+                                    <i class="fa fa-plus text-success tx-20"></i>
+                                    <span class="menu-title">
+                                 الفئات
+                                </span>
+                                </a>
+                                <ul class="menu-content">
+                                                                            <li class="">
+                                            <a href="http://localhost:8000/client/categories/create">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                اضافة فئة جديد
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a href="http://localhost:8000/client/categories">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                قائمة فئات الشركة
+                                            </a>
+                                        </li>
+                                                                    </ul>
+                            </li>
+                            <li class="nav-item ">
+                                <a href="javascript:;">
+                                    <i class="fa fa-plus text-success tx-20"></i>
+                                    <span class="menu-title">
+                                 وحدات المنتجات
+                                </span>
+                                </a>
+                                <ul class="menu-content">
+                                                                            <li class="">
+                                            <a href="http://localhost:8000/client/units/create">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                اضافة وحدة جديدة
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a href="http://localhost:8000/client/units">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                قائمة وحدات المنتجات
+                                            </a>
+                                        </li>
+                                                                    </ul>
+                            </li>
+                            <li class="nav-item ">
+                                <a href="javascript:;">
+                                    <i class="fa fa-plus text-success tx-20"></i>
+                                    <span class="menu-title">
+                                 المنتجات
+                                </span>
+                                </a>
+                                <ul class="menu-content">
+                                                                            <li class="">
+                                            <a href="http://localhost:8000/client/products/create">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                اضافة منتج جديد
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a href="http://localhost:8000/client/products">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                قائمة المنتجات المتوفرة
+                                            </a>
+                                        </li>
+                                        <li class="">
+                                            <a href="http://localhost:8000/client/generate-barcode">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                طباعة باركود المنتجات
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a href="http://localhost:8000/client/clients-products-limited">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                منتجات اوشكت على النفاذ
+                                            </a>
+                                        </li>
+                                        <li class="">
+                                            <a href="http://localhost:8000/client/clients-products-empty">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                قائمة المنتجات التى نفذت
+                                            </a>
+                                        </li>
+                                                                    </ul>
+                            </li>
+                        </ul>
+                    </li>
+                                                                            <li class="nav-item ">
+                        <a href="javascript:;">
+                            <img class="img-icon" src="http://localhost:8000/app-assets/images/icons/depts.png" alt="">
+                            <span class="menu-title">
+                         الديون
+                        </span>
+                        </a>
+                        <ul class="menu-content">
+                            <li class="nav-item ">
+                                <a href="javascript:;">
+                                    <i class="fa fa-plus text-success tx-20"></i>
+                                    <span class="menu-title">
+                                 العملاء
+                                </span>
+                                </a>
+                                <ul class="menu-content">
+                                                                            <li class="">
+                                            <a href="http://localhost:8000/client/outer_clients/create">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                اضافة عميل جديد
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a href="http://localhost:8000/client/outer_clients">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                قائمة العملاء الحاليين
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a href="http://localhost:8000/client/clients-outer-clients-filter">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                فلترة العملاء ( بحث متقدم )
+                                            </a>
+                                        </li>
+                                                                    </ul>
+                            </li>
+                            <li class="nav-item ">
+                                <a href="javascript:;">
+                                    <i class="fa fa-plus text-success tx-20"></i>
+                                    <span class="menu-title">
+                                 الموردين
+                                </span>
+                                </a>
+                                <ul class="menu-content">
+                                                                            <li class="">
+                                            <a href="http://localhost:8000/client/suppliers/create">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                اضافة مورد جديد
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a href="http://localhost:8000/client/suppliers">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                قائمة الموردين الحاليين
+                                            </a>
+                                        </li>
+
+                                        <li class="">
+                                            <a href="http://localhost:8000/client/clients-suppliers-filter">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                فلترة الموردين ( بحث متقدم )
+                                            </a>
+                                        </li>
+                                                                    </ul>
+                            </li>
+                        </ul>
+                    </li>
+                                                                            <li class="nav-item ">
+                        <a href="javascript:;">
+                            <img class="img-icon" src="http://localhost:8000/app-assets/images/icons/safes.png" alt="">
+                            <span class="menu-title">
+                         البنوك والخزن
+                        </span>
+                        </a>
+                        <ul class="menu-content">
+                            <li class="nav-item ">
+                                <a href="javascript:;">
+                                    <i class="fa fa-plus text-success tx-20"></i>
+                                    <span class="menu-title">
+                                 الخزائن
+                                </span>
+                                </a>
+                                <ul class="menu-content">
+                                                                            <li class="">
+                                            <a href="http://localhost:8000/client/safes/create">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                اضافة خزينة جديد
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a href="http://localhost:8000/client/safes">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                قائمة خزائن الشركة
+                                            </a>
+                                        </li>
+                                                                    </ul>
+                            </li>
+                            <li class="nav-item ">
+                                <a href="javascript:;">
+                                    <i class="fa fa-plus text-success tx-20"></i>
+                                    <span class="menu-title">
+                                 البنوك
+                                </span>
+                                </a>
+                                <ul class="menu-content">
+                                                                            <li class="">
+                                            <a href="http://localhost:8000/client/banks/create">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                اضافة بنك جديد
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a href="http://localhost:8000/client/banks">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                قائمة البنوك الحاليين
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a href="http://localhost:8000/client/clients-banks-process">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                سحب وايداع نقدى
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a href="http://localhost:8000/client/clients-banks-transfer">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                تحويل بين البنوك وبعضها
+                                            </a>
+                                        </li>
+                                        <li class="">
+                                            <a href="http://localhost:8000/client/clients-bank-safe-transfer">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                تحويل من بنك الى خزنة
+                                            </a>
+                                        </li>
+                                        <li class="">
+                                            <a href="http://localhost:8000/client/clients-safe-bank-transfer">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                تحويل من خزنة الى بنك
+                                            </a>
+                                        </li>
+
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+            <li class="nav-item ">
+                <a href="http://localhost:8000/client/pos-create">
+                    <img class="img-icon" src="http://localhost:8000/app-assets/images/icons/pos.png" alt="">
+                    <span class="menu-title">
+                     نقطة البيع
+                    </span>
+                </a>
+            </li>
+
+            <li class="nav-item ">
+                <a href="http://localhost:8000/client/pos-sales-report">
+                    <img class="img-icon" src="http://localhost:8000/app-assets/images/icons/pos.png" alt="">
+                    <span class="menu-title">
+                        تقرير مبيعات نقطة البيع
+                    </span>
+                </a>
+            </li>
+
+
+            <li class="nav-item ">
+                <a href="javascript:;">
+                    <i class="fa fa-list"></i>
+                    <span class="menu-title">
+                        قائمة كوبونات الخصم
+                    </span>
+                </a>
+                <ul class="menu-content">
+                    <li class="">
+                        <a href="http://localhost:8000/client/coupons/create"><i class="fa fa-plus"></i>
+                            اضافة كوبون خصم جديد
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="http://localhost:8000/client/coupons"><i class="fa fa-list"></i>
+                            عروض كوبونات الخصم
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+
+                                                <li class="nav-item ">
+                        <a href="javascript:;">
+                            <img class="img-icon" src="http://localhost:8000/app-assets/images/icons/sales.png" alt="">
+                            <span class="menu-title">
+                         المبيعات
+                        </span>
+                        </a>
+                        <ul class="menu-content">
+                            <li class="nav-item ">
+                                <a href="javascript:;">
+                                    <i class="fa fa-plus text-success tx-20"></i>
+                                    <span class="menu-title">
+                                 فواتير البيع
+                                </span>
+                                </a>
+                                <ul class="menu-content">
+                                                                            <li class="">
+                                            <a href="http://localhost:8000/client/sale_bills/create">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                اضافة فاتورة بيع جديدة
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a href="http://localhost:8000/client/sale_bills">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                فواتير البيع السابقة
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a href="http://localhost:8000/client/sale-bills/get-returns">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                مرتجعات فواتير البيع عملاء
+                                            </a>
+                                        </li>
+                                                                    </ul>
+                            </li>
+
+                            <li class="nav-item ">
+                                <a href="javascript:;">
+                                    <i class="fa fa-plus text-success tx-20"></i>
+                                    <span class="menu-title">
+                                 عروض الاسعار
+                                </span>
+                                </a>
+                                <ul class="menu-content">
+                                                                            <li class="">
+                                            <a href="http://localhost:8000/client/quotations/create">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                اضافة عرض سعر جديد
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a href="http://localhost:8000/client/quotations">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                عروض الاسعار السابقة
+                                            </a>
+                                        </li>
+                                                                    </ul>
+                            </li>
+                        </ul>
+                    </li>
+                                                                            <li class="nav-item ">
+                        <a href="javascript:;">
+                            <img class="img-icon" src="http://localhost:8000/app-assets/images/icons/buy_bills.png" alt="">
+                            <span class="menu-title">
+                         المشتريات
+                        </span>
+                        </a>
+                        <ul class="menu-content">
+                            <li class="nav-item ">
+                                <a href="javascript:;">
+                                    <i class="fa fa-plus text-success tx-20"></i>
+                                    <span class="menu-title">
+                                 فواتير المشتريات
+                                </span>
+                                </a>
+                                <ul class="menu-content">
+                                                                            <li class="">
+                                            <a href="http://localhost:8000/client/buy_bills/create">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                اضافة فاتورة مشتريات جديدة
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a href="http://localhost:8000/client/buy_bills">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                فواتير المشتريات السابقة
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a href="http://localhost:8000/client/buy-bills/get-returns">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                مرتجعات فواتير المشتريات
+                                            </a>
+                                        </li>
+                                                                    </ul>
+                            </li>
+                            <li class="nav-item ">
+                                <a href="javascript:;">
+                                    <i class="fa fa-plus text-success tx-20"></i>
+                                    <span class="menu-title">
+                                 اوامر الشراء
+                                </span>
+                                </a>
+                                <ul class="menu-content">
+                                    <li class="">
+                                        <a href="http://localhost:8000/client/purchase_orders/create">
+                                            <i class="fa fa-plus text-success tx-20"></i>
+                                            اضافة امر شراء جديد
+                                        </a>
+                                    </li>
+                                    <li class="">
+                                        <a href="http://localhost:8000/client/purchase_orders">
+                                            <i class="fa fa-plus text-success tx-20"></i>
+                                            عروض اوامر الشراء السابقة
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                                                                            <li class="nav-item ">
+                        <a href="javascript:;">
+                            <img class="img-icon" src="http://localhost:8000/app-assets/images/icons/finance.png" alt="">
+                            <span class="menu-title">
+                         الماليات
+                        </span>
+                        </a>
+                        <ul class="menu-content">
+                            <li class="nav-item ">
+                                <a href="javascript:;">
+                                    <i class="fa fa-plus text-success tx-20"></i>
+                                    <span class="menu-title">
+                                 المصاريف
+                                </span>
+                                </a>
+                                <ul class="menu-content">
+                                                                            <li class="">
+                                            <a href="http://localhost:8000/client/clients-expenses-fixed">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                المصاريف الثابتة
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a href="http://localhost:8000/client/expenses/create">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                تسجيل مصاريف جديدة
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a href="http://localhost:8000/client/expenses">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                عرض المصاريف
+                                            </a>
+                                        </li>
+                                                                    </ul>
+                            </li>
+                            <li class="">
+                                <a class="menu-item" href="javascript:;">
+                                    <i class="fa fa-plus text-success tx-20"></i>
+                                    تسجيل دفع نقدى
+                                </a>
+                                <ul class="menu-content">
+                                                                            <li class="">
+                                            <a class="menu-item" href="http://localhost:8000/client/clients-add-cash-clients">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                استلام نقدية من عميل</a>
+                                        </li>
+                                        <li class="">
+                                            <a class="menu-item" href="http://localhost:8000/client/clients-give-cash-clients">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                اعطاء سلفه الى عميل</a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a class="menu-item" href="http://localhost:8000/client/clients-add-cash-suppliers">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                دفع نقدى الى مورد</a>
+                                        </li>
+                                        <li class="">
+                                            <a class="menu-item" href="http://localhost:8000/client/clients-give-cash-suppliers">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                اخذ سلفه من مورد</a>
+                                        </li>
+                                                                    </ul>
+                            </li>
+                            <li class="">
+                                <a class="menu-item" href="javascript:;">
+                                    <i class="fa fa-plus text-success tx-20"></i>
+                                    تسجيل دفع بنكى
+                                </a>
+                                <ul class="menu-content">
+                                                                            <li class="">
+                                            <a class="menu-item" href="http://localhost:8000/client/clients-add-cashbank-clients">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                دفع بنكى من عميل</a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a class="menu-item" href="http://localhost:8000/client/clients-add-cashbank-suppliers">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                دفع بنكى الى مورد</a>
+                                        </li>
+                                                                    </ul>
+                            </li>
+                            <li class="">
+                                <a class="menu-item" href="javascript:;">
+                                    <i class="fa fa-plus text-success tx-20"></i>
+                                    ادارة راس المال
+                                </a>
+                                <ul class="menu-content">
+                                                                            <li class="">
+                                            <a class="menu-item" href="http://localhost:8000/client/capitals/create">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                اضافة مبلغ راس مال
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a class="menu-item" href="http://localhost:8000/client/capitals">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                مبالغ راس المال المضافة
+                                            </a>
+                                        </li>
+                                                                    </ul>
+                            </li>
+                            <li class="">
+                                <a class="menu-item" href="javascript:;">
+                                    <i class="fa fa-plus text-success tx-20"></i>
+                                    دفعات النقدية السابقة
+                                </a>
+                                <ul class="menu-content">
+                                                                            <li class="">
+                                            <a class="menu-item" href="http://localhost:8000/client/clients-cash-clients">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                دفعات نقدية من العملاء
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a class="menu-item" href="http://localhost:8000/client/clients-cash-suppliers">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                دفعات نقدية الى الموردين
+                                            </a>
+                                        </li>
+                                                                    </ul>
+                            </li>
+                            <li class="">
+                                <a class="menu-item" href="javascript:;">
+                                    <i class="fa fa-plus text-success tx-20"></i>
+                                    السلفات السابقة
+                                </a>
+                                <ul class="menu-content">
+                                                                            <li class="">
+                                            <a class="menu-item" href="http://localhost:8000/client/clients-borrow-clients">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                سلفيات الى العملاء
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a class="menu-item" href="http://localhost:8000/client/clients-borrow-suppliers">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                سلفيات من الموردين
+                                            </a>
+                                        </li>
+                                                                    </ul>
+                            </li>
+                            <li class="">
+                                <a class="menu-item" href="javascript:;">
+                                    <i class="fa fa-plus text-success tx-20"></i>
+                                    دفعات بنكية سابقة
+                                </a>
+                                <ul class="menu-content">
+                                                                            <li class="">
+                                            <a class="menu-item" href="http://localhost:8000/client/clients-cashbank-clients">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                دفعات بنكية من العملاء
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a class="menu-item" href="http://localhost:8000/client/clients-cashbank-suppliers">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                دفعات بنكية الى الموردين
+                                            </a>
+                                        </li>
+                                                                    </ul>
+                            </li>
+                        </ul>
+                    </li>
+                                                                            <li class="nav-item ">
+                        <a href="javascript:;">
+                            <img class="img-icon" src="http://localhost:8000/app-assets/images/icons/marketing.png" alt="">
+                            <span class="menu-title">
+                         التسويق
+                        </span>
+                        </a>
+                        <ul class="menu-content">
+                            <li class="nav-item ">
+                                <a href="javascript:;">
+                                    <i class="fa fa-plus text-success tx-20"></i>
+                                    <span class="menu-title">
+                                 هدايا العملاء المميزين
+                                </span>
+                                </a>
+                                <ul class="menu-content">
+                                                                            <li class="">
+                                            <a href="http://localhost:8000/client/gifts/create">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                اضافة هدية جديدة
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a href="http://localhost:8000/client/gifts">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                عرض هدايا العملاء
+                                            </a>
+                                        </li>
+                                                                    </ul>
+                            </li>
+                            <li class="nav-item ">
+                                <a href="javascript:;">
+                                    <i class="fa fa-plus text-success tx-20"></i>
+                                    <span class="menu-title">
+                                 قسم الايميلات
+                                </span>
+                                </a>
+                                <ul class="menu-content">
+                                                                            <li class="">
+                                            <a href="http://localhost:8000/client/clients-emails-clients">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                ارسال ايميل الى عميل
+                                            </a>
+                                        </li>
+                                                                                                                <li class="">
+                                            <a href="http://localhost:8000/client/clients-emails-suppliers">
+                                                <i class="fa fa-plus text-success tx-20"></i>
+                                                ارسال ايميل الى مورد
+                                            </a>
+                                        </li>
+                                                                    </ul>
+                            </li>
+                        </ul>
+                    </li>
+                                                                            <li class="nav-item ">
+                        <a href="javascript:;">
+                            <img class="img-icon" src="http://localhost:8000/app-assets/images/icons/accounting.png" alt="">
+                            <span class="menu-title">
+                         المحاسبة
+                        </span>
+                        </a>
+                        <ul class="menu-content">
+                                                            <li class="nav-item ">
+                                    <a href="http://localhost:8000/client/daily/get">
+                                        <i class="fa fa-plus text-success tx-20"></i>
+                                        <span class="menu-title">
+                                    دفتر اليومية
+                                </span>
+                                    </a>
+                                </li>
+                                                    </ul>
+                    </li>
+                                                                                                    <li class="nav-item ">
+                            <a href="http://localhost:8000/client/reports">
+                                <img class="img-icon" src="http://localhost:8000/app-assets/images/icons/reports.png" alt="">
+                                <span class="menu-title text-center">
+                            تقارير عامة
+                            </span>
+                            </a>
+                        </li>
+                                                                                                                        <li class="nav-item ">
+                            <a href="javascript:;">
+                                <i class="fa fa-plus text-success tx-20"></i>
+                                <span class="menu-title">
+                        الموظفين
+                    </span>
+                            </a>
+                            <ul class="menu-content">
+                                <li class="">
+                                    <a href="http://localhost:8000/client/employees/create">
+                                        <i class="fa fa-plus text-success tx-20"></i>
+                                        اضافة موظف جديد
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a href="http://localhost:8000/client/employees">
+                                        <i class="fa fa-plus text-success tx-20"></i>
+                                        قائمة الموظفين الحاليين
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a href="http://localhost:8000/client/employees-cash">
+                                        <i class="fa fa-plus text-success tx-20"></i>
+                                        اضافة دفعة الى موظف
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a href="http://localhost:8000/client/employees-cashs">
+                                        <i class="fa fa-plus text-success tx-20"></i>
+                                        مدفوعات الموظفين
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                                                                                                                        <li class="nav-item ">
+                            <a href="javascript:;">
+                                <i class="fa fa-plus text-success tx-20"></i>
+                                <span class="menu-title">
+                                     صلاحيات المستخدمين
+                                    </span>
+                            </a>
+                            <ul class="menu-content">
+                                <li class="">
+                                    <a href="http://localhost:8000/client/clients/create">
+                                        <i class="fa fa-plus text-success tx-20"></i>
+                                        اضافة مستخدم جديد
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a href="http://localhost:8000/client/clients">
+                                        <i class="fa fa-plus text-success tx-20"></i>
+                                        قائمة المستخدمين الحاليين
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a href="http://localhost:8000/client/roles/create">
+                                        <i class="fa fa-plus text-success tx-20"></i>
+                                        اضافة صلاحية جديدة
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a href="http://localhost:8000/client/roles">
+                                        <i class="fa fa-plus text-success tx-20"></i>
+                                        قائمة الصلاحيات الموجودة
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                                                                                                <li class="nav-item ">
+                        <a href="javascript:;">
+                            <img class="img-icon" src="http://localhost:8000/app-assets/images/icons/settings.png" alt="">
+                            <span class="menu-title">
+                         الضبط
+                        </span>
+                        </a>
+                        <ul class="menu-content">
+                                                            <li class="nav-item ">
+                                    <a href="http://localhost:8000/client/client-basic-settings-edit">
+                                        <i class="fa fa-plus text-success tx-20"></i>
+                                        <span class="menu-title">
+                                        الاعدادات العامة للنظام
+                                    </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a href="http://localhost:8000/client/screens-settings">
+                                        <i class="fa fa-plus text-success tx-20"></i>
+                                        <span class="menu-title">
+                                    اعدادات ظهور الشاشات
+                                </span>
+                                    </a>
+                                </li>
+                                                    </ul>
+                    </li>
+                                    </ul>
+    </div>
+</div>
+<div class="app-content content">
+    <div class="content-wrapper">
+        <div class="content-header row">
+
+        </div>
+        <div class="content-body">
+                        <!-- row -->
+    <div class="row row-sm">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-header pb-0 no-print">
+                    <div class="d-flex justify-content-between">
+                        <div class="col-lg-12 margin-tb">
+                            <h5 class="pull-right alert alert-sm alert-success">جرد كل المخازن</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="company_details printy" style="display: none;">
+                        <div class="text-center">
+                            <img class="logo" style="width: 20%;" src="http://localhost:8000/" alt="">
+                        </div>
+                        <div class="text-center">
+                            <div class="col-lg-12 text-center justify-content-center">
+                                <p class="alert alert-secondary text-center alert-sm"
+                                   style="margin: 10px auto; font-size: 17px;line-height: 1.9;" dir="rtl">
+                                    شركة شاور --  <br>
+                                     -- 01092716796 <br>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <form action="http://localhost:8000/client/clients-stores-inventory-post" class="no-print" method="POST">
+                        <input type="hidden" name="_token" value="AcMyAFFJANxLeSKW01q8x8GxhaWHJDK2Qd06UuTP">                        <input type="hidden" name="_method" value="POST">                        <div class="col-lg-3 pull-right no-print">
+                            <label for="" class="d-block">اختر المخزن</label>
+                            <select name="store_id" id="store_id" class="selectpicker"
+                                    data-style="btn-info" data-live-search="true" title="اكتب او اختار اسم المخزن">
+                                <option
+                                                                        value="all">كل المخازن
+                                </option>
+                                                                    <option
+                                                                                value="3">المخزن الرئيسى</option>
+                                                            </select>
+                        </div>
+                        <div class="col-lg-3 pull-right no-print">
+                            <label for="" class="d-block">من تاريخ</label>
+                            <input type="date"  class="form-control" name="from_date"/>
+                        </div>
+                        <div class="col-lg-3 pull-right no-print">
+                            <label for="" class="d-block">الى تاريخ</label>
+                            <input type="date"   class="form-control" name="to_date"/>
+                        </div>
+                        <div class="col-lg-3 pull-right no-print">
+                            <label for="" class="d-block">
+                                خانات التقرير
+                            </label>
+                            <select class="form-control selectpicker show-tick"
+                                    data-live-search="true" data-style="btn-success"
+                                    data-title="اختر الخانات" multiple
+                                    required name="options[]" id="">
+                                <option
+                                                                        value="product_name">اسم المنتج
+                                </option>
+                                <option
+                                                                        value="code_universal">الكود
+                                </option>
+                                <option
+                                                                        value="purchasing_price">سعر الشراء
+                                </option>
+                                <option
+                                                                        value="purchases">مشتريات
+                                </option>
+                                <option
+                                                                        value="sales">مبيعات
+                                </option>
+                                <option
+                                                                        value="current_quantity">كمية حالية
+                                </option>
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <div class="col-lg-12 pull-right">
+                            <button class="btn btn-md btn-danger"
+                                    style="font-size: 15px; height: 40px; margin-top: 25px;" type="submit">
+                                <i class="fa fa-check"></i>
+                                عرض التقرير
+                            </button>
+                            <a href="javascript:;" onclick="window.print()" class="btn btn-md btn-info ml-3"
+                               style="font-size: 15px; height: 40px; margin-top: 25px;" role="button">
+                                <i class="fa fa-print"></i>
+                                طباعة التقرير
+                            </a>
+                            <a class="btn btn-md ml-3 btn-warning" href="http://localhost:8000/client/export-inventory"
+                               style="font-size: 15px; height: 40px; margin-top: 25px;" role="button">
+                                تصدير Excel
+                            </a>
+
+                        </div>
+                    </form>
+                    <div class="clearfix"></div>
+                                    </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+<footer class="footer footer-static footer-dark navbar-border navbar-shadow no-print">
+    <p class="clearfix text-center mb-0 px-2 alarm-upgrade justify-content-center text-white w-100">
+                    أنت الان فى النسخة التجريبية - الوقت المتبقى
+            12            يوم لانتهاء التجربة
+            <a role="button" class="ml-2 btn btn-md btn-outline-success" href="http://localhost:8000/client/go-to-upgrade">
+                الترقية الان
+            </a>
+            </p>
+</footer>
+
+<footer class="footer footer-static footer-light navbar-border navbar-shadow no-print">
+    <p class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2">
+        <span class="float-md-right d-block d-md-inline-blockd-none d-lg-block">
+            <i class="fa fa-heart pink"></i>
+            {{$system->name}}
+        </span>
+        <span class="float-md-left d-block d-md-inline-blockd-none d-lg-block">
+            <a data-toggle="modal" data-target="#modaldemo">
+                <i class="fa fa-info-circle pink"></i>
+                سياسة الخصوصية
+            </a>
+        </span>
+        <span class="float-md-left ml-5">
+            <a href="http://localhost:8000/client/go-to-upgrade">
+                <i class="fa fa-money pink"></i>
+                أسعار الخدمات
+            </a>
+        </span>
+    </p>
+</footer>
+
+<script src="http://localhost:8000/app-assets/js/vendors.min.js" type="text/javascript"></script>
+<script src="http://localhost:8000/app-assets/js/bootstrap-select.js" type="text/javascript"></script>
+<script src="http://localhost:8000/app-assets/js/datatables.min.js" type="text/javascript"></script>
+<script src="http://localhost:8000/app-assets/js/app-menu.js" type="text/javascript"></script>
+<script src="http://localhost:8000/app-assets/js/app.js" type="text/javascript"></script>
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+    $(function () {
+        $('#example-table').DataTable({});
+    });
+    $(".alert.alert-success.alert-dismissable").fadeTo(2000, 5000).slideUp(500);
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+</script>
+<div class="modal" id="modaldemo">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content modal-content-demo">
+            <div class="modal-header text-center">
+                <h6 class="modal-title w-100" style="font-family: 'Cairo'; "> سياسة الخصوصية </h6>
+                <button aria-label="Close" class="close"
+                        data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body text-center" dir="rtl">
+                <ul dir="rtl">
+                    <li> قد يتم استخدام بياناتك لضمان حفظ الجودة </li>
+                    <li> لا يتم مشاركة بيانات مع افراد اخرين </li>
+                    <li> قد يتم استعمال بياناتك من أجل التواصل معك او لحل مشاكل </li>
+                    <li> مع ملاحظة ان أمن بياناتك هى من اهم اولوياتنا </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">اغلاق</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

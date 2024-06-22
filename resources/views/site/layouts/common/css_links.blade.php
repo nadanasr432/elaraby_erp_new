@@ -1,0 +1,9 @@
+<link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
+<link rel="stylesheet" href="{{asset('assets/css/font-awesome.min.css')}}">
+<link rel="stylesheet" href="{{asset('assets/css/jquery.animatedheadline.css')}}">
+<link rel="stylesheet" href="{{asset('assets/css/main.css')}}">
+<link rel="stylesheet" href="{{asset('assets/css/agency.css')}}">
+<link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
+<link href="{{asset('assets/vendor/animate.css/animate.min.css')}}" rel="stylesheet">
+<link href="{{asset('assets/vendor/icofont/icofont.min.css')}}" rel="stylesheet">
+<link href="{{asset('assets/vendor/boxicons/css/boxicons.min.css')}}" rel="stylesheet">

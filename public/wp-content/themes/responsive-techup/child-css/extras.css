@@ -1,0 +1,34 @@
+.team-slider-two.owl-theme .owl-nav [class*=owl-]:hover, .team-slider-two.owl-theme .owl-nav [class*=owl-]:focus, .post-meta li a:hover, .post-meta li a:focus, h5 a:hover, h6 a:hover, h5 a:focus, h6 a:focus, .widget_categories a:hover, .widget_archive a:hover, .widget_categories a:focus, .widget_archive a:focus, .widget_meta a:hover, .widget_meta a:focus, .foot-bottom a, .main-navigation a:hover, .widget_recent_entries a:hover, .widget_recent_entries a:focus, .widget_recent_comments .recentcomments a:hover, .widget_recent_comments .recentcomments a:focus, .widget_recent_entries .post-date, .blog-detail .post-meta li a, .logged-in-as a, .read-more:hover, .read-more:focus, .blog-detail .post-meta li i, .comment-meta a, .says, .sp-100 .pagination-blog .navigation .nav-links a, .post-tags a:hover, .post-tags a:focus, .btn-one:hover, .btn-one:focus, .widget_pages a:hover, .widget_pages a:focus, .hero-sec .caption h1, .main-menu ul ul.sub-menu a:hover, .navbar-expand-lg a:hover, .services-5 .icon-box i, .services-5 .icon-box h4 a:hover, .widget_categories li:hover, .widget_archive li:hover, .widget_categories li a:focus, .widget_archive li a:focus, .testimonials-5 .testimonial-item i, .fibu h2, .fibu-port h5:hover.portfolio-5 .box-body:hover .box-title, .portfolio-5 .box-body:hover i, .busi-dark-banner .section-title-2, .busi-dark-feat .about-box i, .busi-dark-ser .serviceBox .service-icon, .busi-dark-co2 h2, .educ-home .about-box i, .buco .feature-box .icon, .buco .feature-box .link-details, .section-heading .sm-title, .buco .our-team .post, .buco .our-team .post-title a:hover, .creativo-seo .readmore-btn:hover, .creativo-seo .feature-box .link-details, .creativo-service .link-box, .creativo-team .post, .creativo-blog .blog-item .entry-meta a:hover, .constech-feat .feature-box .icon-main i, .constech-service .section-heading > span, .constech-service .service-box .icon, .constech-service .service-box .link-details, .constech-port .section-heading > span.section-title, .constech-team .section-heading > span, .constech-team .post, .constech-blog .section-heading > span, .common-heading>span, .startup-team .our-team .post, .corporate-service .service-logo i, .corporate-testi .client-heading .icon, .corporate-team .our-team:hover .profile-title, .corporate-blog .post-body .post-meta-list > span, .corporate-blog .post-meta-list .meta-date-text, .post-meta-list .post-cat a, .corporate-blog .blog-btn, .corporate-service a:hover
+{
+	color:#03a9f4 !important; 
+}
+.search-form input[type="submit"] {
+    background: #03a9f4 none repeat scroll 0 0;
+    border: 1px solid #03a9f4;
+}
+.btn-dark, .service-box2:after, .feature-box::after, .class-box:hover h5:before, .class-box:hover h5:after, .class-box:focus h5:before, .class-box:focus h5:after, section.cta, .foot-title h4::after, .main-navigation .nav-menu>.menu-item-has-children > .sub-menu li a:before, .search-form input[type='submit'], .title-sep2::after, ::-webkit-scrollbar-thumb, ::-webkit-scrollbar-thumb:hover, .comment-respond .comment-reply-title::after, .comment-respond .form-submit input, .widget_tag_cloud .tagcloud a:hover, .widget_tag_cloud .tagcloud a:focus, .pagination .nav-links .page-numbers.current, .pagination .nav-links .page-numbers:hover, .reply:focus, .blog .blog-item:hover .date, .blog .blog-item:focus .date, .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span, .owl-theme .owl-dots .owl-dot:focus span, .service-box3col:after, .service-box4col:after, .service-box:hover .service-content, .project:hover .proj-content, .project:focus .proj-content, .header-three, .bg-theme, .btn-2, .cta-2, .carousel-indicators .active, .our-team .social_media_team, .service-box3 h5::after, .title-line > i, .main-menu ul ul.sub-menu a::before, .cta-4, .about .about-box:before, .tradebusi-port .box-content, .busi-dark-banner .btn-2:hover, .busi-dark-ser .serviceBox, .busi-dark-ser .service-content:before, .busi-dark-blog .btn-wraper .read-more-btn, .buco .btn-wraper .home-btn:hover, .educ-home .btn-wraper .home-btn:hover, .buco .btn-wraper .home-btn, .educ-home .btn-wraper .home-btn, .heading-divider .heading-seperator::before, .educ-home .btn, .cta-7 .buco .btn, .busi-corp, .creativo-seo .readmore-btn, .creativo-testi .client-pic i, .creativo-co, .btn-one, .constech-hero .content-sec .readmore-btn, .startup-features .feature-box .icon-main, .startup-service .service-icon, .corporate-co1 .btn:hover
+{
+	background-color:#03a9f4 !important; 
+}
+.btn-dark, .service-box2:after, .feature-box::after, .class-box:hover h5:before, .class-box:hover h5:after, .class-box:focus h5:before, .class-box:focus h5:after, section.cta, .foot-title h4::after, .main-navigation .nav-menu>.menu-item-has-children > .sub-menu li a:before, .search-form input[type='submit'], .title-sep2::after, ::-webkit-scrollbar-thumb, ::-webkit-scrollbar-thumb:hover, .comment-respond .comment-reply-title::after, .comment-respond .form-submit input, .widget_tag_cloud .tagcloud a:hover, .widget_tag_cloud .tagcloud a:focus, .pagination .nav-links .page-numbers.current, .pagination .nav-links .page-numbers:hover, .reply:focus, .blog .blog-item:hover .date, .blog .blog-item:focus .date, .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span, .owl-theme .owl-dots .owl-dot:focus span, .service-box3col:after, .service-box4col:after, .service-box:hover .service-content, .project:hover .proj-content, .project:focus .proj-content, .header-three, .bg-theme, .btn-2, .cta-2, .carousel-indicators .active, .our-team .social_media_team, .service-box3 h5::after, .title-line > i, .main-menu ul ul.sub-menu a::before, .cta-4, .blog-5 .btn-wraper .read-more-btn:hover, .about .about-box:before, .tradebusi-port .box-content, .busi-dark-banner .btn-2:hover, .busi-dark-ser .serviceBox, .busi-dark-ser .service-content:before, .busi-dark-blog .btn-wraper .read-more-btn, .buco .btn-wraper .home-btn:hover, .educ-home .btn-wraper .home-btn:hover, .buco .btn-wraper .home-btn, .educ-home .btn-wraper .home-btn, .heading-divider .heading-seperator::before, .educ-home .btn, .cta-7 .buco .btn, .busi-corp, .creativo-seo .readmore-btn, .creativo-testi .client-pic i, .creativo-co, .btn-one, .constech-hero .content-sec .readmore-btn, .startup-features .feature-box .icon-main, .startup-service .service-icon, .corporate-co1 .btn:hover
+{
+	border-color: #03a9f4 !important;
+}
+blockquote {
+    border-left: 5px solid #03a9f4;
+}
+.page-banner::before
+{
+	content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: #000;
+    opacity: 0.6;
+}
+.page-banner h3
+{
+	color:#fff; 
+}

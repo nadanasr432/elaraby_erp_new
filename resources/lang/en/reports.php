@@ -1,0 +1,32 @@
+<?php
+
+return [
+    "product-reports" => "Products Reports",
+    "sales-by-product" => "Sales by products",
+    "sales-by-customer" => "Sales by customer",
+    "purchases-by-product" => "Purchases by products",
+    "best-selling-products-report" => "Best selling product report",
+    "branch-activity-report" => "Branch activity report",
+    "product-activity-report" => "Product activity report",
+    "account-statement-reports" => "Account statement reports",
+    "client-account-statement" => "Client account statement",
+    "supplier-account-statement" => "Supplier account statement",
+    "employee-account-statement" => "Employee account statement",
+    "debts-reports" => "Debts reports",
+    "sales-reports" => "Sales reports",
+    "report-the-quantity-of-products-sold" => "Report the quantity of products sold",
+    "report-the-quantity-of-products-purchased" => "Report the quantity of products purchased",
+    "comprehensive-tax-return-report" => "Comprehensive tax return report",
+    "purchases-reports" => "Purchases reports",
+    "products-purchase-cost-report" => "Products purchase cost report",
+    "safes-banks-reports" => "Banks and safes reports",
+    "bank-activity-report" => "Bank activity report",
+    "safe-activity-report" => "Safes activity report",
+    "financial-reports" => "Financial reports",
+    "capital-reports" => "Capital reports",
+    "collected-from-clients-reports" => "Collected from clients report",
+    "paid-to-suppliers-reports" => "Paid to suppliers report",
+    "earnings-reports" => "Earnings reports",
+    "spending-reports" => "Spending reports",
+    "overall-work-reports" => "Overall Work reports"
+];

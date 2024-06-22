@@ -1,0 +1,10 @@
+@font-face{
+    font-family: 'Cairo';
+    src: url("../../fonts/Cairo.ttf");
+}
+body,html{
+    font-family: 'Cairo' !important;
+}
+.brand-text,.search-input ,.dropdown-user,.navigation-main{
+    font-family: 'Cairo' !important;
+}
