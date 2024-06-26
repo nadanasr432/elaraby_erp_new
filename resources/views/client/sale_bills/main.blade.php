@@ -187,8 +187,7 @@
                     <div class="txtheader mx-auto text-center">
                         @if (!$isMoswada)
                             @lang('sales_bills.Tax bill')
-                            <br>
-                            TaxInvoice
+                       
                         @else
                             @lang('sales_bills.Draft invoice')
                         @endif
@@ -217,8 +216,7 @@
                     <div class="txtheader mx-auto text-center">
                         @if (!$isMoswada)
                             @lang('sales_bills.Tax bill')
-                            <br>
-                            TaxInvoice
+                         
                         @else
                             @lang('sales_bills.Draft invoice')
                         @endif
@@ -251,7 +249,7 @@
                             <tr class="even"
                                 style="font-size: 15px !important; height: 40px !important; text-align: center;">
                                 <td>{{ $sale_bill->date }}</td>
-                                <td>{{ $sale_bill->company_counter }}</td>
+                                <td>{{ $position }}</td>
                                 <td>{{ $company->civil_registration_number }}</td>
                             </tr>
                         </tbody>
@@ -274,7 +272,7 @@
                             <tr class="even"
                                 style="font-size: 15px !important; height: 40px !important; text-align: center;">
                                 <td>{{ $company->civil_registration_number }}</td>
-                                <td>{{ $sale_bill->company_counter }}</td>
+                                <td>{{ $position }}</td>
                                 <td>{{ $sale_bill->date }}</td>
                             </tr>
                         </tbody>

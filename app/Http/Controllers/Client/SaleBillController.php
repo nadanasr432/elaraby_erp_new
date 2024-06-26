@@ -62,7 +62,12 @@ class SaleBillController extends Controller
         $this->reAssignPayments();
         $company_id = Auth::user()->company_id;
         $company = Company::FindOrFail($company_id);
-        $sale_bills = SaleBill::latest()->where('company_id', $company_id)->where('status', 'done')->get();
+        $sale_bills = SaleBill::withTrashed()
+        ->latest()
+        ->where('company_id', $company_id)
+        ->where('status', 'done')
+        ->get();
+
         if (in_array('مدير النظام', Auth::user()->role_name)) {
             $outer_clients = OuterClient::where('company_id', $company_id)->get();
         } else {
@@ -74,8 +79,24 @@ class SaleBillController extends Controller
         }
 
         $products = $company->products;
-        return view('client.sale_bills.index', compact('company', 'products', 'company_id', 'outer_clients', 'sale_bills'));
+
+        // Count the collections
+        $sale_bills_count = $sale_bills->count();
+        $outer_clients_count = $outer_clients->count();
+        $products_count = $products->count();
+
+        return view('client.sale_bills.index', compact(
+            'company',
+            'products',
+            'company_id',
+            'outer_clients',
+            'sale_bills',
+            'sale_bills_count',
+            'outer_clients_count',
+            'products_count'
+        ));
     }
+
 
     # create page #
     public function create()
@@ -177,6 +198,22 @@ class SaleBillController extends Controller
                 'pre_counter'
             )
         );
+    }
+    public function toggleStatus(Request $request)
+    {
+        $saleBill = SaleBill::withTrashed()->find($request->sale_bill_id);
+        if ($saleBill) {
+            if ($request->status == 'active') {
+                $saleBill->deleted_at = null;
+            } else {
+                $saleBill->deleted_at = now();
+            }
+            $saleBill->save();
+
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => false]);
     }
 
     public function store_cash_outer_clients(SaleBillRequest $request)
@@ -548,32 +585,40 @@ class SaleBillController extends Controller
     public function destroy(Request $request)
     {
         $company_id = Auth::user()->company_id;
-        $company = Company::FindOrFail($company_id);
+        $company = Company::findOrFail($company_id);
         $client_id = Auth::user()->id;
         $sale_bill_number = $request->sale_bill_number;
         $sale_bill = SaleBill::where('sale_bill_number', $sale_bill_number)->first();
-        $sale_bill->elements()->delete();
-        $sale_bill->extras()->delete();
-        $cash = Cash::where('bill_id', $sale_bill->sale_bill_number)
-            ->where('company_id', $company_id)
-            ->where('client_id', $sale_bill->client_id)
-            ->where('outer_client_id', $sale_bill->outer_client_id)
-            ->first();
-        if (!empty($cash)) {
-            $cash->delete();
+
+        if ($sale_bill) {
+            $sale_bill->elements()->delete();
+            $sale_bill->extras()->delete();
+
+            $cash = Cash::where('bill_id', $sale_bill->sale_bill_number)
+                ->where('company_id', $company_id)
+                ->where('client_id', $sale_bill->client_id)
+                ->where('outer_client_id', $sale_bill->outer_client_id)
+                ->first();
+            if ($cash) {
+                $cash->delete();
+            }
+
+            $bank_cash = BankCash::where('bill_id', $sale_bill->sale_bill_number)
+                ->where('company_id', $company_id)
+                ->where('client_id', $sale_bill->client_id)
+                ->where('outer_client_id', $sale_bill->outer_client_id)
+                ->first();
+            if ($bank_cash) {
+                $bank_cash->delete();
+            }
+
+            $sale_bill->delete(); // This will now soft delete the record
         }
-        $cash = BankCash::where('bill_id', $sale_bill->sale_bill_number)
-            ->where('company_id', $company_id)
-            ->where('client_id', $sale_bill->client_id)
-            ->where('outer_client_id', $sale_bill->outer_client_id)
-            ->first();
-        if (!empty($cash)) {
-            $cash->delete();
-        }
-        $sale_bill->delete();
+
         return redirect()->route('client.sale_bills.create')
-            ->with('success', 'تم حذف الفاتورة  بنجاح');
+        ->with('success', 'تم حذف الفاتورة بنجاح');
     }
+
 
     public function delete_bill(Request $request)
     {
@@ -1839,9 +1884,21 @@ class SaleBillController extends Controller
 
     public function print($hashtoken, $invoiceType = 1, $printColor = null, $isMoswada = null)
     {
-        // dd($invoiceType);
+        // Fetch the sale_bill using the provided token
         $sale_bill = SaleBill::where('token', $hashtoken)->first();
+
         if (!empty($sale_bill)) {
+            // Get all sale bills with 'done' status for the same company
+            $sale_bills_done = SaleBill::where('company_id', $sale_bill->company_id)
+                ->where('status', 'done')
+                ->orderBy('created_at', 'asc')
+                ->get();
+
+            // Find the position of the current sale_bill in the collection
+            $position = $sale_bills_done->search(function ($item) use ($sale_bill) {
+                return $item->id === $sale_bill->id;
+            }) + 1; // +1 to make it 1-based index
+
             $elements = SaleBillElement::where('sale_bill_id', $sale_bill->id)
                 ->where('company_id', $sale_bill->company_id)
                 ->get();
@@ -1849,12 +1906,12 @@ class SaleBillController extends Controller
             if ($elements->isEmpty()) {
                 return abort('404');
             } else {
-                #--main data of invoice--#
+                // Main data of invoice
                 $company = Company::FindOrFail($sale_bill->company_id);
                 $extra_settings = ExtraSettings::where('company_id', $company->id)->first();
                 $currency = $extra_settings->currency;
 
-                #--owner data--#
+                // Owner data
                 $client_id = $sale_bill->client_id;
                 $client = Client::FindOrFail($client_id);
                 $branch = $client->branch;
@@ -1866,78 +1923,68 @@ class SaleBillController extends Controller
                     $pageData['branch_phone'] = $company->phone_number;
                 }
                 $owner = Client::where('company_id', $company->id)->first();
-                if ($owner && !empty($owner))
-                    $pageData['ownerEmail'] = $owner->email;
-                else
-                    $pageData['ownerEmail'] = 'غير مسجل';
+                $pageData['ownerEmail'] = $owner ? $owner->email : 'غير مسجل';
 
-                #--client data--#
+                // Client data
                 $clientData = OuterClient::findOrFail($sale_bill->outer_client_id);
                 $pageData['clientName'] = $clientData->client_name;
                 $pageData['clientAddress'] = OuterClientAddress::where('outer_client_id', $sale_bill->outer_client_id)->first();
-                if ($pageData['clientAddress'] && !empty($pageData['clientAddress']))
-                    $pageData['clientAddress'] = $pageData['clientAddress']->client_address;
-                else
-                    $pageData['clientAddress'] = 'غير مسجل';
+                $pageData['clientAddress'] = $pageData['clientAddress'] ? $pageData['clientAddress']->client_address : 'غير مسجل';
 
-                $total = [];
-                foreach ($elements as $element) {
-                    array_push($total, $element->quantity_price);
-                }
-                $realtotal = array_sum($total);
-                $total = $realtotal;
+                // Calculate total
+                $total = $elements->sum('quantity_price');
+                $realtotal = $total;
 
-                # chk for discount #
-                $shipping = \App\Models\SaleBillExtra::where('sale_bill_id', $sale_bill->id)->where('company_id', $sale_bill->company_id)->where('action', 'extra')->first();
-                $discount = \App\Models\SaleBillExtra::where('sale_bill_id', $sale_bill->id)->where('company_id', $sale_bill->company_id)->where('action', 'discount')->first();
+                // Check for discount and shipping
+                $shipping = SaleBillExtra::where('sale_bill_id', $sale_bill->id)
+                    ->where('company_id', $sale_bill->company_id)
+                    ->where('action', 'extra')
+                    ->first();
+                $discount = SaleBillExtra::where('sale_bill_id', $sale_bill->id)
+                    ->where('company_id', $sale_bill->company_id)
+                    ->where('action', 'discount')
+                    ->first();
                 $discountNote = $discount->discount_note ?? '';
-                $tax_value_added = $company->tax_value_added; //15%
-                # calc shipping
-                if (!empty($shipping)) {
-                    $shippingType = $shipping->action_type;
-                    $shippingValue = $shipping->value;
-                    if ($shippingType == "percent") {
-                        $shippingValue = $shippingValue / 100 * $total;
-                    }
-                }
-                if (!isset($discount->action_type)) {
-                    $discount->action_type = '';
+                $tax_value_added = $company->tax_value_added; // 15%
+
+                // Calculate shipping value
+                if ($shipping) {
+                    $shippingValue = $shipping->action_type == 'percent' ? $shipping->value / 100 * $total : $shipping->value;
                 }
 
-                # check if discount is on pounds or % percent.
-                if ($discount->action_type == "pound") {
-                    $discountValue = $discount->value;
-                    if (isset($shippingValue) && $shippingValue != 0) {
-                        $after_discount = $total - $discount->value + $shippingValue;
-                    } else {
-                        $after_discount = $total - $discount->value;
-                    }
-                } else if ($discount->action_type == "percent") {
-                    $discountValue = $discount->value / 100 * $total;
-                    if (isset($shippingValue) && $shippingValue != 0) {
-                        $after_discount = $total - $discountValue + $shippingValue;
-                    } else {
-                        $after_discount = $total - $discountValue;
-                    }
-                } else if ($discount->action_type == "afterTax") {
-                    $discountValue = $discount->value / 100 * $total; // 10 / 100*100
-                    if (isset($shippingValue) && $shippingValue != 0) {
-                        $after_discount = $total - $discountValue + $tax_value_added;
-                    } else {
-                        $after_discount = $total - $discountValue;
+                // Calculate discount
+                $discountValue = 0;
+                if ($discount) {
+                    switch ($discount->action_type) {
+                        case 'pound':
+                            $discountValue = $discount->value;
+                            $after_discount = $total - $discountValue + ($shippingValue ?? 0);
+                            break;
+                        case 'percent':
+                            $discountValue = $discount->value / 100 * $total;
+                            $after_discount = $total - $discountValue + ($shippingValue ?? 0);
+                            break;
+                        case 'afterTax':
+                            $discountValue = $discount->value / 100 * $total;
+                            $after_discount = $total - $discountValue + ($tax_value_added ?? 0);
+                            break;
+                        case 'poundAfterTax':
+                        case 'poundAfterTaxPercent':
+                            $discountValue = ($discount->value * $total) / 100;
+                            $after_discount = $total - $discountValue;
+                            break;
+                        default:
+                            $after_discount = $total - $discount->value;
+                            break;
                     }
                 } else {
-                    if ($discount->action_type == "poundAfterTaxPercent") {
-                        $discountValue = (($discount->value * $total) / 100);
-                        $after_discount = $total - $discountValue;
-                    } else {
-                        $discountValue = $discount->value;
-                        $after_discount = $total - $discountValue;
-                    }
+                    $after_discount = $total;
                 }
+
                 $total = $after_discount;
-                # ---------------- #
-                if ($discount->action_type == "poundAfterTax" || $discount->action_type == "poundAfterTaxPercent") {
+
+                // Calculate tax
+                if ($discount && in_array($discount->action_type, ['poundAfterTax', 'poundAfterTaxPercent'])) {
                     $sumWithOutTax = $sale_bill->value_added_tax ? round($total * 20 / 23, 2) : round($total, 2);
                     $sumWithTax = $sale_bill->value_added_tax ? $total : round($total + $realtotal * 15 / 100, 2);
                     $totalTax = round($sumWithTax - $sumWithOutTax, 2);
@@ -1947,8 +1994,7 @@ class SaleBillController extends Controller
                     $totalTax = round($sumWithTax - $sumWithOutTax, 2);
                 }
 
-                #Artisan::call('cache:clear');
-                # ============= get paid and rest amount ============ #
+                // Determine print color
                 if (!empty($printColor)) {
                     $printColor = $printColor == 1 ? "#085d4a" : "#666EE8";
                 } else {
@@ -1958,24 +2004,23 @@ class SaleBillController extends Controller
                     $printColor = '#222751';
                     return view(
                         'client.sale_bills.main',
-                        compact('isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax','realtotal', 'discountValue')
+                        compact('isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
                     );
                 } elseif ($invoiceType == 4) {
                     $printColor = '#222751';
                     return view(
                         'client.sale_bills.print4',
-                        compact('isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue')
+                        compact('isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
                     );
-                }
-                 elseif ($invoiceType == 3) {
+                } elseif ($invoiceType == 3) {
                     return view(
                         'client.sale_bills.no_tax_print',
-                        compact('isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax','realtotal', 'discountValue')
+                        compact('isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
                     );
                 } else {
                     return view(
                         'client.sale_bills.nPrint3',
-                        compact('isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax','realtotal', 'discountValue')
+                        compact('isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
                     );
                 }
             }
@@ -1983,6 +2028,7 @@ class SaleBillController extends Controller
             return abort('404');
         }
     }
+
 
     public function save_notes(Request $request)
     {

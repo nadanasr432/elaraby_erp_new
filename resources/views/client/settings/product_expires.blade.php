@@ -55,23 +55,24 @@
             <input type="hidden" name="company_id" value="{{ $company->id }}" />
             <div class="form-group">
                 <label for="exp_duration">{{ __('Expiration Duration') }}</label>
-                <div id="expDurationContainer" class="custom-radio-group">
-                    <label><input type="radio" name="exp_duration" value="0.33"
-                            {{ old('exp_duration', $company->extra_settings->exp_duration) == '0.33' ? 'checked' : '' }}>
-                        1/3</label>
-                    <label><input type="radio" name="exp_duration" value="0.66"
-                            {{ old('exp_duration', $company->extra_settings->exp_duration) == '0.66' ? 'checked' : '' }}>
-                        2/3</label>
-                    <label><input type="radio" name="exp_duration" value="0.25"
-                            {{ old('exp_duration', $company->extra_settings->exp_duration) == '0.25' ? 'checked' : '' }}>
-                        1/4</label>
-                    <label><input type="radio" name="exp_duration" value="0.75"
-                            {{ old('exp_duration', $company->extra_settings->exp_duration) == '0.75' ? 'checked' : '' }}>
-                        3/4</label>
-                    <label><input type="radio" name="exp_duration" value="0.5"
-                            {{ old('exp_duration', $company->extra_settings->exp_duration) == '0.5' ? 'checked' : '' }}>
-                        1/2</label>
-                </div>
+               <div id="expDurationContainer" class="custom-radio-group">
+    <label><input type="radio" name="exp_duration" value="0.33"
+            {{ old('exp_duration', $company->extra_settings->exp_duration) == '0.33' ? 'checked' : '' }}>
+        ثلث المدة </label>
+    <label><input type="radio" name="exp_duration" value="0.66"
+            {{ old('exp_duration', $company->extra_settings->exp_duration) == '0.66' ? 'checked' : '' }}>
+        ثلثين المدة </label>
+    <label><input type="radio" name="exp_duration" value="0.25"
+            {{ old('exp_duration', $company->extra_settings->exp_duration) == '0.25' ? 'checked' : '' }}>
+        ربع المدة </label>
+    <label><input type="radio" name="exp_duration" value="0.75"
+            {{ old('exp_duration', $company->extra_settings->exp_duration) == '0.75' ? 'checked' : '' }}>
+        ثلاثة أرباع المدة </label>
+    <label><input type="radio" name="exp_duration" value="0.5"
+            {{ old('exp_duration', $company->extra_settings->exp_duration) == '0.5' ? 'checked' : '' }}>
+        نصف المدة </label>
+</div>
+
             </div>
             <div class="col-lg-12 col-xs-12 pull-right">
                 <div class="form-group">

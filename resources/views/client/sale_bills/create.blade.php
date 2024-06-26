@@ -303,7 +303,7 @@
         <div class="col-lg-12 text-center">
             <button type="button" id="add" class="btn btn-info btn-md mt-3">
                 <i class="fa fa-plus"></i>
-                {{ __('sidebar.add-new-sales-invoice') }}
+                {{ __('sidebar.save') }}
             </button>
             <button type="button" id="edit" style="display: none" class="btn btn-success btn-md mt-3">
                 <i class="fa fa-pencil"></i>
