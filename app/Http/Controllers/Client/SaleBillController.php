@@ -61,13 +61,18 @@ class SaleBillController extends Controller
     {
         $this->reAssignPayments();
         $company_id = Auth::user()->company_id;
-        $company = Company::FindOrFail($company_id);
-        $sale_bills = SaleBill::withTrashed()
-        ->latest()
-        ->where('company_id', $company_id)
-        ->where('status', 'done')
-        ->get();
+        $company = Company::findOrFail($company_id);
 
+        // Fetching sale bills in chunks
+        $sale_bills = collect();
+        SaleBill::withTrashed()
+            ->latest()
+            ->where('company_id', $company_id)
+            ->where('status', 'done')
+            ->chunk(100, function ($bills) use ($sale_bills) {
+                $sale_bills->push($bills);
+            });
+        $sale_bills = $sale_bills->flatten();
         if (in_array('مدير النظام', Auth::user()->role_name)) {
             $outer_clients = OuterClient::where('company_id', $company_id)->get();
         } else {
@@ -81,7 +86,10 @@ class SaleBillController extends Controller
         $products = $company->products;
 
         // Count the collections
-        $sale_bills_count = $sale_bills->count();
+        $sale_bills_count = SaleBill::withTrashed()
+            ->where('company_id', $company_id)
+            ->where('status', 'done')
+            ->count();
         $outer_clients_count = $outer_clients->count();
         $products_count = $products->count();
 
@@ -96,6 +104,7 @@ class SaleBillController extends Controller
             'products_count'
         ));
     }
+
 
 
     # create page #
@@ -134,7 +143,6 @@ class SaleBillController extends Controller
                 ->whereIn('store_id', $flatStores)
                 ->orWhereNull('store_id')
                 ->get();
-
         } else {
             $stores = $company->stores;
             $all_products = $company->products;
@@ -616,7 +624,7 @@ class SaleBillController extends Controller
         }
 
         return redirect()->route('client.sale_bills.create')
-        ->with('success', 'تم حذف الفاتورة بنجاح');
+            ->with('success', 'تم حذف الفاتورة بنجاح');
     }
 
 
@@ -777,7 +785,6 @@ class SaleBillController extends Controller
                 'pre_cash'
             )
         );
-
     }
 
     /*
@@ -1368,7 +1375,6 @@ class SaleBillController extends Controller
                     $after_total = $after_discount + $percentage;
                 } else # so its inclusive
                     $after_total = $after_discount;
-
             } else {
                 # calc final_total with inserted tax if inclusive or exclusive.
                 if ($tax_option == 0) { #exclusive
@@ -2072,7 +2078,8 @@ class SaleBillController extends Controller
     {
         if (SaleBill::where("token", $request->token)
             ->firstOrFail()
-            ->update(['value_added_tax' => $request->value_added_tax]))
+            ->update(['value_added_tax' => $request->value_added_tax])
+        )
             return 1;
         else
             return 0;
