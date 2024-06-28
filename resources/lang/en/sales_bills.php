@@ -34,6 +34,7 @@ return [
     "total price" => "total price",
     "Discount"=> "Discount",
     "Total, excluding tax"=> "Grand Total Amount Excluding VAT",
+    
     "Discount note"=> "Discount note",
     "offer price" => "offer price",
     "Start Date" => "Start Date",
