@@ -250,11 +250,15 @@
         <div class="options no-print">
             <div class="col-lg-3 pull-right">
                 <label for=""> {{ __('sales_bills.product-code') }} </label>
-                <select name="product_id" id="product_id" class="selectpicker" data-style="btn-success"
-                        data-live-search="true" title="{{ __('sales_bills.product-code') }}">
+               <select name="product_id" id="product_id" class="selectpicker w-80" data-style="btn-success"
+                    data-live-search="true" title="{{ __('sales_bills.product-code') }}">
                     @foreach ($all_products as $product)
+                        @php
+                            $product_name_words = explode(' ', $product->product_name);
+                            $short_product_name = implode(' ', array_slice($product_name_words, 0, 5));
+                        @endphp
                         <option value="{{ $product->id }}" data-tokens="{{ $product->code_universal }}">
-                            {{ $product->product_name }}</option>
+                            {{ $short_product_name }}</option>
                     @endforeach
                 </select>
                 <a target="_blank" href="{{ route('client.products.create') }}" role="button"
@@ -303,7 +307,7 @@
         <div class="col-lg-12 text-center">
             <button type="button" id="add" class="btn btn-info btn-md mt-3">
                 <i class="fa fa-plus"></i>
-                {{ __('sidebar.save') }}
+                {{ __('sidebar.add-new-sales-invoice') }}
             </button>
             <button type="button" id="edit" style="display: none" class="btn btn-success btn-md mt-3">
                 <i class="fa fa-pencil"></i>
