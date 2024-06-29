@@ -250,9 +250,12 @@
         <div class="options no-print">
             <div class="col-lg-3 pull-right">
                 <label for=""> {{ __('sales_bills.product-code') }} </label>
+                  {{-- @dd($all_products->count())  --}}
                <select name="product_id" id="product_id" class="selectpicker w-80" data-style="btn-success"
                     data-live-search="true" title="{{ __('sales_bills.product-code') }}">
+               
                     @foreach ($all_products as $product)
+                    
                         @php
                             $product_name_words = explode(' ', $product->product_name);
                             $short_product_name = implode(' ', array_slice($product_name_words, 0, 5));

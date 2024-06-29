@@ -139,10 +139,7 @@ class SaleBillController extends Controller
                 ->where(function ($query) {
                     $query->where('first_balance', '>', 0)
                         ->orWhereNull('first_balance');
-                })
-                ->whereIn('store_id', $flatStores)
-                ->orWhereNull('store_id')
-                ->get();
+                })->get();
         } else {
             $stores = $company->stores;
             $all_products = $company->products;
@@ -161,9 +158,9 @@ class SaleBillController extends Controller
         $check = SaleBill::where('company_id', $company_id)->count();
         if ($check == 0) {
             $pre_bill = SaleBill::withTrashed()
-            ->where('company_id', $company_id)
-            ->where('status', 'done')
-            ->count() + 1;
+                ->where('company_id', $company_id)
+                ->where('status', 'done')
+                ->count() + 1;
             $pre_counter = 1;
         } else {
             $old_pre_bill = SaleBill::max('sale_bill_number');
@@ -189,7 +186,7 @@ class SaleBillController extends Controller
         if ($type_name == "تجربة") {
             $bills_count = "غير محدود";
         } else {
-         
+
             $bills_count = $user->company->subscription->type->package->bills_count;
         }
         $company_bills_count = $company->sale_bills->count();
@@ -748,11 +745,9 @@ class SaleBillController extends Controller
             $branch = Branch::FindOrFail($user->branch_id);
             $stores = $branch->stores;
             $all_products = Product::where('company_id', $compID)
-                ->where(function ($query) use ($stores) {
+                ->where(function ($query) {
                     $query->where('first_balance', '>', 0)
-                        ->orWhereNull('first_balance')
-                        ->whereIn('store_id', $stores)
-                        ->orWhereNull('store_id');
+                    ->orWhereNull('first_balance');
                 })->get();
         } else {
             $stores = $company->stores;
