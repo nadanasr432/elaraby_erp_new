@@ -423,7 +423,7 @@
                         <thead>
                             <tr
                                 style="font-size: 13px !important; background: {{ $printColor }}; color: white; height: 44px !important; text-align: center;">
-                                <th>#</th>
+                                <th>@lang('sales_bills.Product number')</th>
                                 <th>@lang('sales_bills.product name')</th>
                                 <th>@lang('sales_bills.unit price')</th>
                                 <th>@lang('sales_bills.Quantity')</th>
@@ -492,7 +492,7 @@
                                 <th>@lang('sales_bills.Quantity')</th>
                                 <th>@lang('sales_bills.unit price')</th>
                                 <th>@lang('sales_bills.product name')</th>
-                                <th>#</th>
+                                <th>@lang('sales_bills.Product number')</th>
                             </tr>
 
                         </thead>
