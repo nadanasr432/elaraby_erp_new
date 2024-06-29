@@ -160,12 +160,18 @@ class SaleBillController extends Controller
         }
         $check = SaleBill::where('company_id', $company_id)->count();
         if ($check == 0) {
-            $pre_bill = SaleBill::max('sale_bill_number') + 1;
+            $pre_bill = SaleBill::withTrashed()
+            ->where('company_id', $company_id)
+            ->where('status', 'done')
+            ->count() + 1;
             $pre_counter = 1;
         } else {
             $old_pre_bill = SaleBill::max('sale_bill_number');
             $pre_bill = ++$old_pre_bill;
-            $old_pre_counter = SaleBill::where('company_id', $company_id)->max('company_counter');
+            $old_pre_counter = SaleBill::withTrashed()
+                ->where('company_id', $company_id)
+                ->where('status', 'done')
+                ->count();
             $pre_counter = $old_pre_counter + 1;
         }
         $check = Cash::all();
@@ -183,6 +189,7 @@ class SaleBillController extends Controller
         if ($type_name == "تجربة") {
             $bills_count = "غير محدود";
         } else {
+         
             $bills_count = $user->company->subscription->type->package->bills_count;
         }
         $company_bills_count = $company->sale_bills->count();
