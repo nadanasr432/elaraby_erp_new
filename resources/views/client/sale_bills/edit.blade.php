@@ -70,7 +70,7 @@
                 {{ __('sales_bills.modify-customer-sales-invoice') }}
                 <span class="badge badge-warning font-weight-bold text-dark">
                     رقم
-                    {{$saleBill->company_counter}}
+                    {{$old_pre_counter}}
                 </span>
             </center>
         </h6>
