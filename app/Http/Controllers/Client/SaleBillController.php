@@ -343,7 +343,7 @@ class SaleBillController extends Controller
             // $outerClient->accountingTree()->create($accountingTree);
         }
         // add prev_balance to account
-        $accountId = $outerClient->accountingTree->id;
+        // $accountId = $outerClient->accountingTree->id;
         // dd($outerClient->accountingTree->id);
 
         # get formData.
@@ -403,7 +403,7 @@ class SaleBillController extends Controller
             // dd( $accountId);
             // foreach ($request->transactions as $transaction) {
             Transaction::create([
-                'accounting_tree_id' => $accountId,
+                // 'accounting_tree_id' => $accountId,
                 'voucher_id' => $voucher->id,
                 'amount' =>  $check['quantity_price'],
                 'notation' => "مدين من فاتورة مبيعات",
