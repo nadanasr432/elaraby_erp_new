@@ -825,6 +825,11 @@ class SaleBillController extends Controller
         $saleBill = SaleBill::where('token', $token)->where('company_id', $compID)->firstOrFail();
         $sale_bill_cash = Cash::where('bill_id', $saleBill->sale_bill_number)->get();
         $sale_bill_bank_cash = BankCash::where('bill_id', $saleBill->sale_bill_number)->get();
+        $old_pre_counter = SaleBill::withTrashed()
+        ->where('company_id', $compID)
+        ->where('status', 'done')
+        ->where('id', '<=', $saleBill->id)  
+        ->count();
         return view(
             'client.sale_bills.edit',
             compact(
@@ -839,7 +844,8 @@ class SaleBillController extends Controller
                 'outer_clients',
                 'extra_settings',
                 'all_products',
-                'pre_cash'
+                'pre_cash',
+                "old_pre_counter"
             )
         );
     }
@@ -1208,11 +1214,31 @@ class SaleBillController extends Controller
         # calc total price of products.
         $sum = array();
         if (!$elements->isEmpty()) {
-            echo '<h6 class="alert alert-sm alert-info text-center font-weight-bold">
-                <i class="fa fa-info-circle"></i>
-            بيانات عناصر الفاتورة
-                (' . $sale_bill->company_counter . ')
-            </h6>';
+            $sale_bill = SaleBill::where('company_id', $company_id)
+                ->where('sale_bill_number', $sale_bill_number)
+                ->first();
+
+            if ($sale_bill && $sale_bill->status == 'done') {
+                echo '<h6 class="alert alert-sm alert-info text-center font-weight-bold">
+            <i class="fa fa-info-circle"></i>
+            بيانات عناصر الفاتورة (' .
+                SaleBill::withTrashed()
+                    ->where('company_id', $company_id)
+                    ->where('status', 'done')
+                    ->where('id', '<=', $sale_bill->id)
+                    ->count() . ')
+          </h6>';
+            } else {
+                echo '<h6 class="alert alert-sm alert-info text-center font-weight-bold">
+            <i class="fa fa-info-circle"></i>
+            بيانات عناصر الفاتورة (' .
+                (SaleBill::withTrashed()
+                    ->where('company_id', $company_id)
+                    ->where('status', 'done')
+                    ->count() + 1) . ')
+          </h6>';
+            }
+
             $i = 0;
             echo "<table class='table table-condensed table-striped table-bordered'>";
             echo "<thead>";

@@ -423,7 +423,7 @@
                         <thead>
                             <tr
                                 style="font-size: 13px !important; background: {{ $printColor }}; color: white; height: 44px !important; text-align: center;">
-                                <th>#</th>
+                                <th>@lang('sales_bills.Product number')</th>
                                 <th>@lang('sales_bills.product name')</th>
                                 <th>@lang('sales_bills.unit price')</th>
                                 <th>@lang('sales_bills.Quantity')</th>
@@ -442,17 +442,17 @@
                                 foreach ($elements as $element) {
                                     #--PRODUCT TAX--#
                                     if ($company->tax_value_added && $company->tax_value_added != 0) {
-                                        $ProdTax = ($sale_bill->value_added_tax ? round($element->quantity_price - ($element->quantity_price * 20) / 23, 2) : round(($element->quantity_price * 15) / 100, 2)) . ' ' . $currency;
+                                        $ProdTax = ($sale_bill->value_added_tax ? round($element->quantity_price - ($element->quantity_price * 20) / 23, 2) : round(($element->quantity_price * 15) / 100, 2)) . ' ' ;
                                     } else {
-                                        $ProdTax = 0 . ' ' . $currency;
+                                        $ProdTax = 0 . ' ' ;
                                     }
                                     #--PRODUCT TAX--#
 
                                     #--PRODUCT TOTAL--#
                                     if ($company->tax_value_added && $company->tax_value_added != 0) {
-                                        $ProdTotal = ($sale_bill->value_added_tax ? $element->quantity_price : round($element->quantity_price + ($element->quantity_price * 15) / 100, 2)) . ' ' . $currency;
+                                        $ProdTotal = ($sale_bill->value_added_tax ? $element->quantity_price : round($element->quantity_price + ($element->quantity_price * 15) / 100, 2)) . ' ' ;
                                     } else {
-                                        $ProdTotal = $element->quantity_price . ' ' . $currency;
+                                        $ProdTotal = $element->quantity_price . ' ' ;
                                     }
                                     #--PRODUCT TOTAL--#
 
@@ -462,9 +462,9 @@
                                     // Reversed order of <td> elements
                                     $tableRow .= '<td>' . ++$i . '</td>';
                                     $tableRow .= '<td>' . $element->product->product_name . '</td>';
-                                    $tableRow .= '<td>' . $element->product_price . ' ' . $currency . '</td>';
+                                    $tableRow .= '<td>' . $element->product_price . ' '  . '</td>';
                                     $tableRow .= '<td class="text-center"><span>' . $element->quantity . '</span><span>' . $element->unit->unit_name . '</span></td>';
-                                    $tableRow .= '<td>' . ($sale_bill->value_added_tax ? round(($element->quantity_price * 20) / 23, 2) : $element->quantity_price) . ' ' . $currency . '</td>';
+                                    $tableRow .= '<td>' . ($sale_bill->value_added_tax ? round(($element->quantity_price * 20) / 23, 2) : $element->quantity_price) . ' '  . '</td>';
                                     $tableRow .= '<td>' . $ProdTax . '</td>';
                                     $tableRow .= '<td>' . $ProdTotal . '</td>';
 
@@ -492,7 +492,7 @@
                                 <th>@lang('sales_bills.Quantity')</th>
                                 <th>@lang('sales_bills.unit price')</th>
                                 <th>@lang('sales_bills.product name')</th>
-                                <th>#</th>
+                                <th>@lang('sales_bills.Product number')</th>
                             </tr>
 
                         </thead>
@@ -504,17 +504,17 @@
                                 foreach ($elements as $element) {
                                     #--PRODUCT TAX--#
                                     if ($company->tax_value_added && $company->tax_value_added != 0) {
-                                        $ProdTax = ($sale_bill->value_added_tax ? round($element->quantity_price - ($element->quantity_price * 20) / 23, 2) : round(($element->quantity_price * 15) / 100, 2)) . ' ' . $currency;
+                                        $ProdTax = ($sale_bill->value_added_tax ? round($element->quantity_price - ($element->quantity_price * 20) / 23, 2) : round(($element->quantity_price * 15) / 100, 2)) . ' ' ;
                                     } else {
-                                        $ProdTax = 0 . ' ' . $currency;
+                                        $ProdTax = 0 . ' ' ;
                                     }
                                     #--PRODUCT TAX--#
 
                                     #--PRODUCT TOTAL--#
                                     if ($company->tax_value_added && $company->tax_value_added != 0) {
-                                        $ProdTotal = ($sale_bill->value_added_tax ? $element->quantity_price : round($element->quantity_price + ($element->quantity_price * 15) / 100, 2)) . ' ' . $currency;
+                                        $ProdTotal = ($sale_bill->value_added_tax ? $element->quantity_price : round($element->quantity_price + ($element->quantity_price * 15) / 100, 2)) . ' ' ;
                                     } else {
-                                        $ProdTotal = $element->quantity_price . ' ' . $currency;
+                                        $ProdTotal = $element->quantity_price . ' ' ;
                                     }
                                     #--PRODUCT TOTAL--#
 
@@ -529,7 +529,7 @@
                                                                                                                                                                                                                                             <td>' .
                                         ($sale_bill->value_added_tax ? round(($element->quantity_price * 20) / 23, 2) : $element->quantity_price) .
                                         ' ' .
-                                        $currency .
+                                        
                                         '</td>
                                                                                                                                                                                                                                             <td class="text-center" >
                                                                                                                                                                                                                                                 <span>' .
@@ -542,7 +542,7 @@
                                                                                                                                                                                                                                             <td>' .
                                         $element->product_price .
                                         ' ' .
-                                        $currency .
+                                        
                                         '</td>
                                                                                                                                                                                                                                             <td>' .
                                         $element->product->product_name .

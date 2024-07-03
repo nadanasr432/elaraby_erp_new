@@ -16,6 +16,7 @@ return [
     "Company Data"=> "Company Data",
     "Company Name"=> "Company Name",
     "Tax Number"=> "Tax Number",
+    "Product number"=> "Product Number",
     "phone"=> "phone",
     "address"=> "address",
     "total"=> "Grand total",
