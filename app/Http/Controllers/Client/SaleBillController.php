@@ -390,39 +390,39 @@ class SaleBillController extends Controller
         // dd( $SaleBill);
         DB::beginTransaction();
 
-        try {
-            $voucher = Voucher::create([
-                'amount' => $check['quantity_price'],
-                'date' => Carbon::now(),
-                'payment_method' => "cash",
-                'notation' => 'قيد فاتورة مبيعات رقم' . $SaleBill->sale_bill_number,
-                'status' => 1,
-                'user_id' => auth::user()->id,
-                'options' => 1
-            ]);
-            // dd( $accountId);
-            // foreach ($request->transactions as $transaction) {
-            Transaction::create([
-                // 'accounting_tree_id' => $accountId,
-                'voucher_id' => $voucher->id,
-                'amount' =>  $check['quantity_price'],
-                'notation' => "مدين من فاتورة مبيعات",
-                'type' =>  1,
-            ]);
-            Transaction::create([
-                'accounting_tree_id' => 10,
-                'voucher_id' => $voucher->id,
-                'amount' =>  $check['quantity_price'],
-                'notation' => "دائن من فاتورة مبيعات",
-                'type' =>  0,
-            ]);
-            // }
-        } catch (\Exception $e) {
-            dd($e);
-            DB::rollBack();
+        // try {
+        //     $voucher = Voucher::create([
+        //         'amount' => $check['quantity_price'],
+        //         'date' => Carbon::now(),
+        //         'payment_method' => "cash",
+        //         'notation' => 'قيد فاتورة مبيعات رقم' . $SaleBill->sale_bill_number,
+        //         'status' => 1,
+        //         'user_id' => auth::user()->id,
+        //         'options' => 1
+        //     ]);
+        //     // dd( $accountId);
+        //     // foreach ($request->transactions as $transaction) {
+        //     Transaction::create([
+        //         // 'accounting_tree_id' => $accountId,
+        //         'voucher_id' => $voucher->id,
+        //         'amount' =>  $check['quantity_price'],
+        //         'notation' => "مدين من فاتورة مبيعات",
+        //         'type' =>  1,
+        //     ]);
+        //     Transaction::create([
+        //         'accounting_tree_id' => 10,
+        //         'voucher_id' => $voucher->id,
+        //         'amount' =>  $check['quantity_price'],
+        //         'notation' => "دائن من فاتورة مبيعات",
+        //         'type' =>  0,
+        //     ]);
+        //     // }
+        // } catch (\Exception $e) {
+        //     dd($e);
+        //     DB::rollBack();
 
-            // return response()->json(['error' => 'An error occurred while creating the voucher.'], 500);
-        }
+        //     // return response()->json(['error' => 'An error occurred while creating the voucher.'], 500);
+        // }
 
         DB::commit();
         # return appropriate msg if created or updated.
