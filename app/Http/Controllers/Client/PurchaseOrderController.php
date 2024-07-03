@@ -2,20 +2,25 @@
 
 namespace App\Http\Controllers\Client;
 
-use App\Http\Controllers\Controller;
-use App\Mail\sendingPurchaseOrder;
+use Carbon\Carbon;
+use App\Models\Store;
 use App\Models\BuyBill;
-use App\Models\BuyBillElement;
-use App\Models\BuyBillExtra;
 use App\Models\Company;
-use App\Models\ExtraSettings;
-
 use App\Models\Product;
-use App\Models\PurchaseOrder;
-use App\Models\PurchaseOrderElement;
-use App\Models\PurchaseOrderExtra;
+use App\Models\Voucher;
 use App\Models\Supplier;
+
+use App\Models\Transaction;
+use App\Models\BuyBillExtra;
 use Illuminate\Http\Request;
+use App\Models\ExtraSettings;
+use App\Models\PurchaseOrder;
+use App\Models\BuyBillElement;
+use App\Mail\sendingPurchaseOrder;
+use App\Models\PurchaseOrderExtra;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\PurchaseOrderElement;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
@@ -312,6 +317,31 @@ class PurchaseOrderController extends Controller
     public function save(Request $request)
     {
         $data = $request->all();
+        $store = Store::find($data['store_id']);
+        $supplier = Supplier::find($data['supplier_id']);
+        // dd( $supplier);
+
+        if (!$store->accountingTree) {
+            $accountingTree = new \App\Models\accounting_tree();
+            $accountingTree->account_name =  'حساب مخزن'.$store->store_name ;
+            $accountingTree->account_name_en =  $store->store_name . 'Account';
+            $accountingTree->account_number = '66' . $store->id;
+            $accountingTree->parent_id = 66;
+            $accountingTree->type = 'sub';
+            $store->accountingTree()->save($accountingTree);
+        }
+        if (!$supplier->accountingTree) {
+            $accountingTree = new \App\Models\accounting_tree();
+            $accountingTree->account_name =  ' حساب المورد'. $supplier->supplier_name ;
+            $accountingTree->account_name_en =  $supplier->supplier_name . 'Account';
+            $accountingTree->account_number = '34' . $supplier->id;
+            $accountingTree->parent_id = 34;
+            $accountingTree->type = 'sub';
+            $supplier->accountingTree()->save($accountingTree);
+        }
+        $storeAccountId = $store->accountingTree->id;
+        $supplierAccountId = $supplier->accountingTree->id;
+        // add prev_balance to account
         $data['company_id'] = Auth::user()->company_id;
         $company = Company::FindOrFail($data['company_id']);
         $data['client_id'] = Auth::user()->id;
@@ -343,6 +373,44 @@ class PurchaseOrderController extends Controller
                 'quantity_price' => $new_quantity_price,
             ]);
         }
+        // dd(   $check->quantity_price);
+        DB::beginTransaction();
+
+        try {
+            $voucher = Voucher::create([
+                'amount' => $check->quantity_price,
+                'date' => Carbon::now(),
+                'payment_method' => "cash",
+                'notation' => 'قيد فاتورة مشتريات رقم' . $purchase_order->sale_bill_number,
+                'status' => 1,
+                'user_id' => auth::user()->id,
+                'options' => 1
+            ]);
+            // dd( $accountId);
+            // foreach ($request->transactions as $transaction) {
+            Transaction::create([
+                'accounting_tree_id' => $storeAccountId,
+                'voucher_id' => $voucher->id,
+                'amount' =>  $check->quantity_price,
+                'notation' => "مدين من فاتورةمشتريات",
+                'type' =>  1,
+            ]);
+            Transaction::create([
+                'accounting_tree_id' => $supplierAccountId,
+                'voucher_id' => $voucher->id,
+                'amount' =>  $check->quantity_price,
+                'notation' => "دائن من فاتورةمشتريات",
+                'type' =>  0,
+            ]);
+            // }
+        } catch (\Exception $e) {
+            dd($e);
+            DB::rollBack();
+
+            // return response()->json(['error' => 'An error occurred while creating the voucher.'], 500);
+        }
+
+        DB::commit();
         if ($purchase_order && $purchase_order_element) {
             $all_elements = PurchaseOrderElement::where('purchase_order_id', $purchase_order->id)->get();
             return response()->json([

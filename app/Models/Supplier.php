@@ -32,4 +32,8 @@ class Supplier extends Model
     public function bankbuyCashs(){
         return $this->hasMany('\App\Models\BankBuyCash','supplier_id','id');
     }
+    public function accountingTree()
+    {
+        return $this->morphOne(accounting_tree::class, 'accountable');
+    }
 }

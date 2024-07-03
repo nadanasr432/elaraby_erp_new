@@ -6,6 +6,7 @@ return [
     "Show or hide the header"=> "Show or hide the header",
     "Show or hide the footer"=> "Show or hide the footer",
     "Tax bill"=> "Tax bill",
+    "Tax invoice"=> "Tax invoice",
     "Draft invoice"=> "Draft invoice",
     "commercial register"=> "commercial register",
     "invoice number"=> "Invoice number",
@@ -34,7 +35,7 @@ return [
     "total price" => "total price",
     "Discount"=> "Discount",
     "Total, excluding tax"=> "Grand Total Amount Excluding VAT",
-    
+
     "Discount note"=> "Discount note",
     "offer price" => "offer price",
     "Start Date" => "Start Date",

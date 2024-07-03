@@ -16,4 +16,8 @@ class accounting_tree extends Model
     {
         return $this->hasMany(Transaction::class);
     }
+    public function accountable()
+    {
+        return $this->morphTo();
+    }
 }

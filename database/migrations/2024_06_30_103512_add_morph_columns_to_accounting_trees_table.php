@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('combos', function (Blueprint $table) {
-            $table->unsignedBigInteger('product_id')->nullable()->after('parent_id');
-            $table->dropColumn('name');
+        Schema::table('accounting_trees', function (Blueprint $table) {
+            $table->nullableMorphs('accountable');
         });
     }
 
@@ -22,9 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('combos', function (Blueprint $table) {
-            $table->text('name')->after('parent_id');
-            $table->dropColumn('product_id');
+        Schema::table('accounting_trees', function (Blueprint $table) {
+            $table->dropMorphs('accountable');
         });
     }
 };
