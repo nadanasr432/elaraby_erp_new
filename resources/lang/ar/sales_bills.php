@@ -6,6 +6,7 @@ return [
     "Show or hide the header" => "اظهار او اخفاء الهيدر",
     "Show or hide the footer" => " اظهار او اخفاء الفوتر",
     "Tax bill" => " فاتورة ضريبية",
+    "Tax invoice" => " فاتورة ضريبية",
     "Draft invoice" => " فاتورة مسودة",
     "commercial register" => "السجل التجاري",
     "invoice number" => "رقم الفاتورة",

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Client;
 
+use Carbon\Carbon;
 use App\Models\Bank;
 use App\Models\Cash;
 use App\Models\Safe;
@@ -9,9 +10,11 @@ use App\Models\Branch;
 use App\Models\Client;
 use App\Models\Company;
 use App\Models\Product;
+use App\Models\Voucher;
 use App\Models\BankCash;
 use App\Models\SaleBill;
 use App\Models\OuterClient;
+use App\Models\Transaction;
 use App\Models\SaleBillNote;
 use Illuminate\Http\Request;
 use App\Mail\sendingSaleBill;
@@ -328,6 +331,21 @@ class SaleBillController extends Controller
     # this function adds products to the invoice #
     public function save(Request $request)
     {
+        $outerClient = OuterClient::find($request->outer_client_id);
+        // dd($request);
+        if (!$outerClient->accountingTree) {
+            $accountingTree = new \App\Models\accounting_tree();
+            $accountingTree->account_name = ' حساب العميل'. $outerClient->client_name;
+            $accountingTree->account_name_en =  $outerClient->client_name . 'Account';
+            $accountingTree->account_number = '1203' . $outerClient->id;
+            $accountingTree->parent_id = 1203;
+            $accountingTree->type = 'sub';
+            $outerClient->accountingTree()->create($accountingTree);
+        }
+        // add prev_balance to account
+        $accountId = $outerClient->accountingTree->id;
+        // dd($outerClient->accountingTree->id);
+
         # get formData.
         $data = $request->all();
         $data['company_id'] = Auth::user()->company_id;
@@ -335,7 +353,7 @@ class SaleBillController extends Controller
         $data['client_id'] = Auth::user()->id;
 
         # get saleBill using saleBillNumber -> if empty then create else update.
-        $SaleBill = SaleBill::where('sale_bill_number', $data['sale_bill_number'])->first();
+        $SaleBill = SaleBill::where('company_id', $company->id)->where('sale_bill_number', $data['sale_bill_number'])->first();
         if (empty($SaleBill)) {
             $old_pre_counter = SaleBill::where('company_id', $company->id)->max('company_counter');
             $pre_counter = ++$old_pre_counter;
@@ -369,7 +387,44 @@ class SaleBillController extends Controller
                 'quantity_price' => $new_quantity_price,
             ]);
         }
+        // dd( $SaleBill);
+        DB::beginTransaction();
 
+        try {
+            $voucher = Voucher::create([
+                'amount' => $check['quantity_price'],
+                'date' => Carbon::now(),
+                'payment_method' => "cash",
+                'notation' => 'قيد فاتورة مبيعات رقم' . $SaleBill->sale_bill_number,
+                'status' => 1,
+                'user_id' => auth::user()->id,
+                'options' => 1
+            ]);
+            // dd( $accountId);
+            // foreach ($request->transactions as $transaction) {
+            Transaction::create([
+                'accounting_tree_id' => $accountId,
+                'voucher_id' => $voucher->id,
+                'amount' =>  $check['quantity_price'],
+                'notation' => "مدين من فاتورة مبيعات",
+                'type' =>  1,
+            ]);
+            Transaction::create([
+                'accounting_tree_id' => 10,
+                'voucher_id' => $voucher->id,
+                'amount' =>  $check['quantity_price'],
+                'notation' => "دائن من فاتورة مبيعات",
+                'type' =>  0,
+            ]);
+            // }
+        } catch (\Exception $e) {
+            dd($e);
+            DB::rollBack();
+
+            // return response()->json(['error' => 'An error occurred while creating the voucher.'], 500);
+        }
+
+        DB::commit();
         # return appropriate msg if created or updated.
         if ($SaleBill && $sale_bill_element) {
             $all_elements = SaleBillElement::where('sale_bill_id', $SaleBill->id)->get();
@@ -747,7 +802,7 @@ class SaleBillController extends Controller
             $all_products = Product::where('company_id', $compID)
                 ->where(function ($query) {
                     $query->where('first_balance', '>', 0)
-                    ->orWhereNull('first_balance');
+                        ->orWhereNull('first_balance');
                 })->get();
         } else {
             $stores = $company->stores;

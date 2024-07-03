@@ -47,5 +47,9 @@ class OuterClient extends Model
     public function bankcashs(){
         return $this->hasMany('\App\Models\BankCash','outer_client_id','id');
     }
+    public function accountingTree()
+    {
+        return $this->morphOne(accounting_tree::class, 'accountable');
+    }
 
 }

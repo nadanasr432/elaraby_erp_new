@@ -19,4 +19,8 @@ class Branch extends Model
     public function stores(){
         return $this->hasMany('\App\Models\Store','branch_id','id');
     }
+    public function accountingTree()
+    {
+        return $this->morphOne(accounting_tree::class, 'accountable');
+    }
 }

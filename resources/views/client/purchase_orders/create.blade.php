@@ -19,7 +19,6 @@
         margin-top: 30px !important;
         min-height: 150px !important;
     }
-
 </style>
 @section('content')
     @if (session('success'))
@@ -94,18 +93,15 @@
             <label for=""> {{ __('sales_bills.select-store') }} </label>
             <select name="store_id" id="store_id" class="selectpicker" data-style="btn-warning" data-live-search="true"
                 title="{{ __('sales_bills.select-store') }}">
-                <?php $i = 0; ?>
                 @foreach ($stores as $store)
-                    @if ($stores->count() == 1)
+                    {{-- @if ($stores->count() == 1)
                         <option selected value="{{ $store->id }}">{{ $store->store_name }}</option>
-                    @else
-                        @if ($i == 0)
-                            <option selected value="{{ $store->id }}">{{ $store->store_name }}</option>
-                        @else
-                            <option value="{{ $store->id }}">{{ $store->store_name }}</option>
-                        @endif
-                    @endif
-                    <?php $i++; ?>
+                    @else --}}
+                    <option @if ($stores->count() == 1) selected @endif value="{{ $store->id }}">
+                        {{ $store->store_name }}</option>
+
+                    {{-- <option value="{{ $store->id }}">{{ $store->store_name }}</option> --}}
+                    {{-- @endif --}}
                 @endforeach
             </select>
             <a target="_blank" href="{{ route('client.stores.create') }}" role="button"
@@ -113,7 +109,6 @@
                 <i class="fa fa-plus"></i>
             </a>
         </div>
-
         <div class="clearfix no-print"></div>
         <div class="col-lg-12 no-print">
             <div class="supplier_details">
@@ -156,6 +151,7 @@
                 <label for=""> {{ __('main.total') }} </label>
                 <input type="text" name="quantity_price" id="quantity_price" class="form-control" />
             </div>
+
             <div class="clearfix"></div>
             <div class="col-lg-12 text-center">
                 <button type="button" id="add" class="btn btn-info btn-md mt-3">
@@ -206,8 +202,9 @@
                             <option value="pound">{{ $extra_settings->currency }}</option>
                             <option value="percent">%</option>
                         </select>
-                        <input type="text" value="0" name="discount_value" style="width: 50%;display: inline;float: right;"
-                            disabled id="discount_value" class="form-control " />
+                        <input type="text" value="0" name="discount_value"
+                            style="width: 50%;display: inline;float: right;" disabled id="discount_value"
+                            class="form-control " />
                         <button type="button" disabled class="btn btn-md btn-success pull-right text-center"
                             style="display: inline !important;width: 20% !important; height: 40px;margin-right: 20px; "
                             id="exec_discount">تطبيق
@@ -272,6 +269,7 @@
                 });
             }
         });
+        $('#store').val($('#store_id').val())
         $('#store_id').on('change', function() {
             let store_id = $(this).val();
             if (store_id != "" || store_id != "0") {
@@ -322,6 +320,7 @@
         });
         $('#add').on('click', function() {
             let supplier_id = $('#supplier_id').val();
+            let store_id = $('#store_id').val();
             let purchase_order_number = $('#purchase_order_number').val();
             let product_id = $('#product_id').val();
             let product_price = $('#product_price').val();
@@ -353,6 +352,7 @@
                 } else {
                     $.post("{{ url('/client/purchase_orders/post') }}", {
                         supplier_id: supplier_id,
+                        store_id: store_id,
                         purchase_order_number: purchase_order_number,
                         product_id: product_id,
                         product_price: product_price,

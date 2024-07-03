@@ -17,8 +17,8 @@
     <meta charset="utf-8" />
     <link href="{{ asset('/assets/css/bootstrap.min.css') }}" rel="stylesheet" />
     <style type="text/css" media="screen">
-    
-           
+
+
         @font-face {
             font-family: 'Cairo';
             src: url({{ asset('fonts/Cairo.ttf') }});
@@ -136,7 +136,7 @@
                 width: 100%;
                 height:100%;
             }
-        
+
     </style>
 </head>
 
@@ -186,8 +186,8 @@
                     </div>
                     <div class="txtheader mx-auto text-center">
                         @if (!$isMoswada)
-                            @lang('sales_bills.Tax bill')
-                       
+                            @lang('sales_bills.Tax invoice')
+
                         @else
                             @lang('sales_bills.Draft invoice')
                         @endif
@@ -215,8 +215,8 @@
                     </div>
                     <div class="txtheader mx-auto text-center">
                         @if (!$isMoswada)
-                            @lang('sales_bills.Tax bill')
-                         
+                            @lang('sales_bills.Tax invoice')
+
                         @else
                             @lang('sales_bills.Draft invoice')
                         @endif
@@ -447,7 +447,7 @@
                                         $ProdTax = 0 . ' ' ;
                                     }
                                     #--PRODUCT TAX--#
-                            
+
                                     #--PRODUCT TOTAL--#
                                     if ($company->tax_value_added && $company->tax_value_added != 0) {
                                         $ProdTotal = ($sale_bill->value_added_tax ? $element->quantity_price : round($element->quantity_price + ($element->quantity_price * 15) / 100, 2)) . ' ' ;
@@ -455,10 +455,10 @@
                                         $ProdTotal = $element->quantity_price . ' ' ;
                                     }
                                     #--PRODUCT TOTAL--#
-                            
+
                                     $tableRows = [];
                                     $tableRow = '<tr style="font-size: 15px !important; height: 34px !important; text-align: center;background: #f8f9fb">';
-                            
+
                                     // Reversed order of <td> elements
                                     $tableRow .= '<td>' . ++$i . '</td>';
                                     $tableRow .= '<td>' . $element->product->product_name . '</td>';
@@ -467,9 +467,9 @@
                                     $tableRow .= '<td>' . ($sale_bill->value_added_tax ? round(($element->quantity_price * 20) / 23, 2) : $element->quantity_price) . ' '  . '</td>';
                                     $tableRow .= '<td>' . $ProdTax . '</td>';
                                     $tableRow .= '<td>' . $ProdTotal . '</td>';
-                            
+
                                     $tableRow .= '</tr>';
-                            
+
                                     // Output the table row
                                     echo $tableRow;
                                 }
@@ -509,7 +509,7 @@
                                         $ProdTax = 0 . ' ' ;
                                     }
                                     #--PRODUCT TAX--#
-                            
+
                                     #--PRODUCT TOTAL--#
                                     if ($company->tax_value_added && $company->tax_value_added != 0) {
                                         $ProdTotal = ($sale_bill->value_added_tax ? $element->quantity_price : round($element->quantity_price + ($element->quantity_price * 15) / 100, 2)) . ' ' ;
@@ -517,7 +517,7 @@
                                         $ProdTotal = $element->quantity_price . ' ' ;
                                     }
                                     #--PRODUCT TOTAL--#
-                            
+
                                     echo '
                                                                                                                                                                                                                                         <tr style="font-size: 15px !important; height: 34px !important; text-align: center;background: #f8f9fb">
                                                                                                                                                                                                                                             <td>' .

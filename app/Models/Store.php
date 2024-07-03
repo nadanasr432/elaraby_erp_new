@@ -22,4 +22,8 @@ class Store extends Model
     public function products(){
         return $this->hasMany('\App\Models\Product','store_id','id');
     }
+    public function accountingTree()
+    {
+        return $this->morphOne(accounting_tree::class, 'accountable');
+    }
 }
