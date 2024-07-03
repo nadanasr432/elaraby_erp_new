@@ -340,7 +340,7 @@ class SaleBillController extends Controller
             $accountingTree->account_number = '1203' . $outerClient->id;
             $accountingTree->parent_id = 1203;
             $accountingTree->type = 'sub';
-            $outerClient->accountingTree()->create($accountingTree);
+            // $outerClient->accountingTree()->create($accountingTree);
         }
         // add prev_balance to account
         $accountId = $outerClient->accountingTree->id;
