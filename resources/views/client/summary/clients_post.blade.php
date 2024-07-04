@@ -285,55 +285,58 @@ $currency = $extra_settings->currency;
                             </td>
                             <td>{{$sale_bill->rest}}</td>
                             <td>{{$sale_bill->paid}}</td>
-                            <td>
-                                <?php $sum = 0; ?>
-                                @foreach($sale_bill->elements as $element)
-                                    <?php $sum = $sum + $element->quantity_price; ?>
-                                @endforeach
+                           <td>
                                 <?php
+                                $sum = 0;
+                                foreach ($sale_bill->elements as $element) {
+                                    $sum += floatval($element->quantity_price);
+                                }
+                            
+                                $sale_bill_discount_value = 0;
+                                $sale_bill_discount_type = "pound";
+                                $sale_bill_extra_value = 0;
+                                $sale_bill_extra_type = "pound";
+                            
                                 $extras = $sale_bill->extras;
                                 foreach ($extras as $key) {
                                     if ($key->action == "discount") {
                                         if ($key->action_type == "pound") {
-                                            $sale_bill_discount_value = $key->value;
+                                            $sale_bill_discount_value = floatval($key->value);
                                             $sale_bill_discount_type = "pound";
                                         } else {
-                                            $sale_bill_discount_value = $key->value;
+                                            $sale_bill_discount_value = floatval($key->value);
                                             $sale_bill_discount_type = "percent";
                                         }
                                     } else {
                                         if ($key->action_type == "pound") {
-                                            $sale_bill_extra_value = $key->value;
+                                            $sale_bill_extra_value = floatval($key->value);
                                             $sale_bill_extra_type = "pound";
                                         } else {
-                                            $sale_bill_extra_value = $key->value;
+                                            $sale_bill_extra_value = floatval($key->value);
                                             $sale_bill_extra_type = "percent";
                                         }
                                     }
                                 }
-                                if ($extras->isEmpty()) {
-                                    $sale_bill_discount_value = 0;
-                                    $sale_bill_extra_value = 0;
-                                    $sale_bill_discount_type = "pound";
-                                    $sale_bill_extra_type = "pound";
-                                }
+                            
                                 if ($sale_bill_extra_type == "percent") {
                                     $sale_bill_extra_value = $sale_bill_extra_value / 100 * $sum;
                                 }
                                 $after_discount = $sum + $sale_bill_extra_value;
-
+                            
                                 if ($sale_bill_discount_type == "percent") {
                                     $sale_bill_discount_value = $sale_bill_discount_value / 100 * $sum;
                                 }
-                                $after_discount = $sum - $sale_bill_discount_value;
                                 $after_discount = $sum - $sale_bill_discount_value + $sale_bill_extra_value;
-                                $tax_value_added = $company->tax_value_added;
+                            
+                                $tax_value_added = floatval($company->tax_value_added);
                                 $percentage = ($tax_value_added / 100) * $after_discount;
                                 $after_total = $after_discount + $percentage;
+                            
                                 echo floatval($after_total) . " " . $currency;
                                 ?>
-                                <?php $total = $total + $after_total; ?>
+                                <?php $total += $after_total; ?>
                             </td>
+
                         </tr>
                     @endforeach
                     </tbody>
