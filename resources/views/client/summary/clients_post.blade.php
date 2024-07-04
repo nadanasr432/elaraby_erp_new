@@ -24,7 +24,8 @@ $currency = $extra_settings->currency;
             direction: rtl !important;
             text-align: center !important;
             font-size: 13px;
-            overflow-x: hidden; /* Hide horizontal scroll */
+            overflow-x: hidden;
+            /* Hide horizontal scroll */
         }
 
         h1,
@@ -39,7 +40,8 @@ $currency = $extra_settings->currency;
         .table-container {
             width: 80%;
             margin: 10px auto;
-            overflow-x: auto; /* Allow horizontal scroll within the container if necessary */
+            overflow-x: auto;
+            /* Allow horizontal scroll within the container if necessary */
         }
 
         .no-print {
@@ -72,35 +74,53 @@ $currency = $extra_settings->currency;
             direction: rtl !important;
             text-align: center !important;
             font-size: 13px;
-            overflow-x: hidden; /* Hide horizontal scroll */
+            overflow-x: hidden;
+            /* Hide horizontal scroll */
             -webkit-print-color-adjust: exact !important;
             -moz-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
             -o-print-color-adjust: exact !important;
         }
 
-        table {
+        .table-respo table {
             width: 100%;
-            table-layout: auto;
+            border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;
         }
 
-        table tr th,
+        .table-respo table tr th,
         table tr td {
             text-align: center !important;
+        }
+
+        .table-respo thead th {
+            background: #222751 !important;
+            color: white;
+            height: 44px !important;
+            text-align: center;
+        }
+
+        thead th {
+            background: #222751 !important;
+            color: white;
+            height: 44px !important;
+            text-align: center;
         }
 
         .no-print {
             display: none;
         }
-
-        thead th {
-            color: #616367 !important; /* Ensure thead text is black when printing */
+          tr {
+            border-bottom: 1px solid #2d2d2d20 !important;
+            padding-bottom: 4px !important;
+            padding-top: 4px !important;
+            font-size: 15px !important;
         }
+              
     </style>
 </head>
 
 <body style="background: #fff">
-    
+
     <table class="table table-bordered table-container">
         <tbody>
             <tr>
@@ -179,7 +199,7 @@ $currency = $extra_settings->currency;
                         <p class="alert alert-sm alert-danger text-center">
                             عرض بيانات العميل
                         </p>
-                        <div class="table-responsive mb-3">
+                        <div class="table-respo mb-3">
                             <table
                                 style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                                 <thead style="font-size: 15px !important;">
@@ -220,7 +240,7 @@ $currency = $extra_settings->currency;
                         <p class="alert alert-sm alert-success mt-3 text-center">
                             عرض هدايا العميل
                         </p>
-                        <div class="table-responsive">
+                        <div class="table-respo ">
                             <table
                                 style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                                 <thead style="font-size: 15px !important;">
@@ -268,6 +288,7 @@ $currency = $extra_settings->currency;
                         <p class="alert alert-sm alert-info mt-3 text-center d-none">
                             عروض أسعار العميل
                         </p>
+                        <div class="table-respo ">
                         <table
                             style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                             <thead style="font-size: 15px !important;">
@@ -344,12 +365,14 @@ $currency = $extra_settings->currency;
                                 @endforeach
                             </tbody>
                         </table>
+                        </div>
                     @endif
                     <div class="clearfix"></div>
                     @if (isset($saleBills) && !$saleBills->isEmpty())
                         <p class="alert alert-sm alert-info mt-3 text-center">
                             فواتير البيع لهذا العميل
                         </p>
+                         <div class="table-respo ">
                         <table
                             style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                             <thead style="font-size: 15px !important;">
@@ -439,6 +462,7 @@ $currency = $extra_settings->currency;
                                 @endforeach
                             </tbody>
                         </table>
+                         </div>
                     @endif
 
 
@@ -452,6 +476,7 @@ $currency = $extra_settings->currency;
                         <h3 class="alert alert-sm alert-light text-center" style="margin:20px auto;">
                             السندات للعميل
                         </h3>
+                         <div class="table-respo ">
                         <table
                             style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                             <thead style="font-size: 15px !important;">
@@ -477,6 +502,7 @@ $currency = $extra_settings->currency;
                                 @endforeach
                             </tbody>
                         </table>
+                         </div>
                     @endif
                     <!------------------------------------------------BONDS--------------------------------------------------->
 
@@ -486,7 +512,7 @@ $currency = $extra_settings->currency;
                         <p class="alert alert-sm alert-dark mt-3 text-center">
                             مرتجعات العميل
                         </p>
-                        <div class="table-responsive">
+                        <div class="table-respo">
                             <table
                                 style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                                 <thead style="font-size: 15px !important;">
@@ -553,7 +579,7 @@ $currency = $extra_settings->currency;
                         <p class="alert alert-sm alert-warning mt-3 text-center">
                             مدفوعات نقدية لهذا العميل
                         </p>
-                        <div class="table-responsive">
+                        <div class="table-respo">
                             <table
                                 style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                                 <thead style="font-size: 15px !important;">
@@ -603,7 +629,7 @@ $currency = $extra_settings->currency;
                         <p class="alert alert-sm alert-warning mt-3 text-center">
                             سلفيات الى العميل
                         </p>
-                        <div class="table-responsive">
+                        <div class="table-respo">
                             <table
                                 style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                                 <thead style="font-size: 15px !important;">
@@ -653,7 +679,7 @@ $currency = $extra_settings->currency;
                         <p class="alert alert-sm alert-warning mt-3 text-center">
                             مدفوعات بنكية لهذا العميل
                         </p>
-                        <div class="table-responsive">
+                        <div class="table-respo">
                             <table
                                 style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                                 <thead style="font-size: 15px !important;">
