@@ -181,14 +181,14 @@ $currency = $extra_settings->currency;
 
                 <td class="thisTD">
                     @if (app()->getLocale() == 'en')
-                        <div class="header-container d-flex align-items-center">
+                        <div class="header-container d-flex justify-content-center">
                             <div class="logo">
                                 <img class="logo" style="object-fit: scale-down;" width="204"
                                     src="{{ asset($company->company_logo) }}">
                             </div>
                         </div>
                     @else
-                        <div class="header-container d-flex align-items-center">
+                        <div class="header-container d-flex justify-content-center">
 
                             <div class="logo">
                                 <img class="logo" style="object-fit: scale-down;" width="204"
