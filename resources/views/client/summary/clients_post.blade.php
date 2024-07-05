@@ -82,6 +82,11 @@ $currency = $extra_settings->currency;
             -o-print-color-adjust: exact !important;
         }
 
+        .table-container {
+
+            margin: 0px auto;
+        }
+
         .table-respo table {
             width: 100%;
             border-radius: 8px !important;
@@ -128,7 +133,7 @@ $currency = $extra_settings->currency;
         <tbody>
             <tr>
                 <div class="row mt-1 mb-1 no-print ">
-                    <div class="col-lg-12 text-center" style="gap: 30px">
+                    <div class="col-lg-12 text-center">
                         <button onclick="window.print()" type="button" class="btn btn-md btn-info">
                             <i class="fa fa-print"></i>
                             طباعة تقرير كشف الحساب
@@ -180,23 +185,13 @@ $currency = $extra_settings->currency;
                 </div>
 
                 <td class="thisTD">
-                    @if (app()->getLocale() == 'en')
-                        <div class="header-container d-flex justify-content-center">
-                            <div class="logo">
-                                <img class="logo" style="object-fit: scale-down;" width="204"
-                                    src="{{ asset($company->company_logo) }}">
-                            </div>
-                        </div>
-                    @else
-                        <div class="header-container d-flex justify-content-center">
 
-                            <div class="logo">
-                                <img class="logo" style="object-fit: scale-down;" width="204"
-                                    src="{{ asset($company->company_logo) }}">
-                            </div>
-
+                    <div class="header-container d-flex justify-content-center">
+                        <div class="logo">
+                            <img class="logo" style="object-fit: scale-down;" width="204"
+                                src="{{ asset($company->company_logo) }}">
                         </div>
-                    @endif
+                    </div>
                     <hr class="mt-1 mb-2">
                     <h3 class="alert alert-sm alert-light text-center" style="margin:20px auto;">
                         كشف حساب عميل
