@@ -84,7 +84,10 @@ $currency = $extra_settings->currency;
 
         .table-respo table {
             width: 100%;
-            border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;
+            border-radius: 8px !important;
+            overflow: hidden;
+            border: 1px solid;
+            box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;
         }
 
         .table-respo table tr th,
@@ -109,13 +112,13 @@ $currency = $extra_settings->currency;
         .no-print {
             display: none;
         }
-          tr {
+
+        tr {
             border-bottom: 1px solid #2d2d2d20 !important;
             padding-bottom: 4px !important;
             padding-top: 4px !important;
             font-size: 15px !important;
         }
-              
     </style>
 </head>
 
@@ -175,7 +178,26 @@ $currency = $extra_settings->currency;
                         </a>
                     </div>
                 </div>
+
                 <td class="thisTD">
+                    @if (app()->getLocale() == 'en')
+                        <div class="header-container d-flex align-items-center">
+                            <div class="logo">
+                                <img class="logo" style="object-fit: scale-down;" width="204"
+                                    src="{{ asset($company->company_logo) }}">
+                            </div>
+                        </div>
+                    @else
+                        <div class="header-container d-flex align-items-center">
+
+                            <div class="logo">
+                                <img class="logo" style="object-fit: scale-down;" width="204"
+                                    src="{{ asset($company->company_logo) }}">
+                            </div>
+
+                        </div>
+                    @endif
+                    <hr class="mt-1 mb-2">
                     <h3 class="alert alert-sm alert-light text-center" style="margin:20px auto;">
                         كشف حساب عميل
                     </h3>
@@ -289,82 +311,82 @@ $currency = $extra_settings->currency;
                             عروض أسعار العميل
                         </p>
                         <div class="table-respo ">
-                        <table
-                            style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                            <thead style="font-size: 15px !important;">
-                                <tr
-                                    style="font-size: 13px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
-                                    <th>#</th>
-                                    <th>رقم عرض السعر</th>
-                                    <th>تاريخ بداية العرض</th>
-                                    <th>تاريخ نهاية العرض</th>
-                                    <th>الاجمالى النهائى</th>
-                                    <th>عدد العناصر</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php $i = 0;
-                                $total = 0; ?>
-                                @foreach ($quotations as $quotation)
-                                    <tr>
-                                        <td>{{ ++$i }}</td>
-                                        <td>{{ $quotation->quotation_number }}</td>
-                                        <td>{{ $quotation->start_date }}</td>
-                                        <td>{{ $quotation->expiration_date }}</td>
-                                        <td>
-                                            <?php $sum = 0; ?>
-                                            @foreach ($quotation->elements as $element)
-                                                <?php $sum = $sum + $element->quantity_price; ?>
-                                            @endforeach
-                                            <?php
-                                            $extras = $quotation->extras;
-                                            foreach ($extras as $key) {
-                                                if ($key->action == 'discount') {
-                                                    if ($key->action_type == 'pound') {
-                                                        $quotation_discount_value = $key->value;
-                                                        $quotation_discount_type = 'pound';
+                            <table
+                                style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+                                <thead style="font-size: 15px !important;">
+                                    <tr
+                                        style="font-size: 13px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
+                                        <th>#</th>
+                                        <th>رقم عرض السعر</th>
+                                        <th>تاريخ بداية العرض</th>
+                                        <th>تاريخ نهاية العرض</th>
+                                        <th>الاجمالى النهائى</th>
+                                        <th>عدد العناصر</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php $i = 0;
+                                    $total = 0; ?>
+                                    @foreach ($quotations as $quotation)
+                                        <tr>
+                                            <td>{{ ++$i }}</td>
+                                            <td>{{ $quotation->quotation_number }}</td>
+                                            <td>{{ $quotation->start_date }}</td>
+                                            <td>{{ $quotation->expiration_date }}</td>
+                                            <td>
+                                                <?php $sum = 0; ?>
+                                                @foreach ($quotation->elements as $element)
+                                                    <?php $sum = $sum + $element->quantity_price; ?>
+                                                @endforeach
+                                                <?php
+                                                $extras = $quotation->extras;
+                                                foreach ($extras as $key) {
+                                                    if ($key->action == 'discount') {
+                                                        if ($key->action_type == 'pound') {
+                                                            $quotation_discount_value = $key->value;
+                                                            $quotation_discount_type = 'pound';
+                                                        } else {
+                                                            $quotation_discount_value = $key->value;
+                                                            $quotation_discount_type = 'percent';
+                                                        }
                                                     } else {
-                                                        $quotation_discount_value = $key->value;
-                                                        $quotation_discount_type = 'percent';
-                                                    }
-                                                } else {
-                                                    if ($key->action_type == 'pound') {
-                                                        $quotation_extra_value = $key->value;
-                                                        $quotation_extra_type = 'pound';
-                                                    } else {
-                                                        $quotation_extra_value = $key->value;
-                                                        $quotation_extra_type = 'percent';
+                                                        if ($key->action_type == 'pound') {
+                                                            $quotation_extra_value = $key->value;
+                                                            $quotation_extra_type = 'pound';
+                                                        } else {
+                                                            $quotation_extra_value = $key->value;
+                                                            $quotation_extra_type = 'percent';
+                                                        }
                                                     }
                                                 }
-                                            }
-                                            if ($extras->isEmpty()) {
-                                                $quotation_discount_value = 0;
-                                                $quotation_extra_value = 0;
-                                                $quotation_discount_type = 'pound';
-                                                $quotation_extra_type = 'pound';
-                                            }
-                                            if ($quotation_extra_type == 'percent') {
-                                                $quotation_extra_value = ($quotation_extra_value / 100) * $sum;
-                                            }
-                                            $after_discount = $sum + $quotation_extra_value;
-                                            
-                                            if ($quotation_discount_type == 'percent') {
-                                                $quotation_discount_value = ($quotation_discount_value / 100) * $sum;
-                                            }
-                                            $after_discount = $sum - $quotation_discount_value;
-                                            $after_discount = $sum - $quotation_discount_value + $quotation_extra_value;
-                                            $tax_value_added = $company->tax_value_added;
-                                            $percentage = ($tax_value_added / 100) * $after_discount;
-                                            $after_total = $after_discount + $percentage;
-                                            echo floatval($after_total) . ' ' . $currency;
-                                            ?>
-                                            <?php $total = $total + $after_total; ?>
-                                        </td>
-                                        <td>{{ $quotation->elements->count() }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                                if ($extras->isEmpty()) {
+                                                    $quotation_discount_value = 0;
+                                                    $quotation_extra_value = 0;
+                                                    $quotation_discount_type = 'pound';
+                                                    $quotation_extra_type = 'pound';
+                                                }
+                                                if ($quotation_extra_type == 'percent') {
+                                                    $quotation_extra_value = ($quotation_extra_value / 100) * $sum;
+                                                }
+                                                $after_discount = $sum + $quotation_extra_value;
+                                                
+                                                if ($quotation_discount_type == 'percent') {
+                                                    $quotation_discount_value = ($quotation_discount_value / 100) * $sum;
+                                                }
+                                                $after_discount = $sum - $quotation_discount_value;
+                                                $after_discount = $sum - $quotation_discount_value + $quotation_extra_value;
+                                                $tax_value_added = $company->tax_value_added;
+                                                $percentage = ($tax_value_added / 100) * $after_discount;
+                                                $after_total = $after_discount + $percentage;
+                                                echo floatval($after_total) . ' ' . $currency;
+                                                ?>
+                                                <?php $total = $total + $after_total; ?>
+                                            </td>
+                                            <td>{{ $quotation->elements->count() }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     @endif
                     <div class="clearfix"></div>
@@ -372,97 +394,97 @@ $currency = $extra_settings->currency;
                         <p class="alert alert-sm alert-info mt-3 text-center">
                             فواتير البيع لهذا العميل
                         </p>
-                         <div class="table-respo ">
-                        <table
-                            style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                            <thead style="font-size: 15px !important;">
+                        <div class="table-respo ">
+                            <table
+                                style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+                                <thead style="font-size: 15px !important;">
 
-                                <tr
-                                    style="font-size: 13px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
+                                    <tr
+                                        style="font-size: 13px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
 
-                                    <th>#</th>
-                                    <th>رقم الفاتورة</th>
-                                    <th>التاريخ</th>
-                                    <th>البيان</th>
-                                    <th>مدين</th>
-                                    <th>دائن</th>
-                                    <th>الرصيد الحالى</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php $i = 0;
-                                $total = 0; ?>
-                                @foreach ($saleBills as $sale_bill)
-                                    <tr>
-                                        <td>{{ ++$i }}</td>
-                                        <td>{{ $sale_bill->company_counter }}</td>
-                                        <td>{{ $sale_bill->date }}</td>
-                                        <td>
-                                            @if ($sale_bill->paid == 0)
-                                                فاتورة مبيعات اجل
-                                            @else
-                                                فاتورة مبيعات نقدي
-                                            @endif
-                                        </td>
-                                        <td>{{ $sale_bill->rest }}</td>
-                                        <td>{{ $sale_bill->paid }}</td>
-                                        <td>
-                                            <?php
-                                            $sum = 0;
-                                            foreach ($sale_bill->elements as $element) {
-                                                $sum += floatval($element->quantity_price);
-                                            }
-                                            
-                                            $sale_bill_discount_value = 0;
-                                            $sale_bill_discount_type = 'pound';
-                                            $sale_bill_extra_value = 0;
-                                            $sale_bill_extra_type = 'pound';
-                                            
-                                            $extras = $sale_bill->extras;
-                                            foreach ($extras as $key) {
-                                                if ($key->action == 'discount') {
-                                                    if ($key->action_type == 'pound') {
-                                                        $sale_bill_discount_value = floatval($key->value);
-                                                        $sale_bill_discount_type = 'pound';
+                                        <th>#</th>
+                                        <th>رقم الفاتورة</th>
+                                        <th>التاريخ</th>
+                                        <th>البيان</th>
+                                        <th>مدين</th>
+                                        <th>دائن</th>
+                                        <th>الرصيد الحالى</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php $i = 0;
+                                    $total = 0; ?>
+                                    @foreach ($saleBills as $sale_bill)
+                                        <tr>
+                                            <td>{{ ++$i }}</td>
+                                            <td>{{ $sale_bill->company_counter }}</td>
+                                            <td>{{ $sale_bill->date }}</td>
+                                            <td>
+                                                @if ($sale_bill->paid == 0)
+                                                    فاتورة مبيعات اجل
+                                                @else
+                                                    فاتورة مبيعات نقدي
+                                                @endif
+                                            </td>
+                                            <td>{{ $sale_bill->rest }}</td>
+                                            <td>{{ $sale_bill->paid }}</td>
+                                            <td>
+                                                <?php
+                                                $sum = 0;
+                                                foreach ($sale_bill->elements as $element) {
+                                                    $sum += floatval($element->quantity_price);
+                                                }
+                                                
+                                                $sale_bill_discount_value = 0;
+                                                $sale_bill_discount_type = 'pound';
+                                                $sale_bill_extra_value = 0;
+                                                $sale_bill_extra_type = 'pound';
+                                                
+                                                $extras = $sale_bill->extras;
+                                                foreach ($extras as $key) {
+                                                    if ($key->action == 'discount') {
+                                                        if ($key->action_type == 'pound') {
+                                                            $sale_bill_discount_value = floatval($key->value);
+                                                            $sale_bill_discount_type = 'pound';
+                                                        } else {
+                                                            $sale_bill_discount_value = floatval($key->value);
+                                                            $sale_bill_discount_type = 'percent';
+                                                        }
                                                     } else {
-                                                        $sale_bill_discount_value = floatval($key->value);
-                                                        $sale_bill_discount_type = 'percent';
-                                                    }
-                                                } else {
-                                                    if ($key->action_type == 'pound') {
-                                                        $sale_bill_extra_value = floatval($key->value);
-                                                        $sale_bill_extra_type = 'pound';
-                                                    } else {
-                                                        $sale_bill_extra_value = floatval($key->value);
-                                                        $sale_bill_extra_type = 'percent';
+                                                        if ($key->action_type == 'pound') {
+                                                            $sale_bill_extra_value = floatval($key->value);
+                                                            $sale_bill_extra_type = 'pound';
+                                                        } else {
+                                                            $sale_bill_extra_value = floatval($key->value);
+                                                            $sale_bill_extra_type = 'percent';
+                                                        }
                                                     }
                                                 }
-                                            }
-                                            
-                                            if ($sale_bill_extra_type == 'percent') {
-                                                $sale_bill_extra_value = ($sale_bill_extra_value / 100) * $sum;
-                                            }
-                                            $after_discount = $sum + $sale_bill_extra_value;
-                                            
-                                            if ($sale_bill_discount_type == 'percent') {
-                                                $sale_bill_discount_value = ($sale_bill_discount_value / 100) * $sum;
-                                            }
-                                            $after_discount = $sum - $sale_bill_discount_value + $sale_bill_extra_value;
-                                            
-                                            $tax_value_added = floatval($company->tax_value_added);
-                                            $percentage = ($tax_value_added / 100) * $after_discount;
-                                            $after_total = $after_discount + $percentage;
-                                            
-                                            echo floatval($after_total) . ' ' . $currency;
-                                            ?>
-                                            <?php $total += $after_total; ?>
-                                        </td>
+                                                
+                                                if ($sale_bill_extra_type == 'percent') {
+                                                    $sale_bill_extra_value = ($sale_bill_extra_value / 100) * $sum;
+                                                }
+                                                $after_discount = $sum + $sale_bill_extra_value;
+                                                
+                                                if ($sale_bill_discount_type == 'percent') {
+                                                    $sale_bill_discount_value = ($sale_bill_discount_value / 100) * $sum;
+                                                }
+                                                $after_discount = $sum - $sale_bill_discount_value + $sale_bill_extra_value;
+                                                
+                                                $tax_value_added = floatval($company->tax_value_added);
+                                                $percentage = ($tax_value_added / 100) * $after_discount;
+                                                $after_total = $after_discount + $percentage;
+                                                
+                                                echo floatval($after_total) . ' ' . $currency;
+                                                ?>
+                                                <?php $total += $after_total; ?>
+                                            </td>
 
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                         </div>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     @endif
 
 
@@ -476,33 +498,33 @@ $currency = $extra_settings->currency;
                         <h3 class="alert alert-sm alert-light text-center" style="margin:20px auto;">
                             السندات للعميل
                         </h3>
-                         <div class="table-respo ">
-                        <table
-                            style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                            <thead style="font-size: 15px !important;">
+                        <div class="table-respo ">
+                            <table
+                                style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+                                <thead style="font-size: 15px !important;">
 
-                                <tr
-                                    style="font-size: 13px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
-                                    <th>رقم السند</th>
-                                    <th>التاريخ</th>
-                                    <th>الحساب</th>
-                                    <th>النوع</th>
-                                    <th>المبلغ</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($bonds as $bond)
-                                    <tr>
-                                        <td>{{ ++$i }}</td>
-                                        <td>{{ $bond->date }}</td>
-                                        <td>{{ $bond->account }}</td>
-                                        <td>{{ $bond->type }}</td>
-                                        <td>{{ $bond->amount }}</td>
+                                    <tr
+                                        style="font-size: 13px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
+                                        <th>رقم السند</th>
+                                        <th>التاريخ</th>
+                                        <th>الحساب</th>
+                                        <th>النوع</th>
+                                        <th>المبلغ</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                         </div>
+                                </thead>
+                                <tbody>
+                                    @foreach ($bonds as $bond)
+                                        <tr>
+                                            <td>{{ ++$i }}</td>
+                                            <td>{{ $bond->date }}</td>
+                                            <td>{{ $bond->account }}</td>
+                                            <td>{{ $bond->type }}</td>
+                                            <td>{{ $bond->amount }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     @endif
                     <!------------------------------------------------BONDS--------------------------------------------------->
 
