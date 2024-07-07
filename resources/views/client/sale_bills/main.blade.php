@@ -652,7 +652,7 @@
                                         
                                             <td dir="rtl">
                                                 {{-- Apply discount after tax --}}
-                                                {{ $realtotal - $discount->value + $sumWithTax }}
+                                                {{ $realtotal - $discount->value + $totalTax }}
                                                 {{ $currency }}
                                             </td>
                                     

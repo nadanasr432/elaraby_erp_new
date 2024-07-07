@@ -2058,6 +2058,8 @@ class SaleBillController extends Controller
                             $after_discount = $total - $discountValue + ($tax_value_added ?? 0);
                             break;
                         case 'poundAfterTax':
+                            $discountValue = $discount->value - $total;
+                            $after_discount = $total - $discountValue;
                         case 'poundAfterTaxPercent':
                             $discountValue = ($discount->value * $total) / 100;
                             $after_discount = $total - $discountValue;
