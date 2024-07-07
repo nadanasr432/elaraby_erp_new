@@ -615,7 +615,6 @@
 
                                     @endif
                                 </td>
-
                             </tr>
 
                             @if (!empty($ifThereIsDiscountNote))
@@ -652,7 +651,7 @@
 
                                             {{ $currency }} --}}
                                             <td dir="rtl">
-                                                {{   $sumWithTax + round($realtotal - $discount->value) }}
+                                                {{ round($realtotal - $discount->value) + $sumWithTax }}
                                                 {{ $currency }} </td>
                                         @endif
                                     @else
