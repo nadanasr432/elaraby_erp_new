@@ -649,13 +649,13 @@
                                 </td>
                                 @if ($company->tax_value_added && $company->tax_value_added != 0)
                                     @if ($discount->action_type == 'poundAfterTax')
-                                        @if ($realtotal > 0)
+                                        
                                             <td dir="rtl">
                                                 {{-- Apply discount after tax --}}
-                                                {{ round($realtotal - $discount->value + $sumWithTax, 2) }}
+                                                {{ $realtotal - $discount->value + $sumWithTax }}
                                                 {{ $currency }}
                                             </td>
-                                        @endif
+                                    
                                     @else
                                         <td dir="rtl">
                                             {{ $sumWithTax }}
