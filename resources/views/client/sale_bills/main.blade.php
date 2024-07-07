@@ -749,17 +749,43 @@
 
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 13px !important; height: 37px !important; text-align: center;background: #f8f9fb">
-                                <td dir="rtl">
+                              <td dir="rtl">
+                                    {{-- @dd( $discountValue) --}}
                                     {{ $discountNote ? $discountNote . ' || ' : '' }}
-                                    ({{ round(($discountValue / $realtotal) * 100, 1) }}%) {{ $discountValue }}
-                                    {{ $currency }}
+                                    @if ($discount->action_type == 'poundAfterTax')
+                                        @if ($realtotal > 0)
+                                            ({{ round($discount->value) }})
+
+                                            {{ $currency }}
+                                        @endif
+                                    @else
+                                        @if ($realtotal > 0)
+                                            ({{ round(($discountValue / $realtotal) * 100, 1) }}%)
+                                            {{ $discountValue }}
+                                        @endif
+                                        {{ $currency }}
+                                    @endif
+
                                 </td>
                                 <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Discount')</td>
                             </tr>
 
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 13px !important; height: 37px !important; text-align: center;background: #f8f9fb">
-                                <td dir="rtl">{{ $sumWithOutTax }} {{ $currency }}</td>
+                                 <td dir="rtl">
+                                    @if ($discount->action_type == 'poundAfterTax')
+                                        @if ($realtotal > 0)
+                                            ({{ round($realtotal) }})
+
+                                            {{ $currency }}
+                                        @endif
+                                    @else
+                                        @if ($realtotal > 0)
+                                            {{ $sumWithOutTax }} {{ $currency }}
+                                        @endif
+
+                                    @endif
+                                </td>
                                 <td style="text-align: right;padding-right: 14px;"style="background:#222751">
                                     @lang('sales_bills.Total, excluding tax')</td>
                             </tr>
@@ -787,10 +813,26 @@
 
                             <tr
                                 style="background:#222751;border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 13px !important; height: 37px !important; text-align: center;background: {{ $printColor }};color:white;">
-                                @if ($company->tax_value_added && $company->tax_value_added != 0)
-                                    <td dir="rtl">{{ $sumWithTax }} {{ $currency }} </td>
+                                 @if ($company->tax_value_added && $company->tax_value_added != 0)
+                                    @if ($discount->action_type == 'poundAfterTax')
+                                        
+                                            <td dir="rtl">
+                                                {{-- Apply discount after tax --}}
+                                                {{ $realtotal - $discount->value + $totalTax }}
+                                                {{ $currency }}
+                                            </td>
+                                    
+                                    @else
+                                        <td dir="rtl">
+                                            {{ $sumWithTax }}
+                                            {{ $currency }}
+                                        </td>
+                                    @endif
                                 @else
-                                    <td dir="rtl">{{ $sumWithOutTax }} {{ $currency }} </td>
+                                    <td dir="rtl">
+                                        {{ $sumWithOutTax }}
+                                        {{ $currency }}
+                                    </td>
                                 @endif
                                 <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.total')</td>
                             </tr>
