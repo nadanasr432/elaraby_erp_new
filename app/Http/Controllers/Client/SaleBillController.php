@@ -2093,23 +2093,23 @@ class SaleBillController extends Controller
                     $printColor = '#222751';
                     return view(
                         'client.sale_bills.main',
-                        compact('isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
+                        compact('discount','isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
                     );
                 } elseif ($invoiceType == 4) {
                     $printColor = '#222751';
                     return view(
                         'client.sale_bills.print4',
-                        compact('isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
                     );
                 } elseif ($invoiceType == 3) {
                     return view(
                         'client.sale_bills.no_tax_print',
-                        compact('isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
                     );
                 } else {
                     return view(
                         'client.sale_bills.nPrint3',
-                        compact('isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
                     );
                 }
             }
