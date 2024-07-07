@@ -647,19 +647,19 @@
                                 @if ($company->tax_value_added && $company->tax_value_added != 0)
                                     @if ($discount->action_type == 'poundAfterTax')
                                         @if ($realtotal > 0)
-                                            {{-- ({{ number_format($realtotal - $discount->value, 2) }}) --}}
-                                            {{-- {{ $currency }} --}}                                           <td dir="rtl">
-                                                {{ number_format($sumWithTax + $realtotal - $discount->value, 2) }}
-                                                {{ $currency }}
-                                            </td>
+                                            {{-- ({{ round($realtotal - $discount->value) }})
+
+                                            {{ $currency }} --}}
+
+                                            <td dir="rtl">
+                                                {{ round($sumWithTax + $realtotal - $discount->value) }}
+                                                {{ $currency }} </td>
                                         @endif
                                     @else
-                                        <td dir="rtl">{{ number_format($sumWithTax, 2) }} {{ $currency }}
-                                        </td>
+                                        <td dir="rtl">{{ $sumWithTax }} {{ $currency }} </td>
                                     @endif
                                 @else
-                                    <td dir="rtl">{{ number_format($sumWithOutTax, 2) }} {{ $currency }}
-                                    </td>
+                                    <td dir="rtl">{{ $sumWithOutTax }} {{ $currency }} </td>
                                 @endif
 
                             </tr>
