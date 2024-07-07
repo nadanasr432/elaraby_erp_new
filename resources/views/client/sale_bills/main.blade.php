@@ -652,7 +652,7 @@
                                             {{ $currency }} --}}
 
                                             <td dir="rtl">
-                                                {{  ($sumWithTax + $realtotal ) - $discount->value }}
+                                                {{  round(($sumWithTax + $realtotal ) - $discount->value) }}
                                                 {{ $currency }} </td>
                                         @endif
                                     @else
