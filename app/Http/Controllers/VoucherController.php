@@ -13,13 +13,14 @@ class VoucherController extends Controller
 {
     public function get_voucher_entries()
     {
-        $vouchers = Voucher::all();
+        $company_id = Auth::user()->company_id;
+        $vouchers = Voucher::where('company_id', $company_id)->get();
         return view('client.voucher.index', compact('vouchers'));
     }
 
     public function create_voucher_entries()
     {
-        $accounts = accounting_tree::all();
+        $accounts = accounting_tree::get();
         return view('client.voucher.create', compact('accounts'));
     }
 
@@ -35,12 +36,14 @@ class VoucherController extends Controller
             'transactions.*.notation' => 'nullable|string',
             // 'transactions.*.type' => 'required|in:0,1',
         ]);
-
+        $company_id = Auth::user()->company_id;
+        // where('company_id',$company_id)
         DB::beginTransaction();
 
         try {
             $voucher = Voucher::create([
                 'amount' => $request->amount,
+                'company_id' => $company_id,
                 'date' => $request->date,
                 'payment_method' => "cash",
                 'notation' => $request->notation,

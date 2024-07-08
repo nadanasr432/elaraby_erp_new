@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('vouchers', function (Blueprint $table) {
             $table->id();
             $table->string('voucher_type')->nullable();
+            $table->unsignedBigInteger('referable_id')->nullable();
             $table->string('referable_type')->nullable();
             $table->decimal('amount');
             $table->string('payment_method');
@@ -21,6 +22,8 @@ return new class extends Migration
             $table->string('status');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('clients');
+            $table->unsignedBigInteger('company_id');
+            $table->foreign('company_id')->references('id')->on('companies');
             $table->timestamp('date')->nullable();
             $table->string('options')->nullable();
             $table->timestamps();

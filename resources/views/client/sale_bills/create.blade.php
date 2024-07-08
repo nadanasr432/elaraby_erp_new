@@ -253,9 +253,9 @@
                   {{-- @dd($all_products->count())  --}}
                <select name="product_id" id="product_id" class="selectpicker w-80" data-style="btn-success"
                     data-live-search="true" title="{{ __('sales_bills.product-code') }}">
-               
+
                     @foreach ($all_products as $product)
-                    
+
                         @php
                             $product_name_words = explode(' ', $product->product_name);
                             $short_product_name = implode(' ', array_slice($product_name_words, 0, 5));
@@ -669,7 +669,7 @@
             @if (!isset($open_sale_bill) || empty($open_sale_bill)) disabled @endif " printColor="1" isMoswada="0" invoiceType='2'>
             حفظ و طباعة 2
         </a>
-        
+
         <a href="javascript:;" role="button" style="height: 40px;border:1px solid #5e8b0b;background: #5e8b0b !important;color:white !important;" class="btn save_btn2 btn-md btn-primary pull-right ml-1
             @if (!isset($open_sale_bill) || empty($open_sale_bill)) disabled @endif " printColor="2" isMoswada="0" invoiceType='4'>
             حفظ و طباعة 3
@@ -1010,6 +1010,7 @@
                     if (data.status == true) {
                         $('<div class="alert alert-dark alert-sm"> ' + data.msg + '</div>').insertAfter(
                             '#company_id');
+
                         $('.delete_pay').on('click', function () {
                             let payment_method = $(this).attr('payment_method');
                             let cash_id = $(this).attr('cash_id');
@@ -1021,7 +1022,16 @@
 
                             });
                             $(this).parent().hide();
+
                         });
+                        setTimeout(function () {
+                            $('#myModal2').hide();
+                            $('#myModal2').removeClass('show');
+                            $('#myModal2').css('display', 'none')
+                            $('body').removeClass('modal-open');
+                            $('.modal-backdrop').remove();
+                }, 2000);
+
                     } else {
                         $('<br/><br/> <p class="alert alert-dark alert-sm"> ' + data.msg + '</p>')
                             .insertAfter('#company_id');
@@ -1159,6 +1169,7 @@
             let extra_type = $('#extra_type').val();
             let extra_value = $('#extra_value').val();
             let value_added_tax = $('#value_added_tax').val();
+            let store_id = $('#store_id').val();
 
             if (product_id == "" || product_id <= "0") {
                 alert("لابد ان تختار المنتج أولا");
@@ -1174,6 +1185,7 @@
                     product_price: product_price,
                     quantity: quantity,
                     unit_id: unit_id,
+                    store_id: store_id,
                     quantity_price: quantity_price,
                     date: date,
                     notes: notes,
