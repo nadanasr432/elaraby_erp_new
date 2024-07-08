@@ -323,7 +323,7 @@ class PurchaseOrderController extends Controller
 
         if (!$store->accountingTree) {
             $accountingTree = new \App\Models\accounting_tree();
-            $accountingTree->account_name =  'حساب مخزن'.$store->store_name ;
+            $accountingTree->account_name =  ' حساب مخزون ' .$store->store_name ;
             $accountingTree->account_name_en =  $store->store_name . 'Account';
             $accountingTree->account_number = '66' . $store->id;
             $accountingTree->parent_id = 66;
@@ -332,7 +332,7 @@ class PurchaseOrderController extends Controller
         }
         if (!$supplier->accountingTree) {
             $accountingTree = new \App\Models\accounting_tree();
-            $accountingTree->account_name =  ' حساب المورد'. $supplier->supplier_name ;
+            $accountingTree->account_name =  ' حساب المورد '. $supplier->supplier_name ;
             $accountingTree->account_name_en =  $supplier->supplier_name . 'Account';
             $accountingTree->account_number = '34' . $supplier->id;
             $accountingTree->parent_id = 34;
@@ -381,7 +381,7 @@ class PurchaseOrderController extends Controller
                 'amount' => $check->quantity_price,
                 'date' => Carbon::now(),
                 'payment_method' => "cash",
-                'notation' => 'قيد فاتورة مشتريات رقم' . $purchase_order->sale_bill_number,
+                'notation' => 'قيد فاتورة مشتريات رقم ' . $purchase_order->sale_bill_number,
                 'status' => 1,
                 'user_id' => auth::user()->id,
                 'options' => 1

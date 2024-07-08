@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Bank;
 use App\Models\Cash;
 use App\Models\Safe;
+use App\Models\Store;
 use App\Models\Branch;
 use App\Models\Client;
 use App\Models\Company;
@@ -238,67 +239,127 @@ class SaleBillController extends Controller
         $data['client_id'] = Auth::user()->id;
         $amount = $data['amount'];
         $bill_id = $request->bill_id;
-        $sale_bill = SaleBill::where('sale_bill_number', $bill_id)->firstOrFail();
 
-        if ($sale_bill->paid >= $sale_bill->final_total) {
-            return response()->json([
-                'status' => true,
-                'msg' => 'غير مسموح لك .. تم الدفع من قبل'
-            ]);
-        }
+        DB::beginTransaction();
 
-        $sale_bill->update(['paid' => ($sale_bill->paid + $amount)]);
-        $outer_client_id = $data['outer_client_id'];
+        try {
+            $sale_bill = SaleBill::where('sale_bill_number', $bill_id)->firstOrFail();
+            $restUpdate = $sale_bill->final_total - $sale_bill->paid;
+            $sale_bill->update(['rest' => $restUpdate]);
 
-        if (!empty($sale_bill->outer_client_id)) {
-            $outer_client = OuterClient::FindOrFail($outer_client_id);
-            $balance_before = $outer_client->prev_balance;
-            $balance_after = $balance_before - $amount;
-            $data['balance_before'] = $balance_before;
-            $data['balance_after'] = $balance_after;
-        } else {
-            $data['balance_before'] = 0;
-            $data['balance_after'] = 0;
-        }
-
-        $payment_method = $data['payment_method'];
-        if ($payment_method == "cash") {
-            if ($sale_bill->paid <= $sale_bill->final_total) {
-                $cash = Cash::create($data);
-            }
-        } else {
-            $check = BankCash::where('bill_id', $request->bill_id)
-                ->where('company_id', $company_id)
-                ->where('client_id', $data['client_id'])
-                ->where('outer_client_id', $outer_client_id)
-                ->first();
-            if (empty($check)) {
-                $cash = BankCash::create($data);
-            } else {
+            if ($sale_bill->paid >= $sale_bill->final_total) {
+                DB::rollBack();
                 return response()->json([
                     'status' => true,
                     'msg' => 'غير مسموح لك .. تم الدفع من قبل'
                 ]);
             }
-        }
-        if ($cash) {
-            if ($payment_method == "cash") {
-                $pay_method = 'دفع نقدى كاش ';
-            } elseif ($payment_method == "bank") {
-                $pay_method = 'دفع بنكى شبكة ';
-            }
-            $button = '<button type="button" payment_method="' . $payment_method . '" cash_id="' . $cash->id . '"
-                class="btn btn-danger delete_pay pull-left"> حذف </button> ';
-            $clear = '<div class="clearfix"></div>';
 
-            return response()->json([
-                'status' => true,
-                'msg' => ' تم تسجيل الدفع بنجاح ' . " ( " . $pay_method . " ) " . " المبلغ : " . $amount . $button . $clear,
+            $paid = $sale_bill->paid + $amount;
+            $rest = $sale_bill->final_total - $paid;
+            $sale_bill->update(['paid' => $paid, 'rest' => $rest]);
+
+            $outer_client_id = $data['outer_client_id'];
+            $outer_client = OuterClient::findOrFail($outer_client_id);
+
+            if (!empty($sale_bill->outer_client_id)) {
+                $balance_before = $outer_client->prev_balance;
+                $balance_after = $balance_before - $amount;
+                $data['balance_before'] = $balance_before;
+                $data['balance_after'] = $balance_after;
+            } else {
+                $data['balance_before'] = 0;
+                $data['balance_after'] = 0;
+            }
+
+            // Handle client account
+            $clientAccountId = $outer_client->accountingTree?->id;
+            if (!$outer_client->accountingTree) {
+                // $accountingTree = new \App\Models\AccountingTree();
+                $accountingTree = new \App\Models\accounting_tree();
+
+                $accountingTree->account_name = 'حساب العميل ' . $outer_client->client_name;
+                $accountingTree->account_name_en = $outer_client->client_name . 'Account';
+                $accountingTree->account_number = '1203' . $outer_client->id;
+                $accountingTree->parent_id = 1203;
+                $accountingTree->type = 'sub';
+                $outer_client->accountingTree()->save($accountingTree);
+                $clientAccountId = $outer_client->accountingTree->id;
+            }
+
+            $payment_method = $data['payment_method'];
+
+            $voucher = new Voucher([
+                'amount' => $amount,
+                'company_id' => $company_id,
+                'date' => Carbon::now(),
+                'payment_method' => $payment_method,
+                'notation' => 'سند قبض فاتورة مبعات رقم ' . $sale_bill->sale_bill_number,
+                'status' => 1,
+                'user_id' => auth::user()->id,
+                'options' => 1
             ]);
-        } else {
+
+            $saleVoucher = $sale_bill->vouchers()->save($voucher);
+
+            Transaction::create([
+                'accounting_tree_id' => 25,
+                'voucher_id' => $voucher->id,
+                'amount' => $amount,
+                'notation' => "مدين من دفع فاتورة مبيعات",
+                'type' => 1,
+            ]);
+
+            Transaction::create([
+                'accounting_tree_id' => $clientAccountId,
+                'voucher_id' => $voucher->id,
+                'amount' => $amount,
+                'notation' => "دائن من دفع فاتورة مبيعات",
+                'type' => 0,
+            ]);
+
+            if ($payment_method == "cash") {
+                if ($sale_bill->paid <= $sale_bill->final_total) {
+                    $cash = Cash::create($data);
+                }
+            } else {
+                $check = BankCash::where('bill_id', $request->bill_id)
+                    ->where('company_id', $company_id)
+                    ->where('client_id', $data['client_id'])
+                    ->where('outer_client_id', $outer_client_id)
+                    ->first();
+                if (empty($check)) {
+                    $cash = BankCash::create($data);
+                } else {
+                    DB::rollBack();
+                    return response()->json([
+                        'status' => true,
+                        'msg' => 'غير مسموح لك .. تم الدفع من قبل'
+                    ]);
+                }
+            }
+
+            if ($cash) {
+                $pay_method = $payment_method == "cash" ? 'دفع نقدى كاش ' : 'دفع بنكى شبكة ';
+                $button = '<button type="button" payment_method="' . $payment_method . '" cash_id="' . $cash->id . '" class="btn btn-danger delete_pay pull-left"> حذف </button>';
+                $clear = '<div class="clearfix"></div>';
+                DB::commit();
+                return response()->json([
+                    'status' => true,
+                    'msg' => ' تم تسجيل الدفع بنجاح ' . " ( " . $pay_method . " ) " . " المبلغ : " . $amount . $button . $clear,
+                ]);
+            } else {
+                DB::rollBack();
+                return response()->json([
+                    'status' => false,
+                    'msg' => 'هناك خطأ فى تسجيل الدفع النقدى حاول مرة اخرى',
+                ]);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'status' => false,
-                'msg' => 'هناك خطأ فى تسجيل الدفع النقدى حاول مرة اخرى',
+                'msg' => 'حدث خطأ أثناء معالجة الدفع: ' . $e->getMessage(),
             ]);
         }
     }
@@ -331,23 +392,9 @@ class SaleBillController extends Controller
     # this function adds products to the invoice #
     public function save(Request $request)
     {
-        $outerClient = OuterClient::find($request->outer_client_id);
-        // dd($request);
-        if (!$outerClient->accountingTree) {
-            $accountingTree = new \App\Models\accounting_tree();
-            $accountingTree->account_name = ' حساب العميل'. $outerClient->client_name;
-            $accountingTree->account_name_en =  $outerClient->client_name . 'Account';
-            $accountingTree->account_number = '1203' . $outerClient->id;
-            $accountingTree->parent_id = 1203;
-            $accountingTree->type = 'sub';
-            // $outerClient->accountingTree()->create($accountingTree);
-        }
-        // add prev_balance to account
-        // $accountId = $outerClient->accountingTree->id;
-        // dd($outerClient->accountingTree->id);
-
         # get formData.
         $data = $request->all();
+        // dd($data);
         $data['company_id'] = Auth::user()->company_id;
         $company = Company::FindOrFail($data['company_id']);
         $data['client_id'] = Auth::user()->id;
@@ -388,7 +435,7 @@ class SaleBillController extends Controller
             ]);
         }
         // dd( $SaleBill);
-        DB::beginTransaction();
+        // DB::beginTransaction();
 
         // try {
         //     $voucher = Voucher::create([
@@ -403,7 +450,7 @@ class SaleBillController extends Controller
         //     // dd( $accountId);
         //     // foreach ($request->transactions as $transaction) {
         //     Transaction::create([
-        //         // 'accounting_tree_id' => $accountId,
+        //         'accounting_tree_id' => $accountId,
         //         'voucher_id' => $voucher->id,
         //         'amount' =>  $check['quantity_price'],
         //         'notation' => "مدين من فاتورة مبيعات",
@@ -416,7 +463,7 @@ class SaleBillController extends Controller
         //         'notation' => "دائن من فاتورة مبيعات",
         //         'type' =>  0,
         //     ]);
-        //     // }
+        // }
         // } catch (\Exception $e) {
         //     dd($e);
         //     DB::rollBack();
@@ -424,7 +471,7 @@ class SaleBillController extends Controller
         //     // return response()->json(['error' => 'An error occurred while creating the voucher.'], 500);
         // }
 
-        DB::commit();
+        // DB::commit();
         # return appropriate msg if created or updated.
         if ($SaleBill && $sale_bill_element) {
             $all_elements = SaleBillElement::where('sale_bill_id', $SaleBill->id)->get();
@@ -471,6 +518,113 @@ class SaleBillController extends Controller
             }
         }
 
+        $elementIds = $elements->pluck('product_id');
+
+        $products = Product::whereIn('id', $elementIds)->with('category')->get();
+
+        $sumPurchasingPrice = $products->reduce(function ($carry, $product) {
+            if ($product->category->category_type != 'خدمية') {
+                // logger($product);
+                return $carry + $product->purchasing_price;
+            }
+            return $carry;
+        }, 0);
+        // dd( $products->pluck('category'));
+        // dd( $sumPurchasingPrice);
+        $outerClient = OuterClient::find($sale_bill->outer_client_id);
+        $store = Store::find($sale_bill->store_id);
+        // dd($request);
+        $clientAccountId = $outerClient->accountingTree?->id;
+        $storeAccountId = $store->accountingTree?->id;
+        if (!$outerClient->accountingTree) {
+            $accountingTree = new \App\Models\accounting_tree();
+            $accountingTree->account_name = 'حساب العميل ' . $outerClient->client_name;
+            $accountingTree->account_name_en =  $outerClient->client_name . 'Account';
+            $accountingTree->account_number = '1203' . $outerClient->id;
+            $accountingTree->parent_id = 1203;
+            $accountingTree->type = 'sub';
+            $outerClient->accountingTree()->save($accountingTree);
+            $clientAccountId = $outerClient->accountingTree->id;
+        }
+        if (!$store->accountingTree) {
+            $accountingTree = new \App\Models\accounting_tree();
+            $accountingTree->account_name =  'حساب مخزون' . $store->store_name;
+            $accountingTree->account_name_en =  $store->store_name . 'Account';
+            $accountingTree->account_number = '66' . $store->id;
+            $accountingTree->parent_id = 66;
+            $accountingTree->type = 'sub';
+            $store->accountingTree()->save($accountingTree);
+        }
+        // add prev_balance to account
+        DB::beginTransaction();
+        // dd($company_id,$company);
+        try {
+            $voucher = new Voucher([
+                'amount' => $sale_bill->final_total,
+                'company_id' => $company_id,
+                'date' => Carbon::now(),
+                'payment_method' => "cash",
+                'notation' => 'قيد فاتورة مبيعات رقم' . $sale_bill->sale_bill_number,
+                'status' => 1,
+                'user_id' => auth::user()->id,
+                'options' => 1
+            ]);
+            $saleVoucher = $sale_bill->vouchers()->save($voucher);
+            // dd($saleVoucher);
+            Transaction::create([
+                'accounting_tree_id' => $clientAccountId,
+                'voucher_id' => $voucher->id,
+                'amount' =>  $sale_bill->final_total,
+                'notation' => "مدين من فاتورة مبيعات",
+                'type' =>  1,
+            ]);
+            Transaction::create([
+                'accounting_tree_id' => 39,
+                'voucher_id' => $voucher->id,
+                'amount' =>  $sale_bill->final_total,
+                'notation' => "دائن من فاتورة مبيعات",
+                'type' =>  0,
+            ]);
+            //cost voucher
+            if ($sumPurchasingPrice) {
+                new Voucher([
+                    'company_id' => $company_id,
+                    'amount' => $sumPurchasingPrice,
+                    'date' => Carbon::now(),
+                    // 'payment_method' => "cash",
+                    'notation' => 'قيد تكاليف فاتورة مبيعات رقم' . $sale_bill->sale_bill_number,
+                    'status' => 1,
+                    'user_id' => auth::user()->id,
+                    'options' => 1
+                ]);
+                $costVoucher =  $sale_bill->vouchers()->save($voucher);
+
+                // dd( $clientAccountId);
+                // foreach ($request->transactions as $transaction) {
+                Transaction::create([
+                    'accounting_tree_id' => $storeAccountId,
+                    'voucher_id' => $costVoucher->id,
+                    'amount' =>  $sumPurchasingPrice,
+                    'notation' => "دائن من تكاليف فاتورة مبيعات",
+                    'type' =>  1,
+                ]);
+                Transaction::create([
+                    'accounting_tree_id' => 19,
+                    'voucher_id' => $costVoucher->id,
+                    'amount' =>  $sumPurchasingPrice,
+                    'notation' => "مدين من تكاليف فاتورة مبيعات",
+                    'type' =>  0,
+                ]);
+            }
+            // }
+        } catch (\Exception $e) {
+            dd($e);
+            DB::rollBack();
+
+            // return response()->json(['error' => 'An error occurred while creating the voucher.'], 500);
+        }
+
+        DB::commit();
         # get tax settings from company settings #
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
         $tax_value_added = $company->tax_value_added;
@@ -826,10 +980,10 @@ class SaleBillController extends Controller
         $sale_bill_cash = Cash::where('bill_id', $saleBill->sale_bill_number)->get();
         $sale_bill_bank_cash = BankCash::where('bill_id', $saleBill->sale_bill_number)->get();
         $old_pre_counter = SaleBill::withTrashed()
-        ->where('company_id', $compID)
-        ->where('status', 'done')
-        ->where('id', '<=', $saleBill->id)  
-        ->count();
+            ->where('company_id', $compID)
+            ->where('status', 'done')
+            ->where('id', '<=', $saleBill->id)
+            ->count();
         return view(
             'client.sale_bills.edit',
             compact(
@@ -1222,7 +1376,7 @@ class SaleBillController extends Controller
                 echo '<h6 class="alert alert-sm alert-info text-center font-weight-bold">
             <i class="fa fa-info-circle"></i>
             بيانات عناصر الفاتورة (' .
-                SaleBill::withTrashed()
+                    SaleBill::withTrashed()
                     ->where('company_id', $company_id)
                     ->where('status', 'done')
                     ->where('id', '<=', $sale_bill->id)
@@ -1232,10 +1386,10 @@ class SaleBillController extends Controller
                 echo '<h6 class="alert alert-sm alert-info text-center font-weight-bold">
             <i class="fa fa-info-circle"></i>
             بيانات عناصر الفاتورة (' .
-                (SaleBill::withTrashed()
-                    ->where('company_id', $company_id)
-                    ->where('status', 'done')
-                    ->count() + 1) . ')
+                    (SaleBill::withTrashed()
+                        ->where('company_id', $company_id)
+                        ->where('status', 'done')
+                        ->count() + 1) . ')
           </h6>';
             }
 

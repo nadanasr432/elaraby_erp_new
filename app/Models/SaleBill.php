@@ -14,9 +14,24 @@ class SaleBill extends Model
     protected $fillable = [
         'token', 'company_id', 'company_counter', 'client_id', 'outer_client_id',
         'sale_bill_number', 'date', 'time', 'notes',
-        'final_total', 'status', 'paid', 'rest', 'value_added_tax'
+        'final_total', 'status', 'paid', 'rest', 'value_added_tax','store_id'
     ];
+    // protected static function boot()
+    // {
+    //     parent::boot();
 
+    //     static::creating(function ($billSale) {
+    //         $billSale->sale_bill_number = self::generateSaleBillNumber($billSale->company_id);
+    //     });
+    // }
+    // public static function generateSaleBillNumber($companyId)
+    // {
+    //     $lastBill = self::where('company_id', $companyId)
+    //                     ->orderBy('sale_bill_number', 'desc')
+    //                     ->first();
+
+    //     return $lastBill ? $lastBill->sale_bill_number + 1 : 1;
+    // }
     public function elements()
     {
         return $this->hasMany('\App\Models\SaleBillElement', 'sale_bill_id', 'id');
@@ -45,5 +60,9 @@ class SaleBill extends Model
     public function client()
     {
         return $this->belongsTo('\App\Models\Client', 'client_id', 'id');
+    }
+    public function vouchers()
+    {
+        return $this->morphMany(Voucher::class, 'referable');
     }
 }
