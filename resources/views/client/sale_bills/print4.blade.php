@@ -45,7 +45,7 @@
             border-bottom: 1px solid #2d2d2d20 !important;
             padding-bottom: 4px !important;
             padding-top: 4px !important;
-            font-size: 15px !important;
+            font-size: 16px !important;
         }
 
         .txtheader {
@@ -221,19 +221,19 @@
                 <div class="products-details" style="padding: 0px 18px;">
                     <table
                         style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                        <thead style="font-size: 15px !important;">
+                        <thead style="font-size: 16px !important;">
                             <tr
-                                style="font-size: 13px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
+                                style="font-size: 16px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
                                 <th>@lang('sales_bills.Release Date')</th>
                                 <th>@lang('sales_bills.invoice number')</th>
                                 <th>@lang('sales_bills.commercial register')</th>
 
                             </tr>
                         </thead>
-                        <tbody style="font-size: 15px !important;">
+                        <tbody style="font-size: 16px !important;">
 
                             <tr class="even"
-                                style="font-size: 15px !important; height: 40px !important; text-align: center;">
+                                style="font-size: 16px !important; height: 40px !important; text-align: center;">
                                 <td>{{ $sale_bill->date }}</td>
                                 <td>{{ $sale_bill->company_counter }}</td>
                                 <td>{{ $company->civil_registration_number }}</td>
@@ -245,18 +245,18 @@
                 <div class="products-details" style="padding: 0px 18px;">
                     <table
                         style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                        <thead style="font-size: 15px !important;">
+                        <thead style="font-size: 16px !important;">
                             <tr
-                                style="font-size: 13px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
+                                style="font-size: 16px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
                                 <th>@lang('sales_bills.commercial register')</th>
                                 <th>@lang('sales_bills.invoice number')</th>
                                 <th>@lang('sales_bills.Release Date')</th>
                             </tr>
                         </thead>
-                        <tbody style="font-size: 15px !important;">
+                        <tbody style="font-size: 16px !important;">
 
                             <tr class="even"
-                                style="font-size: 15px !important; height: 40px !important; text-align: center;">
+                                style="font-size: 16px !important; height: 40px !important; text-align: center;">
                                 <td>{{ $company->civil_registration_number }}</td>
                                 <td>{{ $sale_bill->company_counter }}</td>
                                 <td>{{ $sale_bill->date }}</td>
@@ -273,7 +273,7 @@
                         style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                         <thead>
                             <tr
-                                style="font-size: 13px !important; background: {{ $printColor }}; color: white; height: 44px !important; text-align: center;">
+                                style="font-size: 16px !important; background: {{ $printColor }}; color: white; height: 44px !important; text-align: center;">
                                 <th>@lang('sales_bills.client-name')</th>
                                 <th>@lang('sales_bills.Tax Number')</th>
                                 <th>@lang('sales_bills.phone')</th>
@@ -284,7 +284,7 @@
                         </thead>
                         <tbody style="font-size: 14px !important;">
                             <tr class="even"
-                                style="font-size: 15px !important; height: 40px !important; text-align: center;">
+                                style="font-size: 16px !important; height: 40px !important; text-align: center;">
                                 <td>
                                     {{ $sale_bill->outerClient->shop_name ?? $sale_bill->outerClient->client_name }}
                                 </td>
@@ -339,7 +339,7 @@
                         style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                         <thead>
                             <tr
-                                style="font-size: 13px !important; background: {{ $printColor }}; color: white; height: 44px !important; text-align: center;">
+                                style="font-size: 16px !important; background: {{ $printColor }}; color: white; height: 44px !important; text-align: center;">
 
 
 
@@ -353,7 +353,7 @@
                         </thead>
                         <tbody style="font-size: 14px !important;">
                             <tr class="even"
-                                style="font-size: 15px !important; height: 40px !important; text-align: center;">
+                                style="font-size: 16px !important; height: 40px !important; text-align: center;">
 
 
 
@@ -382,7 +382,7 @@
                         style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                         <thead>
                             <tr
-                                style="font-size: 13px !important; background: {{ $printColor }}; color: white; height: 44px !important; text-align: center;">
+                                style="font-size: 16px !important; background: {{ $printColor }}; color: white; height: 44px !important; text-align: center;">
                                 <th>#</th>
                                 <th>@lang('sales_bills.product name')</th>
                                 <th>@lang('sales_bills.unit price')</th>
@@ -420,7 +420,7 @@
                                     #--PRODUCT TOTAL--#
                             
                                     $tableRows = [];
-                                    $tableRow = '<tr style="font-size: 15px !important; height: 34px !important; text-align: center;background: #f8f9fb">';
+                                    $tableRow = '<tr style="font-size: 16px !important; height: 34px !important; text-align: center;background: #f8f9fb">';
                             
                                     // Reversed order of <td> elements
                                     $tableRow .= '<td>' . ++$i . '</td>';
@@ -450,7 +450,7 @@
                         style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                         <thead>
                             <tr
-                                style="font-size: 13px !important; background: {{ $printColor }}; color: white; height: 44px !important; text-align: center;">
+                                style="font-size: 16px !important; background: {{ $printColor }}; color: white; height: 44px !important; text-align: center;">
                                 <th>@lang('sales_bills.total')</th>
                                 <th>@lang('products.pmodel1')</th>
                                 <th>@lang('products.pdesc')</th>
@@ -489,7 +489,7 @@
                                     #--PRODUCT TOTAL--#
                             
                                     echo '
-                                                                                                                                                                                                    <tr style="font-size: 15px !important; height: 34px !important; text-align: center;background: #f8f9fb">
+                                                                                                                                                                                                    <tr style="font-size: 16px !important; height: 34px !important; text-align: center;background: #f8f9fb">
                                                                                                                                                                                                         <td>' .
                                         $ProdTotal .
                                         '</td>
@@ -546,7 +546,7 @@
                     <div class="products-details p-0 col-8 d-flex justify-content-start flex-column">
                         <div class="qrcode d-flex justify-content-start">
                             @if (!$isMoswada)
-                                <img width="145" src="{{ $displayQRCodeAsBase64 }}" />
+                                <img width="200" src="{{ $displayQRCodeAsBase64 }}" />
                             @endif
                         </div>
                         <div class="qrcode d-flex justify-content-start">
@@ -563,7 +563,7 @@
                             style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
 
                             <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 13px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
 
                                 <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.Discount')</td>
                                 <td dir="rtl">
@@ -574,7 +574,7 @@
                             </tr>
 
                             <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 13px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                 <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
                                 <td dir="rtl">{{ $sumWithOutTax }} </td>
 
@@ -582,7 +582,7 @@
 
                             @if (!empty($ifThereIsDiscountNote))
                                 <tr
-                                    style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 13px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                                    style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                     <td style="text-align: left;padding-right: 14px;">:@lang('sales_bills.Discount note') </td>
                                     <td style="width: 50% !important;">{{ $ifThereIsDiscountNote }}</td>
 
@@ -590,7 +590,7 @@
                             @endif
 
                             <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 13px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
 
                                 <td style="text-align: left;padding-right: 14px;">
                                     @lang('sales_bills.Total tax')
@@ -604,7 +604,7 @@
                             </tr>
 
                             <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 13px !important; height: 37px !important; text-align: center;background: {{ $printColor }};color:white;">
+                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: {{ $printColor }};color:white;">
                                 <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
                                 @if ($company->tax_value_added && $company->tax_value_added != 0)
                                     <td dir="rtl">{{ $sumWithTax }}</td>
@@ -614,7 +614,7 @@
 
                             </tr>
                             <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 13px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                 <td style="text-align: left;padding-right: 14px;">
                                     @lang('sales_bills.The amount paid')
                                 </td>
@@ -622,7 +622,7 @@
 
                             </tr>
                             <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 13px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                 <td style="text-align: left;padding-right: 14px;">
                                     @lang('sales_bills.Residual')
                                 </td>
@@ -665,14 +665,14 @@
                                 style="width:100%;border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                                 <tbody>
                                     <tr
-                                        style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;background: {{ $printColor }};color:white;">
+                                        style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 44px !important; text-align: center;background: {{ $printColor }};color:white;">
                                         <td style="text-align: left;padding-left: 14px;font-size: 14px;"
                                             colspan="2">
                                             @lang('sales_bills.Terms and Conditions')
                                         </td>
                                     </tr>
                                     <tr
-                                        style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 49px !important; text-align: center;background: #f8f9fb">
+                                        style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 49px !important; text-align: center;background: #f8f9fb">
                                         <td
                                             style="text-align: left;padding-left: 14px;direction: rtl;padding-top: 15px;">
                                             {!! $company->basic_settings->sale_bill_condition !!}</td>
@@ -695,7 +695,7 @@
                             style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
 
                             <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 13px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                 <td dir="rtl">
                                     {{ $discountNote ? $discountNote . ' || ' : '' }}
                                     ({{ round(($discountValue / $realtotal) * 100, 1) }}%) {{ $discountValue }}
@@ -705,21 +705,21 @@
                             </tr>
 
                             <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 13px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                 <td dir="rtl">{{ $sumWithOutTax }} </td>
                                 <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
                             </tr>
 
                             @if (!empty($ifThereIsDiscountNote))
                                 <tr
-                                    style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 13px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                                    style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                     <td style="width: 50% !important;">{{ $ifThereIsDiscountNote }}</td>
                                     <td style="text-align: right;padding-right: 14px;">:@lang('sales_bills.Discount note') </td>
                                 </tr>
                             @endif
 
                             <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 13px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                 @if ($company->tax_value_added && $company->tax_value_added != 0)
                                     <td dir="rtl">{{ $totalTax }}</td>
                                 @else
@@ -732,7 +732,7 @@
                             </tr>
 
                             <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 13px !important; height: 37px !important; text-align: center;background: {{ $printColor }};color:white;">
+                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: {{ $printColor }};color:white;">
                                 @if ($company->tax_value_added && $company->tax_value_added != 0)
                                     <td dir="rtl">{{ $sumWithTax }}</td>
                                 @else
@@ -741,14 +741,14 @@
                                 <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total including tax')</td>
                             </tr>
                             <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 13px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                 <td dir="rtl">{{ $sale_bill->paid }} </td>
                                 <td style="text-align: right;padding-right: 14px;">
                                     @lang('sales_bills.The amount paid')
                                 </td>
                             </tr>
                             <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 13px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                 <td dir="rtl">
                                     {{ $sale_bill->rest }} 
                                 </td>
@@ -787,7 +787,7 @@
                     <div class="products-details p-0 col-8 d-flex justify-content-end flex-column">
                         <div class="qrcode d-flex justify-content-end">
                             @if (!$isMoswada)
-                                <img width="145" src="{{ $displayQRCodeAsBase64 }}" />
+                                <img width="200" src="{{ $displayQRCodeAsBase64 }}" />
                             @endif
                         </div>
                         <div class="qrcode d-flex justify-content-end">
@@ -807,13 +807,13 @@
                             style="width:100%;border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                             <tbody>
                                 <tr
-                                    style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;background: {{ $printColor }};color:white;">
+                                    style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 44px !important; text-align: center;background: {{ $printColor }};color:white;">
                                     <td style="text-align: right;padding-right: 14px;font-size: 14px;" colspan="2">
                                         @lang('sales_bills.Terms and Conditions')
                                     </td>
                                 </tr>
                                 <tr
-                                    style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 49px !important; text-align: center;background: #f8f9fb">
+                                    style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 49px !important; text-align: center;background: #f8f9fb">
                                     <td
                                         style="text-align: right;padding-right: 14px;direction: rtl;padding-top: 15px;">
                                         {!! $company->basic_settings->sale_bill_condition !!}</td>

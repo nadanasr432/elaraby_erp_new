@@ -21,7 +21,7 @@
         .left {
             width: 49%;
             background: #f8f9fb;
-            font-size: 15px;
+            font-size: 16px;
             color: #222751 !important;
             overflow: hidden;
             font-weight: 400;
@@ -57,12 +57,23 @@
         }
 
         tr th {
-            font-size: 13px !important;
+            font-size: 16px !important;
             font-weight: 500 !important;
         }
 
         .borderLeftH {
             border-left: 1px solid rgba(229, 229, 229, 0.94) !important;
+        }
+          .headerImg,
+        .footerImg {
+            height: 200px;
+        }
+
+        .headerImg img,
+        .footerImg img {
+            height: 100%;
+            width: 100%;
+            object-fit: scale-down;
         }
     </style>
     <style type="text/css" media="print">
@@ -82,7 +93,7 @@
         .left {
             width: 49%;
             background: #f8f9fb;
-            font-size: 15px;
+            font-size: 16px;
             border-radius: 2px;
             overflow: hidden;
             font-weight: 400;
@@ -107,13 +118,25 @@
 
 <body>
     <div class="invoice-container border mt-4">
-
         <div class="text-center" id="buttons">
-            <button class="btn btn-sm btn-success" onclick="window.print()">@lang('sales_bills.Print the invoice') </button>
-            <a class="btn btn-sm btn-danger" href="{{ route('client.quotations.create') }}"> @lang('sales_bills.back')</a>
+            <button class="btn btn-sm btn-success" onclick="window.print()">@lang('sales_bills.Print offer price')</button>
+            <a class="btn btn-sm btn-danger" href="{{ route('client.quotations.create') }}">@lang('sales_bills.back')</a>
+             <button class="show_hide_header btn btn-sm btn-warning no-print" dir="ltr">
+                <i class="fa fa-eye-slash"></i>
+                @lang('sales_bills.Show or hide the header')
+            </button>
+            <button class="show_hide_footer btn btn-sm btn-primary no-print" dir="ltr">
+                <i class="fa fa-eye-slash"></i>
+                @lang('sales_bills.Show or hide the footer')
+            </button>
         </div>
+        <div class="all-data" style="border-top: 1px solid #2d2d2d20;padding-top: 25px;">
 
-        <div class="all-data">
+            @if (!empty($company->basic_settings->header))
+                <div class="headerImg">
+                    <img class="img-footer" src="{{ asset($company->basic_settings->header) }}" />
+                </div>
+            @endif
             <div class="header-container pt-3">
                 <div class="col-12 txtheader d-flex align-items-center mx-auto text-center justify-content-between"
                     style="color:#222751;">
@@ -140,9 +163,9 @@
             <div class="products-details" style="padding: 0px 14px;">
                 <table
                     style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                    <thead style="font-size: 15px !important;">
+                    <thead style="font-size: 16px !important;">
                         <tr
-                            style="font-size: 15px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
+                            style="font-size: 16px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
                             <th>@lang('sales_bills.commercial register') </th>
                             <th>@lang('sales_bills.Display number') </th>
                             <th>@lang('sales_bills.Release Date') </th>
@@ -151,10 +174,10 @@
                         </tr>
 
                     </thead>
-                    <tbody style="font-size: 15px !important;">
+                    <tbody style="font-size: 16px !important;">
 
                         <tr class="even"
-                            style="font-size: 15px !important; height: 40px !important; text-align: center;">
+                            style="font-size: 16px !important; height: 40px !important; text-align: center;">
                             <td>{{ $company->civil_registration_number }}</td>
                             <td>{{ $quotation->quotation_number }}</td>
                             <td>{{ $quotation->created_at }}</td>
@@ -231,9 +254,9 @@
             <div class="products-details" style="padding: 0px 14px;">
                 <table
                     style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                    <thead style="font-size: 15px !important;">
+                    <thead style="font-size: 16px !important;">
                         <tr
-                            style="font-size: 15px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
+                            style="font-size: 16px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
                             <th>@lang('sales_bills.total')</th>
                             <th>@lang('sales_bills.Tax')</th>
                             <th>@lang('sales_bills.The amount does not include tax') </th>
@@ -244,7 +267,7 @@
                         </tr>
 
                     </thead>
-                    <tbody style="font-size: 15px !important;">
+                    <tbody style="font-size: 16px !important;">
                         @php $counter = 1; @endphp
                         @foreach ($products as $product)
                             @php
@@ -254,7 +277,7 @@
                                 }
                             @endphp
                             <tr class="even"
-                                style="font-size: 15px !important; height: 40px !important; text-align: center;">
+                                style="font-size: 16px !important; height: 40px !important; text-align: center;">
                                 <td class="borderLeftH">{{ $prodTax + $product->quantity_price }}
                                     {{ $company->extra_settings->currency }}</td>
                                 <td class="borderLeftH">{{ $prodTax }} {{ $company->extra_settings->currency }}
@@ -282,7 +305,7 @@
 
             <!-----------final-details-------------->
             <div class="row px-3 pt-1 mt-1">
-                <div class="products-details p-2 col-4">
+                <div class="products-details p-2 col-5">
                     <table
                         style="width: 100%;border-radius: 8px !important; overflow: hidden; border: 1px solid #2d2d2d2d;">
                         <tr class="even"
@@ -294,7 +317,7 @@
                         </tr>
 
                         <tr
-                            style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 13px !important; height: 40px !important; text-align: center;">
+                            style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 40px !important; text-align: center;">
                             <td dir="rtl">
                                 {{ $productsTotal }} {{ $company->extra_settings->currency }}
                             </td>
@@ -314,7 +337,7 @@
                         </tr>
 
                         <tr
-                            style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 13px !important; height: 40px !important; text-align: center;background: #222751;color:white;">
+                            style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 40px !important; text-align: center;background: #222751;color:white;">
                             <td dir="rtl">
                                 {{ $totalQuotaitonPrice }} {{ $company->extra_settings->currency }}
                             </td>
@@ -330,16 +353,16 @@
                 <div class="products-details mb-3" style="padding: 0px 14px;">
                     <table
                         style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                        <thead style="font-size: 15px !important;">
+                        <thead style="font-size: 16px !important;">
                             <tr
                                 style="font-size: 16px !important; background: #222751; color: white; height: 44px !important; text-align: right;">
                                 <th style="padding-right: 10px !important;">@lang('sales_bills.comments')</th>
                             </tr>
 
                         </thead>
-                        <tbody style="font-size: 15px !important;">
+                        <tbody style="font-size: 16px !important;">
                             <tr class="even"
-                                style="font-size: 15px !important; height: 40px !important;text-align: right;">
+                                style="font-size: 16px !important; height: 40px !important;text-align: right;">
                                 <td style="padding-right: 10px !important;">{!! $quotation->notes !!}</td>
                             </tr>
                         </tbody>
@@ -353,16 +376,16 @@
                 <div class="products-details mb-3" style="padding: 0px 14px;">
                     <table
                         style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                        <thead style="font-size: 15px !important;">
+                        <thead style="font-size: 16px !important;">
                             <tr
                                 style="font-size: 16px !important; background: #222751; color: white; height: 44px !important; text-align: right;">
                                 <th style="padding-right: 10px !important;">@lang('sales_bills.Terms and Conditions') </th>
                             </tr>
 
                         </thead>
-                        <tbody style="font-size: 15px !important;">
+                        <tbody style="font-size: 16px !important;">
                             <tr class="even"
-                                style="font-size: 15px !important; height: 40px !important;text-align: right;">
+                                style="font-size: 16px !important; height: 40px !important;text-align: right;">
                                 <td style="padding-right: 10px !important;">{!! $company->basic_settings->quotation_condition !!}</td>
                             </tr>
                         </tbody>
@@ -378,3 +401,13 @@
 </body>
 
 </html>
+ <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
+
+<script type="text/javascript">
+    $('.show_hide_header').on('click', function() {
+        $('.headerImg').slideToggle();
+    });
+    $('.show_hide_footer').on('click', function() {
+        $('.footerImg').slideToggle();
+    });
+</script>

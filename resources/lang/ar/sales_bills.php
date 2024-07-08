@@ -37,6 +37,7 @@ return [
     "modify-customer-sales-invoice" => "تعديل فاتورة مبيعات",
     "client-name" => "اسم العميل",
     "invoice-date" => "تاريخ الفاتورة",
+    "Print offer price"=> "طباعه عرض السعر",
     "invoice from" => "فاتورة من",
     "invoice to" => "فاتورة الي",
     "invoice-time" => "وقت الفاتورة",

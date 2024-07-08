@@ -20,6 +20,7 @@ return [
     "phone"=> "phone",
     "address"=> "address",
     "total"=> "Grand total",
+    "Print offer price" => "Print offer price",
     "Tax"=> "Tax",
     "The amount does not include tax"=> "the amount without vat",
     "Quantity"=> "Quantity",

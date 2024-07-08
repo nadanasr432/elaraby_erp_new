@@ -57,7 +57,7 @@
         }
 
         .header-container {
-            height: 135px;
+            height: 180px;
             overflow: hidden;
         }
     </style>
@@ -138,7 +138,7 @@
 
 
                         @if (!$isMoswada)
-                            <img width="145" src="{{ $displayQRCodeAsBase64 }}" />
+                            <img width="200" src="{{ $displayQRCodeAsBase64 }}" />
                         @endif
 
                     </div>
@@ -149,7 +149,7 @@
 
 
                         @if (!$isMoswada)
-                            <img width="145" src="{{ $displayQRCodeAsBase64 }}" />
+                            <img width="200" src="{{ $displayQRCodeAsBase64 }}" />
                         @endif
 
                     </div>
