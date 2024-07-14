@@ -2,7 +2,7 @@
 
 return [
     'elaraby-erp-integrated-accounting-and-business' => "العربي اي ار بي المتكاملة للمحاسبة والاعمال التجارية",
-    "your-best-choice-for-managing-your-business" => "اختيارك الافضل لادارة مشروعك التجارى",
+    "your-best-choice-for-managing-your-business" => "اختيارك الاول لادارة مشروعك التجارى",
     "home" => "الرئيسية",
     "about-us" => "من نحن",
     "contact-us" => "اتصل بنا",
@@ -230,7 +230,7 @@ return [
     "cost_center" => "مراكز التكلفة",
     "add_cost_center" => "اضافة مركز تكلفة",
     "view_cost_center" => "عرض مراكز التكلفة",
-    "best-option" => "اختيارك الافضل لادارة مشروعك",
+    "best-option" => "اختيارك المناسب لادارة مشروعك",
     "best-option-p" => "كل ما يلزم المشروع خاصتك في مكان واحد لكل الاجهزة الان يمكنك إدارة عملك من أي مكان وفي أي لحظة فقط عبر العربي اي ار بي المتكاملة للمحاسبة والاعمال التجارية انضم الان..",
     "certified" => "نظام معتمد من",
     "partners" => "شركاء النجاح",

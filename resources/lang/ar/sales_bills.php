@@ -23,7 +23,7 @@ return [
     "Quantity" => "الكمية",
     "amount" => "المبلغ",
     "unit price" => "السعر ",
-    "product name" => "اسم المنتج",
+    "product name" => "البيان",
     "comments" => "ملاحظات",
     "Product number" => "رقم المنتج",
     "Discount" => "الخصم",

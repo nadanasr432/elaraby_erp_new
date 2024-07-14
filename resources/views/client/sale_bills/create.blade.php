@@ -255,13 +255,8 @@
                     data-live-search="true" title="{{ __('sales_bills.product-code') }}">
 
                     @foreach ($all_products as $product)
-
-                        @php
-                            $product_name_words = explode(' ', $product->product_name);
-                            $short_product_name = implode(' ', array_slice($product_name_words, 0, 5));
-                        @endphp
                         <option value="{{ $product->id }}" data-tokens="{{ $product->code_universal }}">
-                            {{ $short_product_name }}</option>
+                            {{ $product->product_name }}</option>
                     @endforeach
                 </select>
                 <a target="_blank" href="{{ route('client.products.create') }}" role="button"

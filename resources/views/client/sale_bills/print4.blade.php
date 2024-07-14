@@ -542,7 +542,7 @@
             }
             ?>
             @if (app()->getLocale() == 'en')
-                <div class="row px-4 pt-2 d-flex justify-content-end">
+                <div class="row px-4 pt-2 d-flex justify-content-between">
                     <div class="products-details p-0 col-8 d-flex justify-content-start flex-column">
                         <div class="qrcode d-flex justify-content-start">
                             @if (!$isMoswada)
@@ -640,7 +640,7 @@
                                 <tr class=pt-2" style="height: 38px;">
                                     <td class="text-left">:@lang('sales_bills.details')</td>
                                 </tr>
-                                <tr class="pt-2"
+                                <tr class="pt-2 d-flex justify-content-end"
                                     style="border: none !important;padding-top: 7px !important;display: block;direction:rtl;">
                                     <td>
                                         <span class="tete">
@@ -687,7 +687,7 @@
 
                 </div>
             @else
-                <div class="row px-4 pt-2">
+                <div class="row px-4 pt-2 d-flex justify-content-between">
 
                     <div class="products-details p-0 col-4"
                         style="border: 1px solid #2d2d2d1c; border-radius: 7px; overflow: hidden; box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;">
@@ -784,7 +784,7 @@
                             </div>
                         </div>
                     @endif
-                    <div class="products-details p-0 col-8 d-flex justify-content-end flex-column">
+                    <div class="products-details p-0 col-12 d-flex justify-content-end flex-column">
                         <div class="qrcode d-flex justify-content-end">
                             @if (!$isMoswada)
                                 <img width="200" src="{{ $displayQRCodeAsBase64 }}" />

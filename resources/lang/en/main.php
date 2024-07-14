@@ -238,7 +238,7 @@ return [
     "cost_center" => "Cost Center",
     "add_cost_center" => "Add Cost Center",
     "view_cost_center" => "View Cost Centers",
-    "best-option" => "Your Best Choice For Managing Your Project",
+    "best-option" => "Your Choice For Managing Your Project",
     "best-option-p" => "Everything your project needs is in one place for all devices. Now you can manage your business from anywhere and at any moment only through Al-Arabi IRB Integrated Accounting and Business. Join now..",
     "certified" => "Certified System From",
     "partners" => "Success Partners",
