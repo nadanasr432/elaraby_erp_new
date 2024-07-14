@@ -24,8 +24,8 @@
         }
 
         div.barcode {
-            max-width: 60% !important;
-            min-width: 60% !important;
+            max-width: 400px !important;
+            min-width: 200px !important;
             width: auto !important;
             height: auto;
             border: 1px solid #000;
