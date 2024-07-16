@@ -283,8 +283,9 @@ class ProductController extends Controller
     {
         $count = $request->count;
         $exp_date = $request->exp_date;
+        $start_date = $request->start_date;
         $product = Product::FindOrFail($request->product_id);
-        return view('client.products.barcode', compact('product', 'count', 'exp_date'));
+        return view('client.products.barcode', compact('product', 'count', 'exp_date', 'start_date'));
     }
 
 

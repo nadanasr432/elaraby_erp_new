@@ -28,7 +28,7 @@
                     @csrf
                     <div class="col-lg-3 col-xs-12 pull-right text-right">
                         <div class="form-group">
-                            <label for="" class="d-block"> {{ __('main.company-name') }}
+                            <label for="" class="d-block text-white"> {{ __('main.company-name') }}
                                 <span class="text-danger ">*</span>
                             </label>
                             <input value="{{ old('company_name') }}" required type="text" class="form-control text-right"
@@ -37,7 +37,7 @@
                     </div>
                     <div class="col-lg-3 col-xs-12 pull-right text-right">
                         <div class="form-group">
-                            <label for="" class="d-block"> {{ __('main.company-phone') }}
+                            <label for="" class="d-block text-white"> {{ __('main.company-phone') }}
                             </label>
                             <input value="{{ old('phone_number') }}" type="text" class="form-control text-left" dir="ltr"
                                 placeholder="eg : +966562354761" name="phone_number" />
@@ -45,7 +45,7 @@
                     </div>
                     <div class="col-lg-3 col-xs-12 pull-right text-right">
                         <div class="form-group">
-                            <label for="" class="d-block"> {{ __('main.country') }}
+                            <label for="" class="d-block text-white"> {{ __('main.country') }}
                             </label>
                                <select name="country" class="form-control selectpicker show-tick" data-live-search="true"data-style="btn-info" title="{{ __('main.choose-country') }}" id="">
                             <option value="موريتانيا">  {{ __('main.Mauritania') }}</option>
@@ -75,7 +75,7 @@
                     </div>
                     <div class="col-lg-3 col-xs-12 pull-right text-right">
                         <div class="form-group">
-                            <label for="" class="d-block"> {{ __('main.currency') }}
+                            <label for="" class="d-block text-white"> {{ __('main.currency') }}
                             </label>
                            <select name="currency" class="form-control selectpicker show-tick" data-live-search="true"
                             data-style="btn-danger" title="اختر العملة" id="">

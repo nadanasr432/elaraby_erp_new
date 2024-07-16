@@ -15,7 +15,7 @@
                     <form class="account-form" method="POST" action="{{ route('admin.login') }}">
                         @csrf
                         <div class="form-group">
-                            <label class="d-block"
+                            <label class="d-block text-white"
                                    style="direction: rtl!important;text-align: right!important;"
                                    for="email">البريد الالكترونى<span>*</span></label>
                             <input value="{{old('email')}}" name="email" autofocus
@@ -28,7 +28,7 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label class="d-block"
+                            <label class="d-block text-white"
                                    style="direction: rtl!important;text-align: right!important;"
                                    for="pass3">كلمة المرور<span>*</span></label>
                             <input type="password" placeholder="كلمة المرور"

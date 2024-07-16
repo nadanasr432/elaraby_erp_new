@@ -52,6 +52,12 @@
                         </div>
                         <div class="col-lg-4 pull-right">
                             <div class="form-group">
+                                <label class="d-block" for=""> {{__('sidebar.start_date')}} </label>
+                                <input type="date" value="<?= date('Y-m-d') ?>" class="form-control" name="start_date" />
+                            </div>
+                        </div>
+                         <div class="col-lg-4 pull-right">
+                            <div class="form-group">
                                 <label class="d-block" for=""> {{__('sidebar.expire_date')}} </label>
                                 <input type="date" value="<?= date('Y-m-d') ?>" class="form-control" name="exp_date" />
                             </div>
