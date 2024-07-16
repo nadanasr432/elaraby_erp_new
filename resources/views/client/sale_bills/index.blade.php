@@ -140,6 +140,7 @@
                                         @foreach ($sale_bills as $index => $sale_bill)
                                             <tr class="{{ $index % 2 == 0 ? 'even' : 'odd' }}" role="row">
                                                 <td>{{ $sale_bills_count - $index }}</td>
+                                                {{-- <td>{{ $sale_bill->sale_bill_number }}</td> --}}
                                                 <td>
                                                     @if (empty($sale_bill->outer_client_id))
                                                         {{ __('sidebar.Cash sales client') }}

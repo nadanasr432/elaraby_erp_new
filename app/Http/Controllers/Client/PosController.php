@@ -2,30 +2,34 @@
 
 namespace App\Http\Controllers\Client;
 
-use App\Http\Controllers\Controller;
+use Carbon\Carbon;
+use App\Models\Tax;
 use App\Models\Bank;
-use App\Models\BankCash;
-use App\Models\Branch;
 use App\Models\Cash;
-use App\Models\Category;
+use App\Models\Safe;
+use App\Models\Store;
+use App\Models\Branch;
 use App\Models\Client;
 use App\Models\Company;
+use App\Models\PosOpen;
+use App\Models\Product;
+use App\Models\Voucher;
+use App\Models\BankCash;
+use App\Models\Category;
+use App\Models\TimeZone;
 use App\Models\CouponCash;
 use App\Models\CouponCode;
-use App\Models\ExtraSettings;
-use App\Models\OuterClient;
-use App\Models\PosOpen;
-use App\Models\PosOpenDiscount;
-use App\Models\PosOpenElement;
 use App\Models\PosOpenTax;
 use App\Models\PosSetting;
-use App\Models\Product;
-use App\Models\Safe;
+use App\Models\OuterClient;
 use App\Models\SubCategory;
-use App\Models\Tax;
-use App\Models\TimeZone;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\ExtraSettings;
+use App\Models\PosOpenElement;
+use App\Models\PosOpenDiscount;
+use App\Services\VoucherService;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class PosController extends Controller
@@ -113,8 +117,8 @@ class PosController extends Controller
 
         $taxes = Tax::where('company_id', $company_id)->get();
 
-//        $old_cash = Cash::max('cash_number');
-//        $pre_cash = ++$old_cash;
+        //        $old_cash = Cash::max('cash_number');
+        //        $pre_cash = ++$old_cash;
         $pre_cash = time() . $company_id;
         if (!empty($user->branch_id)) {
             $safes = $branch->safes;
@@ -149,14 +153,42 @@ class PosController extends Controller
                 ->get();
             $pos_coupon_cash = CouponCash::where('bill_id', $pos_id)
                 ->get();
-            return view('client.pos.create',
-                compact('company_id', 'pos_status', 'pos_settings', 'user', 'bills', 'pos_cash', 'pos_bank_cash', 'pos_coupon_cash', 'outer_clients', 'pending_pos', 'pos_open_discount', 'pos_open_tax',
-                    'stores', 'code_universal', 'pos_open', 'currency', 'pos_open_elements', 'safes', 'banks', 'pre_cash', 'products', 'company', 'taxes', 'timezones', 'categories'));
+            return view(
+                'client.pos.create',
+                compact(
+                    'company_id',
+                    'pos_status',
+                    'pos_settings',
+                    'user',
+                    'bills',
+                    'pos_cash',
+                    'pos_bank_cash',
+                    'pos_coupon_cash',
+                    'outer_clients',
+                    'pending_pos',
+                    'pos_open_discount',
+                    'pos_open_tax',
+                    'stores',
+                    'code_universal',
+                    'pos_open',
+                    'currency',
+                    'pos_open_elements',
+                    'safes',
+                    'banks',
+                    'pre_cash',
+                    'products',
+                    'company',
+                    'taxes',
+                    'timezones',
+                    'categories'
+                )
+            );
         } else {
-            return view('client.pos.create',
-                compact('company_id', 'pos_status', 'pos_settings', 'code_universal', 'currency', 'user', 'bills', 'outer_clients', 'safes', 'banks', 'pre_cash', 'pending_pos', 'stores', 'taxes', 'pos_open', 'products', 'company', 'timezones', 'categories'));
+            return view(
+                'client.pos.create',
+                compact('company_id', 'pos_status', 'pos_settings', 'code_universal', 'currency', 'user', 'bills', 'outer_clients', 'safes', 'banks', 'pre_cash', 'pending_pos', 'stores', 'taxes', 'pos_open', 'products', 'company', 'timezones', 'categories')
+            );
         }
-
     }
 
     public function create2()
@@ -216,7 +248,6 @@ class PosController extends Controller
                         ->orWhereNull('first_balance');
                 })
                 ->get();
-
         } else {
             $safes = $company->safes;
             $products = Product::where('company_id', $company_id)
@@ -237,9 +268,10 @@ class PosController extends Controller
             $code_universal = ++$old_order;
         }
 
-        return view('client.pos.create2',
-            compact('company_id', 'pos_status', 'pos_settings', 'code_universal', 'user', 'outer_clients', 'safes', 'banks', 'pre_cash', 'pending_pos', 'stores', 'taxes', 'products', 'company', 'timezones', 'categories'));
-
+        return view(
+            'client.pos.create2',
+            compact('company_id', 'pos_status', 'pos_settings', 'code_universal', 'user', 'outer_clients', 'safes', 'banks', 'pre_cash', 'pending_pos', 'stores', 'taxes', 'products', 'company', 'timezones', 'categories')
+        );
     }
 
     public function close_pos_open(Request $request)
@@ -310,10 +342,9 @@ class PosController extends Controller
         } else {
             $PosOpen->update($data);
         }
-         if ($PosOpen && !empty($PosOpen)) {
+        if ($PosOpen && !empty($PosOpen)) {
             $PosOpen->update(['value_added_tax' => 1]);
-             
-         }
+        }
 
         $data['pos_open_id'] = $PosOpen->id;
         $product = Product::FindOrFail($data['product_id']);
@@ -379,7 +410,6 @@ class PosController extends Controller
         $data['quantity'] = $new_quantity;
         $data['quantity_price'] = $new_quantity_price;
         $pos_open_element = $element->update($data);
-
     }
 
     //change the discount = change the total amount (money)
@@ -490,7 +520,6 @@ class PosController extends Controller
                 $posSettings->update(['taxStatusPos' => 1]);
             elseif ($request->tax_value == 130)
                 $posSettings->update(['taxStatusPos' => 2]);
-                
         }
 
 
@@ -551,10 +580,7 @@ class PosController extends Controller
             <span sub_category_id='" . $sub_category->id . "' class='sub_category m-nos p-1 circle badge badge-lightnew cursor_pointer'>
             " . $sub_category->sub_category_name . "
             </span>";
-
         }
-
-
     }
 
     # get subcategories by subcategory_id
@@ -585,7 +611,6 @@ class PosController extends Controller
                         ->get();
                 else
                     $products = Product::where('company_id', $company_id)->get();
-
             }
         } else {
             $products = Product::where('company_id', $company_id)
@@ -823,7 +848,6 @@ class PosController extends Controller
                 'pos_open_id' => $pos_open->id
             ]);
         }
-
     }
 
     public function get_coupon_code(Request $request)
@@ -958,7 +982,6 @@ class PosController extends Controller
                 'pos_id' => $posOpen->id,
             ];
         }
-
     }
 
     # ============== دفع كاش سريع============pos.open.finish=======#
@@ -976,14 +999,14 @@ class PosController extends Controller
             'tableNum' => $billDetails['tableNum'] ?? 0,
             'notes' => $billDetails['notes'] ?? '',
             'status' => 'done',
-             'value_added_tax' => empty($billDetails['tax_amount']) ? 1 : 0,
+            'value_added_tax' => empty($billDetails['tax_amount']) ? 1 : 0,
             'total_amount' => $billDetails['total_amount'],
             'tax_amount' => $billDetails['tax_amount'],
             'tax_value' => $billDetails['tax_value'],
             'class' => 'paid'
         ]);
-        
- 
+
+
         if ($posOpen) {
             # create pos invoice Elements #
             foreach ($productsArr as $element) {
@@ -1004,7 +1027,7 @@ class PosController extends Controller
                     ]);
                 }
             }
-           
+
             # =============================== #
 
             #===== بيضيف اجمالي الفاتورة للخزنة تبع المؤسسة (كارباح)====#
@@ -1099,6 +1122,111 @@ class PosController extends Controller
                 ->where('type', 'main')
                 ->first();
             $safe->update(['balance' => $safe->balance + $billDetails['total_amount']]);
+            //voucher
+            $company_id = Auth::user()->company_id;
+
+            $outerClient = OuterClient::find($posOpen->outer_client_id);
+            // dd( $billDetails);
+            // $store = Store::find($posOpen->store_id);
+            // dd($request);
+            $clientAccountId = $outerClient->accountingTree?->id;
+            // $storeAccountId = $store->accountingTree?->id;
+            if (!$outerClient->accountingTree) {
+                $accountingTree = new \App\Models\accounting_tree();
+                $accountingTree->account_name = 'حساب العميل ' . $outerClient->client_name;
+                $accountingTree->account_name_en =  $outerClient->client_name . 'Account';
+                $accountingTree->account_number = '1203' . $outerClient->id;
+                $accountingTree->parent_id = 1203;
+                $accountingTree->type = 'sub';
+                $outerClient->accountingTree()->save($accountingTree);
+                $clientAccountId = $outerClient->accountingTree->id;
+            }
+            // if (!$store->accountingTree) {
+            //     $accountingTree = new \App\Models\accounting_tree();
+            //     $accountingTree->account_name =  'حساب مخزون' . $store->store_name;
+            //     $accountingTree->account_name_en =  $store->store_name . 'Account';
+            //     $accountingTree->account_number = '66' . $store->id;
+            //     $accountingTree->parent_id = 66;
+            //     $accountingTree->type = 'sub';
+            //     $store->accountingTree()->save($accountingTree);
+            // }
+            DB::beginTransaction();
+            // dd($company_id,$company);
+            try {
+                // createVoucher($saleBill, $companyId, $notation, $paymentMethod = "cash", $status = 1, $options = 1)
+                // dd();
+                $posOpen->final_total=$posOpen->total_amount;
+                $voucher = VoucherService::createVoucher(
+                    $posOpen,
+                    $company_id,
+                    'قيد فاتورة مبيعات ',
+                );
+                $saleVoucher = $posOpen->vouchers()->save($voucher);
+                // createTransaction($accountingTreeId, $voucherId, $amount, $notation, $type)
+                VoucherService::createTransaction(
+                    $clientAccountId,
+                    $saleVoucher->id,
+                    $posOpen->final_total,
+                    "مدين من فاتورة مبيعات",
+                    1
+                );
+
+                // Create the credit transaction
+                VoucherService::createTransaction(
+                    39,
+                    $voucher->id,
+                    $posOpen->final_total,
+                    "دائن من فاتورة مبيعات",
+                    0
+                );
+                $elements = $posOpen->elements;
+                $elementIds = $elements->pluck('product_id');
+
+                $products = Product::whereIn('id', $elementIds)->with('category')->get();
+
+                $sumPurchasingPrice = $products->reduce(function ($carry, $product) {
+                    if ($product->category->category_type != 'خدمية') {
+                        // logger($product);
+                        return $carry + $product->purchasing_price;
+                    }
+                    return $carry;
+                }, 0);
+                // if ($sumPurchasingPrice) {
+                //     $voucherForCost =  new Voucher([
+                //         'company_id' => $company_id,
+                //         'amount' => $sumPurchasingPrice,
+                //         'date' => Carbon::now(),
+                //         // 'payment_method' => "cash",
+                //         'notation' => 'قيد تكاليف فاتورة مبيعات ',
+                //         'status' => 1,
+                //         'user_id' => auth::user()->id,
+                //         'options' => 1
+                //     ]);
+                //     $costVoucher =  $posOpen->vouchers()->save($voucherForCost);
+
+                //     VoucherService::createTransaction(
+                //         $storeAccountId,
+                //         $costVoucher->id,
+                //         $sumPurchasingPrice,
+                //         "دائن من تكاليف فاتورة مبيعات",
+                //         0,
+                //     );
+                //     VoucherService::createTransaction(
+                //         19,
+                //         $costVoucher->id,
+                //         $sumPurchasingPrice,
+                //         "مدين من تكاليف فاتورة مبيعات",
+                //         1,
+                //     );
+                // }
+            } catch (\Exception $e) {
+                dd($e);
+                DB::rollBack();
+
+                // return response()->json(['error' => 'An error occurred while creating the voucher.'], 500);
+            }
+
+            DB::commit();
             # =============================== #
 
             #=====بيضيف المبلغ في حساب العميل لانه مدفعش====#
@@ -1201,6 +1329,7 @@ class PosController extends Controller
     # =============== زر تسجيل الدفع =========client.store.cash.clients.pos===== #
     public function store_cash_clients(Request $request)
     {
+    // dd($request);
         $billDetails = $request->billDetails;
         $productsArr = $request->productsArr;
 
@@ -1219,7 +1348,7 @@ class PosController extends Controller
             'tax_value' => $billDetails['tax_value'],
             'class' => 'partial'
         ]);
-         
+
         if ($posOpen) {
             # create pos invoice Elements #
             foreach ($productsArr as $element) {
@@ -1299,8 +1428,51 @@ class PosController extends Controller
                 $bank->update([
                     'bank_balance' => $bank->bank_balance + $billDetails['total_amount']
                 ]);
+
                 # ===================================== #
             }
+            $clientAccountId = $outer_client->accountingTree?->id;
+                if (!$outer_client->accountingTree) {
+                    // $accountingTree = new \App\Models\AccountingTree();
+                    $accountingTree = new \App\Models\accounting_tree();
+
+                    $accountingTree->account_name = 'حساب العميل ' . $outer_client->client_name;
+                    $accountingTree->account_name_en = $outer_client->client_name . 'Account';
+                    $accountingTree->account_number = '1203' . $outer_client->id;
+                    $accountingTree->parent_id = 1203;
+                    $accountingTree->type = 'sub';
+                    $outer_client->accountingTree()->save($accountingTree);
+                    $clientAccountId = $outer_client->accountingTree->id;
+                }
+
+                $payment_method = $billDetails['payment_method'];
+
+                $voucher = new Voucher([
+                    'amount' =>  $posOpen->total_amount,
+                    'company_id' => Auth::user()->company_id,
+                    'date' => Carbon::now(),
+                    'payment_method' => $payment_method,
+                    'notation' => 'سند قبض فاتورة مبعات  ',
+                    'status' => 1,
+                    'user_id' => auth::user()->id,
+                    'options' => 1
+                ]);
+
+                $saleVoucher =  $posOpen->vouchers()->save($voucher);
+                VoucherService::createTransaction(
+                    25,
+                    $voucher->id,
+                    $posOpen->total_amount,
+                    "مدين من دفع فاتورة مبيعات",
+                    1
+                );
+                VoucherService::createTransaction(
+                    $clientAccountId,
+                    $voucher->id,
+                    $posOpen->total_amount,
+                    "دائن من دفع فاتورة مبيعات",
+                    0
+                );
             return $posOpen->id;
         }
     }
@@ -1344,7 +1516,7 @@ class PosController extends Controller
         }
 
         $posSettings = PosSetting::where("company_id", $pos->company_id)->first();
-        return view('client.pos.print2', compact('company','pos', 'posSettings', 'branch_address', 'branch_phone'));
+        return view('client.pos.print2', compact('company', 'pos', 'posSettings', 'branch_address', 'branch_phone'));
     }
 
     //pos_sales for main table-main page...
@@ -1485,7 +1657,7 @@ class PosController extends Controller
                         }
                         $percent = ($tax_value / 100) * $sum;
                         $sum = $sum + $percent;
-                    } elseif (isset($pos) && empty($pos_discount) && empty($pos_tax)) {#inclusive
+                    } elseif (isset($pos) && empty($pos_discount) && empty($pos_tax)) { #inclusive
                         if ($pos->value_added_tax)
                             $percent = round($sum - ((100 / 115) * $sum), 2);
                         else
@@ -1706,7 +1878,7 @@ class PosController extends Controller
                         }
                         $percent = ($tax_value / 100) * $sum;
                         $sum = $sum + $percent;
-                    } elseif (isset($pos) && empty($pos_discount) && empty($pos_tax)) {#inclusive
+                    } elseif (isset($pos) && empty($pos_discount) && empty($pos_tax)) { #inclusive
                         if ($pos->value_added_tax)
                             $percent = round($sum - ((100 / 115) * $sum), 2);
                         else
@@ -1887,13 +2059,13 @@ class PosController extends Controller
                 $cash_amount = 0;
                 foreach ($cash as $item) {
                     $cash_amount = $cash_amount + $item->amount;
-//                    $amount = $item->amount;
-//                    $safe = Safe::FindOrFail($item->safe_id);
-//                    $old_safe_balance = $safe->balance;
-//                    $new_safe_balance = $old_safe_balance - $amount;
-//                    $safe->update([
-//                        'balance' => $new_safe_balance
-//                    ]);
+                    //                    $amount = $item->amount;
+                    //                    $safe = Safe::FindOrFail($item->safe_id);
+                    //                    $old_safe_balance = $safe->balance;
+                    //                    $new_safe_balance = $old_safe_balance - $amount;
+                    //                    $safe->update([
+                    //                        'balance' => $new_safe_balance
+                    //                    ]);
                 }
             } else {
                 $cash_amount = 0;
@@ -1904,13 +2076,13 @@ class PosController extends Controller
                 $cash_bank_amount = 0;
                 foreach ($bank_cash as $item) {
                     $cash_bank_amount = $cash_bank_amount + $item->amount;
-//                    $amount = $item->amount;
-//                    $bank = Bank::FindOrFail($item->bank_id);
-//                    $old_bank_balance = $bank->bank_balance;
-//                    $new_bank_balance = $old_bank_balance - $amount;
-//                    $bank->update([
-//                        'bank_balance' => $new_bank_balance
-//                    ]);
+                    //                    $amount = $item->amount;
+                    //                    $bank = Bank::FindOrFail($item->bank_id);
+                    //                    $old_bank_balance = $bank->bank_balance;
+                    //                    $new_bank_balance = $old_bank_balance - $amount;
+                    //                    $bank->update([
+                    //                        'bank_balance' => $new_bank_balance
+                    //                    ]);
                 }
             } else {
                 $cash_bank_amount = 0;
@@ -2272,7 +2444,7 @@ class PosController extends Controller
                     array_push($productsSoldToday, $prodArr);
                 }
             }
-        }# end foreach.
+        } # end foreach.
         return view('client.pos.report_sales_products', compact('productsSoldToday', 'totalTax', 'totalPrice'));
     }
 
@@ -2335,7 +2507,7 @@ class PosController extends Controller
                     array_push($productsSoldToday, $prodArr);
                 }
             }
-        }# end foreach.
+        } # end foreach.
         return view('client.pos.report_sales_products_print', compact('company', 'productsSoldToday', 'totalTax', 'totalPrice'));
     }
 

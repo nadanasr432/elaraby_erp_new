@@ -43,7 +43,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($vouchers as $voucher)
+                                @foreach ($vouchers as $key=>$voucher)
                                     @php
                                         $credits = [];
                                         $depits = [];
@@ -55,7 +55,7 @@
                                         }
                                     @endphp
                                     <tr>
-                                        <td>{{ $voucher->id }}</td>
+                                        <td>{{ $key+1 }}</td>
                                         <td>{{ $voucher->date ? \Carbon\Carbon::parse($voucher->date)->format('Y-m-d') : '' }}
                                         </td>
                                         <td>

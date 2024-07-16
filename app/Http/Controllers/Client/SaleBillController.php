@@ -27,6 +27,7 @@ use App\Models\SaleBillElement;
 use App\Models\OuterClientAddress;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Services\VoucherService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use AIOSEO\Plugin\Common\Utils\Cache;
@@ -301,22 +302,36 @@ class SaleBillController extends Controller
             ]);
 
             $saleVoucher = $sale_bill->vouchers()->save($voucher);
+            VoucherService::createTransaction(
+                25,
+                $voucher->id,
+                $amount,
+                "مدين من دفع فاتورة مبيعات",
+                1
+            );
+            VoucherService::createTransaction(
+                $clientAccountId,
+                $voucher->id,
+                $amount,
+                "دائن من دفع فاتورة مبيعات",
+                0
+            );
 
-            Transaction::create([
-                'accounting_tree_id' => 25,
-                'voucher_id' => $voucher->id,
-                'amount' => $amount,
-                'notation' => "مدين من دفع فاتورة مبيعات",
-                'type' => 1,
-            ]);
+            // Transaction::create([
+            //     'accounting_tree_id' => 25,
+            //     'voucher_id' => $voucher->id,
+            //     'amount' => $amount,
+            //     'notation' => "مدين من دفع فاتورة مبيعات",
+            //     'type' => 1,
+            // ]);
 
-            Transaction::create([
-                'accounting_tree_id' => $clientAccountId,
-                'voucher_id' => $voucher->id,
-                'amount' => $amount,
-                'notation' => "دائن من دفع فاتورة مبيعات",
-                'type' => 0,
-            ]);
+            // Transaction::create([
+            //     'accounting_tree_id' => $clientAccountId,
+            //     'voucher_id' => $voucher->id,
+            //     'amount' => $amount,
+            //     'notation' => "دائن من دفع فاتورة مبيعات",
+            //     'type' => 0,
+            // ]);
 
             if ($payment_method == "cash") {
                 if ($sale_bill->paid <= $sale_bill->final_total) {
@@ -500,6 +515,15 @@ class SaleBillController extends Controller
         $client_id = Auth::user()->id;
 
         # get invoiceData.
+        $sale_bills = SaleBill::where('company_id', $company_id)->get();
+        if($sale_bills)
+        {
+        // foreach($sale_bills as $key=>$bill)
+        // {
+        //     $bill->sale_bill_number=$key+1;
+        //     $bill->save();
+        // }
+        }
         $sale_bill = SaleBill::where('sale_bill_number', $request->sale_bill_number)
             ->where('company_id', $company_id)->first();
         $elements = \App\Models\SaleBillElement::where('sale_bill_id', $sale_bill->id)
@@ -559,35 +583,48 @@ class SaleBillController extends Controller
         DB::beginTransaction();
         // dd($company_id,$company);
         try {
-            $voucher = new Voucher([
-                'amount' => $sale_bill->final_total,
-                'company_id' => $company_id,
-                'date' => Carbon::now(),
-                'payment_method' => "cash",
-                'notation' => 'قيد فاتورة مبيعات رقم' . $sale_bill->sale_bill_number,
-                'status' => 1,
-                'user_id' => auth::user()->id,
-                'options' => 1
-            ]);
+            // createVoucher($saleBill, $companyId, $notation, $paymentMethod = "cash", $status = 1, $options = 1)
+            $voucher =VoucherService::createVoucher(
+                 $sale_bill,
+                 $company_id,
+                 'قيد فاتورة مبيعات رقم' . $sale_bill->sale_bill_number,
+            );
             $saleVoucher = $sale_bill->vouchers()->save($voucher);
-            // dd($saleVoucher);
-            Transaction::create([
-                'accounting_tree_id' => $clientAccountId,
-                'voucher_id' => $voucher->id,
-                'amount' =>  $sale_bill->final_total,
-                'notation' => "مدين من فاتورة مبيعات",
-                'type' =>  1,
-            ]);
-            Transaction::create([
-                'accounting_tree_id' => 39,
-                'voucher_id' => $voucher->id,
-                'amount' =>  $sale_bill->final_total,
-                'notation' => "دائن من فاتورة مبيعات",
-                'type' =>  0,
-            ]);
+            // createTransaction($accountingTreeId, $voucherId, $amount, $notation, $type)
+            VoucherService::createTransaction(
+                $clientAccountId,
+                $saleVoucher->id,
+                $sale_bill->final_total,
+                "مدين من فاتورة مبيعات",
+                1
+            );
+
+            // Create the credit transaction
+            VoucherService::createTransaction(
+                39,
+                $voucher->id,
+                $sale_bill->final_total,
+                "دائن من فاتورة مبيعات",
+                0
+            );
+            // Transaction::create([
+            //     'accounting_tree_id' => $clientAccountId,
+            //     'voucher_id' => $voucher->id,
+            //     'amount' =>  $sale_bill->final_total,
+            //     'notation' => "مدين من فاتورة مبيعات",
+            //     'type' =>  1,
+            // ]);
+            // Transaction::create([
+            //     'accounting_tree_id' => 39,
+            //     'voucher_id' => $voucher->id,
+            //     'amount' =>  $sale_bill->final_total,
+            //     'notation' => "دائن من فاتورة مبيعات",
+            //     'type' =>  0,
+            // ]);
             //cost voucher
+            // dd($sumPurchasingPrice);
             if ($sumPurchasingPrice) {
-                new Voucher([
+                $voucherForCost =  new Voucher([
                     'company_id' => $company_id,
                     'amount' => $sumPurchasingPrice,
                     'date' => Carbon::now(),
@@ -597,24 +634,24 @@ class SaleBillController extends Controller
                     'user_id' => auth::user()->id,
                     'options' => 1
                 ]);
-                $costVoucher =  $sale_bill->vouchers()->save($voucher);
-
+                $costVoucher =  $sale_bill->vouchers()->save($voucherForCost);
+                // dd($costVoucher);
                 // dd( $clientAccountId);
                 // foreach ($request->transactions as $transaction) {
-                Transaction::create([
-                    'accounting_tree_id' => $storeAccountId,
-                    'voucher_id' => $costVoucher->id,
-                    'amount' =>  $sumPurchasingPrice,
-                    'notation' => "دائن من تكاليف فاتورة مبيعات",
-                    'type' =>  1,
-                ]);
-                Transaction::create([
-                    'accounting_tree_id' => 19,
-                    'voucher_id' => $costVoucher->id,
-                    'amount' =>  $sumPurchasingPrice,
-                    'notation' => "مدين من تكاليف فاتورة مبيعات",
-                    'type' =>  0,
-                ]);
+                VoucherService::createTransaction(
+                    $storeAccountId,
+                    $costVoucher->id,
+                    $sumPurchasingPrice,
+                    "دائن من تكاليف فاتورة مبيعات",
+                    0,
+                );
+                VoucherService::createTransaction(
+                    19,
+                    $costVoucher->id,
+                    $sumPurchasingPrice,
+                    "مدين من تكاليف فاتورة مبيعات",
+                    1,
+                );
             }
             // }
         } catch (\Exception $e) {
@@ -2249,7 +2286,7 @@ class SaleBillController extends Controller
                     $printColor = '#222751';
                     return view(
                         'client.sale_bills.main',
-                        compact('discount','isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
                     );
                 } elseif ($invoiceType == 4) {
                     $printColor = '#222751';

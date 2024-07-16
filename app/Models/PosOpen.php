@@ -42,4 +42,8 @@ class PosOpen extends Model
     {
         return $this->belongsTo('\App\Models\Client', 'client_id', 'id');
     }
+    public function vouchers()
+    {
+        return $this->morphMany(Voucher::class, 'referable');
+    }
 }
