@@ -187,7 +187,7 @@ class QuotationController extends Controller
         }
         return response()->json([
             'order_price' => $order_price,
-            'unit_id' => $product->unit->id,
+            'unit_id' => $product->unit?->id,
             'first_balance' => $first_balance . ' ' . $product->unit->unit_name
         ]);
     }
