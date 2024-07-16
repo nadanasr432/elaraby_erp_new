@@ -174,23 +174,31 @@ class QuotationController extends Controller
     {
         $product_id = $request->product_id;
         $outer_client_id = $request->outer_client_id;
-        $product = Product::FindOrFail($product_id);
-        $outer_client = OuterClient::FindOrFail($outer_client_id);
+        $product = Product::findOrFail($product_id);
+        $outer_client = OuterClient::findOrFail($outer_client_id);
         $client_category = $outer_client->client_category;
         $sector_price = $product->sector_price;
         $wholesale_price = $product->wholesale_price;
         $first_balance = $product->first_balance;
+
         if ($client_category == "جملة") {
             $order_price = $wholesale_price;
         } elseif ($client_category == "قطاعى") {
             $order_price = $sector_price;
         }
+
+        // Check if the product has an associated unit
+        $unit = $product->unit;
+        $unit_id = $unit ? $unit->id : null;
+        $unit_name = $unit ? $unit->unit_name : '';
+
         return response()->json([
             'order_price' => $order_price,
-            'unit_id' => $product->unit->id,
-            'first_balance' => $first_balance . ' ' . $product->unit->unit_name
+            'unit_id' => $unit_id,
+            'first_balance' => $first_balance . ' ' . $unit_name
         ]);
     }
+
 
     # store quotation #
     public function save(Request $request)
@@ -990,8 +998,20 @@ class QuotationController extends Controller
 
         return view(
             'client.sale_bills.main',
-            compact('isMoswada', 'realtotal', 'discountValue',
-                'sumWithOutTax', 'discountNote', 'elements', 'printColor', 'sale_bill', 'currency', 'company', 'sumWithTax', 'totalTax')
+            compact(
+                'isMoswada',
+                'realtotal',
+                'discountValue',
+                'sumWithOutTax',
+                'discountNote',
+                'elements',
+                'printColor',
+                'sale_bill',
+                'currency',
+                'company',
+                'sumWithTax',
+                'totalTax'
+            )
         );
     }
 
