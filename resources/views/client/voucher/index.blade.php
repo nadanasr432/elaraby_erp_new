@@ -70,7 +70,7 @@
                                         <td>
                                             @foreach ($depits as $depit)
                                                 <a
-                                                    href="{{ route('account.statement', ['accountId' => $credit?->accountingTree?->id]) }}">
+                                                    href="{{ route('account.statement', ['accountId' => $depit?->accountingTree?->id]) }}">
 
                                                     <span
                                                         class="badge badge-success ml-2">{{ $depit?->accountingTree->account_name }}</span>

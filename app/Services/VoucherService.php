@@ -17,6 +17,7 @@ class VoucherService
             'amount' => $amount,
             'notation' => $notation,
             'type' => $type,
+            'company_id' => Auth::user()->company_id,
         ]);
     }
     public static function createVoucher($saleBill, $companyId, $notation, $paymentMethod = "cash", $status = 1, $options = 1)

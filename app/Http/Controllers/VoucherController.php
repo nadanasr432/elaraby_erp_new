@@ -74,7 +74,7 @@ class VoucherController extends Controller
 
     public function showAccountStatement($accountId)
     {
-        $transactions = Transaction::where('accounting_tree_id', $accountId)->get();
+        $transactions = Transaction::where('company_id',Auth::user()->company_id)->where('accounting_tree_id', $accountId)->get();
         $totalDebit = $transactions->where('type', 1)->sum('amount');
         $totalCredit = $transactions->where('type', 0)->sum('amount');
 

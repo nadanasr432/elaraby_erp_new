@@ -13,7 +13,9 @@ class Transaction extends Model
         'accounting_tree_id',
         'amount',
         'notation',
-        'type'
+        'type',
+        'company_id'
+
     ];
 
       public function voucher()
