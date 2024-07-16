@@ -194,6 +194,7 @@ class QuotationController extends Controller
 
         return response()->json([
             'order_price' => $order_price,
+
             'unit_id' => $unit_id,
             'first_balance' => $first_balance . ' ' . $unit_name
         ]);
