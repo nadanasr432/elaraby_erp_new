@@ -538,7 +538,7 @@
             @if (app()->getLocale() == 'en')
                 <div class="row px-4 pt-2 d-flex justify-content-between">
 
-                    <div class="products-details p-0 col-4"
+                    <div class="products-details p-0 col-6"
                         style="border: 1px solid #2d2d2d1c; border-radius: 7px; overflow: hidden; box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;">
                         <table
                             style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
@@ -711,7 +711,7 @@
             @else
                 <div class="row px-4 pt-2 d-flex justify-content-between">
 
-                    <div class="products-details p-0 col-4"
+                    <div class="products-details p-0 col-6"
                         style="border: 1px solid #2d2d2d1c; border-radius: 7px; overflow: hidden; box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;">
                         <table
                             style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">

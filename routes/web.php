@@ -8,6 +8,7 @@ use App\Models\Information;
 use App\Http\Middleware\CheckStatus;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\Admin\TypeController;
 use App\Http\Controllers\Client\PosController;
 use App\Http\Controllers\Client\BankController;
@@ -15,11 +16,13 @@ use App\Http\Controllers\Client\CashController;
 use App\Http\Controllers\Client\GiftController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\RoleController;
+use App\Http\Controllers\Client\RoomController;
 use App\Http\Controllers\Client\SafeController;
 use App\Http\Controllers\Client\UnitController;
 use App\Http\Controllers\Client\BondsController;
 use App\Http\Controllers\Client\DailyController;
 use App\Http\Controllers\Client\EmailController;
+use App\Http\Controllers\Client\PlaceController;
 use App\Http\Controllers\Client\StoreController;
 use App\Http\Controllers\Site\ContactController;
 use App\Http\Controllers\Admin\CompanyController;
@@ -29,9 +32,11 @@ use App\Http\Controllers\Client\AssetsController;
 use App\Http\Controllers\Client\BranchController;
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\Client\CouponController;
+use App\Http\Controllers\Client\GroupeController;
 use App\Http\Controllers\Client\ReportController;
 use App\Http\Controllers\Client\BuyBillController;
 use App\Http\Controllers\Client\CapitalController;
+use App\Http\Controllers\Client\CountryController;
 use App\Http\Controllers\Client\ExpenseController;
 use App\Http\Controllers\Client\ProductController;
 use App\Http\Controllers\Client\SummaryController;
@@ -42,16 +47,17 @@ use App\Http\Controllers\Client\SaleBillController;
 use App\Http\Controllers\Client\SettingsController;
 use App\Http\Controllers\Client\SupplierController;
 use App\Http\Controllers\Admin\Auth\LoginController;
+// use App\Http\Controllers\Client\JournalEntryController;
 use App\Http\Controllers\Client\QuotationController;
 use App\Http\Controllers\Client\CostCenterController;
 use App\Http\Controllers\Admin\SubscriptionController;
 use App\Http\Controllers\Client\OuterClientController;
 use App\Http\Controllers\Client\SubCategoryController;
+use App\Http\Controllers\Client\BuildingRoleController;
 use App\Http\Controllers\Client\ImportExportController;
-// use App\Http\Controllers\Client\JournalEntryController;
-use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\Client\ClientProfileController;
 use App\Http\Controllers\Client\PurchaseOrderController;
+use App\Http\Controllers\Client\CategoriesAssetController;
 use App\Http\Controllers\Client\SaleBillPrintDemoController;
 
 Route::get('admin/createTokensForAllInvoices', [\App\Http\Controllers\Client\SaleBillController::class, 'createTokensForAllInvoices']);
@@ -310,6 +316,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
                 'edit' => 'client.branches.edit',
                 'store' => 'client.branches.store',
             ]);
+        
 
             // Stores Routes
             Route::resource('stores', StoreController::class)->names([
@@ -983,6 +990,18 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::get('/assets/fixed-assets/create', [AssetsController::class, 'createStaticAssets'])->name('fixed.assets.create');
             Route::get('/depreciations/index', [AssetsController::class, 'getDeprec'])->name('client.depreciations.index');
             Route::get('/depreciations/create', [AssetsController::class, 'createDeprec'])->name('client.depreciations.create');
+            Route::resource('groupes', GroupeController::class);
+            Route::resource('building_roles', BuildingRoleController::class);
+            Route::resource('rooms', RoomController::class);
+            Route::resource('places', PlaceController::class);
+            Route::resource('countries', CountryController::class);
+            Route::resource('/assets/category', CategoriesAssetController::class);
+            Route::get('/categories/export/excel', [CategoriesAssetController::class, 'exportExcel'])->name('category.export.excel');
+            Route::get('/groups/export/excel', [GroupeController::class, 'exportExcel'])->name('groupe.export.excel');
+            Route::get('/countries/export/excel', [CountryController::class, 'exportExcel'])->name('countries.export.excel');
+            Route::get('/building_roles/export/excel', [BuildingRoleController::class, 'exportExcel'])->name('building_roles.export.excel');
+            Route::get('/rooms/export/excel', [RoomController::class, 'exportExcel'])->name('rooms.export.excel');
+            Route::get('/places/export/excel', [PlaceController::class, 'exportExcel'])->name('places.export.excel');
 
             // Coupons Routes
             Route::resource('coupons', CouponController::class)->names([
