@@ -1569,7 +1569,7 @@
                 @endcan
             @endif
         @endif
-        {{-- @if (empty($package) || $package->settings == '1')
+        @if (empty($package) || $package->settings == '1')
                 @if ($screen_settings->settings == '1')
                     @can('صلاحيات المستخدمين')
                         <li class="nav-item {{ Request::is('*/employees*', '*/roles*') ? 'active open' : '' }}">
@@ -1627,7 +1627,7 @@
                         </li>
                     @endif
                 @endif
-            @endif --}}
+            @endif
         @if (empty($package) || $package->settings == '1')
             @if ($screen_settings->settings == '1')
                 @can('صلاحيات المستخدمين')
