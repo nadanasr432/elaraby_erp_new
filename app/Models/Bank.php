@@ -29,5 +29,9 @@ class Bank extends Model
     public function processes(){
         return $this->hasMany('\App\Models\BankProcess','bank_id','id');
     }
+    public function accountingTree()
+    {
+        return $this->morphOne(accounting_tree::class, 'accountable');
+    }
 
 }

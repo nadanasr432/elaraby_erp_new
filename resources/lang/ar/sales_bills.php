@@ -42,6 +42,7 @@ return [
     "invoice to" => "فاتورة الي",
     "invoice-time" => "وقت الفاتورة",
     "choose-store" => "اختر المخزن",
+    "choose-account" => "اختر الحساب",
     "product-code" => "كود المنتج / الاسم",
     "product-price" => "سعر المنتج",
     "offer price" => "عرض سعر",
@@ -82,4 +83,8 @@ return [
     "update" => "تحديث",
     "Total prices of all offers" => "اجمالى اسعار كل العروض",
     "termsAndConditionsQuotation" => "الشروط والاحكام لعروض الاسعار",
+    "from_date" => "من",
+    "to_date" => "الى",
+    "submit" => "بحث",
+
 ];

@@ -11,11 +11,27 @@ use Illuminate\Support\Facades\DB;
 
 class VoucherController extends Controller
 {
-    public function get_voucher_entries()
+    public function get_voucher_entries(Request $request)
     {
+        // dd($request);
         $company_id = Auth::user()->company_id;
-        $vouchers = Voucher::where('company_id', $company_id)->get();
-        return view('client.voucher.index', compact('vouchers'));
+        $vouchers = Voucher::where('company_id', $company_id)
+            ->when($request->filled('from_date'), function ($query) use ($request) {
+                return $query->where('date', '>=', $request->input('from_date'));
+            })
+            ->when($request->filled('to_date'), function ($query) use ($request) {
+                return $query->where('date', '<=', $request->input('to_date'));
+            })
+            ->when($request->filled('acount_id'), function ($query) use ($request) {
+                return $query->whereHas('transactions', function ($query) use ($request) {
+                    $account = accounting_tree::find($request->input('acount_id'));
+                    $childeren = $account->childs->pluck('id')->toArray();
+                    $query->where('accounting_tree_id', $request->input('acount_id'))
+                        ->orWhereIn('accounting_tree_id', $childeren);
+                });
+            })->get();
+        $accounts = accounting_tree::get();
+        return view('client.voucher.index', compact('vouchers', 'accounts'));
     }
 
     public function create_voucher_entries()
@@ -74,7 +90,7 @@ class VoucherController extends Controller
 
     public function showAccountStatement($accountId)
     {
-        $transactions = Transaction::where('company_id',Auth::user()->company_id)->where('accounting_tree_id', $accountId)->get();
+        $transactions = Transaction::where('company_id', Auth::user()->company_id)->where('accounting_tree_id', $accountId)->get();
         $totalDebit = $transactions->where('type', 1)->sum('amount');
         $totalCredit = $transactions->where('type', 0)->sum('amount');
 

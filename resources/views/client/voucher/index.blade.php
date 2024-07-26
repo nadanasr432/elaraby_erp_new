@@ -4,6 +4,7 @@
         text-align: right;
         float: left;
     }
+
 </style>
 @section('content')
     @if (session('success'))
@@ -27,6 +28,48 @@
                         </a>
                     </div>
                 </div>
+
+                <form action="{{ route('client.voucher.get') }}" method="GET" class="d-flex justify-content-around">
+                    <div class="form-group col-6">
+                        <label for="acount_id">{{ __('sales_bills.choose-account') }}</label>
+                        <select name="acount_id" id="acount_id" class="selectpicker form-control" data-style="btn-primary" data-live-search="true"
+                                title="{{ __('sales_bills.choose-account') }}">
+                            @foreach ($accounts as $account)
+                                <option value="{{ $account->id }}" @selected(request('acount_id') == $account->id)>
+                                    {{ $account->account_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="from_date">{{ __('sales_bills.from_date') }}</label>
+                        <input type="date" name="from_date" id="from_date" class="form-control" value="{{ request('from_date') }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="to_date">{{ __('sales_bills.to_date') }}</label>
+                        <input type="date" name="to_date" id="to_date" class="form-control" value="{{ request('to_date') }}">
+                    </div>
+
+                    <div class="form-group align-self-end">
+                        <button type="submit" class="btn btn-primary">{{ __('sales_bills.submit') }}</button>
+                    </div>
+                </form>
+
+                {{-- <form action="{{ route('client.voucher.get') }}" method="GET">
+                    <div class="col-lg-4 pull-right">
+                        <label for="acount_id">{{ __('sales_bills.choose-account') }}</label><br>
+                        <select name="acount_id" id="acount_id" class="selectpicker form-control" data-style="btn-primary" data-live-search="true"
+                                title="{{ __('sales_bills.choose-account') }}">
+                            @foreach ($accounts as $account)
+                                <option value="{{ $account->id }}">
+                                    {{ $account->account_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form> --}}
+
                 {{-- @dump($vouchers->pluck('transactions')) --}}
                 <div class="card-body">
                     <div class="table-responsive">
@@ -104,6 +147,7 @@
 @endsection
 <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
 <script>
+
     $(document).ready(function() {
         $('.delete_voucher').on('click', function() {
             var voucher_id = $(this).attr('voucher_id');

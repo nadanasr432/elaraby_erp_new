@@ -53,6 +53,7 @@ return [
     "invoice-date" => "Invoice date",
     "invoice-time" => "Invoice time",
     "choose-store" => "Choose store",
+    "choose-account" => "Choose account",
     "product-code" => "Product code",
     "product-price" => "Product price",
     "sales-invoice-item-data-no" => "Sales Invoice Item Data No.",
@@ -76,10 +77,11 @@ return [
     "including-tax" => "Including tax",
     "tax" => "Tax",
     "choose-tax" => "Choose Tax",
-
-
     "termsAndConditionsSaleBills" => "Terms & Conditions For Sales Invoices",
     "back" => "Back",
     "update" => "Update",
     "termsAndConditionsQuotation" => "Terms & Conditions For Quotations",
+    "to_date" => "To",
+    "from_date" => "From",
+    "submit" => "Submit",
 ];

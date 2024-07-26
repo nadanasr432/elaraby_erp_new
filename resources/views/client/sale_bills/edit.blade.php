@@ -571,7 +571,7 @@
             {{ __('main.record') }}
         </button>
         <!------PRINT MAIN INVOICE---->
-        <a class="btn btn-md btn-info text-white pull-right ml-1"
+        <a class="btn btn-md btn-info text-white pull-right ml-1"  role="button"
            href="{{route('client.sale_bills.print', $saleBill->token)}}" style="height: 40px;">
             حفظ و طباعة 1
         </a>

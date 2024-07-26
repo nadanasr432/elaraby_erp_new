@@ -53,6 +53,8 @@
             .alert-primary {
                 color: #3e4045 !important;
             }
+
+
         }
     </style>
     <style>
@@ -187,6 +189,9 @@
         h3 {
             font-size: 17px !important;
         }
+        .filter-option-inner {
+                margin-right: 9px;
+            }
     </style>
 </head>
 

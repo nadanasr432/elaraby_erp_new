@@ -976,6 +976,61 @@ class PosController extends Controller
                 'bank_balance' => $bank->bank_balance + $billDetails['total_amount']
             ]);
             # ===================================== #
+            $clientAccountId = $outer_client->accountingTree?->id;
+            if (!$outer_client->accountingTree) {
+                // $accountingTree = new \App\Models\AccountingTree();
+                $accountingTree = new \App\Models\accounting_tree();
+
+                $accountingTree->account_name = 'حساب العميل ' . $outer_client->client_name;
+                $accountingTree->account_name_en = $outer_client->client_name . 'Account';
+                $accountingTree->account_number = '21' . $outer_client->id;
+                $accountingTree->parent_id = 21;
+                $accountingTree->type = 'sub';
+                $outer_client->accountingTree()->save($accountingTree);
+                $clientAccountId = $outer_client->accountingTree->id;
+            }
+            $bankAccountId = $bank->accountingTree?->id;
+            if (!$bankAccountId) {
+                // $accountingTree = new \App\Models\AccountingTree();
+                $bankAccountingTree = new \App\Models\accounting_tree();
+
+                $bankAccountingTree->account_name = 'حساب بنك ' . $bank->bank_name;
+                $bankAccountingTree->account_name_en =  $bank->bank_name . 'Account';
+                $bankAccountingTree->account_number = '23' . $outer_client->id;
+                $bankAccountingTree->parent_id = 23;
+                $bankAccountingTree->type = 'sub';
+                $bank->accountingTree()->save($bankAccountingTree);
+                $bankAccountId = $bank->accountingTree->id;
+            }
+
+            // $payment_method = $billDetails['payment_method'];
+
+            $voucher = new Voucher([
+                'amount' =>  $posOpen->total_amount,
+                'company_id' => Auth::user()->company_id,
+                'date' => Carbon::now(),
+                'payment_method' => 'bank',
+                'notation' => 'سند قبض فاتورة مبيعات  ',
+                'status' => 1,
+                'user_id' => auth::user()->id,
+                'options' => 1
+            ]);
+
+            $saleVoucher =  $posOpen->vouchers()->save($voucher);
+            VoucherService::createTransaction(
+                $bankAccountId,
+                $voucher->id,
+                $posOpen->total_amount,
+                "مدين من دفع فاتورة مبيعات",
+                1
+            );
+            VoucherService::createTransaction(
+                $clientAccountId,
+                $voucher->id,
+                $posOpen->total_amount,
+                "دائن من دفع فاتورة مبيعات",
+                0
+            );
             return [
                 'reason' => 'تم الدفع وحفظ الفاتورة',
                 'success' => 1,
@@ -1064,7 +1119,48 @@ class PosController extends Controller
                 'date' => date('Y-m-d'),
                 'time' => date('H:i:s'),
             ]);
+            $clientAccountId = $outer_client->accountingTree?->id;
+            if (!$outer_client->accountingTree) {
+                // $accountingTree = new \App\Models\AccountingTree();
+                $accountingTree = new \App\Models\accounting_tree();
 
+                $accountingTree->account_name = 'حساب العميل ' . $outer_client->client_name;
+                $accountingTree->account_name_en = $outer_client->client_name . 'Account';
+                $accountingTree->account_number = '1203' . $outer_client->id;
+                $accountingTree->parent_id = 1203;
+                $accountingTree->type = 'sub';
+                $outer_client->accountingTree()->save($accountingTree);
+                $clientAccountId = $outer_client->accountingTree->id;
+            }
+
+            // $payment_method = $billDetails['payment_method'];
+
+            $voucher = new Voucher([
+                'amount' =>  $posOpen->total_amount,
+                'company_id' => Auth::user()->company_id,
+                'date' => Carbon::now(),
+                'payment_method' => 'cash',
+                'notation' => 'سند قبض فاتورة مبيعات  ',
+                'status' => 1,
+                'user_id' => auth::user()->id,
+                'options' => 1
+            ]);
+
+            $saleVoucher =  $posOpen->vouchers()->save($voucher);
+            VoucherService::createTransaction(
+                25,
+                $voucher->id,
+                $posOpen->total_amount,
+                "مدين من دفع فاتورة مبيعات",
+                1
+            );
+            VoucherService::createTransaction(
+                $clientAccountId,
+                $voucher->id,
+                $posOpen->total_amount,
+                "دائن من دفع فاتورة مبيعات",
+                0
+            );
             return [
                 'reason' => 'تم الدفع وحفظ الفاتورة',
                 'success' => 1,
@@ -1155,7 +1251,7 @@ class PosController extends Controller
             try {
                 // createVoucher($saleBill, $companyId, $notation, $paymentMethod = "cash", $status = 1, $options = 1)
                 // dd();
-                $posOpen->final_total=$posOpen->total_amount;
+                $posOpen->final_total = $posOpen->total_amount;
                 $voucher = VoucherService::createVoucher(
                     $posOpen,
                     $company_id,
@@ -1329,7 +1425,7 @@ class PosController extends Controller
     # =============== زر تسجيل الدفع =========client.store.cash.clients.pos===== #
     public function store_cash_clients(Request $request)
     {
-    // dd($request);
+        // dd($request);
         $billDetails = $request->billDetails;
         $productsArr = $request->productsArr;
 
@@ -1432,47 +1528,47 @@ class PosController extends Controller
                 # ===================================== #
             }
             $clientAccountId = $outer_client->accountingTree?->id;
-                if (!$outer_client->accountingTree) {
-                    // $accountingTree = new \App\Models\AccountingTree();
-                    $accountingTree = new \App\Models\accounting_tree();
+            if (!$outer_client->accountingTree) {
+                // $accountingTree = new \App\Models\AccountingTree();
+                $accountingTree = new \App\Models\accounting_tree();
 
-                    $accountingTree->account_name = 'حساب العميل ' . $outer_client->client_name;
-                    $accountingTree->account_name_en = $outer_client->client_name . 'Account';
-                    $accountingTree->account_number = '1203' . $outer_client->id;
-                    $accountingTree->parent_id = 1203;
-                    $accountingTree->type = 'sub';
-                    $outer_client->accountingTree()->save($accountingTree);
-                    $clientAccountId = $outer_client->accountingTree->id;
-                }
+                $accountingTree->account_name = 'حساب العميل ' . $outer_client->client_name;
+                $accountingTree->account_name_en = $outer_client->client_name . 'Account';
+                $accountingTree->account_number = '1203' . $outer_client->id;
+                $accountingTree->parent_id = 1203;
+                $accountingTree->type = 'sub';
+                $outer_client->accountingTree()->save($accountingTree);
+                $clientAccountId = $outer_client->accountingTree->id;
+            }
 
-                $payment_method = $billDetails['payment_method'];
+            $payment_method = $billDetails['payment_method'];
 
-                $voucher = new Voucher([
-                    'amount' =>  $posOpen->total_amount,
-                    'company_id' => Auth::user()->company_id,
-                    'date' => Carbon::now(),
-                    'payment_method' => $payment_method,
-                    'notation' => 'سند قبض فاتورة مبعات  ',
-                    'status' => 1,
-                    'user_id' => auth::user()->id,
-                    'options' => 1
-                ]);
+            $voucher = new Voucher([
+                'amount' =>  $posOpen->total_amount,
+                'company_id' => Auth::user()->company_id,
+                'date' => Carbon::now(),
+                'payment_method' => $payment_method,
+                'notation' => 'سند قبض فاتورة مبيعات  ',
+                'status' => 1,
+                'user_id' => auth::user()->id,
+                'options' => 1
+            ]);
 
-                $saleVoucher =  $posOpen->vouchers()->save($voucher);
-                VoucherService::createTransaction(
-                    25,
-                    $voucher->id,
-                    $posOpen->total_amount,
-                    "مدين من دفع فاتورة مبيعات",
-                    1
-                );
-                VoucherService::createTransaction(
-                    $clientAccountId,
-                    $voucher->id,
-                    $posOpen->total_amount,
-                    "دائن من دفع فاتورة مبيعات",
-                    0
-                );
+            $saleVoucher =  $posOpen->vouchers()->save($voucher);
+            VoucherService::createTransaction(
+                25,
+                $voucher->id,
+                $posOpen->total_amount,
+                "مدين من دفع فاتورة مبيعات",
+                1
+            );
+            VoucherService::createTransaction(
+                $clientAccountId,
+                $voucher->id,
+                $posOpen->total_amount,
+                "دائن من دفع فاتورة مبيعات",
+                0
+            );
             return $posOpen->id;
         }
     }
