@@ -35,6 +35,8 @@
                                     <th class="text-center">المبلغ</th>
                                     <th class="text-center">الموظف</th>
                                     <th class="text-center">الصورة</th>
+                                    <th class="text-center">البنك</th>
+                                     <th class="text-center">رقم المعاملة</th>
                                     <th class="text-center">خزنة الدفع</th>
                                     <th class="text-center"> ملاحظات</th>
                                     <th class="text-center">التاريخ</th>
@@ -62,7 +64,9 @@
                                                 src="{{ asset($expense->expense_pic) }}"
                                                 style="width:50px; height: 50px;cursor:pointer;" alt="" />
                                         </td>
-                                        <td>{{ $expense->safe->safe_name }}</td>
+                                        <td>{{ $expense->bank->bank_name ?? ''}}</td>
+                                        <td>{{ $expense->payment_no ?? ''}}</td>
+                                        <td>{{ $expense->safe->safe_name ?? ''}}</td>
                                         <td>{{ $expense->notes }}</td>
                                         <td>{{ $expense->date }}</td>
                                         <td>{{ $expense->client->name }}</td>

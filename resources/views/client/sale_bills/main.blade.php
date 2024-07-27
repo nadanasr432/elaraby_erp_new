@@ -255,7 +255,7 @@
                             <tr class="d-flex pt-1"
                                 style="background: #222751; color: white; font-size: 16px;border-radius: 7px 7px 0 0;padding: 8px !important;">
 
-                                <td width="50%" class="text-left pr-2">@lang('sales_bills.Company Data')</td>
+                                <td width="50%" class="text-left pr-2">@lang('sales_bills.invoice from')</td>
                                 <td width="50%" class="text-left pr-2">@lang('sales_bills.Customer data')</td>
                             </tr>
                         </table>
@@ -265,7 +265,7 @@
                         <table style="width: 100%;">
                             <tr class="d-flex bordernone">
 
-                                <td width="40%" class="text-left">@lang('sales_bills.Company Name')</td>
+                                <td width="40%" class="text-left">@lang('main.name')</td>
                                 <td width="60%" class="text-right">{{ $company->company_name }}</td>
                             </tr>
                             <tr class="d-flex pt-1 bordernone">
@@ -327,7 +327,7 @@
                             <tr class="d-flex pt-1"
                                 style="background: #222751; color: white; font-size: 16px;border-radius: 7px 7px 0 0;padding: 8px !important;">
                                 <td width="50%" class="text-right pr-2">@lang('sales_bills.Customer data')</td>
-                                <td width="50%" class="text-right pr-2">@lang('sales_bills.Company Data')</td>
+                                <td width="50%" class="text-right pr-2">@lang('sales_bills.invoice from')</td>
                             </tr>
                         </table>
                     </div>

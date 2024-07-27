@@ -1,6 +1,10 @@
 @extends('client.layouts.app-main')
 <style>
-
+    .bootstrap-select,
+    select.form-control {
+        width: 80% !important;
+        display: inline !important;
+    }
 </style>
 @section('content')
     @if (count($errors) > 0)
@@ -55,6 +59,10 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                <a target="_blank" href="{{ route('client.fixed.expenses') }}" role="button"
+                                    style="width: 15%;display: inline;" class="btn btn-sm btn-warning open_popup">
+                                    <i class="fa fa-plus"></i>
+                                </a>
                             </div>
 
                             <div class="col-md-3">
@@ -70,15 +78,51 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-3">
+                                <label for="payment_method">طريقة الدفع <span class="text-danger">*</span></label>
+                                <select required id="payment_method" name="payment_method" class="form-control">
+                                    <option value="">اختر طريقة الدفع</option>
+                                    <option value="cash" @if ($expense->payment_method == 'cash') selected @endif>دفع كاش نقدى</option>
+                                    <option value="bank" @if ($expense->payment_method == 'bank') selected @endif>دفع بنكى شبكة</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-3 bank-section" style="display: @if ($expense->payment_method == 'bank') block @else none @endif;">
+                                <div class="col-md-12">
+                                    <label class="d-block"> البنك <span class="text-danger">*</span></label>
+                                    <select style="width: 80% !important; display: inline !important;" required
+                                        id="bank_id" class="form-control" name="bank_id">
+                                        <option value="">اختر البنك</option>
+                                        @foreach ($banks as $bank)
+                                            <option @if ($expense->bank_id == $bank->id) selected @endif
+                                                value="{{ $bank->id }}">{{ $bank->bank_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <a target="_blank" href="{{ route('client.banks.create') }}" role="button"
+                                        style="width: 15%;display: inline;" class="btn btn-sm btn-danger open_popup">
+                                        <i class="fa fa-plus"></i>
+                                    </a>
+                                </div>
+                                <div class="col-md-8 mt-2">
+                                    <label for="">رقم المعاملة</label>
+                                    <input type="text" name="payment_no" class="form-control" id="bank_check_number"
+                                        value="{{ $expense->payment_no }}" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 safe-section" style="display: @if ($expense->payment_method == 'cash') block @else none @endif;">
                                 <label> خزنة الدفع <span class="text-danger">*</span></label>
-                                <select required name="safe_id" class="form-control">
+                                <select name="safe_id" class="form-control">
                                     <option value="">اختر خزنة الدفع</option>
                                     @foreach ($safes as $safe)
                                         <option @if ($expense->safe_id == $safe->id) selected @endif
                                             value="{{ $safe->id }}">{{ $safe->safe_name }}</option>
                                     @endforeach
                                 </select>
+                                <a target="_blank" href="{{ route('client.safes.create') }}" role="button"
+                                    style="width: 15%;display: inline;" class="btn btn-sm btn-warning open_popup">
+                                    <i class="fa fa-plus"></i>
+                                </a>
                             </div>
+
                             <div class="col-md-3">
                                 <label> الموظف <span class="text-danger">*</span></label>
                                 <select name="employee_id" data-live-search="true" data-title="اختر الموظف"
@@ -118,3 +162,28 @@
         </div>
     </div>
 @endsection
+<script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
+<script>
+    $(document).ready(function() {
+        $('#payment_method').change(function() {
+            var paymentMethod = $(this).val();
+
+            if (paymentMethod === 'cash') {
+                $('.safe-section').show();
+                $('.bank-section').hide();
+                $('#safe_id').prop('required', true);
+                $('#bank_id').prop('required', false);
+            } else if (paymentMethod === 'bank') {
+                $('.safe-section').hide();
+                $('.bank-section').show();
+                $('#bank_id').prop('required', true);
+                $('#safe_id').prop('required', false);
+            } else {
+                $('.safe-section').hide();
+                $('.bank-section').hide();
+                $('#safe_id').prop('required', false);
+                $('#bank_id').prop('required', false);
+            }
+        }).trigger('change');
+    });
+</script>

@@ -1,8 +1,8 @@
 @extends('client.layouts.app-main')
 <style>
-#example-table_filter{
-    float:left;
-}
+    #example-table_filter {
+        float: left;
+    }
 </style>
 @section('content')
     @if (session('success'))
@@ -20,8 +20,8 @@
                         <div class="col-lg-12 margin-tb">
                             <a class="btn pull-left btn-primary btn-sm" href="{{ route('supplier.bonds.create') }}"><i
                                     class="fa fa-plus"></i>{{ __('bonds.add_new_supplier_bonds') }}</a>
-                            <h5 class="pull-right alert alert-sm alert-success"> 
-                            {{ __('bonds.list_all_bonds_suppliers') }}
+                            <h5 class="pull-right alert alert-sm alert-success">
+                                {{ __('bonds.list_all_bonds_suppliers') }}
                             </h5>
                         </div>
                         <br>
@@ -46,39 +46,57 @@
                                 @php
                                     $i = 0;
                                 @endphp
-                                {{ count($blondSuppliers)}}
+                                {{ count($blondSuppliers) }}
                                 @foreach ($blondSuppliers as $branch)
-                                <tr>
-                                    <td style="padding: 10px 3px; width: 5% !important; font-size: 10px !important;">{{ ++$i }}</td>
-                                    <td style="padding: 10px 5px;width: 19% !important;">{{ $branch->supplier }}</td>
-                                    <td>{{ $branch->account }}</td>
-                                    <td>{{ $branch->type }}</td>
-                                    <td>{{ $branch->amount }}</td>
-                                    <td>{{ $branch->date }}</td>
-                                    <td style="padding: 0; padding-top: 17px; ">
-                                        <div class="all" style="align-items: center; display: flex;justify-content:space-around;    margin-bottom: 11px;">
-                                            
-                                            <!--edit-->
-                                            <a href="{{ route('edit_supplier_bond', $branch->id) }}"
-                                                class="btn btn-sm btn-info" data-toggle="tooltip"
-                                                title="{{ __('main.edit') }}" data-placement="top"><i
-                                                    class="fa fa-edit"></i></a>
-                                    
-                                            <!--delete-->
-                                            <a class="modal-effect btn btn-sm btn-danger delete_bonds_supplier"
-                                                bond_supplier_id="{{ $branch->id }}" bond_supplier_name="{{ $branch->supplier }}"
-                                                data-toggle="modal" href="#modaldemo9" title="delete"><i
-                                                    class="fa fa-trash"></i></a>
-                         
-                         
-                                            <!--print-->
-                                            <svg title="print" onclick="window.location.href='/ar/client/showSupplierBondPrint/{{$branch->id}}'" style="cursor:pointer;background-color: #18be77 !important; border: 2px solid #1ec481 !important; padding: 5px; border-radius: 3px;" xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="white" class="bi bi-printer-fill" viewBox="0 0 16 16">
-                                              <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z"/>
-                                              <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
-                                            </svg>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td style="padding: 10px 3px; width: 5% !important; font-size: 10px !important;">
+                                            {{ ++$i }}</td>
+                                        <td style="padding: 10px 5px;width: 19% !important;">{{ $branch->supplier }}</td>
+                                        <td>
+                                            @if ($branch->account == 'النقدية في الخزينة')
+                                                كاش
+                                            @elseif ($branch->account == 'العقد النقدية')
+                                                شبكه
+                                            @elseif ($branch->account == 'حساب البنك الجاري')
+                                                تحويل بنكي
+                                            @else
+                                                {{ $branch->account }}
+                                            @endif
+                                        </td>
+                                        <td>{{ $branch->type }}</td>
+                                        <td>{{ $branch->amount }}</td>
+                                        <td>{{ $branch->date }}</td>
+                                        <td style="padding: 0; padding-top: 17px; ">
+                                            <div class="all"
+                                                style="align-items: center; display: flex;justify-content:space-around;    margin-bottom: 11px;">
+
+                                                <!--edit-->
+                                                <a href="{{ route('edit_supplier_bond', $branch->id) }}"
+                                                    class="btn btn-sm btn-info" data-toggle="tooltip"
+                                                    title="{{ __('main.edit') }}" data-placement="top"><i
+                                                        class="fa fa-edit"></i></a>
+
+                                                <!--delete-->
+                                                <a class="modal-effect btn btn-sm btn-danger delete_bonds_supplier"
+                                                    bond_supplier_id="{{ $branch->id }}"
+                                                    bond_supplier_name="{{ $branch->supplier }}" data-toggle="modal"
+                                                    href="#modaldemo9" title="delete"><i class="fa fa-trash"></i></a>
+
+
+                                                <!--print-->
+                                                <svg title="print"
+                                                    onclick="window.location.href='/ar/client/showSupplierBondPrint/{{ $branch->id }}'"
+                                                    style="cursor:pointer;background-color: #18be77 !important; border: 2px solid #1ec481 !important; padding: 5px; border-radius: 3px;"
+                                                    xmlns="http://www.w3.org/2000/svg" width="27" height="27"
+                                                    fill="white" class="bi bi-printer-fill" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z" />
+                                                    <path
+                                                        d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" />
+                                                </svg>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>

@@ -26,7 +26,7 @@ return [
     "Quantity"=> "Quantity",
     "amount" => "amount" ,
     "Total tax" => "Total VAT",
-    "invoice from" =>"invoice from",
+    "invoice from" =>"Invoice from",
     "invoice to" => "invoice to",
     "unit price"=> "price",
     "product name"=> "product name",
