@@ -299,6 +299,12 @@
                     <ul class="social-icons @if (LaravelLocalization::getCurrentLocale() == 'en') justify-content-end @endif">
                         <li>
                             <a class="pt-2" target="_blank"
+                                href="https://play.google.com/store/apps/details?id=com.elaraby.elarabyErp">
+                            <img src="{{ asset('images/google-play.png') }}" width="50%" alt="google-play">
+                            </a>
+                        </li>
+                        <li>
+                            <a class="pt-2" target="_blank"
                                 href="https://api.whatsapp.com/send/?phone={{ $informations->whatsapp_number }}&text={{ $informations->whatsapp_message }}&app_absent=0">
                                 <i class="fa fa-whatsapp"></i>
                             </a>
