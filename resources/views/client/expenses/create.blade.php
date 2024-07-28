@@ -5,7 +5,6 @@
         width: 80% !important;
         display: inline !important;
     }
-
 </style>
 @section('content')
     @if (count($errors) > 0)
@@ -72,10 +71,37 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-
                             <div class="col-md-3">
+                                <label for="payment_method">طريقة الدفع <span class="text-danger">*</span></label>
+                                <select required id="payment_method" name="payment_method" class="form-control">
+                                    <option value="">اختر طريقة الدفع</option>
+                                    <option value="cash">دفع كاش نقدى</option>
+                                    <option value="bank">دفع بنكى شبكة</option>
+                                </select>
+                            </div>
+                            <div class="row mb-3 bank-section" style="display: none;">
+                                <div class="col-md-12">
+                                    <label class="d-block"> البنك <span class="text-danger">*</span></label>
+                                    <select style="width: 80% !important; display: inline !important;" id="bank_id"
+                                        name="bank_id" class="form-control">
+                                        <option value="">اختر البنك</option>
+                                        @foreach ($banks as $bank)
+                                            <option value="{{ $bank->id }}">{{ $bank->bank_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <a target="_blank" href="{{ route('client.banks.create') }}" role="button"
+                                        style="width: 15%;display: inline;" class="btn btn-sm btn-danger open_popup">
+                                        <i class="fa fa-plus"></i>
+                                    </a>
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <label for="">رقم المعاملة</label>
+                                    <input type="text" name="payment_no" class="form-control" id="bank_check_number" />
+                                </div>
+                            </div>
+                            <div class="col-md-3 safe-section" style="display: none;">
                                 <label> خزنة الدفع <span class="text-danger">*</span></label>
-                                <select required name="safe_id" class="form-control">
+                                <select name="safe_id" class="form-control">
                                     <option value="">اختر خزنة الدفع</option>
                                     @foreach ($safes as $safe)
                                         <option value="{{ $safe->id }}">{{ $safe->safe_name }}</option>
@@ -86,6 +112,7 @@
                                     <i class="fa fa-plus"></i>
                                 </a>
                             </div>
+
                             <div class="col-md-3">
                                 <label> الموظف <span class="text-danger">*</span></label>
                                 <select name="employee_id" data-live-search="true" data-title="اختر الموظف"
@@ -106,8 +133,8 @@
                             <div class="col-md-3">
                                 <label> صورة المصروف <span class="text-danger">*</span></label>
                                 <input accept=".jpg,.png,.jpeg" type="file"
-                                    oninput="pic.src=window.URL.createObjectURL(this.files[0])" id="file" name="expense_pic"
-                                    class="form-control">
+                                    oninput="pic.src=window.URL.createObjectURL(this.files[0])" id="file"
+                                    name="expense_pic" class="form-control">
                                 <label for="" class="d-block"> معاينة الصورة </label>
                                 <img id="pic" style="width: 100px; height:100px;" />
                             </div>
@@ -122,3 +149,26 @@
         </div>
     </div>
 @endsection
+<script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#payment_method').change(function() {
+            var paymentMethod = $(this).val();
+
+            if (paymentMethod == 'bank') {
+                $('.bank-section').show();
+                $('.safe-section').hide();
+                $('#bank_id').prop('required', true);
+            } else if (paymentMethod == 'cash') {
+                $('.safe-section').show();
+                $('.bank-section').hide();
+                $('#bank_id').prop('required', false);
+            } else {
+                $('.bank-section').hide();
+                $('.safe-section').hide();
+                $('#bank_id').prop('required', false);
+            }
+        }).trigger('change');
+    });
+</script>

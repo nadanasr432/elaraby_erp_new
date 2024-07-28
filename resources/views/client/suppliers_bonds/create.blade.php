@@ -61,10 +61,10 @@
                             </div>
                             <div class="col-md-3">
                                 <label> {{ __('bonds.account') }} <span class="text-danger">*</span></label>
-                                <select dir="rtl" id="account" required class="form-control" name="account">
-                                    <option value="النقدية في الخزينة">النقدية في الخزينة</option>
-                                    <option value="العقد النقدية">العقد النقدية</option>
-                                    <option value="حساب البنك الجاري">حساب البنك الجاري</option>
+                                 <select dir="rtl" id="account" required class="form-control" name="account">
+                                    <option value="كاش"> كاش </option>
+                                    <option value="شبكه">شبكه</option>
+                                    <option value="تحويل بنكي">تحويل بنكي</option>
                                 </select>
                             </div>
                             <div class="col-md-3">

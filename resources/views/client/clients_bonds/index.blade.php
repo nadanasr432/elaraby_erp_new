@@ -1,8 +1,8 @@
 @extends('client.layouts.app-main')
 <style>
-#example-table-false-ordering_filter{
-    float:left !important;
-}
+    #example-table-false-ordering_filter {
+        float: left !important;
+    }
 </style>
 @section('content')
     @if (session('success'))
@@ -47,32 +47,51 @@
                                     $i = 0;
                                 @endphp
                                 @foreach ($bondClients as $branch)
-                                <tr>
-                                    <td style="padding: 10px 3px; width: 5% !important; font-size: 10px !important;">{{ ++$i }}</td>
-                                    <td style="padding: 10px 5px;width: 19% !important;">{{ $branch->client }}</td>
-                                    <td>{{ $branch->account }}</td>
-                                    <td>{{ $branch->type }}</td>
-                                    <td>{{ $branch->amount }}</td>
-                                    <td>{{ $branch->date }}</td>
-                                    <td style="padding: 0; padding-top: 17px; ">
-                                        <div class="all" style="align-items: center; display: flex;justify-content:space-around;    margin-bottom: 11px;">
-                                            <a href="{{ route('edit_client_bond', $branch->id) }}"
-                                                class="btn btn-sm btn-info" data-toggle="tooltip"
-                                                title="{{ __('main.edit') }}" data-placement="top"><i
-                                                    class="fa fa-edit"></i></a>
-                                    
-                                            <a class="modal-effect btn btn-sm btn-danger delete_bonds_client"
-                                                bond_client_id="{{ $branch->id }}" bond_client_name="{{ $branch->client }}"
-                                                data-toggle="modal" href="#modaldemo9" title="delete"><i
-                                                    class="fa fa-trash"></i></a>
-                         
-                                            <svg title="print" onclick="window.location.href='/client/showClientBondPrint/{{$branch->id}}'" style="cursor:pointer;background-color: #18be77 !important; border: 2px solid #1ec481 !important; padding: 5px; border-radius: 3px;" xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="white" class="bi bi-printer-fill" viewBox="0 0 16 16">
-                                              <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z"/>
-                                              <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
-                                            </svg>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td style="padding: 10px 3px; width: 5% !important; font-size: 10px !important;">
+                                            {{ ++$i }}</td>
+                                        <td style="padding: 10px 5px;width: 19% !important;">{{ $branch->client }}</td>
+                                        <td>
+                                            @if ($branch->account == 'النقدية في الخزينة')
+                                                كاش
+                                            @elseif ($branch->account == 'العقد النقدية')
+                                                شبكه
+                                            @elseif ($branch->account == 'حساب البنك الجاري')
+                                                تحويل بنكي
+                                            @else
+                                                {{ $branch->account }}
+                                            @endif
+                                        </td>
+
+                                        <td>{{ $branch->type }}</td>
+                                        <td>{{ $branch->amount }}</td>
+                                        <td>{{ $branch->date }}</td>
+                                        <td style="padding: 0; padding-top: 17px; ">
+                                            <div class="all"
+                                                style="align-items: center; display: flex;justify-content:space-around;    margin-bottom: 11px;">
+                                                <a href="{{ route('edit_client_bond', $branch->id) }}"
+                                                    class="btn btn-sm btn-info" data-toggle="tooltip"
+                                                    title="{{ __('main.edit') }}" data-placement="top"><i
+                                                        class="fa fa-edit"></i></a>
+
+                                                <a class="modal-effect btn btn-sm btn-danger delete_bonds_client"
+                                                    bond_client_id="{{ $branch->id }}"
+                                                    bond_client_name="{{ $branch->client }}" data-toggle="modal"
+                                                    href="#modaldemo9" title="delete"><i class="fa fa-trash"></i></a>
+
+                                                <svg title="print"
+                                                    onclick="window.location.href='/client/showClientBondPrint/{{ $branch->id }}'"
+                                                    style="cursor:pointer;background-color: #18be77 !important; border: 2px solid #1ec481 !important; padding: 5px; border-radius: 3px;"
+                                                    xmlns="http://www.w3.org/2000/svg" width="27" height="27"
+                                                    fill="white" class="bi bi-printer-fill" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z" />
+                                                    <path
+                                                        d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" />
+                                                </svg>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -111,11 +130,11 @@
 <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
 <script>
     $(document).ready(function() {
-        $('#example-table-false-ordering').dataTable( {
-          "ordering": false
-        } );
+        $('#example-table-false-ordering').dataTable({
+            "ordering": false
+        });
 
- 
+
         $('.delete_bonds_client').on('click', function() {
             var bond_id = $(this).attr('bond_client_id');
             var bond_name = $(this).attr('bond_client_name');

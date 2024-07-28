@@ -9,7 +9,7 @@ class Expense extends Model
     protected $table = "expenses";
     protected $fillable = [
         'expense_number','company_id','client_id','employee_id','fixed_expense','expense_details'
-        ,'amount','expense_pic','safe_id','notes','date'
+        ,'amount','expense_pic','safe_id','notes','date', 'payment_method', 'bank_id', 'payment_no'
     ];
     public function company(){
         return $this->belongsTo('\App\Models\Company','company_id','id');
@@ -25,5 +25,8 @@ class Expense extends Model
     }
     public function safe(){
         return $this->belongsTo('\App\Models\Safe','safe_id','id');
+    }
+    public function bank(){
+        return $this->belongsTo(Bank::class,'bank_id','id');
     }
 }

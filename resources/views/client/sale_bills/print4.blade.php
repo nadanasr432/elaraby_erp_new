@@ -389,7 +389,7 @@
                                 <th>@lang('sales_bills.Quantity')</th>
                                 <th>@lang('sales_bills.The amount does not include tax')</th>
                                 <th>@lang('sales_bills.Tax')</th>
-                                
+
                                 <th>@lang('products.pdesc')</th>
                                 <th>@lang('products.pmodel1')</th>
                                 <th>@lang('sales_bills.total')</th>
@@ -429,7 +429,7 @@
                                     $tableRow .= '<td class="text-center"><span>' . $element->quantity . '</span><span>' . $element->unit->unit_name . '</span></td>';
                                     $tableRow .= '<td>' . ($sale_bill->value_added_tax ? round(($element->quantity_price * 20) / 23, 2) : $element->quantity_price) . '</td>';
                                     $tableRow .= '<td>' . $ProdTax . '</td>';
-                                   $tableRow .= '<td>' . $element->product->description . '</td>';
+                                    $tableRow .= '<td>' . $element->product->description . '</td>';
                                     $tableRow .= '<td>' . $element->product->product_model . '</td>';
                                     $tableRow .= '<td>' . $ProdTotal . '</td>';
                             
@@ -454,7 +454,7 @@
                                 <th>@lang('sales_bills.total')</th>
                                 <th>@lang('products.pmodel1')</th>
                                 <th>@lang('products.pdesc')</th>
-                                
+
                                 <th>@lang('sales_bills.Tax')</th>
                                 <th>@lang('sales_bills.The amount does not include tax')</th>
                                 <th>@lang('sales_bills.Quantity')</th>
@@ -484,46 +484,45 @@
                                     } else {
                                         $ProdTotal = $element->quantity_price;
                                     }
-                                  
                             
                                     #--PRODUCT TOTAL--#
                             
                                     echo '
-                                                                                                                                                                                                    <tr style="font-size: 16px !important; height: 34px !important; text-align: center;background: #f8f9fb">
-                                                                                                                                                                                                        <td>' .
+                                                                                                                                                                                                                                <tr style="font-size: 16px !important; height: 34px !important; text-align: center;background: #f8f9fb">
+                                                                                                                                                                                                                                    <td>' .
                                         $ProdTotal .
                                         '</td>
-                                                                                                                                                                                                        <td>' .
+                                                                                                                                                                                                                                    <td>' .
                                         $element->product->product_model .
                                         '</td>
-                                                                                                                                                                                                        <td>' .
+                                                                                                                                                                                                                                    <td>' .
                                         $element->product->description .
                                         '</td>
-                                       
-                                                                                                                                                                                                        <td>' .
+                                                                   
+                                                                                                                                                                                                                                    <td>' .
                                         $ProdTax .
                                         '</td>
-                                                                                                                                                                                                        <td>' .
+                                                                                                                                                                                                                                    <td>' .
                                         ($sale_bill->value_added_tax ? round(($element->quantity_price * 20) / 23, 2) : $element->quantity_price) .
                                         '</td>
-                                                                                                                                                                                                        <td class="text-center">
-                                                                                                                                                                                                            <span>' .
+                                                                                                                                                                                                                                    <td class="text-center">
+                                                                                                                                                                                                                                        <span>' .
                                         $element->quantity .
                                         '</span>
-                                                                                                                                                                                                            <span>' .
+                                                                                                                                                                                                                                        <span>' .
                                         $element->unit->unit_name .
                                         '</span>
-                                                                                                                                                                                                        </td>
-                                                                                                                                                                                                        <td>' .
+                                                                                                                                                                                                                                    </td>
+                                                                                                                                                                                                                                    <td>' .
                                         $element->product_price .
                                         '</td>
-                                                                                                                                                                                                        <td>' .
+                                                                                                                                                                                                                                    <td>' .
                                         $element->product->product_name .
                                         '</td>
-                                                                                                                                                                                                        <td>' .
+                                                                                                                                                                                                                                    <td>' .
                                         ++$i .
                                         '</td>
-                                                                                                                                                                                                    </tr>';
+                                                                                                                                                                                                                                </tr>';
                                 }
                             }
                             ?>
@@ -535,10 +534,10 @@
             <?php
             if ($sale_bill->company_id == 20) {
                 echo "<p style='text-align: justify; direction: rtl; font-size: 12px; padding: 11px; background: #f3f3f3; margin: 2px 10px; border-radius: 6px; border: 1px solid #2d2d2d10;'>
-                                                                                                                                                                                                                                            <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
-                                                                                                                                                                                                                                            شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
-                                                                                                                                                                                                                                            (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
-                                                                                                                                                                                                                                        </p>";
+                                                                                                                                                                                                                                                        <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
+                                                                                                                                                                                                                                                        شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
+                                                                                                                                                                                                                                                        (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
+                                                                                                                                                                                                                                                    </p>";
             }
             ?>
             @if (app()->getLocale() == 'en')
@@ -561,18 +560,18 @@
                         style="border: 1px solid #2d2d2d1c; border-radius: 7px; overflow: hidden; box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;">
                         <table
                             style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+                            @if (!empty($discount) && $discount->value > 0)
+                                <tr
+                                    style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
 
-                            <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                                    <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.Discount')</td>
+                                    <td dir="rtl">
+                                        {{ $discountNote ? $discountNote . ' || ' : '' }}
+                                        ({{ round(($discountValue / $realtotal) * 100, 1) }}%) {{ $discountValue }}
 
-                                <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.Discount')</td>
-                                <td dir="rtl">
-                                    {{ $discountNote ? $discountNote . ' || ' : '' }}
-                                    ({{ round(($discountValue / $realtotal) * 100, 1) }}%) {{ $discountValue }}
-                                    
-                                </td>
-                            </tr>
-
+                                    </td>
+                                </tr>
+                            @endif
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                 <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
@@ -627,7 +626,7 @@
                                     @lang('sales_bills.Residual')
                                 </td>
                                 <td dir="rtl">
-                                    {{ $sale_bill->rest }} 
+                                    {{ $sale_bill->rest }}
                                 </td>
 
                             </tr>
@@ -693,17 +692,17 @@
                         style="border: 1px solid #2d2d2d1c; border-radius: 7px; overflow: hidden; box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;">
                         <table
                             style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+                            @if (!empty($discount) && $discount->value > 0)
+                                <tr
+                                    style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                                    <td dir="rtl">
+                                        {{ $discountNote ? $discountNote . ' || ' : '' }}
+                                        ({{ round(($discountValue / $realtotal) * 100, 1) }}%) {{ $discountValue }}
 
-                            <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
-                                <td dir="rtl">
-                                    {{ $discountNote ? $discountNote . ' || ' : '' }}
-                                    ({{ round(($discountValue / $realtotal) * 100, 1) }}%) {{ $discountValue }}
-                                    
-                                </td>
-                                <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Discount')</td>
-                            </tr>
-
+                                    </td>
+                                    <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Discount')</td>
+                                </tr>
+                            @endif
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                 <td dir="rtl">{{ $sumWithOutTax }} </td>
@@ -750,7 +749,7 @@
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                 <td dir="rtl">
-                                    {{ $sale_bill->rest }} 
+                                    {{ $sale_bill->rest }}
                                 </td>
                                 <td style="text-align: right;padding-right: 14px;">
                                     @lang('sales_bills.Residual')

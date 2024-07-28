@@ -195,22 +195,22 @@ class BondsController extends Controller
 
     public function addElectronicStamp(Request $request)
     {
-
         $electronicStamp = ElectronicStamps::where('company_id', Auth::user()->company_id)->first();
 
+        $img = $request->file('elec_stamp');
+        $imgName = time() . "." . $img->getClientOriginalExtension();
+        $path = public_path("assets/images/electronic_stamps/");
 
-        $img = $_FILES['elec_stamp'];
-        $imgName = time() . "." . strtolower(explode(".", $img['name'])[1]);
-        $path = base_path("assets/images/electronic_stamps/" . $imgName);
+        // Ensure the directory exists
+        if (!File::isDirectory($path)) {
+            File::makeDirectory($path, 0755, true, true);
+        }
 
-
-        if (move_uploaded_file($img['tmp_name'], $path)) {
-
-            //check if there is an stamp already uploaded
+        if ($img->move($path, $imgName)) {
+            // Check if there is a stamp already uploaded
             if ($electronicStamp !== null) {
-
-                //yes there is an stamp uploaded... so we need to delete it.
-                $img_path = base_path("assets/images/electronic_stamps/" . $electronicStamp->img);
+                // Yes, there is a stamp uploaded, so we need to delete it.
+                $img_path = public_path("assets/images/electronic_stamps/" . $electronicStamp->img);
                 if (File::exists($img_path)) {
                     File::delete($img_path);
                 }

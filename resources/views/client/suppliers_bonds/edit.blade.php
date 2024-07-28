@@ -64,10 +64,10 @@
                             </div>
                             <div class="col-md-3">
                                 <label> {{ __('bonds.account') }} <span class="text-danger">*</span></label>
-                                <select dir="rtl" id="account" required class="form-control" name="account">
-                                    <option @if( $supplierBond->account == 'الن قدية في الخزينة') selected @endif value="النقدية في الخزينة">النقدية في الخزينة</option>
-                                    <option @if( $supplierBond->account == 'الع قد النقدية') selected @endif value="العقد النقدية">العقد النقدية</option>
-                                    <option @if( $supplierBond->account == 'حساب البنك الجاري')selected @endif value="حساب البنك الجاري">حساب البنك الجاري</option>
+                                  <select dir="rtl" id="account" required class="form-control" name="account">
+                                    <option @if( $supplier->account == "كاش") selected @endif value="كاش">كاش</option>
+                                    <option @if( $supplier->account == "شبكه") selected @endif value="شبكه">شبكه</option>
+                                    <option @if( $supplier->account == "تحويل بنكي")selected @endif value="تحويل بنكي">تحويل بنكي</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
