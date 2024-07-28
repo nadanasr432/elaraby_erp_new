@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'addnewmanufacture' => 'Add New manufacture',
+    'status' => 'status',
+    'choose_status' => 'Choose status',
+    'processing' => 'Processing',
+    'complete' => 'Complete',
+    'date' => 'Date',
+    'choose_products' => 'Choose products',
+    'number' => 'Number',
+    'store' => 'Store',
+    'total' => 'Total',
+    'quantity' => 'Quantity',
+    'note' => 'Note',
+    'view' => 'view',
+    'confirm' => 'confirm',
+    'cancel' => 'cancel',
+    'choose_product' => 'Choose Product',
+    'choose_product' => 'choose_product',
+    'Product Name' => 'Product Name',
+    'Price' => 'Price',
+    'Quantity' =>  'Quantity',
+    'Action' => 'Action',
+    'Total Quantity' =>  'Total Quantity',
+    'Total' => 'Total',
+];

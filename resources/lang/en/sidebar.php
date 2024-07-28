@@ -184,7 +184,6 @@ return [
     "Total billing prices"=>"Total billing prices",
     "Cash sales client"=>"Cash sales client",
     "products-are-expired"=> "Expired products",
-
-
+    "Manufacture"=> "Manufacture",
 
 ];
