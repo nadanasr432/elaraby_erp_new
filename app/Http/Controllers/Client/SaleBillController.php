@@ -285,7 +285,17 @@ class SaleBillController extends Controller
                 $accountingTree->type = 'sub';
                 $outer_client->accountingTree()->save($accountingTree);
             }
-            $clientAccountId = $outer_client->accountingTree->id;
+            $outer_client->load('accountingTree');
+
+            if ($outer_client->accountingTree) {
+                $clientAccountId = $outer_client->accountingTree->id;
+            } else {
+                // Handle the case where the accounting tree is still null
+                // Log::error('Failed to retrieve accounting tree for client ID: ' . $outer_client->id);
+                dd('hi');
+                $clientAccountId = null;
+            }
+            // $clientAccountId = $outer_client->accountingTree->id;
 
             $payment_method = $data['payment_method'];
 
@@ -370,7 +380,7 @@ class SaleBillController extends Controller
                 ]);
             }
         } catch (\Exception $e) {
-        dd($e);
+            dd($e);
             DB::rollBack();
             return response()->json([
                 'status' => false,
@@ -516,13 +526,12 @@ class SaleBillController extends Controller
 
         # get invoiceData.
         $sale_bills = SaleBill::where('company_id', $company_id)->get();
-        if($sale_bills)
-        {
-        // foreach($sale_bills as $key=>$bill)
-        // {
-        //     $bill->sale_bill_number=$key+1;
-        //     $bill->save();
-        // }
+        if ($sale_bills) {
+            // foreach($sale_bills as $key=>$bill)
+            // {
+            //     $bill->sale_bill_number=$key+1;
+            //     $bill->save();
+            // }
         }
         $sale_bill = SaleBill::where('sale_bill_number', $request->sale_bill_number)
             ->where('company_id', $company_id)->first();
@@ -584,10 +593,10 @@ class SaleBillController extends Controller
         // dd($company_id,$company);
         try {
             // createVoucher($saleBill, $companyId, $notation, $paymentMethod = "cash", $status = 1, $options = 1)
-            $voucher =VoucherService::createVoucher(
-                 $sale_bill,
-                 $company_id,
-                 'قيد فاتورة مبيعات رقم' . $sale_bill->sale_bill_number,
+            $voucher = VoucherService::createVoucher(
+                $sale_bill,
+                $company_id,
+                'قيد فاتورة مبيعات رقم' . $sale_bill->sale_bill_number,
             );
             $saleVoucher = $sale_bill->vouchers()->save($voucher);
             // createTransaction($accountingTreeId, $voucherId, $amount, $notation, $type)
