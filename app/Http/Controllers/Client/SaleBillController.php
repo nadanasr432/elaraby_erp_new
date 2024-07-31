@@ -286,17 +286,7 @@ class SaleBillController extends Controller
                 $outer_client->accountingTree()->save($accountingTree);
             }
             $outer_client->load('accountingTree');
-
-            if ($outer_client->accountingTree) {
-                $clientAccountId = $outer_client->accountingTree->id;
-            } else {
-                // Handle the case where the accounting tree is still null
-                // Log::error('Failed to retrieve accounting tree for client ID: ' . $outer_client->id);
-                dd('hi');
-                $clientAccountId = null;
-            }
-            // $clientAccountId = $outer_client->accountingTree->id;
-
+            $clientAccountId = $outer_client->accountingTree->id;
             $payment_method = $data['payment_method'];
 
             $voucher = new Voucher([
@@ -577,8 +567,10 @@ class SaleBillController extends Controller
             $accountingTree->parent_id = 1203;
             $accountingTree->type = 'sub';
             $outerClient->accountingTree()->save($accountingTree);
-            $clientAccountId = $outerClient->accountingTree->id;
         }
+        $outerClient->load('accountingTree');
+
+        $clientAccountId = $outerClient->accountingTree->id;
         if (!$store->accountingTree) {
             $accountingTree = new \App\Models\accounting_tree();
             $accountingTree->account_name =  'حساب مخزون' . $store->store_name;
@@ -588,6 +580,8 @@ class SaleBillController extends Controller
             $accountingTree->type = 'sub';
             $store->accountingTree()->save($accountingTree);
         }
+        $store->load('accountingTree');
+        $storeAccountId = $store->accountingTree->id;
         // add prev_balance to account
         DB::beginTransaction();
         // dd($company_id,$company);
