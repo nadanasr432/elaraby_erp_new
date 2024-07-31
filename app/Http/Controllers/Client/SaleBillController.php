@@ -262,7 +262,7 @@ class SaleBillController extends Controller
 
             $outer_client_id = $data['outer_client_id'];
             $outer_client = OuterClient::findOrFail($outer_client_id);
-            // dd( $outer_client);
+            dd( $outer_client);
             if (!empty($sale_bill->outer_client_id)) {
                 $balance_before = $outer_client->prev_balance;
                 $balance_after = $balance_before - $amount;
@@ -278,14 +278,15 @@ class SaleBillController extends Controller
             if (!$outer_client->accountingTree) {
                 // $accountingTree = new \App\Models\AccountingTree();
                 $accountingTree = new \App\Models\accounting_tree();
+
                 $accountingTree->account_name = 'حساب العميل ' . $outer_client->client_name;
                 $accountingTree->account_name_en = $outer_client->client_name . 'Account';
                 $accountingTree->account_number = '1203' . $outer_client->id;
                 $accountingTree->parent_id = 1203;
                 $accountingTree->type = 'sub';
                 $outer_client->accountingTree()->save($accountingTree);
-                $clientAccountId = $outer_client->accountingTree->id;
             }
+            $clientAccountId = $outer_client->accountingTree->id;
 
             $payment_method = $data['payment_method'];
 
