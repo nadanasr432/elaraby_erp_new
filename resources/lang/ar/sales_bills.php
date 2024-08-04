@@ -48,7 +48,7 @@ return [
     "offer price" => "عرض سعر",
     "Start Date" => "تاريخ البداية",
     "Expiry date" => "تاريخ الانتهاء",
-    "Release Date" => "تاريخ الاصدار",
+    "Release Date" => "تاريخ الفاتوره",
     "Display number" => "رقم العرض",
     "commercial register" => "السجل التجاري",
     "unit price" => "السعر",
