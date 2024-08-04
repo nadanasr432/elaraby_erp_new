@@ -215,6 +215,7 @@ return [
     "Cash sales client" => " عميل مبيعات نقدية",
     "voucher" => "تقرير دفتر اليومية",
     "products-are-expired" => "المنتجات منتهية الصلاحية",
+    "Manufacture"=> "قائمة التصنيع",
 
 
 ];

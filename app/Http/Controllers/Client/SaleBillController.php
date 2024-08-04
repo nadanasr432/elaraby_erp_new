@@ -262,7 +262,7 @@ class SaleBillController extends Controller
 
             $outer_client_id = $data['outer_client_id'];
             $outer_client = OuterClient::findOrFail($outer_client_id);
-
+            // dd( $outer_client);
             if (!empty($sale_bill->outer_client_id)) {
                 $balance_before = $outer_client->prev_balance;
                 $balance_after = $balance_before - $amount;
@@ -278,16 +278,15 @@ class SaleBillController extends Controller
             if (!$outer_client->accountingTree) {
                 // $accountingTree = new \App\Models\AccountingTree();
                 $accountingTree = new \App\Models\accounting_tree();
-
                 $accountingTree->account_name = 'حساب العميل ' . $outer_client->client_name;
                 $accountingTree->account_name_en = $outer_client->client_name . 'Account';
                 $accountingTree->account_number = '1203' . $outer_client->id;
                 $accountingTree->parent_id = 1203;
                 $accountingTree->type = 'sub';
                 $outer_client->accountingTree()->save($accountingTree);
-                $clientAccountId = $outer_client->accountingTree->id;
             }
-
+            $outer_client->load('accountingTree');
+            $clientAccountId = $outer_client->accountingTree->id;
             $payment_method = $data['payment_method'];
 
             $voucher = new Voucher([
@@ -371,6 +370,7 @@ class SaleBillController extends Controller
                 ]);
             }
         } catch (\Exception $e) {
+            dd($e);
             DB::rollBack();
             return response()->json([
                 'status' => false,
@@ -516,13 +516,12 @@ class SaleBillController extends Controller
 
         # get invoiceData.
         $sale_bills = SaleBill::where('company_id', $company_id)->get();
-        if($sale_bills)
-        {
-        // foreach($sale_bills as $key=>$bill)
-        // {
-        //     $bill->sale_bill_number=$key+1;
-        //     $bill->save();
-        // }
+        if ($sale_bills) {
+            // foreach($sale_bills as $key=>$bill)
+            // {
+            //     $bill->sale_bill_number=$key+1;
+            //     $bill->save();
+            // }
         }
         $sale_bill = SaleBill::where('sale_bill_number', $request->sale_bill_number)
             ->where('company_id', $company_id)->first();
@@ -568,8 +567,10 @@ class SaleBillController extends Controller
             $accountingTree->parent_id = 1203;
             $accountingTree->type = 'sub';
             $outerClient->accountingTree()->save($accountingTree);
-            $clientAccountId = $outerClient->accountingTree->id;
         }
+        $outerClient->load('accountingTree');
+
+        $clientAccountId = $outerClient->accountingTree->id;
         if (!$store->accountingTree) {
             $accountingTree = new \App\Models\accounting_tree();
             $accountingTree->account_name =  'حساب مخزون' . $store->store_name;
@@ -579,15 +580,17 @@ class SaleBillController extends Controller
             $accountingTree->type = 'sub';
             $store->accountingTree()->save($accountingTree);
         }
+        $store->load('accountingTree');
+        $storeAccountId = $store->accountingTree->id;
         // add prev_balance to account
         DB::beginTransaction();
         // dd($company_id,$company);
         try {
             // createVoucher($saleBill, $companyId, $notation, $paymentMethod = "cash", $status = 1, $options = 1)
-            $voucher =VoucherService::createVoucher(
-                 $sale_bill,
-                 $company_id,
-                 'قيد فاتورة مبيعات رقم' . $sale_bill->sale_bill_number,
+            $voucher = VoucherService::createVoucher(
+                $sale_bill,
+                $company_id,
+                'قيد فاتورة مبيعات رقم' . $sale_bill->sale_bill_number,
             );
             $saleVoucher = $sale_bill->vouchers()->save($voucher);
             // createTransaction($accountingTreeId, $voucherId, $amount, $notation, $type)

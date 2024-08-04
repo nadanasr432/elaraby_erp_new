@@ -34,6 +34,7 @@ use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\Client\CouponController;
 use App\Http\Controllers\Client\GroupeController;
 use App\Http\Controllers\Client\ReportController;
+use App\Http\Controllers\ManufactureController;
 use App\Http\Controllers\Client\BuyBillController;
 use App\Http\Controllers\Client\CapitalController;
 use App\Http\Controllers\Client\CountryController;
@@ -46,8 +47,8 @@ use App\Http\Controllers\Client\EmployeeController;
 use App\Http\Controllers\Client\SaleBillController;
 use App\Http\Controllers\Client\SettingsController;
 use App\Http\Controllers\Client\SupplierController;
-use App\Http\Controllers\Admin\Auth\LoginController;
 // use App\Http\Controllers\Client\JournalEntryController;
+use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Client\QuotationController;
 use App\Http\Controllers\Client\CostCenterController;
 use App\Http\Controllers\Admin\SubscriptionController;
@@ -316,7 +317,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
                 'edit' => 'client.branches.edit',
                 'store' => 'client.branches.store',
             ]);
-        
+
 
             // Stores Routes
             Route::resource('stores', StoreController::class)->names([
@@ -1017,14 +1018,17 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::post('/getNewPosBillID', [PosController::class, 'getNewPosBillID'])->name('getNewPosBillID');
             Route::post('/clients-store-cash-clients-pos', [PosController::class, 'store_cash_clients'])
             ->name('client.store.cash.clients.pos');
-
-
-
-
-
-
-
-
+            // Route::resource('Manufactures', ManufactureController::class);
+            Route::resource('manufactures', ManufactureController::class)->names([
+                'index' => 'client.manufactures.index',
+                'create' => 'client.manufactures.create',
+                'update' => 'client.manufactures.update',
+                'destroy' => 'client.manufactures.destroy',
+                'edit' => 'client.manufactures.edit',
+                'store' => 'client.manufactures.store',
+                'show' => 'client.manufactures.show',
+            ]);
+            Route::get('manufactures/{manufacturing}/status', [ManufactureController::class, 'cancel'])->name('client.manufactures.cancel');
 
     });
 });

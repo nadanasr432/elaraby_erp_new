@@ -308,7 +308,20 @@
 
                                             </a>
                                         </li>
-                                    @endcan
+                                        @endcan
+                                        <li class="{{ Request::is('*/client/manufactures') ? 'active' : '' }}">
+                                            <a href="{{ route('client.manufactures.index') }}">
+                                                <svg style="width: 15px;fill:lightgreen;"
+                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                    <path
+                                                        d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                                                </svg>
+                                                {{ __('sidebar.Manufacture') }}
+                                                <span class="badge badge-danger" id="Manufacture"
+                                                    style="position: absolute;display:none;margin-right:5px;border-radius: 50%;font-size: 12px !important;width: 20px;height:20px;font-weight: bold;"></span>
+
+                                            </a>
+                                        </li>
                                 </ul>
                             </li>
                         </ul>
@@ -1332,7 +1345,7 @@
                     </ul>
                 </li> --}}
 
-{{--            
+{{--
         <li class="{{ Request::is('*/places') ? 'active' : '' }}">
             <a href="#">
                 <svg style="width: 15px; fill: lightgreen;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -1354,7 +1367,7 @@
                 </li>
             </ul>
         </li>
-    
+
         <li class="{{ Request::is('*/places') ? 'active' : '' }}">
             <a href="#">
                 <svg style="width: 15px; fill: lightgreen;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
