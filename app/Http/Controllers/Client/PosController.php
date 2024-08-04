@@ -48,6 +48,18 @@ class PosController extends Controller
         $user = Client::findOrFail($auth_id);
         $company_id = Auth::user()->company_id;
         $company = Company::FindOrFail($company_id);
+        $stores = Store::where('company_id', $company_id)->get();
+        $categories = Category::where('company_id', $company_id)->get();
+        $sub_categories = SubCategory::where('company_id', $company_id)->get();
+        $units = $company->units;
+        $check = Product::where('company_id', $company_id)->get();
+        if ($check->isEmpty()) {
+            $code_universal = "100000001";
+        } else {
+            // $old_order = Product::where('company_id',$company_id)->max('code_universal');
+            // $code_universal = ++$old_order;
+            $code_universal = time() . substr(time(), 0, 2);
+        }
         $branch_id = $user->branch_id;
         if ($branch_id != "") {
             $pos_status = PosSetting::where('company_id', $company_id)
@@ -180,13 +192,14 @@ class PosController extends Controller
                     'company',
                     'taxes',
                     'timezones',
-                    'categories'
+                    'categories',
+                    'stores'
                 )
             );
         } else {
             return view(
                 'client.pos.create',
-                compact('company_id', 'pos_status', 'pos_settings', 'code_universal', 'currency', 'user', 'bills', 'outer_clients', 'safes', 'banks', 'pre_cash', 'pending_pos', 'stores', 'taxes', 'pos_open', 'products', 'company', 'timezones', 'categories')
+                compact('units','sub_categories','company_id', 'pos_status', 'pos_settings', 'code_universal', 'currency', 'user', 'bills', 'outer_clients', 'safes', 'banks', 'pre_cash', 'pending_pos', 'stores', 'taxes', 'pos_open', 'products', 'company', 'timezones', 'categories')
             );
         }
     }
@@ -196,7 +209,18 @@ class PosController extends Controller
         $user = Client::findOrFail(Auth::user()->id);
         $company_id = Auth::user()->company_id;
         $company = Company::FindOrFail($company_id);
-
+        $stores = Store::where('company_id', $company_id)->get();
+        $categories = Category::where('company_id', $company_id)->get();
+        $sub_categories = SubCategory::where('company_id', $company_id)->get();
+        $units = $company->units;
+        $check = Product::where('company_id', $company_id)->get();
+        if ($check->isEmpty()) {
+            $code_universal = "100000001";
+        } else {
+            // $old_order = Product::where('company_id',$company_id)->max('code_universal');
+            // $code_universal = ++$old_order;
+            $code_universal = time() . substr(time(), 0, 2);
+        }
         $pos_status = "none";
         if ($user->branch_id && !empty($user->branch_id)) {
             $pos_status = PosSetting::where('company_id', $company_id)
@@ -270,7 +294,7 @@ class PosController extends Controller
 
         return view(
             'client.pos.create2',
-            compact('company_id', 'pos_status', 'pos_settings', 'code_universal', 'user', 'outer_clients', 'safes', 'banks', 'pre_cash', 'pending_pos', 'stores', 'taxes', 'products', 'company', 'timezones', 'categories')
+            compact('units', 'sub_categories', 'company_id', 'pos_status', 'pos_settings', 'code_universal', 'user', 'outer_clients', 'safes', 'banks', 'pre_cash', 'pending_pos', 'stores', 'taxes', 'products', 'company', 'timezones', 'categories')
         );
     }
 

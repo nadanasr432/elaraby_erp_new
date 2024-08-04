@@ -7,6 +7,7 @@ return [
     "company-profile-completion-rate" => "Company profile completion rate",
     "complete-the-company-information" => "Complete the company information",
     "add-first-product" => "Add first product",
+    "close" => "close",
     "add-first-customer" => "Add first customer",
     "add-first-supplier" => "Add first supplier",
     "daily-opening-opening-point-of-sale" => "Daily opening (opening point of sale)",

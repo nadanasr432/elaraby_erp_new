@@ -7,6 +7,7 @@ return [
     "company-profile-completion-rate" => "معدل اكتمال بروفايل الشركة",
     "complete-the-company-information" => "استكمل معلومات الشركة",
     "add-first-product" => "اضافة اول منتج",
+    "close"=>"اغلاق",
     "add-first-customer" => "اضافة اول عميل",
     "add-first-supplier" => "اضافة اول مورد",
     "daily-opening-opening-point-of-sale" => "فتح اليومية ( فتح نقطة البيع )",
