@@ -563,23 +563,23 @@
     if (outer_client_id == "") {
         alert("لابد ان تختار المورد أولا");
         return;
-    } 
+    }
     if (product_id == "" || product_id <= "0") {
         alert("لابد ان تختار المنتج أولا");
         return;
-    } 
+    }
     if (product_price == "" || product_price == "0") {
         alert("لم يتم اختيار سعر المنتج");
         return;
-    } 
+    }
     if (quantity == "" || quantity <= "0") {
         alert("الكمية غير مناسبة");
         return;
-    } 
+    }
     if (quantity_price == "" || quantity_price == "0") {
         alert("الكمية غير مناسبة او الاجمالى غير صحيح");
         return;
-    } 
+    }
     if (unit_id == "" || unit_id == "0") {
         alert("اختر الوحدة");
         return;
@@ -609,7 +609,10 @@
             $('.box_success').removeClass('d-none').fadeIn(200).delay(3000).fadeOut(300);
             $('.msg_success').html(data.msg);
 
-            updateQuotationElements(quotation_number);
+            // Only append the new element to the table
+            appendNewElement(data.new_element);
+
+            //----update discount and extra-----//
             updateDiscount(quotation_number, discount_type, discount_value);
             updateExtra(quotation_number, extra_type, extra_value);
         } else {
@@ -617,6 +620,7 @@
             $('.box_error').removeClass('d-none').fadeIn(200).delay(3000).fadeOut(300);
             $('.msg_error').html(data.msg);
 
+            // Update elements, discount, and extra even if there's an error
             updateQuotationElements(quotation_number);
             updateDiscount(quotation_number, discount_type, discount_value);
             updateExtra(quotation_number, extra_type, extra_value);
@@ -624,12 +628,36 @@
     });
 });
 
+function appendNewElement(element) {
+    let i = $('.bill_details tr').length + 1;
+    let newRow = `
+        <tr>
+            <td>${i}</td>
+            <td>${element.product.product_name}</td>
+            <td>${element.product_price}</td>
+            <td>${element.quantity} ${element.unit.unit_name}</td>
+            <td>${element.quantity_price}</td>
+            <td class='no-print'>
+                <button type='button' quotation_number='${element.quotation.quotation_number}' element_id='${element.id}' class='btn btn-sm btn-info edit_element'>
+                    <i class='fa fa-pencil'></i>
+                </button>
+                <button type='button' quotation_number='${element.quotation.quotation_number}' element_id='${element.id}' class='btn btn-sm btn-danger remove_element'>
+                    <i class='fa fa-trash'></i>
+                </button>
+            </td>
+        </tr>
+    `;
+    $('.bill_details tbody').append(newRow);
+    attachElementHandlers();
+}
+
 function updateQuotationElements(quotation_number) {
     $.post("{{ url('/client/quotations/elements') }}", {
         "_token": "{{ csrf_token() }}",
         quotation_number: quotation_number
     }, function(elements) {
         $('.bill_details').html(elements).fadeIn(700);
+        attachElementHandlers();
     });
 }
 
@@ -654,6 +682,67 @@ function updateExtra(quotation_number, extra_type, extra_value) {
         $('.after_totals').html(data);
     });
 }
+
+function attachElementHandlers() {
+    $('.remove_element').on('click', function() {
+        let element_id = $(this).attr('element_id');
+        let quotation_number = $(this).attr('quotation_number');
+
+        let discount_type = $('#discount_type').val();
+        let discount_value = $('#discount_value').val();
+
+        let extra_type = $('#extra_type').val();
+        let extra_value = $('#extra_value').val();
+
+        $.post('/client/quotations/element/delete', {
+            '_token': "{{ csrf_token() }}",
+            element_id: element_id
+        }, function(data) {
+            updateQuotationElements(quotation_number);
+        });
+
+        $.post('/client/quotations/discount', {
+            '_token': "{{ csrf_token() }}",
+            quotation_number: quotation_number,
+            discount_type: discount_type,
+            discount_value: discount_value
+        }, function(data) {
+            $('.after_totals').html(data);
+        });
+
+        $.post('/client/quotations/extra', {
+            '_token': "{{ csrf_token() }}",
+            quotation_number: quotation_number,
+            extra_type: extra_type,
+            extra_value: extra_value
+        }, function(data) {
+            $('.after_totals').html(data);
+        });
+
+        $(this).closest('tr').fadeOut(300);
+    });
+
+    $('.edit_element').on('click', function() {
+        let element_id = $(this).attr('element_id');
+        let quotation_number = $(this).attr('quotation_number');
+        $.post('/client/quotations/edit-element', {
+            '_token': "{{ csrf_token() }}",
+            quotation_number: quotation_number,
+            element_id: element_id
+        }, function(data) {
+            $('#product_id').val(data.product_id).selectpicker('refresh');
+            $('#product_price').val(data.product_price);
+            $('#unit_id').val(data.unit_id);
+            $('#quantity').val(data.quantity);
+            $('#quantity_price').val(data.quantity_price);
+            $('#add').hide();
+            $('#edit').show().attr('element_id', element_id).attr('quotation_number', quotation_number);
+        });
+    });
+}
+
+// Call this function initially to attach handlers
+attachElementHandlers();
 
 
         //----exec discount-----//
