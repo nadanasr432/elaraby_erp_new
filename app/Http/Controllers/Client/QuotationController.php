@@ -103,7 +103,7 @@ class QuotationController extends Controller
         */
         return view(
             'client.quotations.create',
-            compact('company', 'outer_clients', 'units', 'stores', 'categories', 'extra_settings', 'company_id', 'all_products', 'pre_quotation', 'quoationsCount')
+            compact('company', 'outer_clients', 'units', 'stores', 'categories', 'extra_settings', 'company_id', 'all_products', 'pre_quotation')
         );
     }
 
