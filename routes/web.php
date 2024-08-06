@@ -397,7 +397,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
                 'store' => 'client.products.store',
                 'show' => 'client.products.show',
             ]);
-            Route::post('products', [ProductController::class, 'storeProduct'])->name('pos.product.store');
+            Route::post('products-store', [ProductController::class, 'storeProduct'])->name('pos.product.store');
 
             Route::get('clients-products-empty', [ProductController::class, 'empty'])->name('client.products.empty');
             Route::get('clients-products-limited', [ProductController::class, 'limited'])->name('client.products.limited');
