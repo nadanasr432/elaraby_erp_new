@@ -397,6 +397,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
                 'store' => 'client.products.store',
                 'show' => 'client.products.show',
             ]);
+            Route::post('products', [ProductController::class, 'storeProduct'])->name('pos.product.store');
 
             Route::get('clients-products-empty', [ProductController::class, 'empty'])->name('client.products.empty');
             Route::get('clients-products-limited', [ProductController::class, 'limited'])->name('client.products.limited');
@@ -437,6 +438,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
                 'show' => 'client.outer_clients.show',
             ]);
             Route::get('clients-outer-clients-print', [OuterClientController::class, 'print'])->name('client.outer_clients.print');
+            Route::post('outer-clients', [OuterClientController::class, 'storeClient'])->name('pos.outer_clients.store');
 
             Route::get('clients-outer-clients-filter', [OuterClientController::class, 'filter_clients'])->name('client.outer_clients.filter');
             Route::get('clients-outer-clients-filter-key', [OuterClientController::class, 'filter_clients']);

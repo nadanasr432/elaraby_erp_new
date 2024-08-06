@@ -277,7 +277,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 <form class="parsley-style-1" id="selectForm2" name="selectForm2"
-                                                    action="{{ route('client.products.store', 'test') }}"
+                                                    action="{{ route('pos.product.store') }}"
                                                     enctype="multipart/form-data" method="post">
                                                     {{ csrf_field() }}
                                                     <input type="hidden" name="company_id" value="{{ $company_id }}">
@@ -630,7 +630,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <form class="parsley-style-1" id="selectForm2" name="selectForm2"
-                                            action="{{ route('client.outer_clients.store', 'test') }}"
+                                            action="{{ route('pos.outer_clients.store') }}"
                                             enctype="multipart/form-data" method="post">
                                             {{ csrf_field() }}
                                             <input type="hidden" name="company_id" value="{{ $company_id }}">

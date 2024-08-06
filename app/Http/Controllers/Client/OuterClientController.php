@@ -205,6 +205,52 @@ class OuterClientController extends Controller
         return redirect()->route('client.outer_clients.index')
             ->with('success', 'تم اضافة العميل بنجاح');
     }
+    public function storeClient(OuterClientRequest  $request)
+    {
+        $data = $request->all();
+        $company_id = $data['company_id'];
+        $balance = $request->balance;
+        if ($balance == "for") {
+            $data['prev_balance'] = -1 * $request->prev_balance;
+        } elseif ($balance == "on") {
+            $data['prev_balance'] = $request->prev_balance;
+        }
+        $outer_client = OuterClient::create($data);
+        $notes = $request->notes;
+        $phones = $request->phones;
+        $addresses = $request->addresses;
+
+        if (isset($notes) && !empty($notes)) {
+            foreach ($notes as $note) {
+                OuterClientNote::create([
+                    'outer_client_id' => $outer_client->id,
+                    'client_note' => $note,
+                    'company_id' => $company_id,
+                ]);
+            }
+        }
+
+        if (isset($addresses) && !empty($addresses)) {
+            foreach ($addresses as $address) {
+                OuterClientAddress::create([
+                    'outer_client_id' => $outer_client->id,
+                    'client_address' => $address,
+                    'company_id' => $company_id,
+                ]);
+            }
+        }
+
+        if (isset($phones) && !empty($phones)) {
+            foreach ($phones as $phone) {
+                OuterClientPhone::create([
+                    'outer_client_id' => $outer_client->id,
+                    'client_phone' => $phone,
+                    'company_id' => $company_id,
+                ]);
+            }
+        }
+        return back()->with('success', 'تم اضافة العميل بنجاح');
+    }
 
     public function show($id)
     {

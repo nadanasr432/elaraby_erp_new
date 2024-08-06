@@ -135,6 +135,41 @@ class ProductController extends Controller
         return redirect()->route('client.products.index')
         ->with('success', 'تم اضافة المنتج بنجاح');
     }
+    public function storeProduct(ProductRequest $request)
+    {
+        // dd($request);
+        $data = $request->all();
+
+        if (empty($data['first_balance'])) $data['first_balance'] = 0;
+        if (empty($data['qr'])) $company_id = $data['company_id'];
+
+        // Check for category if khadamya
+        $cat = Category::find($data['category_id']);
+        if ($cat->category_type == 'خدمية') $data['first_balance'] = 10000000;
+
+        // Create the main product
+        $product = Product::create($data);
+
+        // Handle file upload for product_pic
+        if ($request->hasFile('product_pic')) {
+            $image = $request->file('product_pic');
+            $fileName = $image->getClientOriginalName();
+            $uploadDir = 'uploads/products/' . $product->id;
+            $image->move($uploadDir, $fileName);
+            $product->product_pic = $uploadDir . '/' . $fileName;
+            $product->save();
+        }
+
+        // Save combo products
+        if (!empty($data['combo_products'])) {
+            foreach ($data['combo_products'] as $comboProductData) {
+                $comboProductData['parent_id'] = $product->id;
+                Combo::create($comboProductData);
+            }
+        }
+
+        return back()->with('success', 'تم اضافة المنتج بنجاح');
+    }
 
     public function show($id)
     {
