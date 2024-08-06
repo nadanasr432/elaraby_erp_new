@@ -211,7 +211,7 @@ class QuotationController extends Controller
         $data['client_id'] = Auth::user()->id;
         $quotation = Quotation::where('quotation_number', $data['quotation_number'])->where('company_id', $company->id)->first();
         // return json_encode($quotation);
-        dd($quotation);
+       
         if (empty($quotation)) {
             $quotation = Quotation::create($data);
         } else {
@@ -224,7 +224,7 @@ class QuotationController extends Controller
             ->where('product_id', $request->product_id)
             ->where('company_id', $company->id)
             ->first();
-
+        dd($check);
         if (empty($check)) {
             $quotation_element = QuotationElement::create($data);
         } else {
