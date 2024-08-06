@@ -649,14 +649,14 @@
                             $('.msg_error').html(data.msg);
                             $('.box_error').delay(3000).fadeOut(300);
 
-                            //----update elements-----//
-                            $.post("{{ url('/client/quotations/elements') }}", {
-                                "_token": "{{ csrf_token() }}",
-                                quotation_number: quotation_number
-                            }, function(elements) {
-                                $('.bill_details').html(elements);
-                                $('.bill_details').fadeIn(700);
-                            });
+                            // //----update elements-----//
+                            // $.post("{{ url('/client/quotations/elements') }}", {
+                            //     "_token": "{{ csrf_token() }}",
+                            //     quotation_number: quotation_number
+                            // }, function(elements) {
+                            //     $('.bill_details').html(elements);
+                            //     $('.bill_details').fadeIn(700);
+                            // });
 
                             //----update discount-----//
                             $.post("{{ url('/client/quotations/discount') }}", {
