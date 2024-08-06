@@ -224,22 +224,23 @@ class QuotationController extends Controller
             ->where('product_id', $request->product_id)
             ->where('company_id', $company->id)
             ->first();
-        dd($check);
+        // dd($check);
         if (empty($check)) {
             $quotation_element = QuotationElement::create($data);
-        } else {
-            $old_quantity = $check->quantity;
-            $new_quantity = $old_quantity + $request->quantity;
-            $product_price = $request->product_price;
-            $new_quantity_price = $new_quantity * $product_price;
-            $unit_id = $request->unit_id;
-            $quotation_element = $check->update([
-                'product_price' => $product_price,
-                'quantity' => $new_quantity,
-                'unit_id' => $unit_id,
-                'quantity_price' => $new_quantity_price,
-            ]);
         }
+        // } else {
+        //     $old_quantity = $check->quantity;
+        //     $new_quantity = $old_quantity + $request->quantity;
+        //     $product_price = $request->product_price;
+        //     $new_quantity_price = $new_quantity * $product_price;
+        //     $unit_id = $request->unit_id;
+        //     $quotation_element = $check->update([
+        //         'product_price' => $product_price,
+        //         'quantity' => $new_quantity,
+        //         'unit_id' => $unit_id,
+        //         'quantity_price' => $new_quantity_price,
+        //     ]);
+        // }
 
         if ($quotation && $quotation_element) {
             $all_elements = QuotationElement::where('quotation_id', $quotation->id)->where('company_id', $company->id)->get();
