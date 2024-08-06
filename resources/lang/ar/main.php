@@ -39,6 +39,8 @@ return [
     "main-information" => "البيانات الاساسية",
     "update" => "تحديث",
     "edit" => "تعديل",
+    "add_product"=>"اضافة منتج",
+    "add_client"=>"اضافة عميل",
     "are-you-sure-to-delete" => "هل انت متأكد من الحذف ؟",
     "delete" => "حذف",
     "reports-fields" => "خانات التقارير",

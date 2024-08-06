@@ -10,6 +10,8 @@ return [
     "contact-us" => "Contact Us",
     "features" => "About us",
     "einvoice" => "E-invoice",
+    "add_product" => "Add Product",
+    "add_client" => "Add Client",
     "register" => "Register",
     "login" => "Login",
     "cancel" => "Cancel",

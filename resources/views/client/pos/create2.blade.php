@@ -259,7 +259,7 @@
                             </div>
                             <div class="col-md-4 d-flex justify-content-end mb-1">
                                 <a href="#" class="btn btn-success p-1" data-toggle="modal"
-                                    data-target="#addProductModal" title="Add Product">
+                                    data-target="#addProductModal" title="{{ __('main.add_product') }}">
                                     <i class="fa fa-plus"></i>
                                 </a>
                                 <!-- Add Product Modal -->
@@ -612,7 +612,7 @@
                                 اختر العميل
                             </h5>
                             <a href="#" class="btn btn-secondary mb-1" data-toggle="modal"
-                                data-target="#addCustomerModal" title="{{ __('home.Add a client') }}">
+                                data-target="#addCustomerModal" title="{{ __('main.add_client') }}">
                                 <i class="fa fa-plus"></i>
                             </a>
                         </div>
