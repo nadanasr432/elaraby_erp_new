@@ -97,13 +97,21 @@ class QuotationController extends Controller
                 })->get();
         }
         $pre_quotation = Quotation::where('company_id', $company_id)->count() + 1;
+        $highestQuotation = Quotation::where('company_id', $company_id)
+        ->orderBy('quotation_number', 'desc')
+        ->first();
+
+        // If there are no existing quotations, start with 1
+        $newQuotationNumber = $highestQuotation ? $highestQuotation->quotation_number + 1 : 1;
+
         /*
         $pre_quotation = $company_id . rand();
         $pre_quotation = substr($pre_quotation, 0, 9);
         */
         return view(
+           
             'client.quotations.create',
-            compact('company', 'outer_clients', 'units', 'stores', 'categories', 'extra_settings', 'company_id', 'all_products', 'pre_quotation')
+            compact("newQuotationNumber",'company', 'outer_clients', 'units', 'stores', 'categories', 'extra_settings', 'company_id', 'all_products', 'pre_quotation')
         );
     }
 

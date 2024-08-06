@@ -77,7 +77,7 @@
                         <h3 class="pull-right font-weight-bold">
                             اضافة عرض سعر
                             <div class="badge btn-newdark font-weight-bold">
-                                {{ $pre_quotation }}
+                                {{ $newQuotationNumber }}
                             </div>
                         </h3>
                         <div class="row mr-1">
@@ -106,7 +106,7 @@
                     <form class="pr-1 pl-1 mb-0 pb-0 mt-2" action="#" method="POST">
                         @csrf
                         @method('POST')
-                        <input type="hidden" value="{{ $pre_quotation }}" id="quotation_number" />
+                        <input type="hidden" value="{{ $newQuotationNumber }}" id="quotation_number" />
 
 
                         <!----STORE--->
@@ -189,14 +189,14 @@
                                     {{ __('sales_bills.product-code') }}
                                     <span class="text-danger font-weight-bold">*</span>
                                 </label>
-                                <select name="product_id" id="product_id" class="selectpicker w-80" data-style="btn-success"
-                                    data-live-search="true" title="{{ __('sales_bills.product-code') }}">
+                               <select name="product_id" id="product_id" class="selectpicker w-80" data-style="btn-success"
+                    data-live-search="true" title="{{ __('sales_bills.product-code') }}">
 
-                                    @foreach ($all_products as $product)
-                                        <option value="{{ $product->id }}" data-tokens="{{ $product->code_universal }}">
-                                            {{ $product->product_name }}</option>
-                                    @endforeach
-                                </select>
+                    @foreach ($all_products as $product)
+                        <option value="{{ $product->id }}" data-tokens="{{ $product->code_universal }}">
+                            {{ $product->product_name }}</option>
+                    @endforeach
+                </select>
 
                                 <div class="available text-warning font-weight-bold"
                                     style="margin-top: 10px;text-align:right;"></div>
