@@ -542,7 +542,6 @@
             $('#quantity_price').val(quantity_price);
         });
 
-        //------on adding new qoutation ------//
         $('#add').on('click', function() {
             let outer_client_id = $('#outer_client_id').val();
             let quotation_number = $('#quotation_number').val();
@@ -560,128 +559,212 @@
 
             let extra_type = $('#extra_type').val();
             let extra_value = $('#extra_value').val();
-            let first_balance = parseFloat($('#quantity').attr('max'));
+
             if (outer_client_id == "") {
                 alert("لابد ان تختار المورد أولا");
-            } else {
-                if (product_id == "" || product_id <= "0") {
-                    alert("لابد ان تختار المنتج أولا");
-                } else if (product_price == "" || product_price == "0") {
-                    alert("لم يتم اختيار سعر المنتج");
-                } else if (quantity == "" || quantity <= "0") {
-                    alert("الكمية غير مناسبة");
-                } else if (quantity_price == "" || quantity_price == "0") {
-                    alert("الكمية غير مناسبة او الاجمالى غير صحيح");
-                } else if (unit_id == "" || unit_id == "0") {
-                    alert("اختر الوحدة");
-                } else {
-                    $.post("{{ url('/client/quotations/post') }}", {
-                        outer_client_id: outer_client_id,
-                        quotation_number: quotation_number,
-                        product_id: product_id,
-                        product_price: product_price,
-                        quantity: quantity,
-                        unit_id: unit_id,
-                        quantity_price: quantity_price,
-                        start_date: start_date,
-                        notes: notes,
-                        expiration_date: expiration_date,
-                        "_token": "{{ csrf_token() }}"
-                    }, function(data) {
-                        // console.log(data);return;
-                        $('#outer_client_id').attr('disabled', true).addClass('disabled');
-                        $('#product_id').val('').trigger('change');
-                        $('#discount_type').attr('disabled', false);
-                        $('.print_btn').attr('disabled', false);
-                        $('.close_btn').attr('disabled', false);
-                        $('.save_btn').removeClass('disabled');
-                        $('.send_btn').removeClass('disabled');
-                        $('#discount_value').attr('disabled', false);
-                        $('#exec_discount').attr('disabled', false);
-                        $('#extra_type').attr('disabled', false);
-                        $('#extra_value').attr('disabled', false);
-                        $('#exec_extra').attr('disabled', false);
-                        $('#product_price').val('0');
-                        $('#quantity').val('');
-                        $('#unit_id').val('');
-                        $('#quantity_price').val('');
-                        if (data.status == true) {
-                            $('.box_success').removeClass('d-none').fadeIn(200);
-                            $('.msg_success').html(data.msg);
-                            $('.box_success').delay(3000).fadeOut(300);
-
-                            //----update elements-----//
-                            $.post("{{ url('/client/quotations/elements') }}", {
-                                "_token": "{{ csrf_token() }}",
-                                quotation_number: quotation_number,
-                                product_id: product_id
-                            }, function(elements) {
-                                $("#saveANDPRINT").append(
-                                    '<input type="hidden" name="quotation_id" value="' +
-                                    quotation_number + '">');
-                                $("#saveANDPRINT").show();
-                                $('.bill_details').html(elements);
-                                $('.bill_details').fadeIn(700);
-                            });
-
-                            //----update discount-----//
-                            $.post("{{ url('/client/quotations/discount') }}", {
-                                "_token": "{{ csrf_token() }}",
-                                quotation_number: quotation_number,
-                                discount_type: discount_type,
-                                discount_value: discount_value
-                            }, function(data) {
-                                $('.after_totals').html(data);
-                            });
-
-                            //----update shipping-----//
-                            $.post("{{ url('/client/quotations/extra') }}", {
-                                "_token": "{{ csrf_token() }}",
-                                quotation_number: quotation_number,
-                                extra_type: extra_type,
-                                extra_value: extra_value
-                            }, function(data) {
-                                $('.after_totals').html(data);
-                            });
-
-                        } else {
-                            $('.box_error').removeClass('d-none').fadeIn(200);
-                            $('.msg_error').html(data.msg);
-                            $('.box_error').delay(3000).fadeOut(300);
-
-                            // //----update elements-----//
-                            // $.post("{{ url('/client/quotations/elements') }}", {
-                            //     "_token": "{{ csrf_token() }}",
-                            //     quotation_number: quotation_number
-                            // }, function(elements) {
-                            //     $('.bill_details').html(elements);
-                            //     $('.bill_details').fadeIn(700);
-                            // });
-
-                            //----update discount-----//
-                            $.post("{{ url('/client/quotations/discount') }}", {
-                                "_token": "{{ csrf_token() }}",
-                                quotation_number: quotation_number,
-                                discount_type: discount_type,
-                                discount_value: discount_value
-                            }, function(data) {
-                                $('.after_totals').html(data);
-                            });
-
-                            //----update shipping-----//
-                            $.post("{{ url('/client/quotations/extra') }}", {
-                                "_token": "{{ csrf_token() }}",
-                                quotation_number: quotation_number,
-                                extra_type: extra_type,
-                                extra_value: extra_value
-                            }, function(data) {
-                                $('.after_totals').html(data);
-                            });
-                        }
-                    });
-                }
+                return;
             }
+            if (product_id == "" || product_id <= "0") {
+                alert("لابد ان تختار المنتج أولا");
+                return;
+            }
+            if (product_price == "" || product_price == "0") {
+                alert("لم يتم اختيار سعر المنتج");
+                return;
+            }
+            if (quantity == "" || quantity <= "0") {
+                alert("الكمية غير مناسبة");
+                return;
+            }
+            if (quantity_price == "" || quantity_price == "0") {
+                alert("الكمية غير مناسبة او الاجمالى غير صحيح");
+                return;
+            }
+            if (unit_id == "" || unit_id == "0") {
+                alert("اختر الوحدة");
+                return;
+            }
+
+            $.post("{{ url('/client/quotations/post') }}", {
+                outer_client_id: outer_client_id,
+                quotation_number: quotation_number,
+                product_id: product_id,
+                product_price: product_price,
+                quantity: quantity,
+                unit_id: unit_id,
+                quantity_price: quantity_price,
+                start_date: start_date,
+                expiration_date: expiration_date,
+                notes: notes,
+                "_token": "{{ csrf_token() }}"
+            }, function(data) {
+                if (data.status) {
+                    // Success actions
+                    $('#outer_client_id').attr('disabled', true).addClass('disabled');
+                    $('#product_id').val('').trigger('change');
+                    $('#discount_type, #discount_value, #extra_type, #extra_value, #exec_discount, #exec_extra')
+                        .attr('disabled', false);
+                    $('.print_btn, .close_btn, .save_btn, .send_btn').attr('disabled', false).removeClass(
+                        'disabled');
+                    $('#product_price, #quantity, #unit_id, #quantity_price').val('');
+
+                    $('.box_success').removeClass('d-none').fadeIn(200).delay(3000).fadeOut(300);
+                    $('.msg_success').html(data.msg);
+
+                    //----update elements-----//
+                    $.post("{{ url('/client/quotations/elements') }}", {
+                        "_token": "{{ csrf_token() }}",
+                        quotation_number: quotation_number,
+                        product_id: product_id
+                    }, function(elements) {
+                        // Assuming elements is an array, filter the element matching the product_id and quotation_number
+                        let newElements = elements.filter(el => el.product_id == product_id && el
+                            .quotation_number == quotation_number);
+
+                        if (newElements.length) {
+                            // Only append the new element to the table
+                            appendNewElement(newElements[0]);
+                        }
+
+                        $("#saveANDPRINT").append(
+                            '<input type="hidden" name="quotation_id" value="' +
+                            quotation_number + '">');
+                        $("#saveANDPRINT").show();
+                    });
+
+                    //----update discount and extra-----//
+                    updateDiscount(quotation_number, discount_type, discount_value);
+                    updateExtra(quotation_number, extra_type, extra_value);
+                } else {
+                    // Error actions
+                    $('.box_error').removeClass('d-none').fadeIn(200).delay(3000).fadeOut(300);
+                    $('.msg_error').html(data.msg);
+
+                    // Update elements, discount, and extra even if there's an error
+                    updateQuotationElements(quotation_number);
+                    updateDiscount(quotation_number, discount_type, discount_value);
+                    updateExtra(quotation_number, extra_type, extra_value);
+                }
+            });
         });
+
+        function appendNewElement(element) {
+            let i = $('.bill_details tr').length + 1;
+            let newRow = `
+        <tr>
+            <td>${i}</td>
+            <td>${element.product.product_name}</td>
+            <td>${element.product_price}</td>
+            <td>${element.quantity} ${element.unit.unit_name}</td>
+            <td>${element.quantity_price}</td>
+            <td class='no-print'>
+                <button type='button' quotation_number='${element.quotation.quotation_number}' element_id='${element.id}' class='btn btn-sm btn-info edit_element'>
+                    <i class='fa fa-pencil'></i>
+                </button>
+                <button type='button' quotation_number='${element.quotation.quotation_number}' element_id='${element.id}' class='btn btn-sm btn-danger remove_element'>
+                    <i class='fa fa-trash'></i>
+                </button>
+            </td>
+        </tr>
+    `;
+            $('.bill_details tbody').append(newRow);
+            attachElementHandlers();
+        }
+
+        function updateQuotationElements(quotation_number) {
+            $.post("{{ url('/client/quotations/elements') }}", {
+                "_token": "{{ csrf_token() }}",
+                quotation_number: quotation_number
+            }, function(elements) {
+                $('.bill_details').html(elements).fadeIn(700);
+                attachElementHandlers();
+            });
+        }
+
+        function updateDiscount(quotation_number, discount_type, discount_value) {
+            $.post("{{ url('/client/quotations/discount') }}", {
+                "_token": "{{ csrf_token() }}",
+                quotation_number: quotation_number,
+                discount_type: discount_type,
+                discount_value: discount_value
+            }, function(data) {
+                $('.after_totals').html(data);
+            });
+        }
+
+        function updateExtra(quotation_number, extra_type, extra_value) {
+            $.post("{{ url('/client/quotations/extra') }}", {
+                "_token": "{{ csrf_token() }}",
+                quotation_number: quotation_number,
+                extra_type: extra_type,
+                extra_value: extra_value
+            }, function(data) {
+                $('.after_totals').html(data);
+            });
+        }
+
+        function attachElementHandlers() {
+            $('.remove_element').on('click', function() {
+                let element_id = $(this).attr('element_id');
+                let quotation_number = $(this).attr('quotation_number');
+
+                let discount_type = $('#discount_type').val();
+                let discount_value = $('#discount_value').val();
+
+                let extra_type = $('#extra_type').val();
+                let extra_value = $('#extra_value').val();
+
+                $.post('/client/quotations/element/delete', {
+                    '_token': "{{ csrf_token() }}",
+                    element_id: element_id
+                }, function(data) {
+                    updateQuotationElements(quotation_number);
+                });
+
+                $.post('/client/quotations/discount', {
+                    '_token': "{{ csrf_token() }}",
+                    quotation_number: quotation_number,
+                    discount_type: discount_type,
+                    discount_value: discount_value
+                }, function(data) {
+                    $('.after_totals').html(data);
+                });
+
+                $.post('/client/quotations/extra', {
+                    '_token': "{{ csrf_token() }}",
+                    quotation_number: quotation_number,
+                    extra_type: extra_type,
+                    extra_value: extra_value
+                }, function(data) {
+                    $('.after_totals').html(data);
+                });
+
+                $(this).closest('tr').fadeOut(300);
+            });
+
+            $('.edit_element').on('click', function() {
+                let element_id = $(this).attr('element_id');
+                let quotation_number = $(this).attr('quotation_number');
+                $.post('/client/quotations/edit-element', {
+                    '_token': "{{ csrf_token() }}",
+                    quotation_number: quotation_number,
+                    element_id: element_id
+                }, function(data) {
+                    $('#product_id').val(data.product_id).selectpicker('refresh');
+                    $('#product_price').val(data.product_price);
+                    $('#unit_id').val(data.unit_id);
+                    $('#quantity').val(data.quantity);
+                    $('#quantity_price').val(data.quantity_price);
+                    $('#add').hide();
+                    $('#edit').show().attr('element_id', element_id).attr('quotation_number',
+                        quotation_number);
+                });
+            });
+        }
+
+        // Call this function initially to attach handlers
+        attachElementHandlers();
+
 
         //----exec discount-----//
         $('#exec_discount').on('click', function() {
