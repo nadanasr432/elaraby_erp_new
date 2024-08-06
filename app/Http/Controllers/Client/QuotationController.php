@@ -204,6 +204,7 @@ class QuotationController extends Controller
     # store quotation #
     public function save(Request $request)
     {
+        dd($request);
         $data = $request->all();
         $data['company_id'] = Auth::user()->company_id;
         $company = Company::FindOrFail($data['company_id']);
