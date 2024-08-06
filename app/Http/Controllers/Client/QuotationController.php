@@ -305,99 +305,128 @@ class QuotationController extends Controller
     public function get_quotation_elements(Request $request)
     {
         $company_id = Auth::user()->company_id;
-        $company = Company::findOrFail($company_id);
+        $company = Company::FindOrFail($company_id);
         $quotation_number = $request->quotation_number;
-
-        $quotation = Quotation::where('quotation_number', $quotation_number)
-            ->where('company_id', $company_id)
-            ->first();
-
-        if (!$quotation) {
-            return response()->json([
-                'status' => false,
-                'msg' => 'Quotation not found',
-            ]);
-        }
-
-        $elements = QuotationElement::where('quotation_id', $quotation->id)
-            ->where('company_id', $company_id)
-            ->get();
-
+        // dd($quotation_number);
+        $quotation = Quotation::where('quotation_number', $quotation_number)->where('company_id', $company->id)->first();
+        $elements = QuotationElement::where('quotation_id', $quotation->id)->where('company_id', $company->id)->get();
         $extras = QuotationExtra::where('quotation_id', $quotation->id)->get();
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
-        $currency = $extra_settings->currency ?? 'USD';
-        $tax_value_added = $company->tax_value_added ?? 0;
-        $sum = [];
+        $currency = $extra_settings->currency;
+        $tax_value_added = $company->tax_value_added;
+        $sum = array();
+        if (!$elements->isEmpty()) {
+            echo '<h6 class="alert bg-white p-1 mb-0 text-left font-weight-bold" style="font-size: 16px !important;">جدول المنتجات</h6>';
+            $i = 0;
+            echo '<table class="defaultTableMain table dataTable no-footer" style="border-radius: 12px !important; overflow: hidden;width: 96%;margin:5px 10px;" >';
+            echo "<thead>";
+            echo "<th> #</th>";
+            echo "<th> اسم المنتج </th>";
+            echo "<th> سعر الوحدة </th>";
+            echo "<th> الكمية </th>";
+            echo "<th>  الاجمالى </th>";
+            echo "<th class='no-print'>  تحكم </th>";
+            echo "</thead>";
+            echo "<tbody>";
+            foreach ($elements as $element) {
+                array_push($sum, $element->quantity_price);
+                echo "<tr>";
+                echo "<td>" . ++$i . "</td>";
+                echo "<td>" . $element->product->product_name . "</td>";
+                echo "<td>" . $element->product_price . "</td>";
+                echo "<td>" . $element->quantity . " " . $element->unit->unit_name . "</td>";
+                echo "<td>" . $element->quantity_price . "</td>";
+                echo "<td class='no-print'>
+                            <button type='button' quotation_number='" . $element->quotation->quotation_number . "' element_id='" . $element->id . "' class='btn btn-sm btn-info edit_element'>
+                                <i class='fa fa-pencil'></i>
+                            </button>
+                            <button type='button' quotation_number='" . $element->quotation->quotation_number . "' element_id='" . $element->id . "' class='btn btn-sm btn-danger remove_element'>
+                                <i class='fa fa-trash'></i>
+                            </button>
+                        </td>";
+                echo "</tr>";
+            }
+            echo "</tbody>";
+            echo "</table>";
+            $total = array_sum($sum);
+            $percentage = ($tax_value_added / 100) * $total;
+            $after_total = $total + $percentage;
+            echo "
+            <div class='alert-sm text-center p-0 w-auto d-inline-block m-1'>
+                <div class='w-auto text-left badge badge-info font-weight-bold'>
+                     اجمالى المنتجات
+                    " . $total . " " . $currency . "
+                </div>
+                <div class='w-auto text-left badge badge-warning font-weight-bold'>
+                    الاجمالي بعد الضريبة
+                    " . $after_total . " " . $currency . "
+                </div>
 
-        if ($elements->isEmpty()) {
-            return response()->json([
-                'status' => true,
-                'msg' => 'No elements found',
-                'html' => '',
-            ]);
+            </div>";
         }
-
-        ob_start();
-        echo '<h6 class="alert bg-white p-1 mb-0 text-left font-weight-bold" style="font-size: 16px !important;">جدول المنتجات</h6>';
-        echo '<table class="defaultTableMain table dataTable no-footer" style="border-radius: 12px !important; overflow: hidden;width: 96%;margin:5px 10px;">';
-        echo "<thead>";
-        echo "<th> #</th>";
-        echo "<th> اسم المنتج </th>";
-        echo "<th> سعر الوحدة </th>";
-        echo "<th> الكمية </th>";
-        echo "<th> الاجمالى </th>";
-        echo "<th class='no-print'> تحكم </th>";
-        echo "</thead>";
-        echo "<tbody>";
-
-        $i = 0;
-        foreach ($elements as $element) {
-            $sum[] = $element->quantity_price;
-            echo "<tr>";
-            echo "<td>" . ++$i . "</td>";
-            echo "<td>" . $element->product->product_name . "</td>";
-            echo "<td>" . $element->product_price . "</td>";
-            echo "<td>" . $element->quantity . " " . $element->unit->unit_name . "</td>";
-            echo "<td>" . $element->quantity_price . "</td>";
-            echo "<td class='no-print'>
-                <button type='button' quotation_number='" . $element->quotation->quotation_number . "' element_id='" . $element->id . "' class='btn btn-sm btn-info edit_element'>
-                    <i class='fa fa-pencil'></i>
-                </button>
-                <button type='button' quotation_number='" . $element->quotation->quotation_number . "' element_id='" . $element->id . "' class='btn btn-sm btn-danger remove_element'>
-                    <i class='fa fa-trash'></i>
-                </button>
-              </td>";
-            echo "</tr>";
-        }
-
-        echo "</tbody>";
-        echo "</table>";
-
-        $total = array_sum($sum);
-        $percentage = ($tax_value_added / 100) * $total;
-        $after_total = $total + $percentage;
 
         echo "
-    <div class='alert-sm text-center p-0 w-auto d-inline-block m-1'>
-        <div class='w-auto text-left badge badge-info font-weight-bold'>
-            اجمالى المنتجات
-            " . $total . " " . $currency . "
-        </div>
-        <div class='w-auto text-left badge badge-warning font-weight-bold'>
-            الاجمالي بعد الضريبة
-            " . $after_total . " " . $currency . "
-        </div>
-    </div>";
+        <script>
+            $('.remove_element').on('click',function(){
+                let element_id = $(this).attr('element_id');
+                let quotation_number = $(this).attr('quotation_number');
 
-        $html = ob_get_clean();
+                let discount_type = $('#discount_type').val();
+                let discount_value = $('#discount_value').val();
 
-        return response()->json([
-            'status' => true,
-            'msg' => 'Elements retrieved successfully',
-            'html' => $html,
-        ]);
+                let extra_type = $('#extra_type').val();
+                let extra_value = $('#extra_value').val();
+
+                $.post('/client/quotations/element/delete',
+                {'_token': '" . csrf_token() . "', element_id: element_id},
+                function (data) {
+                    $.post('/client/quotations/elements',
+                        {'_token': '" . csrf_token() . "', quotation_number: quotation_number},
+                        function (elements) {
+                            $('.bill_details').html(elements);
+                        });
+                    });
+                $.post('/client/quotations/discount',
+                    {'_token': '" . csrf_token() . "',quotation_number:quotation_number, discount_type: discount_type, discount_value: discount_value},
+                    function (data) {
+                        $('.after_totals').html(data);
+                });
+
+                $.post('/client/quotations/extra',
+                    {'_token': '" . csrf_token() . "',quotation_number:quotation_number, extra_type: extra_type, extra_value: extra_value},
+                    function (data) {
+                        $('.after_totals').html(data);
+                });
+
+                $(this).parent().parent().fadeOut(300);
+            });
+
+            $('.edit_element').on('click', function () {
+                let element_id = $(this).attr('element_id');
+                let quotation_number = $(this).attr('quotation_number');
+                $.post('/client/quotations/edit-element',
+                    {
+                        '_token': '" . csrf_token() . "',
+                        quotation_number: quotation_number,
+                        element_id: element_id
+                    },
+                    function (data) {
+                        $('#product_id').val(data.product_id);
+                        $('#product_id').selectpicker('refresh');
+                        $('#product_price').val(data.product_price);
+                        $('#unit_id').val(data.unit_id);
+                        $('#quantity').val(data.quantity);
+                        $('#quantity_price').val(data.quantity_price);
+                        $('#add').hide();
+                        $('#edit').show();
+                        $('#edit').attr('element_id', element_id);
+                        $('#edit').attr('quotation_number', quotation_number);
+                    });
+                });
+
+        </script>
+        ";
     }
-
 
     public function apply_discount(Request $request)
     {
