@@ -307,7 +307,7 @@ class QuotationController extends Controller
         $company_id = Auth::user()->company_id;
         $company = Company::FindOrFail($company_id);
         $quotation_number = $request->quotation_number;
-        // dd($quotation_number);
+        dd($quotation_number);
         $quotation = Quotation::where('quotation_number', $quotation_number)->where('company_id', $company->id)->first();
         $elements = QuotationElement::where('quotation_id', $quotation->id)->where('company_id', $company->id)->get();
         $extras = QuotationExtra::where('quotation_id', $quotation->id)->get();
