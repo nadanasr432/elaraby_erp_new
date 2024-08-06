@@ -189,13 +189,12 @@
                                     {{ __('sales_bills.product-code') }}
                                     <span class="text-danger font-weight-bold">*</span>
                                 </label>
-                                <select name="product_id" id="product_id" class="selectpicker form-control w-100"
-                                    data-style="btn-newdark" data-live-search="true"
-                                    title="{{ __('sales_bills.product-code') }}">
+                                <select name="product_id" id="product_id" class="selectpicker w-80" data-style="btn-success"
+                                    data-live-search="true" title="{{ __('sales_bills.product-code') }}">
+
                                     @foreach ($all_products as $product)
                                         <option value="{{ $product->id }}" data-tokens="{{ $product->code_universal }}">
-                                            {{ $product->product_name }}
-                                        </option>
+                                            {{ $product->product_name }}</option>
                                     @endforeach
                                 </select>
 
