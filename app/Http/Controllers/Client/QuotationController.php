@@ -204,13 +204,14 @@ class QuotationController extends Controller
     # store quotation #
     public function save(Request $request)
     {
-        dd($request);
+       
         $data = $request->all();
         $data['company_id'] = Auth::user()->company_id;
         $company = Company::FindOrFail($data['company_id']);
         $data['client_id'] = Auth::user()->id;
         $quotation = Quotation::where('quotation_number', $data['quotation_number'])->where('company_id', $company->id)->first();
         // return json_encode($quotation);
+        dd($quotation);
         if (empty($quotation)) {
             $quotation = Quotation::create($data);
         } else {
