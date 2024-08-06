@@ -96,7 +96,7 @@ class QuotationController extends Controller
                         ->orWhereNull('client_id');
                 })->get();
         }
-        $pre_quotation = $quoationsCount = Quotation::where('company_id', $company_id)->count() + 1;
+        $pre_quotation = Quotation::where('company_id', $company_id)->count() + 1;
         /*
         $pre_quotation = $company_id . rand();
         $pre_quotation = substr($pre_quotation, 0, 9);
@@ -308,7 +308,7 @@ class QuotationController extends Controller
         $company = Company::FindOrFail($company_id);
         $quotation_number = $request->quotation_number;
         // dd($quotation_number);
-        $quotation = Quotation::where('company_id', $company->id)->first();
+        $quotation = Quotation::where('quotation_number', $quotation_number)->where('company_id', $company->id)->first();
         $elements = QuotationElement::where('quotation_id', $quotation->id)->where('company_id', $company->id)->get();
         $extras = QuotationExtra::where('quotation_id', $quotation->id)->get();
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
