@@ -220,7 +220,7 @@ class PurchaseOrderController extends Controller
         $sum = array();
         $elements = $purchase_order->elements;
         foreach ($elements as $element) {
-            array_push($sum, $element?->quantity_price);
+            array_push($sum, $element->quantity_price);
         }
         $total = array_sum($sum);
         $previous_extra = PurchaseOrderExtra::where('purchase_order_id', $purchase_order->id)
@@ -282,37 +282,23 @@ class PurchaseOrderController extends Controller
     public function create()
     {
         $company_id = Auth::user()->company_id;
-        $company = Company::findOrFail($company_id);
+        $company = Company::FindOrFail($company_id);
         $categories = $company->categories;
-        $all_products = Product::where('company_id', $company_id)->where('first_balance', '>', 0)->get();
+        $all_products = Product::where('company_id', $company_id)->where('first_balance', '>', '0')->get();
         $stores = $company->stores;
         $units = $company->units;
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
         $suppliers = Supplier::where('company_id', $company_id)->get();
-
-        // Retrieve the highest purchase order number for the company
-        $highest_purchase_order = PurchaseOrder::where('company_id', $company_id)
-            ->orderBy('purchase_order_number', 'desc')
-            ->first();
-
-        // Determine the new purchase order number and pre_purchase_order
-        $pre_purchase_order = $highest_purchase_order ? $highest_purchase_order->purchase_order_number + 1 : 1;
-        $newQuotationNumber = $pre_purchase_order;
-
-        return view('client.purchase_orders.create', compact(
-            'newQuotationNumber',
-            'company',
-            'suppliers',
-            'units',
-            'stores',
-            'categories',
-            'extra_settings',
-            'company_id',
-            'all_products',
-            'pre_purchase_order'
-        ));
+        $check = PurchaseOrder::all();
+        if ($check->isEmpty()) {
+            $pre_purchase_order = 1;
+        } else {
+            $old_purchase_order = PurchaseOrder::max('purchase_order_number');
+            $pre_purchase_order = ++$old_purchase_order;
+        }
+        return view('client.purchase_orders.create',
+            compact('company', 'suppliers','units', 'stores', 'categories', 'extra_settings', 'company_id', 'all_products', 'pre_purchase_order'));
     }
-
 
     public function get_product_price(Request $request)
     {
