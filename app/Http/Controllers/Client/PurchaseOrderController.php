@@ -290,7 +290,7 @@ class PurchaseOrderController extends Controller
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
         $suppliers = Supplier::where('company_id', $company_id)->get();
 
-        $last_purchase_order = PurchaseOrder::max('purchase_order_number');
+        $last_purchase_order = PurchaseOrder::where('company_id', $company_id)->max('purchase_order_number');
         $pre_purchase_order = $last_purchase_order ? $last_purchase_order + 1 : 1;
 
         return view('client.purchase_orders.create', compact(
