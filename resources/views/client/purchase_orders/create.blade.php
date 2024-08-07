@@ -54,12 +54,12 @@
     <form target="_blank" action="#" method="POST">
         @csrf
         @method('POST')
-        <input type="hidden" value="{{ $newQuotationNumber }}" id="purchase_order_number" />
+        <input type="hidden" value="{{ $pre_purchase_order }}" id="purchase_order_number" />
         <h6 class="alert alert-dark alert-sm text-center no-print" dir="rtl">
             <center>{{ __('sidebar.add-new-purchase-orders') }}
                 <span>
                     ( {{ __('main.process-number') }} :
-                    {{ $newQuotationNumber }}
+                    {{ $pre_purchase_order }}
                     )</span>
             </center>
         </h6>
