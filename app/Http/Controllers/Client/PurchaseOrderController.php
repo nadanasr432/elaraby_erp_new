@@ -282,23 +282,30 @@ class PurchaseOrderController extends Controller
     public function create()
     {
         $company_id = Auth::user()->company_id;
-        $company = Company::FindOrFail($company_id);
+        $company = Company::findOrFail($company_id);
         $categories = $company->categories;
-        $all_products = Product::where('company_id', $company_id)->where('first_balance', '>', '0')->get();
+        $all_products = Product::where('company_id', $company_id)->where('first_balance', '>', 0)->get();
         $stores = $company->stores;
         $units = $company->units;
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
         $suppliers = Supplier::where('company_id', $company_id)->get();
-        $check = PurchaseOrder::all();
-        if ($check->isEmpty()) {
-            $pre_purchase_order = 1;
-        } else {
-            $old_purchase_order = PurchaseOrder::max('purchase_order_number');
-            $pre_purchase_order = ++$old_purchase_order;
-        }
-        return view('client.purchase_orders.create',
-            compact('company', 'suppliers','units', 'stores', 'categories', 'extra_settings', 'company_id', 'all_products', 'pre_purchase_order'));
+
+        $last_purchase_order = PurchaseOrder::max('purchase_order_number');
+        $pre_purchase_order = $last_purchase_order ? $last_purchase_order + 1 : 1;
+
+        return view('client.purchase_orders.create', compact(
+            'company',
+            'suppliers',
+            'units',
+            'stores',
+            'categories',
+            'extra_settings',
+            'company_id',
+            'all_products',
+            'pre_purchase_order'
+        ));
     }
+
 
     public function get_product_price(Request $request)
     {
