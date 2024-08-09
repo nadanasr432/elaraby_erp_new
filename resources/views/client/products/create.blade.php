@@ -138,7 +138,7 @@
                             <!----product_model---->
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>{{ __('products.pmodel') }}</label>
-                                <input type="text" name="product_model" placeholder="موديل المنتج" class="form-control"
+                                <input type="text" name="product_model" placeholder="{{ __('products.pmodel') }}" class="form-control"
                                     id='model'>
                             </div>
                             <!---------------------->

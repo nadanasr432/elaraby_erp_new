@@ -55,14 +55,25 @@
                         </div>
 
                         <div class="row p-0">
+                            <!-- Form Input for Start Date and End Date -->
+                            <div class="form-group col-lg-6">
+                                <label for="start_date">{{ __('Start Date') }}</label>
+                                <input type="date" class="form-control" id="start_date" name="start_date"
+                                    value="{{ old('start_date', $product->start_date ?? '') }}">
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="end_date">{{ __('End Date') }}</label>
+                                <input type="date" class="form-control" id="end_date" name="end_date"
+                                    value="{{ old('end_date', $product->end_date ?? '') }}">
+                            </div>
                             <!----store---->
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label for="store_id">
-                                    اسم المخزن
+                                    {{ __('products.store_name') }}
                                     <span class="text-danger font-weight-bold">*</span>
                                 </label>
                                 <select required name="store_id" id="store" class="form-control">
-                                    <option value="">اختر المخزن choose the store</option>
+                                    <option value="">{{ __('products.choose_store') }}</option>
                                     @foreach ($stores as $store)
                                         <option @if ($store->id == $product->store_id) selected @endif
                                             value="{{ $store->id }}">{{ $store->store_name }}</option>
@@ -73,30 +84,31 @@
 
                             <!----category_id---->
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
-                                <label for="store_id">
-                                    الفئة الرئيسية
+                                <label for="category_id">
+                                    {{ __('products.main_cat') }}
                                     <span class="text-danger font-weight-bold">*</span>
                                 </label>
                                 <select required name="category_id" id="category" class="form-control">
-                                    <option value="">اختر الفئة الرئيسية</option>
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}"
-                                            @if ($category->id == $product->category_id) selected @endif
-                                            type="{{ $category->category_type }}">{{ $category->category_name }}
+                                    <option value="">{{ __('products.choose_main_cat') }}</option>
+                                    @foreach ($categories as $i => $category)
+                                        <option type="{{ $category->category_type }}" value="{{ $category->id }}"
+                                            {{ old('category_id', $product->category_id ?? ($i == 0 && $categories->count() > 1 ? $category->id : null)) == $category->id ? 'selected' : '' }}>
+                                            {{ $category->category_name }}
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
+
                             <!---------------------->
 
                             <!----sub_category---->
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label for="store_id">
-                                    الفئة الفرعية
+                                    {{ __('products.subcat') }}
                                     <span class="text-danger font-weight-bold">*</span>
                                 </label>
                                 <select name="sub_category_id" id="sub_category" class="form-control">
-                                    <option value="">اختر الفئة الفرعية</option>
+                                    <option value="">{{ __('products.choose_subcat') }}</option>
                                     @foreach ($sub_categories as $category)
                                         <option @if ($category->id == $product->sub_category_id) selected @endif
                                             value="{{ $category->id }}">
@@ -109,31 +121,32 @@
 
                             <!----product_model---->
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
-                                <label> موديل المنتج</label>
+                                <label>{{ __('products.pmodel') }}</label>
                                 <input type="text" name="product_model" value="{{ $product->product_model }}"
-                                    placeholder="موديل المنتج" class="form-control" id='model'>
+                                    placeholder="{{ __('products.pmodel') }}" class="form-control" id='model'>
                             </div>
                             <!---------------------->
 
                             <!----product_name---->
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>
-                                    اسم المنتج
+                                    {{ __('products.pname') }}
                                     <span class="text-danger font-weight-bold">*</span>
                                 </label>
-                                <input type="text" name="product_name" id="order_name" placeholder="اسم المنتج"
-                                    value="{{ $product->product_name }}" class="form-control" required>
+                                <input type="text" name="product_name" id="order_name"
+                                    placeholder="{{ __('products.pname') }}" value="{{ $product->product_name }}"
+                                    class="form-control" required>
                             </div>
                             <!---------------------->
 
                             <!----unit_id---->
                             <div class="form-group col-lg-3 pr-0">
                                 <label>
-                                    وحدة المنتج
+                                    {{ __('products.punit') }}
                                     <span class="text-danger font-weight-bold">*</span>
                                 </label>
                                 <select name="unit_id" class="form-control">
-                                    <option value="">اختر وحدة</option>
+                                    <option value="">{{ __('products.choseunit') }}</option>
                                     @foreach ($units as $unit)
                                         <option value="{{ $unit->id }}"
                                             @if ($unit->id == $product->unit_id) selected @endif>{{ $unit->unit_name }}
@@ -146,64 +159,66 @@
                             <!----code_universal---->
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>
-                                    رقم الباركود
+                                    {{ __('products.barcodenum') }}
                                     <span class="text-danger font-weight-bold">*</span>
                                 </label>
                                 <input type="text" class="form-control" value="{{ $product->code_universal }}"
-                                    dir="ltr" placeholder="رقم الباركود" id="order_universal" name="code_universal" />
+                                    dir="ltr" placeholder="{{ __('products.barcodenum') }}" id="order_universal"
+                                    name="code_universal" />
                             </div>
                             <!---------------------->
 
                             <!----first_balance---->
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>
-                                    رصيد المخازن
+                                    {{ __('products.storeqty') }}
                                     <span class="text-danger font-weight-bold">*</span>
                                 </label>
-                                <input type="number" step="0.01" required placeholder="رصيد المخازن"
-                                    name="first_balance" id="first_balance" value="{{ $product->first_balance }}"
-                                    class="form-control">
+                                <input type="number" step="0.01" required
+                                    placeholder=" {{ __('products.storeqty') }} " name="first_balance"
+                                    id="first_balance" value="{{ $product->first_balance }}" class="form-control">
                             </div>
                             <!---------------------->
 
                             <!----purchasing_price--->
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>
-                                    سعر التكلفة
+                                    {{ __('products.costprice') }}
                                     <span class="text-danger font-weight-bold">*</span>
                                 </label>
                                 <input type="number" step="0.01" name="purchasing_price" id='purchasing_price'
                                     class="form-control" value="{{ $product->purchasing_price }}"
-                                    placeholder="سعر التكلفة">
+                                    placeholder=" {{ __('products.costprice') }}">
                             </div>
                             <!---------------------->
 
                             <!----wholesale_price--->
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>
-                                    سعر الجملة
+                                    {{ __('products.wholeprice') }}
                                     <span class="text-danger font-weight-bold">*</span>
                                 </label>
                                 <input type="number" step="0.01" name="wholesale_price" id="wholesale_price"
                                     class="form-control" value="{{ $product->wholesale_price }}"
-                                    placeholder="سعر الجملة">
+                                    placeholder="{{ __('products.wholeprice') }}">
                             </div>
                             <!-------------------->
 
                             <!----sector_price--->
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>
-                                    سعر القطاعى
+                                    {{ __('products.sectorprice') }}
                                     <span class="text-danger font-weight-bold">*</span>
                                 </label>
-                                <input type="number" step="0.01" name="sector_price" placeholder="سعر القطاعي"
-                                    id="sector_price" value="{{ $product->sector_price }}" class="form-control">
+                                <input type="number" step="0.01" name="sector_price"
+                                    placeholder=" {{ __('products.sectorprice') }}" id="sector_price"
+                                    value="{{ $product->sector_price }}" class="form-control">
                             </div>
                             <!-------------------->
 
                             <!----min_balance--->
                             <div class="form-group pull-right col-lg-3" dir="rtl">
-                                <label>رصيد حد أدنى المخازن</label>
+                                <label>{{ __('products.minimumqty') }}</label>
                                 <input type="number" step="0.01" name="min_balance" id="min_balance"
                                     class="form-control" value="{{ $product->min_balance }}" />
                             </div>
@@ -211,26 +226,26 @@
 
                             <!-------color------->
                             <div class="form-group  col-lg-6 d-none" dir="rtl">
-                                <label>اختر لون</label>
-                                <input style="width: 100%!important;" type="color" placeholder="اختر اللون"
-                                    name="color" id="color" />
+                                <label>{{ __('products.choosecolor') }}</label>
+                                <input style="width: 100%!important;" type="color"
+                                    placeholder="{{ __('products.choosecolor') }}" name="color" id="color" />
                             </div>
                             <!---------------------->
 
                             <!----description---->
                             <div class="form-group col-lg-6" dir="rtl">
-                                <label>وصف المنتج</label>
+                                <label>{{ __('products.pdesc') }}</label>
                                 <textarea name="description" id="description" class="form-control" placeholder="وصف المنتج. . . ."
                                     style="height: 60% !important;" rows="2">{{ $product->description }}</textarea>
                             </div>
                             <!-------------------->
 
                             <div class="form-group col-lg-6 pull-right" dir="rtl">
-                                <label>صورة المنتج</label>
+                                <label>{{ __('products.pimg') }}</label>
                                 <input accept=".jpg,.png,.jpeg" type="file" name="product_pic"
                                     oninput="pic.src=window.URL.createObjectURL(this.files[0])" id="file"
                                     class="form-control">
-                                <label class="d-block mt-2"> معاينة الصورة</label>
+                                <label class="d-block mt-2">{{ __('products.previewimg') }}</label>
                                 <img id="pic" src="{{ asset($product->product_pic) }}"
                                     style="width: 100px; height:100px;" />
                             </div>
@@ -238,6 +253,47 @@
 
                         </div>
                         <!--ROW END-->
+                        <div class="row">
+                            <!---------------------->
+                            <!-- Hidden input fields for combo products -->
+                            <div id="hiddenProductFields"></div>
+
+                            <!-- Add the select input and new table container -->
+                            <div class="form-group col-lg-6" dir="rtl" id="searchContainer" style="display: none;">
+                                <label class="col-lg-6">{{ __('Search Products') }}</label>
+                                <select class="selectpicker" data-style="btn-success" data-live-search="true"
+                                    id="productSearch">
+                                    <option value="" disabled selected>{{ __('Search Products') }}</option>
+                                </select>
+                            </div>
+                            <!-- Add this div for the checkbox -->
+                            <div class="form-check form-switch col-lg-6 mt-2" id="checkboxContainer"
+                                style="display: none;">
+                                <input class="form-check-input" type="checkbox" id="mySwitch" name="manufacturer"
+                                    value="0">
+                                <label class="form-check-label ml-4" for="mySwitch"
+                                    style="font-size: 18px !important">manufacture</label>
+                            </div>
+                        </div>
+
+
+                        <!-- Add this after the search input -->
+                        <div class="col-lg-12" id="newTableContainer" style="display: none;">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>{{ __('products.pname') }}</th>
+                                        <th>{{ __('products.costprice') }}</th>
+                                        <th>{{ __('products.storeqty') }}</th>
+                                        <th>{{ __('products.actions') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="newTableBody">
+
+                                </tbody>
+                            </table>
+                        </div>
+
 
 
                         <button class="btn btn-md btn-success w-100 font-weight-bold" type="submit">تحديث</button>
@@ -261,7 +317,7 @@
 
 
             if (isNaN(first_balance)) {
-                $("#showErrMsg").text("غير مسموح بالاحرف في هذا الحقل ارقام فقط!!");
+                $("#showErrMsg").text(" number only !! غير مسموح بالاحرف في هذا الحقل ارقام فقط!!");
                 $("#showErrMsg").show("slow");
                 $("#first_balance").css("border-color", "red");
                 $("#first_balance").val("");
@@ -278,7 +334,7 @@
 
 
             if (isNaN(purchasing_price)) {
-                $("#showErrMsg").text("غير مسموح بالاحرف في هذا الحقل ارقام فقط!!");
+                $("#showErrMsg").text(" number only !!غير مسموح بالاحرف في هذا الحقل ارقام فقط!!");
                 $("#showErrMsg").show("slow");
                 $("#purchasing_price").css("border-color", "red");
                 $("#purchasing_price").val("");
@@ -294,7 +350,7 @@
             }
 
             if (isNaN(wholesale_price)) {
-                $("#showErrMsg").text("غير مسموح بالاحرف في هذا الحقل ارقام فقط!!");
+                $("#showErrMsg").text(" number only !!غير مسموح بالاحرف في هذا الحقل ارقام فقط!!");
                 $("#showErrMsg").show("slow");
                 $("#wholesale_price").css("border-color", "red");
                 $("#wholesale_price").val("");
@@ -310,7 +366,7 @@
             }
 
             if (isNaN(sector_price)) {
-                $("#showErrMsg").text("غير مسموح بالاحرف في هذا الحقل ارقام فقط!!");
+                $("#showErrMsg").text(" number only !! غير مسموح بالاحرف في هذا الحقل ارقام فقط!!");
                 $("#showErrMsg").show("slow");
                 $("#sector_price").css("border-color", "red");
                 $("#sector_price").val("");
@@ -326,7 +382,7 @@
             }
 
             if (isNaN(min_balance)) {
-                $("#showErrMsg").text("غير مسموح بالاحرف في هذا الحقل ارقام فقط!!");
+                $("#showErrMsg").text(" number only !! غير مسموح بالاحرف في هذا الحقل ارقام فقط!!");
                 $("#showErrMsg").show("slow");
                 $("#min_balance").css("border-color", "red");
                 $("#min_balance").val("");
@@ -343,40 +399,130 @@
 
             $(this).submit();
 
-        }); //end...
-
-
-        $(window).on('load', function() {
-            var category_name = $('#category').val();
-            var category_type = $('#category').children("option:selected").attr('type');
-            if (category_type == 'خدمية') {
-                $('#first_balance').val("").attr('readonly', true);
-                $('#order_universal').val("").attr('readonly', true);
-                $('#min_balance').attr('readonly', true);
-                $('#store').attr('disabled', true);
-            } else {
-                $('#first_balance').attr('readonly', false);
-                $('#model').attr('readonly', false);
-                $('#order_universal').attr('readonly', false);
-                $('#min_balance').attr('readonly', false);
-                $('#store').attr('disabled', false);
-            }
         });
+
+
         $('#category').on('change', function() {
             var category_name = $(this).val();
             var category_type = $(this).children("option:selected").attr('type');
             if (category_type == 'خدمية') {
                 $('#first_balance').val("").attr('readonly', true);
-                $('#order_universal').val("").attr('readonly', true);
+                $('#model').val("").attr('readonly', false);
+                // $('#order_universal').val("").attr('readonly', true);
                 $('#min_balance').attr('readonly', true);
                 $('#store').attr('disabled', true);
+                $('#start_date').attr('disabled', true);
+                $('#end_date').attr('disabled', true);
             } else {
                 $('#first_balance').attr('readonly', false);
                 $('#model').attr('readonly', false);
                 $('#order_universal').attr('readonly', false);
                 $('#min_balance').attr('readonly', false);
                 $('#store').attr('disabled', false);
+                $('#start_date').attr('disabled', false);
+                $('#end_date').attr('disabled', false);
             }
         });
+        $(document).ready(function() {
+            function performSearch() {
+                var query = $('#productSearch').val();
+
+                $.ajax({
+                    url: '{{ route('client.products.search') }}',
+                    method: 'GET',
+                    data: {
+                        query: query
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        var searchResults =
+                            '<option value="" disabled selected>{{ __('Search Products') }}</option>';
+                        $.each(data, function(index, product) {
+                            searchResults += '<option value="' + product.id +
+                                '" data-product-name="' + product.product_name +
+                                '" data-product-cost="' + product.purchasing_price +
+                                '" data-product-qty="' + product.first_balance + '">' + product
+                                .product_name + '</option>';
+                        });
+                        $('#productSearch').html(searchResults).selectpicker('refresh');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+
+            $('#mySwitch').change(function() {
+                $(this).val($(this).is(':checked') ? '1' : '0');
+            });
+
+            $('#productSearch').on('input', performSearch);
+
+            $('#category').change(function() {
+                var categoryType = $(this).children("option:selected").attr('type');
+                if (categoryType === 'مجمع') {
+                    $('#searchContainer').show();
+                    $('#newTableContainer').show();
+                    $('#checkboxContainer').show();
+                    performSearch();
+                } else {
+                    $('#searchContainer').hide();
+                    $('#newTableContainer').hide();
+                    $('#checkboxContainer').hide();
+                    $('#productSearch').empty().selectpicker('refresh');
+                }
+            });
+
+            function addProductToTable(productId, productName, purchasingPrice, storeQty) {
+                var newRow = '<tr data-product-id="' + productId + '">' +
+                    '<td>' + productName + '</td>' +
+                    '<td><input type="number" step="0.01" class="form-control edit-cost-price" value="' +
+                    purchasingPrice + '"></td>' +
+                    '<td><input type="number" step="0.01" class="form-control edit-store-qty" value="' + storeQty +
+                    '"></td>' +
+                    '<td><button class="btn btn-danger delete-product-btn">Delete</button></td>' +
+                    '</tr>';
+                $('#newTableBody').append(newRow);
+                addHiddenProductFields(productId, purchasingPrice, storeQty);
+            }
+
+            function addHiddenProductFields(productId, purchasingPrice, storeQty) {
+                var hiddenFields = '<input type="hidden" name="combo_products[' + productId +
+                    '][product_id]" value="' + productId + '">' +
+                    '<input type="hidden" name="combo_products[' + productId + '][price]" value="' +
+                    purchasingPrice + '">' +
+                    '<input type="hidden" name="combo_products[' + productId + '][quantity]" value="' + storeQty +
+                    '">';
+                $('#hiddenProductFields').append(hiddenFields);
+            }
+
+            function removeHiddenProductFields(productId) {
+                $('#hiddenProductFields input[name^="combo_products[' + productId + ']"]').remove();
+            }
+
+            $(document).on('change', '#productSearch', function() {
+                var selectedOption = $(this).find('option:selected');
+                var productId = selectedOption.val();
+                var productName = selectedOption.data('product-name');
+                var purchasingPrice = selectedOption.data('product-cost');
+                var storeQty = selectedOption.data('product-qty');
+
+                if (productId) {
+                    $('#newTableContainer').show();
+                    $('#checkboxContainer').show();
+                    addProductToTable(productId, productName, purchasingPrice, storeQty);
+                    $(this).val('').selectpicker('refresh');
+                }
+            });
+
+            $(document).on('click', '.delete-product-btn', function() {
+                var productId = $(this).closest('tr').data('product-id');
+                $(this).closest('tr').remove();
+                removeHiddenProductFields(productId);
+            });
+
+            $('.selectpicker').selectpicker();
+        });
     </script>
+
 @endsection

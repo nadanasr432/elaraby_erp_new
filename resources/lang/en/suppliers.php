@@ -10,6 +10,7 @@ return [
     "supplier-address" => "Supplier address",
     "additional-options" => "Additional options",
     "dealing-type" => "Dealing type",
+    "supplier data" => "supplier data",
     "choose-type" => "Choose type",
     "supplier-company-name" => "Supplier company name",
     "supplier-nationality" => "Supplier nationality",
@@ -18,4 +19,6 @@ return [
     "customer-import-instructions" => "Customer Import Instructions",
     "search-by-nationality" => "Search by nationality",
     "search-by-type" => "Search by type",
+    "purch_num" => "Purchase Order No"
+
 ];

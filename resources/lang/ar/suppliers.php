@@ -18,4 +18,7 @@ return [
     "customer-import-instructions" => "تعليمات استيراد الموردين",
     "search-by-nationality" => "بحث بالجنسية",
     "search-by-type" => "بحث بالفئة",
+    "supplier data"=>"بيانات المورد",
+    "purch_num" => "رقم امر الشراء"
+
 ];

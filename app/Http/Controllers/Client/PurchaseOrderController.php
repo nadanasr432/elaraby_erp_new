@@ -204,7 +204,7 @@ class PurchaseOrderController extends Controller
             $after_total_all = $total + $percentage;
         }
 
-        return view('client.purchase_orders.index',
+        return view('client.purchase_orders.print',
             compact('currency', 'after_discount', 'after_total_all', 'purchase_order_k', 'purchase_orders', 'suppliers'
                 , 'elements', 'extras', 'products', 'company', 'purchase_order_discount_value', 'purchase_order_discount_type', 'purchase_order_extra_value', 'purchase_order_extra_type'));
     }

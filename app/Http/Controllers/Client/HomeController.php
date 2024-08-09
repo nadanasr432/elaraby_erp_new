@@ -118,6 +118,7 @@ class HomeController extends Controller
 
         $sale_bills = SaleBill::with('outerClient')
             ->where('company_id', $company_id)
+            ->where('deleted_at', null)
             ->orderBy('created_at', 'DESC')
             ->take(5)->get();
 

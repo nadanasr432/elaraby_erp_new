@@ -634,6 +634,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::get('/convert-to-salebill/{id?}', [QuotationController::class, 'convert_to_salebill'])
                 ->name('convert.to.salebill');
 
+            Route::get('purchase_orders/view', [PurchaseOrderController::class, 'filter_key'])->name('client.purchase_orders.view');
 
             // purchase_orders Routes
             Route::resource('purchase_orders', PurchaseOrderController::class)->names([
