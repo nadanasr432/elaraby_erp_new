@@ -87,5 +87,7 @@ return [
     "from_date" => "من",
     "to_date" => "الى",
     "submit" => "بحث",
+    "Shipping Charges"=> " مصاريف شحن ",
+    "purchase_order"=>"امر الشراء",
 
 ];

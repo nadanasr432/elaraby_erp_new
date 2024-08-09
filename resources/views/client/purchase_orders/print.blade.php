@@ -177,7 +177,7 @@
                             src="http://arabygithub.test/uploads/companies/logos/1/face-brand1.png">
                     </div>
                     <h2 style="font-size: 24px !important;font-weight: 400;line-height: 40px;">
-                        @lang('main.purchase_order')
+                        @lang('sales_bills.purchase_order')
                         <br>
                         {{ $company->company_name }}
                     </h2>
@@ -324,6 +324,9 @@
                             @php
                                 $counter++;
                                 $totalSum += floatval($product->quantity_price);
+                                $tax_value_added = $company->tax_value_added;
+                                $percentage = ($tax_value_added / 100) * $totalSum;
+                                $after_total = $totalSum + $percentage;
                             @endphp
                             @php $counter++; @endphp
                         @endforeach
@@ -337,43 +340,78 @@
 
             <div class='clearfix'></div>
 
-            <div class='col-lg-12 col-md-12 col-sm-12 after_totals'>
-                <div class="row pl-3 pr-3 mt-3">
-                    @foreach ($extras as $key)
-                        @if ($key->action == 'discount')
-                            <div class='col-md-6 alert alert-secondary alert-sm text-center'>
-                                @if ($key->action_type == 'pound')
-                                    {{ 'خصم ' . $key->value . ' ' . $currency }}
-                                @else
-                                    {{ 'خصم ' . $key->value . ' %' }}
-                                @endif
-                            </div>
-                        @else
-                            <div class='col-md-6 alert alert-secondary alert-sm text-center'>
-                                @if ($key->action_type == 'pound')
-                                    {{ 'مصاريف شحن ' . $key->value . ' ' . $currency }}
-                                @else
-                                    {{ 'مصاريف شحن ' . $key->value . ' %' }}
-                                @endif
-                            </div>
-                        @endif
-                    @endforeach
-                </div>
-                <div class="row pl-3 pr-3 mt-3">
+            <div class="row px-3 pt-1 mt-1">
+                <div class="products-details p-2 col-5">
+                    <table
+                        style="width: 100%;border-radius: 8px !important; overflow: hidden; border: 1px solid #2d2d2d2d;">
+                        <!-- Add Discount Row -->
+                        <tr class="even"
+                            style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 14px !important; height: 40px !important; text-align: center;">
+                            <td dir="rtl">
+                                @foreach ($extras as $key)
+                                    @if ($key->action == 'discount')
+                                        @if ($key->action_type == 'pound')
+                                            {{ $key->value }} {{ $currency }}
+                                        @else
+                                            {{ ($totalSum * $key->value) / 100 }} {{ $currency }}
+                                            {{-- Calculate percentage discount --}}
+                                        @endif
+                                    @endif
+                                @endforeach
+                            </td>
+                            <td style="text-align: right;padding-right: 14px;">
+                                @lang('sales_bills.Discount')
+                            </td>
+                        </tr>
 
-                    <div class='col-md-6  alert alert-secondary alert-sm text-center'>
-                        اجمالى امر الشراء النهائى بعد الضريبة والشحن والخصم :
-                        {{ floatval($after_total_all) }} {{ $currency }}
-                    </div>
+                        <!-- Add Shipping Charges Row -->
+                        <tr class="even"
+                            style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 14px !important; height: 40px !important; text-align: center;">
+                            <td dir="rtl">
+                                @foreach ($extras as $key)
+                                    @if ($key->action != 'discount')
+                                        @if ($key->action_type == 'pound')
+                                            {{ $key->value }} {{ $currency }}
+                                        @else
+                                            {{ ($totalSum * $key->value) / 100 }} {{ $currency }}
+                                            {{-- Calculate percentage shipping charge --}}
+                                        @endif
+                                    @endif
+                                @endforeach
+                            </td>
+                            <td style="text-align: right;padding-right: 14px;">
+                                @lang('sales_bills.Shipping Charges')
+                            </td>
+                        </tr>
 
-                    <div class='col-md-6 alert alert-secondary alert-sm text-center'>
-                        اجمالى امر الشراء
-                        @lang('sales_bills.total'): </strong>{{ $totalSum }} {{ $company->extra_settings->currency }}
-                    </div>
+                        <tr class="even"
+                            style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 14px !important; height: 40px !important; text-align: center;">
+                            <td dir="rtl">
+                                {{ $percentage }} {{ $company->extra_settings->currency }}
+                            </td>
+                            <td style="text-align: right;padding-right: 14px;">
+                                @lang('sales_bills.Total tax')
+                                ({{ $tax_value_added }}%)
+                            </td>
+                        </tr>
+                        <tr
+                            style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 40px !important; text-align: center;">
+                            <td dir="rtl">
+                                {{ $totalSum }} {{ $company->extra_settings->currency }}
+                            </td>
+                            <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
+                        </tr>
 
+                        <tr
+                            style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 40px !important; text-align: center;background: #222751;color:white;">
+                            <td dir="rtl">
+                                {{ floatval($after_total_all) }} {{ $currency }}
+                            </td>
+                            <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total including tax') </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
-
             @php
                 $tax_value_added = $company->tax_value_added;
 
