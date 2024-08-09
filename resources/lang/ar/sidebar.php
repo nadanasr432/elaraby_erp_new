@@ -47,6 +47,7 @@ return [
     "stores" => "الخزائن",
     "add-new-store" => "اضافة خزينة جديدة",
     "list-of-stores" => "قائمة خزائن الشركة",
+    "Status" => "الحالة",
     "transfer-between-stores" => "تحويل بين الخزن",
     "banks" => "البنوك",
     "add-new-bank" => "اضافة بنك جديد",
