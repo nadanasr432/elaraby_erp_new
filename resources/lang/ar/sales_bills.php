@@ -19,7 +19,7 @@ return [
     "address" => "العنوان",
     "total" => "الاجمالي",
     "Tax" => "الضريبة",
-    "The amount does not include tax" => "المبلغ غير شامل الضريبة",
+    "The amount does not include tax" => "الاجمالي قبل الضريبة",
     "Quantity" => "الكمية",
     "amount" => "المبلغ",
     "unit price" => "السعر ",
