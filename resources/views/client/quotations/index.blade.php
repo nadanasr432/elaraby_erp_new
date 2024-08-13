@@ -137,25 +137,30 @@
                                                 $quotation_discount_type = '';
                                                 $quotation_extra_value = 0;
                                                 $quotation_extra_type = '';
+                                                
                                                 foreach ($extras as $key) {
+                                                    // Ensure the value is a number
+                                                    $value = floatval($key->value);
+                                                
                                                     if ($key->action == 'discount') {
                                                         if ($key->action_type == 'pound') {
-                                                            $quotation_discount_value = $key->value;
+                                                            $quotation_discount_value = $value;
                                                             $quotation_discount_type = 'pound';
                                                         } else {
-                                                            $quotation_discount_value = $key->value;
+                                                            $quotation_discount_value = $value;
                                                             $quotation_discount_type = 'percent';
                                                         }
                                                     } else {
                                                         if ($key->action_type == 'pound') {
-                                                            $quotation_extra_value = $key->value;
+                                                            $quotation_extra_value = $value;
                                                             $quotation_extra_type = 'pound';
                                                         } else {
-                                                            $quotation_extra_value = $key->value;
+                                                            $quotation_extra_value = $value;
                                                             $quotation_extra_type = 'percent';
                                                         }
                                                     }
                                                 }
+                                                
                                                 if ($extras->isEmpty()) {
                                                     $quotation_discount_value = 0;
                                                     $quotation_extra_value = 0;
