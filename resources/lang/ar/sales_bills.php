@@ -20,7 +20,7 @@ return [
     "total" => "الاجمالي",
     "Tax" => "الضريبة",
     "The amount does not include tax" => "الاجمالي قبل الضريبة",
-    "Quantity" => "الكمية",
+    "Quantity" => "الوحدة",
     "amount" => "المبلغ",
     "unit price" => "السعر ",
     "product name" => "البيان",
