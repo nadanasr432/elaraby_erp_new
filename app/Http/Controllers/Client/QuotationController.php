@@ -1026,13 +1026,22 @@ class QuotationController extends Controller
     // view quotation template
     public function view($quotation_id)
     {
+        # Check if the user's email is worldpenguin1@gmail.com #
+        if (Auth::user()->email === 'worldpenguin1@gmail.com') {
+            abort(403, 'Access denied: This email is not allowed to view the quotation.');
+        }
+
         # get company data #
         $company_id = Auth::user()->company_id;
-        $company = Company::FindOrFail($company_id);
+        $company = Company::findOrFail($company_id);
 
         # get quotation data #
-        $quotation = Quotation::where('quotation_number', $quotation_id)->where('company_id', $company_id)->firstOrFail();
-        $products = QuotationElement::where('quotation_id', $quotation->id)->where('company_id', $company_id)->get();
+        $quotation = Quotation::where('quotation_number', $quotation_id)
+            ->where('company_id', $company_id)
+            ->firstOrFail();
+        $products = QuotationElement::where('quotation_id', $quotation->id)
+            ->where('company_id', $company_id)
+            ->get();
 
         # chk for totalPrice for Products #
         $elements = $quotation->elements;
@@ -1045,7 +1054,8 @@ class QuotationController extends Controller
         # chk for discount #
         $totalQuotaitonPrice = 0;
         $discount = QuotationExtra::where('quotation_id', $quotation->id)
-            ->where('action', 'discount')->first();
+            ->where('action', 'discount')
+            ->first();
         if (!empty($discount)) {
             $discount_type = $discount->action_type;
             $discount_value = $discount->value;
@@ -1062,9 +1072,11 @@ class QuotationController extends Controller
             $taxValue = $totalQuotaitonPrice * $tax_value_added / 100;
             $totalQuotaitonPrice += $taxValue;
         }
+
         # chk for shipping #
         $shipping = QuotationExtra::where('quotation_id', $quotation->id)
-            ->where('action', 'extra')->first();
+            ->where('action', 'extra')
+            ->first();
         if (!empty($shipping)) {
             $shipping_type = $shipping->action_type;
             $shipping_value = $shipping->value;
@@ -1089,6 +1101,7 @@ class QuotationController extends Controller
             )
         );
     }
+
 
 
 

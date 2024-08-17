@@ -64,7 +64,8 @@
         .borderLeftH {
             border-left: 1px solid rgba(229, 229, 229, 0.94) !important;
         }
-          .headerImg,
+
+        .headerImg,
         .footerImg {
             height: 200px;
         }
@@ -121,7 +122,7 @@
         <div class="text-center" id="buttons">
             <button class="btn btn-sm btn-success" onclick="window.print()">@lang('sales_bills.Print offer price')</button>
             <a class="btn btn-sm btn-danger" href="{{ route('client.quotations.create') }}">@lang('sales_bills.back')</a>
-             <button class="show_hide_header btn btn-sm btn-warning no-print" dir="ltr">
+            <button class="show_hide_header btn btn-sm btn-warning no-print" dir="ltr">
                 <i class="fa fa-eye-slash"></i>
                 @lang('sales_bills.Show or hide the header')
             </button>
@@ -262,7 +263,8 @@
                             <th>@lang('sales_bills.The amount does not include tax') </th>
                             <th>@lang('sales_bills.Quantity')</th>
                             <th>@lang('sales_bills.unit price')</th>
-                            <th>@lang('sales_bills.product name') </th>
+                            <th>@lang('sales_bills.product name')</th>
+                            <th>@lang('sales_bills.product-name') </th>
                             <th>#</th>
                         </tr>
 
@@ -292,6 +294,7 @@
                                 <td class="borderLeftH" dir="rtl">
                                     {{ $product->product_price }} {{ $company->extra_settings->currency }}
                                 </td>
+                                <td class="borderLeftH">{{ $product->product->description }}</td>
                                 <td class="borderLeftH">{{ $product->product->product_name }}</td>
                                 <td class="borderLeftH">{{ $counter }}</td>
                             </tr>
@@ -401,7 +404,7 @@
 </body>
 
 </html>
- <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
+<script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
 
 <script type="text/javascript">
     $('.show_hide_header').on('click', function() {

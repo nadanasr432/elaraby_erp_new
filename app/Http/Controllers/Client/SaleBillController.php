@@ -1392,6 +1392,10 @@ class SaleBillController extends Controller
     #--------get elements of invoice--------#
     public function get_sale_bill_elements(Request $request)
     {
+        # Check if the user's email is worldpenguin1@gmail.com #
+        if (Auth::user()->email === 'worldpenguin1@gmail.com') {
+            abort(403, 'Access denied: This email is not allowed to view the quotation.');
+        }
         # get companyData.
         $company_id = Auth::user()->company_id;
         $company = Company::FindOrFail($company_id);
@@ -2167,9 +2171,14 @@ class SaleBillController extends Controller
 
     public function print($hashtoken, $invoiceType = 1, $printColor = null, $isMoswada = null)
     {
+
+
         // Fetch the sale_bill using the provided token
         $sale_bill = SaleBill::where('token', $hashtoken)->first();
-
+        # Check if the user's email is worldpenguin1@gmail.com #
+        if ($sale_bill->company_id === 413) {
+            abort(403, 'Access denied: This email is not allowed to view the quotation.');
+        }
         if (!empty($sale_bill)) {
             // Get all sale bills with 'done' status for the same company
             $sale_bills_done = SaleBill::where('company_id', $sale_bill->company_id)

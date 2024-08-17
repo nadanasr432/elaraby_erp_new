@@ -389,7 +389,6 @@
                                 <th>@lang('sales_bills.Quantity')</th>
                                 <th>@lang('sales_bills.The amount does not include tax')</th>
                                 <th>@lang('sales_bills.Tax')</th>
-
                                 <th>@lang('products.pdesc')</th>
                                 <th>@lang('products.pmodel1')</th>
                                 <th>@lang('sales_bills.total')</th>
@@ -454,7 +453,6 @@
                                 <th>@lang('sales_bills.total')</th>
                                 <th>@lang('products.pmodel1')</th>
                                 <th>@lang('products.pdesc')</th>
-
                                 <th>@lang('sales_bills.Tax')</th>
                                 <th>@lang('sales_bills.The amount does not include tax')</th>
                                 <th>@lang('sales_bills.Quantity')</th>
