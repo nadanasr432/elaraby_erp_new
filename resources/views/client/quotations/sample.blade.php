@@ -263,7 +263,7 @@
                             <th>@lang('sales_bills.The amount does not include tax') </th>
                             <th>@lang('sales_bills.Quantity')</th>
                             <th>@lang('sales_bills.unit price')</th>
-                            <th>@lang('sales_bills.product name')</th>
+                            <th>@lang('sales_bills.description')</th>
                             <th>@lang('sales_bills.product-name') </th>
                             <th>#</th>
                         </tr>
@@ -294,7 +294,10 @@
                                 <td class="borderLeftH" dir="rtl">
                                     {{ $product->product_price }} {{ $company->extra_settings->currency }}
                                 </td>
-                                <td class="borderLeftH">{{ $product->product->description }}</td>
+                                <td class="borderLeftH" style="direction: rtl; unicode-bidi: embed;">
+                                    {{ $product->product->description }}
+                                </td>
+
                                 <td class="borderLeftH">{{ $product->product->product_name }}</td>
                                 <td class="borderLeftH">{{ $counter }}</td>
                             </tr>

@@ -30,7 +30,7 @@ return [
     "invoice from" =>"Invoice from",
     "invoice to" => "invoice to",
     "unit price"=> "price",
-    "product name"=> "product name",
+    "description"=> "Description",
     "Total prices of all offers" => "Total prices of all offers",
     "Total including tax" => "Total including tax",
     "comments"=> "comments",
