@@ -1026,11 +1026,7 @@ class QuotationController extends Controller
     // view quotation template
     public function view($quotation_id)
     {
-        # Check if the user's email is worldpenguin1@gmail.com #
-        if (Auth::user()->email === 'worldpenguin1@gmail.com') {
-            abort(403, 'Access denied: This email is not allowed to view the quotation.');
-        }
-
+       
         # get company data #
         $company_id = Auth::user()->company_id;
         $company = Company::findOrFail($company_id);

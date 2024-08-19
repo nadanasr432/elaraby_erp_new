@@ -2175,10 +2175,6 @@ class SaleBillController extends Controller
 
         // Fetch the sale_bill using the provided token
         $sale_bill = SaleBill::where('token', $hashtoken)->first();
-        # Check if the user's email is worldpenguin1@gmail.com #
-        if ($sale_bill->company_id === 413) {
-            abort(403, 'Access denied: This email is not allowed to view the quotation.');
-        }
         if (!empty($sale_bill)) {
             // Get all sale bills with 'done' status for the same company
             $sale_bills_done = SaleBill::where('company_id', $sale_bill->company_id)
