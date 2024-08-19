@@ -1392,10 +1392,7 @@ class SaleBillController extends Controller
     #--------get elements of invoice--------#
     public function get_sale_bill_elements(Request $request)
     {
-        # Check if the user's email is worldpenguin1@gmail.com #
-        if (Auth::user()->email === 'worldpenguin1@gmail.com') {
-            abort(403, 'Access denied: This email is not allowed to view the quotation.');
-        }
+       
         # get companyData.
         $company_id = Auth::user()->company_id;
         $company = Company::FindOrFail($company_id);
