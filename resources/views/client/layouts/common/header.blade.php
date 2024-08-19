@@ -420,7 +420,7 @@
 
                     <!---------------------POS BTN--------------------------------------------------------->
 
-                    <li class="nav-item custom-nav d-flex justify-content-around "
+                    {{-- <li class="nav-item custom-nav d-flex justify-content-around "
                         style="gap:10px;max-width: 900px;">
                         <a target="_blank" class="d-flex justify-content-end "
                             href="https://play.google.com/store/apps/details?id=com.elaraby.elarabyErp">
@@ -432,7 +432,7 @@
                             <img src="{{ asset('images/app-store.png') }}" class="img-fluid" width="8%"
                                 alt="app-store">
                         </a>
-                    </li>
+                    </li> --}}
                     <!----------------------------------------LANGUAGE------------------------------------->
                     <li class="dropdown dropdown-user nav-item">
                         <p style="color:black;font-size: 13px !important;margin-top: 10px;margin-left: 15px">
