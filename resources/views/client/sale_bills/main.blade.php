@@ -392,7 +392,7 @@
                             <tr
                                 style="font-size:18px !important; background: {{ $printColor }}; color: white; height: 44px !important; text-align: center;">
                                 <th>@lang('sales_bills.Product number')</th>
-                                <th>@lang('sales_bills.product name')</th>
+                                <th>@lang('main.name')</th>
                                 <th>@lang('sales_bills.unit price')</th>
                                 <th>@lang('sales_bills.Quantity')</th>
                                 <th>@lang('sales_bills.The amount does not include tax')</th>
@@ -459,7 +459,7 @@
                                 <th>@lang('sales_bills.The amount does not include tax')</th>
                                 <th>@lang('sales_bills.Quantity')</th>
                                 <th>@lang('sales_bills.unit price')</th>
-                                <th>@lang('sales_bills.product name')</th>
+                                <th>@lang('main.name')</th>
                                 <th>@lang('sales_bills.Product number')</th>
                             </tr>
 
@@ -808,8 +808,10 @@
                             </tr>
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                                
+                                {{-- @dd($sale_bill) --}}
                                 <td dir="rtl">
-                                    {{ $sale_bill->rest }} {{ $currency }}
+                                    {{ $sale_bill->final_total - $sale_bill->paid }} {{ $currency }}
                                 </td>
                                 <td style="text-align: right;padding-right: 14px;">
                                     @lang('sales_bills.Residual')

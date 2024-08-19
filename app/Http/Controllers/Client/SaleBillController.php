@@ -2168,8 +2168,6 @@ class SaleBillController extends Controller
 
     public function print($hashtoken, $invoiceType = 1, $printColor = null, $isMoswada = null)
     {
-
-
         // Fetch the sale_bill using the provided token
         $sale_bill = SaleBill::where('token', $hashtoken)->first();
         if (!empty($sale_bill)) {
