@@ -421,7 +421,7 @@
                     <!---------------------POS BTN--------------------------------------------------------->
 
                     <li class="nav-item custom-nav d-flex justify-content-around "
-                        style="margin-top: -50px;gap:10px;max-width: 900px;">
+                        style="gap:10px;max-width: 900px;">
                         <a target="_blank" class="d-flex justify-content-end "
                             href="https://play.google.com/store/apps/details?id=com.elaraby.elarabyErp">
                             <img src="{{ asset('images/google-play.png') }}" class="img-fluid" width="8%"
