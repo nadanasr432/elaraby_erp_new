@@ -188,20 +188,7 @@
 
                     <br>
                 </div>
-                <div class="logo text-center d-flex justify-content-between" style="gap:20px">
-                    <a target="_blank" href="https://play.google.com/store/apps/details?id=com.elaraby.elarabyErp">
-                        <img style="width: 40px;height:40px;margin-top: 10px; margin-bottom: 10px;"
-                            src="{{ asset('images/google-play.png') }}" class="img-fluid" alt="google-play">
-                    </a>
-                    <a target="_blank" href="https://play.google.com/store/apps/details?id=com.elaraby.elarabyErp">
-                        <img style="width: 40px;height:40px;margin-top: 10px; margin-bottom: 10px;"
-                            src="{{ asset('images/app-store.png') }}" class="img-fluid" alt="app-store">
-                    </a>
-
-
-
-                    <br>
-                </div>
+               
 
                 <!--pages list -home -contact ... -->
                 <ul style="@if (LaravelLocalization::getCurrentLocale() == 'en') direction: ltr; @endif" class="menu">
@@ -313,19 +300,9 @@
                         <br>
                         {{ __('main.footer3') }}
                     </p>
+                     
                     <ul class="social-icons @if (LaravelLocalization::getCurrentLocale() == 'en') justify-content-end @endif">
-                        <li>
-                            <a class="pt-2" target="_blank"
-                                href="https://play.google.com/store/apps/details?id=com.elaraby.elarabyErp">
-                                <img src="{{ asset('images/google-play.png') }}" width="50%" alt="google-play">
-                            </a>
-                        </li>
-                        <li>
-                            <a class="pt-2" target="_blank"
-                                href="https://play.google.com/store/apps/details?id=com.elaraby.elarabyErp">
-                                <img src="{{ asset('images/app-store.png') }}" width="50%" alt="google-play">
-                            </a>
-                        </li>
+                      
                         <li>
                             <a class="pt-2" target="_blank"
                                 href="https://api.whatsapp.com/send/?phone={{ $informations->whatsapp_number }}&text={{ $informations->whatsapp_message }}&app_absent=0">
@@ -539,7 +516,9 @@
                     {{ $system->name }}
             </div>
         </div>
+       
     </footer>
+     
     @include('site.layouts.common.js_links')
 </body>
 
