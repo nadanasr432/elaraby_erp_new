@@ -1095,12 +1095,17 @@ class QuotationController extends Controller
             ->first();
         if (!empty($shipping)) {
             $shipping_type = $shipping->action_type;
-            $shipping_value = $shipping->value;
+
+            $shipping_value = (float)$shipping->value;
+
             if ($shipping_type == "percent") {
+                $totalQuotaitonPrice = (float)$totalQuotaitonPrice;
                 $shipping_value = $shipping_value / 100 * $totalQuotaitonPrice;
             }
-            $totalQuotaitonPrice = $totalQuotaitonPrice + $shipping_value;
+
+            $totalQuotaitonPrice = (float)$totalQuotaitonPrice + $shipping_value;
         }
+
 
         return view(
             'client.quotations.sample',
