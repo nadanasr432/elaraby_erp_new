@@ -252,8 +252,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav" style="height: 52px;align-items: flex-start;">
-
+                <ul class="navbar-nav" style="height: 52px;align-items: flex-start;" role="tablist">
                     <li class="nav-item active">
                         <a class="d-flex navbar-brand text-white text-center mt-1 pb-2 mb-2"
                             href="{{ route('client.home') }}"
@@ -293,7 +292,8 @@
                     <li class="nav-item">
                         <a class="d-flex navbar-brand text-white text-center mt-1 pb-2 mb-2" target="_blank"
                             style="font-size: 14px !important;margin-right: 11px;border-bottom: 1px solid rgba(255,255,255,0.12); cursor: pointer;"
-                            id="toggleAddSalesButton">
+                            id="nav-bills-tab" href="#">
+
                             <svg width="20" style="position: relative; top: -3px; margin-left: 6px;" height="24"
                                 viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -338,8 +338,8 @@
                         <a class="d-flex navbar-brand text-white text-center mt-1 pb-2 mb-2" target="_blank"
                             href="{{ route('pos.sales.report') }}"
                             style="font-size: 14px !important;margin-right: 11px;border-bottom: 1px solid rgba(255,255,255,0.12)">
-                            <svg style="position: relative; top: -3px; margin-left: 6px;" fill="white" width="12"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                            <svg style="position: relative; top: -3px; margin-left: 6px;" fill="white"
+                                width="12" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
                                 <path
                                     d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z">
                                 </path>
@@ -374,11 +374,25 @@
                 </ul>
             </div>
         </nav>
-
         @yield('content')
     </div>
     @include('client.layouts.common.js_links')
-   
+    <script>
+        document.getElementById('nav-bills-tab').addEventListener('click', function(event) {
+            event.preventDefault();
+            var tabContent = document.getElementById('nav-bills');
+
+            if (tabContent.classList.contains('show')) {
+                tabContent.classList.remove('show', 'active');
+            } else {
+                var tabPanes = document.querySelectorAll('.tab-pane');
+                tabPanes.forEach(function(pane) {
+                    pane.classList.remove('show', 'active');
+                });
+                tabContent.classList.add('show', 'active');
+            }
+        });
+    </script>
 </body>
 
 </html>

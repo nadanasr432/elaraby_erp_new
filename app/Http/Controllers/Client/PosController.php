@@ -199,7 +199,7 @@ class PosController extends Controller
         } else {
             return view(
                 'client.pos.create',
-                compact('units','sub_categories','company_id', 'pos_status', 'pos_settings', 'code_universal', 'currency', 'user', 'bills', 'outer_clients', 'safes', 'banks', 'pre_cash', 'pending_pos', 'stores', 'taxes', 'pos_open', 'products', 'company', 'timezones', 'categories')
+                compact('units', 'sub_categories', 'company_id', 'pos_status', 'pos_settings', 'code_universal', 'currency', 'user', 'bills', 'outer_clients', 'safes', 'banks', 'pre_cash', 'pending_pos', 'stores', 'taxes', 'pos_open', 'products', 'company', 'timezones', 'categories')
             );
         }
     }
@@ -291,10 +291,16 @@ class PosController extends Controller
             $old_order = Product::where('company_id', $company_id)->max('code_universal');
             $code_universal = ++$old_order;
         }
+        // $client_id = Auth::user()->id;
+
+        $bills = PosOpen::where('company_id', $company_id)
+            ->where('client_id', $user->id)
+            ->where('status', 'done')
+            ->get();
 
         return view(
             'client.pos.create2',
-            compact('units', 'sub_categories', 'company_id', 'pos_status', 'pos_settings', 'code_universal', 'user', 'outer_clients', 'safes', 'banks', 'pre_cash', 'pending_pos', 'stores', 'taxes', 'products', 'company', 'timezones', 'categories')
+            compact('bills', 'units', 'sub_categories', 'company_id', 'pos_status', 'pos_settings', 'code_universal', 'user', 'outer_clients', 'safes', 'banks', 'pre_cash', 'pending_pos', 'stores', 'taxes', 'products', 'company', 'timezones', 'categories')
         );
     }
 
@@ -2120,146 +2126,64 @@ class PosController extends Controller
 
     public function pos_edit(Request $request)
     {
-        //user data..
         $company_id = Auth::user()->company_id;
-        $company = Company::FindOrFail($company_id);
+        $company = Company::findOrFail($company_id);
         $client_id = Auth::user()->id;
 
-        //get bill id..
         $bill_id = $request->bill_id;
         $pos = PosOpen::where('id', $bill_id)->first();
         $pos_open = PosOpen::where('client_id', $client_id)
             ->where('status', 'open')
             ->first();
-        $elements = $pos->elements;
-        $pos_tax = $pos->tax;
-        $pos_discount = $pos->discount;
-        $sum = 0;
-        foreach ($elements as $pos_element) {
-            $sum = $sum + $pos_element->quantity_price;
-        }
 
-        //get bill data to show..
-        if (isset($pos) && isset($pos_tax) && empty($pos_discount)) {
-            $tax_value = $pos_tax->tax_value;
-            $percent = $tax_value / 100 * $sum;
-            $sum = $sum + $percent;
-        } elseif (isset($pos) && isset($pos_discount) && empty($pos_tax)) {
-            $discount_value = $pos_discount->discount_value;
-            $discount_type = $pos_discount->discount_type;
-            if ($discount_type == "pound") {
-                $sum = $sum - $discount_value;
-            } else {
-                $discount_value = ($discount_value / 100) * $sum;
-                $sum = $sum - $discount_value;
-            }
-        } elseif (isset($pos) && !empty($pos_discount) && !empty($pos_tax)) {
-            $tax_value = $pos_tax->tax_value;
-            $discount_value = $pos_discount->discount_value;
-            $discount_type = $pos_discount->discount_type;
-            if ($discount_type == "percent") {
-                $discount_value = ($discount_value / 100) * $sum;
-            }
-            $tot = $sum - $discount_value;
-            $percent = $tax_value / 100 * $tot;
-            $sum = $sum - $discount_value + $percent;
-        }
+        // Check if the bill exists
+        if ($pos) {
+  
+            $elements = DB::table('pos_open_elements')
+            ->join('products', 'pos_open_elements.product_id', '=', 'products.id')
+            ->select('pos_open_elements.*', 'products.product_name')
+            ->where('pos_open_elements.pos_open_id', $pos->id)
+            ->get();
 
+            // dd($elements);
+            $pos_tax = $pos->tax;
+            $pos_discount = $pos->discount;
+            $sum = $elements->sum('quantity_price');
 
-        if (!empty($pos)) {
-            if (!empty($pos_open)) {
-                $pos_open->update([
-                    'status' => 'pending'
-                ]);
+            // Calculate sum with tax and discount
+            if ($pos_tax && !$pos_discount) {
+                $percent = $pos_tax->tax_value / 100 * $sum;
+                $sum += $percent;
+            } elseif ($pos_discount && !$pos_tax) {
+                $discount_value = $pos_discount->discount_value;
+                $discount_type = $pos_discount->discount_type;
+                $sum -= $discount_type === "pound" ? $discount_value : ($discount_value / 100 * $sum);
+            } elseif ($pos_discount && $pos_tax) {
+                $discount_value = $pos_discount->discount_value;
+                $discount_type = $pos_discount->discount_type;
+                $discount_value = $discount_type === "percent" ? ($discount_value / 100 * $sum) : $discount_value;
+                $tot = $sum - $discount_value;
+                $percent = $pos_tax->tax_value / 100 * $tot;
+                $sum = $tot + $percent;
             }
 
-            $cash_id = "pos_" . $bill_id;
-            $cash = Cash::where('bill_id', $cash_id)->get();
-            if (!$cash->isEmpty()) {
-                $cash_amount = 0;
-                foreach ($cash as $item) {
-                    $cash_amount = $cash_amount + $item->amount;
-                    //                    $amount = $item->amount;
-                    //                    $safe = Safe::FindOrFail($item->safe_id);
-                    //                    $old_safe_balance = $safe->balance;
-                    //                    $new_safe_balance = $old_safe_balance - $amount;
-                    //                    $safe->update([
-                    //                        'balance' => $new_safe_balance
-                    //                    ]);
-                }
-            } else {
-                $cash_amount = 0;
-            }
-
-            $bank_cash = BankCash::where('bill_id', $cash_id)->get();
-            if (!$bank_cash->isEmpty()) {
-                $cash_bank_amount = 0;
-                foreach ($bank_cash as $item) {
-                    $cash_bank_amount = $cash_bank_amount + $item->amount;
-                    //                    $amount = $item->amount;
-                    //                    $bank = Bank::FindOrFail($item->bank_id);
-                    //                    $old_bank_balance = $bank->bank_balance;
-                    //                    $new_bank_balance = $old_bank_balance - $amount;
-                    //                    $bank->update([
-                    //                        'bank_balance' => $new_bank_balance
-                    //                    ]);
-                }
-            } else {
-                $cash_bank_amount = 0;
-            }
-
-            $coupon_cash = CouponCash::where('bill_id', $cash_id)->get();
-            if (!$coupon_cash->isEmpty()) {
-                $cash_coupon_amount = 0;
-                foreach ($coupon_cash as $item) {
-                    $cash_coupon_amount = $cash_coupon_amount + $item->amount;
-                    $item->coupon->update([
-                        'status' => 'new'
-                    ]);
-                }
-            } else {
-                $cash_coupon_amount = 0;
-            }
-            $total_amount = $cash_amount + $cash_bank_amount + $cash_coupon_amount;
-            $rest = $sum - $total_amount;
-
-            if (isset($pos->outer_client_id) && !empty($pos->outer_client_id)) {
-                $outer_client = OuterClient::FindOrFail($pos->outer_client_id);
-                $prev_balance = $outer_client->prev_balance;
-
-                $new_balance = $prev_balance - $rest;
-                $outer_client->update([
-                    'prev_balance' => $new_balance
-                ]);
-            }
-
-
-            $pos->update([
-                'status' => 'open',
-                'editing' => 1,
-            ]);
-            foreach ($elements as $element) {
-                $product = Product::FindOrFail($element->product_id);
-                $category_type = $product->category->category_type;
-                if ($category_type == "مخزونية") {
-                    $product_before_balance = $product->first_balance;
-                    $product_after_balance = $product_before_balance + $element->quantity;
-                    $product->update([
-                        'first_balance' => $product_after_balance
-                    ]);
-                }
-            }
             return response()->json([
-                'message' => '',
-                'success' => 1
+                'success' => 1,
+                'bill' => $pos,
+                'elements' => $elements,
+                'sum' => $sum,
+                'pos_tax' => $pos_tax,
+                'pos_discount' => $pos_discount,
+                'outer_client_id' => $pos->outer_client_id,
             ]);
         } else {
             return response()->json([
-                'message' => 'لا يوجد فاتورة مسجلة بهذا الرقم',
-                'success' => 0
+                'success' => 0,
+                'message' => 'لا يوجد فاتورة مسجلة بهذا الرقم'
             ]);
         }
     }
+
 
     public function delete_pos_open(Request $request)
     {
