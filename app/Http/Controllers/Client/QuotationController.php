@@ -699,18 +699,29 @@ class QuotationController extends Controller
         }
 
         if (!empty($previous_extra) && !empty($previous_discount)) {
+            $previous_discount_value = (float)$previous_discount_value;
+            $previous_extra_value = (float)$previous_extra_value;
+            $total = (float)$total;
+
             $after_discount = $total - $previous_discount_value + $previous_extra_value;
         } else {
-            $after_discount = $total;
+            $after_discount = (float)$total;
         }
 
         if (isset($after_discount) && $after_discount != 0) {
+            $tax_value_added = (float)$tax_value_added;
+            $after_discount = (float)$after_discount;
+
             $percentage = ($tax_value_added / 100) * $after_discount;
             $after_total_all = $after_discount + $percentage;
         } else {
+            $tax_value_added = (float)$tax_value_added;
+            $total = (float)$total;
+
             $percentage = ($tax_value_added / 100) * $total;
             $after_total_all = $total + $percentage;
         }
+
         /*
         return view('client.quotations.sample',
             compact('company_id', 'currency', 'after_discount', 'after_total_all', 'quotation_k', 'quotations', 'outer_clients'
