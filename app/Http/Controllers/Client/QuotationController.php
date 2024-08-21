@@ -671,12 +671,21 @@ class QuotationController extends Controller
         if (!empty($previous_extra)) {
             $previous_extra_type = $previous_extra->action_type;
             $previous_extra_value = $previous_extra->value;
-            if ($previous_extra_type == "percent") {
-                $previous_extra_value = $previous_extra_value / 100 * $total;
+            if (is_numeric($previous_extra_value)) {
+                if ($previous_extra_type == "percent") {
+                    $previous_extra_value = $previous_extra_value / 100 * $total;
+                }
+                if (is_numeric($total)) {
+                    $after_discount = $total + $previous_extra_value;
+                } else {
+                   
+                    $after_discount = $total; 
+                }
+            } else {
+                
+                $after_discount = $total; 
             }
-            $after_discount = $total + $previous_extra_value;
         }
-
 
         $previous_discount = QuotationExtra::where('quotation_id', $quotation_k->id)
             ->where('action', 'discount')->first();
