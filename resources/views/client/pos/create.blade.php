@@ -49,6 +49,10 @@
                         </a>
                     </div>
                 </nav>
+                    <div class="card" id="redCard" style="display: none;">
+                        <!-- Card content here -->
+                        This is the red card content.
+                    </div>
                 <div class="mb-1">
                     <select autofocus id="product_id" class="col-8 selectpicker form-control"
                             data-style="btn-dark" data-live-search="true"

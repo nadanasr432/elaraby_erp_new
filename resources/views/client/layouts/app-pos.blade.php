@@ -292,8 +292,8 @@
 
                     <li class="nav-item">
                         <a class="d-flex navbar-brand text-white text-center mt-1 pb-2 mb-2" target="_blank"
-                            href="{{ route('pos.sales.report') }}"
-                            style="font-size: 14px !important;margin-right: 11px;border-bottom: 1px solid rgba(255,255,255,0.12)">
+                            style="font-size: 14px !important;margin-right: 11px;border-bottom: 1px solid rgba(255,255,255,0.12); cursor: pointer;"
+                            id="toggleAddSalesButton">
                             <svg width="20" style="position: relative; top: -3px; margin-left: 6px;" height="24"
                                 viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -378,6 +378,7 @@
         @yield('content')
     </div>
     @include('client.layouts.common.js_links')
+   
 </body>
 
 </html>

@@ -585,6 +585,8 @@
                         </div>
                     </div>
                     <hr class="m-0">
+                    <button id="addSalesButton" style="display:none; margin-top: 10px;">Add Sales</button>
+
                     <div class="prod-section p-nos">
                         <h5 class="mt-2 text-center loadingH" style="display: none;">
                             جاري التحميل ...
