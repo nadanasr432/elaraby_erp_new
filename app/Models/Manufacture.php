@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Manufacture extends Model
 {
     use HasFactory;
-       protected static function boot()
+    protected static function boot()
     {
         parent::boot();
 
@@ -19,8 +19,8 @@ class Manufacture extends Model
     public static function generateManufactureNumber($companyId)
     {
         $lastManufacture = self::where('company_id', $companyId)
-                        ->orderBy('number', 'desc')
-                        ->first();
+            ->orderBy('number', 'desc')
+            ->first();
 
         return $lastManufacture ? $lastManufacture->number + 1 : 1;
     }

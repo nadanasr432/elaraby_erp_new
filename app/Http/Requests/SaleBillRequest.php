@@ -24,8 +24,8 @@ class SaleBillRequest extends FormRequest
         return [
             'cash_number' => 'required',
             'amount' => 'required',
-            'date' => 'required',
-            'time' => 'required',
+            // 'date' => 'required',
+            // 'time' => 'required',
         ];
     }
 }

@@ -734,6 +734,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::post('/sale-bills/pay-delete', [SaleBillController::class, 'pay_delete'])->name('sale_bills.pay.delete');
             Route::post('/sale-bills/updateStatusOnEdit', [SaleBillController::class, 'updateStatusOnEdit'])->name('sale_bills.updateStatusOnEdit');
             Route::post('/sale_bills/toggle_status', [SaleBillController::class, 'toggleStatus'])->name('client.sale_bills.toggle_status');
+            Route::get('/sale-bill/{id}', [SaleBillController::class, 'show'])->name('sale-bill-show');
 
 
             // buy_bills Routes

@@ -389,6 +389,7 @@
                                 <th>@lang('sales_bills.Quantity')</th>
                                 <th>@lang('sales_bills.The amount does not include tax')</th>
                                 <th>@lang('sales_bills.Tax')</th>
+
                                 <th>@lang('products.pdesc')</th>
                                 <th>@lang('products.pmodel1')</th>
                                 <th>@lang('sales_bills.total')</th>
@@ -409,7 +410,7 @@
                                         $ProdTax = 0;
                                     }
                                     #--PRODUCT TAX--#
-                            
+
                                     #--PRODUCT TOTAL--#
                                     if ($company->tax_value_added && $company->tax_value_added != 0) {
                                         $ProdTotal = $sale_bill->value_added_tax ? $element->quantity_price : round($element->quantity_price + ($element->quantity_price * 15) / 100, 2);
@@ -417,10 +418,10 @@
                                         $ProdTotal = $element->quantity_price;
                                     }
                                     #--PRODUCT TOTAL--#
-                            
+
                                     $tableRows = [];
                                     $tableRow = '<tr style="font-size: 16px !important; height: 34px !important; text-align: center;background: #f8f9fb">';
-                            
+
                                     // Reversed order of <td> elements
                                     $tableRow .= '<td>' . ++$i . '</td>';
                                     $tableRow .= '<td>' . $element->product->product_name . '</td>';
@@ -431,9 +432,9 @@
                                     $tableRow .= '<td>' . $element->product->description . '</td>';
                                     $tableRow .= '<td>' . $element->product->product_model . '</td>';
                                     $tableRow .= '<td>' . $ProdTotal . '</td>';
-                            
+
                                     $tableRow .= '</tr>';
-                            
+
                                     // Output the table row
                                     echo $tableRow;
                                 }
@@ -453,6 +454,7 @@
                                 <th>@lang('sales_bills.total')</th>
                                 <th>@lang('products.pmodel1')</th>
                                 <th>@lang('products.pdesc')</th>
+
                                 <th>@lang('sales_bills.Tax')</th>
                                 <th>@lang('sales_bills.The amount does not include tax')</th>
                                 <th>@lang('sales_bills.Quantity')</th>
@@ -475,16 +477,16 @@
                                         $ProdTax = 0;
                                     }
                                     #--PRODUCT TAX--#
-                            
+
                                     #--PRODUCT TOTAL--#
                                     if ($company->tax_value_added && $company->tax_value_added != 0) {
                                         $ProdTotal = $sale_bill->value_added_tax ? $element->quantity_price : round($element->quantity_price + ($element->quantity_price * 15) / 100, 2);
                                     } else {
                                         $ProdTotal = $element->quantity_price;
                                     }
-                            
+
                                     #--PRODUCT TOTAL--#
-                            
+
                                     echo '
                                                                                                                                                                                                                                 <tr style="font-size: 16px !important; height: 34px !important; text-align: center;background: #f8f9fb">
                                                                                                                                                                                                                                     <td>' .
@@ -496,7 +498,7 @@
                                                                                                                                                                                                                                     <td>' .
                                         $element->product->description .
                                         '</td>
-                                                                   
+
                                                                                                                                                                                                                                     <td>' .
                                         $ProdTax .
                                         '</td>
@@ -558,7 +560,7 @@
                         style="border: 1px solid #2d2d2d1c; border-radius: 7px; overflow: hidden; box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;">
                         <table
                             style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                            @if (!empty($discount) && $discount->value > 0)
+                            @if (!empty($discount) && $discount > 0)
                                 <tr
                                     style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
 
@@ -690,7 +692,7 @@
                         style="border: 1px solid #2d2d2d1c; border-radius: 7px; overflow: hidden; box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;">
                         <table
                             style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                            @if (!empty($discount) && $discount->value > 0)
+                            @if (!empty($discount) && $discount > 0)
                                 <tr
                                     style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                     <td dir="rtl">

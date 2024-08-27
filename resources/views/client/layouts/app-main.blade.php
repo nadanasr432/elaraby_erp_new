@@ -14,7 +14,11 @@
     <!-- include summernote css/js -->
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/treeview-rtl.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{asset('css/font-awesome.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.min.css') }}">
+    <!-- Include SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+
+    <!-- Include SweetAlert2 JavaScript -->
 
     @include('client.layouts.common.css_links')
 
@@ -190,9 +194,10 @@
         h3 {
             font-size: 17px !important;
         }
+
         .filter-option-inner {
-                margin-right: 9px;
-            }
+            margin-right: 9px;
+        }
     </style>
 </head>
 
@@ -222,6 +227,8 @@
     @include('client.layouts.common.js_links')
     <!-----sweetalert------>
     <script src="{{ asset('/') }}../js/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 
     <div class="modal" id="modaldemo">

@@ -363,7 +363,7 @@
                                         $ProdTax = 0 . ' ' . $currency;
                                     }
                                     #--PRODUCT TAX--#
-                            
+
                                     #--PRODUCT TOTAL--#
                                     if ($company->tax_value_added && $company->tax_value_added != 0) {
                                         $ProdTotal = ($sale_bill->value_added_tax ? $element->quantity_price : round($element->quantity_price + ($element->quantity_price * 15) / 100, 2)) . ' ' . $currency;
@@ -371,7 +371,7 @@
                                         $ProdTotal = $element->quantity_price . ' ' . $currency;
                                     }
                                     #--PRODUCT TOTAL--#
-                            
+
                                     echo '
                                                                                     <tr style="font-size: 15px !important; height: 44px !important; text-align: center;background: #f2f2f2">
                                                                                         <td style="border: 1px solid rgba(161,161,161,0.63);">' .
@@ -442,7 +442,7 @@
                                         $ProdTax = 0 . ' ' . $currency;
                                     }
                                     #--PRODUCT TAX--#
-                            
+
                                     #--PRODUCT TOTAL--#
                                     if ($company->tax_value_added && $company->tax_value_added != 0) {
                                         $ProdTotal = ($sale_bill->value_added_tax ? $element->quantity_price : round($element->quantity_price + ($element->quantity_price * 15) / 100, 2)) . ' ' . $currency;
@@ -450,7 +450,7 @@
                                         $ProdTotal = $element->quantity_price . ' ' . $currency;
                                     }
                                     #--PRODUCT TOTAL--#
-                            
+
                                     echo '
                                                                                                                                     <tr style="font-size: 15px !important; height: 44px !important; text-align: center;background: #f2f2f2">
                                                                                                                                         <td style="border: 1px solid rgba(161,161,161,0.63);">' .
@@ -508,7 +508,7 @@
                     <div class="products-details p-2 col-6">
                         <table
                             style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                            @if (!empty($discount) && $discount->value > 0)
+                            @if (!empty($discount) && $discount > 0)
                                 <tr
                                     style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;background: #f2f2f2">
                                     <td style="text-align: left;padding-left: 14px;">@lang('sales_bills.Discount')</td>
@@ -621,7 +621,7 @@
                     <div class="products-details p-2 col-6">
                         <table
                             style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                            @if (!empty($discount) && $discount->value > 0)
+                            @if (!empty($discount) && $discount > 0)
                                 <tr
                                     style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;background: #f2f2f2">
                                     <td dir="rtl">

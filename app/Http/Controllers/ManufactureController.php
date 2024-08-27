@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Manufacture;
 use Illuminate\Http\Request;
 use App\Models\Manufacturing;
+use App\Services\StockService;
 use Illuminate\Support\Carbon;
 use App\Models\ManufactureProduct;
 use Illuminate\Support\Facades\DB;
@@ -61,7 +62,6 @@ class ManufactureController extends Controller
         DB::beginTransaction();
 
         try {
-            // Create the manufacturing record
             $manufacturing = Manufacture::create([
                 'company_id' => $request->input('company_id'),
                 'store_id' => $request->input('store_id'),
@@ -71,16 +71,19 @@ class ManufactureController extends Controller
                 'note' => $request->input('note'),
                 'total' => $request->input('total'),
             ]);
-
-            // Create the related manufacture products
             foreach ($request->input('products') as $product) {
-                ManufactureProduct::create([
+                $manufactureProduct =  ManufactureProduct::create([
                     'manufacture_id' => $manufacturing->id,
                     'product_id' => $product['id'],
                     'qty' => $product['qty'],
                 ]);
             }
-
+            if ($request->input('status') == 'complete') {
+                $this->edit($manufacturing);
+            }
+            foreach ($manufacturing->products as $product) {
+                $this->reduceChildren($product, $request->input('store_id'));
+            }
             DB::commit();
 
             return redirect()->route('client.manufactures.index')->with('success', 'Manufacturing record created successfully.');
@@ -98,14 +101,34 @@ class ManufactureController extends Controller
     {
         $Manufacture->status = 'complete';
         $Manufacture->save();
+        $subTotal = 0;
+        foreach ($Manufacture->products as $product) {
+            $subTotal = $this->calculateSubTotal($product, $product->qty, $Manufacture->store_id);
+            $product->cost = $subTotal;
+            StockService::record($product, $Manufacture->store_id, $product->qty);
+        }
+
         return redirect()->route('client.manufactures.index')->with('success', 'Manufacturing confirmed successfully.');
     }
-
-
+    public function reduceChildren($manufactureProduct, $store_id)
+    {
+        foreach ($manufactureProduct->product->children as $child) {
+            $cumulative = $manufactureProduct->qty * $manufactureProduct->product->qtyInCombos($child->id);
+            StockService::reduce($child, $store_id, $cumulative);
+        }
+    }
+    public function calculateSubTotal($manufactureProduct, $qty, $store_id)
+    {
+        foreach ($manufactureProduct->product->children as $child) {
+            $cumulative = $manufactureProduct->qty * $qty;
+            $subTotal = StockService::getTotalCost($child, $cumulative);
+            $subTotal += $subTotal;
+        }
+        return  $subTotal;
+    }
     public function cancel($Manufacture)
     {
         $Manufacture = Manufacture::findOrFail($Manufacture);
-        // dd($Manufacture);
         $Manufacture->status = 'canceled';
         $Manufacture->save();
         return redirect()->route('client.manufactures.index')->with('success', 'Manufacturing canceled successfully.');
