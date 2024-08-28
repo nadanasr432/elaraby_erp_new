@@ -264,7 +264,6 @@ class SaleBillController extends Controller
     public function store_cash_outer_clients(SaleBillRequest $request)
     {
         $data = $request->all();
-        // dd($request);
         $company_id = $data['company_id'];
         $data['client_id'] = Auth::user()->id;
         $amount = $data['amount'];
@@ -274,6 +273,7 @@ class SaleBillController extends Controller
 
         try {
             $sale_bill = SaleBill::where(['sale_bill_number' => $bill_id, 'company_id' => $company_id])->firstOrFail();
+            // dd($sale_bill);
 
             $restUpdate = $sale_bill->final_total - $sale_bill->paid;
             $sale_bill->update(['rest' => $restUpdate]);
@@ -1134,7 +1134,6 @@ class SaleBillController extends Controller
                 'pre_cash'
             )
         );
-        dd($saleBill);
     }
 
     public function destroy(Request $request)

@@ -119,11 +119,11 @@
         </div>
         <div class="pull-left col-lg-6">
             مجموع الخصم
-            {{ round( $saleBill->total_discount, 2) }} {{ $currency }}
+            {{ round($saleBill->total_discount, 2) }} {{ $currency }}
         </div>
         <div class="pull-left col-lg-6">
             مجموع الضرائب
-            {{ round( $saleBill->total_tax, 2) }} {{ $currency }}
+            {{ round($saleBill->total_tax, 2) }} {{ $currency }}
         </div>
         <div class="clearfix"></div>
     </div>
@@ -211,6 +211,8 @@
                             <label> رقم العملية <span class="text-danger">*</span></label>
                             <input required readonly value="{{ $pre_cash }}" class="form-control" id="cash_number"
                                 name="cash_number" type="text">
+                            <input type="hidden" value="{{ $saleBill->sale_bill_number }}" id="sale_bill_number"
+                                name="sale_bill_number" />
                         </div>
                         <div class="col-md-4">
                             <label> المبلغ المدفوع <span class="text-danger">*</span></label>
