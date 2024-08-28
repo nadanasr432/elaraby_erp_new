@@ -1,9 +1,9 @@
 @extends('client.layouts.app-main')
 <style>
     .btn.dropdown-toggle.bs-placeholder,
-    .form-control {
+    /* .form-control {
         height: 40px !important;
-    }
+    } */
 
     a,
     a:hover {
@@ -58,120 +58,141 @@
             </center>
         </h6>
 
-        <!-----store_id------->
-        <!-- First row -->
-        <div class="row">
-            <!-- Store selection -->
-            <div class="col-lg-6 mb-3 ">
-                <label for="store_id" class="d-block mb-2">{{ __('sales_bills.choose-store') }}</label>
-                <div class="d-flex align-items-stretch">
-                    <select name="store_id" id="store_id" class="selectpicker w-75 ml-n5" data-style="btn-info"
-                        data-live-search="true" title="{{ __('sales_bills.choose-store') }}">
-                        <?php $i = 0; ?>
-                        @foreach ($stores as $store)
-                            @if ($stores->count() == 1)
+
+        <!----Store--->
+
+        <div class="col-lg-3 pl-0 pull-right no-print">
+            <label>
+                {{ __('sales_bills.select-store') }}
+                <span class="text-danger font-weight-bold">*</span>
+            </label>
+            <div class="d-flex align-items-center">
+                <select name="store_id" id="store_id" class="selectpicker me-2" data-style="btn-newdark"
+                    data-live-search="true" title="{{ __('sales_bills.select-store') }}">
+                    <?php $i = 0; ?>
+                    @foreach ($stores as $store)
+                        @if ($stores->count() == 1)
+                            <option selected value="{{ $store->id }}">{{ $store->store_name }}</option>
+                        @else
+                            @if ($i == 0)
                                 <option selected value="{{ $store->id }}">{{ $store->store_name }}</option>
                             @else
-                                @if ($i == 0)
-                                    <option selected value="{{ $store->id }}">{{ $store->store_name }}</option>
-                                @else
-                                    <option value="{{ $store->id }}">{{ $store->store_name }}</option>
-                                @endif
+                                <option value="{{ $store->id }}">{{ $store->store_name }}</option>
                             @endif
-                            <?php $i++; ?>
-                        @endforeach
-                    </select>
-                    <a target="_blank" href="{{ route('client.stores.create') }}" role="button"
-                        class="btn btn-sm btn-danger ms-2">
-                        <i> {{ __('sales_bills.add-store') }}</i>
-                    </a>
-                </div>
+                        @endif
+                        <?php $i++; ?>
+                    @endforeach
+                </select>
+                <a target="_blank" href="{{ route('client.stores.create') }}" role="button" class="btn btn-sm">
+                    <i>{{ __('sales_bills.add-store') }}</i>
+                </a>
             </div>
+        </div>
 
-            <!-- Client selection -->
-            <div class="col-lg-6 mb-3">
-                <label for="outer_client_id" class="d-block mb-2">{{ __('sales_bills.client-name') }}</label>
-                <div class="d-flex align-items-center">
-                    <select required name="outer_client_id" id="outer_client_id" class="selectpicker w-75"
-                        data-style="btn-info" data-live-search="true" title="{{ __('sales_bills.client-name') }}">
-                        <option value="" disabled selected>اختر عميل</option>
-                        @foreach ($outer_clients as $outer_client)
-                            <option value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
-                        @endforeach
-                    </select>
-                    <a target="_blank" href="{{ route('client.outer_clients.create') }}" role="button"
-                        class="btn btn-sm btn-danger ms-2">
-                        <i> {{ __('sales_bills.add-client') }}</i>
-                    </a>
-                </div>
+
+        <!----CLIENT--->
+        <div class="col-lg-3 p-0 pull-right no-print">
+            <label>
+                {{ __('sales_bills.client-name') }}
+                <span class="text-danger font-weight-bold">*</span>
+            </label>
+            <div class="d-flex align-items-center">
+                <select name="outer_client_id" id="outer_client_id" data-style="btn-newdark"
+                    title="{{ __('sales_bills.client-name') }}" class="selectpicker w-100 me-2" data-live-search="true">
+                    @foreach ($outer_clients as $outer_client)
+                        <option value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
+                    @endforeach
+                </select>
+                <a target="_blank" href="{{ route('client.outer_clients.create') }}" role="button" class="btn btn-sm">
+                    <i>{{ __('sales_bills.add-client') }}</i>
+                </a>
             </div>
         </div>
 
 
 
-        <!-- Second row -->
-        <div class="row d-flex justify-content-between align-items-stretch mt-3">
-            <!-- Tax selection -->
-            <div class="col-lg-6 d-flex flex-column h-100">
-                <div class="form-group" dir="rtl">
-                    <label for="value_added_tax">{{ __('sales_bills.prices-for-tax') }}</label>
-                    <select required name="value_added_tax" id="value_added_tax" class="selectpicker w-100"
-                        data-style="btn-info" data-live-search="true">
-                        <option value="0">
-                            {{ __('sales_bills.not-including-tax') }}</option>
-                        <option value="2" selected>
-                            {{ __('sales_bills.including-tax') }}</option>
-                        <option value="1">
-                            {{ __('sales_bills.exempt-tax') }}</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Date and time -->
-            <div class="col-lg-6 d-flex h-100">
-                <!-- Date -->
-                <div class="col-sm-6 d-flex flex-column justify-content-between pr-1">
-                    <label>{{ __('sales_bills.invoice-date') }}</label>
-                    <input type="date" required name="date" id="date" class="form-control"
-                        value="{{ date('Y-m-d') }}" />
-                </div>
-                <!-- Time -->
-                <div class="col-sm-6 d-flex flex-column justify-content-between">
-                    <label>{{ __('sales_bills.invoice-time') }}</label>
-                    <input type="time" required name="time" id="time" class="form-control"
-                        value="{{ date('H:i:s') }}" />
-                </div>
+        <!----DATE--->
+        <div class="col-lg-3 col-md-3 col-sm-3 pull-right no-print">
+            <div class="form-group" dir="rtl">
+                <label>{{ __('sales_bills.invoice-date') }}</label>
+                <span class="text-danger font-weight-bold">*</span>
+                <input type="date" required name="date" id="date" class="form-control"
+                    value="{{ date('Y-m-d') }}" />
             </div>
         </div>
-        <div class="row options no-print products">
-            <div class="col-lg-12 pull-right">
-                {{-- <label for="product_id"> {{ __('sales_bills.product-code') }} </label> --}}
-                <select name="product_id" id="product_id" class="selectpicker w-50" data-style="btn-info"
+
+        <!----TIME--->
+        <div class="col-lg-3 col-md-3 col-sm-3 pull-right no-print">
+            <div class="form-group" dir="rtl">
+                <label>{{ __('sales_bills.invoice-time') }}</label>
+                <span class="text-danger font-weight-bold">*</span>
+                <input type="time" required name="time" id="time" class="form-control"
+                    value="{{ date('H:i:s') }}" />
+            </div>
+        </div>
+        <!--tax-->
+        <div class="clearfix no-print"></div>
+        <div class="col-lg-3 pl-0 pull-right no-print">
+            <label for="value_added_tax">{{ __('sales_bills.prices-for-tax') }}
+                <span class="text-danger font-weight-bold">*</span>
+
+            </label>
+
+            <div class="d-flex align-items-center">
+                <select required name="value_added_tax" id="value_added_tax" class="selectpicker me-2"
+                    data-style="btn-newdark" data-live-search="true">
+                    <option value="0">
+                        {{ __('sales_bills.not-including-tax') }}</option>
+                    <option value="2" selected>
+                        {{ __('sales_bills.including-tax') }}</option>
+                    <option value="1">
+                        {{ __('sales_bills.exempt-tax') }}</option>
+                </select>
+            </div>
+        </div>
+
+
+        <!----Product--->
+
+        <!----->
+        <div class="col-lg-3 p-0 pull-right no-print">
+            <label>
+                {{ __('sales_bills.product-code') }}
+                <span class="text-danger font-weight-bold">*</span>
+            </label>
+            <div class="d-flex align-items-center">
+                <select name="product_id" id="product_id" class="selectpicker w-50" data-style="btn-newdark"
                     data-live-search="true" title="{{ __('sales_bills.product-code') }}">
                     @foreach ($all_products as $product)
                         <option value="{{ $product->id }}" data-name="{{ strtolower($product->product_name) }}"
                             data-sectorprice="{{ $product->sector_price }}"
                             data-wholesaleprice="{{ $product->wholesale_price }}"
-                            data-tokens="{{ $product->code_universal }}" data-remaining="{{ $product->total_remaining }}"
+                            data-tokens="{{ $product->code_universal }}"
+                            data-remaining="{{ $product->total_remaining }}"
                             data-categorytype="{{ $product->category_type }}" data-unitid="{{ $product->unit_id }}">
                             {{ $product->product_name }}
                         </option>
                     @endforeach
                 </select>
-
-                <a target="_blank" href="{{ route('client.products.create') }}" role="button"
-                    style="width: 15%;display: inline;" class="btn btn-sm btn-danger open_popup">
-                    <i> {{ __('sales_bills.add-product') }}</i>
+                {{-- <select name="outer_client_id" id="outer_client_id" data-style="btn-newdark"
+                    title="{{ __('sales_bills.client-name') }}" class="selectpicker w-100 me-2" data-live-search="true">
+                    @foreach ($outer_clients as $outer_client)
+                        <option value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
+                    @endforeach
+                </select> --}}
+                <a target="_blank" href="{{ route('client.products.create') }} }}" role="button" class="btn btn-sm">
+                    <i>{{ __('sales_bills.add-product') }}</i>
                 </a>
-                <div class="available text-center" style="color: #000; font-size: 14px; margin-top: 10px;"></div>
             </div>
         </div>
+        <div class="clearfix no-print"></div>
+
         <input type="number" id='grand_total_input' name="grand_total" hidden>
         <input type="number" id='grand_tax_input' name="grand_tax" hidden>
         <input type="number" id='grand_discount_input' name="total_discount" hidden>
 
         <!-- Table to display selected products -->
-        <table class="table table-bordered" id="products_table">
+        <table class="table table-bordered mt-2" id="products_table">
             <thead>
                 <tr>
                     <th>{{ __('sales_bills.product') }}</th>
@@ -573,7 +594,10 @@
             percent: "{{ __('sales_bills.percent') }}",
             include_tax: "{{ __('sales_bills.include_tax') }}",
             remove: "{{ __('sales_bills.remove') }}",
-            max_quantity: "{{ __('sales_bills.max_quantity') }}"
+            max_quantity: "{{ __('sales_bills.max_quantity') }}",
+            not_including_tax: "{{ __('sales_bills.not-including-tax') }}",
+            including_tax: "{{ __('sales_bills.including-tax') }}",
+            exempt_tax: "{{ __('sales_bills.exempt-tax') }}",
         };
     </script>
     <script>
@@ -586,7 +610,40 @@
         })
         //onsave btn حفظ الفاتورة
         $(document).ready(function() {
+            $('#value_added_tax').on('change', function() {
+                const newTaxType = $(this).val();
 
+                // Show a SweetAlert confirmation dialog
+                Swal.fire({
+                    title: 'تأكيد التغيير',
+                    text: 'سيتم تغيير نوع الضريبة لجميع العناصر في الجدول إلى القيمة المحددة. هل تريد المتابعة؟',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'نعم، تغيير',
+                    cancelButtonText: 'إلغاء',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Update all tax types in the table to match the selected value
+                        $('#products_table tbody tr').each(function() {
+                            $(this).find('select[name*="[tax]"]').val(newTaxType).trigger(
+                                'change');
+                        });
+
+                        handleTaxCalculation(); // Recalculate taxes after the update
+                        Swal.fire(
+                            'تم التغيير!',
+                            'تم تحديث نوع الضريبة بنجاح.',
+                            'success'
+                        );
+                    } else {
+                        // Reset the dropdown to its previous value
+                        $(this).val($(this).data('previous-value'));
+                    }
+                });
+
+                // Save the current value as previous for potential reset
+                $(this).data('previous-value', newTaxType);
+            });
             $('.save_btn1').on('click', function() {
                 let outerClientId = $('#outer_client_id').val();
 
@@ -1285,45 +1342,46 @@
             var roductPrice = 0;
 
             function handleTaxCalculation(flag = 1) {
-                var valueAddedTax = $('#value_added_tax').val(); // الحصول على إعداد الضريبة المختار
-                var taxRate = 0.15; // نسبة الضريبة 15%
+                var taxRate = 0.15; // Tax rate of 15%
 
                 $('#products_table tbody tr').each(function() {
                     var row = $(this);
-                    var taxCheckbox = row.find(`input[name="products[${row.data('index')}][tax]"]`);
+                    var taxTypeSelect = row.find(`select[name="products[${row.data('index')}][tax]"]`);
                     var taxAmountField = row.find(
                         `input[name="products[${row.data('index')}][tax_amount]"]`);
                     var productPrice = parseFloat(row.find(
-                        `input[name="products[${row.data('index')}][product_price]"]`).val());
+                        `input[name="products[${row.data('index')}][product_price]"]`).val()) || 0;
+                    var quantity = parseFloat(row.find(
+                        `input[name="products[${row.data('index')}][quantity]"]`).val()) || 0;
+                    var taxType = taxTypeSelect.val();
                     var tax = 0;
 
-                    if (valueAddedTax == "2" && flag) { // شامل الضريبة
-                        taxCheckbox.prop('checked', true).prop('disabled', false);
-                        tax = productPrice - (productPrice / (1 + taxRate)); // حساب الضريبة
-
-
-                        taxAmountField.show().val(tax.toFixed(2));
-                    } else if (valueAddedTax == "0" || !flag) { // غير شامل الضريبة
-                        flag ? taxCheckbox.prop('checked', false).prop('disabled', true) : taxCheckbox.prop(
-                            'checked', false);
-                        tax = productPrice * taxRate; // حساب الضريبة
-
-
-                        taxAmountField.show().val(tax.toFixed(2));
-                    } else { // معفي من الضريبة
-                        taxCheckbox.prop('checked', false).prop('disabled', true);
-                        taxAmountField.show().val(0); // عدم عرض أي ضريبة
+                    switch (taxType) {
+                        case "2": // Including tax
+                            tax = (productPrice - (productPrice / (1 + taxRate))) *
+                                quantity; // Calculate the tax amount considering quantity
+                            taxAmountField.show().val(tax.toFixed(2));
+                            break;
+                        case "0": // Not including tax
+                            tax = (productPrice * taxRate) *
+                                quantity; // Calculate the tax amount considering quantity
+                            taxAmountField.show().val(tax.toFixed(2));
+                            break;
+                        case "1": // Exempt from tax
+                        default:
+                            taxAmountField.show().val(0); // Set tax to 0 if exempt
+                            break;
                     }
 
-                    calculateRowTotal(row); // حساب إجمالي الصف بعد تحديث الضريبة
+                    calculateRowTotal(row); // Recalculate the row total after updating the tax
                 });
 
-                calculateGrandTotal(); // حساب المجموع الكلي للفاتورة
+                calculateGrandTotal(); // Recalculate the grand total after updating all rows
             }
 
-
             function calculateRowTotal(row) {
-                var valueAddedTax = $('#value_added_tax').val(); // الحصول على إعداد الضريبة المختار
+                var taxType = row.find(`select[name="products[${row.data('index')}][tax]"]`)
+                    .val(); // Get tax type for this row
 
                 var quantity = parseFloat(row.find(`input[name="products[${row.data('index')}][quantity]"]`)
                     .val()) || 0;
@@ -1333,23 +1391,42 @@
                     .val()) || 0;
                 var discountType = row.find(`input[name="products[${row.data('index')}][discount_type]"]:checked`)
                     .val();
-                var taxValue = row.find(`input[name="products[${row.data('index')}][tax_amount]"]`).val();
-                var taxAmount = quantity * taxValue;
+                var taxValue = parseFloat(row.find(`input[name="products[${row.data('index')}][tax_amount]"]`)
+                    .val()) || 0;
                 var discountApplication = $('#discount_application').val();
+
                 var subtotal = quantity * price;
-                var subtotalForDiscount = discountApplication === 'before_tax' ? subtotal - taxAmount : subtotal;
+                // var subtotalForDiscount = discountApplication === 'before_tax' ? subtotal - taxValue : subtotal;
+                if (taxType === "0") { // not include
+                    var subtotalForDiscount = discountApplication === 'before_tax' ? subtotal : subtotal + taxValue;
+                } else {
+                    var subtotalForDiscount = discountApplication === 'before_tax' ? subtotal - taxValue : subtotal;
+
+                }
+
                 var discountAmount = discountType === 'percent' ? (subtotalForDiscount * discount / 100) : discount;
-                var total;
+                var total = subtotal - discountAmount;
 
-                total = subtotal - discountAmount
+                // Adjust the total based on tax type in the row
+                if (taxType === "2") { // Including tax
+                    // The tax is included in the price, so no need to adjust the total
+                    total = subtotal - discountAmount; // Total remains as calculated without adding tax
+                } else if (taxType === "0") { // Not including tax
+                    total += taxValue; // Add tax value to the total
+                } else if (taxType === "1") { // Exempt tax
+                    // Tax is exempt, no adjustment needed
+                }
 
+                // Update the row with calculated values
                 row.find(`input[name="products[${row.data('index')}][applied_discount]"]`).val(discountAmount
                     .toFixed(2));
-                row.find(`input[name="products[${row.data('index')}][tax_amount]"]`).val(taxAmount.toFixed(2));
+                row.find(`input[name="products[${row.data('index')}][tax_amount]"]`).val(taxValue.toFixed(2));
                 row.find(`input[name="products[${row.data('index')}][total]"]`).val(total.toFixed(2));
-                calculateGrandTotal();
 
+                // Recalculate the grand total
+                calculateGrandTotal();
             }
+
 
             function calculateGrandTotal() {
                 var grandTotal = 0;
@@ -1447,6 +1524,8 @@
                 var existingRow = $(`#products_table tbody tr[data-product-id="${productId}"]`);
                 var remaining = categoryType !== "خدمية" ? $('option:selected', this).data('remaining') :
                     99999;
+                var valueAddedTax = $('#value_added_tax').val(); // الحصول على إعداد الضريبة المختار
+                console.log(valueAddedTax);
 
                 if (existingRow.length > 0) {
                     var quantityInput = existingRow.find(
@@ -1463,35 +1542,39 @@
                     calculateRowTotal(existingRow);
                 } else {
                     var rowHtml = `
-            <tr data-product-id="${productId}" data-index="${rowIndex}">
-                <td>${productName}</td>
-                <td>
-                    <label><input type="radio" name="products[${rowIndex}][price_type]" value="sector" class="price_type" checked> ${translations.sector}</label>
-                    <label><input type="radio" name="products[${rowIndex}][price_type]" value="wholesale" class="price_type"> ${translations.wholesale}</label>
-                </td>
-                <td><input type="number" min="1" name="products[${rowIndex}][product_price]" class="form-control price" value="${sectorPrice}" step="any"></td>
-                <td><input type="number" name="products[${rowIndex}][quantity]" class="form-control quantity" value="1" min="1" max="${remaining}" step="any"></td>
-                <td>
-                    <select name="products[${rowIndex}][unit_id]" class="form-control unit">
-                        <option disabled>${translations.choose_unit}</option>
-                        @foreach ($units as $unit)
-                            <option value="{{ $unit->id }}" ${unitId === {{ $unit->id }} ? 'selected' : ''}>{{ $unit->unit_name }}</option>
-                        @endforeach
-                    </select>
-                </td>
-                <td>
-                    <label><input type="radio" name="products[${rowIndex}][discount_type]" value="pound" class="discount_type"> ${translations.pound}</label>
-                    <label><input type="radio" name="products[${rowIndex}][discount_type]" value="percent" checked class="discount_type"> ${translations.percent}</label>
-                    <input type="number" name="products[${rowIndex}][discount]" class="form-control discount" value="0" min="0" step="any">
-                    <input type="number" hidden name="products[${rowIndex}][applied_discount]" class="form-control applied_discount" value="0" min="0" style="display:none;" step="any">
-                </td>
-                <td>
-                    <label><input type="checkbox" name="products[${rowIndex}][tax]" class="tax"> ${translations.include_tax}</label>
-                    <input type="number" readonly name="products[${rowIndex}][tax_amount]" class="form-control tax_amount" value="0" min="0" style="display:none;" step="any">
-                </td>
-                <td><input type="number" name="products[${rowIndex}][total]" class="form-control total" value="0" readonly step="any"><input type="number" hidden name="products[${rowIndex}][product_id]" class="form-control total" value="${productId}"></td>
-                <td><button type="button" class="btn btn-danger remove-product">${translations.remove}</button></td>
-            </tr>`;
+                     <tr data-product-id="${productId}" data-index="${rowIndex}">
+                         <td>${productName}</td>
+                         <td>
+                             <label><input type="radio" name="products[${rowIndex}][price_type]" value="sector" class="price_type" checked> ${translations.sector}</label>
+                             <label><input type="radio" name="products[${rowIndex}][price_type]" value="wholesale" class="price_type"> ${translations.wholesale}</label>
+                         </td>
+                         <td><input type="number" min="1" name="products[${rowIndex}][product_price]" class="form-control price" value="${sectorPrice}" step="any"></td>
+                         <td><input type="number" name="products[${rowIndex}][quantity]" class="form-control quantity" value="1" min="1" max="${remaining}" step="any"></td>
+                         <td>
+                             <select name="products[${rowIndex}][unit_id]" class="form-control unit">
+                                 <option disabled>${translations.choose_unit}</option>
+                                 @foreach ($units as $unit)
+                                     <option value="{{ $unit->id }}" ${unitId === {{ $unit->id }} ? 'selected' : ''}>{{ $unit->unit_name }}</option>
+                                 @endforeach
+                             </select>
+                         </td>
+                         <td>
+                             <label><input type="radio" name="products[${rowIndex}][discount_type]" value="pound" class="discount_type"> ${translations.pound}</label>
+                             <label><input type="radio" name="products[${rowIndex}][discount_type]" value="percent" checked class="discount_type"> ${translations.percent}</label>
+                             <input type="number" name="products[${rowIndex}][discount]" class="form-control discount" value="0" min="0" step="any">
+                             <input type="number" hidden name="products[${rowIndex}][applied_discount]" class="form-control applied_discount" value="0" min="0" style="display:none;" step="any">
+                         </td>
+                         <td>
+                              <select name="products[${rowIndex}][tax]" class="form-control tax_type">
+                               <option value="0" ${valueAddedTax == 0 ? 'selected' : ''}>${translations.not_including_tax}</option>
+                               <option value="1" ${valueAddedTax == 1 ? 'selected' : ''}>${translations.exempt_tax}</option>
+                               <option value="2" ${valueAddedTax == 2 ? 'selected' : ''}>${translations.including_tax}</option>
+                           </select>
+                             <input type="number" readonly name="products[${rowIndex}][tax_amount]" class="form-control tax_amount" value="0" min="0" step="any">
+                         </td>
+                         <td><input type="number" name="products[${rowIndex}][total]" class="form-control total" value="0" readonly step="any"><input type="number" hidden name="products[${rowIndex}][product_id]" class="form-control total" value="${productId}"></td>
+                         <td><button type="button" class="btn btn-danger remove-product">${translations.remove}</button></td>
+                     </tr>`;
 
                     $('#products_table tbody').append(rowHtml);
                     handleTaxCalculation();
@@ -1500,6 +1583,7 @@
 
                 calculateGrandTotal();
             });
+
 
 
             $('#products_table').on('input', '.quantity', function() {
@@ -1545,7 +1629,7 @@
                 handleTaxCalculation();
             });
 
-            $('#products_table').on('change', '.tax', function() {
+            $('#products_table').on('change', '.tax_type', function() {
                 var row = $(this).closest('tr');
                 var taxAmountField = row.find(`input[name="products[${row.data('index')}][tax_amount]"]`);
                 if ($(this).is(':checked')) {
