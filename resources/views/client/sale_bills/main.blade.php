@@ -758,7 +758,7 @@
                                 <td dir="rtl">
                                     {{-- @if ($discount->action_type == 'poundAfterTax') --}}
                                     {{-- @if ($realtotal > 0) --}}
-                                        ({{ round($sumWithOutTax) }})
+                                        ({{ number_format($sumWithOutTax, 2, '.', '') }})
 
                                         {{ $currency }}
                                     {{-- @endif --}}
