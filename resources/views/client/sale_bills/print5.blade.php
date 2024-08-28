@@ -756,7 +756,6 @@
                                     ({{ $company->tax_value_added ?? '0' }}%)
                                 </td>
                             </tr>
-
                             <tr
                                 style="background:#222751;border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: {{ $printColor }};color:white;">
                                 @if ($company->tax_value_added && $company->tax_value_added != 0)
@@ -780,8 +779,6 @@
                                 @endif
                                 <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.total')</td>
                             </tr>
-
-
                         </table>
                     </div>
                     @if (!empty($sale_bill->notes))
