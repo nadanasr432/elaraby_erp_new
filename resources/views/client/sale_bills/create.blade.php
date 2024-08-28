@@ -251,9 +251,8 @@
             <div class="col-lg-3 pull-right">
                 <label for=""> {{ __('sales_bills.product-code') }} </label>
                   {{-- @dd($all_products->count())  --}}
-               <select name="product_id" id="product_id" class="selectpicker w-80" data-style="btn-success"
+                <select name="product_id" id="product_id" class="selectpicker w-80" data-style="btn-success"
                     data-live-search="true" title="{{ __('sales_bills.product-code') }}">
-
                     @foreach ($all_products as $product)
                         <option value="{{ $product->id }}" data-tokens="{{ $product->code_universal }}">
                             {{ $product->product_name }}</option>
@@ -673,6 +672,10 @@
         <a href="javascript:;" role="button" style="height: 40px;" class="btn save_btn2 btn-md btn-primary pull-right ml-1
             @if (!isset($open_sale_bill) || empty($open_sale_bill)) disabled @endif " printColor="2" isMoswada="0" invoiceType='2'>
             حفظ و طباعة 4
+        </a>
+        <a href="javascript:;" role="button" style="height: 40px;border:1px solid #0bb3b3!important;background: #0bb3b3 !important ;color:white !important;" class="btn save_btn5 btn-md btn-primary pull-right ml-1
+            @if (!isset($open_sale_bill) || empty($open_sale_bill)) disabled @endif " printColor="3" isMoswada="0" invoiceType='5'>
+            حفظ و طباعة 5
         </a>
 
         <!------FATOORAH MOSWADA---->

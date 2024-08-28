@@ -2291,6 +2291,12 @@ class SaleBillController extends Controller
                         'client.sale_bills.main',
                         compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
                     );
+                } elseif ($invoiceType == 5) {
+                    $printColor = '#222751';
+                    return view(
+                        'client.sale_bills.print5',
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
+                    );
                 } elseif ($invoiceType == 4) {
                     $printColor = '#222751';
                     return view(
