@@ -97,11 +97,6 @@
     <div class="invoice-container border mt-4">
         <div class="text-center" id="buttons">
             <button class="btn btn-sm btn-success" onclick="window.print()">@lang('sales_bills.Print the invoice') </button>
-            <a class="btn btn-sm btn-danger" href="{{ route('client.sale_bills.create') }}"> @lang('sales_bills.back') </a>
-            <button class="btn btn-sm btn-success" dir="ltr" onclick="sendToWhatsApp()">
-                <i class="fa fa-whatsapp"></i>
-                @lang('sales_bills.Send to whatsapp')
-            </button>
         </div>
 
         <div class="all-data" style="border-top: 1px solid #2d2d2d20;padding-top: 25px;">
@@ -737,16 +732,4 @@
 </body>
 
 </html>
-<script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
 
-<script>
-    function sendToWhatsApp() {
-        const clientPhone = '{{ $sale_bill->outerClient->phones[0]->client_phone }}';
-        const invoiceUrl = '{{ route('client.sale_bills.sent', [$sale_bill->token,2,1,0]) }}';
-        const message = `Please check your invoice at the following link: ${invoiceUrl}`;
-        const whatsappUrl = `https://wa.me/${clientPhone}?text=${encodeURIComponent(message)}`;
-        setTimeout(() => {
-            window.open(whatsappUrl, '_blank');
-        }, 1000);
-    }
-</script>
