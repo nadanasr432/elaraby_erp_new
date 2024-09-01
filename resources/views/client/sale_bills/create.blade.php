@@ -1,25 +1,4 @@
 @extends('client.layouts.app-main')
-<style>
-    .btn.dropdown-toggle.bs-placeholder,
-    /* .form-control {
-        height: 40px !important;
-    } */
-
-    a,
-    a:hover {
-        text-decoration: none;
-        color: #444;
-    }
-
-    .bootstrap-select {
-        width: 80% !important;
-    }
-
-    .bill_details {
-        margin-top: 30px !important;
-        min-height: 150px !important;
-    }
-</style>
 @section('content')
     @if (session('success'))
         <div class="alert alert-success alert-dismissable fade show text-center">
@@ -52,137 +31,136 @@
     <form id="myForm" target="_blank" action="#" method="POST">
         @csrf
         @method('POST')
-        <h6 class="alert alert-info alert-sm text-center no-print  font-weight-bold" dir="rtl">
+        <h6 class="alert alert-info alert-sm text-center no-print  font-weight-bold" dir="rtl"
+            style="background-color: #d8daf5 !important; border:#d8daf5">
             <center>
                 {{ __('sidebar.add-new-sales-invoice') }}
             </center>
         </h6>
 
+        <div class="row">
+            <!----DATE--->
+            <div class="col-md-6 pull-right no-print">
+                <div class="form-group" dir="rtl">
+                    <label>{{ __('sales_bills.invoice-date') }}</label>
+                    <span class="text-danger font-weight-bold">*</span>
+                    <input type="date" required name="date" id="date" class="form-control"
+                        value="{{ date('Y-m-d') }}" />
+                </div>
+            </div>
 
+            <!----TIME--->
+            <div class="col-md-6 pull-right no-print">
+                <div class="form-group" dir="rtl">
+                    <label>{{ __('sales_bills.invoice-time') }}</label>
+                    <span class="text-danger font-weight-bold">*</span>
+                    <input type="time" required name="time" id="time" class="form-control"
+                        value="{{ date('H:i:s') }}" />
+                </div>
+            </div>
+        </div>
         <!----Store--->
-
-        <div class="col-lg-3 pl-0 pull-right no-print">
-            <label>
-                {{ __('sales_bills.select-store') }}
-                <span class="text-danger font-weight-bold">*</span>
-            </label>
-            <div class="d-flex align-items-center">
-                <select name="store_id" id="store_id" class="selectpicker me-2" data-style="btn-newdark"
-                    data-live-search="true" title="{{ __('sales_bills.select-store') }}">
-                    <?php $i = 0; ?>
-                    @foreach ($stores as $store)
-                        @if ($stores->count() == 1)
-                            <option selected value="{{ $store->id }}">{{ $store->store_name }}</option>
-                        @else
-                            @if ($i == 0)
+        <div class="row">
+            <div class="col-md-6 pull-right no-print">
+                <label>
+                    {{ __('sales_bills.select-store') }}
+                    <span class="text-danger font-weight-bold">*</span>
+                </label>
+                <div class="d-flex justify-content-between">
+                    <select name="store_id" id="store_id" class="selectpicker me-2" data-style="btn-new_color"
+                        data-live-search="true" title="{{ __('sales_bills.select-store') }}">
+                        <?php $i = 0; ?>
+                        @foreach ($stores as $store)
+                            @if ($stores->count() == 1)
                                 <option selected value="{{ $store->id }}">{{ $store->store_name }}</option>
                             @else
-                                <option value="{{ $store->id }}">{{ $store->store_name }}</option>
+                                @if ($i == 0)
+                                    <option selected value="{{ $store->id }}">{{ $store->store_name }}</option>
+                                @else
+                                    <option value="{{ $store->id }}">{{ $store->store_name }}</option>
+                                @endif
                             @endif
-                        @endif
-                        <?php $i++; ?>
-                    @endforeach
-                </select>
-                <a target="_blank" href="{{ route('client.stores.create') }}" role="button" class="btn btn-sm">
-                    <i>{{ __('sales_bills.add-store') }}</i>
-                </a>
+                            <?php $i++; ?>
+                        @endforeach
+                    </select>
+                    <a target="_blank" href="{{ route('client.stores.create') }}" role="button" class="btn btn-primary ">
+                        <i class="fa fa-plus" aria-hidden="true"> </i>
+                        {{ __('sales_bills.add-store') }}
+                    </a>
+                </div>
             </div>
-        </div>
-
-
-        <!----CLIENT--->
-        <div class="col-lg-3 p-0 pull-right no-print">
-            <label>
-                {{ __('sales_bills.client-name') }}
-                <span class="text-danger font-weight-bold">*</span>
-            </label>
-            <div class="d-flex align-items-center">
-                <select name="outer_client_id" id="outer_client_id" data-style="btn-newdark"
-                    title="{{ __('sales_bills.client-name') }}" class="selectpicker w-100 me-2" data-live-search="true">
-                    @foreach ($outer_clients as $outer_client)
-                        <option value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
-                    @endforeach
-                </select>
-                <a target="_blank" href="{{ route('client.outer_clients.create') }}" role="button" class="btn btn-sm">
-                    <i>{{ __('sales_bills.add-client') }}</i>
-                </a>
-            </div>
-        </div>
-
-
-
-        <!----DATE--->
-        <div class="col-lg-3 col-md-3 col-sm-3 pull-right no-print">
-            <div class="form-group" dir="rtl">
-                <label>{{ __('sales_bills.invoice-date') }}</label>
-                <span class="text-danger font-weight-bold">*</span>
-                <input type="date" required name="date" id="date" class="form-control"
-                    value="{{ date('Y-m-d') }}" />
-            </div>
-        </div>
-
-        <!----TIME--->
-        <div class="col-lg-3 col-md-3 col-sm-3 pull-right no-print">
-            <div class="form-group" dir="rtl">
-                <label>{{ __('sales_bills.invoice-time') }}</label>
-                <span class="text-danger font-weight-bold">*</span>
-                <input type="time" required name="time" id="time" class="form-control"
-                    value="{{ date('H:i:s') }}" />
+            <!----CLIENT--->
+            <div class="col-md-6 pull-right no-print">
+                <label>
+                    {{ __('sales_bills.client-name') }}
+                    <span class="text-danger font-weight-bold">*</span>
+                </label>
+                <div class="d-flex align-items-center justify-content-between">
+                    <select name="outer_client_id" id="outer_client_id" data-style="btn-new_color"
+                        title="{{ __('sales_bills.client-name') }}" class="selectpicker w-100 me-2"
+                        data-live-search="true">
+                        @foreach ($outer_clients as $outer_client)
+                            <option value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
+                        @endforeach
+                    </select>
+                    <a target="_blank" href="{{ route('client.outer_clients.create') }}" role="button"
+                        class="btn btn-primary">
+                        <i class="fa fa-plus" aria-hidden="true"> </i> {{ __('sales_bills.add-client') }}
+                    </a>
+                </div>
             </div>
         </div>
         <!--tax-->
-        <div class="clearfix no-print"></div>
-        <div class="col-lg-3 pl-0 pull-right no-print">
-            <label for="value_added_tax">{{ __('sales_bills.prices-for-tax') }}
-                <span class="text-danger font-weight-bold">*</span>
-
-            </label>
-
-            <div class="d-flex align-items-center">
-                <select required name="value_added_tax" id="value_added_tax" class="selectpicker me-2"
-                    data-style="btn-newdark" data-live-search="true">
-                    <option value="0">
-                        {{ __('sales_bills.not-including-tax') }}</option>
-                    <option value="2" selected>
-                        {{ __('sales_bills.including-tax') }}</option>
-                    <option value="1">
-                        {{ __('sales_bills.exempt-tax') }}</option>
-                </select>
-            </div>
-        </div>
-
-
-        <!----Product--->
-
-        <!----->
-        <div class="col-lg-3 p-0 pull-right no-print">
-            <label>
-                {{ __('sales_bills.product-code') }}
-                <span class="text-danger font-weight-bold">*</span>
-            </label>
-            <div class="d-flex align-items-center">
-                <select name="product_id" id="product_id" class="selectpicker w-50" data-style="btn-newdark"
-                    data-live-search="true" title="{{ __('sales_bills.product-code') }}">
-                    @foreach ($all_products as $product)
-                        <option value="{{ $product->id }}" data-name="{{ strtolower($product->product_name) }}"
-                            data-sectorprice="{{ $product->sector_price }}"
-                            data-wholesaleprice="{{ $product->wholesale_price }}"
-                            data-tokens="{{ $product->code_universal }}"
-                            data-remaining="{{ $product->total_remaining }}"
-                            data-categorytype="{{ $product->category_type }}" data-unitid="{{ $product->unit_id }}">
-                            {{ $product->product_name }}
-                        </option>
-                    @endforeach
-                </select>
-                {{-- <select name="outer_client_id" id="outer_client_id" data-style="btn-newdark"
+        <div class="row mt-2">
+            <!----->
+            <div class="col-md-6 pull-right no-print">
+                <label>
+                    {{ __('sales_bills.product-code') }}
+                    <span class="text-danger font-weight-bold">*</span>
+                </label>
+                <div class="d-flex align-items-center justify-content-between">
+                    <select name="product_id" id="product_id" class="selectpicker w-50" data-style="btn-new_color"
+                        data-live-search="true" title="{{ __('sales_bills.product-code') }}">
+                        @foreach ($all_products as $product)
+                            <option value="{{ $product->id }}" data-name="{{ strtolower($product->product_name) }}"
+                                data-sectorprice="{{ $product->sector_price }}"
+                                data-wholesaleprice="{{ $product->wholesale_price }}"
+                                data-tokens="{{ $product->code_universal }}"
+                                data-remaining="{{ $product->total_remaining }}"
+                                data-categorytype="{{ $product->category_type }}" data-unitid="{{ $product->unit_id }}">
+                                {{ $product->product_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    {{-- <select name="outer_client_id" id="outer_client_id" data-style="btn-new_color"
                     title="{{ __('sales_bills.client-name') }}" class="selectpicker w-100 me-2" data-live-search="true">
                     @foreach ($outer_clients as $outer_client)
                         <option value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
                     @endforeach
                 </select> --}}
-                <a target="_blank" href="{{ route('client.products.create') }} }}" role="button" class="btn btn-sm">
-                    <i>{{ __('sales_bills.add-product') }}</i>
-                </a>
+                    <a target="_blank" href="{{ route('client.products.create') }} }}" role="button"
+                        class="btn btn-primary">
+                        <i class="fa fa-plus" aria-hidden="true"> </i> {{ __('sales_bills.add-product') }}
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6 pull-right no-print">
+                <label for="value_added_tax">{{ __('sales_bills.prices-for-tax') }}
+                    <span class="text-danger font-weight-bold">*</span>
+
+                </label>
+
+                <div class="d-flex align-items-center justify-content-between">
+                    <select required name="value_added_tax" id="value_added_tax" class="selectpicker w-100"
+                        data-style="btn-new_color" data-live-search="true">
+                        <option value="0">
+                            {{ __('sales_bills.not-including-tax') }}</option>
+                        <option value="2" selected>
+                            {{ __('sales_bills.including-tax') }}</option>
+                        <option value="1">
+                            {{ __('sales_bills.exempt-tax') }}</option>
+                    </select>
+                </div>
             </div>
         </div>
         <div class="clearfix no-print"></div>
@@ -191,42 +169,101 @@
         <input type="number" id='grand_tax_input' name="grand_tax" hidden>
         <input type="number" id='grand_discount_input' name="total_discount" hidden>
 
-        <!-- Table to display selected products -->
-        <table class="table table-bordered mt-2" id="products_table">
+        <!-- Table to display selected products
+                        <table class="table table-bordered mt-2" id="products_table">
+                            <thead>
+                                <tr>
+                                    <th>{{ __('sales_bills.product') }}</th>
+                                    <th>{{ __('sales_bills.price_type') }}</th>
+                                    <th>{{ __('sales_bills.price') }}</th>
+                                    <th>{{ __('sales_bills.quantity') }}</th>
+                                    <th>{{ __('sales_bills.unit') }}</th>
+                                    <th>{{ __('sales_bills.discount') }}
+                                        <div class="tax_discount"
+                                            style="display: inline-block; margin-left: 10px; vertical-align: middle;">
+                                            <select id="discount_application" class="form-control form-control-sm"
+                                                style="font-size: 12px; width: 20px; height: 20px;" name="products_discount_type">
+                                                <option value="before_tax">{{ __('sales_bills.discount_before_tax') }}</option>
+                                                <option value="after_tax">{{ __('sales_bills.discount_after_tax') }}</option>
+                                            </select>
+                                        </div>
+                                    </th>
+                                    <th>{{ __('sales_bills.tax') }}</th>
+                                    <th>{{ __('sales_bills.total') }}</th>
+                                    <th>{{ __('sales_bills.actions') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6">{{ __('sales_bills.grand_tax') }}</td>
+                                    <td colspan="3" id="grand_tax" class="text-right">0.00</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6">{{ __('sales_bills.grand_total') }}</td>
+                                    <td colspan="3" id="grand_total" class="text-right">0.00</td>
+                                </tr>
+                            </tfoot>
+                        </table> -->
+        <table class="table table-bordered mt-2" id="products_table"
+            style="background-color: #ffffff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); border-radius: 5px;">
             <thead>
                 <tr>
-                    <th>{{ __('sales_bills.product') }}</th>
-                    <th>{{ __('sales_bills.price_type') }}</th>
-                    <th>{{ __('sales_bills.price') }}</th>
-                    <th>{{ __('sales_bills.quantity') }}</th>
-                    <th>{{ __('sales_bills.unit') }}</th>
-                    <th>{{ __('sales_bills.discount') }}
+                    <th
+                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                        {{ __('sales_bills.product') }}</th>
+                    <th
+                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                        {{ __('sales_bills.price_type') }}</th>
+                    <th
+                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                        {{ __('sales_bills.price') }}</th>
+                    <th
+                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                        {{ __('sales_bills.quantity') }}</th>
+                    <th
+                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                        {{ __('sales_bills.unit') }}</th>
+                    <th
+                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 5px; font-weight: bold;">
+                        {{ __('sales_bills.discount') }}
                         <div class="tax_discount"
                             style="display: inline-block; margin-left: 10px; vertical-align: middle;">
-                            <select id="discount_application" class="form-control form-control-sm"
-                                style="font-size: 12px; width: 20px; height: 20px;" name="products_discount_type">
+                            <select id="discount_application" class="form-control" style="font-size: 12px; height: 30px;"
+                                name="products_discount_type">
                                 <option value="before_tax">{{ __('sales_bills.discount_before_tax') }}</option>
                                 <option value="after_tax">{{ __('sales_bills.discount_after_tax') }}</option>
                             </select>
                         </div>
                     </th>
-                    <th>{{ __('sales_bills.tax') }}</th>
-                    <th>{{ __('sales_bills.total') }}</th>
-                    <th>{{ __('sales_bills.actions') }}</th>
+                    <th
+                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                        {{ __('sales_bills.tax') }}</th>
+                    <th
+                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                        {{ __('sales_bills.total') }}</th>
+                    <th
+                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                        {{ __('sales_bills.actions') }}</th>
                 </tr>
             </thead>
-            <tbody></tbody>
+            <tbody style="text-align: center;">
+                <!-- هنا يتم عرض البيانات -->
+            </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="6">{{ __('sales_bills.grand_tax') }}</td>
-                    <td colspan="3" id="grand_tax" class="text-right">0.00</td>
+                    <td colspan="6" style="background-color: #f9f9f9; font-weight: bold;">
+                        {{ __('sales_bills.grand_tax') }}</td>
+                    <td colspan="3" id="grand_tax" class="text-right" style="background-color: #f9f9f9;">0.00</td>
                 </tr>
                 <tr>
-                    <td colspan="6">{{ __('sales_bills.grand_total') }}</td>
-                    <td colspan="3" id="grand_total" class="text-right">0.00</td>
+                    <td colspan="6" style="background-color: #f9f9f9; font-weight: bold;">
+                        {{ __('sales_bills.grand_total') }}</td>
+                    <td colspan="3" id="grand_total" class="text-right" style="background-color: #f9f9f9;">0.00</td>
                 </tr>
             </tfoot>
         </table>
+
 
 
         {{-- <div class="row options no-print products">
@@ -241,7 +278,7 @@
                     @endforeach
                 </select>
                 <a target="_blank" href="{{ route('client.products.create') }}" role="button"
-                   style="width: 15%;display: inline;" class="btn btn-sm btn-danger open_popup">
+                   style="width: 15%;display: inline;" class="btn btn-primary btn-danger open_popup">
                     <i class="fa fa-plus"></i>
                 </a>
                 <div class="available text-center" style="color: #000; font-size: 14px; margin-top: 10px;"></div>
@@ -282,59 +319,52 @@
                        id="quantity_price" class="form-control"/>
             </div>
         </div> --}}
-        <div class="col-lg-12" style="margin: 20px auto;">
-            <div class="col-lg-12">
-                <div class="col-lg-6 col-md-6 col-xs-6 pull-right">
-                    <div class="form-group" dir="rtl">
-                        <label for="discount">{{ __('sales_bills.discount-on-the-total-bill') }}</label> <br>
-
-
-                        <select name="discount_type" id="discount_type" class="form-control"
-                            style="width: 20%;display: inline;float: right; margin-left:5px;">
-                            <option value="">اختر نوع الخصم</option>
-                            <option value="pound">خصم قبل الضريبة (مسطح)</option>
-                            <option value="percent">خصم قبل الضريبة (%)</option>
-                            <option value="poundAfterTax">ضمان اعمال (مسطح)</option>
-                            <option value="poundAfterTaxPercent">ضمان اعمال (%)</option>
-                            <option value="afterTax" class="d-none">
-                                خصم علي اجمالي المبلغ شامل الضريبة
-                            </option>
-                        </select>
-                        <input type="number" value="0" name="discount_value" min="0"
-                            style="width: 50%;display: inline;float: right;" id="discount_value" class="form-control "
-                            step = "any" />
-                        {{-- <span id="dicountForBill"></span> --}}
-
-
-                        <input type="text" name="discount_note" id="discount_note" placeholder="ملاحظات الخصم. . ."
-                            class="form-control" style="position:relative;top: 15px;width:93%; ">
-                    </div>
+        <div class="row">
+            <div class="col-md-6 pull-right">
+                <div class="form-group" dir="rtl">
+                    <label for="discount">{{ __('sales_bills.discount-on-the-total-bill') }}</label> <br>
+                    <select name="discount_type" id="discount_type" class="form-control"
+                        style="width: 60%;display: inline;float: right; margin-left:5px;">
+                        <option value="">اختر نوع الخصم</option>
+                        <option value="pound">خصم قبل الضريبة (مسطح)</option>
+                        <option value="percent">خصم قبل الضريبة (%)</option>
+                        <option value="poundAfterTax">ضمان اعمال (مسطح)</option>
+                        <option value="poundAfterTaxPercent">ضمان اعمال (%)</option>
+                        <option value="afterTax" class="d-none">
+                            خصم علي اجمالي المبلغ شامل الضريبة
+                        </option>
+                    </select>
+                    <input type="number" value="0" name="discount_value" min="0"
+                        style="width: 20%;display: inline;float: right;" id="discount_value" class="form-control "
+                        step = "any" />
+                          <input type="text" name="discount_note" id="discount_note" placeholder="ملاحظات الخصم. . ."
+                class="form-control mt-5"  style="width: 80%;">
+                    {{-- <span id="dicountForBill"></span> --}}
                 </div>
-                <div class="col-lg-6 col-md-6 col-xs-6 pull-right">
-                    <div class="form-group" dir="rtl">
-                        <label for="extra">{{ __('main.shipping-expenses') }}</label> <br>
+              
+              
+            </div>
+            <div class="col-md-6 pull-right">
+                <div class="form-group" dir="rtl">
+                    <label for="extra">{{ __('main.shipping-expenses') }}</label> <br>
 
-                        <select name="extra_type" id="extra_type" class="form-control"
-                            style="width: 20%;display: inline;float: right;margin-left: 5px">
-                            <option value="">اختر نوع الشحن</option>
-                            <option value="pound">{{ $extra_settings->currency }}</option>
-                            <option value="percent">%</option>
-                        </select>
-                        <input value="0" type="number" name="extra_value" min='0'
-                            style="width: 50%;display: inline;float: right;" id="extra_value" class="form-control"
-                            step = "any" />
-
-                    </div>
+                    <select name="extra_type" id="extra_type" class="form-control"
+                        style="width:60%;display: inline;float: right;margin-left: 5px">
+                        <option value="">اختر نوع الشحن</option>
+                        <option value="pound">{{ $extra_settings->currency }}</option>
+                        <option value="percent">%</option>
+                    </select>
+                    <input value="0" type="number" name="extra_value" min='0'
+                        style="width: 20%;display: inline;float: right;" id="extra_value" class="form-control"
+                        step = "any" />
                 </div>
-                <div class="clearfix"></div>
-            </div> <!--  End Col-lg-12 -->
+            </div>
         </div><!--  End Row -->
         <!-----notes------->
         <div class="col-sm-12 pull-right no-print">
             <div class="form-group" dir="rtl">
                 <label for="time">{{ __('main.notes') }}</label>
                 <textarea name="main_notes" id="notes" class="summernotes">
-
                   </textarea>
                 <a data-toggle="modal" data-target="#myModal3" class="btn btn-link add_extra_notes d-none"
                     style="color: blue!important;">
@@ -458,7 +488,7 @@
                                     @endforeach
                                 </select>
                                 <a target="_blank" href="{{ route('client.safes.create') }}" role="button"
-                                    style="width: 15%;display: inline;" class="btn btn-sm btn-danger open_popup">
+                                    style="width: 15%;display: inline;" class="btn btn-primary btn-danger open_popup">
                                     <i class="fa fa-plus"></i>
                                 </a>
                             </div>
@@ -474,7 +504,7 @@
                                     @endforeach
                                 </select>
                                 <a target="_blank" href="{{ route('client.banks.create') }}" role="button"
-                                    style="width: 15%;display: inline;" class="btn btn-sm btn-danger open_popup">
+                                    style="width: 15%;display: inline;" class="btn btn-primary btn-danger open_popup">
                                     <i class="fa fa-plus"></i>
                                 </a>
                             </div>
@@ -1543,38 +1573,60 @@
                 } else {
                     var rowHtml = `
                      <tr data-product-id="${productId}" data-index="${rowIndex}">
-                         <td>${productName}</td>
-                         <td>
-                             <label><input type="radio" name="products[${rowIndex}][price_type]" value="sector" class="price_type" checked> ${translations.sector}</label>
-                             <label><input type="radio" name="products[${rowIndex}][price_type]" value="wholesale" class="price_type"> ${translations.wholesale}</label>
-                         </td>
-                         <td><input type="number" min="1" name="products[${rowIndex}][product_price]" class="form-control price" value="${sectorPrice}" step="any"></td>
-                         <td><input type="number" name="products[${rowIndex}][quantity]" class="form-control quantity" value="1" min="1" max="${remaining}" step="any"></td>
-                         <td>
-                             <select name="products[${rowIndex}][unit_id]" class="form-control unit">
-                                 <option disabled>${translations.choose_unit}</option>
-                                 @foreach ($units as $unit)
-                                     <option value="{{ $unit->id }}" ${unitId === {{ $unit->id }} ? 'selected' : ''}>{{ $unit->unit_name }}</option>
-                                 @endforeach
-                             </select>
-                         </td>
-                         <td>
-                             <label><input type="radio" name="products[${rowIndex}][discount_type]" value="pound" class="discount_type"> ${translations.pound}</label>
-                             <label><input type="radio" name="products[${rowIndex}][discount_type]" value="percent" checked class="discount_type"> ${translations.percent}</label>
-                             <input type="number" name="products[${rowIndex}][discount]" class="form-control discount" value="0" min="0" step="any">
-                             <input type="number" hidden name="products[${rowIndex}][applied_discount]" class="form-control applied_discount" value="0" min="0" style="display:none;" step="any">
-                         </td>
-                         <td>
-                              <select name="products[${rowIndex}][tax]" class="form-control tax_type">
-                               <option value="0" ${valueAddedTax == 0 ? 'selected' : ''}>${translations.not_including_tax}</option>
-                               <option value="1" ${valueAddedTax == 1 ? 'selected' : ''}>${translations.exempt_tax}</option>
-                               <option value="2" ${valueAddedTax == 2 ? 'selected' : ''}>${translations.including_tax}</option>
-                           </select>
-                             <input type="number" readonly name="products[${rowIndex}][tax_amount]" class="form-control tax_amount" value="0" min="0" step="any">
-                         </td>
-                         <td><input type="number" name="products[${rowIndex}][total]" class="form-control total" value="0" readonly step="any"><input type="number" hidden name="products[${rowIndex}][product_id]" class="form-control total" value="${productId}"></td>
-                         <td><button type="button" class="btn btn-danger remove-product">${translations.remove}</button></td>
-                     </tr>`;
+                        <td>${productName}</td>
+                        <td class="text-left">
+                            <label>
+                                <input type="radio" name="products[${rowIndex}][price_type]" value="sector" class="price_type" checked>
+                                ${translations.sector}
+                            </label>
+                            <label>
+                                <input type="radio" name="products[${rowIndex}][price_type]" value="wholesale" class="price_type">
+                                ${translations.wholesale}
+                            </label>
+                        </td>
+                        <td>
+                            <input type="number" min="1" name="products[${rowIndex}][product_price]" class="form-control price" value="${sectorPrice}" step="any">
+                        </td>
+                        <td>
+                            <input type="number" name="products[${rowIndex}][quantity]" class="form-control quantity" value="1" min="1" max="${remaining}" step="any">
+                        </td>
+                        <td>
+                            <select name="products[${rowIndex}][unit_id]" class="form-control unit">
+                                <option disabled>${translations.choose_unit}</option>
+                                @foreach ($units as $unit)
+                                    <option value="{{ $unit->id }}" ${unitId === {{ $unit->id }} ? 'selected' : ''}>{{ $unit->unit_name }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td>
+                            <label>
+                                <input type="radio" name="products[${rowIndex}][discount_type]" value="pound" class="discount_type">
+                                ${translations.pound}
+                            </label>
+                            <label>
+                                <input type="radio" name="products[${rowIndex}][discount_type]" value="percent" checked class="discount_type">
+                                ${translations.percent}
+                            </label>
+                            <input type="number" name="products[${rowIndex}][discount]" class="form-control discount" value="0" min="0" step="any">
+                            <input type="number" hidden name="products[${rowIndex}][applied_discount]" class="form-control applied_discount" value="0" style="display:none;" step="any">
+                        </td>
+                        <td>
+                            <select name="products[${rowIndex}][tax]" class="form-control tax_type w-100 mb-1">
+                                <option value="0" ${valueAddedTax == 0 ? 'selected' : ''}>${translations.not_including_tax}</option>
+                                <option value="1" ${valueAddedTax == 1 ? 'selected' : ''}>${translations.exempt_tax}</option>
+                                <option value="2" ${valueAddedTax == 2 ? 'selected' : ''}>${translations.including_tax}</option>
+                            </select>
+                            <input type="number" readonly name="products[${rowIndex}][tax_amount]" class="form-control tax_amount" value="0" min="0" step="any">
+                        </td>
+                        <td>
+                            <input type="number" name="products[${rowIndex}][total]" class="form-control total" value="0" readonly step="any">
+                            <input type="number" hidden name="products[${rowIndex}][product_id]" class="form-control total" value="${productId}">
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger remove-product">${translations.remove}</button>
+                        </td>
+                    </tr>
+                    `;
 
                     $('#products_table tbody').append(rowHtml);
                     handleTaxCalculation();
