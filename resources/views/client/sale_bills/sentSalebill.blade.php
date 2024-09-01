@@ -115,19 +115,6 @@
     <div class="invoice-container border mt-4">
         <div class="text-center" id="buttons">
             <button class="btn btn-sm btn-success" onclick="window.print()">@lang('sales_bills.Print the invoice')</button>
-            <a class="btn btn-sm btn-danger" href="{{ route('client.sale_bills.create') }}">@lang('sales_bills.back') </a>
-            <button class="show_hide_header btn btn-sm btn-warning no-print" dir="ltr">
-                <i class="fa fa-eye-slash"></i>
-                @lang('sales_bills.Show or hide the header')
-            </button>
-            <button class="show_hide_footer btn btn-sm btn-primary no-print" dir="ltr">
-                <i class="fa fa-eye-slash"></i>
-                @lang('sales_bills.Show or hide the footer')
-            </button>
-            <button class="btn btn-sm btn-success" dir="ltr" onclick="sendToWhatsApp()">
-                <i class="fa fa-whatsapp"></i>
-                @lang('sales_bills.Send to whatsapp')
-            </button>
         </div>
         <div class="all-data" style="border-top: 1px solid #2d2d2d20;padding-top: 25px;">
 
@@ -143,17 +130,13 @@
                 use Salla\ZATCA\Tags\InvoiceTotalAmount;
                 use Salla\ZATCA\Tags\Seller;
                 use Salla\ZATCA\Tags\TaxNumber;
-
-                // Ensure date and time are formatted correctly
-                $invoiceDate = date('Y-m-d\TH:i:s\Z', strtotime($sale_bill->date . ' ' . $sale_bill->time));
-
                 $displayQRCodeAsBase64 = GenerateQrCode::fromArray([
                     new Seller($company->company_name), // seller name
                     new TaxNumber($company->tax_number), // seller tax number
-                    new InvoiceDate($invoiceDate), // invoice date in ISO 8601 format
-                    new InvoiceTotalAmount(number_format($sumWithTax, 2, '.', '')), // invoice total amount
-                    new InvoiceTaxAmount(number_format($totalTax, 2, '.', '')), // invoice tax amount
-                    // Additional tags can be added here if needed
+                    new InvoiceDate($sale_bill->date . ' ' . $sale_bill->time), // invoice date as Zulu ISO8601 @see https://en.wikipedia.org/wiki/ISO_8601
+                    new InvoiceTotalAmount($sumWithTax), // invoice total amount
+                    new InvoiceTaxAmount($totalTax), // invoice tax amount
+                    // TODO :: Support others tags
                 ])->render();
             @endphp
             @if (app()->getLocale() == 'en')
@@ -423,7 +406,7 @@
                                         $ProdTax = 0 . ' ';
                                     }
                                     #--PRODUCT TAX--#
-
+                            
                                     #--PRODUCT TOTAL--#
                                     if ($company->tax_value_added && $company->tax_value_added != 0) {
                                         $ProdTotal = ($sale_bill->value_added_tax ? $element->quantity_price : round($element->quantity_price + ($element->quantity_price * 15) / 100, 2)) . ' ';
@@ -431,10 +414,10 @@
                                         $ProdTotal = $element->quantity_price . ' ';
                                     }
                                     #--PRODUCT TOTAL--#
-
+                            
                                     $tableRows = [];
                                     $tableRow = '<tr style="font-size:18px !important; height: 34px !important; text-align: center;background: #f8f9fb">';
-
+                            
                                     // Reversed order of <td> elements
                                     $tableRow .= '<td>' . ++$i . '</td>';
                                     $tableRow .= '<td>' . $element->product->product_name . '</td>';
@@ -443,9 +426,9 @@
                                     $tableRow .= '<td>' . ($sale_bill->value_added_tax ? round(($element->quantity_price * 20) / 23, 2) : $element->quantity_price) . ' ' . '</td>';
                                     $tableRow .= '<td>' . $ProdTax . '</td>';
                                     $tableRow .= '<td>' . $ProdTotal . '</td>';
-
+                            
                                     $tableRow .= '</tr>';
-
+                            
                                     // Output the table row
                                     echo $tableRow;
                                 }
@@ -485,7 +468,7 @@
                                         $ProdTax = 0 . ' ';
                                     }
                                     #--PRODUCT TAX--#
-
+                            
                                     #--PRODUCT TOTAL--#
                                     if ($company->tax_value_added && $company->tax_value_added != 0) {
                                         $ProdTotal = ($sale_bill->value_added_tax ? $element->quantity_price : round($element->quantity_price + ($element->quantity_price * 15) / 100, 2)) . ' ';
@@ -493,7 +476,7 @@
                                         $ProdTotal = $element->quantity_price . ' ';
                                     }
                                     #--PRODUCT TOTAL--#
-
+                            
                                     echo '
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             <tr style="font-size:18px !important; height: 34px !important; text-align: center;background: #f8f9fb">
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 <td>' .
@@ -892,18 +875,6 @@
 
 </html>
 <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
-
-<script>
-    function sendToWhatsApp() {
-        const clientPhone = '{{ $sale_bill->outerClient->phones[0]->client_phone }}';
-        const invoiceUrl = '{{ route('client.sale_bills.sent', [$sale_bill->token]) }}';
-        const message = `Please check your invoice at the following link: ${invoiceUrl}`;
-        const whatsappUrl = `https://wa.me/${clientPhone}?text=${encodeURIComponent(message)}`;
-        setTimeout(() => {
-            window.open(whatsappUrl, '_blank');
-        }, 1000);
-    }
-</script>
 <script type="text/javascript">
     $('.show_hide_header').on('click', function() {
         $('.headerImg').slideToggle();

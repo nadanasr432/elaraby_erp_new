@@ -64,25 +64,23 @@ class QuotationController extends Controller
     public function create()
     {
         $company_id = Auth::user()->company_id;
-        $company = Company::FindOrFail($company_id);
+        $company = Company::findOrFail($company_id);
 
         /**************************************************************************************/
-        //get products that خدمية and update its stock
+        // Get products that are "خدمية" and update their stock
         $products = Product::with('category')->where('company_id', $company_id)
             ->where('first_balance', '<=', 0)
             ->get();
-        if (!empty($products)) {
-            foreach ($products as $khadamy) {
-                if ($khadamy->category->category_type == "خدمية") {
-                    $khadamy->first_balance = 100000;
-                    $khadamy->update();
-                }
+        foreach ($products as $khadamy) {
+            if ($khadamy->category->category_type == "خدمية") {
+                $khadamy->first_balance = 100000;
+                $khadamy->update();
             }
         }
         /**************************************************************************************/
 
         $categories = $company->categories;
-        $all_products = Product::where('company_id', $company_id)->where('first_balance', '>', '0')->get();
+        $all_products = Product::where('company_id', $company_id)->where('first_balance', '>', 0)->get();
         $stores = $company->stores;
         $units = $company->units;
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
@@ -96,22 +94,18 @@ class QuotationController extends Controller
                         ->orWhereNull('client_id');
                 })->get();
         }
-        $pre_quotation = Quotation::where('company_id', $company_id)->count() + 1;
+
+        // Find the highest existing quotation number
         $highestQuotation = Quotation::where('company_id', $company_id)
             ->orderBy('quotation_number', 'desc')
             ->first();
 
-        // If there are no existing quotations, start with 1
-        $newQuotationNumber = $highestQuotation ? $pre_quotation : 1;
+        // Generate the next quotation number
+        $newQuotationNumber = $highestQuotation ? $highestQuotation->quotation_number + 1 : 1;
 
-        /*
-        $pre_quotation = $company_id . rand();
-        $pre_quotation = substr($pre_quotation, 0, 9);
-        */
         return view(
-
             'client.quotations.create',
-            compact("newQuotationNumber", 'company', 'outer_clients', 'units', 'stores', 'categories', 'extra_settings', 'company_id', 'all_products', 'pre_quotation')
+            compact("newQuotationNumber", 'company', 'outer_clients', 'units', 'stores', 'categories', 'extra_settings', 'company_id', 'all_products')
         );
     }
 
@@ -678,12 +672,12 @@ class QuotationController extends Controller
                 if (is_numeric($total)) {
                     $after_discount = $total + $previous_extra_value;
                 } else {
-                   
-                    $after_discount = $total; 
+
+                    $after_discount = $total;
                 }
             } else {
-                
-                $after_discount = $total; 
+
+                $after_discount = $total;
             }
         }
 

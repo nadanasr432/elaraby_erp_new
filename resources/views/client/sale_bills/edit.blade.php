@@ -590,9 +590,15 @@
             حفظ و طباعة 3
         </a>
         <!------PRINT 2---->
+        
+         <a href="{{route('client.sale_bills.print', [$saleBill->token,5,2,0])}}" role="button" style="height: 40px;border:1px solid #0bb3b3!important;background: #0bb3b3 !important ;color:white !important;" class="btn save_btn5 btn-md btn-primary pull-right ml-1"
+          >
+            حفظ و طباعة 4
+        </a>
+
         <a href="{{route('client.sale_bills.print', [$saleBill->token,2,3,0])}}" style="height: 40px;"
            class="btn btn-md btn-primary pull-right ml-1">
-            حفظ و طباعة 4
+            حفظ و طباعة 5
 
         </a>
 
