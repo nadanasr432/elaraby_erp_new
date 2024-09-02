@@ -31,6 +31,7 @@ return [
     "invoice to" => "invoice to",
     "unit price"=> "price",
     "description"=> "Description",
+    "Send to whatsapp" => "Send to whatsapp",
     "Total prices of all offers" => "Total prices of all offers",
     "Total including tax" => "Total including tax",
     "comments"=> "comments",
