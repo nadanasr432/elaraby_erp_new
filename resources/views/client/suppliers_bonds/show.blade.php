@@ -26,7 +26,7 @@
                         </div> --}}
                         <div class="w-100 mb-2 d-flex flex-column justify-content-center align-items-center">
                             <h5 class="w-100 alert alert-sm text-bold" style="text-align: center; font-size: 22px !important;color: black; font-weight: 600 !important;">
-                                {{ __('bonds.bond_for_client') }}</h5>
+                                {{ __('bonds.bond_for_supplier') }}</h5>
                             <img style="width: 200px; display: block;border-radius: 8px; background: white; padding: 16px; border: 1px solid #c9c7c7;"
                                 src="{{ asset($company_data->company_logo) }}" alt="company_logo">
                         </div>
