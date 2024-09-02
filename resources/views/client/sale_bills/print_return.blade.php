@@ -312,7 +312,7 @@ $company = \App\Models\Company::FindOrFail($itemsInSaleBillReturn[0]->company_id
                             use Salla\ZATCA\Tags\TaxNumber;
 
                             // Ensure date and time are formatted correctly
-                            $invoiceDate = date('Y-m-d\TH:i:s\Z', strtotime($sale_bill->date . ' ' . $sale_bill->time));
+                            $invoiceDate = date('Y-m-d\TH:i:s\Z', strtotime($itemsInSaleBillReturn[0]->date . ' ' . $itemsInSaleBillReturn[0]->time));
 
                             $displayQRCodeAsBase64 = GenerateQrCode::fromArray([
                                 new Seller($company->company_name), // seller name
