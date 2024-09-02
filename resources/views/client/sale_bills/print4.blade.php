@@ -138,6 +138,10 @@
                 <i class="fa fa-eye-slash"></i>
                 @lang('sales_bills.Show or hide the footer')
             </button>
+            <button class="btn btn-sm btn-success" dir="ltr" onclick="sendToWhatsApp()">
+                <i class="fa fa-whatsapp"></i>
+                @lang('sales_bills.Send to whatsapp')
+            </button>
         </div>
         <div class="all-data" style="border-top: 1px solid #2d2d2d20;padding-top: 25px;">
 
@@ -840,10 +844,18 @@
     </div>
 
 </body>
-
-</html>
 <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
-
+<script>
+    function sendToWhatsApp() {
+        const clientPhone = '{{ $sale_bill->outerClient->phones[0]->client_phone }}';
+        const invoiceUrl = '{{ route('client.sale_bills.sent', [$sale_bill->token,4,2,0]) }}';
+        const message = `Please check your invoice at the following link: ${invoiceUrl}`;
+        const whatsappUrl = `https://wa.me/${clientPhone}?text=${encodeURIComponent(message)}`;
+        setTimeout(() => {
+            window.open(whatsappUrl, '_blank');
+        }, 1000);
+    }
+</script>
 <script type="text/javascript">
     $('.show_hide_header').on('click', function() {
         $('.headerImg').slideToggle();
@@ -852,3 +864,5 @@
         $('.footerImg').slideToggle();
     });
 </script>
+
+</html>
