@@ -402,6 +402,7 @@
                                 <th>@lang('sales_bills.Product number')</th>
                                 <th>@lang('main.name')</th>
                                 <th>@lang('sales_bills.unit price')</th>
+                                <th>@lang('products.pmodel1')</th>
                                 <th>@lang('sales_bills.Quantity')</th>
                                 <th>@lang('sales_bills.The amount does not include tax')</th>
                                 <th>@lang('sales_bills.Tax')</th>
@@ -439,6 +440,7 @@
                                     $tableRow .= '<td>' . ++$i . '</td>';
                                     $tableRow .= '<td>' . $element->product->product_name . '</td>';
                                     $tableRow .= '<td>' . $element->product_price . ' ' . '</td>';
+                                    $tableRow .= '<td>' . $element->product->product_model . ' ' . '</td>';
                                     $tableRow .= '<td class="text-center"><span>' . $element->quantity . '</span><span>' . $element->unit->unit_name . '</span></td>';
                                     $tableRow .= '<td>' . ($sale_bill->value_added_tax ? round(($element->quantity_price * 20) / 23, 2) : $element->quantity_price) . ' ' . '</td>';
                                     $tableRow .= '<td>' . $ProdTax . '</td>';
@@ -466,6 +468,7 @@
                                 <th>@lang('sales_bills.Tax')</th>
                                 <th>@lang('sales_bills.The amount does not include tax')</th>
                                 <th>@lang('sales_bills.Quantity')</th>
+                                <th>@lang('products.pmodel1')</th>
                                 <th>@lang('sales_bills.unit price')</th>
                                 <th>@lang('main.name')</th>
                                 <th>@lang('sales_bills.Product number')</th>
@@ -514,6 +517,10 @@
                                         $element->quantity .
                                         '</span>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 </td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <td>' .
+                                        $element->product->product_model .
+                                        ' ' .
+                                        '</td>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 <td>' .
                                         $element->product_price .
                                         ' ' .
