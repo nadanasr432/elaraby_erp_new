@@ -582,8 +582,6 @@
            style="height: 40px;border:1px solid #085d4a;background: #085d4a !important;color:white !important;">
             حفظ و طباعة 2
         </a>
-
-
         <!------PRINT 2---->
         <a href="{{route('client.sale_bills.print', [$saleBill->token,4,2,0])}}"
           class="btn save_btn2 btn-md btn-primary pull-right ml-1" style="height: 40px;border:1px solid #5e8b0b;background: #5e8b0b !important;color:white !important;">
