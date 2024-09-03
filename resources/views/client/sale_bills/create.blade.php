@@ -79,9 +79,9 @@
         </h6>
 
         <!-----store_id------->
-        <div class="col-lg-3 pull-right">
+        <div class="col-lg-3 p-0 pull-right no-print">
             <label for=""> {{ __('sales_bills.choose-store') }} </label><br>
-            <select name="store_id" id="store_id" class="selectpicker w-100" data-style="btn-primary" data-live-search="true"
+            <select name="store_id" id="store_id" class="selectpicker w-70" data-style="btn-primary" data-live-search="true"
                     title="{{ __('sales_bills.choose-store') }}">
                 <?php $i = 0; ?>
                 @foreach ($stores as $store)
@@ -98,7 +98,7 @@
                 @endforeach
             </select>
             <a target="_blank" href="{{ route('client.stores.create') }}" role="button"
-               style="width: 15%;display: inline;" class="btn btn-sm btn-primary open_popup d-none">
+               style="width: 15%;display: inline;" class="btn btn-sm btn-primary open_popup">
                 <i class="fa fa-plus"></i>
             </a>
         </div>
@@ -106,7 +106,7 @@
         <!-----outer_client_id------->
         <div class="col-lg-3 p-0 pull-right no-print">
             <label for="" class="d-block">{{ __('sales_bills.client-name') }}</label>
-            <select required name="outer_client_id" id="outer_client_id" class="selectpicker w-100" data-style="btn-danger"
+            <select required name="outer_client_id" id="outer_client_id" class="selectpicker w-70" data-style="btn-danger"
                     data-live-search="true" title="{{ __('sales_bills.client-name') }}" required>
                 <option
                     @if (isset($open_sale_bill) && !empty($open_sale_bill) && empty($open_sale_bill->outer_client_id)) selected
@@ -122,7 +122,7 @@
                 @endforeach
             </select>
             <a target="_blank" href="{{ route('client.outer_clients.create') }}" role="button"
-               style="width: 15%;display: inline;" class="btn btn-sm btn-danger open_popup d-none">
+               style="width: 15%;display: inline;" class="btn btn-sm btn-danger open_popup">
                 <i class="fa fa-plus"></i>
             </a>
         </div>
