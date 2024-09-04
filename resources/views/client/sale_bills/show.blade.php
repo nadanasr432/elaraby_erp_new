@@ -141,7 +141,7 @@
             class="btn btn-info btn-md ml-1"
             style="height: 40px;">
              {{-- <i class="fa fa-plus"></i> --}}
-             {{ __('sales_bills.update') }}
+             {{ __('sales_bills.edit') }}
          </a>
 
         {{-- <form class="d-inline" method="POST" onsubmit="return checkChanges()"

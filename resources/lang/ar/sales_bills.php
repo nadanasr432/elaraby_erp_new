@@ -112,4 +112,5 @@ return [
     'add-product' => 'اضافة منتج',
     'add-client' => 'اضافة عميل',
     'add-store' => 'اضافة مخزن',
+    'edit' => "تعديل"
 ];

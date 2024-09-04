@@ -110,4 +110,5 @@ return [
     'add-product' => 'Add Product',
     'add-client' => 'Add client',
     'add-store' => 'Add store',
+    'edit' => 'Edit',
 ];
