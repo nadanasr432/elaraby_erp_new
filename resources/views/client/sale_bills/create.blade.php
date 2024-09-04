@@ -341,8 +341,8 @@
                 class="form-control mt-5"  style="width: 80%;">
                     {{-- <span id="dicountForBill"></span> --}}
                 </div>
-              
-              
+
+
             </div>
             <div class="col-md-6 pull-right">
                 <div class="form-group" dir="rtl">

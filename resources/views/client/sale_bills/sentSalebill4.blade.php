@@ -129,19 +129,6 @@
     <div class="invoice-container border mt-4">
         <div class="text-center" id="buttons">
             <button class="btn btn-sm btn-success" onclick="window.print()">@lang('sales_bills.Print the invoice')</button>
-            <a class="btn btn-sm btn-danger" href="{{ route('client.sale_bills.create') }}">@lang('sales_bills.back') </a>
-            <button class="show_hide_header btn btn-sm btn-warning no-print" dir="ltr">
-                <i class="fa fa-eye-slash"></i>
-                @lang('sales_bills.Show or hide the header')
-            </button>
-            <button class="show_hide_footer btn btn-sm btn-primary no-print" dir="ltr">
-                <i class="fa fa-eye-slash"></i>
-                @lang('sales_bills.Show or hide the footer')
-            </button>
-            <button class="btn btn-sm btn-success" dir="ltr" onclick="sendToWhatsApp()">
-                <i class="fa fa-whatsapp"></i>
-                @lang('sales_bills.Send to whatsapp')
-            </button>
         </div>
         <div class="all-data" style="border-top: 1px solid #2d2d2d20;padding-top: 25px;">
 
@@ -397,7 +384,6 @@
                                 <th>@lang('sales_bills.Quantity')</th>
                                 <th>@lang('sales_bills.The amount does not include tax')</th>
                                 <th>@lang('sales_bills.Tax')</th>
-
                                 <th>@lang('products.pdesc')</th>
                                 <th>@lang('products.pmodel1')</th>
                                 <th>@lang('sales_bills.total')</th>
@@ -462,7 +448,6 @@
                                 <th>@lang('sales_bills.total')</th>
                                 <th>@lang('products.pmodel1')</th>
                                 <th>@lang('products.pdesc')</th>
-
                                 <th>@lang('sales_bills.Tax')</th>
                                 <th>@lang('sales_bills.The amount does not include tax')</th>
                                 <th>@lang('sales_bills.Quantity')</th>
@@ -568,7 +553,7 @@
                         style="border: 1px solid #2d2d2d1c; border-radius: 7px; overflow: hidden; box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;">
                         <table
                             style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                            @if (!empty($discount) && $discount > 0)
+                            @if (!empty($discount) && $discount->value > 0)
                                 <tr
                                     style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
 
@@ -700,7 +685,7 @@
                         style="border: 1px solid #2d2d2d1c; border-radius: 7px; overflow: hidden; box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;">
                         <table
                             style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                            @if (!empty($discount) && $discount > 0)
+                            @if (!empty($discount) && $discount->value > 0)
                                 <tr
                                     style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                     <td dir="rtl">
@@ -846,18 +831,10 @@
     </div>
 
 </body>
+
+</html>
 <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
-<script>
-    function sendToWhatsApp() {
-        const clientPhone = '{{ $sale_bill->outerClient->phones[0]->client_phone }}';
-        const invoiceUrl = '{{ route('client.sale_bills.sent', [$sale_bill->token,4,2,0]) }}';
-        const message = `Please check your invoice at the following link: ${invoiceUrl}`;
-        const whatsappUrl = `https://wa.me/${clientPhone}?text=${encodeURIComponent(message)}`;
-        setTimeout(() => {
-            window.open(whatsappUrl, '_blank');
-        }, 1000);
-    }
-</script>
+
 <script type="text/javascript">
     $('.show_hide_header').on('click', function() {
         $('.headerImg').slideToggle();
@@ -866,5 +843,3 @@
         $('.footerImg').slideToggle();
     });
 </script>
-
-</html>

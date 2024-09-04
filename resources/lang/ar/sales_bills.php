@@ -25,6 +25,8 @@ return [
     "unit price" => "السعر ",
     "product name" => "البيان",
     "comments" => "ملاحظات",
+    "product name"=>"اسم المنتج",
+    "Send to whatsapp"=> "أرسل إلى الواتساب",
     "Product number" => "رقم المنتج",
     "Discount" => "الخصم",
     "Total, excluding tax" => "الاجمالي باستثناء ضريبة القيمة المضافة",

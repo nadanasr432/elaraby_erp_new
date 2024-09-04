@@ -93,36 +93,11 @@
     <div class="invoice-container border mt-4">
         <div class="text-center" id="buttons">
             <button class="btn btn-sm btn-success" onclick="window.print()">@lang('sales_bills.Print the invoice') </button>
-            <a class="btn btn-sm btn-danger" href="{{ route('client.sale_bills.create') }}"> @lang('sales_bills.back')</a>
-            <button class="btn btn-sm btn-success" dir="ltr" onclick="sendToWhatsApp()">
-                <i class="fa fa-whatsapp"></i>
-                @lang('sales_bills.Send to whatsapp')
-            </button>
         </div>
         <div class="all-data" style="border-top: 1px solid #2d2d2d20;padding-top: 25px;">
 
             <div class="header-container d-flex align-items-center">
                 <div class="qrcode">
-                    @php
-                        use Salla\ZATCA\GenerateQrCode;
-                        use Salla\ZATCA\Tags\InvoiceDate;
-                        use Salla\ZATCA\Tags\InvoiceTaxAmount;
-                        use Salla\ZATCA\Tags\InvoiceTotalAmount;
-                        use Salla\ZATCA\Tags\Seller;
-                        use Salla\ZATCA\Tags\TaxNumber;
-
-                        // Ensure date and time are formatted correctly
-                        $invoiceDate = date('Y-m-d\TH:i:s\Z', strtotime($sale_bill->date . ' ' . $sale_bill->time));
-
-                        $displayQRCodeAsBase64 = GenerateQrCode::fromArray([
-                            new Seller($company->company_name), // seller name
-                            new TaxNumber($company->tax_number), // seller tax number
-                            new InvoiceDate($invoiceDate), // invoice date in ISO 8601 format
-                            new InvoiceTotalAmount(number_format($sumWithTax, 2, '.', '')), // invoice total amount
-                            new InvoiceTaxAmount(number_format($totalTax, 2, '.', '')), // invoice tax amount
-                            // Additional tags can be added here if needed
-                        ])->render();
-                    @endphp
                     @php
                         use Salla\ZATCA\GenerateQrCode;
                         use Salla\ZATCA\Tags\InvoiceDate;
@@ -539,7 +514,7 @@
                         {{-- <div clظass="products-details p-2" style="width: 40%;"> --}}
                         <table
                             style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                            @if (!empty($discount) && $discount > 0)
+                            @if (!empty($discount) && $discount->value > 0)
                                 <tr
                                     style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;background: #f2f2f2">
                                     <td style="text-align: left;padding-left: 14px;">@lang('sales_bills.Discount')</td>
@@ -609,7 +584,7 @@
                             {{-- <div clظass="products-details p-2" style="width: 40%;"> --}}
                             <table
                                 style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                                @if (!empty($discount) && $discount > 0)
+                                @if (!empty($discount) && $discount->value > 0)
                                     <tr
                                         style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;background: #f2f2f2">
                                         <td dir="rtl">
@@ -675,15 +650,5 @@
 
 
 </body>
-<script>
-    function sendToWhatsApp() {
-        const clientPhone = '{{ $sale_bill->outerClient->phones[0]->client_phone }}';
-        const invoiceUrl = '{{ route('client.sale_bills.sent', [$sale_bill->token,2,3,0]) }}';
-        const message = `Please check your invoice at the following link: ${invoiceUrl}`;
-        const whatsappUrl = `https://wa.me/${clientPhone}?text=${encodeURIComponent(message)}`;
-        setTimeout(() => {
-            window.open(whatsappUrl, '_blank');
-        }, 1000);
-    }
-</script>
+
 </html>
