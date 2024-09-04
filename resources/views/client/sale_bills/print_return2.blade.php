@@ -290,14 +290,14 @@ $company = \App\Models\Company::FindOrFail($sale_bill_return->company_id);
                             use Salla\ZATCA\Tags\TaxNumber;
 
                             // Ensure date and time are formatted correctly
-                            $invoiceDate = date('Y-m-d\TH:i:s\Z', strtotime($sale_bill_return->date . ' ' . $sale_bill_return->time));
+                            $invoiceDate = date('Y-m-d\TH:i:s\Z', strtotime($sale_bill->date . ' ' . $sale_bill->time));
 
-                           $displayQRCodeAsBase64 = GenerateQrCode::fromArray([
+                            $displayQRCodeAsBase64 = GenerateQrCode::fromArray([
                                 new Seller($company->company_name), // seller name
                                 new TaxNumber($company->tax_number), // seller tax number
                                 new InvoiceDate($invoiceDate), // invoice date in ISO 8601 format
-                                new InvoiceTotalAmount(number_format($sale_bill_return->quantity_price, 2, '.', '')), // invoice total amount
-                                # new InvoiceTaxAmount(number_format($totalTax, 2, '.', '')), // invoice tax amount
+                                new InvoiceTotalAmount(number_format($sumWithTax, 2, '.', '')), // invoice total amount
+                                new InvoiceTaxAmount(number_format($totalTax, 2, '.', '')), // invoice tax amount
                                 // Additional tags can be added here if needed
                             ])->render();
                         @endphp

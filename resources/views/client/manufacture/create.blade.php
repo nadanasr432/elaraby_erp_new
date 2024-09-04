@@ -205,6 +205,7 @@
                                     <button type="button" class="btn btn-danger remove-row">Remove</button>
                                 </td>
                                 <input type="hidden" name="products[${index}][id]" value="${productId}">
+                                <input type="hidden" name="products[${index}][cost]" value="${productPrice}">
                               </tr>`;
                         $('#productTable').append(newRow);
                     }

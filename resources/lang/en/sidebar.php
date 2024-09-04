@@ -63,6 +63,7 @@ return [
     "sales" => "Sales",
     "sales-invoices" => "Sales invoices",
     "add-new-sales-invoice" => "Add new sales invoice",
+    "edit-sales-invoice" => "Edit sales invoice",
     "previous-sales-invoices" => "Previous sales invoices",
     "manage-sales-invoices" => "Manage Sales Invoices",
     "lsearch" => "Search",

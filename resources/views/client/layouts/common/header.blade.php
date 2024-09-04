@@ -135,6 +135,22 @@
         color: #FFFFFF;
     }
 
+    .btn-new_color {
+        background-color: #ffffff !important;
+        border: 1px solid #CACFE7;
+    }
+
+    .filter-option-inner-inner {
+        color: #787983 !important;
+
+    }
+
+    .btn-sm {
+        background-color: #222751 !important;
+        color: #ffff;
+
+    }
+
     .bootstrap-select .dropdown-toggle .filter-option {
         text-align: right !important;
     }
@@ -147,6 +163,44 @@
 
     .dataTables_wrapper .row .col-sm-12:nth-child(2) {
         text-align: left !important;
+    }
+
+    .btn.dropdown-toggle.bs-placeholder,
+    /* .form-control {
+        height: 40px !important;
+    } */
+
+    a,
+    a:hover {
+        text-decoration: none;
+        color: #444444;
+    }
+
+    .bootstrap-select {
+        width: 80% !important;
+    }
+
+    /*
+    .selectpicker {
+        background-color: #085d4a !important;
+    } */
+
+    .bill_details {
+        margin-top: 30px !important;
+        min-height: 150px !important;
+    }
+
+    .dropdown-item.active {
+        background-color: #666EE8 !important;
+    }
+
+    .dropdown-item:hover {
+        background-color: #7e85e5 !important;
+    }
+
+    .note-toolbar button.note-btn {
+        background-color: #666EE8 !important;
+
     }
 </style>
 <nav

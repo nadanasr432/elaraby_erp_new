@@ -189,14 +189,14 @@
                                     {{ __('sales_bills.product-code') }}
                                     <span class="text-danger font-weight-bold">*</span>
                                 </label>
-                                <select name="product_id" id="product_id" class="selectpicker w-80" data-style="btn-success"
-                                    data-live-search="true" title="{{ __('sales_bills.product-code') }}">
+                               <select name="product_id" id="product_id" class="selectpicker w-80" data-style="btn-success"
+                    data-live-search="true" title="{{ __('sales_bills.product-code') }}">
 
-                                    @foreach ($all_products as $product)
-                                        <option value="{{ $product->id }}" data-tokens="{{ $product->code_universal }}">
-                                            {{ $product->product_name }}</option>
-                                    @endforeach
-                                </select>
+                    @foreach ($all_products as $product)
+                        <option value="{{ $product->id }}" data-tokens="{{ $product->code_universal }}">
+                            {{ $product->product_name }}</option>
+                    @endforeach
+                </select>
 
                                 <div class="available text-warning font-weight-bold"
                                     style="margin-top: 10px;text-align:right;"></div>
@@ -429,7 +429,7 @@
         <form class="d-inline" action="{{ route('client.quotations.destroy', 'test') }}" method="post">
             {{ method_field('delete') }}
             {{ csrf_field() }}
-            <input type="hidden" name="quotation_number" value="{{ $newQuotationNumber }}">
+            <input type="hidden" name="quotation_number" value="{{ $pre_quotation }}">
             <button disabled type="submit" class="btn btn-md close_btn btn-danger pull-right ml-3"
                 style="margin-top: 8px;">
                 <i class="fa fa-close"></i>

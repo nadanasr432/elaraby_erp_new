@@ -26,7 +26,7 @@ return [
     'supplier_name' => "اسم المورد",
     'choose_supplier' => "اختر المورد",
     'edit_supplier_bond' => "تعديل السند الخاص بالمورد",
-    'bond_for_supplier' => "سند صرف",
+    'bond_for_supplier' => "سند للمورد",
     '' => "",
     '' => "",
     '' => "",

@@ -24,7 +24,7 @@ return [
     'supplier_name' => "Supplier Name",
     'choose_supplier' => "Choose Supplier Name",
     'edit_supplier_bond' => "Edit Supplier Bond",
-    'bond_for_supplier' => "Bond of Exchange",
+    'bond_for_supplier' => "Bond For Supplier",
     '' => "",
     '' => "",
     '' => "",
