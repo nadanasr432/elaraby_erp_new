@@ -124,6 +124,10 @@
                 <i class="fa fa-eye-slash"></i>
                 @lang('sales_bills.Show or hide the footer')
             </button>
+            <button class="btn btn-sm btn-success" dir="ltr" onclick="sendToWhatsApp()">
+                <i class="fa fa-whatsapp"></i>
+                @lang('sales_bills.Send to whatsapp')
+            </button>
         </div>
         <div class="all-data" style="border-top: 1px solid #2d2d2d20;padding-top: 25px;">
 
@@ -152,23 +156,6 @@
                     // Additional tags can be added here if needed
                 ])->render();
             @endphp
-
-            {{-- @php
-                use Salla\ZATCA\GenerateQrCode;
-                use Salla\ZATCA\Tags\InvoiceDate;
-                use Salla\ZATCA\Tags\InvoiceTaxAmount;
-                use Salla\ZATCA\Tags\InvoiceTotalAmount;
-                use Salla\ZATCA\Tags\Seller;
-                use Salla\ZATCA\Tags\TaxNumber;
-                $displayQRCodeAsBase64 = GenerateQrCode::fromArray([
-                    new Seller($company->company_name), // seller name
-                    new TaxNumber($company->tax_number), // seller tax number
-                    new InvoiceDate($sale_bill->date . ' ' . $sale_bill->time), // invoice date as Zulu ISO8601 @see https://en.wikipedia.org/wiki/ISO_8601
-                    new InvoiceTotalAmount($sumWithTax), // invoice total amount
-                    new InvoiceTaxAmount($totalTax), // invoice tax amount
-                    // TODO :: Support others tags
-                ])->render();
-            @endphp --}}
             @if (app()->getLocale() == 'en')
                 <div class="header-container d-flex align-items-center">
                     <div class="logo">
@@ -328,13 +315,13 @@
 
                                 <td width="40%" class="text-left">@lang('sales_bills.phone')</td>
                                 <td width="60%" class="text-right">
-                                    {{ $sale_bill->outerClient->phones[0]->client_phone ?? '-' }}</td>
+                                    {{ $sale_bill->outerClient->phones[0]?->client_phone ?? '-' }}</td>
                             </tr>
                             <tr class="d-flex pt-1 bordernone">
 
                                 <td width="40%" class="text-left">@lang('sales_bills.address')</td>
                                 <td width="60%" class="text-right">
-                                    {{ $sale_bill->outerClient->addresses[0]->client_address ?? '-' }}</td>
+                                    {{ $sale_bill->outerClient->addresses[0]?->client_address ?? '-' }}</td>
                             </tr>
                         </table>
                     </div>
@@ -413,12 +400,11 @@
                             <tr
                                 style="font-size:18px !important; background: {{ $printColor }}; color: white; height: 44px !important; text-align: center;">
                                 <th>@lang('sales_bills.Product number')</th>
-                                <th>@lang('sales_bills.product name')</th>
+                                <th>@lang('main.name')</th>
                                 <th>@lang('sales_bills.unit price')</th>
                                 <th>@lang('sales_bills.Quantity')</th>
                                 <th>@lang('sales_bills.The amount does not include tax')</th>
                                 <th>@lang('sales_bills.Tax')</th>
-                                <th>@lang('sales_bills.Discount')</th>
                                 <th>@lang('sales_bills.total')</th>
 
                             </tr>
@@ -454,10 +440,9 @@
                                     $tableRow .= '<td>' . $element->product->product_name . '</td>';
                                     $tableRow .= '<td>' . $element->product_price . ' ' . '</td>';
                                     $tableRow .= '<td class="text-center"><span>' . $element->quantity . '</span><span>' . $element->unit->unit_name . '</span></td>';
-                                    $tableRow .= '<td>' . $element->quantity_price - $element->tax_value . ' ' . '</td>';
-                                    $tableRow .= '<td>' . $element->tax_value . '</td>';
-                                    $tableRow .= '<td>' . $element->discount_value . '</td>';
-                                    $tableRow .= '<td>' . $element->quantity_price - $element->discount_value  . '</td>';
+                                    $tableRow .= '<td>' . ($sale_bill->value_added_tax ? round(($element->quantity_price * 20) / 23, 2) : $element->quantity_price) . ' ' . '</td>';
+                                    $tableRow .= '<td>' . $ProdTax . '</td>';
+                                    $tableRow .= '<td>' . $ProdTotal . '</td>';
 
                                     $tableRow .= '</tr>';
 
@@ -479,64 +464,71 @@
                                 style="font-size:18px !important; background: {{ $printColor }}; color: white; height: 44px !important; text-align: center;">
                                 <th>@lang('sales_bills.total')</th>
                                 <th>@lang('sales_bills.Tax')</th>
-                                <th>@lang('sales_bills.Discount')</th>
                                 <th>@lang('sales_bills.The amount does not include tax')</th>
                                 <th>@lang('sales_bills.Quantity')</th>
                                 <th>@lang('sales_bills.unit price')</th>
-                                <th>@lang('sales_bills.product name')</th>
+                                <th>@lang('main.name')</th>
                                 <th>@lang('sales_bills.Product number')</th>
                             </tr>
 
                         </thead>
                         <tbody style="font-size: 14px !important;">
-                            @php
-                                $extras = $sale_bill->extras;
+                            <?php
+                            $extras = $sale_bill->extras;
+                            if (!$elements->isEmpty()) {
                                 $i = 0;
-                            @endphp
+                                foreach ($elements as $element) {
+                                    #--PRODUCT TAX--#
+                                    if ($company->tax_value_added && $company->tax_value_added != 0) {
+                                        $ProdTax = ($sale_bill->value_added_tax ? round($element->quantity_price - ($element->quantity_price * 20) / 23, 2) : round(($element->quantity_price * 15) / 100, 2)) . ' ';
+                                    } else {
+                                        $ProdTax = 0 . ' ';
+                                    }
+                                    #--PRODUCT TAX--#
 
-                            @if (!$elements->isEmpty())
-                                @foreach ($elements as $element)
-                                    @php
-                                        // Calculate Product Tax
-                                        $ProdTax = 0;
-                                        if ($company->tax_value_added && $company->tax_value_added != 0) {
-                                            $ProdTax = $sale_bill->value_added_tax
-                                                ? round(
-                                                    $element->quantity_price - ($element->quantity_price * 20) / 23,
-                                                    2,
-                                                )
-                                                : round(($element->quantity_price * 15) / 100, 2);
-                                        }
+                                    #--PRODUCT TOTAL--#
+                                    if ($company->tax_value_added && $company->tax_value_added != 0) {
+                                        $ProdTotal = ($sale_bill->value_added_tax ? $element->quantity_price : round($element->quantity_price + ($element->quantity_price * 15) / 100, 2)) . ' ';
+                                    } else {
+                                        $ProdTotal = $element->quantity_price . ' ';
+                                    }
+                                    #--PRODUCT TOTAL--#
 
-                                        // Calculate Product Total
-                                        $ProdTotal = $element->quantity_price;
-                                        if ($company->tax_value_added && $company->tax_value_added != 0) {
-                                            $ProdTotal = $sale_bill->value_added_tax
-                                                ? $element->quantity_price
-                                                : round(
-                                                    $element->quantity_price + ($element->quantity_price * 15) / 100,
-                                                    2,
-                                                );
-                                        }
-                                    @endphp
-
-                                    <tr
-                                        style="font-size:18px !important; height: 34px !important; text-align: center;background: #f8f9fb">
-                                        <td>{{ $element->quantity_price }}</td>
-                                        <td>{{ $element->tax_value }}</td>
-                                        <td>{{ $element->discount_value }}</td>
-                                        <td>{{ $element->quantity_price - $element->tax_value}}</td>
-                                        <td class="text-center">
-                                            <span>{{ $element->unit->unit_name }}</span>
-                                            <span>{{ $element->quantity }}</span>
-                                        </td>
-                                        <td>{{ $element->product_price }}</td>
-                                        <td>{{ $element->product->product_name }}</td>
-                                        <td>{{ ++$i }}</td>
-                                    </tr>
-                                @endforeach
-                            @endif
-
+                                    echo '
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <tr style="font-size:18px !important; height: 34px !important; text-align: center;background: #f8f9fb">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <td>' .
+                                        $ProdTotal .
+                                        '</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <td>' .
+                                        $ProdTax .
+                                        '</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <td>' .
+                                        ($sale_bill->value_added_tax ? round(($element->quantity_price * 20) / 23, 2) : $element->quantity_price) .
+                                        ' ' .
+                                        '</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <td class="text-center" >
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <span>' .
+                                        $element->unit->unit_name .
+                                        '</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <span>' .
+                                        $element->quantity .
+                                        '</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <td>' .
+                                        $element->product_price .
+                                        ' ' .
+                                        '</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <td>' .
+                                        $element->product->product_name .
+                                        ' </td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <td>' .
+                                        ++$i .
+                                        '</td>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </tr>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ';
+                                }
+                            }
+                            ?>
 
                         </tbody>
                     </table>
@@ -545,10 +537,10 @@
             <?php
             if ($sale_bill->company_id == 20) {
                 echo "<p style='text-align: justify; direction: rtl; font-size: 12px; padding: 11px; background: #f3f3f3; margin: 2px 10px; border-radius: 6px; border: 1px solid #2d2d2d10;'>
-                                                                                                                                                                                                                                                                                                        <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
-                                                                                                                                                                                                                                                                                                        شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
-                                                                                                                                                                                                                                                                                                        (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
-                                                                                                                                                                                                                                                                                                    </p>";
+                                                                                                                                                                                                                                            <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
+                                                                                                                                                                                                                                            شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
+                                                                                                                                                                                                                                            (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
+                                                                                                                                                                                                                                        </p>";
             }
             ?>
             @if (app()->getLocale() == 'en')
@@ -558,8 +550,7 @@
                         style="border: 1px solid #2d2d2d1c; border-radius: 7px; overflow: hidden; box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;">
                         <table
                             style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-
-                            @if ($discount > 0)
+                            @if (!empty($discount) && $discount->value > 0)
                                 <tr
                                     style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
 
@@ -567,40 +558,39 @@
                                     <td dir="rtl">
                                         {{-- @dd( $discountValue) --}}
                                         {{ $discountNote ? $discountNote . ' || ' : '' }}
-                                        {{-- @if ($discount->action_type == 'poundAfterTax') --}}
-                                        @if ($realtotal > 0)
-                                            ({{ round($discount) }})
+                                        @if ($discount->action_type == 'poundAfterTax')
+                                            @if ($realtotal > 0)
+                                                ({{ round($discount->value) }})
 
-                                            {{ $currency }}
-                                        @endif
-                                        {{-- @else
+                                                {{ $currency }}
+                                            @endif
+                                        @else
                                             @if ($realtotal > 0)
                                                 ({{ round(($discountValue / $realtotal) * 100, 1) }}%)
                                                 {{ $discountValue }}
                                             @endif
                                             {{ $currency }}
-                                        @endif --}}
+                                        @endif
 
                                     </td>
                                 </tr>
                             @endif
-                            {{-- @dump($discount) --}}
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                 <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
                                 <td dir="rtl">
-                                    {{-- @if ($discount->action_type == 'poundAfterTax')
+                                    @if ($discount->action_type == 'poundAfterTax')
                                         @if ($realtotal > 0)
                                             ({{ round($realtotal) }})
 
                                             {{ $currency }}
                                         @endif
-                                    @else --}}
-                                    {{-- @if ($realtotal > 0) --}}
-                                        {{ $sumWithOutTax }} {{ $currency }}
-                                    {{-- @endif --}}
+                                    @else
+                                        @if ($realtotal > 0)
+                                            {{ $sumWithOutTax }} {{ $currency }}
+                                        @endif
 
-                                    {{-- @endif --}}
+                                    @endif
                                 </td>
                             </tr>
 
@@ -620,11 +610,11 @@
                                     @lang('sales_bills.Total tax')
                                     ({{ $company->tax_value_added ?? '0' }}%)
                                 </td>
-                                {{-- @if ($company->tax_value_added && $company->tax_value_added != 0) --}}
+                                @if ($company->tax_value_added && $company->tax_value_added != 0)
                                     <td dir="rtl">{{ $totalTax }} {{ $currency }} </td>
-                                {{-- @else
+                                @else
                                     <td dir="rtl">0 {{ $currency }} </td>
-                                @endif --}}
+                                @endif
                             </tr>
 
 
@@ -634,25 +624,25 @@
                                 <td style="text-align: left;padding-right: 14px;background:#222751;">
                                     @lang('sales_bills.total')
                                 </td>
-                                {{-- @if ($company->tax_value_added && $company->tax_value_added != 0) --}}
-                                    {{-- @if ($discount->action_type == 'poundAfterTax') --}}
-                                    <td dir="rtl">
-                                        <<-- Apply discount after tax -->>
-                                            {{ $sale_bill->final_total }}
+                                @if ($company->tax_value_added && $company->tax_value_added != 0)
+                                    @if ($discount->action_type == 'poundAfterTax')
+                                        <td dir="rtl">
+                                            {{-- Apply discount after tax --}}
+                                            {{ $realtotal - $discount->value + $totalTax }}
                                             {{ $currency }}
-                                    </td>
-                                    {{-- @else
+                                        </td>
+                                    @else
                                         <td dir="rtl">
                                             {{ $sumWithTax }}
                                             {{ $currency }}
                                         </td>
-                                    @endif --}}
-                                {{-- @else
+                                    @endif
+                                @else
                                     <td dir="rtl">
                                         {{ $sumWithOutTax }}
                                         {{ $currency }}
                                     </td>
-                                @endif --}}
+                                @endif
                             </tr>
 
                             <tr
@@ -731,23 +721,23 @@
                         style="border: 1px solid #2d2d2d1c; border-radius: 7px; overflow: hidden; box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;">
                         <table
                             style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                            @if ($discount)
+                            @if (!empty($discount) && $discount->value > 0)
                                 <tr
                                     style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                     <td dir="rtl">
                                         {{ $discountNote ? $discountNote . ' || ' : '' }}
-                                        {{-- @if ($discount->action_type == 'poundAfterTax') --}}
-                                        @if ($realtotal > 0)
-                                            ({{ round($discount) }})
-                                            {{ $currency }}
-                                        @endif
-                                        {{-- @else
+                                        @if ($discount->action_type == 'poundAfterTax')
+                                            @if ($realtotal > 0)
+                                                ({{ round(float($discount->value)) }})
+                                                {{ $currency }}
+                                            @endif
+                                        @else
                                             @if ($realtotal > 0)
                                                 ({{ round(($discountValue / $realtotal) * 100, 1) }}%)
                                                 {{ $discountValue }}
                                             @endif
                                             {{ $currency }}
-                                        @endif --}}
+                                        @endif
                                     </td>
                                     <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Discount')</td>
                                 </tr>
@@ -756,18 +746,18 @@
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                 <td dir="rtl">
-                                    {{-- @if ($discount->action_type == 'poundAfterTax') --}}
-                                    {{-- @if ($realtotal > 0) --}}
-                                        ({{ number_format($sumWithOutTax, 2, '.', '') }})
+                                    @if ($discount->action_type == 'poundAfterTax')
+                                        @if ($realtotal > 0)
+                                            ({{ round($realtotal) }})
 
-                                        {{ $currency }}
-                                    {{-- @endif --}}
-                                    {{-- @else
+                                            {{ $currency }}
+                                        @endif
+                                    @else
                                         @if ($realtotal > 0)
                                             {{ $sumWithOutTax }} {{ $currency }}
                                         @endif
 
-                                    @endif --}}
+                                    @endif
                                 </td>
                                 <td style="text-align: right;padding-right: 14px;"style="background:#222751">
                                     @lang('sales_bills.Total, excluding tax')</td>
@@ -783,11 +773,11 @@
 
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: #f8f9fb">
-                                {{-- @if ($company->tax_value_added && $company->tax_value_added != 0) --}}
+                                @if ($company->tax_value_added && $company->tax_value_added != 0)
                                     <td dir="rtl">{{ $totalTax }} {{ $currency }} </td>
-                                {{-- @else
+                                @else
                                     <td dir="rtl">0 {{ $currency }} </td>
-                                @endif --}}
+                                @endif
                                 <td style="text-align: right;padding-right: 14px;">
                                     @lang('sales_bills.Total tax')
                                     ({{ $company->tax_value_added ?? '0' }}%)
@@ -796,26 +786,25 @@
 
                             <tr
                                 style="background:#222751;border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: {{ $printColor }};color:white;">
-                                {{-- @if ($company->tax_value_added && $company->tax_value_added != 0) --}}
-                                    {{-- @if ($discount->action_type == 'poundAfterTax') --}}
-                                    <td dir="rtl">
-                                        {{-- Apply discount after tax --}}
-                                        {{ $sale_bill->final_total }}
-
-                                        {{ $currency }}
-                                    </td>
-                                    {{-- @else
+                                @if ($company->tax_value_added && $company->tax_value_added != 0)
+                                    @if ($discount->action_type == 'poundAfterTax')
+                                        <td dir="rtl">
+                                            {{-- Apply discount after tax --}}
+                                            {{ $realtotal - $discount->value + $totalTax }}
+                                            {{ $currency }}
+                                        </td>
+                                    @else
                                         <td dir="rtl">
                                             {{ $sumWithTax }}
                                             {{ $currency }}
                                         </td>
-                                    @endif --}}
-                                {{-- @else
+                                    @endif
+                                @else
                                     <td dir="rtl">
                                         {{ $sumWithOutTax }}
                                         {{ $currency }}
                                     </td>
-                                @endif --}}
+                                @endif
                                 <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.total')</td>
                             </tr>
                             <tr
@@ -827,8 +816,10 @@
                             </tr>
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+
+                                {{-- @dd($sale_bill) --}}
                                 <td dir="rtl">
-                                    {{ $sale_bill->rest }} {{ $currency }}
+                                    {{ $sale_bill->final_total - $sale_bill->paid }} {{ $currency }}
                                 </td>
                                 <td style="text-align: right;padding-right: 14px;">
                                     @lang('sales_bills.Residual')
@@ -902,6 +893,17 @@
 </html>
 <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
 
+<script>
+    function sendToWhatsApp() {
+        const clientPhone = '{{ isset($sale_bill->outerClient->phones[0])?$sale_bill->outerClient->phones[0]->client_phone:"" }}';
+        const invoiceUrl = '{{ route('client.sale_bills.sent', [$sale_bill->token]) }}';
+        const message = `Please check your invoice at the following link: ${invoiceUrl}`;
+        const whatsappUrl = `https://wa.me/${clientPhone}?text=${encodeURIComponent(message)}`;
+        setTimeout(() => {
+            window.open(whatsappUrl, '_blank');
+        }, 1000);
+    }
+</script>
 <script type="text/javascript">
     $('.show_hide_header').on('click', function() {
         $('.headerImg').slideToggle();

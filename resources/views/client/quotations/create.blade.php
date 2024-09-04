@@ -77,7 +77,7 @@
                         <h3 class="pull-right font-weight-bold">
                             اضافة عرض سعر
                             <div class="badge btn-newdark font-weight-bold">
-                                {{ $newQuotationNumber }}
+                                {{ $newQuotationNumber-1 }}
                             </div>
                         </h3>
                         <div class="row mr-1">
