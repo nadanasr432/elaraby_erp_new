@@ -101,7 +101,8 @@ class UpdateSaleBillsSeeder extends Seeder
                 : 0;
 
             $element->update([
-                'tax_value' => $elementTaxValue
+                'tax_value' => $elementTaxValue,
+                'tax_type' => $saleBill->value_added_tax,
             ]);
         }
     }

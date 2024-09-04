@@ -136,6 +136,13 @@
             <i class="fa fa-money"></i>
             {{ __('main.record') }}
         </button>
+        <a href="{{ route('client.sale_bills.edit', [$saleBill->token, $saleBill->company_id]) }}"
+
+            class="btn btn-info btn-md ml-1"
+            style="height: 40px;">
+             {{-- <i class="fa fa-plus"></i> --}}
+             {{ __('sales_bills.update') }}
+         </a>
 
         {{-- <form class="d-inline" method="POST" onsubmit="return checkChanges()"
             action="{{ route('client.sale_bills.cancel') }}">

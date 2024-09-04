@@ -11,26 +11,35 @@ class VoucherService
 {
     public static function createTransaction($accountingTreeId, $voucherId, $amount, $notation, $type)
     {
-        return Transaction::create([
-            'accounting_tree_id' => $accountingTreeId,
-            'voucher_id' => $voucherId,
-            'amount' => $amount,
-            'notation' => $notation,
-            'type' => $type,
-            'company_id' => Auth::user()->company_id,
-        ]);
+        return Transaction::updateOrCreate(
+            [
+                'accounting_tree_id' => $accountingTreeId,
+                'voucher_id' => $voucherId,
+            ],
+            [
+                'amount' => $amount,
+                'notation' => $notation,
+                'type' => $type,
+                'company_id' => Auth::user()->company_id,
+            ]
+        );
     }
+
     public static function createVoucher($saleBill, $companyId, $notation, $paymentMethod = "cash", $status = 1, $options = 1)
     {
-        return new Voucher([
-            'amount' => $saleBill->final_total,
-            'company_id' => $companyId,
-            'date' => Carbon::now(),
-            'payment_method' => $paymentMethod,
-            'notation' => $notation,
-            'status' => $status,
-            'user_id' => Auth::user()->id,
-            'options' => $options,
-        ]);
+        return Voucher::updateOrCreate(
+            [
+                'amount' => $saleBill->final_total,
+                'company_id' => $companyId,
+                'user_id' => Auth::user()->id,
+            ],
+            [
+                'date' => Carbon::now(),
+                'payment_method' => $paymentMethod,
+                'notation' => $notation,
+                'status' => $status,
+                'options' => $options,
+            ]
+        );
     }
 }

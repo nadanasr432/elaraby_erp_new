@@ -702,6 +702,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::post('/sale-bills/edit-element', [SaleBillController::class, 'edit_element']);
 
             Route::post('/sale-bills/post', [SaleBillController::class, 'save']);
+            Route::post('/sale-bills/update', [SaleBillController::class, 'update']);
             Route::post('/sale-bills/discount', [SaleBillController::class, 'apply_discount']);
             Route::post('/sale-bills/extra', [SaleBillController::class, 'apply_extra']);
             Route::post('/sale-bills/updateData', [SaleBillController::class, 'updateData']);

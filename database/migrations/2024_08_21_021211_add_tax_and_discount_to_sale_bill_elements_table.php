@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::table('sale_bill_elements', function (Blueprint $table) {
             $table->decimal('tax_value', 8, 2)->default(0);
+            $table->integer('tax_type');
+            $table->string('price_type');
+            $table->string('discount_type');
             $table->decimal('discount_value', 8, 2)->default(0);
         });
     }

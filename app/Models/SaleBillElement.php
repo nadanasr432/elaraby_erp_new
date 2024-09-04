@@ -16,6 +16,9 @@ class SaleBillElement extends Model
         'unit_id',
         'quantity_price',
         'tax_value',
+        'tax_type',
+        'price_type',
+        'discount_type',
         'discount_value'
     ];
     public function unit()
