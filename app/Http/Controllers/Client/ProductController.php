@@ -22,6 +22,7 @@ class ProductController extends Controller
         $company_id = Auth::user()->company_id;
         $company = Company::FindOrFail($company_id);
 
+
         $products = Product::select('products.*', DB::raw('IFNULL(SUM(product_stock.remaining), 0) as remaining'))
             ->leftJoin('product_stock', 'product_stock.product_id', '=', 'products.id')
             ->where('products.company_id', $company_id)
@@ -34,7 +35,6 @@ class ProductController extends Controller
             )')
             ->get();
 
-        // return $products->all();
 
         $purchase_prices = array();
         $balances = array();
@@ -74,10 +74,6 @@ class ProductController extends Controller
         $categories = Category::where('company_id', $company_id)->get();
         $sub_categories = SubCategory::where('company_id', $company_id)->get();
         $units = $company->units;
-        $products = Product::where('company_id', $company_id)->whereHas('category', function ($query) {
-            $query->where('category_type', 'مخزونية');
-        })
-            ->get();
         $check = Product::where('company_id', $company_id)->get();
         if ($check->isEmpty()) {
             $code_universal = "100000001";
@@ -88,7 +84,7 @@ class ProductController extends Controller
         }
         return view(
             'client.products.create',
-            compact('company_id', 'units', 'sub_categories', 'code_universal', 'categories', 'stores', 'company', 'products')
+            compact('company_id', 'units', 'sub_categories', 'code_universal', 'categories', 'stores', 'company')
         );
     }
 
@@ -117,6 +113,7 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {
+        // dd($request);
         $data = $request->all();
 
         if (empty($data['first_balance'])) $data['first_balance'] = 0;
@@ -125,7 +122,7 @@ class ProductController extends Controller
         // Check for category if khadamya
         $cat = Category::find($data['category_id']);
         if ($cat->category_type == 'خدمية') $data['first_balance'] = 10000000;
-        // dd($data['combo_products']);
+
         // Create the main product
         $product = Product::create($data);
 
@@ -148,7 +145,42 @@ class ProductController extends Controller
         }
 
         return redirect()->route('client.products.index')
-            ->with('success', 'تم اضافة المنتج بنجاح');
+        ->with('success', 'تم اضافة المنتج بنجاح');
+    }
+    public function storeProduct(ProductRequest $request)
+    {
+        // dd($request);
+        $data = $request->all();
+
+        if (empty($data['first_balance'])) $data['first_balance'] = 0;
+        if (empty($data['qr'])) $company_id = $data['company_id'];
+
+        // Check for category if khadamya
+        $cat = Category::find($data['category_id']);
+        if ($cat->category_type == 'خدمية') $data['first_balance'] = 10000000;
+
+        // Create the main product
+        $product = Product::create($data);
+
+        // Handle file upload for product_pic
+        if ($request->hasFile('product_pic')) {
+            $image = $request->file('product_pic');
+            $fileName = $image->getClientOriginalName();
+            $uploadDir = 'uploads/products/' . $product->id;
+            $image->move($uploadDir, $fileName);
+            $product->product_pic = $uploadDir . '/' . $fileName;
+            $product->save();
+        }
+
+        // Save combo products
+        if (!empty($data['combo_products'])) {
+            foreach ($data['combo_products'] as $comboProductData) {
+                $comboProductData['parent_id'] = $product->id;
+                Combo::create($comboProductData);
+            }
+        }
+
+        return back()->with('success', 'تم اضافة المنتج بنجاح');
     }
 
     public function show($id)
