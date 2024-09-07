@@ -16,8 +16,6 @@ use Illuminate\Http\Request;
 use App\Models\ExtraSettings;
 use App\Models\PurchaseOrder;
 use App\Models\BuyBillElement;
-use App\Services\StockService;
-use App\Services\VoucherService;
 use App\Mail\sendingPurchaseOrder;
 use App\Models\PurchaseOrderExtra;
 use Illuminate\Support\Facades\DB;
@@ -190,6 +188,7 @@ class PurchaseOrderController extends Controller
                 $previous_discount_value = $previous_discount_value / 100 * $total;
             }
             $after_discount = $total - $previous_discount_value;
+
         }
         if (!empty($previous_extra) && !empty($previous_discount)) {
             $after_discount = $total - $previous_discount_value + $previous_extra_value;
@@ -205,25 +204,9 @@ class PurchaseOrderController extends Controller
             $after_total_all = $total + $percentage;
         }
 
-        return view(
-            'client.purchase_orders.index',
-            compact(
-                'currency',
-                'after_discount',
-                'after_total_all',
-                'purchase_order_k',
-                'purchase_orders',
-                'suppliers',
-                'elements',
-                'extras',
-                'products',
-                'company',
-                'purchase_order_discount_value',
-                'purchase_order_discount_type',
-                'purchase_order_extra_value',
-                'purchase_order_extra_type'
-            )
-        );
+        return view('client.purchase_orders.print',
+            compact('currency', 'after_discount', 'after_total_all', 'purchase_order_k', 'purchase_orders', 'suppliers'
+                , 'elements', 'extras', 'products', 'company', 'purchase_order_discount_value', 'purchase_order_discount_type', 'purchase_order_extra_value', 'purchase_order_extra_type'));
     }
 
     public function send($id)
@@ -259,6 +242,7 @@ class PurchaseOrderController extends Controller
                 $previous_discount_value = $previous_discount_value / 100 * $total;
             }
             $after_discount = $total - $previous_discount_value;
+
         }
         if (!empty($previous_extra) && !empty($previous_discount)) {
             $after_discount = $total - $previous_discount_value + $previous_extra_value;
@@ -287,6 +271,7 @@ class PurchaseOrderController extends Controller
         Mail::to($purchase_order->supplier->supplier_email)->send(new sendingPurchaseOrder($data));
         return redirect()->route('client.purchase_orders.index')
             ->with('success', 'تم  ارسال امر الشراء الى بريد المورد بنجاح');
+
     }
 
     public function show($id)
@@ -297,25 +282,30 @@ class PurchaseOrderController extends Controller
     public function create()
     {
         $company_id = Auth::user()->company_id;
-        $company = Company::FindOrFail($company_id);
+        $company = Company::findOrFail($company_id);
         $categories = $company->categories;
-        $all_products = Product::where('company_id', $company_id)->where('first_balance', '>', '0')->get();
+        $all_products = Product::where('company_id', $company_id)->where('first_balance', '>', 0)->get();
         $stores = $company->stores;
         $units = $company->units;
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
         $suppliers = Supplier::where('company_id', $company_id)->get();
-        $check = PurchaseOrder::all();
-        if ($check->isEmpty()) {
-            $pre_purchase_order = 1;
-        } else {
-            $old_purchase_order = PurchaseOrder::max('purchase_order_number');
-            $pre_purchase_order = ++$old_purchase_order;
-        }
-        return view(
-            'client.purchase_orders.create',
-            compact('company', 'suppliers', 'units', 'stores', 'categories', 'extra_settings', 'company_id', 'all_products', 'pre_purchase_order')
-        );
+
+        $last_purchase_order = PurchaseOrder::where('company_id', $company_id)->max('purchase_order_number');
+        $pre_purchase_order = $last_purchase_order ? $last_purchase_order + 1 : 1;
+
+        return view('client.purchase_orders.create', compact(
+            'company',
+            'suppliers',
+            'units',
+            'stores',
+            'categories',
+            'extra_settings',
+            'company_id',
+            'all_products',
+            'pre_purchase_order'
+        ));
     }
+
 
     public function get_product_price(Request $request)
     {
@@ -340,7 +330,7 @@ class PurchaseOrderController extends Controller
 
         if (!$store->accountingTree) {
             $accountingTree = new \App\Models\accounting_tree();
-            $accountingTree->account_name =  ' حساب مخزون ' . $store->store_name;
+            $accountingTree->account_name =  ' حساب مخزون ' .$store->store_name ;
             $accountingTree->account_name_en =  $store->store_name . 'Account';
             $accountingTree->account_number = '66' . $store->id;
             $accountingTree->parent_id = 66;
@@ -349,7 +339,7 @@ class PurchaseOrderController extends Controller
         }
         if (!$supplier->accountingTree) {
             $accountingTree = new \App\Models\accounting_tree();
-            $accountingTree->account_name =  ' حساب المورد ' . $supplier->supplier_name;
+            $accountingTree->account_name =  ' حساب المورد '. $supplier->supplier_name ;
             $accountingTree->account_name_en =  $supplier->supplier_name . 'Account';
             $accountingTree->account_number = '34' . $supplier->id;
             $accountingTree->parent_id = 34;
@@ -376,7 +366,7 @@ class PurchaseOrderController extends Controller
             ->where('company_id', $company->id)
             ->first();
         if (empty($check)) {
-            $purchase_order_element = $product = PurchaseOrderElement::create($data);
+            $purchase_order_element = PurchaseOrderElement::create($data);
         } else {
             $old_quantity = $check->quantity;
             $new_quantity = $old_quantity + $request->quantity;
@@ -389,10 +379,8 @@ class PurchaseOrderController extends Controller
                 'unit_id' => $unit_id,
                 'quantity_price' => $new_quantity_price,
             ]);
-            $product = $check;
         }
-        StockService::record($product, $data['store_id'], $product->quantity);
-
+        // dd(   $check->quantity_price);
         DB::beginTransaction();
 
         try {
@@ -403,7 +391,6 @@ class PurchaseOrderController extends Controller
                 'notation' => 'قيد فاتورة مشتريات رقم ' . $purchase_order->sale_bill_number,
                 'status' => 1,
                 'user_id' => auth::user()->id,
-                'company_id'=>$company->id,
                 'options' => 1
             ]);
             // dd( $accountId);
@@ -413,7 +400,6 @@ class PurchaseOrderController extends Controller
                 'voucher_id' => $voucher->id,
                 'amount' =>  $check->quantity_price,
                 'notation' => "مدين من فاتورةمشتريات",
-                'company_id'=>$company->id,
                 'type' =>  1,
             ]);
             Transaction::create([
@@ -421,7 +407,6 @@ class PurchaseOrderController extends Controller
                 'voucher_id' => $voucher->id,
                 'amount' =>  $check->quantity_price,
                 'notation' => "دائن من فاتورةمشتريات",
-                'company_id'=>$company->id,
                 'type' =>  0,
             ]);
             // }
@@ -530,12 +515,12 @@ class PurchaseOrderController extends Controller
             foreach ($elements as $element) {
                 array_push($sum, $element->quantity_price);
                 echo "<tr>";
-                echo "<td>" . ++$i . "</td>";
-                echo "<td>" . $element->product->product_name . "</td>";
-                echo "<td>" . $element->product_price . "</td>";
-                echo "<td>" . $element->quantity . " " . $element->unit->unit_name . "</td>";
-                echo "<td>" . $element->quantity_price . "</td>";
-                echo "<td class='no-print'>
+                    echo "<td>" . ++$i . "</td>";
+                    echo "<td>" . $element->product->product_name . "</td>";
+                    echo "<td>" . $element->product_price . "</td>";
+                    echo "<td>" . $element->quantity ." ".$element->unit->unit_name. "</td>";
+                    echo "<td>" . $element->quantity_price . "</td>";
+                    echo "<td class='no-print'>
                             <button type='button' purchase_order_number='" . $element->PurchaseOrder->purchase_order_number . "' element_id='" . $element->id . "' class='btn btn-sm btn-info edit_element'>
                                 <i class='fa fa-pencil'></i> تعديل
                             </button>
@@ -563,6 +548,7 @@ class PurchaseOrderController extends Controller
                 </div>
                 <div class='clearfix'></div>
             </div>";
+
         }
 
         echo "
@@ -741,6 +727,7 @@ class PurchaseOrderController extends Controller
                 } else {
                     $after_extra = $total + $extra_value;
                 }
+
             } else if ($extra_type == "percent") {
                 $value = $extra_value / 100 * $total;
                 if (isset($previous_discount_value) && $previous_discount_value != 0) {
@@ -801,11 +788,13 @@ class PurchaseOrderController extends Controller
     {
         $supplier_id = $request->supplier_id;
         $supplier = Supplier::FindOrFail($supplier_id);
-        if ($supplier->prev_balance > 0) {
-            $balance = "له " . floatval($supplier->prev_balance);
-        } elseif ($supplier->prev_balance < 0) {
-            $balance = "عليه " . floatval(abs($supplier->prev_balance));
-        } else {
+        if($supplier->prev_balance > 0 ){
+            $balance = "له ". floatval($supplier->prev_balance);
+        }
+        elseif($supplier->prev_balance < 0){
+            $balance = "عليه ". floatval(abs($supplier->prev_balance));
+        }
+        else{
             $balance = 0;
         }
         echo "<div class='col-lg-4 pull-right'>" . "الفئة : " . $supplier->supplier_category . '</div>';
@@ -837,22 +826,9 @@ class PurchaseOrderController extends Controller
         $suppliers = Supplier::where('company_id', $company_id)->get();
         $safes = $company->safes;
         $banks = $company->banks;
-        return view(
-            'client.purchase_orders.edit',
-            compact(
-                'purchase_order',
-                'units',
-                'categories',
-                'all_products',
-                'stores',
-                'extra_settings',
-                'safes',
-                'banks',
-                'suppliers',
-                'company_id',
-                'company'
-            )
-        );
+        return view('client.purchase_orders.edit',
+            compact('purchase_order','units', 'categories', 'all_products', 'stores',
+                'extra_settings', 'safes', 'banks', 'suppliers', 'company_id', 'company'));
     }
 
     public function delete_bill(Request $request)
@@ -955,6 +931,7 @@ class PurchaseOrderController extends Controller
                 $previous_discount_value = $previous_discount_value / 100 * $total;
             }
             $after_discount = $total - $previous_discount_value;
+
         }
         if (!empty($previous_extra) && !empty($previous_discount)) {
             $after_discount = $total - $previous_discount_value + $previous_extra_value;
@@ -1005,6 +982,10 @@ class PurchaseOrderController extends Controller
                 'value' => $extra->value,
             ]);
         }
-        return redirect()->route('client.buy_bills.create')->with('success', 'تم تحويل امر الشراء الى فاتورة مشتريات ');
+        return redirect()->route('client.buy_bills.create')->with('success','تم تحويل امر الشراء الى فاتورة مشتريات ');
     }
+
+
 }
+
+?>
