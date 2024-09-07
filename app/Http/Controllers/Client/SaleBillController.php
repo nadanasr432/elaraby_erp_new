@@ -674,11 +674,11 @@ class SaleBillController extends Controller
 //         $tax_value_added = $company->tax_value_added;
 
         # calc total price of products.
-        $sum = array();
-        foreach ($elements as $element) {
-            array_push($sum, $element->quantity_price);
-        }
-        $total = array_sum($sum);
+        // $sum = array();
+        // foreach ($elements as $element) {
+        //     array_push($sum, $element->quantity_price);
+        // }
+        // $total = array_sum($sum);
 
 
 
