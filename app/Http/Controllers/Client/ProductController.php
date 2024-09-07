@@ -101,7 +101,6 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {
-        // dd($request);
         $data = $request->all();
 
         if (empty($data['first_balance'])) $data['first_balance'] = 0;
