@@ -371,7 +371,7 @@
                         display: block;
                     }
                 </style>
-                <img src="{{ $displayQRCodeAsBase64 }}" style="width: 100px; height: 80px;" alt="QR Code" />
+                <img src="{{ $displayQRCodeAsBase64 }}" style="width: 200px; height: 160px;" alt="QR Code" />
             </div>
         </div>
     </div>
