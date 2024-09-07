@@ -299,7 +299,7 @@ class PurchaseOrderController extends Controller
         $company_id = Auth::user()->company_id;
         $company = Company::FindOrFail($company_id);
         $categories = $company->categories;
-        $all_products = Product::where('company_id', $company_id)->get();
+        $all_products = Product::where('company_id', $company_id)->where('first_balance', '>', '0')->get();
         $stores = $company->stores;
         $units = $company->units;
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();

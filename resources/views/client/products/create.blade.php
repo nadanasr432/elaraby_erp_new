@@ -160,7 +160,7 @@
                                     {{ __('products.punit') }}
                                     <span class="text-danger font-weight-bold">*</span>
                                 </label>
-                                <select required name="unit_id" class="form-control">
+                                <select name="unit_id" class="form-control">
                                     <option value="">{{ __('products.choseunit') }}</option>
                                     @foreach ($units as $unit)
                                         <option value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
@@ -199,7 +199,7 @@
                                     {{ __('products.costprice') }}
                                     <span class="text-danger font-weight-bold">*</span>
                                 </label>
-                                <input type="number" required step="0.01" name="purchasing_price" id='purchasing_price'
+                                <input type="number" step="0.01" name="purchasing_price" id='purchasing_price'
                                     value="0" class="form-control" placeholder="{{ __('products.costprice') }}">
                             </div>
                             <!---------------------->
@@ -210,7 +210,7 @@
                                     {{ __('products.wholeprice') }}
                                     <span class="text-danger font-weight-bold">*</span>
                                 </label>
-                                <input type="number" required step="0.01" name="wholesale_price" value="0"
+                                <input type="number" step="0.01" name="wholesale_price" value="0"
                                     id="wholesale_price" class="form-control"
                                     placeholder="{{ __('products.wholeprice') }}">
                             </div>
@@ -222,7 +222,7 @@
                                     {{ __('products.sectorprice') }}
                                     <span class="text-danger font-weight-bold">*</span>
                                 </label>
-                                <input type="number" required step="0.01" value="0" name="sector_price"
+                                <input type="number" step="0.01" value="0" name="sector_price"
                                     placeholder="{{ __('products.sectorprice') }}" id="sector_price"
                                     class="form-control">
                             </div>
@@ -287,7 +287,7 @@
                             <!-- Add this div for the checkbox -->
                             <div class="form-check form-switch col-lg-6 mt-2" id="checkboxContainer"
                                 style="display: none;">
-                                <input class="form-check-input" type="checkbox" id="mySwitch" name="manufacture"
+                                <input class="form-check-input" type="checkbox" id="mySwitch" name="manufacturer"
                                     value="0">
                                 <label class="form-check-label ml-4" for="mySwitch"
                                     style="font-size: 18px !important">manufacture</label>

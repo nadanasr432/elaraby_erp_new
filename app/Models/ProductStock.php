@@ -17,7 +17,6 @@ class ProductStock extends Model
         'stockable_id',
         'stockable_type',
         'net_unit_cost',
-        'company_id',
     ];
 
     /**
