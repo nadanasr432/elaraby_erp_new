@@ -23,6 +23,17 @@ class ProductRequest extends FormRequest
     {
         return [
             'category_id' => 'required',
+            "company_id" => 'required',
+            "sub_category_id" => 'nullable',
+            "product_model" => 'nullable',
+            "product_name" => 'required',
+            "unit_id" => 'required',
+            "code_universal" => 'nullable',
+            "purchasing_price" => 'required',
+            "wholesale_price" => 'required',
+            "sector_price" => 'required',
+            "color" => 'nullable',
+            "description" => 'nullable',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
         ];

@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ProductRequest;
@@ -20,13 +21,27 @@ class ProductController extends Controller
     {
         $company_id = Auth::user()->company_id;
         $company = Company::FindOrFail($company_id);
-        $products = Product::where('company_id', $company_id)
+
+        $products = Product::select('products.*', DB::raw('IFNULL(SUM(product_stock.remaining), 0) as remaining'))
+            ->leftJoin('product_stock', 'product_stock.product_id', '=', 'products.id')
+            ->where('products.company_id', $company_id)
+            ->groupBy('products.id')
+            ->havingRaw('SUM(product_stock.remaining) > 0')
+            ->orHavingRaw('0 = 0 AND EXISTS (
+               SELECT 1 FROM categories
+               WHERE categories.id = products.category_id
+               AND categories.category_type = "خدمية"
+            )')
             ->get();
+
+        // return $products->all();
+
         $purchase_prices = array();
         $balances = array();
         foreach ($products as $product) {
             $product_price = $product->purchasing_price;
-            $product_balance = $product->first_balance;
+            $product_balance = $product->remaining;
+            $product->first_balance = $product_balance;
             array_push($balances, $product_balance);
 
             //check if the values are integer or not..
@@ -35,7 +50,6 @@ class ProductController extends Controller
                 array_push($purchase_prices, $total_price);
             }
         }
-
         $total_purchase_prices = array_sum($purchase_prices);
         $total_balances = array_sum($balances);
         return view('client.products.index', compact('company', 'total_balances', 'total_purchase_prices', 'company_id', 'products'));
@@ -111,7 +125,6 @@ class ProductController extends Controller
         // Check for category if khadamya
         $cat = Category::find($data['category_id']);
         if ($cat->category_type == 'خدمية') $data['first_balance'] = 10000000;
-
         // dd($data['combo_products']);
         // Create the main product
         $product = Product::create($data);

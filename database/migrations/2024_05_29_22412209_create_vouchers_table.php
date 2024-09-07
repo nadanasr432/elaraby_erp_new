@@ -21,9 +21,7 @@ return new class extends Migration
             $table->text('notation')->nullable();
             $table->string('status');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('clients');
             $table->unsignedBigInteger('company_id');
-            $table->foreign('company_id')->references('id')->on('companies');
             $table->timestamp('date')->nullable();
             $table->string('options')->nullable();
             $table->timestamps();
