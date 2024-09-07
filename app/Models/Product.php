@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -11,9 +12,26 @@ class Product extends Model
 {
     protected $table = "products";
     protected $fillable = [
-        'company_id', 'store_id', 'category_id', 'product_name', 'wholesale_price', 'sector_price', 'first_balance', 'purchasing_price',
-        'product_model', 'start_date',
-        'end_date', 'product_pic', 'code_universal', 'description', 'min_balance', 'unit_id', 'sub_category_id', 'color', 'viewed', 'manufacturer'
+        'company_id',
+        'store_id',
+        'category_id',
+        'product_name',
+        'wholesale_price',
+        'sector_price',
+        'first_balance',
+        'purchasing_price',
+        'product_model',
+        'start_date',
+        'end_date',
+        'product_pic',
+        'code_universal',
+        'description',
+        'min_balance',
+        'unit_id',
+        'sub_category_id',
+        'color',
+        'viewed',
+        'manufacturer'
     ];
     public function company()
     {
@@ -30,7 +48,7 @@ class Product extends Model
     }
     public function qtyInCombos($childId = null)
     {
-       return $this->combos->where('product_id', $childId)->value('quantity');
+        return $this->combos->where('product_id', $childId)->value('quantity');
     }
     public function unit()
     {
@@ -81,6 +99,7 @@ class Product extends Model
     }
     public function stocks()
     {
-        return $this->hasMany(ProductStock::class);
+        return $this->hasMany(ProductStock::class)
+            ->where('company_id', Auth::user()->company_id);
     }
 }

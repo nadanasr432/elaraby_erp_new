@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ProductRequest;
@@ -20,16 +21,27 @@ class ProductController extends Controller
     {
         $company_id = Auth::user()->company_id;
         $company = Company::FindOrFail($company_id);
-        $products = Product::where('company_id', $company_id)
-            ->where(function ($query) {
-                $query->where('first_balance', '>', 0)
-                    ->orWhereNull('first_balance');
-            })->get();
+
+
+        $products = Product::select('products.*', DB::raw('IFNULL(SUM(product_stock.remaining), 0) as remaining'))
+            ->leftJoin('product_stock', 'product_stock.product_id', '=', 'products.id')
+            ->where('products.company_id', $company_id)
+            ->groupBy('products.id')
+            ->havingRaw('SUM(product_stock.remaining) > 0')
+            ->orHavingRaw('0 = 0 AND EXISTS (
+               SELECT 1 FROM categories
+               WHERE categories.id = products.category_id
+               AND categories.category_type = "خدمية"
+            )')
+            ->get();
+
+
         $purchase_prices = array();
         $balances = array();
         foreach ($products as $product) {
             $product_price = $product->purchasing_price;
-            $product_balance = $product->first_balance;
+            $product_balance = $product->remaining;
+            $product->first_balance = $product_balance;
             array_push($balances, $product_balance);
 
             //check if the values are integer or not..
