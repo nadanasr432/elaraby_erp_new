@@ -64,15 +64,15 @@ class UpdateSaleBillsSeeder extends Seeder
                         $after_discount = $total - $discountValue + ($saleBill->value_added_tax ? $saleBill->value_added_tax : 0);
                         break;
                     case 'poundAfterTax':
-                        $discountValue = $discount->value - $total;
+                        $discountValue = (float)$discount->value - $total;
                         $after_discount = $total - $discountValue;
                         break;
                     case 'poundAfterTaxPercent':
-                        $discountValue = ($discount->value * $total) / 100;
+                        $discountValue = ((float)$discount->value * $total) / 100;
                         $after_discount = $total - $discountValue;
                         break;
                     default:
-                        $after_discount = $total - $discount->value;
+                        $after_discount = $total - (float)$discount->value;
                         break;
                 }
             } else {
