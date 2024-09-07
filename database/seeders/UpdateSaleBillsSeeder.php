@@ -53,7 +53,7 @@ class UpdateSaleBillsSeeder extends Seeder
                 switch ($discount->action_type) {
                     case 'pound':
                         $discountValue = (float) ($discount->value);
-                        $after_discount = (float)$total - $discountValue + ($shipping ? ($shipping->action_type == 'percent' ? $shipping->value / 100 * $total : $shipping->value) : 0);
+                        $after_discount = (float)$total - (float)$discountValue + (float)($shipping ? ($shipping->action_type == 'percent' ? $shipping->value / 100 * $total : $shipping->value) : 0);
                         break;
                     case 'percent':
                         $discountValue = $discount->value / 100 * $total;
