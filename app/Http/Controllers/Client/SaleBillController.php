@@ -736,6 +736,7 @@ class SaleBillController extends Controller
     {
 
         try {
+
             $saleBill = $this->store($request);
             $elements = $saleBill->elements;
             return response()->json([
