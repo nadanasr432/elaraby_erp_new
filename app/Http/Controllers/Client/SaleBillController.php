@@ -510,183 +510,168 @@ class SaleBillController extends Controller
     }
 
     # save then redirect to print #
-    public function saveAll(Request $request)
-    {
-        # get companyData.
-        $data = $request->all();
-        $company_id = Auth::user()->company_id;
-        $company = Company::FindOrFail($company_id);
-        $client_id = Auth::user()->id;
+//     public function saveAll(Request $request)
+//     {
+//         # get companyData.
+//         $data = $request->all();
+//         $company_id = Auth::user()->company_id;
+//         $company = Company::FindOrFail($company_id);
+//         $client_id = Auth::user()->id;
 
-        # get invoiceData.
-        $sale_bills = SaleBill::where('company_id', $company_id)->get();
-        if ($sale_bills) {
-            // foreach($sale_bills as $key=>$bill)
-            // {
-            //     $bill->sale_bill_number=$key+1;
-            //     $bill->save();
-            // }
-        }
-        $sale_bill = SaleBill::where('sale_bill_number', $request->sale_bill_number)
-            ->where('company_id', $company_id)->first();
-        $elements = \App\Models\SaleBillElement::where('sale_bill_id', $sale_bill->id)
-            ->where('company_id', $sale_bill->company_id)
-            ->get();
-        # update products balance
-        foreach ($elements as $element) {
-            $product = Product::FindOrFail($element->product_id);
-            $category_type = $product->category->category_type;
-            if ($category_type == "مخزونية") {
-                $old_product_balance = $product->first_balance;
-                $new_product_balance = $old_product_balance - $element->quantity;
-                $product->update([
-                    'first_balance' => $new_product_balance
-                ]);
-            }
-        }
+//         # get invoiceData.
+//         $sale_bills = SaleBill::where('company_id', $company_id)->get();
+//         if ($sale_bills) {
+//             // foreach($sale_bills as $key=>$bill)
+//             // {
+//             //     $bill->sale_bill_number=$key+1;
+//             //     $bill->save();
+//             // }
+//         }
+//         $sale_bill = SaleBill::where('sale_bill_number', $request->sale_bill_number)
+//             ->where('company_id', $company_id)->first();
+//         $elements = \App\Models\SaleBillElement::where('sale_bill_id', $sale_bill->id)
+//             ->where('company_id', $sale_bill->company_id)
+//             ->get();
+//         # update products balance
+//         foreach ($elements as $element) {
+//             $product = Product::FindOrFail($element->product_id);
+//             $category_type = $product->category->category_type;
+//             if ($category_type == "مخزونية") {
+//                 $old_product_balance = $product->first_balance;
+//                 $new_product_balance = $old_product_balance - $element->quantity;
+//                 $product->update([
+//                     'first_balance' => $new_product_balance
+//                 ]);
+//             }
+//         }
 
-        $elementIds = $elements->pluck('product_id');
+//         $elementIds = $elements->pluck('product_id');
 
-        $products = Product::whereIn('id', $elementIds)->with('category')->get();
+//         $products = Product::whereIn('id', $elementIds)->with('category')->get();
 
-        $sumPurchasingPrice = $products->reduce(function ($carry, $product) {
-            if ($product->category->category_type != 'خدمية') {
-                // logger($product);
-                return $carry + $product->purchasing_price;
-            }
-            return $carry;
-        }, 0);
-        // dd( $products->pluck('category'));
-        // dd( $sumPurchasingPrice);
-        $outerClient = OuterClient::find($sale_bill->outer_client_id);
-        $store = Store::find($sale_bill->store_id);
-        // dd($request);
-        $clientAccountId = $outerClient->accountingTree?->id;
-        $storeAccountId = $store->accountingTree?->id;
-        if (!$outerClient->accountingTree) {
-            $accountingTree = new \App\Models\accounting_tree();
-            $accountingTree->account_name = 'حساب العميل ' . $outerClient->client_name;
-            $accountingTree->account_name_en =  $outerClient->client_name . 'Account';
-            $accountingTree->account_number = '1203' . $outerClient->id;
-            $accountingTree->parent_id = 1203;
-            $accountingTree->type = 'sub';
-            $outerClient->accountingTree()->save($accountingTree);
-        }
-        $outerClient->load('accountingTree');
+//         $sumPurchasingPrice = $products->reduce(function ($carry, $product) {
+//             if ($product->category->category_type != 'خدمية') {
+//                 // logger($product);
+//                 return $carry + $product->purchasing_price;
+//             }
+//             return $carry;
+//         }, 0);
+//         // dd( $products->pluck('category'));
+//         // dd( $sumPurchasingPrice);
+//         $outerClient = OuterClient::find($sale_bill->outer_client_id);
+//         $store = Store::find($sale_bill->store_id);
+//         // dd($request);
+//         $clientAccountId = $outerClient->accountingTree?->id;
+//         $storeAccountId = $store->accountingTree?->id;
+//         if (!$outerClient->accountingTree) {
+//             $accountingTree = new \App\Models\accounting_tree();
+//             $accountingTree->account_name = 'حساب العميل ' . $outerClient->client_name;
+//             $accountingTree->account_name_en =  $outerClient->client_name . 'Account';
+//             $accountingTree->account_number = '1203' . $outerClient->id;
+//             $accountingTree->parent_id = 1203;
+//             $accountingTree->type = 'sub';
+//             $outerClient->accountingTree()->save($accountingTree);
+//         }
+//         $outerClient->load('accountingTree');
 
-        $clientAccountId = $outerClient->accountingTree->id;
-        if (!$store->accountingTree) {
-            $accountingTree = new \App\Models\accounting_tree();
-            $accountingTree->account_name =  'حساب مخزون' . $store->store_name;
-            $accountingTree->account_name_en =  $store->store_name . 'Account';
-            $accountingTree->account_number = '66' . $store->id;
-            $accountingTree->parent_id = 66;
-            $accountingTree->type = 'sub';
-            $store->accountingTree()->save($accountingTree);
-        }
-        $store->load('accountingTree');
-        $storeAccountId = $store->accountingTree->id;
-        // add prev_balance to account
-        DB::beginTransaction();
-        // dd($company_id,$company);
-        try {
-            // createVoucher($saleBill, $companyId, $notation, $paymentMethod = "cash", $status = 1, $options = 1)
-            $voucher = VoucherService::createVoucher(
-                $sale_bill,
-                $company_id,
-                'قيد فاتورة مبيعات رقم' . $sale_bill->sale_bill_number,
-            );
-            $saleVoucher = $sale_bill->vouchers()->save($voucher);
-            // createTransaction($accountingTreeId, $voucherId, $amount, $notation, $type)
-            VoucherService::createTransaction(
-                $clientAccountId,
-                $saleVoucher->id,
-                $sale_bill->final_total,
-                "مدين من فاتورة مبيعات",
-                1
-            );
+//         $clientAccountId = $outerClient->accountingTree->id;
+//         if (!$store->accountingTree) {
+//             $accountingTree = new \App\Models\accounting_tree();
+//             $accountingTree->account_name =  'حساب مخزون' . $store->store_name;
+//             $accountingTree->account_name_en =  $store->store_name . 'Account';
+//             $accountingTree->account_number = '66' . $store->id;
+//             $accountingTree->parent_id = 66;
+//             $accountingTree->type = 'sub';
+//             $store->accountingTree()->save($accountingTree);
+//         }
+//         $store->load('accountingTree');
+//         $storeAccountId = $store->accountingTree->id;
+//         // add prev_balance to account
+//         DB::beginTransaction();
+//         // dd($company_id,$company);
+//         try {
+//             // createVoucher($saleBill, $companyId, $notation, $paymentMethod = "cash", $status = 1, $options = 1)
+//             $voucher = VoucherService::createVoucher(
+//                 $sale_bill,
+//                 $company_id,
+//                 'قيد فاتورة مبيعات رقم' . $sale_bill->sale_bill_number,
+//             );
+//             $saleVoucher = $sale_bill->vouchers()->save($voucher);
+//             // createTransaction($accountingTreeId, $voucherId, $amount, $notation, $type)
+//             VoucherService::createTransaction(
+//                 $clientAccountId,
+//                 $saleVoucher->id,
+//                 $sale_bill->final_total,
+//                 "مدين من فاتورة مبيعات",
+//                 1
+//             );
 
-            // Create the credit transaction
-            VoucherService::createTransaction(
-                39,
-                $voucher->id,
-                $sale_bill->final_total,
-                "دائن من فاتورة مبيعات",
-                0
-            );
-            // Transaction::create([
-            //     'accounting_tree_id' => $clientAccountId,
-            //     'voucher_id' => $voucher->id,
-            //     'amount' =>  $sale_bill->final_total,
-            //     'notation' => "مدين من فاتورة مبيعات",
-            //     'type' =>  1,
-            // ]);
-            // Transaction::create([
-            //     'accounting_tree_id' => 39,
-            //     'voucher_id' => $voucher->id,
-            //     'amount' =>  $sale_bill->final_total,
-            //     'notation' => "دائن من فاتورة مبيعات",
-            //     'type' =>  0,
-            // ]);
-            //cost voucher
-            // dd($sumPurchasingPrice);
-            if ($sumPurchasingPrice) {
-                $voucherForCost =  new Voucher([
-                    'company_id' => $company_id,
-                    'amount' => $sumPurchasingPrice,
-                    'date' => Carbon::now(),
-                    // 'payment_method' => "cash",
-                    'notation' => 'قيد تكاليف فاتورة مبيعات رقم' . $sale_bill->sale_bill_number,
-                    'status' => 1,
-                    'user_id' => auth::user()->id,
-                    'options' => 1
-                ]);
-                $costVoucher =  $sale_bill->vouchers()->save($voucherForCost);
-                // dd($costVoucher);
-                // dd( $clientAccountId);
-                // foreach ($request->transactions as $transaction) {
-                VoucherService::createTransaction(
-                    $storeAccountId,
-                    $costVoucher->id,
-                    $sumPurchasingPrice,
-                    "دائن من تكاليف فاتورة مبيعات",
-                    0,
-                );
-                VoucherService::createTransaction(
-                    19,
-                    $costVoucher->id,
-                    $sumPurchasingPrice,
-                    "مدين من تكاليف فاتورة مبيعات",
-                    1,
-                );
-            }
-            // }
-        } catch (\Exception $e) {
-            dd($e);
-            DB::rollBack();
+//             // Create the credit transaction
+//             VoucherService::createTransaction(
+//                 39,
+//                 $voucher->id,
+//                 $sale_bill->final_total,
+//                 "دائن من فاتورة مبيعات",
+//                 0
+//             );
+//             // Transaction::create([
+//             //     'accounting_tree_id' => $clientAccountId,
+//             //     'voucher_id' => $voucher->id,
+//             //     'amount' =>  $sale_bill->final_total,
+//             //     'notation' => "مدين من فاتورة مبيعات",
+//             //     'type' =>  1,
+//             // ]);
+//             // Transaction::create([
+//             //     'accounting_tree_id' => 39,
+//             //     'voucher_id' => $voucher->id,
+//             //     'amount' =>  $sale_bill->final_total,
+//             //     'notation' => "دائن من فاتورة مبيعات",
+//             //     'type' =>  0,
+//             // ]);
+//             //cost voucher
+//             // dd($sumPurchasingPrice);
+//             if ($sumPurchasingPrice) {
+//                 $voucherForCost =  new Voucher([
+//                     'company_id' => $company_id,
+//                     'amount' => $sumPurchasingPrice,
+//                     'date' => Carbon::now(),
+//                     // 'payment_method' => "cash",
+//                     'notation' => 'قيد تكاليف فاتورة مبيعات رقم' . $sale_bill->sale_bill_number,
+//                     'status' => 1,
+//                     'user_id' => auth::user()->id,
+//                     'options' => 1
+//                 ]);
+//                 $costVoucher =  $sale_bill->vouchers()->save($voucherForCost);
+//                 // dd($costVoucher);
+//                 // dd( $clientAccountId);
+//                 // foreach ($request->transactions as $transaction) {
+//                 VoucherService::createTransaction(
+//                     $storeAccountId,
+//                     $costVoucher->id,
+//                     $sumPurchasingPrice,
+//                     "دائن من تكاليف فاتورة مبيعات",
+//                     0,
+//                 );
+//                 VoucherService::createTransaction(
+//                     19,
+//                     $costVoucher->id,
+//                     $sumPurchasingPrice,
+//                     "مدين من تكاليف فاتورة مبيعات",
+//                     1,
+//                 );
+//             }
+//             // }
+//         } catch (\Exception $e) {
+//             dd($e);
+//             DB::rollBack();
 
-            // return response()->json(['error' => 'An error occurred while creating the voucher.'], 500);
-        }
+//             // return response()->json(['error' => 'An error occurred while creating the voucher.'], 500);
+//         }
 
-        DB::commit();
-        # get tax settings from company settings #
-        $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
-        $tax_value_added = $company->tax_value_added;
-
-
-        try {
-
-            $saleBill = $this->store($request);
-            $elements = $saleBill->elements;
-            return response()->json([
-                'status' => true,
-                'msg' => 'تمت الاضافة الى الفاتورة بنجاح',
-                'id' => $saleBill->id,
-                'all_elements' => $elements,
-            ]);
-        } catch (\Exception $e) {
-            // Rollback the transaction on error
-            DB::rollBack();
+//         DB::commit();
+//         # get tax settings from company settings #
+//         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
+//         $tax_value_added = $company->tax_value_added;
 
         # calc total price of products.
         $sum = array();
@@ -696,153 +681,155 @@ class SaleBillController extends Controller
         $total = array_sum($sum);
 
 
-        # calc shipping #
-        $previous_extra = SaleBillExtra::where('sale_bill_id', $sale_bill->id)
-            ->where('action', 'extra')->first();
-        if (!empty($previous_extra)) {
-            $previous_extra_type = $previous_extra->action_type;
-            $previous_extra_value = $previous_extra->value;
-            if ($previous_extra_type == "percent") {
-                $previous_extra_value = $previous_extra_value / 100 * $total;
-            }
-            $after_discount = $total + $previous_extra_value;
-        }
-        #---------------#
 
-        # calc discount #
-        $previous_discount = SaleBillExtra::where('sale_bill_id', $sale_bill->id)
-            ->where('action', 'discount')->first();
-        if (!empty($previous_discount)) {
-            $previous_discount_type = $previous_discount->action_type;
-            $previous_discount_value = $previous_discount->value;
-            if ($previous_discount_type == "percent" || $previous_discount_type == "afterTax") {
-                $previous_discount_value = $previous_discount_value / 100 * $total;
-            }
-            if ($previous_discount_type != "poundAfterTax" && $previous_discount_type != "poundAfterTaxPercent")
-                $after_discount = $total - $previous_discount_value;
-        }
-        #---------------#
 
-        # calc total Price After Discount & Shipping #
-        if (!empty($previous_extra) && !empty($previous_discount)) {
-            if ($previous_discount_type != "poundAfterTax" && $previous_discount_type != "poundAfterTaxPercent")
-                $after_discount = $total - $previous_discount_value + $previous_extra_value;
-        } else {
-            $after_discount = $total;
-        }
-        #-------------------------------------------#
+//         # calc shipping #
+//         $previous_extra = SaleBillExtra::where('sale_bill_id', $sale_bill->id)
+//             ->where('action', 'extra')->first();
+//         if (!empty($previous_extra)) {
+//             $previous_extra_type = $previous_extra->action_type;
+//             $previous_extra_value = $previous_extra->value;
+//             if ($previous_extra_type == "percent") {
+//                 $previous_extra_value = $previous_extra_value / 100 * $total;
+//             }
+//             $after_discount = $total + $previous_extra_value;
+//         }
+//         #---------------#
 
-        # calc final_total with tax if inclusive or exclusive
-        $tax_option = $sale_bill->value_added_tax;
-        if (isset($after_discount) && $after_discount != 0) {
-            # calc final_total with inserted tax if inclusive or exclusive.
-            if ($tax_option == 0) { #exclusive
-                $percentage = ($tax_value_added / 100) * $after_discount;
-                $after_total_all = $after_discount + $percentage;
-            } else # so its inclusive
-                $after_total_all = $after_discount;
-        } else {
-            # calc final_total with inserted tax if inclusive or exclusive.
-            if ($tax_option == 0) { #exclusive
-                $percentage = ($tax_value_added / 100) * $total;
-                $after_total_all = $total + $percentage;
-            } else # so its inclusive
-                $after_total_all = $total;
-        }
+//         # calc discount #
+//         $previous_discount = SaleBillExtra::where('sale_bill_id', $sale_bill->id)
+//             ->where('action', 'discount')->first();
+//         if (!empty($previous_discount)) {
+//             $previous_discount_type = $previous_discount->action_type;
+//             $previous_discount_value = $previous_discount->value;
+//             if ($previous_discount_type == "percent" || $previous_discount_type == "afterTax") {
+//                 $previous_discount_value = $previous_discount_value / 100 * $total;
+//             }
+//             if ($previous_discount_type != "poundAfterTax" && $previous_discount_type != "poundAfterTaxPercent")
+//                 $after_discount = $total - $previous_discount_value;
+//         }
+//         #---------------#
 
-        if ($previous_discount_type == "poundAfterTax") {
-            $after_total_all = $after_total_all - $previous_discount_value;
-        } elseif ($previous_discount_type == "poundAfterTaxPercent") {
-            $after_total_all = $after_total_all - (($total * $previous_discount_value) / 100);
-        }
-        #-------------------------------------------#
+//         # calc total Price After Discount & Shipping #
+//         if (!empty($previous_extra) && !empty($previous_discount)) {
+//             if ($previous_discount_type != "poundAfterTax" && $previous_discount_type != "poundAfterTaxPercent")
+//                 $after_discount = $total - $previous_discount_value + $previous_extra_value;
+//         } else {
+//             $after_discount = $total;
+//         }
+//         #-------------------------------------------#
 
-        # get cash if exists #
-        $cash = Cash::where('bill_id', $sale_bill->sale_bill_number)
-            ->where('company_id', $company_id)
-            ->where('client_id', $sale_bill->client_id)
-            ->where('outer_client_id', $sale_bill->outer_client_id)
-            ->first();
-        if (!empty($cash)) {
-            $amount = $cash->amount;
-            $rest = $after_total_all - $amount;
-            if (!empty($sale_bill->outer_client_id)) {
-                $outer_client = OuterClient::FindOrFail($sale_bill->outer_client_id);
-                $balance_before = $outer_client->prev_balance;
-                $balance_after = $balance_before + $rest;
-                $outer_client->update([
-                    'prev_balance' => $balance_after
-                ]);
-            }
+//         # calc final_total with tax if inclusive or exclusive
+//         $tax_option = $sale_bill->value_added_tax;
+//         if (isset($after_discount) && $after_discount != 0) {
+//             # calc final_total with inserted tax if inclusive or exclusive.
+//             if ($tax_option == 0) { #exclusive
+//                 $percentage = ($tax_value_added / 100) * $after_discount;
+//                 $after_total_all = $after_discount + $percentage;
+//             } else # so its inclusive
+//                 $after_total_all = $after_discount;
+//         } else {
+//             # calc final_total with inserted tax if inclusive or exclusive.
+//             if ($tax_option == 0) { #exclusive
+//                 $percentage = ($tax_value_added / 100) * $total;
+//                 $after_total_all = $total + $percentage;
+//             } else # so its inclusive
+//                 $after_total_all = $total;
+//         }
 
-            $safe_id = $cash->safe_id;
-            $safe = Safe::FindOrFail($safe_id);
-            $safe_balance_before = $safe->balance;
-            $safe_balance_after = $safe_balance_before + $amount;
-            $safe->update([
-                'balance' => $safe_balance_after
-            ]);
-            $sale_bill->update([
-                'status' => 'done',
-                'paid' => $amount,
-                'rest' => $rest,
-            ]);
-        }
-        #-------------------------------------------#
+//         if ($previous_discount_type == "poundAfterTax") {
+//             $after_total_all = $after_total_all - $previous_discount_value;
+//         } elseif ($previous_discount_type == "poundAfterTaxPercent") {
+//             $after_total_all = $after_total_all - (($total * $previous_discount_value) / 100);
+//         }
+//         #-------------------------------------------#
 
-        # get bank if exists #
-        $bank_cash = BankCash::where('bill_id', $sale_bill->sale_bill_number)
-            ->where('company_id', $company_id)
-            ->where('client_id', $sale_bill->client_id)
-            ->where('outer_client_id', $sale_bill->outer_client_id)
-            ->first();
-        if (!empty($bank_cash)) {
-            $amount = $bank_cash->amount;
-            $rest = $after_total_all - $amount;
-            if (!empty($sale_bill->outer_client_id)) {
-                $outer_client = OuterClient::FindOrFail($sale_bill->outer_client_id);
-                $balance_before = $outer_client->prev_balance;
-                $balance_after = $balance_before + $rest;
-                $outer_client->update([
-                    'prev_balance' => $balance_after
-                ]);
-            }
+//         # get cash if exists #
+//         $cash = Cash::where('bill_id', $sale_bill->sale_bill_number)
+//             ->where('company_id', $company_id)
+//             ->where('client_id', $sale_bill->client_id)
+//             ->where('outer_client_id', $sale_bill->outer_client_id)
+//             ->first();
+//         if (!empty($cash)) {
+//             $amount = $cash->amount;
+//             $rest = $after_total_all - $amount;
+//             if (!empty($sale_bill->outer_client_id)) {
+//                 $outer_client = OuterClient::FindOrFail($sale_bill->outer_client_id);
+//                 $balance_before = $outer_client->prev_balance;
+//                 $balance_after = $balance_before + $rest;
+//                 $outer_client->update([
+//                     'prev_balance' => $balance_after
+//                 ]);
+//             }
 
-            $bank_id = $bank_cash->bank_id;
-            $bank = Bank::FindOrFail($bank_id);
-            $bank_balance_before = $bank->bank_balance;
-            $bank_balance_after = $bank_balance_before + $amount;
-            $bank->update([
-                'bank_balance' => $bank_balance_after
-            ]);
-            $sale_bill->update([
-                'status' => 'done',
-                'paid' => $amount,
-                'rest' => $rest,
-            ]);
-        }
-        #-------------------------------------------#
+//             $safe_id = $cash->safe_id;
+//             $safe = Safe::FindOrFail($safe_id);
+//             $safe_balance_before = $safe->balance;
+//             $safe_balance_after = $safe_balance_before + $amount;
+//             $safe->update([
+//                 'balance' => $safe_balance_after
+//             ]);
+//             $sale_bill->update([
+//                 'status' => 'done',
+//                 'paid' => $amount,
+//                 'rest' => $rest,
+//             ]);
+//         }
+//         #-------------------------------------------#
 
-        # update payment #
-        if (empty($bank_cash) && empty($cash)) {
-            $rest = $after_total_all;
-            if (!empty($sale_bill->outer_client_id)) {
-                $outer_client = OuterClient::FindOrFail($sale_bill->outer_client_id);
-                $outer_client->update([
-                    'prev_balance' => ($outer_client->prev_balance) + $rest,
-                ]);
-            }
-            $sale_bill->update([
-                'final_total' => $after_total_all,
-                'status' => 'done',
-                'paid' => '0',
-                'rest' => $rest,
-            ]);
-        }
-        #-------------------------------------------#
-        $sale_bill->update(['final_total' => $after_total_all]);
-        return $sale_bill->token;
-    }
+//         # get bank if exists #
+//         $bank_cash = BankCash::where('bill_id', $sale_bill->sale_bill_number)
+//             ->where('company_id', $company_id)
+//             ->where('client_id', $sale_bill->client_id)
+//             ->where('outer_client_id', $sale_bill->outer_client_id)
+//             ->first();
+//         if (!empty($bank_cash)) {
+//             $amount = $bank_cash->amount;
+//             $rest = $after_total_all - $amount;
+//             if (!empty($sale_bill->outer_client_id)) {
+//                 $outer_client = OuterClient::FindOrFail($sale_bill->outer_client_id);
+//                 $balance_before = $outer_client->prev_balance;
+//                 $balance_after = $balance_before + $rest;
+//                 $outer_client->update([
+//                     'prev_balance' => $balance_after
+//                 ]);
+//             }
+
+//             $bank_id = $bank_cash->bank_id;
+//             $bank = Bank::FindOrFail($bank_id);
+//             $bank_balance_before = $bank->bank_balance;
+//             $bank_balance_after = $bank_balance_before + $amount;
+//             $bank->update([
+//                 'bank_balance' => $bank_balance_after
+//             ]);
+//             $sale_bill->update([
+//                 'status' => 'done',
+//                 'paid' => $amount,
+//                 'rest' => $rest,
+//             ]);
+//         }
+//         #-------------------------------------------#
+
+//         # update payment #
+//         if (empty($bank_cash) && empty($cash)) {
+//             $rest = $after_total_all;
+//             if (!empty($sale_bill->outer_client_id)) {
+//                 $outer_client = OuterClient::FindOrFail($sale_bill->outer_client_id);
+//                 $outer_client->update([
+//                     'prev_balance' => ($outer_client->prev_balance) + $rest,
+//                 ]);
+//             }
+//             $sale_bill->update([
+//                 'final_total' => $after_total_all,
+//                 'status' => 'done',
+//                 'paid' => '0',
+//                 'rest' => $rest,
+//             ]);
+//         }
+//         #-------------------------------------------#
+//         $sale_bill->update(['final_total' => $after_total_all]);
+//         return $sale_bill->token;
+//     }
 
     public function send($id)
     {
