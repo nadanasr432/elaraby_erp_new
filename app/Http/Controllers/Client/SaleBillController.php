@@ -673,12 +673,27 @@ class SaleBillController extends Controller
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
         $tax_value_added = $company->tax_value_added;
 
+        try {
+
+            $saleBill = $this->store($request);
+            $elements = $saleBill->elements;
+            return response()->json([
+                'status' => true,
+                'msg' => 'تمت الاضافة الى الفاتورة بنجاح',
+                'id' => $saleBill->id,
+                'all_elements' => $elements,
+            ]);
+        } catch (\Exception $e) {
+            // Rollback the transaction on error
+            DB::rollBack();
+
         # calc total price of products.
         $sum = array();
         foreach ($elements as $element) {
             array_push($sum, $element->quantity_price);
         }
         $total = array_sum($sum);
+
 
         # calc shipping #
         $previous_extra = SaleBillExtra::where('sale_bill_id', $sale_bill->id)
