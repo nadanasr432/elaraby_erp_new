@@ -103,7 +103,7 @@
 
             <div class="header-container d-flex align-items-center">
                 <div class="qrcode">
-                    @php
+                    {{-- @php
                         use Salla\ZATCA\GenerateQrCode;
                         use Salla\ZATCA\Tags\InvoiceDate;
                         use Salla\ZATCA\Tags\InvoiceTaxAmount;
@@ -122,7 +122,7 @@
                             new InvoiceTaxAmount(number_format($totalTax, 2, '.', '')), // invoice tax amount
                             // Additional tags can be added here if needed
                         ])->render();
-                    @endphp
+                    @endphp --}}
                     @php
                         use Salla\ZATCA\GenerateQrCode;
                         use Salla\ZATCA\Tags\InvoiceDate;

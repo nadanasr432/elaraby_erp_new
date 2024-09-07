@@ -157,22 +157,7 @@
                 ])->render();
             @endphp
 
-            {{-- @php
-                use Salla\ZATCA\GenerateQrCode;
-                use Salla\ZATCA\Tags\InvoiceDate;
-                use Salla\ZATCA\Tags\InvoiceTaxAmount;
-                use Salla\ZATCA\Tags\InvoiceTotalAmount;
-                use Salla\ZATCA\Tags\Seller;
-                use Salla\ZATCA\Tags\TaxNumber;
-                $displayQRCodeAsBase64 = GenerateQrCode::fromArray([
-                    new Seller($company->company_name), // seller name
-                    new TaxNumber($company->tax_number), // seller tax number
-                    new InvoiceDate($invoiceDate), // invoice date in ISO 8601 format
-                    new InvoiceTotalAmount(number_format($sumWithTax, 2, '.', '')), // invoice total amount
-                    new InvoiceTaxAmount(number_format($totalTax, 2, '.', '')), // invoice tax amount
-                    // Additional tags can be added here if needed
-                ])->render();
-            @endphp --}}
+
             @if (app()->getLocale() == 'en')
                 <div class="header-container d-flex align-items-center">
                     <div class="logo">
@@ -495,58 +480,51 @@
                             @php
                                 $extras = $sale_bill->extras;
                                 $i = 0;
-                                foreach ($elements as $element) {
-                                    #--PRODUCT TAX--#
-                                    if ($company->tax_value_added && $company->tax_value_added != 0) {
-                                        $ProdTax = ($sale_bill->value_added_tax ? round($element->quantity_price - ($element->quantity_price * 20) / 23, 2) : round(($element->quantity_price * 15) / 100, 2)) . ' ';
-                                    } else {
-                                        $ProdTax = 0 . ' ';
-                                    }
-                                    #--PRODUCT TAX--#
+                            @endphp
 
-                                    #--PRODUCT TOTAL--#
-                                    if ($company->tax_value_added && $company->tax_value_added != 0) {
-                                        $ProdTotal = ($sale_bill->value_added_tax ? $element->quantity_price : round($element->quantity_price + ($element->quantity_price * 15) / 100, 2)) . ' ';
-                                    } else {
-                                        $ProdTotal = $element->quantity_price . ' ';
-                                    }
-                                    #--PRODUCT TOTAL--#
+                            @if (!$elements->isEmpty())
+                                @foreach ($elements as $element)
+                                    @php
+                                        // Calculate Product Tax
+                                        $ProdTax = 0;
+                                        if ($company->tax_value_added && $company->tax_value_added != 0) {
+                                            $ProdTax = $sale_bill->value_added_tax
+                                                ? round(
+                                                    $element->quantity_price - ($element->quantity_price * 20) / 23,
+                                                    2,
+                                                )
+                                                : round(($element->quantity_price * 15) / 100, 2);
+                                        }
 
-                                    echo '
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <tr style="font-size:18px !important; height: 34px !important; text-align: center;background: #f8f9fb">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>' .
-                                        $ProdTotal .
-                                        '</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>' .
-                                        $ProdTax .
-                                        '</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>' .
-                                        ($sale_bill->value_added_tax ? round(($element->quantity_price * 20) / 23, 2) : $element->quantity_price) .
-                                        ' ' .
-                                        '</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td class="text-center" >
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <span>' .
-                                        $element->unit->unit_name .
-                                        '</span>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <span>' .
-                                        $element->quantity .
-                                        '</span>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>' .
-                                        $element->product_price .
-                                        ' ' .
-                                        '</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>' .
-                                        $element->product->product_name .
-                                        ' </td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td>' .
-                                        ++$i .
-                                        '</td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </tr>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ';
-                                }
-                            }
-                            ?>
+                                        // Calculate Product Total
+                                        $ProdTotal = $element->quantity_price;
+                                        if ($company->tax_value_added && $company->tax_value_added != 0) {
+                                            $ProdTotal = $sale_bill->value_added_tax
+                                                ? $element->quantity_price
+                                                : round(
+                                                    $element->quantity_price + ($element->quantity_price * 15) / 100,
+                                                    2,
+                                                );
+                                        }
+                                    @endphp
+
+                                    <tr
+                                        style="font-size:18px !important; height: 34px !important; text-align: center;background: #f8f9fb">
+                                        <td>{{ $element->quantity_price }}</td>
+                                        <td>{{ $element->tax_value }}</td>
+                                        <td>{{ $element->discount_value }}</td>
+                                        <td>{{ $element->quantity_price - $element->tax_value}}</td>
+                                        <td class="text-center">
+                                            <span>{{ $element->unit->unit_name }}</span>
+                                            <span>{{ $element->quantity }}</span>
+                                        </td>
+                                        <td>{{ $element->product_price }}</td>
+                                        <td>{{ $element->product->product_name }}</td>
+                                        <td>{{ ++$i }}</td>
+                                    </tr>
+                                @endforeach
+                            @endif
+
 
                         </tbody>
                     </table>
