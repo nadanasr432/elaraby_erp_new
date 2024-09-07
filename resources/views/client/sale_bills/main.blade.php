@@ -414,46 +414,61 @@
 
                         </thead>
                         <tbody style="font-size: 14px !important;">
-                            <?php
-                            $extras = $sale_bill->extras;
-                            if (!$elements->isEmpty()) {
-                                $i = 0;
-                                foreach ($elements as $element) {
-                                    #--PRODUCT TAX--#
-                                    if ($company->tax_value_added && $company->tax_value_added != 0) {
-                                        $ProdTax = ($sale_bill->value_added_tax ? round($element->quantity_price - ($element->quantity_price * 20) / 23, 2) : round(($element->quantity_price * 15) / 100, 2)) . ' ';
-                                    } else {
-                                        $ProdTax = 0 . ' ';
-                                    }
-                                    #--PRODUCT TAX--#
+                            @php
+                                $extras = $sale_bill->extras;
+                            @endphp
 
-                                    #--PRODUCT TOTAL--#
-                                    if ($company->tax_value_added && $company->tax_value_added != 0) {
-                                        $ProdTotal = ($sale_bill->value_added_tax ? $element->quantity_price : round($element->quantity_price + ($element->quantity_price * 15) / 100, 2)) . ' ';
-                                    } else {
-                                        $ProdTotal = $element->quantity_price . ' ';
-                                    }
-                                    #--PRODUCT TOTAL--#
+                            @if (!$elements->isEmpty())
+                                @php $i = 0; @endphp
+                                @foreach ($elements as $element)
+                                    @php
+                                        // Calculate Product Tax
+                                        $ProdTax = 0;
+                                        if ($company->tax_value_added && $company->tax_value_added != 0) {
+                                            $ProdTax = $sale_bill->value_added_tax
+                                                ? round(
+                                                    $element->quantity_price - ($element->quantity_price * 20) / 23,
+                                                    2,
+                                                )
+                                                : round(($element->quantity_price * 15) / 100, 2);
+                                        }
 
-                                    $tableRows = [];
-                                    $tableRow = '<tr style="font-size:18px !important; height: 34px !important; text-align: center;background: #f8f9fb">';
+                                        // Calculate Product Total
+                                        $ProdTotal = $element->quantity_price;
+                                        if ($company->tax_value_added && $company->tax_value_added != 0) {
+                                            $ProdTotal = $sale_bill->value_added_tax
+                                                ? $element->quantity_price
+                                                : round(
+                                                    $element->quantity_price + ($element->quantity_price * 15) / 100,
+                                                    2,
+                                                );
+                                        }
+                                        $productPrice =
+                                            $element->tax_type == 0
+                                                ? $element->product_price + $element->tax_value
+                                                : $element->product_price;
+                                    @endphp
 
-                                    // Reversed order of <td> elements
-                                    $tableRow .= '<td>' . ++$i . '</td>';
-                                    $tableRow .= '<td>' . $element->product->product_name . '</td>';
-                                    $tableRow .= '<td>' . $element->product_price . ' ' . '</td>';
-                                    $tableRow .= '<td class="text-center"><span>' . $element->quantity . '</span><span>' . $element->unit->unit_name . '</span></td>';
-                                    $tableRow .= '<td>' . ($sale_bill->value_added_tax ? round(($element->quantity_price * 20) / 23, 2) : $element->quantity_price) . ' ' . '</td>';
-                                    $tableRow .= '<td>' . $ProdTax . '</td>';
-                                    $tableRow .= '<td>' . $ProdTotal . '</td>';
+                                    <tr
+                                        style="font-size:18px !important; height: 34px !important; text-align: center; background: #f8f9fb">
+                                        <td>{{ ++$i }}</td>
+                                        <td>{{ $element->product->product_name }}</td>
+                                        <td>{{ $productPrice }}
+                                        </td>
+                                        <td class="text-center">
+                                            <span>{{ $element->quantity }}</span>
+                                            <span>{{ $element->unit->unit_name }}</span>
+                                        </td>
+                                        <td>
+                                            {{ $element->tax_type == 2 ? $element->product_price - $element->tax_value : $element->product_price }}
+                                        </td>
+                                        <td>{{ $element->tax_value }}</td>
+                                        <td>{{ $element->discount_value }}</td>
+                                        <td>{{ $element->quantity_price }}</td>
+                                    </tr>
+                                @endforeach
+                            @endif
 
-                                    $tableRow .= '</tr>';
-
-                                    // Output the table row
-                                    echo $tableRow;
-                                }
-                            }
-                            ?>
 
                         </tbody>
                     </table>
@@ -506,6 +521,10 @@
                                                     2,
                                                 );
                                         }
+                                        $productPrice =
+                                            $element->tax_type == 0
+                                                ? $element->product_price + $element->tax_value
+                                                : $element->product_price;
                                     @endphp
 
                                     <tr
@@ -513,12 +532,12 @@
                                         <td>{{ $element->quantity_price }}</td>
                                         <td>{{ $element->tax_value }}</td>
                                         <td>{{ $element->discount_value }}</td>
-                                        <td>{{ $element->quantity_price - $element->tax_value}}</td>
+                                        <td>{{ $element->tax_type == 2 ? $element->product_price - $element->tax_value : $element->product_price}}</td>
                                         <td class="text-center">
                                             <span>{{ $element->unit->unit_name }}</span>
                                             <span>{{ $element->quantity }}</span>
                                         </td>
-                                        <td>{{ $element->product_price }}</td>
+                                        <td>{{ $productPrice }}</td>
                                         <td>{{ $element->product->product_name }}</td>
                                         <td>{{ ++$i }}</td>
                                     </tr>
@@ -533,10 +552,10 @@
             <?php
             if ($sale_bill->company_id == 20) {
                 echo "<p style='text-align: justify; direction: rtl; font-size: 12px; padding: 11px; background: #f3f3f3; margin: 2px 10px; border-radius: 6px; border: 1px solid #2d2d2d10;'>
-                                                                                                                                                                                                                                                                                                        <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
-                                                                                                                                                                                                                                                                                                        شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
-                                                                                                                                                                                                                                                                                                        (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
-                                                                                                                                                                                                                                                                                                    </p>";
+                                                                                                                                                                                                                                                                                                                                                        <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
+                                                                                                                                                                                                                                                                                                                                                        شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
+                                                                                                                                                                                                                                                                                                                                                        (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
+                                                                                                                                                                                                                                                                                                                                                    </p>";
             }
             ?>
             @if (app()->getLocale() == 'en')
@@ -585,7 +604,7 @@
                                         @endif
                                     @else --}}
                                     {{-- @if ($realtotal > 0) --}}
-                                        {{ $sumWithOutTax }} {{ $currency }}
+                                    {{ $sumWithOutTax }} {{ $currency }}
                                     {{-- @endif --}}
 
                                     {{-- @endif --}}
@@ -609,7 +628,7 @@
                                     ({{ $company->tax_value_added ?? '0' }}%)
                                 </td>
                                 {{-- @if ($company->tax_value_added && $company->tax_value_added != 0) --}}
-                                    <td dir="rtl">{{ $totalTax }} {{ $currency }} </td>
+                                <td dir="rtl">{{ $totalTax }} {{ $currency }} </td>
                                 {{-- @else
                                     <td dir="rtl">0 {{ $currency }} </td>
                                 @endif --}}
@@ -623,13 +642,13 @@
                                     @lang('sales_bills.total')
                                 </td>
                                 {{-- @if ($company->tax_value_added && $company->tax_value_added != 0) --}}
-                                    {{-- @if ($discount->action_type == 'poundAfterTax') --}}
-                                    <td dir="rtl">
-                                        <<-- Apply discount after tax -->>
-                                            {{ $sale_bill->final_total }}
-                                            {{ $currency }}
-                                    </td>
-                                    {{-- @else
+                                {{-- @if ($discount->action_type == 'poundAfterTax') --}}
+                                <td dir="rtl">
+                                    <<-- Apply discount after tax -->>
+                                        {{ $sale_bill->final_total }}
+                                        {{ $currency }}
+                                </td>
+                                {{-- @else
                                         <td dir="rtl">
                                             {{ $sumWithTax }}
                                             {{ $currency }}
@@ -746,9 +765,9 @@
                                 <td dir="rtl">
                                     {{-- @if ($discount->action_type == 'poundAfterTax') --}}
                                     {{-- @if ($realtotal > 0) --}}
-                                        ({{ number_format($sumWithOutTax, 2, '.', '') }})
+                                    ({{ number_format($sumWithOutTax, 2, '.', '') }})
 
-                                        {{ $currency }}
+                                    {{ $currency }}
                                     {{-- @endif --}}
                                     {{-- @else
                                         @if ($realtotal > 0)
@@ -772,7 +791,7 @@
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                 {{-- @if ($company->tax_value_added && $company->tax_value_added != 0) --}}
-                                    <td dir="rtl">{{ $totalTax }} {{ $currency }} </td>
+                                <td dir="rtl">{{ $totalTax }} {{ $currency }} </td>
                                 {{-- @else
                                     <td dir="rtl">0 {{ $currency }} </td>
                                 @endif --}}
@@ -785,14 +804,14 @@
                             <tr
                                 style="background:#222751;border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: {{ $printColor }};color:white;">
                                 {{-- @if ($company->tax_value_added && $company->tax_value_added != 0) --}}
-                                    {{-- @if ($discount->action_type == 'poundAfterTax') --}}
-                                    <td dir="rtl">
-                                        {{-- Apply discount after tax --}}
-                                        {{ $sale_bill->final_total }}
+                                {{-- @if ($discount->action_type == 'poundAfterTax') --}}
+                                <td dir="rtl">
+                                    {{-- Apply discount after tax --}}
+                                    {{ $sale_bill->final_total }}
 
-                                        {{ $currency }}
-                                    </td>
-                                    {{-- @else
+                                    {{ $currency }}
+                                </td>
+                                {{-- @else
                                         <td dir="rtl">
                                             {{ $sumWithTax }}
                                             {{ $currency }}
