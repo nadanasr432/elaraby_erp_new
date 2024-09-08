@@ -2882,279 +2882,292 @@ class SaleBillController extends Controller
     {
         $data = $request->all();
         DB::beginTransaction();
+        try {
+            $saleBill = SaleBill::where(['sale_bill_number' => $data['sale_bill_number'], 'company_id' => $data['company_id']])->first(); // Assuming the ID is passed from the form
+            // Update the sale bill with the new data
+            $saleBill->update([
+                'outer_client_id' => $data['outer_client_id'],
+                'store_id' => $data['store_id'],
+                'date' => $data['date'],
+                'time' => $data['time'],
+                'notes' => $data['main_notes'],
+                'final_total' => $data['grand_total'],
+                'total_discount' => $data['total_discount'],
+                'total_tax' => $data['grand_tax'],
+                'rest' => $data['grand_total'],
+                'products_discount_type' => $data['products_discount_type'],
+                'value_added_tax' => $data['value_added_tax'] ? 1 : 0,
+            ]);
 
-        // try {
-        $saleBill = SaleBill::where(['sale_bill_number' => $data['sale_bill_number'], 'company_id' => $data['company_id']])->first(); // Assuming the ID is passed from the form
-        // Update the sale bill with the new data
-        $saleBill->update([
-            'outer_client_id' => $data['outer_client_id'],
-            'store_id' => $data['store_id'],
-            'date' => $data['date'],
-            'time' => $data['time'],
-            'notes' => $data['main_notes'],
-            'final_total' => $data['grand_total'],
-            'total_discount' => $data['total_discount'],
-            'total_tax' => $data['grand_tax'],
-            'rest' => $data['grand_total'],
-            'products_discount_type' => $data['products_discount_type'],
-            'value_added_tax' => $data['value_added_tax'] ? 1 : 0,
-        ]);
+            $saleBill->elements()->delete();
 
-        $saleBill->elements()->delete();
-
-        // Update existing elements or create new ones if needed
-        foreach ($data['products'] as $product) {
-            // Find existing sale bill element or create a new one
-            $element = SaleBillElement::updateOrCreate(
-                ['sale_bill_id' => $saleBill->id, 'product_id' => $product['product_id'], 'company_id' => $data['company_id']],
-                [
+            // Update existing elements or create new ones if needed
+            foreach ($data['products'] as $product) {
+                // Find existing sale bill element or create a new one
+                $element = SaleBillElement::create([
+                    'sale_bill_id' => $saleBill->id,
+                    'product_id' => $product['product_id'],
                     'company_id' => $data['company_id'],
                     'product_price' => $product['product_price'],
                     'quantity' => $product['quantity'],
                     'unit_id' => $product['unit_id'],
-                    'quantity_price' => (float) $product['product_price'] * $product['quantity'],
-                    'tax_value' => (float) $product['tax_amount'],
-                    'discount_value' => (float) $product['discount'],
-                    'tax_type' => (float) $product['tax'],
+                    'quantity_price' => (float)$product['product_price'] * $product['quantity'],
+                    'tax_value' => (float)$product['tax_amount'],
+                    'discount_value' => (float)$product['discount'],
+                    'tax_type' => (float)$product['tax'],
                     'price_type' => $product['price_type'],
                     'discount_type' => $product['discount_type'],
-                ]
-            );
+                ]);
 
-            // Handle discount extras
-            // if (isset($product['discount_type']) && $product['discount_type'] && $product['discount']) {
-            //     SaleBillExtra::updateOrCreate(
-            //         ['sale_bill_id' => $saleBill->id, 'action' => 'discount', 'action_type' => &$product['discount_type']],
-            //         [
-            //             'value' => $product['discount'],
-            //             'company_id' => $data['company_id'],
-            //             'discount_note' => $product['discount_note'] ?? null,
-            //         ]
-            //     );
-            // }
-        }
-
-        $elements = $saleBill->elements;
-        if ($data['discount_type'] && $data['discount_value']) {
-            SaleBillExtra::updateOrCreate(
-                [
-                    'sale_bill_id' => $saleBill->id,
-                    'action' => 'discount',
-                ],
-                [
-                    'action_type' => $data['discount_type'],
-                    'value' => $data['discount_value'],
-                    'company_id' => $data['company_id'],
-                    'discount_note' => $data['discount_note'] ?? null,
-                ]
-            );
-        }
-
-        if ($data['extra_type'] && $data['extra_value']) {
-            SaleBillExtra::updateOrCreate(
-                [
-                    'sale_bill_id' => $saleBill->id,
-                    'action' => 'extra',
-                ],
-                [
-                    'action_type' => $data['extra_type'],
-                    'value' => $data['extra_value'],
-                    'company_id' => $data['company_id'],
-                ]
-            );
-        }
-
-
-        $subTotal = 0;
-        foreach ($elements as $product) {
-            $product->store_id = $request->input('store_id');
-            $subTotal = StockService::getTotalCost($product, $product->quantity);
-            $subTotal += $subTotal;
-        }
-
-        foreach ($elements as $element) {
-            if ($element->product->category->category_type != 'خدمية') {
-                StockService::reduce($element, $request->input('store_id'), $element->quantity);
+                // Handle discount extras
+                // if (isset($product['discount_type']) && $product['discount_type'] && $product['discount']) {
+                //     SaleBillExtra::updateOrCreate(
+                //         ['sale_bill_id' => $saleBill->id, 'action' => 'discount', 'action_type' => &$product['discount_type']],
+                //         [
+                //             'value' => $product['discount'],
+                //             'company_id' => $data['company_id'],
+                //             'discount_note' => $product['discount_note'] ?? null,
+                //         ]
+                //     );
+                // }
             }
-        }
-        $outerClient = OuterClient::find($saleBill->outer_client_id);
-        $store = Store::find($saleBill->store_id);
-        //
-        $clientAccountId = $outerClient->accountingTree?->id;
-        $storeAccountId = $store->accountingTree?->id;
-        $taxAccount = accounting_tree::where('account_name', 'ضريبة القيمة المضافة')->first();
-        if (!$taxAccount) {
-            $taxAccount = new \App\Models\accounting_tree();
-            $taxAccount->account_name = 'ضريبة القيمة المضافة';
-            $taxAccount->account_name_en =  'ضريبة القيمة المضافة';
-            $taxAccount->account_number = 45;
-            $taxAccount->parent_id = 1;
-            $taxAccount->type = 'أصول';
-            $taxAccount->save();
-        }
-        if (!$outerClient->accountingTree) {
-            $accountingTree = new \App\Models\accounting_tree();
-            $accountingTree->account_name = 'حساب العميل ' . $outerClient->client_name;
-            $accountingTree->account_name_en =  $outerClient->client_name . 'Account';
-            $accountingTree->account_number = '1203' . $outerClient->id;
-            $accountingTree->parent_id = 1203;
-            $accountingTree->type = 'sub';
-            $outerClient->accountingTree()->save($accountingTree);
-        }
-        $outerClient->load('accountingTree');
 
-        $clientAccountId = $outerClient->accountingTree->id;
-        if (!$store->accountingTree) {
-            $accountingTree = new \App\Models\accounting_tree();
-            $accountingTree->account_name =  'حساب مخزون' . $store->store_name;
-            $accountingTree->account_name_en =  $store->store_name . 'Account';
-            $accountingTree->account_number = '66' . $store->id;
-            $accountingTree->parent_id = 66;
-            $accountingTree->type = 'sub';
-            $store->accountingTree()->save($accountingTree);
-        }
-        $store->load('accountingTree');
-        $storeAccountId = $store->accountingTree->id;
-        if (!empty($saleBill->vouchers)) {
-            // dd($saleBill->vouchers->first()->transactions);
-            foreach ($saleBill->vouchers as $voucher) {
-                $voucher->transactions()->delete();
-                $voucher->delete();
+            $elements = $saleBill->elements;
+            if ($data['discount_type'] && $data['discount_value']) {
+                SaleBillExtra::updateOrCreate(
+                    [
+                        'sale_bill_id' => $saleBill->id,
+                        'action' => 'discount',
+                    ],
+                    [
+                        'action_type' => $data['discount_type'],
+                        'value' => $data['discount_value'],
+                        'company_id' => $data['company_id'],
+                        'discount_note' => $data['discount_note'] ?? null,
+                    ]
+                );
             }
-        }
-        // dd('hello',$saleBill->vouchers);
 
-        $company_id = Auth::user()->company_id;
+            if ($data['extra_type'] && $data['extra_value']) {
+                SaleBillExtra::updateOrCreate(
+                    [
+                        'sale_bill_id' => $saleBill->id,
+                        'action' => 'extra',
+                    ],
+                    [
+                        'action_type' => $data['extra_type'],
+                        'value' => $data['extra_value'],
+                        'company_id' => $data['company_id'],
+                    ]
+                );
+            }
 
-        $voucher = VoucherService::createVoucher(
-            $saleBill,
-            $company_id,
-            ' قيد فاتورة مبيعات رقم' . $saleBill->sale_bill_number,
-        );
-        $saleVoucher = $saleBill->vouchers()->save($voucher);
-        // createTransaction($accountingTreeId, $voucherId, $amount, $notation, $type)
-        VoucherService::createTransaction(
-            $clientAccountId,
-            $saleVoucher->id,
-            $saleBill->final_total,
-            " مدين من فاتورة مبيعات" . $saleBill->sale_bill_number,
-            1
-        );
 
-        // Create the credit transaction
-        VoucherService::createTransaction(
-            39,
-            $voucher->id,
-            $saleBill->final_total - $data['grand_tax'],
-            " دائن من فاتورة مبيعات" . $saleBill->sale_bill_number,
-            0
-        );
-        if ($data['grand_tax'] > 0) {
+            $subTotal = 0;
+            foreach ($elements as $product) {
+                $product->store_id = $request->input('store_id');
+                $subTotal = StockService::getTotalCost($product, $product->quantity);
+                $subTotal += $subTotal;
+            }
+
+            foreach ($elements as $element) {
+                if ($element->product->category->category_type != 'خدمية') {
+                    StockService::reduce($element, $request->input('store_id'), $element->quantity);
+                }
+            }
+            $outerClient = OuterClient::find($saleBill->outer_client_id);
+            $store = Store::find($saleBill->store_id);
+            //
+            $clientAccountId = $outerClient->accountingTree?->id;
+            $storeAccountId = $store->accountingTree?->id;
+            $taxAccount = accounting_tree::where('account_name', 'ضريبة القيمة المضافة')->first();
+            if (!$taxAccount) {
+                $taxAccount = new \App\Models\accounting_tree();
+                $taxAccount->account_name = 'ضريبة القيمة المضافة';
+                $taxAccount->account_name_en =  'ضريبة القيمة المضافة';
+                $taxAccount->account_number = 45;
+                $taxAccount->parent_id = 1;
+                $taxAccount->type = 'أصول';
+                $taxAccount->save();
+            }
+            if (!$outerClient->accountingTree) {
+                $accountingTree = new \App\Models\accounting_tree();
+                $accountingTree->account_name = 'حساب العميل ' . $outerClient->client_name;
+                $accountingTree->account_name_en =  $outerClient->client_name . 'Account';
+                $accountingTree->account_number = '1203' . $outerClient->id;
+                $accountingTree->parent_id = 1203;
+                $accountingTree->type = 'sub';
+                $outerClient->accountingTree()->save($accountingTree);
+            }
+            $outerClient->load('accountingTree');
+
+            $clientAccountId = $outerClient->accountingTree->id;
+            if (!$store->accountingTree) {
+                $accountingTree = new \App\Models\accounting_tree();
+                $accountingTree->account_name =  'حساب مخزون' . $store->store_name;
+                $accountingTree->account_name_en =  $store->store_name . 'Account';
+                $accountingTree->account_number = '66' . $store->id;
+                $accountingTree->parent_id = 66;
+                $accountingTree->type = 'sub';
+                $store->accountingTree()->save($accountingTree);
+            }
+            $store->load('accountingTree');
+            $storeAccountId = $store->accountingTree->id;
+            if (!empty($saleBill->vouchers)) {
+                // dd($saleBill->vouchers->first()->transactions);
+                foreach ($saleBill->vouchers as $voucher) {
+                    $voucher->transactions()->delete();
+                    $voucher->delete();
+                }
+            }
+            // dd('hello',$saleBill->vouchers);
+
+            $company_id = Auth::user()->company_id;
+
+            $voucher = VoucherService::createVoucher(
+                $saleBill,
+                $company_id,
+                ' قيد فاتورة مبيعات رقم' . $saleBill->sale_bill_number,
+            );
+            $saleVoucher = $saleBill->vouchers()->save($voucher);
+            // createTransaction($accountingTreeId, $voucherId, $amount, $notation, $type)
             VoucherService::createTransaction(
-                $taxAccount->id,
+                $clientAccountId,
+                $saleVoucher->id,
+                $saleBill->final_total,
+                " مدين من فاتورة مبيعات" . $saleBill->sale_bill_number,
+                1
+            );
+
+            // Create the credit transaction
+            VoucherService::createTransaction(
+                39,
                 $voucher->id,
-                $data['grand_tax'],
+                $saleBill->final_total - $data['grand_tax'],
                 " دائن من فاتورة مبيعات" . $saleBill->sale_bill_number,
                 0
             );
-        }
-        if ($subTotal) {
-            $voucherForCost =  new Voucher([
-                'company_id' => $company_id,
-                'amount' => $subTotal,
-                'date' => Carbon::now(),
-                // 'payment_method' => "cash",
-                'notation' => 'قيد تكاليف فاتورة مبيعات رقم' . $saleBill->sale_bill_number,
-                'status' => 1,
-                'user_id' => auth::user()->id,
-                'options' => 1
-            ]);
-            $costVoucher =  $saleBill->vouchers()->save($voucherForCost);
-            // dd($costVoucher);
-            // dd( $clientAccountId);
-            // foreach ($request->transactions as $transaction) {
-            VoucherService::createTransaction(
-                $storeAccountId,
-                $costVoucher->id,
-                $subTotal,
-                " دائن من تكاليف فاتورة مبيعات" . $saleBill->sale_bill_number,
-                0,
-            );
-            VoucherService::createTransaction(
-                19,
-                $costVoucher->id,
-                $subTotal,
-                " مدين من تكاليف فاتورة مبيعات" . $saleBill->sale_bill_number,
-                1,
-            );
-        }
-        //////////////payment
-        // dd($data['amount'], $data['payment_method']);
-        if ($data['amount'] && $data['payment_method']) {
-            $amount = $data['amount'];
-            $restUpdate = $saleBill->final_total - $amount;
-            $saleBill->update(['rest' => $restUpdate, 'paid' => $amount]);
-
-            $outer_client = OuterClient::findOrFail($outerClient->id);
-            if (!empty($saleBill->outer_client_id)) {
-                $balance_before = $outer_client->prev_balance;
-                $balance_after = $balance_before - $amount;
-                $data['balance_before'] = $balance_before;
-                $data['balance_after'] = $balance_after;
-            } else {
-                $data['balance_before'] = 0;
-                $data['balance_after'] = 0;
+            if ($data['grand_tax'] > 0) {
+                VoucherService::createTransaction(
+                    $taxAccount->id,
+                    $voucher->id,
+                    $data['grand_tax'],
+                    " دائن من فاتورة مبيعات" . $saleBill->sale_bill_number,
+                    0
+                );
             }
-
-            // Handle client account
-            $clientAccountId = $outer_client->accountingTree?->id;
-            if (!$outer_client->accountingTree) {
-                // $accountingTree = new \App\Models\AccountingTree();
-                $accountingTree = new \App\Models\accounting_tree();
-                $accountingTree->account_name = 'حساب العميل ' . $outer_client->client_name;
-                $accountingTree->account_name_en = $outer_client->client_name . 'Account';
-                $accountingTree->account_number = '1203' . $outer_client->id;
-                $accountingTree->parent_id = 1203;
-                $accountingTree->type = 'sub';
-                $outer_client->accountingTree()->save($accountingTree);
+            if ($subTotal) {
+                $voucherForCost =  new Voucher([
+                    'company_id' => $company_id,
+                    'amount' => $subTotal,
+                    'date' => Carbon::now(),
+                    // 'payment_method' => "cash",
+                    'notation' => 'قيد تكاليف فاتورة مبيعات رقم' . $saleBill->sale_bill_number,
+                    'status' => 1,
+                    'user_id' => auth::user()->id,
+                    'options' => 1
+                ]);
+                $costVoucher =  $saleBill->vouchers()->save($voucherForCost);
+                // dd($costVoucher);
+                // dd( $clientAccountId);
+                // foreach ($request->transactions as $transaction) {
+                VoucherService::createTransaction(
+                    $storeAccountId,
+                    $costVoucher->id,
+                    $subTotal,
+                    " دائن من تكاليف فاتورة مبيعات" . $saleBill->sale_bill_number,
+                    0,
+                );
+                VoucherService::createTransaction(
+                    19,
+                    $costVoucher->id,
+                    $subTotal,
+                    " مدين من تكاليف فاتورة مبيعات" . $saleBill->sale_bill_number,
+                    1,
+                );
             }
-            $outer_client->load('accountingTree');
-            $clientAccountId = $outer_client->accountingTree->id;
-            $payment_method = $data['payment_method'];
+            //////////////payment
+            // dd($data['amount'], $data['payment_method']);
+            if ($data['amount'] && $data['payment_method']) {
+                $amount = $data['amount'];
+                $restUpdate = $saleBill->final_total - $amount;
+                $saleBill->update(['rest' => $restUpdate, 'paid' => $amount]);
 
-            $voucher = new Voucher([
-                'amount' => $amount,
-                'company_id' => $company_id,
-                'date' => Carbon::now(),
-                'payment_method' => $payment_method,
-                'notation' => 'سند قبض فاتورة مبيعات رقم ' . $saleBill->sale_bill_number,
-                'status' => 1,
-                'user_id' => auth::user()->id,
-                'options' => 1
-            ]);
+                $outer_client = OuterClient::findOrFail($outerClient->id);
+                if (!empty($saleBill->outer_client_id)) {
+                    $balance_before = $outer_client->prev_balance;
+                    $balance_after = $balance_before - $amount;
+                    $data['balance_before'] = $balance_before;
+                    $data['balance_after'] = $balance_after;
+                } else {
+                    $data['balance_before'] = 0;
+                    $data['balance_after'] = 0;
+                }
 
-            $saleVoucher = $saleBill->vouchers()->save($voucher);
-            VoucherService::createTransaction(
-                25,
-                $voucher->id,
-                $amount,
-                " مدين من دفع فاتورة مبيعات" . $saleBill->sale_bill_number,
-                1
-            );
-            VoucherService::createTransaction(
-                $clientAccountId,
-                $voucher->id,
-                $amount,
-                " دائن من دفع فاتورة مبيعات" . $saleBill->sale_bill_number,
-                0
-            );
-            if ($payment_method == "cash") {
-                if ($saleBill->paid <= $saleBill->final_total) {
-                    $cash = Cash::create([
+                // Handle client account
+                $clientAccountId = $outer_client->accountingTree?->id;
+                if (!$outer_client->accountingTree) {
+                    // $accountingTree = new \App\Models\AccountingTree();
+                    $accountingTree = new \App\Models\accounting_tree();
+                    $accountingTree->account_name = 'حساب العميل ' . $outer_client->client_name;
+                    $accountingTree->account_name_en = $outer_client->client_name . 'Account';
+                    $accountingTree->account_number = '1203' . $outer_client->id;
+                    $accountingTree->parent_id = 1203;
+                    $accountingTree->type = 'sub';
+                    $outer_client->accountingTree()->save($accountingTree);
+                }
+                $outer_client->load('accountingTree');
+                $clientAccountId = $outer_client->accountingTree->id;
+                $payment_method = $data['payment_method'];
+
+                $voucher = new Voucher([
+                    'amount' => $amount,
+                    'company_id' => $company_id,
+                    'date' => Carbon::now(),
+                    'payment_method' => $payment_method,
+                    'notation' => 'سند قبض فاتورة مبيعات رقم ' . $saleBill->sale_bill_number,
+                    'status' => 1,
+                    'user_id' => auth::user()->id,
+                    'options' => 1
+                ]);
+
+                $saleVoucher = $saleBill->vouchers()->save($voucher);
+                VoucherService::createTransaction(
+                    25,
+                    $voucher->id,
+                    $amount,
+                    " مدين من دفع فاتورة مبيعات" . $saleBill->sale_bill_number,
+                    1
+                );
+                VoucherService::createTransaction(
+                    $clientAccountId,
+                    $voucher->id,
+                    $amount,
+                    " دائن من دفع فاتورة مبيعات" . $saleBill->sale_bill_number,
+                    0
+                );
+                if ($payment_method == "cash") {
+                    if ($saleBill->paid <= $saleBill->final_total) {
+                        $cash = Cash::create([
+                            'cash_number' => $data['cash_number'],
+                            'company_id' => $data['company_id'],
+                            'client_id' => $data['client_id'],
+                            'safe_id' => $data['safe_id'],
+                            'outer_client_id' => $data['outer_client_id'],
+                            'balance_before' => $data['balance_before'],
+                            'balance_after' => $data['balance_after'],
+                            'amount' => $data['amount'],
+                            'bill_id' => $saleBill->id,
+                            'date' => $data['date'],
+                            'time' => $data['time'],
+                        ]);
+                    }
+                } else {
+                    $cash = BankCash::create([
                         'cash_number' => $data['cash_number'],
                         'company_id' => $data['company_id'],
                         'client_id' => $data['client_id'],
-                        'safe_id' => $data['safe_id'],
+                        'bank_id' => $data['bank_id'],
                         'outer_client_id' => $data['outer_client_id'],
                         'balance_before' => $data['balance_before'],
                         'balance_after' => $data['balance_after'],
@@ -3162,33 +3175,18 @@ class SaleBillController extends Controller
                         'bill_id' => $saleBill->id,
                         'date' => $data['date'],
                         'time' => $data['time'],
+                        'notes' => $data['bank_notes'],
+                        'bank_check_number' => $data['bank_check_number']
                     ]);
                 }
-            } else {
-                $cash = BankCash::create([
-                    'cash_number' => $data['cash_number'],
-                    'company_id' => $data['company_id'],
-                    'client_id' => $data['client_id'],
-                    'bank_id' => $data['bank_id'],
-                    'outer_client_id' => $data['outer_client_id'],
-                    'balance_before' => $data['balance_before'],
-                    'balance_after' => $data['balance_after'],
-                    'amount' => $data['amount'],
-                    'bill_id' => $saleBill->id,
-                    'date' => $data['date'],
-                    'time' => $data['time'],
-                    'notes' => $data['bank_notes'],
-                    'bank_check_number' => $data['bank_check_number']
-                ]);
             }
+
+            DB::commit();
+
+            return response()->json(['status' => true, 'msg' => 'تم التحديث بنجاح', 'id' => $saleBill->id]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['status' => false, 'msg' => 'حدث خطأ أثناء التحديث']);
         }
-
-        DB::commit();
-
-        return response()->json(['status' => true, 'msg' => 'تم التحديث بنجاح', 'id' => $saleBill->id]);
-        // } catch (\Exception $e) {
-        //     DB::rollback();
-        //     return response()->json(['status' => false, 'msg' => 'حدث خطأ أثناء التحديث']);
-        // }
     }
 }

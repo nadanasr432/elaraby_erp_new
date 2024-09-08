@@ -677,7 +677,7 @@
 </body>
 <script>
     function sendToWhatsApp() {
-        const clientPhone = '{{ $sale_bill->outerClient->phones[0]->client_phone }}';
+        const clientPhone = '{{ $sale_bill->outerClient->phones[0]->client_phone ?? "-" }}';
         const invoiceUrl = '{{ route('client.sale_bills.sent', [$sale_bill->token,2,3,0]) }}';
         const message = `Please check your invoice at the following link: ${invoiceUrl}`;
         const whatsappUrl = `https://wa.me/${clientPhone}?text=${encodeURIComponent(message)}`;

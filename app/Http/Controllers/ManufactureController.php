@@ -28,7 +28,7 @@ class ManufactureController extends Controller
     {
         $company_id = Auth::user()->company_id;
         $stores = Store::where('company_id', $company_id)->get();
-        $ManufactureProducts = Product::where(['manufacturer' => 1, 'company_id' => $company_id])->get();
+        $ManufactureProducts = Product::where(['manufacture' => 1, 'company_id' => $company_id])->get();
         return view(
             'client.manufacture.create',
             compact('company_id', 'stores', 'ManufactureProducts')
