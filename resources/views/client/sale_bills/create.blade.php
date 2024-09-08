@@ -654,6 +654,7 @@
                 // Save the current value as previous for potential reset
                 $(this).data('previous-value', newTaxType);
             });
+            // Save button 1
             $('.save_btn1').on('click', function() {
                 let outerClientId = $('#outer_client_id').val();
 
@@ -673,7 +674,6 @@
                 $('#products_table tbody tr').each(function() {
                     let quantity = $(this).find('input[name*="[quantity]"]').val();
                     let price = $(this).find('input[name*="[product_price]"]').val();
-
                     let unit = $(this).find('select[name*="[unit_id]"]').val();
 
                     if (quantity > 0 && price > 0 && unit) {
@@ -690,15 +690,37 @@
                     });
                     return false;
                 }
+
                 var formData = $('#myForm').serialize();
 
-                $.post("{{ url('/client/sale-bills/saveAll') }}", formData, function(data) {
+                $.post("{{ url('/client/sale-bills/saveAll') }}", formData)
+                    .done(function(data) {
+                        location.href = '/sale-bills/print/' + data;
+                    })
+                    .fail(function(jqXHR) {
+                        // Check if responseJSON exists and try to extract message
+                        let errorMessage = "حدث خطأ أثناء حفظ البيانات";
 
-                    location.href = '/sale-bills/print/' + data;
-                });
+                        if (jqXHR.responseJSON) {
+                            if (jqXHR.responseJSON.message) {
+                                errorMessage = jqXHR.responseJSON.message;
+                            } else if (jqXHR.responseJSON.error) {
+                                errorMessage = jqXHR.responseJSON.error;
+                            }
+                        } else if (jqXHR.responseText) {
+                            errorMessage = jqXHR.responseText;
+                        }
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: errorMessage, // Replace title with the error message
+                            text: '',
+                            confirmButtonText: 'إغلاق'
+                        });
+                    });
             });
 
-            //onsave btn حفظ الفاتورة
+            // Save button 2
             $('.save_btn2').on('click', function() {
                 let printColor = $(this).attr('printColor');
                 let isMoswada = $(this).attr('isMoswada');
@@ -737,14 +759,37 @@
                     });
                     return false;
                 }
+
                 var formData = $('#myForm').serialize();
 
-                $.post("{{ url('/client/sale-bills/saveAll') }}", formData, function(data) {
-                    location.href = '/sale-bills/print/' + data + '/' + invoiceType + '/' +
-                        printColor + '/' +
-                        isMoswada;
-                });
+                $.post("{{ url('/client/sale-bills/saveAll') }}", formData)
+                    .done(function(data) {
+                        location.href = '/sale-bills/print/' + data + '/' + invoiceType + '/' +
+                            printColor + '/' + isMoswada;
+                    })
+                    .fail(function(jqXHR) {
+                        // Check if responseJSON exists and try to extract message
+                        let errorMessage = "حدث خطأ أثناء حفظ البيانات";
+
+                        if (jqXHR.responseJSON) {
+                            if (jqXHR.responseJSON.message) {
+                                errorMessage = jqXHR.responseJSON.message;
+                            } else if (jqXHR.responseJSON.error) {
+                                errorMessage = jqXHR.responseJSON.error;
+                            }
+                        } else if (jqXHR.responseText) {
+                            errorMessage = jqXHR.responseText;
+                        }
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: errorMessage, // Replace title with the error message
+                            text: '',
+                            confirmButtonText: 'إغلاق'
+                        });
+                    });
             });
+
 
 
             $('.pay_cash').on('click', function() {

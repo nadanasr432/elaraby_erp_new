@@ -114,4 +114,5 @@ return [
     'add-store' => 'Add store',
     'edit' => 'Edit',
     'choose product' => 'Choose product',
+    'Product qty executed' => 'Product qty executed',
 ];

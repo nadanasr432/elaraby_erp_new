@@ -71,7 +71,8 @@
         font-weight: 600 !important;
     }
 
-    .ctitle, .ctxt {
+    .ctitle,
+    .ctxt {
         margin-bottom: 3px !important;
     }
 
@@ -190,12 +191,14 @@
         display: none;
     }
 
-    .table th, .table td {
+    .table th,
+    .table td {
         padding: 9px 5px !important;
         font-size: 11px !important;
     }
 
-    .category, .sub_category {
+    .category,
+    .sub_category {
         cursor: pointer;
     }
 
@@ -205,7 +208,8 @@
         border-top: 1px solid #E3EBF3 !important;
     }
 
-    .table-bordered th, .table-bordered td {
+    .table-bordered th,
+    .table-bordered td {
         border: 1px solid #ffffff45;
     }
 
@@ -632,38 +636,34 @@
             </div>
         </div>
 
-         <div class="col-md-5 py-1 px-0">
+        <div class="col-md-5 py-1 px-0">
             <div class="inner-sectoin bg-white rounded pr-2 pl-nos pb-2 pt-1" style="border: 1px solid #2d2d2d1f;">
                 <div class="section">
                     <div class="mb-nos">
                         <h5 class="font-weight-bold">
                             <svg style="margin-left: 5px;" fill="#0A246A" width="10" xmlns="http://www.w3.org/2000/svg"
-                                 viewBox="0 0 448 512">
+                                viewBox="0 0 448 512">
                                 <path
-                                    d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"></path>
+                                    d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z">
+                                </path>
                             </svg>
                             اختر العميل
                         </h5>
-                        <select
-                            id="outer_client_id" class="selectpicker w-100"
-                            data-style="btn-success" data-live-search="true"
-                            title="{{ __('pos.choose-client-name') }}">
+                        <select id="outer_client_id" class="selectpicker w-100" data-style="btn-success"
+                            data-live-search="true" title="{{ __('pos.choose-client-name') }}">
                             @foreach ($outer_clients as $outer_client)
-                                <option
-                                    @if($outer_client->client_name == 'Cash') selected @endif
-                                value="{{ $outer_client->id }}">
+                                <option @if ($outer_client->client_name == 'Cash') selected @endif value="{{ $outer_client->id }}">
                                     {{ $outer_client->client_name }}
                                 </option>
                             @endforeach
                         </select>
-                        <select id="product_id" class="selectpicker form-control w-100 mt-nos"
-                                data-style="btn-dark" data-live-search="true"
-                                title="{{ __('pos.search-for-products-by-code-name-or-using-a-barcode-device') }}">
+                        <select id="product_id" class="selectpicker form-control w-100 mt-nos" data-style="btn-dark"
+                            data-live-search="true"
+                            title="{{ __('pos.search-for-products-by-code-name-or-using-a-barcode-device') }}">
                             @foreach ($products as $product)
-                                <option
-                                    value="{{ $product->id }}" data-tokens="{{ $product->code_universal }}"
-                                    product_name="{{$product->product_name}}"
-                                    product_price="{{$product->wholesale_price}}">
+                                <option value="{{ $product->id }}" data-tokens="{{ $product->code_universal }}"
+                                    product_name="{{ $product->product_name }}"
+                                    product_price="{{ $product->wholesale_price }}">
                                     {{ $product->product_name }}
                                 </option>
                             @endforeach
@@ -671,24 +671,24 @@
                     </div>
 
                     <div class="table-responsive"
-                         style=" border:1px solid #FF9149;height: 370px; overflow:auto !important;">
+                        style=" border:1px solid #FF9149;height: 370px; overflow:auto !important;">
                         <table class="table table-striped table-bordered table-condensed table-hover posTable"
-                               style="margin-bottom: 0px; padding: 0px;border-collapse:separate;border-spacing:0 3px;">
+                            style="margin-bottom: 0px; padding: 0px;border-collapse:separate;border-spacing:0 3px;">
                             <thead style="background: #FF9149; color: #fff;top: -2px !important; position: relative;">
-                            <tr>
-                                <th style="width: 30%!important;"> {{ __('main.product-name') }}</th>
-                                <th style="width: 15%!important;"> {{ __('main.amount') }}</th>
-                                <th style="width: 15%!important;">{{ __('main.quantity') }}</th>
-                                <th style="width: 15%!important;"> {{ __('main.discount') }}</th>
-                                <th style="width: 6%!important;"> {{ __('main.total') }}</th>
-                                <th style="width: 4%!important;text-align: center;">
-                                    @if(isset($pos_open) && $pos_open->editing)
-                                        {{ __('main.return') }}
-                                    @else
-                                        {{ __('main.delete') }}
-                                    @endif
-                                </th>
-                            </tr>
+                                <tr>
+                                    <th style="width: 30%!important;"> {{ __('main.product-name') }}</th>
+                                    <th style="width: 15%!important;"> {{ __('main.amount') }}</th>
+                                    <th style="width: 15%!important;">{{ __('main.quantity') }}</th>
+                                    <th style="width: 15%!important;"> {{ __('main.discount') }}</th>
+                                    <th style="width: 6%!important;"> {{ __('main.total') }}</th>
+                                    <th style="width: 4%!important;text-align: center;">
+                                        @if (isset($pos_open) && $pos_open->editing)
+                                            {{ __('main.return') }}
+                                        @else
+                                            {{ __('main.delete') }}
+                                        @endif
+                                    </th>
+                                </tr>
                             </thead>
                             <tbody class="bill_details">
                             </tbody>
@@ -696,129 +696,130 @@
                     </div>
                     <table id="totalTable" style="width:100%; float:right; padding:5px; color:#000; background: #FFF;">
                         <tbody>
-                        <tr>
-                            <td style="padding: 5px 10px;border-top: 1px solid #DDD;width: 30%;"> {{ __('main.items') }}</td>
-                            <td class="text-right"
-                                style="padding: 5px 10px;font-size: 14px; font-weight:bold;border-top: 1px solid #DDD;width: 30%;">
-                                <span id="items">0</span>
-                                (<span id="total_quantity">0</span>)
-                            </td>
-                            <td style="padding: 5px 10px;border-top: 1px solid #DDD;"> {{ __('main.total') }}</td>
-                            <td class="text-right"
-                                style="padding: 5px 10px;font-size: 14px; font-weight:bold;border-top: 1px solid #DDD;">
-                            <span id="sum">
-                                @if (isset($pos_open) && !$pos_open_elements->isEmpty())
-                                    <?php
-                                    $sum = 0;
-                                    foreach ($pos_open_elements as $pos_open_element) {
-                                        $sum = $sum + $pos_open_element->quantity_price;
-                                    }
-                                    ?>
-                                    {{ $sum }}
-                                @else
-                                    0
+                            <tr>
+                                <td style="padding: 5px 10px;border-top: 1px solid #DDD;width: 30%;">
+                                    {{ __('main.items') }}</td>
+                                <td class="text-right"
+                                    style="padding: 5px 10px;font-size: 14px; font-weight:bold;border-top: 1px solid #DDD;width: 30%;">
+                                    <span id="items">0</span>
+                                    (<span id="total_quantity">0</span>)
+                                </td>
+                                <td style="padding: 5px 10px;border-top: 1px solid #DDD;"> {{ __('main.total') }}</td>
+                                <td class="text-right"
+                                    style="padding: 5px 10px;font-size: 14px; font-weight:bold;border-top: 1px solid #DDD;">
+                                    <span id="sum">
+                                        @if (isset($pos_open) && !$pos_open_elements->isEmpty())
+                                            <?php
+                                            $sum = 0;
+                                            foreach ($pos_open_elements as $pos_open_element) {
+                                                $sum = $sum + $pos_open_element->quantity_price;
+                                            }
+                                            ?>
+                                            {{ $sum }}
+                                        @else
+                                            0
+                                        @endif
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                @if ($pos_settings->tax == '1')
+                                    <td style="padding: 5px 10px;">
+                                        {{ __('main.order-tax') }}
+                                        <a href="#chooseTaxValue" data-toggle="modal" class="modal-effect">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <br>
+                                        <span class="text-danger noTaxAddedMsg font-weight-bold"
+                                            style="display: none;font-size: 11px;">(لم يتم اضافة ضريبة)</span>
+                                    </td>
+                                    <td class="text-right" style="padding: 5px 10px;font-size: 14px; font-weight:bold;">
+                                        <span id="tds_2">
+                                            <span id="taxValueAmount">0</span>
+                                            ( <span id="posTaxValue">0</span> %)
+                                        </span>
+                                    </td>
                                 @endif
-                            </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            @if ($pos_settings->tax == '1')
-                                <td style="padding: 5px 10px;">
-                                    {{ __('main.order-tax') }}
-                                    <a href="#chooseTaxValue" data-toggle="modal" class="modal-effect">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                    <br>
-                                    <span class="text-danger noTaxAddedMsg font-weight-bold"
-                                          style="display: none;font-size: 11px;">(لم يتم اضافة ضريبة)</span>
-                                </td>
-                                <td class="text-right" style="padding: 5px 10px;font-size: 14px; font-weight:bold;">
-                            <span id="tds_2">
-                                <span id="taxValueAmount">0</span>
-                                ( <span id="posTaxValue">0</span> %)
-                            </span>
-                                </td>
-                            @endif
-                            @if ($pos_settings->discount == '1')
-                                <td style="padding: 5px 10px;"> {{ __('main.discount') }}
-                                    <a href="#modaldemo7" style="font-size: 17px !important;" data-toggle="modal"
-                                       class="modal-effect">
-                                        <i class="fa fa-edit" style="font-size: 17px !important;"></i>
-                                    </a>
-                                </td>
-                                <td class="text-right" style="padding: 5px 10px;font-weight:bold;">
-                            <span id="tds">
-                                @if (isset($pos_open) && !empty($pos_open_discount))
-                                    <?php
-                                    $discount_value = $pos_open_discount->discount_value;
-                                    $discount_type = $pos_open_discount->discount_type;
-                                    $sum = 0;
-                                    foreach ($pos_open_elements as $pos_open_element) {
-                                        $sum = $sum + $pos_open_element->quantity_price;
-                                    }
-                                    if ($discount_type == 'pound') {
-                                        echo $discount_value;
-                                    } else {
-                                        echo $discount_value = ($discount_value / 100) * $sum;
-                                        echo ' ( ' . $pos_open_discount->discount_value . ' % ) ';
-                                    }
-                                    ?>
-                                @else
-                                    0
+                                @if ($pos_settings->discount == '1')
+                                    <td style="padding: 5px 10px;"> {{ __('main.discount') }}
+                                        <a href="#modaldemo7" style="font-size: 17px !important;" data-toggle="modal"
+                                            class="modal-effect">
+                                            <i class="fa fa-edit" style="font-size: 17px !important;"></i>
+                                        </a>
+                                    </td>
+                                    <td class="text-right" style="padding: 5px 10px;font-weight:bold;">
+                                        <span id="tds">
+                                            @if (isset($pos_open) && !empty($pos_open_discount))
+                                                <?php
+                                                $discount_value = $pos_open_discount->discount_value;
+                                                $discount_type = $pos_open_discount->discount_type;
+                                                $sum = 0;
+                                                foreach ($pos_open_elements as $pos_open_element) {
+                                                    $sum = $sum + $pos_open_element->quantity_price;
+                                                }
+                                                if ($discount_type == 'pound') {
+                                                    echo $discount_value;
+                                                } else {
+                                                    echo $discount_value = ($discount_value / 100) * $sum;
+                                                    echo ' ( ' . $pos_open_discount->discount_value . ' % ) ';
+                                                }
+                                                ?>
+                                            @else
+                                                0
+                                            @endif
+                                        </span>
+                                    </td>
                                 @endif
-                            </span>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px 10px; border-top: 1px solid #666; border-bottom: 1px solid #333; font-weight:bold; background:#333; color:#FFF;"
+                                    colspan="2">
+                                    {{ __('main.total-amount') }}
                                 </td>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td style="padding: 5px 10px; border-top: 1px solid #666; border-bottom: 1px solid #333; font-weight:bold; background:#333; color:#FFF;"
-                                colspan="2">
-                                {{ __('main.total-amount') }}
-                            </td>
-                            <td class="text-right"
-                                style="padding:5px 10px 5px 10px; font-size: 14px;border-top: 1px solid #666; border-bottom: 1px solid #333; font-weight:bold; background:#333; color:#FFF;"
-                                colspan="2">
-                            <span id="total" style="color: #fff !important;">
-                                @if (isset($pos_open))
-                                    <?php
-                                    $sum = 0;
-                                    foreach ($pos_open_elements as $pos_open_element) {
-                                        $sum = $sum + $pos_open_element->quantity_price;
-                                    }
-                                    if (isset($pos_open) && isset($pos_open_tax) && empty($pos_open_discount)) {
-                                        $tax_value = $pos_open_tax->tax_value;
-                                        $percent = ($tax_value / 100) * $sum;
-                                        $sum = $sum + $percent;
-                                    } elseif (isset($pos_open) && isset($pos_open_discount) && empty($pos_open_tax)) {
-                                        $discount_value = $pos_open_discount->discount_value;
-                                        $discount_type = $pos_open_discount->discount_type;
-                                        if ($discount_type == 'pound') {
-                                            $sum = $sum - $discount_value;
-                                        } else {
-                                            $discount_value = ($discount_value / 100) * $sum;
-                                            $sum = $sum - $discount_value;
-                                        }
-                                    } elseif (isset($pos_open) && !empty($pos_open_discount) && !empty($pos_open_tax)) {
-                                        $tax_value = $pos_open_tax->tax_value;
-                                        $discount_value = $pos_open_discount->discount_value;
-                                        $discount_type = $pos_open_discount->discount_type;
-                                        if ($discount_type == 'pound') {
-                                            $sum = $sum - $discount_value;
-                                        } else {
-                                            $discount_value = ($discount_value / 100) * $sum;
-                                            $sum = $sum - $discount_value;
-                                        }
-                                        $percent = ($tax_value / 100) * $sum;
-                                        $sum = $sum + $percent;
-                                    }
-                                    echo $sum;
-                                    ?>
-                                @else
-                                    0
-                                @endif
-                            </span>
-                            </td>
-                        </tr>
+                                <td class="text-right"
+                                    style="padding:5px 10px 5px 10px; font-size: 14px;border-top: 1px solid #666; border-bottom: 1px solid #333; font-weight:bold; background:#333; color:#FFF;"
+                                    colspan="2">
+                                    <span id="total" style="color: #fff !important;">
+                                        @if (isset($pos_open))
+                                            <?php
+                                            $sum = 0;
+                                            foreach ($pos_open_elements as $pos_open_element) {
+                                                $sum = $sum + $pos_open_element->quantity_price;
+                                            }
+                                            if (isset($pos_open) && isset($pos_open_tax) && empty($pos_open_discount)) {
+                                                $tax_value = $pos_open_tax->tax_value;
+                                                $percent = ($tax_value / 100) * $sum;
+                                                $sum = $sum + $percent;
+                                            } elseif (isset($pos_open) && isset($pos_open_discount) && empty($pos_open_tax)) {
+                                                $discount_value = $pos_open_discount->discount_value;
+                                                $discount_type = $pos_open_discount->discount_type;
+                                                if ($discount_type == 'pound') {
+                                                    $sum = $sum - $discount_value;
+                                                } else {
+                                                    $discount_value = ($discount_value / 100) * $sum;
+                                                    $sum = $sum - $discount_value;
+                                                }
+                                            } elseif (isset($pos_open) && !empty($pos_open_discount) && !empty($pos_open_tax)) {
+                                                $tax_value = $pos_open_tax->tax_value;
+                                                $discount_value = $pos_open_discount->discount_value;
+                                                $discount_type = $pos_open_discount->discount_type;
+                                                if ($discount_type == 'pound') {
+                                                    $sum = $sum - $discount_value;
+                                                } else {
+                                                    $discount_value = ($discount_value / 100) * $sum;
+                                                    $sum = $sum - $discount_value;
+                                                }
+                                                $percent = ($tax_value / 100) * $sum;
+                                                $sum = $sum + $percent;
+                                            }
+                                            echo $sum;
+                                            ?>
+                                        @else
+                                            0
+                                        @endif
+                                    </span>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <div class="clearfix"></div>
@@ -829,8 +830,8 @@
                                 <div class="btn-group btn-block" style="width: 100.4%;">
                                     @if ($pos_settings->cancel == '1')
                                         <a role="button"
-                                           class="d-none btn col-4 btn-danger btn-block btn-flat modal-effect mt-0 font-weight-bold"
-                                           data-toggle="modal" href="#modaldemo5">
+                                            class="d-none btn col-4 btn-danger btn-block btn-flat modal-effect mt-0 font-weight-bold"
+                                            data-toggle="modal" href="#modaldemo5">
                                             <i class="fa fa-trash-o" style="font-size: 19px"></i>
                                             {{ __('pos.cancel-invoice') }}
                                         </a>
@@ -841,13 +842,12 @@
                                         </button>
                                     @endif
                                     @if ($pos_settings->suspension == '1')
-                                        <a role="button"
-                                           class="btn col-4 btn-warning modal-effect mt-0 font-weight-bold"
-                                           data-toggle="modal" href="#pendingPosInvModal">
+                                        <a role="button" class="btn col-4 btn-warning modal-effect mt-0 font-weight-bold"
+                                            data-toggle="modal" href="#pendingPosInvModal">
                                             <svg style="position: inherit; top: 4px; margin-left: 6px;" fill="white"
-                                                 width="10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                                                width="10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
                                                 <path
-                                                    d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z"/>
+                                                    d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z" />
                                             </svg>
                                             {{ __('pos.hold-invoice') }}
                                         </a>
@@ -855,10 +855,10 @@
 
                                     @if ($pos_settings->payment == '1')
                                         <a href="#recordPaymentModal" role="button" data-toggle="modal"
-                                           class="btn col-4 btn-success modal-effect mt-0 font-weight-bold" id="payment"
-                                           tabindex="-1">
+                                            class="btn col-4 btn-success modal-effect mt-0 font-weight-bold"
+                                            id="payment" tabindex="-1">
                                             <i class="fa fa-money"
-                                               style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
+                                                style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
                                             {{ __('pos.record-payment') }}
                                         </a>
                                     @endif
@@ -870,26 +870,25 @@
                                 <div class="btn-group btn-block">
                                     @if ($pos_settings->fast_finish == '1')
                                         <button type="button" id="finishBank"
-                                                style="background: #053e59d4;border-color:#053e59d4;height: 45px;padding-top: 5px;"
-                                                class="btn btn-dark btn-block btn-md modal-effect mt-0">
+                                            style="background: #053e59d4;border-color:#053e59d4;height: 45px;padding-top: 5px;"
+                                            class="btn btn-dark btn-block btn-md modal-effect mt-0">
                                             <i class="fa fa-check-circle-o"
-                                               style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
+                                                style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
                                             دفع شبكة سريع
                                         </button>
                                         <button type="button" id="finish" style="padding-top: 5px;"
-                                                class="btn btn-dark btn-block btn-md modal-effect mt-0">
+                                            class="btn btn-dark btn-block btn-md modal-effect mt-0">
                                             <i class="fa fa-check-circle-o"
-                                               style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
+                                                style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
                                             دفع كاش سريع
                                         </button>
                                     @endif
                                     @if ($pos_settings->print_save == '1')
-                                        <button
-                                            type="button" class="btn text-white btn-block btn-md modal-effect mt-0"
+                                        <button type="button" class="btn text-white btn-block btn-md modal-effect mt-0"
                                             style="background: #666ee8 !important;height: 45px;padding-top: 5px;"
                                             id="save_pos" tabindex="-1">
                                             <i class="fa fa-save"
-                                               style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
+                                                style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
                                             {{ __('pos.save-and-print') }}
                                         </button>
                                     @endif
@@ -904,316 +903,316 @@
     </div>
 
 
-<!--===========modal for choosing tax values===========-->
-<div class="modal" id="chooseTaxValue">
-    <div class="modal-dialog modal-sm modal-dialog-centered" capital="document">
-        <div class="modal-content modal-content-demo">
-            <div class="modal-header text-center">
-                <h6 class="modal-title w-100" style="font-family: 'Cairo'; "> تحرير النظام الضريبي</h6>
-                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="" class="d-block">ضريبة الطلب</label>
-
-                    <select id="tax_id" class="form-control d-inline float-left w-50">
-                        <option value="" selected disabled>اختر نوع الضريبة</option>
-                        @foreach ($taxes as $tax)
-                            <option @if (isset($pos_open) && !empty($pos_open_tax) && $pos_open_tax->tax_id == $tax->id) selected @endif
-                                @if ($pos_settings->taxStatusPos == 1 && $tax->tax_value == 15) selected @endif
-                                @if ($pos_settings->taxStatusPos == 2 && $tax->tax_value == 130) selected @endif taxvalue="{{ $tax->tax_value }}"
-                                value="{{ $tax->id }}">{{ $tax->tax_name }}
-                            </option>
-                        @endforeach
-
-                        <option value="inclusive" @if ($pos_settings->taxStatusPos == 3) selected @endif>شامل
-                            الضريبة
-                        </option>
-                    </select>
-
-                    <!--for saving tax value-->
-                    <input type="number" id="tax_value"
-                        @if (isset($pos_open) && !empty($pos_open_tax)) value="{{ $pos_open_tax->tax_value }}" @endif
-                        style="width: 40%;" name="tax_value" class="form-control d-inline float-right" />
-
+    <!--===========modal for choosing tax values===========-->
+    <div class="modal" id="chooseTaxValue">
+        <div class="modal-dialog modal-sm modal-dialog-centered" capital="document">
+            <div class="modal-content modal-content-demo">
+                <div class="modal-header text-center">
+                    <h6 class="modal-title w-100" style="font-family: 'Cairo'; "> تحرير النظام الضريبي</h6>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-success save_tax">حفظ</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!--==================================================-->
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="" class="d-block">ضريبة الطلب</label>
 
-
-<!--===========modal for choosing fast bank===========-->
-<div class="modal fade" id="finishBankModal">
-    <div class="modal-dialog modal-sm modal-dialog-centered" capital="document">
-        <div class="modal-content modal-content-demo px-2">
-            <div class="modal-header text-center">
-                <h6 class="modal-title w-100" style="font-family: 'Cairo'; ">
-                    اختر البنك ليتم الدفع السريع
-                </h6>
-                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="row extra_div bank">
-                <!------bank_id-------->
-                <div class="col-md-12 p-2">
-                    <label class="d-block"> {{ __('banks.bank-name') }}
-                        <span class="text-danger">*</span>
-                    </label>
-                    <select style="display: inline !important;" id="fast_bank_id" class="form-control" required>
-                        <option value="">{{ __('banks.bank-name') }}</option>
-                        @foreach ($banks as $bank)
-                            <option value="{{ $bank->id }}">{{ $bank->bank_name }}</option>
-                        @endforeach
-                    </select>
-
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 text-center mb-2">
-                <a target="_blank" href="{{ route('client.banks.create') }}"
-                    class="btn btn-info rounded open_popup" role="button">
-                    <i class="fa fa-plus" style="font-size: 16px"></i>
-                    اضافة بنك جديد
-                </a>
-                <button class="btn btn-success rounded finishBank ml-1" type="button">
-                    <i class="fa fa-check-circle-o"
-                        style="font-size: 15px; margin-left: 2px; top: 2px; position: relative;"></i>
-                    {{ __('banks.record-process') }}
-                </button>
-
-            </div>
-        </div>
-    </div>
-</div>
-<!--==================================================-->
-
-<!--===========modal for pending inv==================-->
-<div class="modal fade" id="pendingPosInvModal">
-    <div class="modal-dialog modal-sm modal-dialog-centered" capital="document">
-        <div class="modal-content modal-content-demo">
-            <div class="modal-header text-center">
-                <h4 class="modal-title w-100" style="font-family: 'Cairo';color: #0A246A !important; ">
-                    <svg style="position: relative; top: 4px; margin-left: 6px;" fill="#0A246A" width="10"
-                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-                        <path
-                            d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z">
-                        </path>
-                    </svg>
-                    تعليق عملية البيع وحفظها كفاتورة مفتوحة
-                </h4>
-                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
-                        aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <h5>برجاء كتابة الملاحظة المرجعية لتعليق هذة العملية!</h5>
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="سبب تعليق الفاتورة..." id="notes_2" />
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-warning" id="pending">تعليق الفاتورة</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">رجوع</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!--==================================================-->
-
-<!--====modal to record payment for pos inv ==========-->
-<div class="modal fade" dir="rtl" id="recordPaymentModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header w-100">
-                <h4 class="modal-title text-center"
-                    style="display: flex; align-items: end; color: #0A246A !important; font-weight: 500;">
-                    <i class="fa fa-money" style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
-                    تسجيل دفع للفاتورة
-                </h4>
-            </div>
-            <div class="modal-body">
-                @if (
-                    (isset($pos_cash) && !$pos_cash->isEmpty()) ||
-                        (isset($pos_bank_cash) && !$pos_bank_cash->isEmpty()) ||
-                        (isset($pos_coupon_cash) && !$pos_coupon_cash->isEmpty()))
-                    <table class="table table-condensed table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>{{ __('main.amount') }}</th>
-                                <th>{{ __('main.payment-method') }}</th>
-                                <th>{{ __('main.delete') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $j = 0; ?>
-                            @if (isset($pos_cash) && !$pos_cash->isEmpty())
-                                @foreach ($pos_cash as $cash)
-                                    <tr>
-                                        <td>{{ ++$j }}</td>
-                                        <td>{{ $cash->amount }}</td>
-                                        <td>{{ __('main.cash') }}
-                                            <br>
-                                            ({{ $cash->safe->safe_name }})
-                                        </td>
-                                        <td>
-                                            <button type="button" payment_method="cash"
-                                                cash_id="{{ $cash->id }}"
-                                                class="btn btn-danger delete_pay">{{ __('main.delete') }}
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
-                            @if (isset($pos_bank_cash) && !$pos_bank_cash->isEmpty())
-                                @foreach ($pos_bank_cash as $cash)
-                                    <tr>
-                                        <td>{{ ++$j }}</td>
-                                        <td>{{ $cash->amount }}</td>
-                                        <td>دفع بنكى شبكة
-                                            <br>
-                                            @if (!empty($cash->bank_id))
-                                                ({{ $cash->bank->bank_name }})
-                                            @endif
-                                            <br>
-                                            ( {{ $cash->bank_check_number }} )
-                                        </td>
-                                        <td>
-                                            <button type="button" payment_method="bank"
-                                                cash_id="{{ $cash->id }}" class="btn btn-danger delete_pay">حذف
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
-                            @if (isset($pos_coupon_cash) && !$pos_coupon_cash->isEmpty())
-                                @foreach ($pos_coupon_cash as $cash)
-                                    <tr>
-                                        <td>{{ ++$j }}</td>
-                                        <td>{{ $cash->amount }}</td>
-                                        <td>دفع كوبون خصم
-                                            <br>
-                                            ({{ $cash->coupon->coupon_code }})
-                                        </td>
-                                        <td>
-                                            <button type="button" payment_method="coupon"
-                                                cash_id="{{ $cash->id }}" class="btn btn-danger delete_pay">حذف
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
-
-                        </tbody>
-                    </table>
-                @endif
-                <input type="hidden" id="company_id" value="{{ $company_id }}">
-                <input type="hidden" name="client_name" id="client_name" />
-                <div class="row mb-1">
-                    <!------cash_number------->
-                    <div class="col-md-4" style="display: none;">
-                        <label> رقم العملية <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="cash_number" value="{{ $pre_cash }}"
-                            required readonly>
-                    </div>
-
-                    <!------amount------->
-                    <div class="col-md-6">
-                        <label> {{ __('main.paid-amount') }} <span class="text-danger">*</span></label>
-                        <input type="number" class="form-control" id="amount" dir="rtl"
-                            placeholder="{{ __('main.paid-amount') }}" required>
-                    </div>
-
-                    <!------payment_method------->
-                    <div class="col-md-6">
-                        <label> {{ __('main.payment-method') }} <span class="text-danger">*</span></label>
-                        <select required id="payment_method" name="payment_method" class="form-control">
-                            <option value="" disabled selected>{{ __('main.payment-method') }}</option>
-                            <option value="cash">دفع كاش نقدى</option>
-                            <option value="bank">دفع بنكى شبكة</option>
-                            <option value="coupon">دفع كوبون خصم</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="row mb-1 extra_div cash" style="display: none;">
-                    <div class="col-md-6">
-                        <label class="d-block"> خزنة الدفع <span class="text-danger">*</span></label>
-                        <select required id="safe_id" class="form-control">
-                            <option value="">اختر خزنة الدفع</option>
-                            @foreach ($safes as $safe)
-                                <option value="{{ $safe->id }}">{{ $safe->safe_name }}</option>
+                        <select id="tax_id" class="form-control d-inline float-left w-50">
+                            <option value="" selected disabled>اختر نوع الضريبة</option>
+                            @foreach ($taxes as $tax)
+                                <option @if (isset($pos_open) && !empty($pos_open_tax) && $pos_open_tax->tax_id == $tax->id) selected @endif
+                                    @if ($pos_settings->taxStatusPos == 1 && $tax->tax_value == 15) selected @endif
+                                    @if ($pos_settings->taxStatusPos == 2 && $tax->tax_value == 130) selected @endif taxvalue="{{ $tax->tax_value }}"
+                                    value="{{ $tax->id }}">{{ $tax->tax_name }}
+                                </option>
                             @endforeach
+
+                            <option value="inclusive" @if ($pos_settings->taxStatusPos == 3) selected @endif>شامل
+                                الضريبة
+                            </option>
                         </select>
+
+                        <!--for saving tax value-->
+                        <input type="number" id="tax_value"
+                            @if (isset($pos_open) && !empty($pos_open_tax)) value="{{ $pos_open_tax->tax_value }}" @endif
+                            style="width: 40%;" name="tax_value" class="form-control d-inline float-right" />
+
                     </div>
                 </div>
-                <div class="row mb-1 extra_div coupon" style="display: none;">
-                    <div class="col-md-4">
-                        <label> رقم كوبون الخصم <span class="text-danger">*</span></label>
-                        <select class="form-control selectpicker show-tick" data-style="btn-info"
-                            data-live-search="true" data-title="اختر الكوبون" name="couponcode" id="couponcode">
-                        </select>
-                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success save_tax">حفظ</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
                 </div>
-                <div class="row mb-1 extra_div bank" style="display: none;">
+            </div>
+        </div>
+    </div>
+    <!--==================================================-->
+
+
+    <!--===========modal for choosing fast bank===========-->
+    <div class="modal fade" id="finishBankModal">
+        <div class="modal-dialog modal-sm modal-dialog-centered" capital="document">
+            <div class="modal-content modal-content-demo px-2">
+                <div class="modal-header text-center">
+                    <h6 class="modal-title w-100" style="font-family: 'Cairo'; ">
+                        اختر البنك ليتم الدفع السريع
+                    </h6>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="row extra_div bank">
                     <!------bank_id-------->
-                    <div class="col-md-4">
-                        <label class="d-block"> {{ __('banks.bank-name') }} <span
-                                class="text-danger">*</span></label>
-                        <select id="bank_id" class="form-control" required>
-                            <option value="" disabled selected>{{ __('banks.bank-name') }}</option>
+                    <div class="col-md-12 p-2">
+                        <label class="d-block"> {{ __('banks.bank-name') }}
+                            <span class="text-danger">*</span>
+                        </label>
+                        <select style="display: inline !important;" id="fast_bank_id" class="form-control" required>
+                            <option value="">{{ __('banks.bank-name') }}</option>
                             @foreach ($banks as $bank)
                                 <option value="{{ $bank->id }}">{{ $bank->bank_name }}</option>
                             @endforeach
                         </select>
-                    </div>
-                    <!------bank_check_number-------->
-                    <div class="col-md-4">
-                        <label>رقم المعاملة</label>
-                        <input type="text" class="form-control" placeholder="رقم المعاملة"
-                            id="bank_check_number" />
-                    </div>
-                    <!------bank_notes-------->
-                    <div class="col-md-4">
-                        <label>{{ __('main.notes') }}</label>
-                        <input type="text" class="form-control" placeholder="{{ __('main.notes') }}"
-                            id="bank_notes" />
+
                     </div>
                 </div>
-                <hr>
-                <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                    <button class="btn btn-success pay_cash" style="height: 39px;">
-                        {{ __('banks.record-process') }}
-                    </button>
-                    <a href="{{ route('client.safes.create') }}" target="_blank"
-                        class="btn btn-sm btn-warning py-1" style="height: 39px;">
-                        <i class="fa fa-plus"></i>
-                        اضافة خزنة جديدة
-                    </a>
-                    <a href="{{ route('client.banks.create') }}" target="_blank" class="btn btn-sm py-1 btn-info"
-                        style="height: 39px;">
-                        <i class="fa fa-plus"></i>
+                <div class="col-xs-12 col-sm-12 col-md-12 text-center mb-2">
+                    <a target="_blank" href="{{ route('client.banks.create') }}" class="btn btn-info rounded open_popup"
+                        role="button">
+                        <i class="fa fa-plus" style="font-size: 16px"></i>
                         اضافة بنك جديد
                     </a>
-                    <button class="btn btn-danger" data-dismiss="modal" style="height: 39px;">
-                        <i class="fa fa-close"></i>
-                        اغلاق
+                    <button class="btn btn-success rounded finishBank ml-1" type="button">
+                        <i class="fa fa-check-circle-o"
+                            style="font-size: 15px; margin-left: 2px; top: 2px; position: relative;"></i>
+                        {{ __('banks.record-process') }}
                     </button>
+
                 </div>
             </div>
         </div>
     </div>
-</div>
+    <!--==================================================-->
+
+    <!--===========modal for pending inv==================-->
+    <div class="modal fade" id="pendingPosInvModal">
+        <div class="modal-dialog modal-sm modal-dialog-centered" capital="document">
+            <div class="modal-content modal-content-demo">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100" style="font-family: 'Cairo';color: #0A246A !important; ">
+                        <svg style="position: relative; top: 4px; margin-left: 6px;" fill="#0A246A" width="10"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                            <path
+                                d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z">
+                            </path>
+                        </svg>
+                        تعليق عملية البيع وحفظها كفاتورة مفتوحة
+                    </h4>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <h5>برجاء كتابة الملاحظة المرجعية لتعليق هذة العملية!</h5>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="سبب تعليق الفاتورة..." id="notes_2" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning" id="pending">تعليق الفاتورة</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">رجوع</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--==================================================-->
+
+    <!--====modal to record payment for pos inv ==========-->
+    <div class="modal fade" dir="rtl" id="recordPaymentModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header w-100">
+                    <h4 class="modal-title text-center"
+                        style="display: flex; align-items: end; color: #0A246A !important; font-weight: 500;">
+                        <i class="fa fa-money" style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
+                        تسجيل دفع للفاتورة
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    @if (
+                        (isset($pos_cash) && !$pos_cash->isEmpty()) ||
+                            (isset($pos_bank_cash) && !$pos_bank_cash->isEmpty()) ||
+                            (isset($pos_coupon_cash) && !$pos_coupon_cash->isEmpty()))
+                        <table class="table table-condensed table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>{{ __('main.amount') }}</th>
+                                    <th>{{ __('main.payment-method') }}</th>
+                                    <th>{{ __('main.delete') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $j = 0; ?>
+                                @if (isset($pos_cash) && !$pos_cash->isEmpty())
+                                    @foreach ($pos_cash as $cash)
+                                        <tr>
+                                            <td>{{ ++$j }}</td>
+                                            <td>{{ $cash->amount }}</td>
+                                            <td>{{ __('main.cash') }}
+                                                <br>
+                                                ({{ $cash->safe->safe_name }})
+                                            </td>
+                                            <td>
+                                                <button type="button" payment_method="cash"
+                                                    cash_id="{{ $cash->id }}"
+                                                    class="btn btn-danger delete_pay">{{ __('main.delete') }}
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                                @if (isset($pos_bank_cash) && !$pos_bank_cash->isEmpty())
+                                    @foreach ($pos_bank_cash as $cash)
+                                        <tr>
+                                            <td>{{ ++$j }}</td>
+                                            <td>{{ $cash->amount }}</td>
+                                            <td>دفع بنكى شبكة
+                                                <br>
+                                                @if (!empty($cash->bank_id))
+                                                    ({{ $cash->bank->bank_name }})
+                                                @endif
+                                                <br>
+                                                ( {{ $cash->bank_check_number }} )
+                                            </td>
+                                            <td>
+                                                <button type="button" payment_method="bank"
+                                                    cash_id="{{ $cash->id }}" class="btn btn-danger delete_pay">حذف
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                                @if (isset($pos_coupon_cash) && !$pos_coupon_cash->isEmpty())
+                                    @foreach ($pos_coupon_cash as $cash)
+                                        <tr>
+                                            <td>{{ ++$j }}</td>
+                                            <td>{{ $cash->amount }}</td>
+                                            <td>دفع كوبون خصم
+                                                <br>
+                                                ({{ $cash->coupon->coupon_code }})
+                                            </td>
+                                            <td>
+                                                <button type="button" payment_method="coupon"
+                                                    cash_id="{{ $cash->id }}" class="btn btn-danger delete_pay">حذف
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+
+                            </tbody>
+                        </table>
+                    @endif
+                    <input type="hidden" id="company_id" value="{{ $company_id }}">
+                    <input type="hidden" name="client_name" id="client_name" />
+                    <div class="row mb-1">
+                        <!------cash_number------->
+                        <div class="col-md-4" style="display: none;">
+                            <label> رقم العملية <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="cash_number" value="{{ $pre_cash }}"
+                                required readonly>
+                        </div>
+
+                        <!------amount------->
+                        <div class="col-md-6">
+                            <label> {{ __('main.paid-amount') }} <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="amount" dir="rtl"
+                                placeholder="{{ __('main.paid-amount') }}" required>
+                        </div>
+
+                        <!------payment_method------->
+                        <div class="col-md-6">
+                            <label> {{ __('main.payment-method') }} <span class="text-danger">*</span></label>
+                            <select required id="payment_method" name="payment_method" class="form-control">
+                                <option value="" disabled selected>{{ __('main.payment-method') }}</option>
+                                <option value="cash">دفع كاش نقدى</option>
+                                <option value="bank">دفع بنكى شبكة</option>
+                                <option value="coupon">دفع كوبون خصم</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-1 extra_div cash" style="display: none;">
+                        <div class="col-md-6">
+                            <label class="d-block"> خزنة الدفع <span class="text-danger">*</span></label>
+                            <select required id="safe_id" class="form-control">
+                                <option value="">اختر خزنة الدفع</option>
+                                @foreach ($safes as $safe)
+                                    <option value="{{ $safe->id }}">{{ $safe->safe_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-1 extra_div coupon" style="display: none;">
+                        <div class="col-md-4">
+                            <label> رقم كوبون الخصم <span class="text-danger">*</span></label>
+                            <select class="form-control selectpicker show-tick" data-style="btn-info"
+                                data-live-search="true" data-title="اختر الكوبون" name="couponcode" id="couponcode">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-1 extra_div bank" style="display: none;">
+                        <!------bank_id-------->
+                        <div class="col-md-4">
+                            <label class="d-block"> {{ __('banks.bank-name') }} <span
+                                    class="text-danger">*</span></label>
+                            <select id="bank_id" class="form-control" required>
+                                <option value="" disabled selected>{{ __('banks.bank-name') }}</option>
+                                @foreach ($banks as $bank)
+                                    <option value="{{ $bank->id }}">{{ $bank->bank_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <!------bank_check_number-------->
+                        <div class="col-md-4">
+                            <label>رقم المعاملة</label>
+                            <input type="text" class="form-control" placeholder="رقم المعاملة"
+                                id="bank_check_number" />
+                        </div>
+                        <!------bank_notes-------->
+                        <div class="col-md-4">
+                            <label>{{ __('main.notes') }}</label>
+                            <input type="text" class="form-control" placeholder="{{ __('main.notes') }}"
+                                id="bank_notes" />
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                        <button class="btn btn-success pay_cash" style="height: 39px;">
+                            {{ __('banks.record-process') }}
+                        </button>
+                        <a href="{{ route('client.safes.create') }}" target="_blank" class="btn btn-sm btn-warning py-1"
+                            style="height: 39px;">
+                            <i class="fa fa-plus"></i>
+                            اضافة خزنة جديدة
+                        </a>
+                        <a href="{{ route('client.banks.create') }}" target="_blank" class="btn btn-sm py-1 btn-info"
+                            style="height: 39px;">
+                            <i class="fa fa-plus"></i>
+                            اضافة بنك جديد
+                        </a>
+                        <button class="btn btn-danger" data-dismiss="modal" style="height: 39px;">
+                            <i class="fa fa-close"></i>
+                            اغلاق
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
-<!--==================================================-->
+    <!--==================================================-->
 
 @endsection
 
@@ -1661,7 +1660,7 @@
                     quantity: productQty,
                     discount: productDiscount,
                     quantity_price: totalSum,
-                })
+                });
             });
 
             $.post("{{ route('pos.open.done') }}", {
@@ -1677,15 +1676,28 @@
                         showConfirmButton: true,
                         confirmButtonText: 'اغلاق',
                         confirmButtonColor: '#69d26f',
-                    })
+                    });
 
                     setTimeout(() => {
-                        if (data.success == 1)
-                            window.location.href = '/pos-print/' + data.pos_id;
+                        window.location.href = '/pos-print/' + data.pos_id;
                     }, 50);
                 }
+            }).fail(function(jqXHR) {
+                // Extracting the error message from the response
+                let errorMessage = jqXHR.responseJSON ? jqXHR.responseJSON.message :
+                    "An error occurred";
+
+                // Display the error message using Swal
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: errorMessage,
+                    confirmButtonText: 'إغلاق',
+                    confirmButtonColor: '#d33',
+                });
             });
         });
+
         //==================================================
 
         //================دفع شبكة سريع================
@@ -1696,11 +1708,11 @@
 
         //============= ACTION DB دفع شبكة سريع========
         $(".finishBank").click(function() {
-            // validation //
+            // Validation
             let bank_id = $('#fast_bank_id').val();
             if (!chkIfExistsBanks(bank_id)) return false;
 
-            //---bill details---//
+            //--- Bill details ---//
             let billDetails = {
                 outer_client_id: $('#outer_client_id').val(),
                 tableNum: $('#tableNum').val(),
@@ -1713,7 +1725,7 @@
                 bank_id: bank_id,
             };
 
-            //---products details---//
+            //--- Products details ---//
             let productsArr = [];
             let totalSum = 0;
             $(".edit_price").each(function(index) {
@@ -1729,8 +1741,9 @@
                     quantity: productQty,
                     discount: productDiscount,
                     quantity_price: totalSum,
-                })
+                });
             });
+
             $.post("{{ route('pos.open.finishBank') }}", {
                 "_token": "{{ csrf_token() }}",
                 billDetails: billDetails,
@@ -1743,20 +1756,34 @@
                     showConfirmButton: true,
                     confirmButtonText: 'اغلاق',
                     confirmButtonColor: '#69d26f',
-                })
+                });
+
                 setTimeout(() => {
                     if (response.success == 1)
                         window.location.href = '/pos-print/' + response.pos_id;
-
                 }, 50);
+            }).fail(function(jqXHR) {
+                // Extract the error message from the response
+                let errorMessage = jqXHR.responseJSON ? jqXHR.responseJSON.message : "حدث خطأ";
+
+                // Display the error message using Swal
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: errorMessage,
+                    confirmButtonText: 'إغلاق',
+                    confirmButtonColor: '#d33',
+                });
             });
         });
+
         //=============================================
 
         //================دفع كاش سريع==================
         $('#finish').on('click', function() {
             // validation //
             if (!chkInvHasProductsAndClient()) return false;
+
             //---bill details---//
             let billDetails = {
                 outer_client_id: $('#outer_client_id').val(),
@@ -1768,6 +1795,7 @@
                 tax_amount: Number($("#taxValueAmount").text()),
                 tax_value: Number($("#posTaxValue").text()),
             };
+
             //---products details---//
             let productsArr = [];
             let totalSum = 0;
@@ -1784,8 +1812,9 @@
                     quantity: productQty,
                     discount: productDiscount,
                     quantity_price: totalSum,
-                })
+                });
             });
+
             $.post("{{ route('pos.open.finish') }}", {
                 "_token": "{{ csrf_token() }}",
                 billDetails: billDetails,
@@ -1798,14 +1827,27 @@
                     showConfirmButton: true,
                     confirmButtonText: 'اغلاق',
                     confirmButtonColor: '#69d26f',
-                })
+                });
 
                 setTimeout(() => {
                     if (response.success == 1)
                         window.location.href = '/pos-print/' + response.pos_id;
                 }, 50);
+            }).fail(function(jqXHR) {
+                // Extracting the error message from the response
+                let errorMessage = jqXHR.responseJSON ? jqXHR.responseJSON.message : "حدث خطأ";
+
+                // Display the error message using Swal
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: errorMessage,
+                    confirmButtonText: 'إغلاق',
+                    confirmButtonColor: '#d33',
+                });
             });
         });
+
         //=============================================
 
         //================تسجيل دفع==================
@@ -1872,12 +1914,25 @@
                     showConfirmButton: true,
                     confirmButtonText: 'اغلاق',
                     confirmButtonColor: '#69d26f',
-                })
+                });
 
                 setTimeout(() => {
                     window.location.href = '/pos-print/' + posID;
                 }, 50);
+            }).fail(function(jqXHR) {
+                // Extract the error message from the response
+                let errorMessage = jqXHR.responseJSON ? jqXHR.responseJSON.message : "حدث خطأ";
+
+                // Display the error message using Swal
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: errorMessage,
+                    confirmButtonText: 'إغلاق',
+                    confirmButtonColor: '#d33',
+                });
             });
+
 
         });
         //=============================================

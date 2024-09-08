@@ -40,7 +40,7 @@ class StockService
         $product = $product->product ?? $product;
         if ($cumulative > 0 && $type != 'خدمية') {
 
-            throw new \ValueError(trans('file.Product qty executed', ['product' => $product?->name ?? $product->product_unit_name]));
+            throw new \ValueError(trans('sales_bills.Product qty executed', ['product' => $product?->name ?? $product->product_unit_name]));
         };
     }
     public static function record($product, $storeId, $remaining, $company_id = null)
@@ -103,8 +103,7 @@ class StockService
                 });
         };
         if ($cumulative > 0 && $type != 'خدمية') {
-
-            throw new Exception(trans("file.Product qty executed", ['product' => $product_data->name]));
+            throw new Exception(trans("sales_bills.Product qty executed".$product_data->product->name, ['product' => $product_data->product->name]));
             // return $purchase_subtotal  + ($cumulative * $purchase_subtotal);
         };
         return $purchase_subtotal;

@@ -26,6 +26,7 @@ use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use App\Models\ExtraSettings;
 use App\Models\PosOpenElement;
+use App\Services\StockService;
 use App\Models\PosOpenDiscount;
 use App\Services\VoucherService;
 use Illuminate\Support\Facades\DB;
@@ -949,7 +950,7 @@ class PosController extends Controller
         if ($posOpen) {
             # create pos invoice Elements #
             foreach ($productsArr as $element) {
-                PosOpenElement::create([
+                $saveElement = PosOpenElement::create([
                     'pos_open_id' => $posOpen->id,
                     'company_id' => Auth::user()->company_id,
                     'product_id' => $element['product_id'],
@@ -964,6 +965,9 @@ class PosController extends Controller
                     $product->update([
                         'first_balance' => ($product->first_balance - $element['quantity'])
                     ]);
+                }
+                if ($product->category->category_type != 'خدمية') {
+                    StockService::reduce($saveElement, $product->store_id, $saveElement->quantity);
                 }
             }
             # ===================================== #
@@ -1095,7 +1099,7 @@ class PosController extends Controller
         if ($posOpen) {
             # create pos invoice Elements #
             foreach ($productsArr as $element) {
-                PosOpenElement::create([
+                $saveElement = PosOpenElement::create([
                     'pos_open_id' => $posOpen->id,
                     'company_id' => Auth::user()->company_id,
                     'product_id' => $element['product_id'],
@@ -1110,6 +1114,10 @@ class PosController extends Controller
                     $product->update([
                         'first_balance' => ($product->first_balance - $element['quantity'])
                     ]);
+                }
+
+                if ($product->category->category_type != 'خدمية') {
+                    StockService::reduce($saveElement, $product->store_id, $saveElement->quantity);
                 }
             }
 
@@ -1224,7 +1232,7 @@ class PosController extends Controller
         if ($posOpen) {
             # create pos invoice Elements #
             foreach ($productsArr as $element) {
-                PosOpenElement::create([
+                $saveElement =  PosOpenElement::create([
                     'pos_open_id' => $posOpen->id,
                     'company_id' => Auth::user()->company_id,
                     'product_id' => $element['product_id'],
@@ -1239,6 +1247,9 @@ class PosController extends Controller
                     $product->update([
                         'first_balance' => ($product->first_balance - $element['quantity'])
                     ]);
+                }
+                if ($product->category->category_type != 'خدمية') {
+                    StockService::reduce($saveElement, $product->store_id, $saveElement->quantity);
                 }
             }
             # =============================== #
@@ -1478,7 +1489,7 @@ class PosController extends Controller
         if ($posOpen) {
             # create pos invoice Elements #
             foreach ($productsArr as $element) {
-                PosOpenElement::create([
+                $saveElement =  PosOpenElement::create([
                     'pos_open_id' => $posOpen->id,
                     'company_id' => Auth::user()->company_id,
                     'product_id' => $element['product_id'],
@@ -1493,6 +1504,9 @@ class PosController extends Controller
                     $product->update([
                         'first_balance' => ($product->first_balance - $element['quantity'])
                     ]);
+                }
+                if ($saveElement->product->category->category_type != 'خدمية') {
+                    StockService::reduce($saveElement, $saveElement->product->store_id, $saveElement->quantity);
                 }
             }
             # =============================== #
@@ -2138,12 +2152,12 @@ class PosController extends Controller
 
         // Check if the bill exists
         if ($pos) {
-  
+
             $elements = DB::table('pos_open_elements')
-            ->join('products', 'pos_open_elements.product_id', '=', 'products.id')
-            ->select('pos_open_elements.*', 'products.product_name')
-            ->where('pos_open_elements.pos_open_id', $pos->id)
-            ->get();
+                ->join('products', 'pos_open_elements.product_id', '=', 'products.id')
+                ->select('pos_open_elements.*', 'products.product_name')
+                ->where('pos_open_elements.pos_open_id', $pos->id)
+                ->get();
 
             // dd($elements);
             $pos_tax = $pos->tax;

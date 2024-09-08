@@ -116,4 +116,5 @@ return [
     'add-store' => 'اضافة مخزن',
     'edit' => "تعديل",
     'choose product' => "اختر منتج",
+    'Product qty executed' => "كمية المنتج نفذت",
 ];
