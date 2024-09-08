@@ -61,26 +61,28 @@ class QuotationController extends Controller
     # =============== #
 
     # view create page #
-    public function create()
+  public function create()
     {
         $company_id = Auth::user()->company_id;
-        $company = Company::findOrFail($company_id);
+        $company = Company::FindOrFail($company_id);
 
-        /**************************************************************************************/
-        // Get products that are "خدمية" and update their stock
+        //
+        //get products that خدمية and update its stock
         $products = Product::with('category')->where('company_id', $company_id)
             ->where('first_balance', '<=', 0)
             ->get();
-        foreach ($products as $khadamy) {
-            if ($khadamy->category->category_type == "خدمية") {
-                $khadamy->first_balance = 100000;
-                $khadamy->update();
+        if (!empty($products)) {
+            foreach ($products as $khadamy) {
+                if ($khadamy->category->category_type == "خدمية") {
+                    $khadamy->first_balance = 100000;
+                    $khadamy->update();
+                }
             }
         }
-        /**************************************************************************************/
+        //
 
         $categories = $company->categories;
-        $all_products = Product::where('company_id', $company_id)->where('first_balance', '>', 0)->get();
+        $all_products = Product::where('company_id', $company_id)->where('first_balance', '>', '0')->get();
         $stores = $company->stores;
         $units = $company->units;
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
@@ -94,20 +96,24 @@ class QuotationController extends Controller
                         ->orWhereNull('client_id');
                 })->get();
         }
-
-        // Find the highest existing quotation number
+        $pre_quotation = Quotation::where('company_id', $company_id)->count() + 1;
         $highestQuotation = Quotation::where('company_id', $company_id)
             ->orderBy('quotation_number', 'desc')
             ->first();
 
-        // Generate the next quotation number
-        $newQuotationNumber = $highestQuotation ? $highestQuotation->quotation_number + 1 : 1;
+        // If there are no existing quotations, start with 1
+        $newQuotationNumber = $highestQuotation ? $pre_quotation+1 : 1;
 
+        /*
+        $pre_quotation = $company_id . rand();
+        $pre_quotation = substr($pre_quotation, 0, 9);
+        */
         return view(
+
             'client.quotations.create',
-            compact("newQuotationNumber", 'company', 'outer_clients', 'units', 'stores', 'categories', 'extra_settings', 'company_id', 'all_products')
-        );
-    }
+            compact("newQuotationNumber", 'company', 'outer_clients', 'units', 'stores', 'categories', 'extra_settings', 'company_id', 'all_products', 'pre_quotation'));
+         }
+
 
     # =============== #
 
@@ -204,54 +210,54 @@ class QuotationController extends Controller
 
 
     # store quotation #
-    public function save(Request $request)
-    {
-        $data = $request->all();
-        $data['company_id'] = Auth::user()->company_id;
-        $data['client_id'] = Auth::user()->id;
+  public function save(Request $request)
+{
+    $data = $request->all();
+    $data['company_id'] = Auth::user()->company_id;
+    $data['client_id'] = Auth::user()->id;
 
-        $company = Company::findOrFail($data['company_id']);
-        $quotation = Quotation::where('quotation_number', $data['quotation_number'])
-            ->where('company_id', $company->id)
-            ->first();
+    $company = Company::findOrFail($data['company_id']);
+    $quotation = Quotation::where('quotation_number', $data['quotation_number'])
+                          ->where('company_id', $company->id)
+                          ->first();
 
-        if (empty($quotation)) {
-            $quotation = Quotation::create($data);
-        } else {
-            $quotation->update($data);
-        }
+    if (empty($quotation)) {
+        $quotation = Quotation::create($data);
+    } else {
+        $quotation->update($data);
+    }
 
-        $data['quotation_id'] = $quotation->id;
+    $data['quotation_id'] = $quotation->id;
 
-        $check = QuotationElement::where('quotation_id', $quotation->id)
-            ->where('product_id', $request->product_id)
-            ->where('company_id', $company->id)
-            ->first();
+    $check = QuotationElement::where('quotation_id', $quotation->id)
+                             ->where('product_id', $request->product_id)
+                             ->where('company_id', $company->id)
+                             ->first();
 
-        if (empty($check)) {
-            QuotationElement::create($data);
-        } else {
-            $new_quantity = $check->quantity + $request->quantity;
-            $new_quantity_price = $new_quantity * $request->product_price;
+    if (empty($check)) {
+        QuotationElement::create($data);
+    } else {
+        $new_quantity = $check->quantity + $request->quantity;
+        $new_quantity_price = $new_quantity * $request->product_price;
 
-            $check->update([
-                'product_price' => $request->product_price,
-                'quantity' => $new_quantity,
-                'unit_id' => $request->unit_id,
-                'quantity_price' => $new_quantity_price,
-            ]);
-        }
-
-        $all_elements = QuotationElement::where('quotation_id', $quotation->id)
-            ->where('company_id', $company->id)
-            ->get();
-
-        return response()->json([
-            'status' => true,
-            'msg' => 'تمت الاضافة الى عرض السعر بنجاح',
-            'all_elements' => $all_elements,
+        $check->update([
+            'product_price' => $request->product_price,
+            'quantity' => $new_quantity,
+            'unit_id' => $request->unit_id,
+            'quantity_price' => $new_quantity_price,
         ]);
     }
+
+    $all_elements = QuotationElement::where('quotation_id', $quotation->id)
+                                    ->where('company_id', $company->id)
+                                    ->get();
+
+    return response()->json([
+        'status' => true,
+        'msg' => 'تمت الاضافة الى عرض السعر بنجاح',
+        'all_elements' => $all_elements,
+    ]);
+}
 
 
     # =============== #
@@ -1040,7 +1046,7 @@ class QuotationController extends Controller
     // view quotation template
     public function view($quotation_id)
     {
-
+       
         # get company data #
         $company_id = Auth::user()->company_id;
         $company = Company::findOrFail($company_id);
