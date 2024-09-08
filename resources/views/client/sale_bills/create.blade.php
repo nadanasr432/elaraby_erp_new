@@ -238,7 +238,7 @@
 
 
 
-        {{-- <div class="row options no-print products">
+        <div class="row options no-print products">
             <div class="col-lg-3 pull-right">
                 <label for=""> {{ __('sales_bills.product-code') }} </label>
                <select name="product_id" id="product_id" class="selectpicker w-80" data-style="btn-success"
@@ -290,48 +290,8 @@
                 <input type="number" name="quantity_price" readonly
                        id="quantity_price" class="form-control"/>
             </div>
-        </div> --}}
-        <div class="row">
-            <div class="col-md-6 pull-right">
-                <div class="form-group" dir="rtl">
-                    <label for="discount">{{ __('sales_bills.discount-on-the-total-bill') }}</label> <br>
-                    <select name="discount_type" id="discount_type" class="form-control"
-                        style="width: 60%;display: inline;float: right; margin-left:5px;">
-                        <option value="">اختر نوع الخصم</option>
-                        <option value="pound">خصم قبل الضريبة (مسطح)</option>
-                        <option value="percent">خصم قبل الضريبة (%)</option>
-                        <option value="poundAfterTax">ضمان اعمال (مسطح)</option>
-                        <option value="poundAfterTaxPercent">ضمان اعمال (%)</option>
-                        <option value="afterTax" class="d-none">
-                            خصم علي اجمالي المبلغ شامل الضريبة
-                        </option>
-                    </select>
-                    <input type="number" value="0" name="discount_value" min="0"
-                        style="width: 20%;display: inline;float: right;" id="discount_value" class="form-control "
-                        step = "any" />
-                    <input type="text" name="discount_note" id="discount_note" placeholder="ملاحظات الخصم. . ."
-                        class="form-control mt-5" style="width: 80%;">
-                    {{-- <span id="dicountForBill"></span> --}}
-                </div>
+        </div>
 
-
-            </div>
-            <div class="col-md-6 pull-right">
-                <div class="form-group" dir="rtl">
-                    <label for="extra">{{ __('main.shipping-expenses') }}</label> <br>
-
-                    <select name="extra_type" id="extra_type" class="form-control"
-                        style="width:60%;display: inline;float: right;margin-left: 5px">
-                        <option value="">اختر نوع الشحن</option>
-                        <option value="pound">{{ $extra_settings->currency }}</option>
-                        <option value="percent">%</option>
-                    </select>
-                    <input value="0" type="number" name="extra_value" min='0'
-                        style="width: 20%;display: inline;float: right;" id="extra_value" class="form-control"
-                        step = "any" />
-                </div>
-            </div>
-        </div><!--  End Row -->
         <!-----notes------->
         <div class="col-sm-12 pull-right no-print">
             <div class="form-group" dir="rtl">
@@ -414,7 +374,7 @@
                 فاتورة غير ضريبية
             </a>
         </div> --}}
-        {{-- <div class="col-lg-12 no-print text-center pt-3" style="overflow-x: auto;">
+        <div class="col-lg-12 no-print text-center pt-3" style="overflow-x: auto;">
             <div class="d-flex justify-content-center align-items-center flex-nowrap">
                 <!-- Record Button -->
                 <button type="button" data-toggle="modal" style="height: 40px;" data-target="#myModal2"
@@ -465,124 +425,9 @@
                     فاتورة غير ضريبية
                 </a>
             </div>
-        </div> --}}
-        {{-- <div class="col-lg-12 no-print text-center pt-3 d-flex flex-wrap justify-content-center">
-            <!-- Record Button -->
-            <button type="button" data-toggle="modal" style="height: 40px;" data-target="#myModal2"
-                class="btn btn-md btn-dark pay_btn m-1">
-                <i class="fa fa-money"></i> {{ __('main.record') }}
-            </button>
-
-            <!-- Save and Print 1 Button -->
-            <button type="button" role="button" class="btn save_btn1 btn-md btn-info text-white m-1" isMoswada="0"
-                invoiceType='2' style="height: 40px;">
-                حفظ و طباعة 1
-            </button>
-
-            <!-- Add Button -->
-            <button type="button" id="add" class="btn btn-info btn-md m-1" style="height: 40px;">
-                <i class="fa fa-plus"></i> {{ __('sales_bills.save') }}
-            </button>
-
-            <!-- Save and Print 2 Button -->
-            <a href="javascript:;" role="button"
-                style="height: 40px; border:1px solid #085d4a; background: #085d4a !important; color:white !important;"
-                class="btn save_btn2 btn-md m-1" printColor="1" isMoswada="0" invoiceType='2'>
-                حفظ و طباعة 2
-            </a>
-
-            <!-- Save and Print 3 Button -->
-            <a href="javascript:;" role="button"
-                style="height: 40px; border:1px solid #5e8b0b; background: #5e8b0b !important; color:white !important;"
-                class="btn save_btn2 btn-md btn-primary m-1" printColor="2" isMoswada="0" invoiceType='4'>
-                حفظ و طباعة 3
-            </a>
-
-            <!-- Save and Print 4 Button -->
-            <a href="javascript:;" role="button" style="height: 40px;" class="btn save_btn2 btn-md btn-primary m-1"
-                printColor="2" isMoswada="0" invoiceType='2'>
-                حفظ و طباعة 4
-            </a>
-
-            <!-- Draft Invoice Button -->
-            <a href="javascript:;" role="button" style="height: 40px;" class="btn save_btn2 btn-md btn-warning m-1"
-                printColor="2" isMoswada="1" invoiceType='2'>
-                فاتورة مسودة
-            </a>
-
-            <!-- Non-Tax Invoice Button -->
-            <a href="javascript:;" role="button" style="height: 40px;" class="btn save_btn2 btn-md btn-success m-1"
-                printColor="2" isMoswada="0" invoiceType='3'>
-                فاتورة غير ضريبية
-            </a>
-        </div> --}}
-        <div class="row no-print text-center" style="padding-top: 25px;">
-            <div class="col-12 col-sm-auto mb-2">
-                <button type="button" data-toggle="modal" style="height: 40px;" data-target="#myModal2"
-                    class="btn btn-md btn-dark pay_btn">
-                    <i class="fa fa-money"></i>
-                    {{ __('main.record') }}
-                </button>
-            </div>
-
-            <!-- PRINT MAIN INVOICE -->
-            {{-- <div class="col-12 col-sm-auto mb-2">
-                <a href="javascript:;" role="button" class="btn save_btn1 btn-md btn-info text-white" isMoswada="0" invoiceType='2' style="height: 40px;">
-                    حفظ و طباعة 1
-                </a>
-            </div> --}}
-
-            <div class="col-12 col-sm-auto mb-2">
-                <button type="button" id="add" class="btn btn-info btn-md" style="height: 40px;">
-                    <i class="fa fa-plus"></i>
-                    {{ __('sales_bills.save') }}
-                </button>
-            </div>
-
-            <div class="col-12 col-sm-auto mb-2">
-                <button type="button" role="button" class="btn save_btn1 btn-md btn-info text-white" isMoswada="0"
-                    invoiceType='2' style="height: 40px;">
-                    حفظ و طباعة 1
-                </button>
-            </div>
-
-            <div class="col-12 col-sm-auto mb-2">
-                <a href="javascript:;"
-                    style="height: 40px;border:1px solid #085d4a;background: #085d4a !important;color:white !important;"
-                    role="button" class="btn save_btn2 btn-md" printColor="1" isMoswada="0" invoiceType='2'>
-                    حفظ و طباعة 2
-                </a>
-            </div>
-
-            <div class="col-12 col-sm-auto mb-2">
-                <a href="javascript:;" role="button"
-                    style="height: 40px;border:1px solid #5e8b0b;background: #5e8b0b !important;color:white !important;"
-                    class="btn save_btn2 btn-md btn-primary" printColor="2" isMoswada="0" invoiceType='4'>
-                    حفظ و طباعة 3
-                </a>
-            </div>
-
-            <div class="col-12 col-sm-auto mb-2">
-                <a href="javascript:;" role="button" style="height: 40px;" class="btn save_btn2 btn-md btn-primary"
-                    printColor="2" isMoswada="0" invoiceType='2'>
-                    حفظ و طباعة 4
-                </a>
-            </div>
-
-            <div class="col-12 col-sm-auto mb-2">
-                <a href="javascript:;" role="button" style="height: 40px;" class="btn save_btn2 btn-md btn-warning"
-                    printColor="2" isMoswada="1" invoiceType='2'>
-                    فاتورة مسودة
-                </a>
-            </div>
-
-            <div class="col-12 col-sm-auto mb-2">
-                <a href="javascript:;" role="button" style="height: 40px;" class="btn save_btn2 btn-md btn-success"
-                    printColor="2" isMoswada="0" invoiceType='3'>
-                    فاتورة غير ضريبية
-                </a>
-            </div>
         </div>
+
+
 
 
 
