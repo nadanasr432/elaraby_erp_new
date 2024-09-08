@@ -180,7 +180,24 @@ class SaleBillController extends Controller
                 });
         } else {
             $stores = $company->stores;
-            $all_products = $company->products;
+            $flatStores = $stores->pluck('id')->toArray();
+            $all_products = Product::where('company_id', $company_id)
+                ->where(function ($query) use ($flatStores) {
+                    $query->whereHas('stocks', function ($query) use ($flatStores) {
+                        $query->whereIn('store_id', $flatStores)
+                            ->selectRaw('SUM(remaining) as total_remaining')
+                            ->having('total_remaining', '>', 0);
+                    })
+                        ->orWhereHas('category', function ($query) {
+                            $query->where('category_type', 'خدمية');
+                        });
+                })->get()->map(function ($product) {
+                    // Include the calculated total_remaining in the result
+                    $product->total_remaining = $product->stocks->sum('remaining');
+                    $product->category_type = $product->category->category_type;
+                    return $product;
+                });
+            // $all_products = $company->products;
         }
         $units = $company->units;
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
@@ -1294,14 +1311,45 @@ class SaleBillController extends Controller
         if (!empty($user->branch_id)) {
             $branch = Branch::FindOrFail($user->branch_id);
             $stores = $branch->stores;
+            $flatStores = $stores->pluck('id')->toArray();
+            // dd($flatStores);
+
             $all_products = Product::where('company_id', $company_id)
-                ->where(function ($query) {
-                    $query->where('first_balance', '>', 0)
-                        ->orWhereNull('first_balance');
-                })->get();
+                ->where(function ($query) use ($flatStores) {
+                    $query->whereHas('stocks', function ($query) use ($flatStores) {
+                        $query->whereIn('store_id', $flatStores)
+                            ->selectRaw('SUM(remaining) as total_remaining')
+                            ->having('total_remaining', '>', 0);
+                    })
+                        ->orWhereHas('category', function ($query) {
+                            $query->where('category_type', 'خدمية');
+                        });
+                })->get()->map(function ($product) {
+                    // Include the calculated total_remaining in the result
+                    $product->total_remaining = $product->stocks->sum('remaining');
+                    $product->category_type = $product->category->category_type;
+                    return $product;
+                });
         } else {
             $stores = $company->stores;
-            $all_products = $company->products;
+            $flatStores = $stores->pluck('id')->toArray();
+            $all_products = Product::where('company_id', $company_id)
+                ->where(function ($query) use ($flatStores) {
+                    $query->whereHas('stocks', function ($query) use ($flatStores) {
+                        $query->whereIn('store_id', $flatStores)
+                            ->selectRaw('SUM(remaining) as total_remaining')
+                            ->having('total_remaining', '>', 0);
+                    })
+                        ->orWhereHas('category', function ($query) {
+                            $query->where('category_type', 'خدمية');
+                        });
+                })->get()->map(function ($product) {
+                    // Include the calculated total_remaining in the result
+                    $product->total_remaining = $product->stocks->sum('remaining');
+                    $product->category_type = $product->category->category_type;
+                    return $product;
+                });
+            // $all_products = $company->products;
         }
         $units = $company->units;
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
