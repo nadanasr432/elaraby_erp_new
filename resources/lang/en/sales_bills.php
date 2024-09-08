@@ -30,7 +30,7 @@ return [
     "invoice to" => "invoice to",
     "unit price" => "price",
     "product name" => "product name",
-    "description"=> "Description",
+    "description" => "Description",
     "Send to whatsapp" => "Send to whatsapp",
     "Total prices of all offers" => "Total prices of all offers",
     "Total including tax" => "Total including tax",
@@ -113,4 +113,5 @@ return [
     'add-client' => 'Add client',
     'add-store' => 'Add store',
     'edit' => 'Edit',
+    'choose product' => 'Choose product',
 ];

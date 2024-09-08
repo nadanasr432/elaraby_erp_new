@@ -285,14 +285,14 @@
                                 <td class="borderLeftH">{{ $prodTax }} {{ $company->extra_settings->currency }}
                                 </td>
                                 <td class="borderLeftH" dir="rtl">
-                                    {{ $product->product_price }} {{ $company->extra_settings->currency }}
+                                    {{ $product->product_price * $product->quantity }} {{ $company->extra_settings->currency }}
                                 </td>
                                 <td class="borderLeftH" dir="rtl">
                                     {{ $product->quantity }}
                                     {{ $product->product->unit ? $product->product->unit->unit_name : ' ' }}
                                 </td>
                                 <td class="borderLeftH" dir="rtl">
-                                    {{ $product->product_price }} {{ $company->extra_settings->currency }}
+                                    {{ $product->product_price * $product->quantity }} {{ $company->extra_settings->currency }}
                                 </td>
                                 <td class="borderLeftH" style="direction: rtl; unicode-bidi: embed;">
                                     {{ $product->product->description }}

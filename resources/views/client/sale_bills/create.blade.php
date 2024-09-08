@@ -120,7 +120,7 @@
                 </label>
                 <div class="d-flex align-items-center justify-content-between">
                     <select name="product_id" id="product_id" class="selectpicker w-50" data-style="btn-new_color"
-                        data-live-search="true" title="{{ __('sales_bills.product-code') }}">
+                        data-live-search="true" title="{{ __('sales_bills.choose product') }}">
                         @foreach ($all_products as $product)
                             <option value="{{ $product->id }}" data-name="{{ strtolower($product->product_name) }}"
                                 data-sectorprice="{{ $product->sector_price }}"
@@ -153,9 +153,9 @@
                 <div class="d-flex align-items-center justify-content-between">
                     <select required name="value_added_tax" id="value_added_tax" class="selectpicker w-100"
                         data-style="btn-new_color" data-live-search="true">
-                        <option value="0">
+                        <option value="0" selected>
                             {{ __('sales_bills.not-including-tax') }}</option>
-                        <option value="2" selected>
+                        <option value="2">
                             {{ __('sales_bills.including-tax') }}</option>
                         <option value="1">
                             {{ __('sales_bills.exempt-tax') }}</option>
@@ -169,100 +169,72 @@
         <input type="number" id='grand_tax_input' name="grand_tax" hidden>
         <input type="number" id='grand_discount_input' name="total_discount" hidden>
 
-        <!-- Table to display selected products
-                        <table class="table table-bordered mt-2" id="products_table">
-                            <thead>
-                                <tr>
-                                    <th>{{ __('sales_bills.product') }}</th>
-                                    <th>{{ __('sales_bills.price_type') }}</th>
-                                    <th>{{ __('sales_bills.price') }}</th>
-                                    <th>{{ __('sales_bills.quantity') }}</th>
-                                    <th>{{ __('sales_bills.unit') }}</th>
-                                    <th>{{ __('sales_bills.discount') }}
-                                        <div class="tax_discount"
-                                            style="display: inline-block; margin-left: 10px; vertical-align: middle;">
-                                            <select id="discount_application" class="form-control form-control-sm"
-                                                style="font-size: 12px; width: 20px; height: 20px;" name="products_discount_type">
-                                                <option value="before_tax">{{ __('sales_bills.discount_before_tax') }}</option>
-                                                <option value="after_tax">{{ __('sales_bills.discount_after_tax') }}</option>
-                                            </select>
-                                        </div>
-                                    </th>
-                                    <th>{{ __('sales_bills.tax') }}</th>
-                                    <th>{{ __('sales_bills.total') }}</th>
-                                    <th>{{ __('sales_bills.actions') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="6">{{ __('sales_bills.grand_tax') }}</td>
-                                    <td colspan="3" id="grand_tax" class="text-right">0.00</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="6">{{ __('sales_bills.grand_total') }}</td>
-                                    <td colspan="3" id="grand_total" class="text-right">0.00</td>
-                                </tr>
-                            </tfoot>
-                        </table> -->
-        <table class="table table-bordered mt-2" id="products_table"
-            style="background-color: #ffffff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); border-radius: 5px;">
-            <thead>
-                <tr>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                        {{ __('sales_bills.product') }}</th>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                        {{ __('sales_bills.price_type') }}</th>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                        {{ __('sales_bills.price') }}</th>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                        {{ __('sales_bills.quantity') }}</th>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                        {{ __('sales_bills.unit') }}</th>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 5px; font-weight: bold;">
-                        {{ __('sales_bills.discount') }}
-                        <div class="tax_discount"
-                            style="display: inline-block; margin-left: 10px; vertical-align: middle;">
-                            <select id="discount_application" class="form-control" style="font-size: 12px; height: 30px;"
-                                name="products_discount_type">
-                                <option value="before_tax">{{ __('sales_bills.discount_before_tax') }}</option>
-                                <option value="after_tax">{{ __('sales_bills.discount_after_tax') }}</option>
-                            </select>
-                        </div>
-                    </th>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                        {{ __('sales_bills.tax') }}</th>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                        {{ __('sales_bills.total') }}</th>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                        {{ __('sales_bills.actions') }}</th>
-                </tr>
-            </thead>
-            <tbody style="text-align: center;">
-                <!-- هنا يتم عرض البيانات -->
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="6" style="background-color: #f9f9f9; font-weight: bold;">
-                        {{ __('sales_bills.grand_tax') }}</td>
-                    <td colspan="3" id="grand_tax" class="text-right" style="background-color: #f9f9f9;">0.00</td>
-                </tr>
-                <tr>
-                    <td colspan="6" style="background-color: #f9f9f9; font-weight: bold;">
-                        {{ __('sales_bills.grand_total') }}</td>
-                    <td colspan="3" id="grand_total" class="text-right" style="background-color: #f9f9f9;">0.00</td>
-                </tr>
-            </tfoot>
-        </table>
+
+        <div class="container">
+            <div class="table-responsive">
+                <table class="table table-bordered mt-2" id="products_table"
+                    style="background-color: #ffffff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); border-radius: 5px;">
+                    <thead>
+                        <tr>
+                            <th
+                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                {{ __('sales_bills.product') }}</th>
+                            <th
+                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                {{ __('sales_bills.price_type') }}</th>
+                            <th
+                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                {{ __('sales_bills.price') }}</th>
+                            <th
+                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                {{ __('sales_bills.quantity') }}</th>
+                            <th
+                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                {{ __('sales_bills.unit') }}</th>
+                            <th
+                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 5px; font-weight: bold;">
+                                {{ __('sales_bills.discount') }}
+                                <div class="tax_discount"
+                                    style="display: inline-block; margin-left: 10px; vertical-align: middle;">
+                                    <select id="discount_application" class="form-control"
+                                        style="font-size: 12px; height: 30px;" name="products_discount_type">
+                                        <option value="before_tax">{{ __('sales_bills.discount_before_tax') }}</option>
+                                        <option value="after_tax">{{ __('sales_bills.discount_after_tax') }}</option>
+                                    </select>
+                                </div>
+                            </th>
+                            <th
+                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                {{ __('sales_bills.tax') }}</th>
+                            <th
+                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                {{ __('sales_bills.total') }}</th>
+                            <th
+                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                {{ __('sales_bills.actions') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody style="text-align: center;">
+                        <!-- هنا يتم عرض البيانات -->
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="6" style="background-color: #f9f9f9; font-weight: bold;">
+                                {{ __('sales_bills.grand_tax') }}</td>
+                            <td colspan="3" id="grand_tax" class="text-right" style="background-color: #f9f9f9;">0.00
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" style="background-color: #f9f9f9; font-weight: bold;">
+                                {{ __('sales_bills.grand_total') }}</td>
+                            <td colspan="3" id="grand_total" class="text-right" style="background-color: #f9f9f9;">
+                                0.00</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
 
 
 
@@ -337,8 +309,8 @@
                     <input type="number" value="0" name="discount_value" min="0"
                         style="width: 20%;display: inline;float: right;" id="discount_value" class="form-control "
                         step = "any" />
-                          <input type="text" name="discount_note" id="discount_note" placeholder="ملاحظات الخصم. . ."
-                class="form-control mt-5"  style="width: 80%;">
+                    <input type="text" name="discount_note" id="discount_note" placeholder="ملاحظات الخصم. . ."
+                        class="form-control mt-5" style="width: 80%;">
                     {{-- <span id="dicountForBill"></span> --}}
                 </div>
 
@@ -391,7 +363,7 @@
             </div>
         </div>
 
-        <div class="col-lg-12 no-print text-center"
+        {{-- <div class="col-lg-12 no-print text-center"
             style="padding-top: 25px;height: auto !important;display: flex;justify-content: center;">
             <button type="button" data-toggle="modal" style="height: 40px;" data-target="#myModal2"
                 class="btn btn-md btn-dark pay_btn pull-right">
@@ -402,10 +374,7 @@
 
 
             <!------PRINT MAIN INVOICE---->
-            {{-- <a href="javascript:;" role="button" class="btn save_btn1 btn-md btn-info text-white pull-right ml-1 "
-                isMoswada="0" invoiceType='2' style="height: 40px;">
-                حفظ و طباعة 1
-            </a> --}}
+
             <button type="button" id="add" class="btn btn-info btn-md ml-1" style="height: 40px;">
                 <i class="fa fa-plus"></i>
                 {{ __('sales_bills.save') }}
@@ -444,7 +413,180 @@
                 class="btn save_btn2 btn-md btn-success pull-right ml-1" printColor="2" isMoswada="0" invoiceType='3'>
                 فاتورة غير ضريبية
             </a>
+        </div> --}}
+        {{-- <div class="col-lg-12 no-print text-center pt-3" style="overflow-x: auto;">
+            <div class="d-flex justify-content-center align-items-center flex-nowrap">
+                <!-- Record Button -->
+                <button type="button" data-toggle="modal" style="height: 40px;" data-target="#myModal2"
+                    class="btn btn-md btn-dark pay_btn m-1">
+                    <i class="fa fa-money"></i> {{ __('main.record') }}
+                </button>
+
+                <!-- Save and Print 1 Button -->
+                <button type="button" role="button" class="btn save_btn1 btn-md btn-info text-white m-1"
+                    isMoswada="0" invoiceType='2' style="height: 40px;">
+                    حفظ و طباعة 1
+                </button>
+
+                <!-- Add Button -->
+                <button type="button" id="add" class="btn btn-info btn-md m-1" style="height: 40px;">
+                    <i class="fa fa-plus"></i> {{ __('sales_bills.save') }}
+                </button>
+
+                <!-- Save and Print 2 Button -->
+                <a href="javascript:;" role="button"
+                    style="height: 40px; border:1px solid #085d4a; background: #085d4a !important; color:white !important;"
+                    class="btn save_btn2 btn-md m-1" printColor="1" isMoswada="0" invoiceType='2'>
+                    حفظ و طباعة 2
+                </a>
+
+                <!-- Save and Print 3 Button -->
+                <a href="javascript:;" role="button"
+                    style="height: 40px; border:1px solid #5e8b0b; background: #5e8b0b !important; color:white !important;"
+                    class="btn save_btn2 btn-md btn-primary m-1" printColor="2" isMoswada="0" invoiceType='4'>
+                    حفظ و طباعة 3
+                </a>
+
+                <!-- Save and Print 4 Button -->
+                <a href="javascript:;" role="button" style="height: 40px;" class="btn save_btn2 btn-md btn-primary m-1"
+                    printColor="2" isMoswada="0" invoiceType='2'>
+                    حفظ و طباعة 4
+                </a>
+
+                <!-- Draft Invoice Button -->
+                <a href="javascript:;" role="button" style="height: 40px;" class="btn save_btn2 btn-md btn-warning m-1"
+                    printColor="2" isMoswada="1" invoiceType='2'>
+                    فاتورة مسودة
+                </a>
+
+                <!-- Non-Tax Invoice Button -->
+                <a href="javascript:;" role="button" style="height: 40px;" class="btn save_btn2 btn-md btn-success m-1"
+                    printColor="2" isMoswada="0" invoiceType='3'>
+                    فاتورة غير ضريبية
+                </a>
+            </div>
+        </div> --}}
+        {{-- <div class="col-lg-12 no-print text-center pt-3 d-flex flex-wrap justify-content-center">
+            <!-- Record Button -->
+            <button type="button" data-toggle="modal" style="height: 40px;" data-target="#myModal2"
+                class="btn btn-md btn-dark pay_btn m-1">
+                <i class="fa fa-money"></i> {{ __('main.record') }}
+            </button>
+
+            <!-- Save and Print 1 Button -->
+            <button type="button" role="button" class="btn save_btn1 btn-md btn-info text-white m-1" isMoswada="0"
+                invoiceType='2' style="height: 40px;">
+                حفظ و طباعة 1
+            </button>
+
+            <!-- Add Button -->
+            <button type="button" id="add" class="btn btn-info btn-md m-1" style="height: 40px;">
+                <i class="fa fa-plus"></i> {{ __('sales_bills.save') }}
+            </button>
+
+            <!-- Save and Print 2 Button -->
+            <a href="javascript:;" role="button"
+                style="height: 40px; border:1px solid #085d4a; background: #085d4a !important; color:white !important;"
+                class="btn save_btn2 btn-md m-1" printColor="1" isMoswada="0" invoiceType='2'>
+                حفظ و طباعة 2
+            </a>
+
+            <!-- Save and Print 3 Button -->
+            <a href="javascript:;" role="button"
+                style="height: 40px; border:1px solid #5e8b0b; background: #5e8b0b !important; color:white !important;"
+                class="btn save_btn2 btn-md btn-primary m-1" printColor="2" isMoswada="0" invoiceType='4'>
+                حفظ و طباعة 3
+            </a>
+
+            <!-- Save and Print 4 Button -->
+            <a href="javascript:;" role="button" style="height: 40px;" class="btn save_btn2 btn-md btn-primary m-1"
+                printColor="2" isMoswada="0" invoiceType='2'>
+                حفظ و طباعة 4
+            </a>
+
+            <!-- Draft Invoice Button -->
+            <a href="javascript:;" role="button" style="height: 40px;" class="btn save_btn2 btn-md btn-warning m-1"
+                printColor="2" isMoswada="1" invoiceType='2'>
+                فاتورة مسودة
+            </a>
+
+            <!-- Non-Tax Invoice Button -->
+            <a href="javascript:;" role="button" style="height: 40px;" class="btn save_btn2 btn-md btn-success m-1"
+                printColor="2" isMoswada="0" invoiceType='3'>
+                فاتورة غير ضريبية
+            </a>
+        </div> --}}
+        <div class="row no-print text-center" style="padding-top: 25px;">
+            <div class="col-12 col-sm-auto mb-2">
+                <button type="button" data-toggle="modal" style="height: 40px;" data-target="#myModal2"
+                    class="btn btn-md btn-dark pay_btn">
+                    <i class="fa fa-money"></i>
+                    {{ __('main.record') }}
+                </button>
+            </div>
+
+            <!-- PRINT MAIN INVOICE -->
+            {{-- <div class="col-12 col-sm-auto mb-2">
+                <a href="javascript:;" role="button" class="btn save_btn1 btn-md btn-info text-white" isMoswada="0" invoiceType='2' style="height: 40px;">
+                    حفظ و طباعة 1
+                </a>
+            </div> --}}
+
+            <div class="col-12 col-sm-auto mb-2">
+                <button type="button" id="add" class="btn btn-info btn-md" style="height: 40px;">
+                    <i class="fa fa-plus"></i>
+                    {{ __('sales_bills.save') }}
+                </button>
+            </div>
+
+            <div class="col-12 col-sm-auto mb-2">
+                <button type="button" role="button" class="btn save_btn1 btn-md btn-info text-white" isMoswada="0"
+                    invoiceType='2' style="height: 40px;">
+                    حفظ و طباعة 1
+                </button>
+            </div>
+
+            <div class="col-12 col-sm-auto mb-2">
+                <a href="javascript:;"
+                    style="height: 40px;border:1px solid #085d4a;background: #085d4a !important;color:white !important;"
+                    role="button" class="btn save_btn2 btn-md" printColor="1" isMoswada="0" invoiceType='2'>
+                    حفظ و طباعة 2
+                </a>
+            </div>
+
+            <div class="col-12 col-sm-auto mb-2">
+                <a href="javascript:;" role="button"
+                    style="height: 40px;border:1px solid #5e8b0b;background: #5e8b0b !important;color:white !important;"
+                    class="btn save_btn2 btn-md btn-primary" printColor="2" isMoswada="0" invoiceType='4'>
+                    حفظ و طباعة 3
+                </a>
+            </div>
+
+            <div class="col-12 col-sm-auto mb-2">
+                <a href="javascript:;" role="button" style="height: 40px;" class="btn save_btn2 btn-md btn-primary"
+                    printColor="2" isMoswada="0" invoiceType='2'>
+                    حفظ و طباعة 4
+                </a>
+            </div>
+
+            <div class="col-12 col-sm-auto mb-2">
+                <a href="javascript:;" role="button" style="height: 40px;" class="btn save_btn2 btn-md btn-warning"
+                    printColor="2" isMoswada="1" invoiceType='2'>
+                    فاتورة مسودة
+                </a>
+            </div>
+
+            <div class="col-12 col-sm-auto mb-2">
+                <a href="javascript:;" role="button" style="height: 40px;" class="btn save_btn2 btn-md btn-success"
+                    printColor="2" isMoswada="0" invoiceType='3'>
+                    فاتورة غير ضريبية
+                </a>
+            </div>
         </div>
+
+
+
+
         <div class="modal fade" dir="rtl" id="myModal2" tabindex="-1" role="dialog"
             aria-labelledby="myModalLabel2">
             <div class="modal-dialog modal-lg" role="document">
@@ -1556,7 +1698,7 @@
                     99999;
                 var valueAddedTax = $('#value_added_tax').val(); // الحصول على إعداد الضريبة المختار
                 console.log(valueAddedTax);
-
+                $(this).val("");
                 if (existingRow.length > 0) {
                     var quantityInput = existingRow.find(
                         `input[name="products[${existingRow.data('index')}][quantity]"]`);

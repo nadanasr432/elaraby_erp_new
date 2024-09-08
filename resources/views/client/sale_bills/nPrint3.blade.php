@@ -407,13 +407,13 @@
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
                                             {{ $element->product->product_name }}</td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
-                                            {{ $productPrice }} {{ $currency }}</td>
+                                            {{ $element->product_price }} {{ $currency }}</td>
                                         <td class="text-center" style="border: 1px solid rgba(161,161,161,0.63);">
                                             <span>{{ $element->quantity }}</span>
                                             <span>{{ $element->unit->unit_name }}</span>
                                         </td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
-                                            {{ $element->tax_type == 2 ? $element->product_price - $element->tax_value : $element->product_price }}
+                                            {{ $element->quantity_price }}
                                             {{ $currency }}
                                         </td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
@@ -421,7 +421,7 @@
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
                                             {{ $element->discount_value }}</td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
-                                            {{ $element->quantity_price }}</td>
+                                            {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $element->discount_value : $element->quantity_price - $element->discount_value }}</td>
                                     </tr>
                                 @endforeach
                             @endif
@@ -466,13 +466,13 @@
                                     <tr
                                         style="font-size: 15px !important; height: 44px !important; text-align: center; background: #f2f2f2">
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
-                                            {{ $element->quantity_price }}</td>
+                                            {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $element->discount_value : $element->quantity_price - $element->discount_value }}</td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
                                             {{ $element->discount_value }}</td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
                                             {{ $element->tax_value }}</td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
-                                            {{ $element->tax_type == 2 ? $element->product_price - $element->tax_value : $element->product_price }}
+                                            {{ $element->quantity_price }}
                                             {{ $currency }}
                                         </td>
                                         <td class="text-center" style="border: 1px solid rgba(161,161,161,0.63);">
@@ -480,7 +480,7 @@
                                             <span>{{ $element->quantity }}</span>
                                         </td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
-                                            {{ $productPrice }} {{ $currency }}</td>
+                                            {{ $element->product_price }} {{ $currency }}</td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
                                             {{ $element->product->product_name }}</td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">{{ ++$i }}</td>
