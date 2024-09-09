@@ -34,7 +34,7 @@
         <h6 class="alert alert-info alert-sm text-center no-print  font-weight-bold" dir="rtl"
             style="background-color: #d8daf5 !important; border:#d8daf5">
             <center>
-                {{ __('sidebar.edit-sales-invoice') }} {{$saleBill->sale_bill_number}}
+                {{ __('sidebar.edit-sales-invoice') }} {{ $saleBill->sale_bill_number }}
             </center>
         </h6>
 
@@ -162,7 +162,7 @@
         <input type="number" id='grand_total_input' name="grand_total" hidden>
         <input type="number" id='grand_tax_input' name="grand_tax" hidden>
         <input type="number" id='grand_discount_input' name="total_discount" hidden>
-        <input type="number" value="{{$saleBill->sale_bill_number}}" name="sale_bill_number" hidden>
+        <input type="number" value="{{ $saleBill->sale_bill_number }}" name="sale_bill_number" hidden>
 
 
         <table class="table table-bordered mt-2" id="products_table"
@@ -998,19 +998,21 @@
 
                 var formData = $('#myForm').serialize();
                 $.post("{{ url('/client/sale-bills/update') }}", formData, function(data) {
-
                     if (data.status === true) {
-                        //-----show success msg.------//
+                        // Show success message
                         $('.box_success').removeClass('d-none').fadeIn(200);
                         $('.msg_success').html(data.msg);
                         $('.box_success').delay(3000).fadeOut(300);
                         window.location.href = `/client/sale-bill/${data.id}`;
                     } else {
+                        // Show error message and alert with the error message
                         $('.box_error').removeClass('d-none').fadeIn(200);
                         $('.msg_error').html(data.msg);
                         $('.box_error').delay(3000).fadeOut(300);
+                        alert(data.msg); // Add this line to show an alert
                     }
                 });
+
             });
 
         });

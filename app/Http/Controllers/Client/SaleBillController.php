@@ -2947,25 +2947,40 @@ class SaleBillController extends Controller
                 'value_added_tax' => $data['value_added_tax'] ? 1 : 0,
             ]);
 
-            $saleBill->elements()->delete();
 
+            $oldElementIds = $saleBill->elements->pluck('id')->toArray();
+
+            // Get IDs from the incoming data
+            $newProductIds = collect($data['products'])->pluck('product_id')->toArray();
+
+            // Determine which elements are no longer in the incoming data
+            $idsToDelete = array_diff($oldElementIds, $newProductIds);
+
+            // Delete the elements that are no longer present
+            SaleBillElement::where('sale_bill_id', $saleBill->id)
+                ->whereIn('product_id', $idsToDelete)
+                ->delete();
             // Update existing elements or create new ones if needed
             foreach ($data['products'] as $product) {
                 // Find existing sale bill element or create a new one
-                $element = SaleBillElement::create([
-                    'sale_bill_id' => $saleBill->id,
-                    'product_id' => $product['product_id'],
-                    'company_id' => $data['company_id'],
-                    'product_price' => $product['product_price'],
-                    'quantity' => $product['quantity'],
-                    'unit_id' => $product['unit_id'],
-                    'quantity_price' => (float)$product['product_price'] * $product['quantity'],
-                    'tax_value' => (float)$product['tax_amount'],
-                    'discount_value' => (float)$product['discount'],
-                    'tax_type' => (float)$product['tax'],
-                    'price_type' => $product['price_type'],
-                    'discount_type' => $product['discount_type'],
-                ]);
+                SaleBillElement::updateOrCreate(
+                    [
+                        'sale_bill_id' => $saleBill->id,
+                        'product_id' => $product['product_id']
+                    ],
+                    [
+                        'company_id' => $data['company_id'],
+                        'product_price' => $product['product_price'],
+                        'quantity' => $product['quantity'],
+                        'unit_id' => $product['unit_id'],
+                        'quantity_price' => (float)$product['product_price'] * $product['quantity'],
+                        'tax_value' => (float)$product['tax_amount'],
+                        'discount_value' => (float)$product['discount'],
+                        'tax_type' => (float)$product['tax'],
+                        'price_type' => $product['price_type'],
+                        'discount_type' => $product['discount_type'],
+                    ]
+                );
 
                 // Handle discount extras
                 // if (isset($product['discount_type']) && $product['discount_type'] && $product['discount']) {
