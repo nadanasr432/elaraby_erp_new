@@ -1497,6 +1497,9 @@
             });
 
             $('#product_id').on('change', function() {
+                let rowIndex = $('#products_table tbody tr').length;
+                console.log(rowIndex);
+
                 var productId = $(this).val();
                 var productName = $('option:selected', this).data('name');
                 var sectorPrice = $('option:selected', this).data('sectorprice');
@@ -1508,7 +1511,7 @@
                     99999;
                 var valueAddedTax = $('#value_added_tax').val(); // الحصول على إعداد الضريبة المختار
                 console.log(valueAddedTax);
-
+                $(this).val("");
                 if (existingRow.length > 0) {
                     var quantityInput = existingRow.find(
                         `input[name="products[${existingRow.data('index')}][quantity]"]`);
