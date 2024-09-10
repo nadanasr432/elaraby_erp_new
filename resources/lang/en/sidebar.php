@@ -187,4 +187,5 @@ return [
     "products-are-expired"=> "Expired products",
     "Manufacture"=> "Manufacture",
     "Status"=> "Status",
+    "New sales"=> "New sales",
 ];

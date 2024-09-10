@@ -19,6 +19,7 @@ use App\Http\Controllers\Client\RoleController;
 use App\Http\Controllers\Client\RoomController;
 use App\Http\Controllers\Client\SafeController;
 use App\Http\Controllers\Client\UnitController;
+use App\Http\Controllers\ManufactureController;
 use App\Http\Controllers\Client\BondsController;
 use App\Http\Controllers\Client\DailyController;
 use App\Http\Controllers\Client\EmailController;
@@ -34,7 +35,6 @@ use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\Client\CouponController;
 use App\Http\Controllers\Client\GroupeController;
 use App\Http\Controllers\Client\ReportController;
-use App\Http\Controllers\ManufactureController;
 use App\Http\Controllers\Client\BuyBillController;
 use App\Http\Controllers\Client\CapitalController;
 use App\Http\Controllers\Client\CountryController;
@@ -50,6 +50,7 @@ use App\Http\Controllers\Client\SupplierController;
 // use App\Http\Controllers\Client\JournalEntryController;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Client\QuotationController;
+use App\Http\Controllers\Client\SaleBillController1;
 use App\Http\Controllers\Client\CostCenterController;
 use App\Http\Controllers\Admin\SubscriptionController;
 use App\Http\Controllers\Client\OuterClientController;
@@ -688,6 +689,15 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
                 'store' => 'client.sale_bills.store',
                 'show' => 'client.sale_bills.show',
             ]);
+            Route::resource('sale-bills-new', SaleBillController1::class)->names([
+                'index' => 'client.sale_bills.index1',
+                'create' => 'client.sale_bills.create1',
+                'update' => 'client.sale_bills.update1',
+                'destroy' => 'client.sale_bills.destroy1',
+                'edit' => 'client.sale_bills.edit1',
+                'store' => 'client.sale_bills.store1',
+                'show' => 'client.sale_bills.show1',
+            ]);
             Route::get('/generate-invoice-pdf/{saleBillId}/{hashtoken?}/{invoiceType?}/{printColor?}/{isMoswada?}', [SaleBillController::class, 'generateInvoicePdf'])
             ->name('generate.invoice.pdf');
 
@@ -705,11 +715,13 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::post('/sale-bills/edit-element', [SaleBillController::class, 'edit_element']);
 
             Route::post('/sale-bills/post', [SaleBillController::class, 'save']);
-            Route::post('/sale-bills/update', [SaleBillController::class, 'update']);
+            Route::post('/sale-bills/post1', [SaleBillController1::class, 'save']);
+            Route::post('/sale-bills/update', [SaleBillController1::class, 'update']);
             Route::post('/sale-bills/discount', [SaleBillController::class, 'apply_discount']);
             Route::post('/sale-bills/extra', [SaleBillController::class, 'apply_extra']);
             Route::post('/sale-bills/updateData', [SaleBillController::class, 'updateData']);
             Route::post('/sale-bills/saveAll', [SaleBillController::class, 'saveAll']);
+            Route::post('/sale-bills/saveAll1', [SaleBillController1::class, 'saveAll']);
             Route::post('/clients-store-cash-outer-clients-sale-bills', [SaleBillController::class, 'store_cash_outer_clients'])->name('client.store.cash.outerClients.SaleBill');
             Route::post('/sale-bills/refresh', [SaleBillController::class, 'refresh']);
 
@@ -739,6 +751,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::post('/sale-bills/updateStatusOnEdit', [SaleBillController::class, 'updateStatusOnEdit'])->name('sale_bills.updateStatusOnEdit');
             Route::post('/sale_bills/toggle_status', [SaleBillController::class, 'toggleStatus'])->name('client.sale_bills.toggle_status');
             Route::get('/sale-bill/{id}', [SaleBillController::class, 'show'])->name('sale-bill-show');
+            Route::get('/sale-bill1/{id}', [SaleBillController1::class, 'show'])->name('sale-bill-show1');
 
 
             // buy_bills Routes

@@ -355,68 +355,77 @@
                                 <th style="border: 1px solid white;">@lang('sales_bills.Quantity')</th>
                                 <th style="border: 1px solid white;">@lang('sales_bills.The amount does not include tax') </th>
                                 <th style="border: 1px solid white;">@lang('sales_bills.Tax')</th>
+                                <th style="border: 1px solid white;">@lang('sales_bills.Discount')</th>
                                 <th style="border: 1px solid white;">@lang('sales_bills.total')</th>
                             </tr>
 
                         </thead>
                         <tbody style="font-size: 15px !important;">
-                            <?php
-                            $extras = $sale_bill->extras;
-                            if (!$elements->isEmpty()) {
-                                $i = 0;
-                                foreach ($elements as $element) {
-                                    #--PRODUCT TAX--#
-                                    if ($company->tax_value_added && $company->tax_value_added != 0) {
-                                        $ProdTax = ($sale_bill->value_added_tax ? round($element->quantity_price - ($element->quantity_price * 20) / 23, 2) : round(($element->quantity_price * 15) / 100, 2)) . ' ' . $currency;
-                                    } else {
+                            @php
+                                $extras = $sale_bill->extras;
+                            @endphp
+
+                            @if (!$elements->isEmpty())
+                                @php $i = 0; @endphp
+                                @foreach ($elements as $element)
+                                    @php
+                                        // Calculate Product Tax
                                         $ProdTax = 0 . ' ' . $currency;
-                                    }
-                                    #--PRODUCT TAX--#
+                                        if ($company->tax_value_added && $company->tax_value_added != 0) {
+                                            $ProdTax = $sale_bill->value_added_tax
+                                                ? round(
+                                                        $element->quantity_price - ($element->quantity_price * 20) / 23,
+                                                        2,
+                                                    ) .
+                                                    ' ' .
+                                                    $currency
+                                                : round(($element->quantity_price * 15) / 100, 2) . ' ' . $currency;
+                                        }
 
-                                    #--PRODUCT TOTAL--#
-                                    if ($company->tax_value_added && $company->tax_value_added != 0) {
-                                        $ProdTotal = ($sale_bill->value_added_tax ? $element->quantity_price : round($element->quantity_price + ($element->quantity_price * 15) / 100, 2)) . ' ' . $currency;
-                                    } else {
+                                        // Calculate Product Total
                                         $ProdTotal = $element->quantity_price . ' ' . $currency;
-                                    }
-                                    #--PRODUCT TOTAL--#
+                                        if ($company->tax_value_added && $company->tax_value_added != 0) {
+                                            $ProdTotal = $sale_bill->value_added_tax
+                                                ? $element->quantity_price . ' ' . $currency
+                                                : round(
+                                                        $element->quantity_price +
+                                                            ($element->quantity_price * 15) / 100,
+                                                        2,
+                                                    ) .
+                                                    ' ' .
+                                                    $currency;
+                                        }
+                                        $productPrice =
+                                            $element->tax_type == 0
+                                                ? $element->product_price + $element->tax_value
+                                                : $element->product_price;
+                                    @endphp
 
-                                    echo '
-                                                                                                                                                                                                    <tr style="font-size: 15px !important; height: 44px !important; text-align: center;background: #f2f2f2">
-                                                                                                                                                                                                        <td style="border: 1px solid rgba(161,161,161,0.63);">' .
-                                        ++$i .
-                                        '</td>
-                                                                                                                                                                                                        <td style="border: 1px solid rgba(161,161,161,0.63);">' .
-                                        $element->product->product_name .
-                                        '</td>
-                                                                                                                                                                                                        <td style="border: 1px solid rgba(161,161,161,0.63);">' .
-                                        $element->product_price .
-                                        ' ' .
-                                        $currency .
-                                        '</td>
-                                                                                                                                                                                                        <td class="text-center" style="border: 1px solid rgba(161,161,161,0.63);">
-                                                                                                                                                                                                            <span>' .
-                                        $element->quantity .
-                                        '</span>
-                                                                                                                                                                                                            <span>' .
-                                        $element->unit->unit_name .
-                                        '</span>
-                                                                                                                                                                                                        </td>
-                                                                                                                                                                                                        <td style="border: 1px solid rgba(161,161,161,0.63);">' .
-                                        ($sale_bill->value_added_tax ? round(($element->quantity_price * 20) / 23, 2) : $element->quantity_price) .
-                                        ' ' .
-                                        $currency .
-                                        '</td>
-                                                                                                                                                                                                        <td style="border: 1px solid rgba(161,161,161,0.63);">' .
-                                        $ProdTax .
-                                        '</td>
-                                                                                                                                                                                                        <td style="border: 1px solid rgba(161,161,161,0.63);">' .
-                                        $ProdTotal .
-                                        '</td>
-                                                                                                                                                                                                    </tr>';
-                                }
-                            }
-                            ?>
+                                    <tr
+                                        style="font-size: 15px !important; height: 44px !important; text-align: center; background: #f2f2f2">
+                                        <td style="border: 1px solid rgba(161,161,161,0.63);">{{ ++$i }}</td>
+                                        <td style="border: 1px solid rgba(161,161,161,0.63);">
+                                            {{ $element->product->product_name }}</td>
+                                        <td style="border: 1px solid rgba(161,161,161,0.63);">
+                                            {{ $element->product_price }} {{ $currency }}</td>
+                                        <td class="text-center" style="border: 1px solid rgba(161,161,161,0.63);">
+                                            <span>{{ $element->quantity }}</span>
+                                            <span>{{ $element->unit->unit_name }}</span>
+                                        </td>
+                                        <td style="border: 1px solid rgba(161,161,161,0.63);">
+                                            {{ $element->quantity_price }}
+                                            {{ $currency }}
+                                        </td>
+                                        <td style="border: 1px solid rgba(161,161,161,0.63);">
+                                            {{ $element->tax_value }}</td>
+                                        <td style="border: 1px solid rgba(161,161,161,0.63);">
+                                            {{ $element->discount_value }}</td>
+                                        <td style="border: 1px solid rgba(161,161,161,0.63);">
+                                            {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $element->discount_value : $element->quantity_price - $element->discount_value }}</td>
+                                    </tr>
+                                @endforeach
+                            @endif
+
 
                         </tbody>
                     </table>
@@ -429,6 +438,7 @@
                             <tr
                                 style="font-size: 15px !important; background: {{ $printColor }}; color: white; height: 44px !important; text-align: center;">
                                 <th style="border: 1px solid white;">@lang('sales_bills.total')</th>
+                                <th style="border: 1px solid white;">@lang('sales_bills.Discount')</th>
                                 <th style="border: 1px solid white;">@lang('sales_bills.Tax')</th>
                                 <th style="border: 1px solid white;">@lang('sales_bills.The amount does not include tax') </th>
                                 <th style="border: 1px solid white;">@lang('sales_bills.Quantity')</th>
@@ -439,64 +449,45 @@
 
                         </thead>
                         <tbody style="font-size: 15px !important;">
-                            <?php
-                            $extras = $sale_bill->extras;
-                            if (!$elements->isEmpty()) {
-                                $i = 0;
-                                foreach ($elements as $element) {
-                                    #--PRODUCT TAX--#
-                                    if ($company->tax_value_added && $company->tax_value_added != 0) {
-                                        $ProdTax = ($sale_bill->value_added_tax ? round($element->quantity_price - ($element->quantity_price * 20) / 23, 2) : round(($element->quantity_price * 15) / 100, 2)) . ' ' . $currency;
-                                    } else {
-                                        $ProdTax = 0 . ' ' . $currency;
-                                    }
-                                    #--PRODUCT TAX--#
+                            @php
+                                $extras = $sale_bill->extras;
+                            @endphp
 
-                                    #--PRODUCT TOTAL--#
-                                    if ($company->tax_value_added && $company->tax_value_added != 0) {
-                                        $ProdTotal = ($sale_bill->value_added_tax ? $element->quantity_price : round($element->quantity_price + ($element->quantity_price * 15) / 100, 2)) . ' ' . $currency;
-                                    } else {
-                                        $ProdTotal = $element->quantity_price . ' ' . $currency;
-                                    }
-                                    #--PRODUCT TOTAL--#
+                            @if (!$elements->isEmpty())
+                                @php $i = 0; @endphp
+                                @foreach ($elements as $element)
+                                    @php
+                                        $productPrice =
+                                            $element->tax_type == 0
+                                                ? $element->product_price + $element->tax_value
+                                                : $element->product_price;
+                                    @endphp
 
-                                    echo '
-                                                                                                                                                                                                                                                    <tr style="font-size: 15px !important; height: 44px !important; text-align: center;background: #f2f2f2">
-                                                                                                                                                                                                                                                        <td style="border: 1px solid rgba(161,161,161,0.63);">' .
-                                        $ProdTotal .
-                                        '</td>
-                                                                                                                                                                                                                                                        <td style="border: 1px solid rgba(161,161,161,0.63);">' .
-                                        $ProdTax .
-                                        '</td>
-                                                                                                                                                                                                                                                        <td style="border: 1px solid rgba(161,161,161,0.63);">' .
-                                        ($sale_bill->value_added_tax ? round(($element->quantity_price * 20) / 23, 2) : $element->quantity_price) .
-                                        ' ' .
-                                        $currency .
-                                        '</td>
-                                                                                                                                                                                                                                                        <td class="text-center" style="border: 1px solid rgba(161,161,161,0.63);">
-                                                                                                                                                                                                                                                            <span>' .
-                                        $element->unit->unit_name .
-                                        '</span>
-                                                                                                                                                                                                                                                            <span>' .
-                                        $element->quantity .
-                                        '</span>
-                                                                                                                                                                                                                                                        </td>
-                                                                                                                                                                                                                                                        <td style="border: 1px solid rgba(161,161,161,0.63);">' .
-                                        $element->product_price .
-                                        ' ' .
-                                        $currency .
-                                        '</td>
-                                                                                                                                                                                                                                                        <td style="border: 1px solid rgba(161,161,161,0.63);">' .
-                                        $element->product->product_name .
-                                        ' </td>
-                                                                                                                                                                                                                                                        <td style="border: 1px solid rgba(161,161,161,0.63);">' .
-                                        ++$i .
-                                        '</td>
-                                                                                                                                                                                                                                                    </tr>
-                                                                                                                                                                                                                                                    ';
-                                }
-                            }
-                            ?>
+                                    <tr
+                                        style="font-size: 15px !important; height: 44px !important; text-align: center; background: #f2f2f2">
+                                        <td style="border: 1px solid rgba(161,161,161,0.63);">
+                                            {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $element->discount_value : $element->quantity_price - $element->discount_value }}</td>
+                                        <td style="border: 1px solid rgba(161,161,161,0.63);">
+                                            {{ $element->discount_value }}</td>
+                                        <td style="border: 1px solid rgba(161,161,161,0.63);">
+                                            {{ $element->tax_value }}</td>
+                                        <td style="border: 1px solid rgba(161,161,161,0.63);">
+                                            {{ $element->quantity_price }}
+                                            {{ $currency }}
+                                        </td>
+                                        <td class="text-center" style="border: 1px solid rgba(161,161,161,0.63);">
+                                            <span>{{ $element->unit->unit_name }}</span>
+                                            <span>{{ $element->quantity }}</span>
+                                        </td>
+                                        <td style="border: 1px solid rgba(161,161,161,0.63);">
+                                            {{ $element->product_price }} {{ $currency }}</td>
+                                        <td style="border: 1px solid rgba(161,161,161,0.63);">
+                                            {{ $element->product->product_name }}</td>
+                                        <td style="border: 1px solid rgba(161,161,161,0.63);">{{ ++$i }}</td>
+                                    </tr>
+                                @endforeach
+                            @endif
+
 
                         </tbody>
                     </table>
@@ -505,10 +496,10 @@
             <?php
             if ($sale_bill->company_id == 20) {
                 echo "<p style='text-align: justify; direction: rtl; font-size: 12px; padding: 11px; background: #f3f3f3; margin: 2px 10px; border-radius: 6px; border: 1px solid #2d2d2d10;'>
-                                                                                                                <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
-                                                                                                                شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
-                                                                                                                (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
-                                                                                                            </p>";
+                                                                                                                            <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
+                                                                                                                            شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
+                                                                                                                            (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
+                                                                                                                        </p>";
             }
             ?>
             @if (app()->getLocale() == 'en')
@@ -517,7 +508,7 @@
                     <div class="products-details p-2 col-6">
                         <table
                             style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                            @if (!empty($discount) && $discount->value > 0)
+                            @if (!empty($discount) && $discount > 0)
                                 <tr
                                     style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;background: #f2f2f2">
                                     <td style="text-align: left;padding-left: 14px;">@lang('sales_bills.Discount')</td>
@@ -630,7 +621,7 @@
                     <div class="products-details p-2 col-6">
                         <table
                             style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                            @if (!empty($discount) && $discount->value > 0)
+                            @if (!empty($discount) && $discount > 0)
                                 <tr
                                     style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;background: #f2f2f2">
                                     <td dir="rtl">
@@ -745,7 +736,7 @@
 
 <script>
     function sendToWhatsApp() {
-        const clientPhone = '{{ isset($sale_bill->outerClient->phones[0])?$sale_bill->outerClient->phones[0]->client_phone:"" }}';
+        const clientPhone = '{{ $sale_bill->outerClient->phones[0]->client_phone ?? '-' }}';
         const invoiceUrl = '{{ route('client.sale_bills.sent', [$sale_bill->token, 2, 1, 0]) }}';
         const message = `Please check your invoice at the following link: ${invoiceUrl}`;
         const whatsappUrl = `https://wa.me/${clientPhone}?text=${encodeURIComponent(message)}`;

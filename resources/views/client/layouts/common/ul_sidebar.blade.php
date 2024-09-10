@@ -433,6 +433,51 @@
                 @endif
             @endif
             <!----------------------------------------SALES SECTION------------------------------------>
+            <!------------------------------------new SALES SECTION------------------------------------>
+            @if (empty($package) || $package->sales == '1')
+            @if ($screen_settings->sales == '1')
+                <li class="nav-item {{ Request::is('*/quotations*', '*/sale_bills*') ? 'active open' : '' }}">
+                    <a href="javascript:;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                            <path
+                                d="M24 0C10.7 0 0 10.7 0 24S10.7 48 24 48H76.1l60.3 316.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24-10.7 24-24s-10.7-24-24-24H179.9l-9.1-48h317c14.3 0 26.9-9.5 30.8-23.3l54-192C578.3 52.3 563 32 541.8 32H122l-2.4-12.5C117.4 8.2 107.5 0 96 0H24zM176 512c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm336-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM252 160c0-11 9-20 20-20h44V96c0-11 9-20 20-20s20 9 20 20v44h44c11 0 20 9 20 20s-9 20-20 20H356v44c0 11-9 20-20 20s-20-9-20-20V180H272c-11 0-20-9-20-20z" />
+                        </svg>
+                        <span class="menu-title">
+                            {{ __('sidebar.New sales') }}
+                            <span class="badge badge-danger">{{ __('sidebar.new') }}</span> <!-- Add this line -->
+                        </span>
+                    </a>
+                    <ul class="menu-content">
+                        <li class="nav-item {{ Request::is('*/sale_bills*') ? 'active open' : '' }}">
+                            <a href="javascript:;">
+                                <i class="fa fa-plus text-success tx-20"></i>
+                                <span class="menu-title">
+                                    {{ __('sidebar.sales-invoices') }}
+                                </span>
+                            </a>
+                            <ul class="menu-content">
+                                @can('فواتير البيع السابقة (عرض فقط)')
+                                    <li class="{{ Request::is('*/sale-bills-new') ? 'active' : '' }}">
+                                        <a href="{{ route('client.sale_bills.index1') }}">
+                                            <svg style="width: 12px;fill:lightgreen;"
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                <path
+                                                    d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                                            </svg>
+                                            <span class="menu-title">
+                                                {{ __('sidebar.sales-invoices') }}
+                                            </span>
+                                        </a>
+                                    </li>
+                                @endcan
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            @endif
+        @endif
+
+            <!----------------------------------------SALES SECTION------------------------------------>
 
 
             <!----------------------------------------PURCHASES SECTION------------------------------------>

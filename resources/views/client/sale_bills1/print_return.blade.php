@@ -1,15 +1,16 @@
 <?php
-$company = \App\Models\Company::FindOrFail($sale_bill_return->company_id);
+$company = \App\Models\Company::FindOrFail($itemsInSaleBillReturn[0]->company_id);
 ?>
 <!DOCTYPE html>
 <html>
 
 <head>
     <title>
-        @if (!empty($sale_bill_return->outer_client_id))
-            <?php echo $sale_bill_return->OuterClient->client_name . ' - فاتورة رقم ' . $sale_bill_return->bill_id; ?>
+        @if (!empty($itemsInSaleBillReturn[0]->outer_client_id))
+            <?php
+            echo $itemsInSaleBillReturn[0]->OuterClient->client_name . ' - فاتورة رقم ' . $itemsInSaleBillReturn[0]->bill->company_counter; ?>
         @else
-            <?php echo 'فاتورة مرتجع' . ' - فاتورة رقم ' . $sale_bill_return->bill_id; ?>
+            <?php echo 'فاتورة مرتجع' . ' - فاتورة رقم ' . $itemsInSaleBillReturn[0]->bill->company_counter; ?>
         @endif
     </title>
     <meta charset="utf-8" />
@@ -102,12 +103,16 @@ $company = \App\Models\Company::FindOrFail($sale_bill_return->company_id);
             <tr>
                 <td class="thisTD">
                     <center style="margin:20px auto;">
-                        @if (!empty($sale_bill_return->outer_client_id))
+                        @if (!empty($itemsInSaleBillReturn[0]->outer_client_id))
                             <span style="font-size:18px;font-weight:bold;border:1px dashed #333; padding: 5px 30px;">
-                                فاتورة مرتجع رقم {{ $sale_bill_return->bill_id }} </span>
+                                فاتورة مرتجع رقم
+                                {{ $itemsInSaleBillReturn[0]->bill->company_counter }}
+                            </span>
                         @else
                             <span style="font-size:18px;font-weight:bold;border:1px dashed #333; padding: 5px 30px;">
-                                فاتورة مرتجع رقم {{ $sale_bill_return->bill_id }} </span>
+                                فاتورة مرتجع رقم
+                                {{ $itemsInSaleBillReturn[0]->bill->company_counter }}
+                            </span>
                         @endif
                     </center>
                     <hr style="border-bottom:1px solid #000;margin:5px auto; width: 90%;" />
@@ -119,17 +124,17 @@ $company = \App\Models\Company::FindOrFail($sale_bill_return->company_id);
                                     <td>
                                         اسم العميل
                                     </td>
-                                    <td colspan="2">{{ $sale_bill_return->client->name }}</td>
+                                    <td colspan="2">{{ $itemsInSaleBillReturn[0]->client->name }}</td>
                                     <td>
                                         التاريخ
                                     </td>
-                                    <td colspan="2">{{ $sale_bill_return->date }}</td>
+                                    <td colspan="2">{{ $itemsInSaleBillReturn[0]->date }}</td>
                                 </tr>
                                 <tr>
                                     <td>
                                         رقم العميل
                                     </td>
-                                    <td colspan="2">{{ $sale_bill_return->client->phone_number }}</td>
+                                    <td colspan="2">{{ $itemsInSaleBillReturn[0]->client->phone_number }}</td>
                                     <td>
                                         الرقم الضريبي
                                     </td>
@@ -159,7 +164,7 @@ $company = \App\Models\Company::FindOrFail($sale_bill_return->company_id);
                                 </tr>
                             </table>
                         </div>
-                        @if (!empty($sale_bill_return->outer_client_id))
+                        @if (!empty($itemsInSaleBillReturn[0]->outer_client_id))
                             <div class="col-lg-12">
                                 <table class="table table-bordered" style="font-size:12px;">
                                     <tr class="text-center">
@@ -177,7 +182,7 @@ $company = \App\Models\Company::FindOrFail($sale_bill_return->company_id);
                                                 الاسم
                                             @endif
                                         </td>
-                                        <td>{{ $sale_bill_return->OuterClient->client_name }}</td>
+                                        <td>{{ $itemsInSaleBillReturn[0]->OuterClient->client_name }}</td>
                                         <td>
                                             @if (isset($print_demo) && !empty($print_demo->outer_client_address_ar) && !empty($print_demo->outer_client_address_en))
                                                 @if (App::getLocale() == 'ar')
@@ -190,8 +195,8 @@ $company = \App\Models\Company::FindOrFail($sale_bill_return->company_id);
                                             @endif
                                         </td>
                                         <td colspan="3">
-                                            @if (!empty($sale_bill_return->OuterClient->addresses[0]))
-                                                {{ $sale_bill_return->OuterClient->addresses[0]->client_address }}
+                                            @if (!empty($itemsInSaleBillReturn[0]->OuterClient->addresses[0]))
+                                                {{ $itemsInSaleBillReturn[0]->OuterClient->addresses[0]->client_address }}
                                             @endif
 
                                         </td>
@@ -209,8 +214,8 @@ $company = \App\Models\Company::FindOrFail($sale_bill_return->company_id);
                                             @endif
                                         </td>
                                         <td>
-                                            @if (!empty($sale_bill_return->OuterClient->phones[0]))
-                                                {{ $sale_bill_return->OuterClient->phones[0]->client_phone }}
+                                            @if (!empty($itemsInSaleBillReturn[0]->OuterClient->phones[0]))
+                                                {{ $itemsInSaleBillReturn[0]->OuterClient->phones[0]->client_phone }}
                                             @endif
                                         </td>
                                         <td>
@@ -226,7 +231,7 @@ $company = \App\Models\Company::FindOrFail($sale_bill_return->company_id);
                                                 الرقم الضريبى
                                             @endif
                                         </td>
-                                        <td>{{ $sale_bill_return->OuterClient->tax_number }}</td>
+                                        <td>{{ $itemsInSaleBillReturn[0]->OuterClient->tax_number }}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -249,38 +254,55 @@ $company = \App\Models\Company::FindOrFail($sale_bill_return->company_id);
                                 <td style='border:1px solid #ddd;font-family:Cairo !important;'>التاريخ</td>
                             </thead>
                             <tbody>
+                                @php
+                                    $i = 0;
+                                    $total = 0;
+                                    $totalTax = 0;
+                                @endphp
+                                @foreach ($itemsInSaleBillReturn as $item)
+                                    <tr>
+                                        <td>{{ ++$i }}</td>
+                                        <td>{{ $item->product->product_name }}</td>
+                                        <td>{{ $item->product_price }}</td>
+                                        <td>{{ $item->return_quantity }}</td>
+                                        <td>{{ $item->quantity_price }}</td>
+                                        <td>
+                                            <?php
+                                            if ($taxOption == 1) {
+                                                $total += $item->quantity_price;
+                                                $totalTax += $item->quantity_price - ($item->quantity_price * 20) / 23;
+                                                echo $item->quantity_price;
+                                            } else {
+                                                $totalTax += ($item->quantity_price * 15) / 100;
+                                                $prodTotalPrice = $item->quantity_price + ($item->quantity_price * 15) / 100;
+                                                $total += $prodTotalPrice;
+                                                echo $prodTotalPrice;
+                                            }
+                                            ?>
+                                        </td>
+                                        <td>{{ $item->date }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class='table-responsive'>
+                        <table style='width:50%;text-align:center;float:left' class='table table-bordered'>
+                            <tbody>
                                 <tr>
-                                    <td>1</td>
-                                    <td>{{ $sale_bill_return->product->product_name }}</td>
-                                    <td>{{ $sale_bill_return->product_price }}</td>
-                                    <td>{{ $sale_bill_return->return_quantity }}</td>
-                                    <td>{{ $sale_bill_return->quantity_price }}</td>
-                                    <td>
-                                        <?php
-                                        $totalAfterTax = 0;
-                                        $tax_option = $sale_bill_return->value_added_tax;
-                                        if ($tax_option == 1) {
-                                            $total = $sale_bill_return->quantity_price * (100 / 115);
-                                            $total_with_option = $total;
-                                            $percentage = (15 / 100) * $total_with_option;
-                                            $after_total = $percentage + $total_with_option;
-                                        } else {
-                                            $totalAfterTax = $sale_bill_return->quantity_price + $sale_bill_return->quantity_price * (15 / 100);
-                                        }
-                                        echo floatval($totalAfterTax);
-                                        ?>
-                                    </td>
-                                    <td>{{ $sale_bill_return->date }}</td>
+                                    <td style="background: #007bff">الضريبة</td>
+                                    <td>{{ round($totalTax, 3) }}</td>
                                 </tr>
                                 <tr>
-                                    <td colspan='7'> ملاحظات : {{ $sale_bill_return->notes }}</td>
+                                    <td style="background: #007bff">المبلغ شامل الضريبة</td>
+                                    <td>{{ round($total, 3) }}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="clearfix"></div>
                     <div class="text-center mt-2 mb-2">
-                        <!--{!! SimpleSoftwareIO\QrCode\Facades\QrCode::size(80)->generate(Request::url()) !!}-->
+                        {!! SimpleSoftwareIO\QrCode\Facades\QrCode::size(80)->generate(Request::url()) !!}
                         @php
                             use Salla\ZATCA\GenerateQrCode;
                             use Salla\ZATCA\Tags\InvoiceDate;
@@ -290,14 +312,14 @@ $company = \App\Models\Company::FindOrFail($sale_bill_return->company_id);
                             use Salla\ZATCA\Tags\TaxNumber;
 
                             // Ensure date and time are formatted correctly
-                            $invoiceDate = date('Y-m-d\TH:i:s\Z', strtotime($sale_bill_return->date . ' ' . $sale_bill_return->time));
+                            $invoiceDate = date('Y-m-d\TH:i:s\Z', strtotime($sale_bill->date . ' ' . $sale_bill->time));
 
-                           $displayQRCodeAsBase64 = GenerateQrCode::fromArray([
+                            $displayQRCodeAsBase64 = GenerateQrCode::fromArray([
                                 new Seller($company->company_name), // seller name
                                 new TaxNumber($company->tax_number), // seller tax number
                                 new InvoiceDate($invoiceDate), // invoice date in ISO 8601 format
-                                new InvoiceTotalAmount(number_format($sale_bill_return->quantity_price, 2, '.', '')), // invoice total amount
-                                # new InvoiceTaxAmount(number_format($totalTax, 2, '.', '')), // invoice tax amount
+                                new InvoiceTotalAmount(number_format($sumWithTax, 2, '.', '')), // invoice total amount
+                                new InvoiceTaxAmount(number_format($totalTax, 2, '.', '')), // invoice tax amount
                                 // Additional tags can be added here if needed
                             ])->render();
                         @endphp

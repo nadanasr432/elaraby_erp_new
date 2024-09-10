@@ -547,11 +547,18 @@
 
                     {{ __('main.add-sale-bill') }}
                 </a>
+
                 <a class="btn bg-none border-0 ml-1"
                     style="    background: white !important;color: gray;border: 1px solid gray !important;border-radius: 7px;"
                     href="{{ route('client.sale_bills.index') }}">
                     <img src="{{ asset('assets/svgs/paper.svg') }}">
                     {{ __('main.mnge-bills') }}
+                </a>
+                <a class="btn  border-0" href="{{ route('client.sale_bills.create1') }}">
+                    {{-- <img src="{{ asset('assets/svgs/plus.svg') }}"
+                        style="border: 1px dashed; border-radius: 50%; margin-left: 6px;"> --}}
+
+                    {{ __('main.use the new sale bill') }}
                 </a>
             </div>
         </div>

@@ -218,6 +218,7 @@ return [
     "voucher" => "تقرير دفتر اليومية",
     "products-are-expired" => "المنتجات منتهية الصلاحية",
     "Manufacture"=> "قائمة التصنيع",
+    "New sales"=> "المبيعات الجديدة",
 
 
 ];
