@@ -543,7 +543,7 @@ class SaleBillController extends Controller
                 $product->update([
                     'first_balance' => $new_product_balance
                 ]);
-                StockService::reduce($product, $product->store_id, $element->quantity);
+                // StockService::reduce($product, $product->store_id, $element->quantity);
             }
         }
 
@@ -2314,6 +2314,11 @@ class SaleBillController extends Controller
                 } elseif ($invoiceType == 3) {
                     return view(
                         'client.sale_bills.no_tax_print',
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
+                    );
+                } elseif ($invoiceType == 6) {
+                    return view(
+                        'client.sale_bills.print6',
                         compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
                     );
                 } else {
