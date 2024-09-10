@@ -2289,9 +2289,9 @@ class SaleBillController extends Controller
 
                 // Determine print color
                 if (!empty($printColor)) {
-                    $printColor = $printColor == 1 ? "#085d4a" : "#666EE8";
+                    $printColor = $printColor == 1 ? "#222751" : "#222751";
                 } else {
-                    $printColor = "#666EE8";
+                    $printColor = "#222751";
                 }
                 if ($invoiceType == 1) {
                     $printColor = '#222751';

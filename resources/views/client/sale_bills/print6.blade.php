@@ -88,6 +88,11 @@
             display: none !important;
         }
 
+        .border-black {
+            border: 2px solid black;
+            /* Black border for table and sections */
+        }
+
         .right,
         .left {
             background: #f2f2f2 !important;
@@ -491,7 +496,7 @@
                     </table>
                 </div>
                 @if (!empty($sale_bill->notes))
-                    <div class="right border2 pr-2 pl-2"
+                    <div class="right border2 col-5 pr-2 pl-2"
                         style="height: fit-content !important;margin-top: 11px; border-radius: 5px;">
                         <table style="width: 100%;">
                             <tr class=pt-2" style="height: 38px;">
@@ -509,7 +514,7 @@
                     </div>
                 @endif
                 @if (!empty($company->invoice_note))
-                    <div class="products-details p-2 col-6">
+                    <div class="products-details p-2 col-7">
                         <div class=" mx-auto text-right p-2" dir="rtl">
                             {{ $company->invoice_note }}
                             <br />
@@ -538,15 +543,15 @@
                         </table>
                     </div>
                 @endif
-                <div class="container mt-5">
-                    <div class="row border-black">
+                <div class="container">
+                    <div class="row border-black  mt-5">
                         <div class="col-md-6 d-flex justify-content-between mt-4 mb-4">
                             <span>Received By: </span>
                             <span>: المستلم</span>
                         </div>
                         <div class="col-md-6 d-flex justify-content-between mt-4 mb-4">
                             <span>Salesman: </span>
-                            <span>: البأئع</span>
+                            <span>: البائع</span>
                         </div>
                     </div>
                 </div>
