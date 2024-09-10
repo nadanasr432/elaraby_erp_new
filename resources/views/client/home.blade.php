@@ -554,12 +554,17 @@
                     <img src="{{ asset('assets/svgs/paper.svg') }}">
                     {{ __('main.mnge-bills') }}
                 </a>
-                <a class="btn  border-0" href="{{ route('client.sale_bills.create1') }}">
-                    {{-- <img src="{{ asset('assets/svgs/plus.svg') }}"
-                        style="border: 1px dashed; border-radius: 50%; margin-left: 6px;"> --}}
+                <a class="btn border-0 ml-1" href="{{ route('client.sale_bills.create1') }}"
+                    style="background: white !important; color: gray; border: 1px solid gray !important; border-radius: 7px; display: flex; align-items: center;">
 
-                    {{ __('main.use the new sale bill') }}
+                    {{-- <img src="{{ asset('assets/svgs/plus.svg') }}"
+        style="border: 1px dashed; border-radius: 50%; margin-left: 6px;"> --}}
+
+                    <b> {{ __('main.use the new sale bill') }} </b>
+                    <span class="badge badge-success ml-1"
+                        style="font-size: 10px; border-radius: 50%; padding: 2px 5px;">{{ __('sidebar.new') }}</span> <!-- Add this line -->
                 </a>
+
             </div>
         </div>
     </div>

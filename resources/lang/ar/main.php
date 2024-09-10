@@ -334,6 +334,6 @@ return [
     "add_voucher_entry" => "اضف قيد يومية",
     "view_voucher_entry" => "عرض كل قيود اليومية",
     "voucher_entry" =>"القيود اليومية",
-    "use the new sale bill" =>"استخدام الشكل الجديد للفاتورة",
+    "use the new sale bill" =>"قسم المبيعات الجديد",
 
 ];

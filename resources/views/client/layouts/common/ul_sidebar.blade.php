@@ -308,20 +308,20 @@
 
                                             </a>
                                         </li>
-                                        @endcan
-                                        <li class="{{ Request::is('*/client/manufactures') ? 'active' : '' }}">
-                                            <a href="{{ route('client.manufactures.index') }}">
-                                                <svg style="width: 15px;fill:lightgreen;"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                                    <path
-                                                        d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
-                                                </svg>
-                                                {{ __('sidebar.Manufacture') }}
-                                                <span class="badge badge-danger" id="Manufacture"
-                                                    style="position: absolute;display:none;margin-right:5px;border-radius: 50%;font-size: 12px !important;width: 20px;height:20px;font-weight: bold;"></span>
+                                    @endcan
+                                    <li class="{{ Request::is('*/client/manufactures') ? 'active' : '' }}">
+                                        <a href="{{ route('client.manufactures.index') }}">
+                                            <svg style="width: 15px;fill:lightgreen;"
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                <path
+                                                    d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                                            </svg>
+                                            {{ __('sidebar.Manufacture') }}
+                                            <span class="badge badge-danger" id="Manufacture"
+                                                style="position: absolute;display:none;margin-right:5px;border-radius: 50%;font-size: 12px !important;width: 20px;height:20px;font-weight: bold;"></span>
 
-                                            </a>
-                                        </li>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>
@@ -435,38 +435,259 @@
             <!----------------------------------------SALES SECTION------------------------------------>
             <!------------------------------------new SALES SECTION------------------------------------>
             @if (empty($package) || $package->sales == '1')
-            @if ($screen_settings->sales == '1')
-                <li class="nav-item {{ Request::is('*/quotations*', '*/sale_bills*') ? 'active open' : '' }}">
+                @if ($screen_settings->sales == '1')
+                    <li class="nav-item {{ Request::is('*/quotations*', '*/sale_bills*','*/sale-bills-new*') ? 'active open' : '' }}">
+                        <a href="javascript:;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                <path
+                                    d="M24 0C10.7 0 0 10.7 0 24S10.7 48 24 48H76.1l60.3 316.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24-10.7 24-24s-10.7-24-24-24H179.9l-9.1-48h317c14.3 0 26.9-9.5 30.8-23.3l54-192C578.3 52.3 563 32 541.8 32H122l-2.4-12.5C117.4 8.2 107.5 0 96 0H24zM176 512c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm336-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM252 160c0-11 9-20 20-20h44V96c0-11 9-20 20-20s20 9 20 20v44h44c11 0 20 9 20 20s-9 20-20 20H356v44c0 11-9 20-20 20s-20-9-20-20V180H272c-11 0-20-9-20-20z" />
+                            </svg>
+                            <span class="menu-title">
+                                {{ __('sidebar.New sales') }}
+                                <span class="badge badge-danger">{{ __('sidebar.new') }}</span> <!-- Add this line -->
+                            </span>
+                        </a>
+                        <ul class="menu-content">
+                            <li class="nav-item {{ Request::is('*/sale_bills*') ? 'active open' : '' }}">
+                                {{-- <a href="javascript:;">
+                                    <i class="fa fa-plus text-success tx-20"></i>
+                                    <span class="menu-title">
+                                        {{ __('sidebar.sales-invoices') }}
+                                    </span>
+                                </a> --}}
+                                <ul class="menu-content">
+                                </ul>
+                                @can('فواتير البيع السابقة (عرض فقط)')
+                                <li class="{{ Request::is('*/sale-bills-new') ? 'active' : '' }}">
+                                    <a href="{{ route('client.sale_bills.create1') }}">
+                                        <i class="fa fa-plus text-success tx-20"></i>
+
+                                        <span class="menu-title">
+                                            {{ __('home.New bill of sale') }}
+                                        </span>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('فواتير البيع السابقة (عرض فقط)')
+                                <li class="{{ Request::is('*/sale-bills-new') ? 'active' : '' }}">
+                                    <a href="{{ route('client.sale_bills.index1') }}">
+                                        <svg style="width: 12px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 512 512">
+                                            <path
+                                                d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                                        </svg>
+                                        <span class="menu-title">
+                                            {{ __('sidebar.sales-invoices') }}
+                                        </span>
+                                    </a>
+                                </li>
+                            @endcan
+                    </li>
+        </ul>
+        </li>
+        @endif
+        @endif
+
+        <!----------------------------------------SALES SECTION------------------------------------>
+
+
+        <!----------------------------------------PURCHASES SECTION------------------------------------>
+        @if (empty($package) || $package->purchases == '1')
+            @if ($screen_settings->purchases == '1')
+                <li class="nav-item {{ Request::is('*/purchase_orders*', '*/buy_bills*') ? 'active open' : '' }}">
                     <a href="javascript:;">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                             <path
-                                d="M24 0C10.7 0 0 10.7 0 24S10.7 48 24 48H76.1l60.3 316.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24-10.7 24-24s-10.7-24-24-24H179.9l-9.1-48h317c14.3 0 26.9-9.5 30.8-23.3l54-192C578.3 52.3 563 32 541.8 32H122l-2.4-12.5C117.4 8.2 107.5 0 96 0H24zM176 512c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm336-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM252 160c0-11 9-20 20-20h44V96c0-11 9-20 20-20s20 9 20 20v44h44c11 0 20 9 20 20s-9 20-20 20H356v44c0 11-9 20-20 20s-20-9-20-20V180H272c-11 0-20-9-20-20z" />
+                                d="M168 336C181.3 336 192 346.7 192 360C192 373.3 181.3 384 168 384H120C106.7 384 96 373.3 96 360C96 346.7 106.7 336 120 336H168zM360 336C373.3 336 384 346.7 384 360C384 373.3 373.3 384 360 384H248C234.7 384 224 373.3 224 360C224 346.7 234.7 336 248 336H360zM512 32C547.3 32 576 60.65 576 96V416C576 451.3 547.3 480 512 480H64C28.65 480 0 451.3 0 416V96C0 60.65 28.65 32 64 32H512zM512 80H64C55.16 80 48 87.16 48 96V128H528V96C528 87.16 520.8 80 512 80zM528 224H48V416C48 424.8 55.16 432 64 432H512C520.8 432 528 424.8 528 416V224z" />
                         </svg>
                         <span class="menu-title">
-                            {{ __('sidebar.New sales') }}
-                            <span class="badge badge-danger">{{ __('sidebar.new') }}</span> <!-- Add this line -->
+                            {{ __('sidebar.purchases') }}
                         </span>
                     </a>
                     <ul class="menu-content">
-                        <li class="nav-item {{ Request::is('*/sale_bills*') ? 'active open' : '' }}">
+                        <li class="nav-item {{ Request::is('*/buy_bills*') ? 'active open' : '' }}">
                             <a href="javascript:;">
                                 <i class="fa fa-plus text-success tx-20"></i>
                                 <span class="menu-title">
-                                    {{ __('sidebar.sales-invoices') }}
+                                    {{ __('sidebar.purchases-invoices') }}
                                 </span>
                             </a>
                             <ul class="menu-content">
-                                @can('فواتير البيع السابقة (عرض فقط)')
-                                    <li class="{{ Request::is('*/sale-bills-new') ? 'active' : '' }}">
-                                        <a href="{{ route('client.sale_bills.index1') }}">
-                                            <svg style="width: 12px;fill:lightgreen;"
-                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                @can('اضافة فاتورة مشتريات جديدة')
+                                    <li class="{{ Request::is('*/buy_bills/create') ? 'active' : '' }}">
+                                        <a href="{{ route('client.buy_bills.create') }}">
+                                            <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 512 512">
                                                 <path
                                                     d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
                                             </svg>
-                                            <span class="menu-title">
-                                                {{ __('sidebar.sales-invoices') }}
-                                            </span>
+                                            {{ __('sidebar.add-new-purchase-invoice') }}
+                                        </a>
+                                    </li>
+                                @endcan
+                                @can('فواتير المشتريات السابقة')
+                                    <li class="{{ Request::is('*/buy_bills') ? 'active' : '' }}">
+                                        <a href="{{ route('client.buy_bills.index') }}">
+                                            <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 512 512">
+                                                <path
+                                                    d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                                            </svg>
+                                            {{ __('sidebar.previous-purchases-invoices') }}
+                                        </a>
+                                    </li>
+                                @endcan
+                                @can('مرتجعات فواتير المشتريات')
+                                    <li class="{{ Request::is('*/buy-bills/get-returns') ? 'active' : '' }}">
+                                        <a href="{{ url('/client/buy-bills/get-returns') }}">
+                                            <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 512 512">
+                                                <path
+                                                    d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                                            </svg>
+                                            {{ __('sidebar.returns-purchases-invoices') }}
+                                        </a>
+                                    </li>
+                                @endcan
+                            </ul>
+                        </li>
+                        <li class="nav-item {{ Request::is('*/purchase_orders*') ? 'active open' : '' }}">
+                            <a href="javascript:;">
+                                <i class="fa fa-plus text-success tx-20"></i>
+                                <span class="menu-title">
+                                    {{ __('sidebar.purchase-orders') }}
+                                </span>
+                            </a>
+                            <ul class="menu-content">
+                                <li class="{{ Request::is('*/purchase_orders/create') ? 'active' : '' }}">
+                                    <a href="{{ route('client.purchase_orders.create') }}">
+                                        <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 512 512">
+                                            <path
+                                                d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                                        </svg>
+                                        {{ __('sidebar.add-new-purchase-orders') }}
+                                    </a>
+                                </li>
+                                <li class="{{ Request::is('*/purchase_orders') ? 'active' : '' }}">
+                                    <a href="{{ route('client.purchase_orders.index') }}">
+                                        <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 512 512">
+                                            <path
+                                                d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                                        </svg>
+                                        {{ __('sidebar.display-previous-purchase-orders') }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            @endif
+        @endif
+        <!----------------------------------------PURCHASES SECTION------------------------------------>
+
+        <!----------------------------------------DEBTS SECTION------------------------------------>
+        @if (empty($package) || $package->debt == '1')
+            @if ($screen_settings->debt == '1')
+                <li class="nav-item {{ Request::is('*/outer_clients*') ? 'active open' : '' }}">
+                    <a href="javascript:;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+                            <path
+                                d="M416 176c0 97.2-93.1 176-208 176c-38.2 0-73.9-8.7-104.7-23.9c-7.5 4-16 7.9-25.2 11.4C59.8 346.4 37.8 352 16 352c-6.9 0-13.1-4.5-15.2-11.1s.2-13.8 5.8-17.9l0 0 0 0 .2-.2c.2-.2 .6-.4 1.1-.8c1-.8 2.5-2 4.3-3.7c3.6-3.3 8.5-8.1 13.3-14.3c5.5-7 10.7-15.4 14.2-24.7C14.7 250.3 0 214.6 0 176C0 78.8 93.1 0 208 0S416 78.8 416 176zM231.5 383C348.9 372.9 448 288.3 448 176c0-5.2-.2-10.4-.6-15.5C555.1 167.1 640 243.2 640 336c0 38.6-14.7 74.3-39.6 103.4c3.5 9.4 8.7 17.7 14.2 24.7c4.8 6.2 9.7 11 13.3 14.3c1.8 1.6 3.3 2.9 4.3 3.7c.5 .4 .9 .7 1.1 .8l.2 .2 0 0 0 0c5.6 4.1 7.9 11.3 5.8 17.9c-2.1 6.6-8.3 11.1-15.2 11.1c-21.8 0-43.8-5.6-62.1-12.5c-9.2-3.5-17.8-7.4-25.2-11.4C505.9 503.3 470.2 512 432 512c-95.6 0-176.2-54.6-200.5-129zM228 72c0-11-9-20-20-20s-20 9-20 20V86c-7.6 1.7-15.2 4.4-22.2 8.5c-13.9 8.3-25.9 22.8-25.8 43.9c.1 20.3 12 33.1 24.7 40.7c11 6.6 24.7 10.8 35.6 14l1.7 .5c12.6 3.8 21.8 6.8 28 10.7c5.1 3.2 5.8 5.4 5.9 8.2c.1 5-1.8 8-5.9 10.5c-5 3.1-12.9 5-21.4 4.7c-11.1-.4-21.5-3.9-35.1-8.5c-2.3-.8-4.7-1.6-7.2-2.4c-10.5-3.5-21.8 2.2-25.3 12.6s2.2 21.8 12.6 25.3c1.9 .6 4 1.3 6.1 2.1l0 0 0 0c8.3 2.9 17.9 6.2 28.2 8.4V280c0 11 9 20 20 20s20-9 20-20V266.2c8-1.7 16-4.5 23.2-9c14.3-8.9 25.1-24.1 24.8-45c-.3-20.3-11.7-33.4-24.6-41.6c-11.5-7.2-25.9-11.6-37.1-15l-.7-.2c-12.8-3.9-21.9-6.7-28.3-10.5c-5.2-3.1-5.3-4.9-5.3-6.7c0-3.7 1.4-6.5 6.2-9.3c5.4-3.2 13.6-5.1 21.5-5c9.6 .1 20.2 2.2 31.2 5.2c10.7 2.8 21.6-3.5 24.5-14.2s-3.5-21.6-14.2-24.5c-6.5-1.7-13.7-3.4-21.1-4.7V72z" />
+                        </svg>
+                        <span class="menu-title">
+                            {{ __('sidebar.debts') }}
+                        </span>
+                    </a>
+                    <ul class="menu-content">
+                        <li class="nav-item {{ Request::is('*/outer_clients*') ? 'active open' : '' }}">
+                            <a href="javascript:;">
+                                <i class="fa fa-plus text-success tx-20"></i>
+                                <span class="menu-title">
+                                    {{ __('sidebar.clients') }}
+                                </span>
+                            </a>
+                            <ul class="menu-content">
+                                @can('اضافة عميل جديد')
+                                    <li class="{{ Request::is('*/outer_clients/create') ? 'active' : '' }}">
+                                        <a href="{{ route('client.outer_clients.create') }}">
+                                            <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 512 512">
+                                                <path
+                                                    d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                                            </svg>
+                                            {{ __('sidebar.add-new-client') }}
+                                        </a>
+                                    </li>
+                                @endcan
+                                @can('قائمة العملاء الحاليين')
+                                    <li class="{{ Request::is('*/outer_clients') ? 'active' : '' }}">
+                                        <a href="{{ route('client.outer_clients.index') }}">
+                                            <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 512 512">
+                                                <path
+                                                    d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                                            </svg>
+                                            {{ __('sidebar.list-of-client') }}
+                                        </a>
+                                    </li>
+                                @endcan
+                                @can('فلترة العملاء ( بحث متقدم )')
+                                    <li class="{{ Request::is('*/clients-outer-clients-filter') ? 'active' : '' }}">
+                                        <a href="{{ route('client.outer_clients.filter') }}">
+                                            <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 512 512">
+                                                <path
+                                                    d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                                            </svg>
+                                            {{ __('sidebar.clients-filter') }}
+                                        </a>
+                                    </li>
+                                @endcan
+                            </ul>
+                        </li>
+                        <li class="nav-item {{ Request::is('*client/suppliers/index*') ? 'active open' : '' }}">
+                            <a href="javascript:;">
+                                <i class="fa fa-plus text-success tx-20"></i>
+                                <span class="menu-title">
+                                    {{ __('sidebar.suppliers') }}
+                                </span>
+                            </a>
+                            <ul class="menu-content">
+                                @can('اضافة مورد جديد')
+                                    <li class="{{ Request::is('*/suppliers/create') ? 'active' : '' }}">
+                                        <a href="{{ route('client.suppliers.create') }}">
+                                            <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 512 512">
+                                                <path
+                                                    d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                                            </svg>
+                                            {{ __('sidebar.add-new-supplier') }}
+                                        </a>
+                                    </li>
+                                @endcan
+                                @can('قائمة الموردين الحاليين')
+                                    <li class="{{ Request::is('*/suppliers') ? 'active' : '' }}">
+                                        <a href="{{ route('client.suppliers.index') }}">
+                                            <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 512 512">
+                                                <path
+                                                    d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                                            </svg>
+                                            {{ __('sidebar.list-of-suppliers') }}
+                                        </a>
+                                    </li>
+                                @endcan
+                                @can('فلترة الموردين ( بحث متقدم )')
+                                    <li class="{{ Request::is('*/clients-suppliers-filter') ? 'active' : '' }}">
+                                        <a href="{{ route('client.suppliers.filter') }}">
+                                            <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 512 512">
+                                                <path
+                                                    d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                                            </svg>
+                                            {{ __('sidebar.suppliers-filter') }}
                                         </a>
                                     </li>
                                 @endcan
@@ -476,267 +697,55 @@
                 </li>
             @endif
         @endif
+        <!----------------------------------------DEBTS SECTION------------------------------------>
 
-            <!----------------------------------------SALES SECTION------------------------------------>
+        <!----------------------------------------BONDS SECTION------------------------------------>
+        <li class="nav-item {{ Request::is('*/bonds/*') ? 'active open' : '' }}">
+            <a href="javascript:;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <path
+                        d="M470.7 9.4c3 3.1 5.3 6.6 6.9 10.3s2.4 7.8 2.4 12.2l0 .1v0 96c0 17.7-14.3 32-32 32s-32-14.3-32-32V109.3L310.6 214.6c-11.8 11.8-30.8 12.6-43.5 1.7L176 138.1 84.8 216.3c-13.4 11.5-33.6 9.9-45.1-3.5s-9.9-33.6 3.5-45.1l112-96c12-10.3 29.7-10.3 41.7 0l89.5 76.7L370.7 64H352c-17.7 0-32-14.3-32-32s14.3-32 32-32h96 0c8.8 0 16.8 3.6 22.6 9.3l.1 .1zM0 304c0-26.5 21.5-48 48-48H464c26.5 0 48 21.5 48 48V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V304zM48 416v48H96c0-26.5-21.5-48-48-48zM96 304H48v48c26.5 0 48-21.5 48-48zM464 416c-26.5 0-48 21.5-48 48h48V416zM416 304c0 26.5 21.5 48 48 48V304H416zm-96 80c0-35.3-28.7-64-64-64s-64 28.7-64 64s28.7 64 64 64s64-28.7 64-64z" />
+                </svg>
+                <span class="menu-title">
+                    {{ __('sidebar.Bonds') }}
+                </span>
+            </a>
+            <ul class="menu-content">
+                <li class="nav-item {{ Request::is('*/clients-bonds/*') ? 'active open' : '' }}">
+                <li class="{{ Request::is('*/clients-bonds/*') ? 'active' : '' }}">
+                    <a href="{{ route('client.bonds.index') }}">
+                        <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 512 512">
+                            <path
+                                d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                        </svg>
+                        {{ __('sidebar.bonds_for_clients') }}
+                    </a>
+                </li>
+        </li>
+        <li class="nav-item">
+        <li class="{{ Request::is('*client/suppliers-bonds/index*') ? 'active open' : '' }}">
+            <a href="{{ route('supplier.bonds.index') }}">
+                <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <path
+                        d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                </svg>
+                {{ __('sidebar.bonds_for_suppliers') }}
+            </a>
+        </li>
+        </li>
 
-
-            <!----------------------------------------PURCHASES SECTION------------------------------------>
-            @if (empty($package) || $package->purchases == '1')
-                @if ($screen_settings->purchases == '1')
-                    <li class="nav-item {{ Request::is('*/purchase_orders*', '*/buy_bills*') ? 'active open' : '' }}">
-                        <a href="javascript:;">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                <path
-                                    d="M168 336C181.3 336 192 346.7 192 360C192 373.3 181.3 384 168 384H120C106.7 384 96 373.3 96 360C96 346.7 106.7 336 120 336H168zM360 336C373.3 336 384 346.7 384 360C384 373.3 373.3 384 360 384H248C234.7 384 224 373.3 224 360C224 346.7 234.7 336 248 336H360zM512 32C547.3 32 576 60.65 576 96V416C576 451.3 547.3 480 512 480H64C28.65 480 0 451.3 0 416V96C0 60.65 28.65 32 64 32H512zM512 80H64C55.16 80 48 87.16 48 96V128H528V96C528 87.16 520.8 80 512 80zM528 224H48V416C48 424.8 55.16 432 64 432H512C520.8 432 528 424.8 528 416V224z" />
-                            </svg>
-                            <span class="menu-title">
-                                {{ __('sidebar.purchases') }}
-                            </span>
-                        </a>
-                        <ul class="menu-content">
-                            <li class="nav-item {{ Request::is('*/buy_bills*') ? 'active open' : '' }}">
-                                <a href="javascript:;">
-                                    <i class="fa fa-plus text-success tx-20"></i>
-                                    <span class="menu-title">
-                                        {{ __('sidebar.purchases-invoices') }}
-                                    </span>
-                                </a>
-                                <ul class="menu-content">
-                                    @can('اضافة فاتورة مشتريات جديدة')
-                                        <li class="{{ Request::is('*/buy_bills/create') ? 'active' : '' }}">
-                                            <a href="{{ route('client.buy_bills.create') }}">
-                                                <svg style="width: 15px;fill:lightgreen;"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                                    <path
-                                                        d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
-                                                </svg>
-                                                {{ __('sidebar.add-new-purchase-invoice') }}
-                                            </a>
-                                        </li>
-                                    @endcan
-                                    @can('فواتير المشتريات السابقة')
-                                        <li class="{{ Request::is('*/buy_bills') ? 'active' : '' }}">
-                                            <a href="{{ route('client.buy_bills.index') }}">
-                                                <svg style="width: 15px;fill:lightgreen;"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                                    <path
-                                                        d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
-                                                </svg>
-                                                {{ __('sidebar.previous-purchases-invoices') }}
-                                            </a>
-                                        </li>
-                                    @endcan
-                                    @can('مرتجعات فواتير المشتريات')
-                                        <li class="{{ Request::is('*/buy-bills/get-returns') ? 'active' : '' }}">
-                                            <a href="{{ url('/client/buy-bills/get-returns') }}">
-                                                <svg style="width: 15px;fill:lightgreen;"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                                    <path
-                                                        d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
-                                                </svg>
-                                                {{ __('sidebar.returns-purchases-invoices') }}
-                                            </a>
-                                        </li>
-                                    @endcan
-                                </ul>
-                            </li>
-                            <li class="nav-item {{ Request::is('*/purchase_orders*') ? 'active open' : '' }}">
-                                <a href="javascript:;">
-                                    <i class="fa fa-plus text-success tx-20"></i>
-                                    <span class="menu-title">
-                                        {{ __('sidebar.purchase-orders') }}
-                                    </span>
-                                </a>
-                                <ul class="menu-content">
-                                    <li class="{{ Request::is('*/purchase_orders/create') ? 'active' : '' }}">
-                                        <a href="{{ route('client.purchase_orders.create') }}">
-                                            <svg style="width: 15px;fill:lightgreen;"
-                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                                <path
-                                                    d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
-                                            </svg>
-                                            {{ __('sidebar.add-new-purchase-orders') }}
-                                        </a>
-                                    </li>
-                                    <li class="{{ Request::is('*/purchase_orders') ? 'active' : '' }}">
-                                        <a href="{{ route('client.purchase_orders.index') }}">
-                                            <svg style="width: 15px;fill:lightgreen;"
-                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                                <path
-                                                    d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
-                                            </svg>
-                                            {{ __('sidebar.display-previous-purchase-orders') }}
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                @endif
-            @endif
-            <!----------------------------------------PURCHASES SECTION------------------------------------>
-
-            <!----------------------------------------DEBTS SECTION------------------------------------>
-            @if (empty($package) || $package->debt == '1')
-                @if ($screen_settings->debt == '1')
-                    <li class="nav-item {{ Request::is('*/outer_clients*') ? 'active open' : '' }}">
-                        <a href="javascript:;">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
-                                <path
-                                    d="M416 176c0 97.2-93.1 176-208 176c-38.2 0-73.9-8.7-104.7-23.9c-7.5 4-16 7.9-25.2 11.4C59.8 346.4 37.8 352 16 352c-6.9 0-13.1-4.5-15.2-11.1s.2-13.8 5.8-17.9l0 0 0 0 .2-.2c.2-.2 .6-.4 1.1-.8c1-.8 2.5-2 4.3-3.7c3.6-3.3 8.5-8.1 13.3-14.3c5.5-7 10.7-15.4 14.2-24.7C14.7 250.3 0 214.6 0 176C0 78.8 93.1 0 208 0S416 78.8 416 176zM231.5 383C348.9 372.9 448 288.3 448 176c0-5.2-.2-10.4-.6-15.5C555.1 167.1 640 243.2 640 336c0 38.6-14.7 74.3-39.6 103.4c3.5 9.4 8.7 17.7 14.2 24.7c4.8 6.2 9.7 11 13.3 14.3c1.8 1.6 3.3 2.9 4.3 3.7c.5 .4 .9 .7 1.1 .8l.2 .2 0 0 0 0c5.6 4.1 7.9 11.3 5.8 17.9c-2.1 6.6-8.3 11.1-15.2 11.1c-21.8 0-43.8-5.6-62.1-12.5c-9.2-3.5-17.8-7.4-25.2-11.4C505.9 503.3 470.2 512 432 512c-95.6 0-176.2-54.6-200.5-129zM228 72c0-11-9-20-20-20s-20 9-20 20V86c-7.6 1.7-15.2 4.4-22.2 8.5c-13.9 8.3-25.9 22.8-25.8 43.9c.1 20.3 12 33.1 24.7 40.7c11 6.6 24.7 10.8 35.6 14l1.7 .5c12.6 3.8 21.8 6.8 28 10.7c5.1 3.2 5.8 5.4 5.9 8.2c.1 5-1.8 8-5.9 10.5c-5 3.1-12.9 5-21.4 4.7c-11.1-.4-21.5-3.9-35.1-8.5c-2.3-.8-4.7-1.6-7.2-2.4c-10.5-3.5-21.8 2.2-25.3 12.6s2.2 21.8 12.6 25.3c1.9 .6 4 1.3 6.1 2.1l0 0 0 0c8.3 2.9 17.9 6.2 28.2 8.4V280c0 11 9 20 20 20s20-9 20-20V266.2c8-1.7 16-4.5 23.2-9c14.3-8.9 25.1-24.1 24.8-45c-.3-20.3-11.7-33.4-24.6-41.6c-11.5-7.2-25.9-11.6-37.1-15l-.7-.2c-12.8-3.9-21.9-6.7-28.3-10.5c-5.2-3.1-5.3-4.9-5.3-6.7c0-3.7 1.4-6.5 6.2-9.3c5.4-3.2 13.6-5.1 21.5-5c9.6 .1 20.2 2.2 31.2 5.2c10.7 2.8 21.6-3.5 24.5-14.2s-3.5-21.6-14.2-24.5c-6.5-1.7-13.7-3.4-21.1-4.7V72z" />
-                            </svg>
-                            <span class="menu-title">
-                                {{ __('sidebar.debts') }}
-                            </span>
-                        </a>
-                        <ul class="menu-content">
-                            <li class="nav-item {{ Request::is('*/outer_clients*') ? 'active open' : '' }}">
-                                <a href="javascript:;">
-                                    <i class="fa fa-plus text-success tx-20"></i>
-                                    <span class="menu-title">
-                                        {{ __('sidebar.clients') }}
-                                    </span>
-                                </a>
-                                <ul class="menu-content">
-                                    @can('اضافة عميل جديد')
-                                        <li class="{{ Request::is('*/outer_clients/create') ? 'active' : '' }}">
-                                            <a href="{{ route('client.outer_clients.create') }}">
-                                                <svg style="width: 15px;fill:lightgreen;"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                                    <path
-                                                        d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
-                                                </svg>
-                                                {{ __('sidebar.add-new-client') }}
-                                            </a>
-                                        </li>
-                                    @endcan
-                                    @can('قائمة العملاء الحاليين')
-                                        <li class="{{ Request::is('*/outer_clients') ? 'active' : '' }}">
-                                            <a href="{{ route('client.outer_clients.index') }}">
-                                                <svg style="width: 15px;fill:lightgreen;"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                                    <path
-                                                        d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
-                                                </svg>
-                                                {{ __('sidebar.list-of-client') }}
-                                            </a>
-                                        </li>
-                                    @endcan
-                                    @can('فلترة العملاء ( بحث متقدم )')
-                                        <li class="{{ Request::is('*/clients-outer-clients-filter') ? 'active' : '' }}">
-                                            <a href="{{ route('client.outer_clients.filter') }}">
-                                                <svg style="width: 15px;fill:lightgreen;"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                                    <path
-                                                        d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
-                                                </svg>
-                                                {{ __('sidebar.clients-filter') }}
-                                            </a>
-                                        </li>
-                                    @endcan
-                                </ul>
-                            </li>
-                            <li class="nav-item {{ Request::is('*client/suppliers/index*') ? 'active open' : '' }}">
-                                <a href="javascript:;">
-                                    <i class="fa fa-plus text-success tx-20"></i>
-                                    <span class="menu-title">
-                                        {{ __('sidebar.suppliers') }}
-                                    </span>
-                                </a>
-                                <ul class="menu-content">
-                                    @can('اضافة مورد جديد')
-                                        <li class="{{ Request::is('*/suppliers/create') ? 'active' : '' }}">
-                                            <a href="{{ route('client.suppliers.create') }}">
-                                                <svg style="width: 15px;fill:lightgreen;"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                                    <path
-                                                        d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
-                                                </svg>
-                                                {{ __('sidebar.add-new-supplier') }}
-                                            </a>
-                                        </li>
-                                    @endcan
-                                    @can('قائمة الموردين الحاليين')
-                                        <li class="{{ Request::is('*/suppliers') ? 'active' : '' }}">
-                                            <a href="{{ route('client.suppliers.index') }}">
-                                                <svg style="width: 15px;fill:lightgreen;"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                                    <path
-                                                        d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
-                                                </svg>
-                                                {{ __('sidebar.list-of-suppliers') }}
-                                            </a>
-                                        </li>
-                                    @endcan
-                                    @can('فلترة الموردين ( بحث متقدم )')
-                                        <li class="{{ Request::is('*/clients-suppliers-filter') ? 'active' : '' }}">
-                                            <a href="{{ route('client.suppliers.filter') }}">
-                                                <svg style="width: 15px;fill:lightgreen;"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                                    <path
-                                                        d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
-                                                </svg>
-                                                {{ __('sidebar.suppliers-filter') }}
-                                            </a>
-                                        </li>
-                                    @endcan
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                @endif
-            @endif
-            <!----------------------------------------DEBTS SECTION------------------------------------>
-
-            <!----------------------------------------BONDS SECTION------------------------------------>
-            <li class="nav-item {{ Request::is('*/bonds/*') ? 'active open' : '' }}">
-                <a href="javascript:;">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                        <path
-                            d="M470.7 9.4c3 3.1 5.3 6.6 6.9 10.3s2.4 7.8 2.4 12.2l0 .1v0 96c0 17.7-14.3 32-32 32s-32-14.3-32-32V109.3L310.6 214.6c-11.8 11.8-30.8 12.6-43.5 1.7L176 138.1 84.8 216.3c-13.4 11.5-33.6 9.9-45.1-3.5s-9.9-33.6 3.5-45.1l112-96c12-10.3 29.7-10.3 41.7 0l89.5 76.7L370.7 64H352c-17.7 0-32-14.3-32-32s14.3-32 32-32h96 0c8.8 0 16.8 3.6 22.6 9.3l.1 .1zM0 304c0-26.5 21.5-48 48-48H464c26.5 0 48 21.5 48 48V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V304zM48 416v48H96c0-26.5-21.5-48-48-48zM96 304H48v48c26.5 0 48-21.5 48-48zM464 416c-26.5 0-48 21.5-48 48h48V416zM416 304c0 26.5 21.5 48 48 48V304H416zm-96 80c0-35.3-28.7-64-64-64s-64 28.7-64 64s28.7 64 64 64s64-28.7 64-64z" />
-                    </svg>
-                    <span class="menu-title">
-                        {{ __('sidebar.Bonds') }}
-                    </span>
-                </a>
-                <ul class="menu-content">
-                    <li class="nav-item {{ Request::is('*/clients-bonds/*') ? 'active open' : '' }}">
-                    <li class="{{ Request::is('*/clients-bonds/*') ? 'active' : '' }}">
-                        <a href="{{ route('client.bonds.index') }}">
-                            <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 512 512">
-                                <path
-                                    d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
-                            </svg>
-                            {{ __('sidebar.bonds_for_clients') }}
-                        </a>
-                    </li>
-            </li>
-            <li class="nav-item">
-            <li class="{{ Request::is('*client/suppliers-bonds/index*') ? 'active open' : '' }}">
-                <a href="{{ route('supplier.bonds.index') }}">
-                    <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 512 512">
-                        <path
-                            d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
-                    </svg>
-                    {{ __('sidebar.bonds_for_suppliers') }}
-                </a>
-            </li>
-            </li>
-
-            <li class="nav-item">
-            <li class="{{ Request::is('*client/electronic-stamp/index*') ? 'active open' : '' }}">
-                <a href="{{ route('electronic-stamp') }}">
-                    <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 512 512">
-                        <path
-                            d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
-                    </svg>
-                    {{ __('sidebar.electronic-stamp') }}
-                </a>
-            </li>
-            </li>
+        <li class="nav-item">
+        <li class="{{ Request::is('*client/electronic-stamp/index*') ? 'active open' : '' }}">
+            <a href="{{ route('electronic-stamp') }}">
+                <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <path
+                        d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                </svg>
+                {{ __('sidebar.electronic-stamp') }}
+            </a>
+        </li>
+        </li>
         </ul>
         </li>
         <!----------------------------------------BONDS SECTION------------------------------------>
@@ -1390,7 +1399,7 @@
                     </ul>
                 </li> --}}
 
-{{--
+                {{--
         <li class="{{ Request::is('*/places') ? 'active' : '' }}">
             <a href="#">
                 <svg style="width: 15px; fill: lightgreen;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -1455,7 +1464,7 @@
                 </li>
             </ul>
         </li> --}}
-        </ul>
+            </ul>
         </li>
         <!---------------------------------assets section--------------------------------->
 
@@ -1628,192 +1637,192 @@
             @endif
         @endif
         @if (empty($package) || $package->settings == '1')
-                @if ($screen_settings->settings == '1')
-                    @can('صلاحيات المستخدمين')
-                        <li class="nav-item {{ Request::is('*/employees*', '*/roles*') ? 'active open' : '' }}">
-                            <a href="javascript:;">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
-                                    <path
-                                        d="M144 160c-44.2 0-80-35.8-80-80S99.8 0 144 0s80 35.8 80 80s-35.8 80-80 80zm368 0c-44.2 0-80-35.8-80-80s35.8-80 80-80s80 35.8 80 80s-35.8 80-80 80zM0 298.7C0 239.8 47.8 192 106.7 192h42.7c15.9 0 31 3.5 44.6 9.7c-1.3 7.2-1.9 14.7-1.9 22.3c0 38.2 16.8 72.5 43.3 96c-.2 0-.4 0-.7 0H21.3C9.6 320 0 310.4 0 298.7zM405.3 320c-.2 0-.4 0-.7 0c26.6-23.5 43.3-57.8 43.3-96c0-7.6-.7-15-1.9-22.3c13.6-6.3 28.7-9.7 44.6-9.7h42.7C592.2 192 640 239.8 640 298.7c0 11.8-9.6 21.3-21.3 21.3H405.3zM416 224c0 53-43 96-96 96s-96-43-96-96s43-96 96-96s96 43 96 96zM128 485.3C128 411.7 187.7 352 261.3 352H378.7C452.3 352 512 411.7 512 485.3c0 14.7-11.9 26.7-26.7 26.7H154.7c-14.7 0-26.7-11.9-26.7-26.7z"/>
-                                </svg>
-                                <span class="menu-title">
-                                {{ __('sidebar.employees') }}
-                            </span>
-                            </a>
-                            <ul class="menu-content">
-                                <li class="{{ Request::is('*/employees/create') ? 'active' : '' }}">
-                                    <a href="{{ route('client.employees.create') }}">
-                                        <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
-                                             viewBox="0 0 512 512">
-                                            <path
-                                                d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z"/>
-                                        </svg>
-                                        {{ __('sidebar.add-new-employee') }}
-                                    </a>
-                                </li>
-                                <li class="{{ Request::is('*/employees') ? 'active' : '' }}">
-                                    <a href="{{ route('client.employees.index') }}">
-                                        <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
-                                             viewBox="0 0 512 512">
-                                            <path
-                                                d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z"/>
-                                        </svg>
-                                        {{ __('sidebar.list-of-current-employees') }}
-                                    </a>
-                                </li>
-                                <li class="{{ Request::is('*/employees-cash') ? 'active' : '' }}">
-                                    <a href="{{ route('employees.get.cash') }}">
-                                        <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
-                                             viewBox="0 0 512 512">
-                                            <path
-                                                d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z"/>
-                                        </svg>
-                                        {{ __('sidebar.add-cash-to-employee') }}
-                                    </a>
-                                </li>
-                                <li class="{{ Request::is('*/employees-cashs') ? 'active' : '' }}">
-                                    <a href="{{ route('employees.cashs') }}">
-                                        <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
-                                             viewBox="0 0 512 512">
-                                            <path
-                                                d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z"/>
-                                        </svg>
-                                        {{ __('sidebar.employees-payments') }}
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    @endif
-                @endif
-            @endif
-        @if (empty($package) || $package->settings == '1')
             @if ($screen_settings->settings == '1')
                 @can('صلاحيات المستخدمين')
-                    <li class="nav-item {{ Request::is('*/roles*') ? 'active open' : '' }}">
+                    <li class="nav-item {{ Request::is('*/employees*', '*/roles*') ? 'active open' : '' }}">
                         <a href="javascript:;">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
                                 <path
-                                    d="M243.8 339.8C232.9 350.7 215.1 350.7 204.2 339.8L140.2 275.8C129.3 264.9 129.3 247.1 140.2 236.2C151.1 225.3 168.9 225.3 179.8 236.2L224 280.4L332.2 172.2C343.1 161.3 360.9 161.3 371.8 172.2C382.7 183.1 382.7 200.9 371.8 211.8L243.8 339.8zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                                    d="M144 160c-44.2 0-80-35.8-80-80S99.8 0 144 0s80 35.8 80 80s-35.8 80-80 80zm368 0c-44.2 0-80-35.8-80-80s35.8-80 80-80s80 35.8 80 80s-35.8 80-80 80zM0 298.7C0 239.8 47.8 192 106.7 192h42.7c15.9 0 31 3.5 44.6 9.7c-1.3 7.2-1.9 14.7-1.9 22.3c0 38.2 16.8 72.5 43.3 96c-.2 0-.4 0-.7 0H21.3C9.6 320 0 310.4 0 298.7zM405.3 320c-.2 0-.4 0-.7 0c26.6-23.5 43.3-57.8 43.3-96c0-7.6-.7-15-1.9-22.3c13.6-6.3 28.7-9.7 44.6-9.7h42.7C592.2 192 640 239.8 640 298.7c0 11.8-9.6 21.3-21.3 21.3H405.3zM416 224c0 53-43 96-96 96s-96-43-96-96s43-96 96-96s96 43 96 96zM128 485.3C128 411.7 187.7 352 261.3 352H378.7C452.3 352 512 411.7 512 485.3c0 14.7-11.9 26.7-26.7 26.7H154.7c-14.7 0-26.7-11.9-26.7-26.7z" />
                             </svg>
                             <span class="menu-title">
-                                {{ __('sidebar.users-permissions') }}
+                                {{ __('sidebar.employees') }}
                             </span>
                         </a>
                         <ul class="menu-content">
-                            <li class="{{ Request::is('*/clients/create') ? 'active' : '' }}">
-                                <a href="{{ route('client.clients.create') }}">
+                            <li class="{{ Request::is('*/employees/create') ? 'active' : '' }}">
+                                <a href="{{ route('client.employees.create') }}">
                                     <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 512 512">
                                         <path
                                             d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
                                     </svg>
-                                    {{ __('sidebar.add-new-user') }}
+                                    {{ __('sidebar.add-new-employee') }}
                                 </a>
                             </li>
-                            <li class="{{ Request::is('*/clients') ? 'active' : '' }}">
-                                <a href="{{ route('client.clients.index') }}">
+                            <li class="{{ Request::is('*/employees') ? 'active' : '' }}">
+                                <a href="{{ route('client.employees.index') }}">
                                     <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 512 512">
                                         <path
                                             d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
                                     </svg>
-                                    {{ __('sidebar.list-of-users') }}
+                                    {{ __('sidebar.list-of-current-employees') }}
                                 </a>
                             </li>
-                            <li class="{{ Request::is('*/roles/create') ? 'active' : '' }}">
-                                <a href="{{ route('client.roles.create') }}">
+                            <li class="{{ Request::is('*/employees-cash') ? 'active' : '' }}">
+                                <a href="{{ route('employees.get.cash') }}">
                                     <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 512 512">
                                         <path
                                             d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
                                     </svg>
-                                    {{ __('sidebar.add-new-permission') }}
+                                    {{ __('sidebar.add-cash-to-employee') }}
                                 </a>
                             </li>
-                            <li class="{{ Request::is('*/roles') ? 'active' : '' }}">
-                                <a href="{{ route('client.roles.index') }}">
+                            <li class="{{ Request::is('*/employees-cashs') ? 'active' : '' }}">
+                                <a href="{{ route('employees.cashs') }}">
                                     <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 512 512">
                                         <path
                                             d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
                                     </svg>
-                                    {{ __('sidebar.list-of-permissions') }}
+                                    {{ __('sidebar.employees-payments') }}
                                 </a>
                             </li>
                         </ul>
                     </li>
-                @endcan
+                @endif
             @endif
-        @endif
-        @if (empty($package) || $package->settings == '1')
-            @if ($screen_settings->settings == '1')
-                <li class="nav-item {{ Request::is('*/roles*', '*settings*') ? 'active open' : '' }}">
-                    <a href="javascript:;">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
-                            <path
-                                d="M308.5 135.3c7.1-6.3 9.9-16.2 6.2-25c-2.3-5.3-4.8-10.5-7.6-15.5L304 89.4c-3-5-6.3-9.9-9.8-14.6c-5.7-7.6-15.7-10.1-24.7-7.1l-28.2 9.3c-10.7-8.8-23-16-36.2-20.9L199 27.1c-1.9-9.3-9.1-16.7-18.5-17.8C173.7 8.4 166.9 8 160 8s-13.7 .4-20.4 1.2c-9.4 1.1-16.6 8.6-18.5 17.8L115 56.1c-13.3 5-25.5 12.1-36.2 20.9L50.5 67.8c-9-3-19-.5-24.7 7.1c-3.5 4.7-6.8 9.6-9.9 14.6l-3 5.3c-2.8 5-5.3 10.2-7.6 15.6c-3.7 8.7-.9 18.6 6.2 25l22.2 19.8C32.6 161.9 32 168.9 32 176s.6 14.1 1.7 20.9L11.5 216.7c-7.1 6.3-9.9 16.2-6.2 25c2.3 5.3 4.8 10.5 7.6 15.6l3 5.2c3 5.1 6.3 9.9 9.9 14.6c5.7 7.6 15.7 10.1 24.7 7.1l28.2-9.3c10.7 8.8 23 16 36.2 20.9l6.1 29.1c1.9 9.3 9.1 16.7 18.5 17.8c6.7 .8 13.5 1.2 20.4 1.2s13.7-.4 20.4-1.2c9.4-1.1 16.6-8.6 18.5-17.8l6.1-29.1c13.3-5 25.5-12.1 36.2-20.9l28.2 9.3c9 3 19 .5 24.7-7.1c3.5-4.7 6.8-9.5 9.8-14.6l3.1-5.4c2.8-5 5.3-10.2 7.6-15.5c3.7-8.7 .9-18.6-6.2-25l-22.2-19.8c1.1-6.8 1.7-13.8 1.7-20.9s-.6-14.1-1.7-20.9l22.2-19.8zM208 176c0 26.5-21.5 48-48 48s-48-21.5-48-48s21.5-48 48-48s48 21.5 48 48zM504.7 500.5c6.3 7.1 16.2 9.9 25 6.2c5.3-2.3 10.5-4.8 15.5-7.6l5.4-3.1c5-3 9.9-6.3 14.6-9.8c7.6-5.7 10.1-15.7 7.1-24.7l-9.3-28.2c8.8-10.7 16-23 20.9-36.2l29.1-6.1c9.3-1.9 16.7-9.1 17.8-18.5c.8-6.7 1.2-13.5 1.2-20.4s-.4-13.7-1.2-20.4c-1.1-9.4-8.6-16.6-17.8-18.5L583.9 307c-5-13.3-12.1-25.5-20.9-36.2l9.3-28.2c3-9 .5-19-7.1-24.7c-4.7-3.5-9.6-6.8-14.6-9.9l-5.3-3c-5-2.8-10.2-5.3-15.6-7.6c-8.7-3.7-18.6-.9-25 6.2l-19.8 22.2c-6.8-1.1-13.8-1.7-20.9-1.7s-14.1 .6-20.9 1.7l-19.8-22.2c-6.3-7.1-16.2-9.9-25-6.2c-5.3 2.3-10.5 4.8-15.6 7.6l-5.2 3c-5.1 3-9.9 6.3-14.6 9.9c-7.6 5.7-10.1 15.7-7.1 24.7l9.3 28.2c-8.8 10.7-16 23-20.9 36.2L315.1 313c-9.3 1.9-16.7 9.1-17.8 18.5c-.8 6.7-1.2 13.5-1.2 20.4s.4 13.7 1.2 20.4c1.1 9.4 8.6 16.6 17.8 18.5l29.1 6.1c5 13.3 12.1 25.5 20.9 36.2l-9.3 28.2c-3 9-.5 19 7.1 24.7c4.7 3.5 9.5 6.8 14.6 9.8l5.4 3.1c5 2.8 10.2 5.3 15.5 7.6c8.7 3.7 18.6 .9 25-6.2l19.8-22.2c6.8 1.1 13.8 1.7 20.9 1.7s14.1-.6 20.9-1.7l19.8 22.2zM464 400c-26.5 0-48-21.5-48-48s21.5-48 48-48s48 21.5 48 48s-21.5 48-48 48z" />
-                        </svg>
-                        <span class="menu-title">
-                            {{ __('sidebar.settings') }}
-                        </span>
-                    </a>
-                    <ul class="menu-content">
-                        @can('الاعدادات العامة للنظام')
-                            <li class="nav-item {{ Request::is('*settings*') ? 'active open' : '' }}">
-                                <a href="{{ route('client.basic.settings.edit') }}">
-                                    <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 512 512">
-                                        <path
-                                            d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
-                                    </svg>
-                                    <span class="menu-title">
-                                        {{ __('sidebar.system-settings') }}
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="nav-item {{ Request::is('*/screens-settings*') ? 'active open' : '' }}">
-                                <a href="{{ route('screens.settings') }}">
-                                    <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 512 512">
-                                        <path
-                                            d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
-                                    </svg>
-                                    <span class="menu-title">
-                                        {{ __('sidebar.screens-settings') }}
-                                    </span>
-                                </a>
-                            </li>
-
-                            <li class="nav-item {{ Request::is('*/pos-settings*') ? 'active open' : '' }}">
-                                <a href="{{ route('pos.settings') }}">
-                                    <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 512 512">
-                                        <path
-                                            d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
-                                    </svg>
-                                    <span class="menu-title">
-                                        {{ __('sidebar.pos-settings') }}
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="{{ Request::is('*/print-demo') ? 'active' : '' }}">
-                                <a href="{{ route('print.demo') }}">
-                                    <svg style="width: 12px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 512 512">
-                                        <path
-                                            d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
-                                    </svg>
-
-                                    <span class="menu-title">
-                                        نموذج طباعة الفاتورة
-                                    </span>
-                                </a>
-                            </li>
-                        @endcan
-                    </ul>
-                </li>
             @endif
-        @endif
-        </ul>
+            @if (empty($package) || $package->settings == '1')
+                @if ($screen_settings->settings == '1')
+                    @can('صلاحيات المستخدمين')
+                        <li class="nav-item {{ Request::is('*/roles*') ? 'active open' : '' }}">
+                            <a href="javascript:;">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                    <path
+                                        d="M243.8 339.8C232.9 350.7 215.1 350.7 204.2 339.8L140.2 275.8C129.3 264.9 129.3 247.1 140.2 236.2C151.1 225.3 168.9 225.3 179.8 236.2L224 280.4L332.2 172.2C343.1 161.3 360.9 161.3 371.8 172.2C382.7 183.1 382.7 200.9 371.8 211.8L243.8 339.8zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                                </svg>
+                                <span class="menu-title">
+                                    {{ __('sidebar.users-permissions') }}
+                                </span>
+                            </a>
+                            <ul class="menu-content">
+                                <li class="{{ Request::is('*/clients/create') ? 'active' : '' }}">
+                                    <a href="{{ route('client.clients.create') }}">
+                                        <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 512 512">
+                                            <path
+                                                d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                                        </svg>
+                                        {{ __('sidebar.add-new-user') }}
+                                    </a>
+                                </li>
+                                <li class="{{ Request::is('*/clients') ? 'active' : '' }}">
+                                    <a href="{{ route('client.clients.index') }}">
+                                        <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 512 512">
+                                            <path
+                                                d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                                        </svg>
+                                        {{ __('sidebar.list-of-users') }}
+                                    </a>
+                                </li>
+                                <li class="{{ Request::is('*/roles/create') ? 'active' : '' }}">
+                                    <a href="{{ route('client.roles.create') }}">
+                                        <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 512 512">
+                                            <path
+                                                d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                                        </svg>
+                                        {{ __('sidebar.add-new-permission') }}
+                                    </a>
+                                </li>
+                                <li class="{{ Request::is('*/roles') ? 'active' : '' }}">
+                                    <a href="{{ route('client.roles.index') }}">
+                                        <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 512 512">
+                                            <path
+                                                d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                                        </svg>
+                                        {{ __('sidebar.list-of-permissions') }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endcan
+                @endif
+            @endif
+            @if (empty($package) || $package->settings == '1')
+                @if ($screen_settings->settings == '1')
+                    <li class="nav-item {{ Request::is('*/roles*', '*settings*') ? 'active open' : '' }}">
+                        <a href="javascript:;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+                                <path
+                                    d="M308.5 135.3c7.1-6.3 9.9-16.2 6.2-25c-2.3-5.3-4.8-10.5-7.6-15.5L304 89.4c-3-5-6.3-9.9-9.8-14.6c-5.7-7.6-15.7-10.1-24.7-7.1l-28.2 9.3c-10.7-8.8-23-16-36.2-20.9L199 27.1c-1.9-9.3-9.1-16.7-18.5-17.8C173.7 8.4 166.9 8 160 8s-13.7 .4-20.4 1.2c-9.4 1.1-16.6 8.6-18.5 17.8L115 56.1c-13.3 5-25.5 12.1-36.2 20.9L50.5 67.8c-9-3-19-.5-24.7 7.1c-3.5 4.7-6.8 9.6-9.9 14.6l-3 5.3c-2.8 5-5.3 10.2-7.6 15.6c-3.7 8.7-.9 18.6 6.2 25l22.2 19.8C32.6 161.9 32 168.9 32 176s.6 14.1 1.7 20.9L11.5 216.7c-7.1 6.3-9.9 16.2-6.2 25c2.3 5.3 4.8 10.5 7.6 15.6l3 5.2c3 5.1 6.3 9.9 9.9 14.6c5.7 7.6 15.7 10.1 24.7 7.1l28.2-9.3c10.7 8.8 23 16 36.2 20.9l6.1 29.1c1.9 9.3 9.1 16.7 18.5 17.8c6.7 .8 13.5 1.2 20.4 1.2s13.7-.4 20.4-1.2c9.4-1.1 16.6-8.6 18.5-17.8l6.1-29.1c13.3-5 25.5-12.1 36.2-20.9l28.2 9.3c9 3 19 .5 24.7-7.1c3.5-4.7 6.8-9.5 9.8-14.6l3.1-5.4c2.8-5 5.3-10.2 7.6-15.5c3.7-8.7 .9-18.6-6.2-25l-22.2-19.8c1.1-6.8 1.7-13.8 1.7-20.9s-.6-14.1-1.7-20.9l22.2-19.8zM208 176c0 26.5-21.5 48-48 48s-48-21.5-48-48s21.5-48 48-48s48 21.5 48 48zM504.7 500.5c6.3 7.1 16.2 9.9 25 6.2c5.3-2.3 10.5-4.8 15.5-7.6l5.4-3.1c5-3 9.9-6.3 14.6-9.8c7.6-5.7 10.1-15.7 7.1-24.7l-9.3-28.2c8.8-10.7 16-23 20.9-36.2l29.1-6.1c9.3-1.9 16.7-9.1 17.8-18.5c.8-6.7 1.2-13.5 1.2-20.4s-.4-13.7-1.2-20.4c-1.1-9.4-8.6-16.6-17.8-18.5L583.9 307c-5-13.3-12.1-25.5-20.9-36.2l9.3-28.2c3-9 .5-19-7.1-24.7c-4.7-3.5-9.6-6.8-14.6-9.9l-5.3-3c-5-2.8-10.2-5.3-15.6-7.6c-8.7-3.7-18.6-.9-25 6.2l-19.8 22.2c-6.8-1.1-13.8-1.7-20.9-1.7s-14.1 .6-20.9 1.7l-19.8-22.2c-6.3-7.1-16.2-9.9-25-6.2c-5.3 2.3-10.5 4.8-15.6 7.6l-5.2 3c-5.1 3-9.9 6.3-14.6 9.9c-7.6 5.7-10.1 15.7-7.1 24.7l9.3 28.2c-8.8 10.7-16 23-20.9 36.2L315.1 313c-9.3 1.9-16.7 9.1-17.8 18.5c-.8 6.7-1.2 13.5-1.2 20.4s.4 13.7 1.2 20.4c1.1 9.4 8.6 16.6 17.8 18.5l29.1 6.1c5 13.3 12.1 25.5 20.9 36.2l-9.3 28.2c-3 9-.5 19 7.1 24.7c4.7 3.5 9.5 6.8 14.6 9.8l5.4 3.1c5 2.8 10.2 5.3 15.5 7.6c8.7 3.7 18.6 .9 25-6.2l19.8-22.2c6.8 1.1 13.8 1.7 20.9 1.7s14.1-.6 20.9-1.7l19.8 22.2zM464 400c-26.5 0-48-21.5-48-48s21.5-48 48-48s48 21.5 48 48s-21.5 48-48 48z" />
+                            </svg>
+                            <span class="menu-title">
+                                {{ __('sidebar.settings') }}
+                            </span>
+                        </a>
+                        <ul class="menu-content">
+                            @can('الاعدادات العامة للنظام')
+                                <li class="nav-item {{ Request::is('*settings*') ? 'active open' : '' }}">
+                                    <a href="{{ route('client.basic.settings.edit') }}">
+                                        <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 512 512">
+                                            <path
+                                                d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                                        </svg>
+                                        <span class="menu-title">
+                                            {{ __('sidebar.system-settings') }}
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item {{ Request::is('*/screens-settings*') ? 'active open' : '' }}">
+                                    <a href="{{ route('screens.settings') }}">
+                                        <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 512 512">
+                                            <path
+                                                d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                                        </svg>
+                                        <span class="menu-title">
+                                            {{ __('sidebar.screens-settings') }}
+                                        </span>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item {{ Request::is('*/pos-settings*') ? 'active open' : '' }}">
+                                    <a href="{{ route('pos.settings') }}">
+                                        <svg style="width: 15px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 512 512">
+                                            <path
+                                                d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                                        </svg>
+                                        <span class="menu-title">
+                                            {{ __('sidebar.pos-settings') }}
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="{{ Request::is('*/print-demo') ? 'active' : '' }}">
+                                    <a href="{{ route('print.demo') }}">
+                                        <svg style="width: 12px;fill:lightgreen;" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 512 512">
+                                            <path
+                                                d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                                        </svg>
+
+                                        <span class="menu-title">
+                                            نموذج طباعة الفاتورة
+                                        </span>
+                                    </a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endif
+            @endif
+            </ul>
+        </div>
     </div>
-</div>

@@ -336,6 +336,6 @@ return [
 
     "elaraby" => "Elaraby Erp",
     "manst-elaraby" => "Elaraby Platform",
-    "use the new sale bill" => "Use the new sale bill",
+    "use the new sale bill" => "New Sales",
 
 ];
