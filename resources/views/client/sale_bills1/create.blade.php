@@ -370,7 +370,9 @@
                     class="btn btn-md btn-dark pay_btn m-1">
                     <i class="fa fa-money"></i> {{ __('main.record') }}
                 </button>
-
+                <button type="button" id="add" class="btn btn-info btn-md m-1" style="height: 40px">
+                    <i class="fa fa-plus"></i> {{ __('sales_bills.save and show') }}
+                </button>
                 <!-- Save and Print 1 Button -->
                 <button type="button" role="button" class="btn save_btn1 btn-md btn-info text-white m-1"
                     isMoswada="0" invoiceType="2" style="height: 40px">
@@ -378,9 +380,7 @@
                 </button>
 
                 <!-- Add Button -->
-                <button type="button" id="add" class="btn btn-info btn-md m-1" style="height: 40px">
-                    <i class="fa fa-plus"></i> {{ __('sales_bills.save') }}
-                </button>
+
 
                 <!-- Save and Print 2 Button -->
                 <a href="javascript:;" role="button"

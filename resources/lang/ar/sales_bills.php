@@ -117,4 +117,6 @@ return [
     'edit' => "تعديل",
     'choose product' => "اختر منتج",
     'Product qty executed' => "كمية المنتج نفذت",
+    "save and show" =>"حفظ وعرض",
+
 ];

@@ -543,7 +543,7 @@ class SaleBillController extends Controller
                 $product->update([
                     'first_balance' => $new_product_balance
                 ]);
-                StockService::reduce($product, $product->store_id, $element->quantity);
+                // StockService::reduce($product, $product->store_id, $element->quantity);
             }
         }
 

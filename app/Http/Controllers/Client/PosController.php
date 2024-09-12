@@ -966,9 +966,9 @@ class PosController extends Controller
                         'first_balance' => ($product->first_balance - $element['quantity'])
                     ]);
                 }
-                if ($product->category->category_type != 'خدمية') {
-                    StockService::reduce($saveElement, $product->store_id, $saveElement->quantity);
-                }
+                // if ($product->category->category_type != 'خدمية') {
+                //     StockService::reduce($saveElement, $product->store_id, $saveElement->quantity);
+                // }
             }
             # ===================================== #
 
@@ -1116,9 +1116,9 @@ class PosController extends Controller
                     ]);
                 }
 
-                if ($product->category->category_type != 'خدمية') {
-                    StockService::reduce($saveElement, $product->store_id, $saveElement->quantity);
-                }
+                // if ($product->category->category_type != 'خدمية') {
+                //     StockService::reduce($saveElement, $product->store_id, $saveElement->quantity);
+                // }
             }
 
             # =============================== #
@@ -1248,9 +1248,9 @@ class PosController extends Controller
                         'first_balance' => ($product->first_balance - $element['quantity'])
                     ]);
                 }
-                if ($product->category->category_type != 'خدمية') {
-                    StockService::reduce($saveElement, $product->store_id, $saveElement->quantity);
-                }
+                // if ($product->category->category_type != 'خدمية') {
+                //     StockService::reduce($saveElement, $product->store_id, $saveElement->quantity);
+                // }
             }
             # =============================== #
 
@@ -1505,9 +1505,9 @@ class PosController extends Controller
                         'first_balance' => ($product->first_balance - $element['quantity'])
                     ]);
                 }
-                if ($saveElement->product->category->category_type != 'خدمية') {
-                    StockService::reduce($saveElement, $saveElement->product->store_id, $saveElement->quantity);
-                }
+                // if ($saveElement->product->category->category_type != 'خدمية') {
+                //     StockService::reduce($saveElement, $saveElement->product->store_id, $saveElement->quantity);
+                // }
             }
             # =============================== #
 

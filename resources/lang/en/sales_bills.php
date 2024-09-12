@@ -115,4 +115,6 @@ return [
     'edit' => 'Edit',
     'choose product' => 'Choose product',
     'Product qty executed' => 'Product qty executed',
+    "save and show" => "Save and Show",
+
 ];
