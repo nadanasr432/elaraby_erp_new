@@ -2289,9 +2289,9 @@ class SaleBillController extends Controller
 
                 // Determine print color
                 if (!empty($printColor)) {
-                    $printColor = $printColor == 1 ? "#085d4a" : "#666EE8";
+                    $printColor = $printColor == 1 ? "#222751" : "#222751";
                 } else {
-                    $printColor = "#666EE8";
+                    $printColor = "#222751";
                 }
                 if ($invoiceType == 1) {
                     $printColor = '#222751';
@@ -2314,6 +2314,11 @@ class SaleBillController extends Controller
                 } elseif ($invoiceType == 3) {
                     return view(
                         'client.sale_bills.no_tax_print',
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
+                    );
+                } elseif ($invoiceType == 6) {
+                    return view(
+                        'client.sale_bills.print6',
                         compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
                     );
                 } else {
