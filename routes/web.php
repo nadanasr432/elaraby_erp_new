@@ -723,6 +723,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::post('/sale-bills/saveAll', [SaleBillController::class, 'saveAll']);
             Route::post('/sale-bills/saveAll1', [SaleBillController1::class, 'saveAll']);
             Route::post('/clients-store-cash-outer-clients-sale-bills', [SaleBillController::class, 'store_cash_outer_clients'])->name('client.store.cash.outerClients.SaleBill');
+            Route::post('/clients-store-cash-outer-clients-sale-bills1', [SaleBillController1::class, 'store_cash_outer_clients'])->name('client.store.cash.outerClients.SaleBill1');
             Route::post('/sale-bills/refresh', [SaleBillController::class, 'refresh']);
 
             Route::post('clients-sale-bills-filter-key', [SaleBillController::class, 'filter_key'])->name('client.sale_bills.filter.key');

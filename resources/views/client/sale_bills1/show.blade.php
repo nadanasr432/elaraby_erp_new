@@ -137,12 +137,10 @@
             {{ __('main.record') }}
         </button>
         <a href="{{ route('client.sale_bills.edit1', [$saleBill->token, $saleBill->company_id]) }}"
-
-            class="btn btn-info btn-md ml-1"
-            style="height: 40px;">
-             {{-- <i class="fa fa-plus"></i> --}}
-             {{ __('sales_bills.edit') }}
-         </a>
+            class="btn btn-info btn-md ml-1" style="height: 40px;">
+            {{-- <i class="fa fa-plus"></i> --}}
+            {{ __('sales_bills.edit') }}
+        </a>
 
         {{-- <form class="d-inline" method="POST" onsubmit="return checkChanges()"
             action="{{ route('client.sale_bills.cancel') }}">
@@ -484,7 +482,7 @@
             } else if (payment_method == "") {
                 alert('اختر طريقة الدفع اولا ');
             } else {
-                $.post("{{ route('client.store.cash.outerClients.SaleBill', 'test') }}", {
+                $.post("{{ route('client.store.cash.outerClients.SaleBill1', 'test') }}", {
                     outer_client_id: outer_client_id,
                     company_id: company_id,
                     bill_id: sale_bill_number,
@@ -514,6 +512,7 @@
 
                             });
                             $(this).parent().hide();
+                            location.reload();
 
                         });
                         setTimeout(function() {

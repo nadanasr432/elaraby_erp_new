@@ -258,11 +258,11 @@
                                 @endforeach
                             </div>
                             <div class="col-md-4 d-flex justify-content-end mb-1">
-                                {{-- <a href="#" class="btn btn-success p-1" data-toggle="modal"
+                                <a href="#" class="btn btn-success p-1" data-toggle="modal"
                                     data-target="#addProductModal" title="{{ __('main.add_product') }}">
                                     <i class="fa fa-plus"></i>
-                                </a> --}}
-                                {{-- <!-- Add Product Modal -->
+                                </a>
+                                <!-- Add Product Modal -->
                                 <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog"
                                     aria-labelledby="addProductModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
@@ -580,8 +580,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div> --}}
-
+                                </div>
                             </div>
                         </div>
                         <div class="row p-nos sub_categories" style="display: none;">
@@ -640,266 +639,374 @@
             <div class="inner-sectoin bg-white rounded pr-2 pl-nos pb-2 pt-1" style="border: 1px solid #2d2d2d1f;">
                 <div class="section">
                     <div class="mb-nos">
+                        <div class=" d-flex justify-content-between">
+
                         <h5 class="font-weight-bold">
-                            <svg style="margin-left: 5px;" fill="#0A246A" width="10" xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 448 512">
+                            <svg style="margin-left: 5px;" fill="#0A246A" width="10"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                                 <path
                                     d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z">
                                 </path>
                             </svg>
                             اختر العميل
                         </h5>
-                        <select id="outer_client_id" class="selectpicker w-100" data-style="btn-success"
-                            data-live-search="true" title="{{ __('pos.choose-client-name') }}">
-                            @foreach ($outer_clients as $outer_client)
-                                <option @if ($outer_client->client_name == 'Cash') selected @endif value="{{ $outer_client->id }}">
-                                    {{ $outer_client->client_name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <select id="product_id" class="selectpicker form-control w-100 mt-nos" data-style="btn-dark"
-                            data-live-search="true"
-                            title="{{ __('pos.search-for-products-by-code-name-or-using-a-barcode-device') }}">
-                            @foreach ($products as $product)
-                                <option value="{{ $product->id }}" data-tokens="{{ $product->code_universal }}"
-                                    product_name="{{ $product->product_name }}"
-                                    product_price="{{ $product->wholesale_price }}">
-                                    {{ $product->product_name }}
-                                </option>
-                            @endforeach
-                        </select>
+                        <a href="#" class="btn btn-secondary mb-1" data-toggle="modal"
+                            data-target="#addCustomerModal" title="{{ __('home.Add a client') }}">
+                            <i class="fa fa-plus"></i>
+                        </a>
                     </div>
+                    {{-- modal add client --}}
+                    <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog"
+                        aria-labelledby="addCustomerModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="addCustomerModalLabel">{{ __('home.add-customer') }}
+                                    </h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="parsley-style-1" id="selectForm2" name="selectForm2"
+                                        action="{{ route('pos.outer_clients.store', 'test') }}"
+                                        enctype="multipart/form-data" method="post">
+                                        {{ csrf_field() }}
+                                        <input type="hidden" name="company_id" value="{{ $company_id }}">
+                                        <div class="col-lg-6 col-xs-12 pull-right">
+                                            <div class="form-group pull-right" dir="rtl">
+                                                <label for="order">{{ __('clients.client-name') }} </label>
+                                                <input type="text" name="client_name" class="form-control" required>
+                                            </div>
+                                            <input type="hidden" name="notes[]" class="form-control"
+                                                style="width:90%; display: inline; float: right;" dir="rtl">
+                                        </div>
+                                        <div class="col-lg-6 col-xs-12  pull-left" style="display: none">
+                                            <div class="form-group  pull-right col-lg-6" dir="rtl">
+                                                <input style="margin-right:5px;margin-left:5px;"type="hidden"
+                                                    value="for" name="balance" /> {{ __('main.for') }}
+                                                <input style="margin-right:5px;margin-left:5px;" checked type="hidden"
+                                                    value="on" name="balance" />
+                                                {{ __('main.on') }}
+                                                <input required type="hidden"value="0" name="prev_balance"
+                                                    class="form-control" step="1" dir="ltr" />
+                                            </div>
+                                            <div class="form-group pull-right col-lg-6" dir="ltr">
+                                                <input type="hidden" name="phones[]" class="form-control"
+                                                    style="width:80%; display: inline; float: right;" dir="ltr">
 
-                    <div class="table-responsive"
-                        style=" border:1px solid #FF9149;height: 370px; overflow:auto !important;">
-                        <table class="table table-striped table-bordered table-condensed table-hover posTable"
-                            style="margin-bottom: 0px; padding: 0px;border-collapse:separate;border-spacing:0 3px;">
-                            <thead style="background: #FF9149; color: #fff;top: -2px !important; position: relative;">
-                                <tr>
-                                    <th style="width: 30%!important;"> {{ __('main.product-name') }}</th>
-                                    <th style="width: 15%!important;"> {{ __('main.amount') }}</th>
-                                    <th style="width: 15%!important;">{{ __('main.quantity') }}</th>
-                                    <th style="width: 15%!important;"> {{ __('main.discount') }}</th>
-                                    <th style="width: 6%!important;"> {{ __('main.total') }}</th>
-                                    <th style="width: 4%!important;text-align: center;">
-                                        @if (isset($pos_open) && $pos_open->editing)
-                                            {{ __('main.return') }}
-                                        @else
-                                            {{ __('main.delete') }}
-                                        @endif
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="bill_details">
-                            </tbody>
-                        </table>
-                    </div>
-                    <table id="totalTable" style="width:100%; float:right; padding:5px; color:#000; background: #FFF;">
-                        <tbody>
-                            <tr>
-                                <td style="padding: 5px 10px;border-top: 1px solid #DDD;width: 30%;">
-                                    {{ __('main.items') }}</td>
-                                <td class="text-right"
-                                    style="padding: 5px 10px;font-size: 14px; font-weight:bold;border-top: 1px solid #DDD;width: 30%;">
-                                    <span id="items">0</span>
-                                    (<span id="total_quantity">0</span>)
-                                </td>
-                                <td style="padding: 5px 10px;border-top: 1px solid #DDD;"> {{ __('main.total') }}</td>
-                                <td class="text-right"
-                                    style="padding: 5px 10px;font-size: 14px; font-weight:bold;border-top: 1px solid #DDD;">
-                                    <span id="sum">
-                                        @if (isset($pos_open) && !$pos_open_elements->isEmpty())
-                                            <?php
-                                            $sum = 0;
-                                            foreach ($pos_open_elements as $pos_open_element) {
-                                                $sum = $sum + $pos_open_element->quantity_price;
-                                            }
-                                            ?>
-                                            {{ $sum }}
-                                        @else
-                                            0
-                                        @endif
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                @if ($pos_settings->tax == '1')
-                                    <td style="padding: 5px 10px;">
-                                        {{ __('main.order-tax') }}
-                                        <a href="#chooseTaxValue" data-toggle="modal" class="modal-effect">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                        <br>
-                                        <span class="text-danger noTaxAddedMsg font-weight-bold"
-                                            style="display: none;font-size: 11px;">(لم يتم اضافة ضريبة)</span>
-                                    </td>
-                                    <td class="text-right" style="padding: 5px 10px;font-size: 14px; font-weight:bold;">
-                                        <span id="tds_2">
-                                            <span id="taxValueAmount">0</span>
-                                            ( <span id="posTaxValue">0</span> %)
-                                        </span>
-                                    </td>
-                                @endif
-                                @if ($pos_settings->discount == '1')
-                                    <td style="padding: 5px 10px;"> {{ __('main.discount') }}
-                                        <a href="#modaldemo7" style="font-size: 17px !important;" data-toggle="modal"
-                                            class="modal-effect">
-                                            <i class="fa fa-edit" style="font-size: 17px !important;"></i>
-                                        </a>
-                                    </td>
-                                    <td class="text-right" style="padding: 5px 10px;font-weight:bold;">
-                                        <span id="tds">
-                                            @if (isset($pos_open) && !empty($pos_open_discount))
-                                                <?php
-                                                $discount_value = $pos_open_discount->discount_value;
-                                                $discount_type = $pos_open_discount->discount_type;
-                                                $sum = 0;
-                                                foreach ($pos_open_elements as $pos_open_element) {
-                                                    $sum = $sum + $pos_open_element->quantity_price;
-                                                }
-                                                if ($discount_type == 'pound') {
-                                                    echo $discount_value;
-                                                } else {
-                                                    echo $discount_value = ($discount_value / 100) * $sum;
-                                                    echo ' ( ' . $pos_open_discount->discount_value . ' % ) ';
-                                                }
-                                                ?>
-                                            @else
-                                                0
-                                            @endif
-                                        </span>
-                                    </td>
-                                @endif
-                            </tr>
-                            <tr>
-                                <td style="padding: 5px 10px; border-top: 1px solid #666; border-bottom: 1px solid #333; font-weight:bold; background:#333; color:#FFF;"
-                                    colspan="2">
-                                    {{ __('main.total-amount') }}
-                                </td>
-                                <td class="text-right"
-                                    style="padding:5px 10px 5px 10px; font-size: 14px;border-top: 1px solid #666; border-bottom: 1px solid #333; font-weight:bold; background:#333; color:#FFF;"
-                                    colspan="2">
-                                    <span id="total" style="color: #fff !important;">
-                                        @if (isset($pos_open))
-                                            <?php
-                                            $sum = 0;
-                                            foreach ($pos_open_elements as $pos_open_element) {
-                                                $sum = $sum + $pos_open_element->quantity_price;
-                                            }
-                                            if (isset($pos_open) && isset($pos_open_tax) && empty($pos_open_discount)) {
-                                                $tax_value = $pos_open_tax->tax_value;
-                                                $percent = ($tax_value / 100) * $sum;
-                                                $sum = $sum + $percent;
-                                            } elseif (isset($pos_open) && isset($pos_open_discount) && empty($pos_open_tax)) {
-                                                $discount_value = $pos_open_discount->discount_value;
-                                                $discount_type = $pos_open_discount->discount_type;
-                                                if ($discount_type == 'pound') {
-                                                    $sum = $sum - $discount_value;
-                                                } else {
-                                                    $discount_value = ($discount_value / 100) * $sum;
-                                                    $sum = $sum - $discount_value;
-                                                }
-                                            } elseif (isset($pos_open) && !empty($pos_open_discount) && !empty($pos_open_tax)) {
-                                                $tax_value = $pos_open_tax->tax_value;
-                                                $discount_value = $pos_open_discount->discount_value;
-                                                $discount_type = $pos_open_discount->discount_type;
-                                                if ($discount_type == 'pound') {
-                                                    $sum = $sum - $discount_value;
-                                                } else {
-                                                    $discount_value = ($discount_value / 100) * $sum;
-                                                    $sum = $sum - $discount_value;
-                                                }
-                                                $percent = ($tax_value / 100) * $sum;
-                                                $sum = $sum + $percent;
-                                            }
-                                            echo $sum;
-                                            ?>
-                                        @else
-                                            0
-                                        @endif
-                                    </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="clearfix"></div>
-                    <div id="botbuttons" class="col-lg-12 text-center">
-                        <input type="hidden" name="biller" id="biller" value="3">
-                        <div class="row">
-                            <div class="col-lg-12" style="padding: 0;">
-                                <div class="btn-group btn-block" style="width: 100.4%;">
-                                    @if ($pos_settings->cancel == '1')
-                                        <a role="button"
-                                            class="d-none btn col-4 btn-danger btn-block btn-flat modal-effect mt-0 font-weight-bold"
-                                            data-toggle="modal" href="#modaldemo5">
-                                            <i class="fa fa-trash-o" style="font-size: 19px"></i>
-                                            {{ __('pos.cancel-invoice') }}
-                                        </a>
-                                        <button
-                                            class="deletePosInv btn col-4 btn-danger btn-block btn-flat modal-effect mt-0 font-weight-bold">
-                                            <i class="fa fa-trash-o" style="font-size: 19px"></i>
-                                            {{ __('pos.cancel-invoice') }}
-                                        </button>
-                                    @endif
-                                    @if ($pos_settings->suspension == '1')
-                                        <a role="button" class="btn col-4 btn-warning modal-effect mt-0 font-weight-bold"
-                                            data-toggle="modal" href="#pendingPosInvModal">
-                                            <svg style="position: inherit; top: 4px; margin-left: 6px;" fill="white"
-                                                width="10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-                                                <path
-                                                    d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z" />
-                                            </svg>
-                                            {{ __('pos.hold-invoice') }}
-                                        </a>
-                                    @endif
 
-                                    @if ($pos_settings->payment == '1')
-                                        <a href="#recordPaymentModal" role="button" data-toggle="modal"
-                                            class="btn col-4 btn-success modal-effect mt-0 font-weight-bold"
-                                            id="payment" tabindex="-1">
-                                            <i class="fa fa-money"
-                                                style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
-                                            {{ __('pos.record-payment') }}
-                                        </a>
-                                    @endif
+                                                <div class="dom1"></div>
+                                            </div>
+
+                                            <div class="form-group pull-right col-lg-12" dir="ltr">
+                                                <input type="hidden" name="addresses[]" class="form-control"
+                                                    style="width:90%; display: inline; float: right;" dir="rtl">
+
+
+                                                <div class="dom3"></div>
+                                            </div>
+                                        </div>
+                                        <div class="extras" style="display: none">
+                                            <div class="col-lg-12">
+                                                <div class="form-group  col-lg-4  pull-right" dir="rtl"
+                                                    style="display: none">
+                                                    <select name="client_category" class="form-control" required>
+                                                        <option value="">{{ __('clients.choose-type') }}
+                                                        </option>
+                                                        <option selected value="جملة">جملة</option>
+                                                        <option value="قطاعى">قطاعى</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-lg-4  pull-right" dir="rtl">
+                                                    <input type="hidden" name="client_email" dir="ltr"
+                                                        class="form-control">
+                                                </div>
+
+                                                <div class="form-group  pull-right col-lg-4" dir="rtl">
+                                                    <input type="hidden" name="shop_name" class="form-control"
+                                                        dir="rtl">
+                                                </div>
+                                                <div class="form-group  pull-right col-lg-4" dir="rtl"
+                                                    style="display: none">
+                                                    <select type="hidden" name="client_national" class="form-control">
+                                                        <option value="">{{ __('main.choose-country') }}
+                                                        </option>
+                                                        @foreach ($timezones as $timezone)
+                                                            <option @if ($timezone->country_name == 'السعودية') selected @endif
+                                                                value="{{ $timezone->country_name }}">
+                                                                {{ $timezone->country_name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="form-group  pull-right col-lg-4" dir="rtl">
+
+                                                    <input type="hidden" name="tax_number" class="form-control"
+                                                        dir="ltr" />
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 modal-footer d-flex justify-content-between">
+                                            <button class="btn btn-info" type="submit">{{ __('main.add') }}</button>
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">{{ __('home.close') }}</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-12" style="padding: 0;">
-                                <div class="btn-group btn-block">
-                                    @if ($pos_settings->fast_finish == '1')
-                                        <button type="button" id="finishBank"
-                                            style="background: #053e59d4;border-color:#053e59d4;height: 45px;padding-top: 5px;"
-                                            class="btn btn-dark btn-block btn-md modal-effect mt-0">
-                                            <i class="fa fa-check-circle-o"
-                                                style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
-                                            دفع شبكة سريع
-                                        </button>
-                                        <button type="button" id="finish" style="padding-top: 5px;"
-                                            class="btn btn-dark btn-block btn-md modal-effect mt-0">
-                                            <i class="fa fa-check-circle-o"
-                                                style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
-                                            دفع كاش سريع
-                                        </button>
-                                    @endif
-                                    @if ($pos_settings->print_save == '1')
-                                        <button type="button" class="btn text-white btn-block btn-md modal-effect mt-0"
-                                            style="background: #666ee8 !important;height: 45px;padding-top: 5px;"
-                                            id="save_pos" tabindex="-1">
-                                            <i class="fa fa-save"
-                                                style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
-                                            {{ __('pos.save-and-print') }}
-                                        </button>
-                                    @endif
+                    </div>
+                    <select id="outer_client_id" class="selectpicker w-100" data-style="btn-success"
+                        data-live-search="true" title="{{ __('pos.choose-client-name') }}">
+                        @foreach ($outer_clients as $outer_client)
+                            <option @if ($outer_client->client_name == 'Cash') selected @endif value="{{ $outer_client->id }}">
+                                {{ $outer_client->client_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <select id="product_id" class="selectpicker form-control w-100 mt-nos" data-style="btn-dark"
+                        data-live-search="true"
+                        title="{{ __('pos.search-for-products-by-code-name-or-using-a-barcode-device') }}">
+                        @foreach ($products as $product)
+                            <option value="{{ $product->id }}" data-tokens="{{ $product->code_universal }}"
+                                product_name="{{ $product->product_name }}"
+                                product_price="{{ $product->wholesale_price }}">
+                                {{ $product->product_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
-                                </div>
+                <div class="table-responsive" style=" border:1px solid #FF9149;height: 370px; overflow:auto !important;">
+                    <table class="table table-striped table-bordered table-condensed table-hover posTable"
+                        style="margin-bottom: 0px; padding: 0px;border-collapse:separate;border-spacing:0 3px;">
+                        <thead style="background: #FF9149; color: #fff;top: -2px !important; position: relative;">
+                            <tr>
+                                <th style="width: 30%!important;"> {{ __('main.product-name') }}</th>
+                                <th style="width: 15%!important;"> {{ __('main.amount') }}</th>
+                                <th style="width: 15%!important;">{{ __('main.quantity') }}</th>
+                                <th style="width: 15%!important;"> {{ __('main.discount') }}</th>
+                                <th style="width: 6%!important;"> {{ __('main.total') }}</th>
+                                <th style="width: 4%!important;text-align: center;">
+                                    @if (isset($pos_open) && $pos_open->editing)
+                                        {{ __('main.return') }}
+                                    @else
+                                        {{ __('main.delete') }}
+                                    @endif
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bill_details">
+                        </tbody>
+                    </table>
+                </div>
+                <table id="totalTable" style="width:100%; float:right; padding:5px; color:#000; background: #FFF;">
+                    <tbody>
+                        <tr>
+                            <td style="padding: 5px 10px;border-top: 1px solid #DDD;width: 30%;"> {{ __('main.items') }}
+                            </td>
+                            <td class="text-right"
+                                style="padding: 5px 10px;font-size: 14px; font-weight:bold;border-top: 1px solid #DDD;width: 30%;">
+                                <span id="items">0</span>
+                                (<span id="total_quantity">0</span>)
+                            </td>
+                            <td style="padding: 5px 10px;border-top: 1px solid #DDD;"> {{ __('main.total') }}</td>
+                            <td class="text-right"
+                                style="padding: 5px 10px;font-size: 14px; font-weight:bold;border-top: 1px solid #DDD;">
+                                <span id="sum">
+                                    @if (isset($pos_open) && !$pos_open_elements->isEmpty())
+                                        <?php
+                                        $sum = 0;
+                                        foreach ($pos_open_elements as $pos_open_element) {
+                                            $sum = $sum + $pos_open_element->quantity_price;
+                                        }
+                                        ?>
+                                        {{ $sum }}
+                                    @else
+                                        0
+                                    @endif
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            @if ($pos_settings->tax == '1')
+                                <td style="padding: 5px 10px;">
+                                    {{ __('main.order-tax') }}
+                                    <a href="#chooseTaxValue" data-toggle="modal" class="modal-effect">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <br>
+                                    <span class="text-danger noTaxAddedMsg font-weight-bold"
+                                        style="display: none;font-size: 11px;">(لم يتم اضافة ضريبة)</span>
+                                </td>
+                                <td class="text-right" style="padding: 5px 10px;font-size: 14px; font-weight:bold;">
+                                    <span id="tds_2">
+                                        <span id="taxValueAmount">0</span>
+                                        ( <span id="posTaxValue">0</span> %)
+                                    </span>
+                                </td>
+                            @endif
+                            @if ($pos_settings->discount == '1')
+                                <td style="padding: 5px 10px;"> {{ __('main.discount') }}
+                                    <a href="#modaldemo7" style="font-size: 17px !important;" data-toggle="modal"
+                                        class="modal-effect">
+                                        <i class="fa fa-edit" style="font-size: 17px !important;"></i>
+                                    </a>
+                                </td>
+                                <td class="text-right" style="padding: 5px 10px;font-weight:bold;">
+                                    <span id="tds">
+                                        @if (isset($pos_open) && !empty($pos_open_discount))
+                                            <?php
+                                            $discount_value = $pos_open_discount->discount_value;
+                                            $discount_type = $pos_open_discount->discount_type;
+                                            $sum = 0;
+                                            foreach ($pos_open_elements as $pos_open_element) {
+                                                $sum = $sum + $pos_open_element->quantity_price;
+                                            }
+                                            if ($discount_type == 'pound') {
+                                                echo $discount_value;
+                                            } else {
+                                                echo $discount_value = ($discount_value / 100) * $sum;
+                                                echo ' ( ' . $pos_open_discount->discount_value . ' % ) ';
+                                            }
+                                            ?>
+                                        @else
+                                            0
+                                        @endif
+                                    </span>
+                                </td>
+                            @endif
+                        </tr>
+                        <tr>
+                            <td style="padding: 5px 10px; border-top: 1px solid #666; border-bottom: 1px solid #333; font-weight:bold; background:#333; color:#FFF;"
+                                colspan="2">
+                                {{ __('main.total-amount') }}
+                            </td>
+                            <td class="text-right"
+                                style="padding:5px 10px 5px 10px; font-size: 14px;border-top: 1px solid #666; border-bottom: 1px solid #333; font-weight:bold; background:#333; color:#FFF;"
+                                colspan="2">
+                                <span id="total" style="color: #fff !important;">
+                                    @if (isset($pos_open))
+                                        <?php
+                                        $sum = 0;
+                                        foreach ($pos_open_elements as $pos_open_element) {
+                                            $sum = $sum + $pos_open_element->quantity_price;
+                                        }
+                                        if (isset($pos_open) && isset($pos_open_tax) && empty($pos_open_discount)) {
+                                            $tax_value = $pos_open_tax->tax_value;
+                                            $percent = ($tax_value / 100) * $sum;
+                                            $sum = $sum + $percent;
+                                        } elseif (isset($pos_open) && isset($pos_open_discount) && empty($pos_open_tax)) {
+                                            $discount_value = $pos_open_discount->discount_value;
+                                            $discount_type = $pos_open_discount->discount_type;
+                                            if ($discount_type == 'pound') {
+                                                $sum = $sum - $discount_value;
+                                            } else {
+                                                $discount_value = ($discount_value / 100) * $sum;
+                                                $sum = $sum - $discount_value;
+                                            }
+                                        } elseif (isset($pos_open) && !empty($pos_open_discount) && !empty($pos_open_tax)) {
+                                            $tax_value = $pos_open_tax->tax_value;
+                                            $discount_value = $pos_open_discount->discount_value;
+                                            $discount_type = $pos_open_discount->discount_type;
+                                            if ($discount_type == 'pound') {
+                                                $sum = $sum - $discount_value;
+                                            } else {
+                                                $discount_value = ($discount_value / 100) * $sum;
+                                                $sum = $sum - $discount_value;
+                                            }
+                                            $percent = ($tax_value / 100) * $sum;
+                                            $sum = $sum + $percent;
+                                        }
+                                        echo $sum;
+                                        ?>
+                                    @else
+                                        0
+                                    @endif
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="clearfix"></div>
+                <div id="botbuttons" class="col-lg-12 text-center">
+                    <input type="hidden" name="biller" id="biller" value="3">
+                    <div class="row">
+                        <div class="col-lg-12" style="padding: 0;">
+                            <div class="btn-group btn-block" style="width: 100.4%;">
+                                @if ($pos_settings->cancel == '1')
+                                    <a role="button"
+                                        class="d-none btn col-4 btn-danger btn-block btn-flat modal-effect mt-0 font-weight-bold"
+                                        data-toggle="modal" href="#modaldemo5">
+                                        <i class="fa fa-trash-o" style="font-size: 19px"></i>
+                                        {{ __('pos.cancel-invoice') }}
+                                    </a>
+                                    <button
+                                        class="deletePosInv btn col-4 btn-danger btn-block btn-flat modal-effect mt-0 font-weight-bold">
+                                        <i class="fa fa-trash-o" style="font-size: 19px"></i>
+                                        {{ __('pos.cancel-invoice') }}
+                                    </button>
+                                @endif
+                                @if ($pos_settings->suspension == '1')
+                                    <a role="button" class="btn col-4 btn-warning modal-effect mt-0 font-weight-bold"
+                                        data-toggle="modal" href="#pendingPosInvModal">
+                                        <svg style="position: inherit; top: 4px; margin-left: 6px;" fill="white"
+                                            width="10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                                            <path
+                                                d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z" />
+                                        </svg>
+                                        {{ __('pos.hold-invoice') }}
+                                    </a>
+                                @endif
+
+                                @if ($pos_settings->payment == '1')
+                                    <a href="#recordPaymentModal" role="button" data-toggle="modal"
+                                        class="btn col-4 btn-success modal-effect mt-0 font-weight-bold" id="payment"
+                                        tabindex="-1">
+                                        <i class="fa fa-money"
+                                            style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
+                                        {{ __('pos.record-payment') }}
+                                    </a>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12" style="padding: 0;">
+                            <div class="btn-group btn-block">
+                                @if ($pos_settings->fast_finish == '1')
+                                    <button type="button" id="finishBank"
+                                        style="background: #053e59d4;border-color:#053e59d4;height: 45px;padding-top: 5px;"
+                                        class="btn btn-dark btn-block btn-md modal-effect mt-0">
+                                        <i class="fa fa-check-circle-o"
+                                            style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
+                                        دفع شبكة سريع
+                                    </button>
+                                    <button type="button" id="finish" style="padding-top: 5px;"
+                                        class="btn btn-dark btn-block btn-md modal-effect mt-0">
+                                        <i class="fa fa-check-circle-o"
+                                            style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
+                                        دفع كاش سريع
+                                    </button>
+                                @endif
+                                @if ($pos_settings->print_save == '1')
+                                    <button type="button" class="btn text-white btn-block btn-md modal-effect mt-0"
+                                        style="background: #666ee8 !important;height: 45px;padding-top: 5px;"
+                                        id="save_pos" tabindex="-1">
+                                        <i class="fa fa-save"
+                                            style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
+                                        {{ __('pos.save-and-print') }}
+                                    </button>
+                                @endif
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
 
@@ -977,8 +1084,8 @@
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 text-center mb-2">
-                    <a target="_blank" href="{{ route('client.banks.create') }}" class="btn btn-info rounded open_popup"
-                        role="button">
+                    <a target="_blank" href="{{ route('client.banks.create') }}"
+                        class="btn btn-info rounded open_popup" role="button">
                         <i class="fa fa-plus" style="font-size: 16px"></i>
                         اضافة بنك جديد
                     </a>
@@ -1191,8 +1298,8 @@
                         <button class="btn btn-success pay_cash" style="height: 39px;">
                             {{ __('banks.record-process') }}
                         </button>
-                        <a href="{{ route('client.safes.create') }}" target="_blank" class="btn btn-sm btn-warning py-1"
-                            style="height: 39px;">
+                        <a href="{{ route('client.safes.create') }}" target="_blank"
+                            class="btn btn-sm btn-warning py-1" style="height: 39px;">
                             <i class="fa fa-plus"></i>
                             اضافة خزنة جديدة
                         </a>
@@ -2507,5 +2614,6 @@
         });
 
         $('.selectpicker').selectpicker();
-    });
+ });
 </script>
+
