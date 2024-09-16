@@ -544,8 +544,8 @@
                     </div>
                 @endif
                 <div class="container">
-                    <div class="row border-black  mt-5">
-                        <div class="col-md-6 d-flex justify-content-between mt-4 mb-4">
+                    <div class="row border-black  mt-2">
+                        <div class="col-md-6 d-flex justify-content-between mt-4 mb-4 ">
                             <span>Received By: </span>
                             <span>: المستلم</span>
                         </div>
