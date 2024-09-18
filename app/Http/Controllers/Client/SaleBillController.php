@@ -2321,6 +2321,11 @@ class SaleBillController extends Controller
                         'client.sale_bills.print6',
                         compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
                     );
+                } elseif ($invoiceType == 7) {
+                    return view(
+                        'client.sale_bills.print7',
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
+                    );
                 } else {
                     return view(
                         'client.sale_bills.nPrint3',

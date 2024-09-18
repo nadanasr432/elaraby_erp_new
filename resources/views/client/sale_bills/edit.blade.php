@@ -595,6 +595,10 @@
             حفظ و طباعة 5
 
         </a>
+         <a href="{{route('client.sale_bills.print', [$saleBill->token,7,3,0])}}" role="button" style="height: 40px;border:1px solid #9b4aad !important ;background: #9b4aad !important;color:white !important;" class="btn save_btn2 btn-md btn-primary pull-right ml-1"
+         >
+            حفظ و طباعة 7
+        </a>
 
         <!------FATOORAH MOSWADA---->
         <a href="{{route('client.sale_bills.print', [$saleBill->token,2,1,1])}}" style="height: 40px;"
