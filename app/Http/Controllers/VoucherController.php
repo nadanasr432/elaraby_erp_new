@@ -13,7 +13,6 @@ class VoucherController extends Controller
 {
     public function get_voucher_entries(Request $request)
     {
-        // dd($request);
         $company_id = Auth::user()->company_id;
         $vouchers = Voucher::where('company_id', $company_id)
             ->when($request->filled('from_date'), function ($query) use ($request) {
@@ -29,7 +28,7 @@ class VoucherController extends Controller
                     $query->where('accounting_tree_id', $request->input('acount_id'))
                         ->orWhereIn('accounting_tree_id', $childeren);
                 });
-            })->get();
+            })->orderBy('id', 'desc')->get();
         $accounts = accounting_tree::get();
         return view('client.voucher.index', compact('vouchers', 'accounts'));
     }
@@ -39,6 +38,14 @@ class VoucherController extends Controller
         $accounts = accounting_tree::get();
         return view('client.voucher.create', compact('accounts'));
     }
+    public function edit_voucher_entries($id)
+    {
+        $voucher = Voucher::findOrFail($id);
+        $accounts = accounting_tree::get();
+        $transactions = Transaction::where('voucher_id', $voucher->id)->get();
+        return view('client.voucher.edit', compact('voucher', 'accounts', 'transactions'));
+    }
+
 
     public function store(Request $request)
     {
@@ -72,6 +79,7 @@ class VoucherController extends Controller
                 Transaction::create([
                     'accounting_tree_id' => $transaction['account'],
                     'voucher_id' => $voucher->id,
+                    'company_id' => $company_id,
                     'amount' => $transaction['credit'] ? $transaction['credit'] : $transaction['debit'],
                     'notation' => $transaction['notation'],
                     'type' => $transaction['credit'] ? 0 : 1,
@@ -88,9 +96,78 @@ class VoucherController extends Controller
         }
     }
 
-    public function showAccountStatement($accountId)
+    public function update_voucher_entries(Request $request, $id)
     {
-        $transactions = Transaction::where('company_id', Auth::user()->company_id)->where('accounting_tree_id', $accountId)->get();
+        $request->validate([
+            'amount' => 'required',
+            'date' => 'required',
+            'notation' => 'required',
+            'transactions' => 'required|array|min:1',
+            'transactions.*.account' => 'required|exists:accounting_trees,id',
+            'transactions.*.amount' => 'required|numeric',
+            'transactions.*.notation' => 'nullable|string',
+            'transactions.*.type' => 'required|in:0,1',
+        ]);
+
+        $company_id = Auth::user()->company_id;
+
+        DB::beginTransaction();
+
+        try {
+            $voucher = Voucher::findOrFail($id);
+            $voucher->update([
+                'amount' => $request->amount,
+                'company_id' => $company_id,
+                'date' => $request->date,
+                'payment_method' => "cash",
+                'notation' => $request->notation,
+                'status' => 1,
+                'user_id' => auth::user()->id,
+                'options' => 0,
+            ]);
+
+            // Remove old transactions
+            Transaction::where('voucher_id', $voucher->id)->delete();
+
+            // Insert new transactions
+            foreach ($request->transactions as $transaction) {
+                Transaction::create([
+                    'accounting_tree_id' => $transaction['account'],
+                    'voucher_id' => $voucher->id,
+                    'amount' => $transaction['amount'],
+                    'notation' => $transaction['notation'],
+                    'type' => $transaction['type'],
+                    'company_id' => $company_id,
+                ]);
+            }
+
+            DB::commit();
+
+            // Redirect to the vouchers route with a success message
+            return redirect()->route('client.voucher.get')->with('success', 'Voucher updated successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            // Redirect back with an error message
+            return redirect()->back()->with('error', 'An error occurred while updating the voucher.');
+        }
+    }
+
+
+    public function showAccountStatement(Request $request, $accountId)
+    {
+        $company_id = Auth::user()->company_id;
+
+        $transactions = Transaction::where('company_id', $company_id)
+            ->where('accounting_tree_id', $accountId)
+            ->when($request->filled('from_date'), function ($query) use ($request) {
+                return $query->where('created_at', '>=', $request->input('from_date'));
+            })
+            ->when($request->filled('to_date'), function ($query) use ($request) {
+                return $query->where('created_at', '<=', $request->input('to_date'));
+            })
+            ->get();
+
         $totalDebit = $transactions->where('type', 1)->sum('amount');
         $totalCredit = $transactions->where('type', 0)->sum('amount');
 

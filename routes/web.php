@@ -150,25 +150,25 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
     });
 
     Route::group(
-        [
-
-        ], function () {
-        Auth::routes(
-            [
-                'verify' => false,
-                'register' => false,
-            ]
-        );
-        Route::GET('client/login', [App\Http\Controllers\Client\Auth\LoginController::class,'showLoginForm'])->name('client.login');
-        Route::POST('client/login', [App\Http\Controllers\Client\Auth\LoginController::class, 'login']);
-        Route::POST('client/logout', [App\Http\Controllers\Client\Auth\LoginController::class, 'logout'])->name('client.logout');
-        Route::GET('client/password/confirm', [App\Http\Controllers\Client\Auth\LoginController::class, 'showConfirmForm'])->name('client.password.confirm');
-        Route::POST('client/password/confirm',  [App\Http\Controllers\Client\Auth\LoginController::class, 'confirm']);
-        Route::POST('client/password/email',  [App\Http\Controllers\Client\Auth\LoginController::class, 'sendResetLinkEmail'])->name('client.password.email');
-        Route::GET('client/password/reset', [App\Http\Controllers\Client\Auth\LoginController::class, 'showLinkRequestForm'])->name('client.password.request');
-        Route::POST('client/password/reset', [App\Http\Controllers\Client\Auth\LoginController::class, 'reset'])->name('client.password.update');
-        Route::GET('client/password/reset/{token}', [App\Http\Controllers\Client\Auth\LoginController::class, 'showResetForm'])->name('client.password.reset');
-    });
+        [],
+        function () {
+            Auth::routes(
+                [
+                    'verify' => false,
+                    'register' => false,
+                ]
+            );
+            Route::GET('client/login', [App\Http\Controllers\Client\Auth\LoginController::class, 'showLoginForm'])->name('client.login');
+            Route::POST('client/login', [App\Http\Controllers\Client\Auth\LoginController::class, 'login']);
+            Route::POST('client/logout', [App\Http\Controllers\Client\Auth\LoginController::class, 'logout'])->name('client.logout');
+            Route::GET('client/password/confirm', [App\Http\Controllers\Client\Auth\LoginController::class, 'showConfirmForm'])->name('client.password.confirm');
+            Route::POST('client/password/confirm',  [App\Http\Controllers\Client\Auth\LoginController::class, 'confirm']);
+            Route::POST('client/password/email',  [App\Http\Controllers\Client\Auth\LoginController::class, 'sendResetLinkEmail'])->name('client.password.email');
+            Route::GET('client/password/reset', [App\Http\Controllers\Client\Auth\LoginController::class, 'showLinkRequestForm'])->name('client.password.request');
+            Route::POST('client/password/reset', [App\Http\Controllers\Client\Auth\LoginController::class, 'reset'])->name('client.password.update');
+            Route::GET('client/password/reset/{token}', [App\Http\Controllers\Client\Auth\LoginController::class, 'showResetForm'])->name('client.password.reset');
+        }
+    );
     Route::group(
         [
             'middleware' => ['auth:admin-web'],
@@ -258,9 +258,10 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             'middleware' => ['auth:client-web', CheckStatus::class],
             'prefix' => 'client',
 
-        ], function () {
-        Route::get('/', [App\Http\Controllers\Client\Auth\LoginController::class, 'showLoginForm']);
-        Route::get('/home',  [HomeController::class, 'index'])->name('client.home');
+        ],
+        function () {
+            Route::get('/', [App\Http\Controllers\Client\Auth\LoginController::class, 'showLoginForm']);
+            Route::get('/home',  [HomeController::class, 'index'])->name('client.home');
 
 
             Route::post('toggleSearchCardOpen', [HomeController::class, 'toggleSearchCardOpen'])->name('toggleSearchCardOpen');
@@ -699,7 +700,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
                 'show' => 'client.sale_bills.show1',
             ]);
             Route::get('/generate-invoice-pdf/{saleBillId}/{hashtoken?}/{invoiceType?}/{printColor?}/{isMoswada?}', [SaleBillController::class, 'generateInvoicePdf'])
-            ->name('generate.invoice.pdf');
+                ->name('generate.invoice.pdf');
 
             Route::get('/print-demo', [SaleBillPrintDemoController::class, 'edit_print_demo'])->name('print.demo');
             Route::post('/print-demo-update', [SaleBillPrintDemoController::class, 'update_print_demo'])->name('print.demo.update');
@@ -987,6 +988,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
 
             // Journal routes voucher routes
             Route::get('/voucher/create', [VoucherController::class, 'create_voucher_entries'])->name('client.voucher.create');
+            Route::get('/voucher/edit/{id}', [VoucherController::class, 'edit_voucher_entries'])->name('client.voucher.edit');
+            Route::put('/voucher/update/{id}', [VoucherController::class, 'update_voucher_entries'])->name('client.voucher.update');
+
             Route::get('/vouchers', [VoucherController::class, 'get_voucher_entries'])->name('client.voucher.get');
             Route::post('/voucher/store', [VoucherController::class, 'store'])->name('client.voucher.store');
             Route::get('/account/{accountId}/statement', [VoucherController::class, 'showAccountStatement'])->name('account.statement');
@@ -1039,7 +1043,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::post('/get-coupon-code', [PosController::class, 'get_coupon_code'])->name('get.coupon.code');
             Route::post('/getNewPosBillID', [PosController::class, 'getNewPosBillID'])->name('getNewPosBillID');
             Route::post('/clients-store-cash-clients-pos', [PosController::class, 'store_cash_clients'])
-            ->name('client.store.cash.clients.pos');
+                ->name('client.store.cash.clients.pos');
             // Route::resource('Manufactures', ManufactureController::class);
             Route::resource('manufactures', ManufactureController::class)->names([
                 'index' => 'client.manufactures.index',
@@ -1051,8 +1055,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
                 'show' => 'client.manufactures.show',
             ]);
             Route::get('manufactures/{manufacturing}/status', [ManufactureController::class, 'cancel'])->name('client.manufactures.cancel');
-
-    });
+        }
+    );
 });
 
 Route::get('/get_csid', 'FatooraController@get_csid');

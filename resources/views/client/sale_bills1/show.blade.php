@@ -77,7 +77,10 @@
 
             @foreach ($saleBill->elements as $element)
                 @php
-                    $sum[] = $element->quantity_price;
+                    $sum[] =
+                        $element->tax_type == 2
+                            ? $element->quantity_price - $element->tax_value
+                            : $element->quantity_price;
                 @endphp
                 <tr>
                     <td>{{ ++$i }}</td>
@@ -96,7 +99,7 @@
 
     {{-- Calculations --}}
     @php
-        $total = array_sum($sum) - $saleBill->total_tax + $saleBill->total_discount;
+        $total = array_sum($sum) + $saleBill->total_discount;
         $after_total = $saleBill->final_total;
         $tax_option = $saleBill->value_added_tax;
     @endphp

@@ -27,12 +27,12 @@ class Voucher extends Model
 
     public function transactions()
     {
-        return $this->hasMany(Transaction::class);
+        return $this->hasMany(Transaction::class)->where('company_id', $this->company_id);
     }
+
 
     public function referable()
     {
         return $this->morphTo();
     }
-
 }

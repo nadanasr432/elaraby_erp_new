@@ -771,7 +771,7 @@
                         @foreach ($products as $product)
                             <option value="{{ $product->id }}" data-tokens="{{ $product->code_universal }}"
                                 product_name="{{ $product->product_name }}"
-                                product_price="{{ $product->wholesale_price }}">
+                                product_price="{{ $product->sector_price }}">
                                 {{ $product->product_name }}
                             </option>
                         @endforeach
@@ -1651,8 +1651,8 @@
                         product.product_name +
                         '</h5> <p class="card-text ctxt" style="margin-bottom: 3px !important;">' +
                         product.code_universal +
-                        '</p> <div class="row col-12 justify-content-between m-0 pl-0"> <span class="text-warning font-weight-bold"> ' +
-                        product.sector_price +
+                        '</p> <div class="row col-12 justify-content-between m-0 pl-0"> <span class="text-warning font-weight-bold"> '
+                        +product.sector_price +
                         ' </span> <span class="row p-0 d-inline"> <span class="plusIcon">+</span> <span class="m-nos font-weight-bold">1</span> <span class="minusIcon">-</span> </span> </div> </div> </div>';
                     $(".products").append(productElement);
                 });
