@@ -1,5 +1,8 @@
 @extends('client.layouts.app-main1')
+
+
 @section('content')
+
     @if (session('success'))
         <div class="alert alert-success alert-dismissable fade show text-center">
             <button class="close" data-dismiss="alert" aria-label="Close">×</button>
@@ -121,7 +124,7 @@
                 </label>
                 <div class="d-flex align-items-center justify-content-between">
                     <select name="product_id" id="product_id" class="selectpicker w-50" data-style="btn-new_color"
-                        data-live-search="true" title="{{ __('sales_bills.choose product') }}">
+                        data-live-search="true" data-dropup-auto="false" title="{{ __('sales_bills.choose product') }}">
                         @foreach ($all_products as $product)
                             <option value="{{ $product->id }}" data-name="{{ strtolower($product->product_name) }}"
                                 data-sectorprice="{{ $product->sector_price }}"
@@ -457,6 +460,26 @@
     <input type="hidden" id="product" placeholder="product" name="product" />
     <input type="hidden" id="net_total" placeholder="اجمالى قبل الخصم" name="total" />
     <input type="hidden" value="0" id="check" />
+    <style>
+        /* Limit the height of the dropdown and allow scrolling */
+        .bootstrap-select .dropdown-menu.inner {
+            max-height: 300px;
+            /* Adjust based on preference */
+            max-width: 500px;
+            /* Adjust based on preference */
+            overflow-y: auto;
+            /* Enable scrolling */
+        }
+
+        /* Ensures dropdown position behaves naturally without overriding transforms */
+        .bootstrap-select .dropdown-menu {
+            position: absolute;
+            will-change: unset !important;
+            /* Remove will-change to prevent forced transforms */
+            transform: none !important;
+            /* Ensure transform isn't causing misalignment */
+        }
+    </style>
     <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
     <script>
         var translations = {
@@ -558,7 +581,7 @@
 
                 $.post("{{ route('client.quotations.redirectANDprint') }} ", formData)
                     .done(function(data) {
-                        location.href = '/client/quotations/view/' + data ;
+                        location.href = '/client/quotations/view/' + data;
                     })
                     .fail(function(jqXHR) {
                         // Check if responseJSON exists and try to extract message
@@ -1257,6 +1280,11 @@
         $(document).ready(function() {
             var rowIndex = 0;
             var roductPrice = 0;
+            $('.selectpicker').selectpicker({
+                liveSearch: true,
+                dropupAuto: false,
+                // container: 'body'
+            });
 
             function handleTaxCalculation(flag = 1) {
                 var taxRate = 0.15; // Tax rate of 15%
