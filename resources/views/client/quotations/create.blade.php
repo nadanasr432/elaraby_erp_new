@@ -152,7 +152,7 @@
                 </label>
 
                 <div class="d-flex align-items-center justify-content-between">
-                    <select required name="value_added_tax" id="value_added_tax" class="selectpicker w-100"
+                    <select required disabled name="value_added_tax" id="value_added_tax" class="selectpicker w-100"
                         data-style="btn-new_color" data-live-search="true">
                         <option value="0" selected>
                             {{ __('sales_bills.not-including-tax') }}</option>

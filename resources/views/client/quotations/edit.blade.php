@@ -350,12 +350,10 @@
                         <label for="discount">خصم على اجمالى عرض السعر</label> <br>
                         <select name="discount_type" id="discount_type" class="form-control"
                                 style="width: 20%;display: inline;float: right; margin-left:5px;">
-                            <option @if($quotation_discount_type == "pound") selected
-                                    @endif value="pound">{{$extra_settings->currency}}</option>
-                            <option @if($quotation_discount_type == "percent") selected
-                                    @endif value="percent">%</option>
+                            <option  value="pound">{{$extra_settings->currency}}</option>
+                            <option value="percent">%</option>
                         </select>
-                        <input type="text" value="{{$quotation_discount_value}}" name="discount_value"
+                        <input type="text"  name="discount_value"
                                style="width: 50%;display: inline;float: right;"
                                 id="discount_value" class="form-control "/>
                         <button type="button"  class="btn btn-md btn-success pull-right text-center"
@@ -369,12 +367,10 @@
                         <label for="extra">مصاريف الشحن</label> <br>
                         <select  name="extra_type" id="extra_type" class="form-control"
                                 style="width: 20%;display: inline;float: right;margin-left: 5px">
-                            <option @if($quotation_extra_type == "pound") selected
-                                    @endif value="pound">{{$extra_settings->currency}}</option>
-                            <option @if($quotation_extra_type == "percent") selected
-                                    @endif value="percent">%</option>
+                            <option  value="pound">{{$extra_settings->currency}}</option>
+                            <option value="percent">%</option>
                         </select>
-                        <input value="{{$quotation_extra_value}}"  type="text" name="extra_value"
+                        <input   type="text" name="extra_value"
                                style="width: 50%;display: inline;float: right;"
                                id="extra_value" class="form-control"/>
                         <button  type="button" class="btn btn-md btn-success pull-right text-center"

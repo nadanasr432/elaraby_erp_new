@@ -1120,9 +1120,10 @@ class QuotationController extends Controller
             array_push($productsTotal, $element->quantity_price);
         }
         $productsTotal = array_sum($productsTotal);
+        // dd($productsTotal);
 
         # chk for discount #
-        $totalQuotaitonPrice = 0;
+        $totalQuotaitonPrice = $productsTotal;
         $discount = QuotationExtra::where('quotation_id', $quotation->id)
             ->where('action', 'discount')
             ->first();
@@ -1137,10 +1138,15 @@ class QuotationController extends Controller
 
         # calc tax #
         $tax_value_added = $company->tax_value_added;
+        // dd( $quotation);
         $taxValue = 0;
         if ($tax_value_added != 0) {
-            $taxValue = $totalQuotaitonPrice * $tax_value_added / 100;
-            $totalQuotaitonPrice += $taxValue;
+            // $taxValue = $totalQuotaitonPrice * $tax_value_added / 100;
+            $taxValue = ($productsTotal * $tax_value_added) / (100 + $tax_value_added);
+            $netPrice = $totalQuotaitonPrice - $taxValue;
+
+            // dd($taxValue);
+            // $totalQuotaitonPrice += $taxValue;
         }
 
         # chk for shipping #

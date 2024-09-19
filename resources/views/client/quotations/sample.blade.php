@@ -180,7 +180,7 @@
                         <tr class="even"
                             style="font-size: 16px !important; height: 40px !important; text-align: center;">
                             <td>{{ $company->civil_registration_number }}</td>
-                            <td>{{ $quotation->quotation_number-1 }}</td>
+                            <td>{{ $quotation->quotation_number - 1 }}</td>
                             <td>{{ $quotation->created_at }}</td>
                             <td>{{ $quotation->expiration_date }}</td>
                             <td>{{ $quotation->start_date }}</td>
@@ -275,24 +275,26 @@
                             @php
                                 $prodTax = 0;
                                 if ($tax_value_added != 0) {
-                                    $prodTax = ($product->quantity_price * $tax_value_added) / 100;
+                                    $prodTax = ($product->quantity_price * $tax_value_added) / (100 + $tax_value_added);
                                 }
                             @endphp
                             <tr class="even"
                                 style="font-size: 16px !important; height: 40px !important; text-align: center;">
-                                <td class="borderLeftH">{{ $prodTax + $product->quantity_price }}
+                                <td class="borderLeftH">{{ $product->quantity_price }}
                                     {{ $company->extra_settings->currency }}</td>
                                 <td class="borderLeftH">{{ $prodTax }} {{ $company->extra_settings->currency }}
                                 </td>
                                 <td class="borderLeftH" dir="rtl">
-                                    {{ $product->product_price * $product->quantity }} {{ $company->extra_settings->currency }}
+                                    {{ $product->product_price * $product->quantity }}
+                                    {{ $company->extra_settings->currency }}
                                 </td>
                                 <td class="borderLeftH" dir="rtl">
                                     {{ $product->quantity }}
                                     {{ $product->product->unit ? $product->product->unit->unit_name : ' ' }}
                                 </td>
                                 <td class="borderLeftH" dir="rtl">
-                                    {{ $product->product_price * $product->quantity }} {{ $company->extra_settings->currency }}
+                                    {{ $product->product_price * $product->quantity }}
+                                    {{ $company->extra_settings->currency }}
                                 </td>
                                 <td class="borderLeftH" style="direction: rtl; unicode-bidi: embed;">
                                     {{ $product->product->description }}
