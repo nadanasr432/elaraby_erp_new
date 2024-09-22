@@ -78,7 +78,8 @@
                                     </thead>
                                     <tbody class="tbodyvouchers">
 
-                                        <input type="hidden" name="amount" class="amount">
+                                        <input type="hidden" name="amount" class="
+                                        ">
 
                                         @foreach ($voucher->transactions as $transaction)
                                             <tr>

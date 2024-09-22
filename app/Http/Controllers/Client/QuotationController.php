@@ -1180,7 +1180,8 @@ class QuotationController extends Controller
                 'discount_value',
                 'productsTotal',
                 'tax_value_added',
-                'products'
+                'products',
+                'netPrice'
             )
         );
     }

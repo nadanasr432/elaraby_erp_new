@@ -25,8 +25,8 @@ return [
     "unit price" => "السعر ",
     "product name" => "البيان",
     "comments" => "ملاحظات",
-    "product name"=>"اسم المنتج",
-    "Send to whatsapp"=> "أرسل إلى الواتساب",
+    "product name" => "اسم المنتج",
+    "Send to whatsapp" => "أرسل إلى الواتساب",
     "Product number" => "رقم المنتج",
     "Discount" => "الخصم",
     "Total, excluding tax" => "الاجمالي باستثناء ضريبة القيمة المضافة",
@@ -45,7 +45,7 @@ return [
     "invoice-time" => "وقت الفاتورة",
     "choose-store" => "اختر المخزن",
     "choose-account" => "اختر الحساب",
-    "product-code" =>"اختر منتج",
+    "product-code" => "اختر منتج",
     "product-price" => "سعر المنتج",
     "offer price" => "عرض سعر",
     "Start Date" => "تاريخ البداية",
@@ -117,6 +117,6 @@ return [
     'edit' => "تعديل",
     'choose product' => "اختر منتج",
     'Product qty executed' => "كمية المنتج نفذت",
-    "save and show" =>"حفظ وعرض",
-
+    "save and show" => "حفظ وعرض",
+    "description" => "وصف",
 ];

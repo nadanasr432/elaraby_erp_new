@@ -276,11 +276,18 @@
                                 $prodTax = 0;
                                 if ($tax_value_added != 0) {
                                     $prodTax = ($product->quantity_price * $tax_value_added) / (100 + $tax_value_added);
+                                    $netElementPrice = $product->product_price * $product->quantity;
+                                    $pricewithTax = $product->quantity_price / $product->quantity;
+
+                                    if ($pricewithTax <= $netElementPrice) {
+                                        $product->quantity_price = $product->quantity_price + $prodTax;
+                                        $netElementPrice = $product->product_price * $product->quantity - $prodTax;
+                                    }
                                 }
                             @endphp
                             <tr class="even"
                                 style="font-size: 16px !important; height: 40px !important; text-align: center;">
-                                <td class="borderLeftH">{{ $product->quantity_price }}
+                                <td class="borderLeftH">{{ $prodTax + $product->product_price * $product->quantity }}
                                     {{ $company->extra_settings->currency }}</td>
                                 <td class="borderLeftH">{{ $prodTax }} {{ $company->extra_settings->currency }}
                                 </td>
@@ -293,7 +300,7 @@
                                     {{ $product->product->unit ? $product->product->unit->unit_name : ' ' }}
                                 </td>
                                 <td class="borderLeftH" dir="rtl">
-                                    {{ $product->product_price * $product->quantity }}
+                                    {{ $product->product_price }}
                                     {{ $company->extra_settings->currency }}
                                 </td>
                                 <td class="borderLeftH" style="direction: rtl; unicode-bidi: embed;">
@@ -327,7 +334,7 @@
                         <tr
                             style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 40px !important; text-align: center;">
                             <td dir="rtl">
-                                {{ $productsTotal }} {{ $company->extra_settings->currency }}
+                                {{ $netPrice }} {{ $company->extra_settings->currency }}
                             </td>
                             <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
                         </tr>

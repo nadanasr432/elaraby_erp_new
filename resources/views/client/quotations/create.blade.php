@@ -479,6 +479,14 @@
             transform: none !important;
             /* Ensure transform isn't causing misalignment */
         }
+
+        input {
+            min-width: 100px;
+        }
+
+        select {
+            min-width: 100px;
+        }
     </style>
     <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
     <script>
@@ -1500,48 +1508,49 @@
                     calculateRowTotal(existingRow);
                 } else {
                     var rowHtml = `
-                     <tr data-product-id="${productId}" data-index="${rowIndex}">
-                        <td>${productName}</td>
-                        <td class="text-left">
-                            <label>
-                                <input type="radio" name="products[${rowIndex}][price_type]" value="sector" class="price_type" checked>
-                                ${translations.sector}
-                            </label>
-                            <label>
-                                <input type="radio" name="products[${rowIndex}][price_type]" value="wholesale" class="price_type">
-                                ${translations.wholesale}
-                            </label>
-                        </td>
-                        <td>
-                            <input type="number" min="1" name="products[${rowIndex}][product_price]" class="form-control price" value="${sectorPrice}" step="any">
-                        </td>
-                        <td>
-                            <input type="number" name="products[${rowIndex}][quantity]" class="form-control quantity" value="1" min="1" max="${remaining}" step="any">
-                        </td>
-                        <td>
-                            <select name="products[${rowIndex}][unit_id]" class="form-control unit">
-                                <option disabled>${translations.choose_unit}</option>
-                                @foreach ($units as $unit)
-                                    <option value="{{ $unit->id }}" ${unitId === {{ $unit->id }} ? 'selected' : ''}>{{ $unit->unit_name }}</option>
-                                @endforeach
-                            </select>
-                            <select name="products[${rowIndex}][tax]" hidden class="form-control tax_type w-100 mb-1">
-                                <option value="0" ${valueAddedTax == 0 ? 'selected' : ''}>${translations.not_including_tax}</option>
-                                <option value="1" ${valueAddedTax == 1 ? 'selected' : ''}>${translations.exempt_tax}</option>
-                                <option value="2" ${valueAddedTax == 2 ? 'selected' : ''}>${translations.including_tax}</option>
-                            </select>
-                            <input type="number"  hidden name="products[${rowIndex}][tax_amount]" class="form-control tax_amount" value="0" min="0" step="any">
-                        </td>
+                  <tr data-product-id="${productId}" data-index="${rowIndex}">
+                      <td>${productName}</td>
+                      <td class="text-left">
+                          <label>
+                              <input type="radio" name="products[${rowIndex}][price_type]" value="sector" class="price_type" checked>
+                              ${translations.sector}
+                          </label>
+                          <label>
+                              <input type="radio" name="products[${rowIndex}][price_type]" value="wholesale" class="price_type">
+                              ${translations.wholesale}
+                          </label>
+                      </td>
+                      <td>
+                          <input type="number" min="1" name="products[${rowIndex}][product_price]" class="form-control form-control-sm price w-auto" value="${sectorPrice}" step="any">
+                      </td>
+                      <td>
+                          <input type="number" name="products[${rowIndex}][quantity]" class="form-control form-control-sm quantity w-auto" value="1" min="1" max="${remaining}" step="any">
+                      </td>
+                      <td>
+                          <select name="products[${rowIndex}][unit_id]" class="form-control form-control-sm unit w-auto">
+                              <option disabled>${translations.choose_unit}</option>
+                              @foreach ($units as $unit)
+                                  <option value="{{ $unit->id }}" ${unitId === {{ $unit->id }} ? 'selected' : ''}>{{ $unit->unit_name }}</option>
+                              @endforeach
+                          </select>
+                          <select name="products[${rowIndex}][tax]" hidden class="form-control tax_type w-auto mb-1">
+                              <option value="0" ${valueAddedTax == 0 ? 'selected' : ''}>${translations.not_including_tax}</option>
+                              <option value="1" ${valueAddedTax == 1 ? 'selected' : ''}>${translations.exempt_tax}</option>
+                              <option value="2" ${valueAddedTax == 2 ? 'selected' : ''}>${translations.including_tax}</option>
+                          </select>
+                          <input type="number" hidden name="products[${rowIndex}][tax_amount]" class="form-control form-control-sm tax_amount w-auto" value="0" min="0" step="any">
+                      </td>
 
-                        <td>
-                            <input type="number" name="products[${rowIndex}][total]" class="form-control total" value="0" readonly step="any">
-                            <input type="number" hidden name="products[${rowIndex}][product_id]" class="form-control total" value="${productId}">
-                        </td>
-                        <td>
-                            <button type="button" class="btn btn-danger remove-product">${translations.remove}</button>
-                        </td>
-                    </tr>
-                    `;
+                      <td>
+                          <input type="number" name="products[${rowIndex}][total]" class="form-control form-control-sm total w-auto" value="0" readonly step="any">
+                          <input type="number" hidden name="products[${rowIndex}][product_id]" class="form-control form-control-sm total" value="${productId}">
+                      </td>
+                      <td>
+                          <button type="button" class="btn btn-danger btn-sm remove-product">${translations.remove}</button>
+                      </td>
+                  </tr>
+                  `;
+
 
                     $('#products_table tbody').append(rowHtml);
                     handleTaxCalculation();
