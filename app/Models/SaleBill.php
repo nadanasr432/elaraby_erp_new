@@ -12,9 +12,25 @@ class SaleBill extends Model
 
     protected $table = "sale_bills";
     protected $fillable = [
-        'token', 'company_id', 'company_counter', 'client_id', 'outer_client_id',
-        'sale_bill_number', 'date', 'time', 'notes',
-        'final_total', 'status', 'paid', 'rest', 'value_added_tax','store_id'
+        'token',
+        'company_id',
+        'company_counter',
+        'client_id',
+        'outer_client_id',
+        'sale_bill_number',
+        'date',
+        'time',
+        'notes',
+        'final_total',
+        'status',
+        'paid',
+        'rest',
+        'value_added_tax',
+        'store_id',
+        'total_discount',
+        'products_discount_type',
+        'value_added_tax',
+        'total_tax',
     ];
     // protected static function boot()
     // {

@@ -1133,7 +1133,7 @@ class QuotationController extends Controller
             if ($discount_type == "percent") {
                 $discount_value = $discount_value / 100 * $productsTotal;
             }
-            $totalQuotaitonPrice = $productsTotal - $discount_value;
+            $totalQuotaitonPrice = (float)$productsTotal - (float)$discount_value;
         }
 
         # calc tax #

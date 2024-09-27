@@ -501,7 +501,7 @@ class SaleBillController1 extends Controller
                 'unit_id' => $product['unit_id'],
                 'quantity_price' => (float)$product['product_price'] * $product['quantity'],
                 'tax_value' => (float)$product['tax_amount'],
-                'discount_value' => (float)$product['discount'],
+                'discount_value' => (float)$product['applied_discount'],
                 'tax_type' => (float)$product['tax'],
                 'price_type' => $product['price_type'],
                 'discount_type' => $product['discount_type'],
@@ -2613,86 +2613,56 @@ class SaleBillController1 extends Controller
                     $shippingValue = $shipping->action_type == 'percent' ? $shipping->value / 100 * $total : $shipping->value;
                 }
 
-                // Calculate discount
-                // $discountValue = 0;
-                // if ($discount) {
-                //     switch ($discount->action_type) {
-                //         case 'pound':
-                //             $discountValue = $discount->value;
-                //             $after_discount = $total - $discountValue + ($shippingValue ?? 0);
-                //             break;
-                //         case 'percent':
-                //             $discountValue = $discount->value / 100 * $total;
-                //             $after_discount = $total - $discountValue + ($shippingValue ?? 0);
-                //             break;
-                //         case 'afterTax':
-                //             $discountValue = $discount->value / 100 * $total;
-                //             $after_discount = $total - $discountValue + ($tax_value_added ?? 0);
-                //             break;
-                //         case 'poundAfterTax':
-                //             $discountValue = $discount->value - $total;
-                //             $after_discount = $total - $discountValue;
-                //         case 'poundAfterTaxPercent':
-                //             $discountValue = ($discount->value * $total) / 100;
-                //             $after_discount = $total - $discountValue;
-                //             break;
-                //         default:
-                //             $after_discount = $total - $discount->value;
-                //             break;
-                //     }
-                // } else {
-                //     $after_discount = $total;
-                // }
 
                 $total = $after_discount = $total - $discount;
                 $totalTax = $sale_bill->total_tax;
                 $sumWithTax = $sale_bill->final_total;
                 $sumWithOutTax = $sumWithTax - $totalTax;
-                // dd($sumWithOutTax);
-                // Calculate tax
-                // if ($discount && in_array($discount->action_type, ['poundAfterTax', 'poundAfterTaxPercent'])) {
-                //     $sumWithOutTax = $sale_bill->value_added_tax ? round($total * 20 / 23, 2) : round($total, 2);
-                //     $sumWithTax = $sale_bill->value_added_tax ? $total : round($total + $realtotal * 15 / 100, 2);
-                //     $totalTax = round($sumWithTax - $sumWithOutTax, 2);
-                // } else {
-                //     $sumWithOutTax = $sale_bill->value_added_tax ? round($total * 20 / 23, 2) : round($total, 2);
-                //     $sumWithTax = $sale_bill->value_added_tax ? $total : round($total + $total * 15 / 100, 2);
-                //     $totalTax = round($sumWithTax - $sumWithOutTax, 2);
-                // }
+                $discountValueForEveryElement = $discountValue / count($elements);
 
                 // Determine print color
                 if (!empty($printColor)) {
-                    $printColor = $printColor == 1 ? "#085d4a" : "#666EE8";
+                    $printColor = $printColor == 1 ? "#222751" : "#222751";
                 } else {
-                    $printColor = "#666EE8";
+                    $printColor = "#222751";
                 }
                 if ($invoiceType == 1) {
                     $printColor = '#222751';
                     return view(
                         'client.sale_bills1.main',
-                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
                     );
                 } elseif ($invoiceType == 5) {
                     $printColor = '#222751';
                     return view(
                         'client.sale_bills1.print5',
-                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
                     );
                 } elseif ($invoiceType == 4) {
                     $printColor = '#222751';
                     return view(
                         'client.sale_bills1.print4',
-                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
                     );
                 } elseif ($invoiceType == 3) {
                     return view(
                         'client.sale_bills1.no_tax_print',
-                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
+                    );
+                } elseif ($invoiceType == 6) {
+                    return view(
+                        'client.sale_bills1.print6',
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
+                    );
+                } elseif ($invoiceType == 7) {
+                    return view(
+                        'client.sale_bills1.print7',
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
                     );
                 } else {
                     return view(
                         'client.sale_bills1.nPrint3',
-                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
                     );
                 }
             }
@@ -2824,35 +2794,35 @@ class SaleBillController1 extends Controller
                     $printColor = '#222751';
                     return view(
                         'client.sale_bills1.sentSalebill',
-                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
                     );
                 } elseif ($invoiceType == 5) {
                     $printColor = '#222751';
                     return view(
                         'client.sale_bills1.sentSalebill5',
-                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
                     );
                 } elseif ($invoiceType == 5) {
                     $printColor = '#222751';
                     return view(
                         'client.sale_bills1.print5',
-                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
                     );
                 } elseif ($invoiceType == 4) {
                     $printColor = '#222751';
                     return view(
                         'client.sale_bills1.sentSalebill4',
-                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
                     );
                 } elseif ($invoiceType == 3) {
                     return view(
                         'client.sale_bills1.sentSalebill3',
-                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
                     );
                 } else {
                     return view(
                         'client.sale_bills1.sentSalebill2',
-                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
                     );
                 }
             }

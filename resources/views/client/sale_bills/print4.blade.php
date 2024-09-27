@@ -847,7 +847,7 @@
 <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
 <script>
     function sendToWhatsApp() {
-        const clientPhone = '{{ $sale_bill->outerClient->phones[0]->client_phone }}';
+        const clientPhone = '{{ $sale_bill->outerClient->phones[0]->client_phone ?? '-'}}';
         const invoiceUrl = '{{ route('client.sale_bills.sent', [$sale_bill->token,4,2,0]) }}';
         const message = `Please check your invoice at the following link: ${invoiceUrl}`;
         const whatsappUrl = `https://wa.me/${clientPhone}?text=${encodeURIComponent(message)}`;

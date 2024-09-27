@@ -522,7 +522,7 @@
                                     style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;background: #f2f2f2">
                                     <td style="text-align: left;padding-left: 14px;">@lang('sales_bills.Discount')</td>
                                     <td dir="rtl">
-                                        {{ $discountNote . ' || ' ?? '' }}
+                                        {{ $discountNote . '  ' ?? '' }}
                                         {{ $discountValue }} {{ $currency }}
                                     </td>
 
@@ -634,7 +634,7 @@
                                 <tr
                                     style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;background: #f2f2f2">
                                     <td dir="rtl">
-                                        {{ $discountNote . ' || ' ?? '' }}
+                                        {{ $discountNote . '  ' ?? '' }}
                                         {{ $discountValue }} {{ $currency }}
                                     </td>
                                     <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Discount')</td>
