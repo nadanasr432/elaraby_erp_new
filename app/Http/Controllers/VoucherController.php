@@ -35,13 +35,29 @@ class VoucherController extends Controller
 
     public function create_voucher_entries()
     {
-        $accounts = accounting_tree::get();
+        // $accounts = accounting_tree::get();
+        $authCompanyId = Auth::user()->company_id;
+
+        $accounts = accounting_tree::whereNull('accountable_id')
+            ->orWhereHas('accountable', function ($query) use ($authCompanyId) {
+                $query->where('company_id', $authCompanyId);
+            })
+            ->get();
+
         return view('client.voucher.create', compact('accounts'));
     }
     public function edit_voucher_entries($id)
     {
         $voucher = Voucher::findOrFail($id);
-        $accounts = accounting_tree::get();
+        // $accounts = accounting_tree::get();
+        $authCompanyId = Auth::user()->company_id;
+
+        $accounts = accounting_tree::whereNull('accountable_id')
+            ->orWhereHas('accountable', function ($query) use ($authCompanyId) {
+                $query->where('company_id', $authCompanyId);
+            })
+            ->get();
+
         $transactions = Transaction::where('voucher_id', $voucher->id)->get();
         return view('client.voucher.edit', compact('voucher', 'accounts', 'transactions'));
     }
