@@ -76,12 +76,18 @@ class UpdateSaleBillsSeeder extends Seeder
                             // Calculate tax values based on the company's tax settings
                             $company = Company::find($saleBill->company_id);
                             $tax_value_added = $company->tax_value_added ?? 15; // Default to 15% tax if not specified
-
                             // Calculate total without tax and total tax
                             $totalTax = $saleBill->value_added_tax
-                                ? round(($realtotal * $tax_value_added) / (100 + $tax_value_added), 2)
-                                : round(($realtotal * $tax_value_added) / 100, 2);
-
+                                ? round(($total * $tax_value_added) / (100 + $tax_value_added), 2)
+                                : round(($total * $tax_value_added) / 100, 2);
+                            // $sumWithOutTax = $saleBill->value_added_tax ? round(($total * $tax_value_added) / (100 + $tax_value_added), 2) : round($total + ($total * $tax_value_added / 100), 2);
+                            // $sumWithTax = $saleBill->value_added_tax ? $total : round($total + $total * $tax_value_added / 100, 2);
+                            // $totalTax = round($sumWithTax - $sumWithOutTax, 2);
+                            if ($saleBill->id == 26269) {
+                                logger($total);
+                                logger($totalTax);
+                                // logger($sumWithTax);
+                            }
                             // Update the SaleBill with calculated discount and tax
                             $saleBill->update([
                                 'total_discount' => $discountValue,

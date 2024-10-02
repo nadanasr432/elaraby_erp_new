@@ -226,6 +226,7 @@ class QuotationController extends Controller
 
         foreach ($request['products'] as $product) {
             // Create a new QuotationElement record for each product
+            $quantityPrice = $product['product_price'] * $product['quantity'];
             QuotationElement::create([
                 'quotation_id' => $data['quotation_id'],          // The related quotation ID
                 'company_id' => $data['company_id'],              // The company ID
@@ -233,7 +234,7 @@ class QuotationController extends Controller
                 'product_price' => $product['product_price'],     // The price of the product
                 'quantity' => $product['quantity'],               // The quantity of the product
                 'unit_id' => $product['unit_id'],                 // The unit ID
-                'quantity_price' => $product['total'],            // The total price (or use any other appropriate logic here)
+                'quantity_price' => $quantityPrice,            // The total price (or use any other appropriate logic here)
             ]);
         }
         $elements = $quotation->elements;
@@ -950,6 +951,7 @@ class QuotationController extends Controller
         }
         $previous_discount = QuotationExtra::where('quotation_id', $quotation->id)
             ->where('action', 'discount')->first();
+        $previous_discount_value = 0;
         if (!empty($previous_discount)) {
             $previous_discount_type = $previous_discount->action_type;
             $previous_discount_value = $previous_discount->value;
@@ -960,9 +962,9 @@ class QuotationController extends Controller
         }
         if (!empty($previous_extra) && !empty($previous_discount)) {
             $after_discount = $total - $previous_discount_value + $previous_extra_value;
-        } else {
-            $after_discount = $total;
         }
+
+        $percentage = 0;
         if (isset($after_discount) && $after_discount != 0) {
             $percentage = ($tax_value_added / 100) * $after_discount;
             $after_total_all = $after_discount + $percentage;
@@ -972,7 +974,6 @@ class QuotationController extends Controller
         }
         $final_total = $after_total_all;
         $rest = $final_total;
-
         $sale_bill = SaleBill::create([
             'company_id' => $company_id,
             'client_id' => $client_id,
@@ -985,10 +986,13 @@ class QuotationController extends Controller
             'status' => $status,
             'final_total' => $final_total,
             'paid' => $paid,
+            'total_tax' => $percentage,
+            'total_discount' => $previous_discount_value,
             'rest' => $rest,
         ]);
 
         foreach ($quotation_elements as $element) {
+            $taxValue = (float)$element->quantity_price * ($tax_value_added / 100);
             $salebill_element = SaleBillElement::create([
                 'sale_bill_id' => $sale_bill->id,
                 'company_id' => $company_id,
@@ -996,7 +1000,9 @@ class QuotationController extends Controller
                 'product_price' => $element->product_price,
                 'quantity' => $element->quantity,
                 'quantity_price' => $element->quantity_price,
-                'unit_id' => $element->unit_id
+                'unit_id' => $element->unit_id,
+                'tax_value' => $taxValue,
+                'tax_type' => 0,
             ]);
         }
         foreach ($quotation_extras as $extra) {
@@ -1041,7 +1047,7 @@ class QuotationController extends Controller
             $totalTax = round($sumWithTax - $sumWithOutTax, 2);
             $discountNote = '';
         }
-
+        $discountValue = 0;
         if ($discount) {
             if ($discount->action_type == "pound") {
                 $discountValue = $discount->value;
@@ -1074,13 +1080,21 @@ class QuotationController extends Controller
         } else {
             $after_discount = $total;
         }
-
+        $sale_bills_done = SaleBill::where('company_id', $sale_bill->company_id)
+            ->where('status', 'done')
+            ->orderBy('created_at', 'asc')
+            ->get();
+        $position = $sale_bills_done->search(function ($item) use ($sale_bill) {
+            return $item->id === $sale_bill->id;
+        }) + 1;
+        $discount = $discountValue;
         return view(
-            'client.sale_bills.main',
+            'client.sale_bills1.main',
             compact(
                 'isMoswada',
                 'realtotal',
                 'discountValue',
+                'discount',
                 'sumWithOutTax',
                 'discountNote',
                 'elements',
@@ -1089,7 +1103,8 @@ class QuotationController extends Controller
                 'currency',
                 'company',
                 'sumWithTax',
-                'totalTax'
+                'totalTax',
+                'position',
             )
         );
     }
@@ -1104,7 +1119,8 @@ class QuotationController extends Controller
         # get company data #
         $company_id = Auth::user()->company_id;
         $company = Company::findOrFail($company_id);
-
+        $shipping_value = 0;
+        $discount_value = 0;
         # get quotation data #
         $quotation = Quotation::where('quotation_number', $quotation_id)
             ->where('company_id', $company_id)
@@ -1135,14 +1151,14 @@ class QuotationController extends Controller
             }
             $totalQuotaitonPrice = (float)$productsTotal - (float)$discount_value;
         }
-
+        // dd($discount_value);
         # calc tax #
         $tax_value_added = $company->tax_value_added;
-        // dd( $quotation);
+        // dd( $tax_value_added);
         $taxValue = 0;
         if ($tax_value_added != 0) {
-            // $taxValue = $totalQuotaitonPrice * $tax_value_added / 100;
-            $taxValue = ($productsTotal * $tax_value_added) / (100 + $tax_value_added);
+            $taxValue = $totalQuotaitonPrice * $tax_value_added / 100;
+            // $taxValue = ($productsTotal * $tax_value_added) / (100 + $tax_value_added);
             $netPrice = $totalQuotaitonPrice - $taxValue;
 
             // dd($taxValue);
@@ -1153,8 +1169,7 @@ class QuotationController extends Controller
         $shipping = QuotationExtra::where('quotation_id', $quotation->id)
             ->where('action', 'extra')
             ->first();
-        $shipping_value = null;
-        $discount_value = null;
+
         if (!empty($shipping)) {
             $shipping_type = $shipping->action_type;
 

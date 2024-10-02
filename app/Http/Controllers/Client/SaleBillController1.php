@@ -3006,11 +3006,11 @@ class SaleBillController1 extends Controller
                 $subTotal += $subTotal;
             }
 
-            foreach ($elements as $element) {
-                if ($element->product->category->category_type != 'خدمية') {
-                    StockService::reduce($element, $request->input('store_id'), $element->quantity);
-                }
-            }
+            // foreach ($elements as $element) {
+            //     if ($element->product->category->category_type != 'خدمية') {
+            //         StockService::reduce($element, $request->input('store_id'), $element->quantity);
+            //     }
+            // }
             $outerClient = OuterClient::find($saleBill->outer_client_id);
             $store = Store::find($saleBill->store_id);
             //

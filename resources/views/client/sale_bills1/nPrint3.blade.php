@@ -524,7 +524,7 @@
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;background: #f2f2f2">
                                 <td style="text-align: left;padding-left: 14px;">@lang('sales_bills.Total, excluding tax')</td>
-                                <td>{{ $sumWithOutTax }} {{ $currency }}</td>
+                                <td>{{ $sale_bill->final_total - $sale_bill->total_tax }} {{ $currency }}</td>
 
                             </tr>
 
@@ -563,7 +563,7 @@
                                 @if ($company->tax_value_added && $company->tax_value_added != 0)
                                     <td>{{ $sumWithTax }} {{ $currency }} </td>
                                 @else
-                                    <td>{{ $sumWithOutTax }} {{ $currency }} </td>
+                                    <td>{{ $sale_bill->final_total - $sale_bill->total_tax }} {{ $currency }} </td>
                                 @endif
 
                             </tr>
@@ -635,7 +635,7 @@
                             @endif
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;background: #f2f2f2">
-                                <td>{{ $sumWithOutTax }} {{ $currency }}</td>
+                                <td>{{ $sale_bill->final_total - $sale_bill->total_tax }} {{ $currency }}</td>
                                 <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
                             </tr>
 
@@ -671,7 +671,7 @@
                                 @if ($company->tax_value_added && $company->tax_value_added != 0)
                                     <td>{{ $sumWithTax }} {{ $currency }} </td>
                                 @else
-                                    <td>{{ $sumWithOutTax }} {{ $currency }} </td>
+                                    <td>{{ $sale_bill->final_total - $sale_bill->total_tax }} {{ $currency }} </td>
                                 @endif
                                 <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total including tax') </td>
                             </tr>

@@ -13,9 +13,9 @@ class StockService
         $type = $product->product?->category ? $product->product->category->category_type : $product->category->category_type;
         $company_id = Auth::user()->company_id;
         $any = ProductStock::where(['product_id' => $product->product_id ?? $product->id, "store_id" => $storeId, 'company_id' => $company_id])
-        ->where('remaining', '>', 0)
-        ->select(['id', 'net_unit_cost', 'remaining', 'product_id'])
-        ->oldest()->get();
+            ->where('remaining', '>', 0)
+            ->select(['id', 'net_unit_cost', 'remaining', 'product_id'])
+            ->oldest()->get();
         logger($any);
         // logger($product);
         // logger($product->product_id);
@@ -64,6 +64,7 @@ class StockService
         $type = $product_data->category?->category_type ?? $product_data->product?->category->category_type;
         $purchase_subtotal = 0;
         $company_id = Auth::user()->company_id;
+        $lastCost = 0;
         $product_data->manufacture = $product_data->product->manufacture ?? $product_data->manufacture;
         if ($type == 'مجمع' && $product_data->manufacture == 0) {
             ProductStock::where('product_id', $id)
@@ -81,6 +82,8 @@ class StockService
                         : $cumulative;
                     $cumulative -= $remaining;
                     $purchase_subtotal += $remaining * ($product_stock->net_unit_cost);
+                    $lastCost = $product_stock->net_unit_cost;
+
                     if ($remaining <= 0) {
                         return;
                     }
@@ -100,11 +103,12 @@ class StockService
                         $cumulative;
                     $purchase_subtotal += $remaining * $productStock->net_unit_cost;
                     $cumulative -= $remaining;
+                    $lastCost = $productStock->net_unit_cost;
                 });
         };
         if ($cumulative > 0 && $type != 'خدمية') {
-            throw new Exception(trans("sales_bills.Product qty executed".$product_data->product->name, ['product' => $product_data->product->name]));
-            // return $purchase_subtotal  + ($cumulative * $purchase_subtotal);
+            // throw new Exception(trans("sales_bills.Product qty executed".$product_data->product->name, ['product' => $product_data->product->name]));
+            return $purchase_subtotal  + ($cumulative * $lastCost);
         };
         return $purchase_subtotal;
     }
