@@ -122,7 +122,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
 
     Route::get('/suppliers-summary-post', [\App\Http\Controllers\Client\SummaryController::class, 'post_suppliers_summary'])->name('suppliers.summary.post');
 
-    Route::get('/sale-bills/print/{hashtoken?}/{invoiceType?}/{printColor?}/{isMoswada?}', [\App\Http\Controllers\Client\SaleBillController::class, 'print'])->name('client.sale_bills.print');
+    Route::get('/sale-bills/print/{hashtoken?}/{invoiceType?}/{printColor?}/{isMoswada?}', [\App\Http\Controllers\Client\SaleBillController1::class, 'print'])->name('client.sale_bills.print');
     Route::get('/sent/sale-bills/print/{hashtoken?}/{invoiceType?}/{printColor?}/{isMoswada?}', [\App\Http\Controllers\Client\SaleBillController::class, 'sent'])->name('client.sale_bills.sent');
 
     Route::get('/buy-bills/print/{id?}', [\App\Http\Controllers\Client\BuyBillController::class, 'print'])->name('client.buy_bills.print');
@@ -990,6 +990,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
 
             // Journal routes voucher routes
             Route::get('/voucher/create', [VoucherController::class, 'create_voucher_entries'])->name('client.voucher.create');
+            Route::get('/voucher/edit/{id}', [VoucherController::class, 'edit_voucher_entries'])->name('client.voucher.edit');
+            Route::put('/voucher/update/{id}', [VoucherController::class, 'update_voucher_entries'])->name('client.voucher.update');
+
             Route::get('/vouchers', [VoucherController::class, 'get_voucher_entries'])->name('client.voucher.get');
             Route::post('/voucher/store', [VoucherController::class, 'store'])->name('client.voucher.store');
             Route::get('/account/{accountId}/statement', [VoucherController::class, 'showAccountStatement'])->name('account.statement');

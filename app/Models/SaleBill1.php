@@ -29,7 +29,6 @@ class SaleBill1 extends Model
         'store_id',
         'total_discount',
         'products_discount_type',
-        'value_added_tax',
         'total_tax'
     ];
     protected static function boot()

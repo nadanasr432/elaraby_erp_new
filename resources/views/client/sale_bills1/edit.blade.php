@@ -164,68 +164,70 @@
         <input type="number" id='grand_discount_input' name="total_discount" hidden>
         <input type="number" value="{{ $saleBill->sale_bill_number }}" name="sale_bill_number" hidden>
 
-
-        <table class="table table-bordered mt-2" id="products_table"
-            style="background-color: #ffffff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); border-radius: 5px;">
-            <thead>
-                <tr>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                        {{ __('sales_bills.product') }}</th>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                        {{ __('sales_bills.price_type') }}</th>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                        {{ __('sales_bills.price') }}</th>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                        {{ __('sales_bills.quantity') }}</th>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                        {{ __('sales_bills.unit') }}</th>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 5px; font-weight: bold;">
-                        {{ __('sales_bills.discount') }}
-                        <div class="tax_discount"
-                            style="display: inline-block; margin-left: 10px; vertical-align: middle;">
-                            <select id="discount_application" class="form-control" style="font-size: 12px; height: 30px;"
-                                name="products_discount_type">
-                                <option {{ $saleBill->products_discount_type == 'before_tax' ? 'selected' : '' }}
-                                    value="before_tax">{{ __('sales_bills.discount_before_tax') }}</option>
-                                <option {{ $saleBill->products_discount_type == 'after_tax' ? 'selected' : '' }}
-                                    value="after_tax">{{ __('sales_bills.discount_after_tax') }}</option>
-                            </select>
-                        </div>
-                    </th>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                        {{ __('sales_bills.tax') }}</th>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                        {{ __('sales_bills.total') }}</th>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                        {{ __('sales_bills.actions') }}</th>
-                </tr>
-            </thead>
-            <tbody style="text-align: center;">
-                <!-- هنا يتم عرض البيانات -->
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="6" style="background-color: #f9f9f9; font-weight: bold;">
-                        {{ __('sales_bills.grand_tax') }}</td>
-                    <td colspan="3" id="grand_tax" class="text-right" style="background-color: #f9f9f9;">0.00</td>
-                </tr>
-                <tr>
-                    <td colspan="6" style="background-color: #f9f9f9; font-weight: bold;">
-                        {{ __('sales_bills.grand_total') }}</td>
-                    <td colspan="3" id="grand_total" class="text-right" style="background-color: #f9f9f9;">0.00</td>
-                </tr>
-            </tfoot>
-        </table>
-
+        <div class="table-responsive">
+            <table class="table table-bordered mt-2" id="products_table"
+                style="background-color: #ffffff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); border-radius: 5px;">
+                <thead>
+                    <tr>
+                        <th
+                            style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                            {{ __('sales_bills.product') }}</th>
+                        <th
+                            style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                            {{ __('sales_bills.price_type') }}</th>
+                        <th
+                            style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                            {{ __('sales_bills.price') }}</th>
+                        <th
+                            style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                            {{ __('sales_bills.quantity') }}</th>
+                        <th
+                            style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                            {{ __('sales_bills.unit') }}</th>
+                        <th
+                            style="background-color: #d8daf5; color: #333; text-align: center; padding: 5px; font-weight: bold;">
+                            {{ __('sales_bills.discount') }}
+                            <div class="tax_discount"
+                                style="display: inline-block; margin-left: 10px; vertical-align: middle;">
+                                <select id="discount_application" class="form-control"
+                                    style="font-size: 12px; height: 30px;" name="products_discount_type">
+                                    <option {{ $saleBill->products_discount_type == 'before_tax' ? 'selected' : '' }}
+                                        value="before_tax">{{ __('sales_bills.discount_before_tax') }}</option>
+                                    <option {{ $saleBill->products_discount_type == 'after_tax' ? 'selected' : '' }}
+                                        value="after_tax">{{ __('sales_bills.discount_after_tax') }}</option>
+                                </select>
+                            </div>
+                        </th>
+                        <th
+                            style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                            {{ __('sales_bills.tax') }}</th>
+                        <th
+                            style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                            {{ __('sales_bills.total') }}</th>
+                        <th
+                            style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                            {{ __('sales_bills.actions') }}</th>
+                    </tr>
+                </thead>
+                <tbody style="text-align: center;">
+                    <!-- هنا يتم عرض البيانات -->
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="6" style="background-color: #f9f9f9; font-weight: bold;">
+                            {{ __('sales_bills.grand_tax') }}</td>
+                        <td colspan="3" id="grand_tax" class="text-right" style="background-color: #f9f9f9;">0.00
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" style="background-color: #f9f9f9; font-weight: bold;">
+                            {{ __('sales_bills.grand_total') }}</td>
+                        <td colspan="3" id="grand_total" class="text-right" style="background-color: #f9f9f9;">0.00
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
         <div class="row">
             <div class="col-md-6 pull-right">
                 <div class="form-group" dir="rtl">
@@ -520,6 +522,15 @@
     <input type="hidden" id="product" placeholder="product" name="product" />
     <input type="hidden" id="net_total" placeholder="اجمالى قبل الخصم" name="total" />
     <input type="hidden" value="0" id="check" />
+    <style>
+        input {
+            min-width: 100px;
+        }
+
+        select {
+            min-width: 100px;
+        }
+    </style>
     <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
     <script>
         var translations = {

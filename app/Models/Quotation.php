@@ -10,6 +10,22 @@ class Quotation extends Model
     protected $fillable = [
         'company_id','client_id','outer_client_id','quotation_number','start_date','expiration_date','notes'
     ];
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($quotationBill) {
+            $quotationBill->quotation_number = self::generateSaleBillNumber($quotationBill->company_id);
+        });
+    }
+    public static function generateSaleBillNumber($companyId)
+    {
+        $lastBill = self::where('company_id', $companyId)
+            ->orderBy('quotation_number', 'desc')
+            ->first();
+
+        return $lastBill ? $lastBill->quotation_number + 1 : 1;
+    }
     public function elements(){
         return $this->hasMany('\App\Models\QuotationElement','quotation_id','id');
     }

@@ -133,7 +133,9 @@
                     <option @if (isset($open_sale_bill) && !empty($open_sale_bill) && $open_sale_bill->value_added_tax == 0) selected @endif value="0">
                         {{ __('sales_bills.not-including-tax') }}
                     </option>
-                    <option @if (isset($open_sale_bill) && !empty($open_sale_bill) && $open_sale_bill->value_added_tax == 1) selected @endif value="1">
+                    <option
+                        @if (isset($open_sale_bill) && !empty($open_sale_bill) && $open_sale_bill->value_added_tax == 1) selected
+                        @endif value="2">
                         {{ __('sales_bills.including-tax') }}
                     </option>
                 </select>

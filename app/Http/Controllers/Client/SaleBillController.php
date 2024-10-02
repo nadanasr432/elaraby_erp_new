@@ -433,12 +433,17 @@ class SaleBillController extends Controller
 
         $data['sale_bill_id'] = $SaleBill->id;
         $data['company_id'] = $company->id;
+        $company = Company::find($company->id);
+        $tax_value_added = $company->tax_value_added;
 
         # get elements of sale invoice if empty then create else update..
         $check = SaleBillElement::where('sale_bill_id', $SaleBill->id)
             ->where('product_id', $request->product_id)
             ->where('company_id', $company->id)
             ->first();
+            // dd($data['value_added_tax']);
+        $data['tax_value'] = $data['value_added_tax'] ? round(($data['quantity_price'] * $tax_value_added) / (100 + $tax_value_added), 2) : $data['quantity_price'] * $tax_value_added / 100;
+        $data['tax_type'] = $data['value_added_tax'];
         if (empty($check)) {
             $sale_bill_element = SaleBillElement::create($data);
         } else {
@@ -664,6 +669,15 @@ class SaleBillController extends Controller
         #-------------------------------------------#
 
         # get cash if exists #
+        $discount = $previous_discount ? $previous_discount->value : 0;
+        $elementsDiscount = $sale_bill->elements->sum('discount_value');
+        $elementsTax = $sale_bill->elements->sum('tax_value');
+        $totalDiscount = $discount + $elementsDiscount;
+        $sale_bill->update([
+            'total_discount' => $totalDiscount,
+            'total_tax' => $elementsTax
+
+        ]);
         $cash = Cash::where('bill_id', $sale_bill->sale_bill_number)
             ->where('company_id', $company_id)
             ->where('client_id', $sale_bill->client_id)
@@ -688,6 +702,11 @@ class SaleBillController extends Controller
             $safe->update([
                 'balance' => $safe_balance_after
             ]);
+
+            $discount = $previous_discount ? $previous_discount->value : 0;
+            $elementsDiscount = $sale_bill->elements->sum('discount_value');
+            $elementsTax = $sale_bill->elements->sum('tax_value');
+            $totalDiscount = $discount + $elementsDiscount;
             $sale_bill->update([
                 'status' => 'done',
                 'paid' => $amount,
@@ -774,22 +793,6 @@ class SaleBillController extends Controller
                 "دائن من فاتورة مبيعات",
                 0
             );
-            // Transaction::create([
-            //     'accounting_tree_id' => $clientAccountId,
-            //     'voucher_id' => $voucher->id,
-            //     'amount' =>  $sale_bill->final_total,
-            //     'notation' => "مدين من فاتورة مبيعات",
-            //     'type' =>  1,
-            // ]);
-            // Transaction::create([
-            //     'accounting_tree_id' => 39,
-            //     'voucher_id' => $voucher->id,
-            //     'amount' =>  $sale_bill->final_total,
-            //     'notation' => "دائن من فاتورة مبيعات",
-            //     'type' =>  0,
-            // ]);
-            //cost voucher
-            // dd($sumPurchasingPrice);
             if ($sumPurchasingPrice) {
                 $voucherForCost =  new Voucher([
                     'company_id' => $company_id,
@@ -802,9 +805,6 @@ class SaleBillController extends Controller
                     'options' => 1
                 ]);
                 $costVoucher =  $sale_bill->vouchers()->save($voucherForCost);
-                // dd($costVoucher);
-                // dd( $clientAccountId);
-                // foreach ($request->transactions as $transaction) {
                 VoucherService::createTransaction(
                     $storeAccountId,
                     $costVoucher->id,
@@ -1602,7 +1602,8 @@ class SaleBillController extends Controller
         $discount_note = $request->discount_note; //10
 
         # get invoiceData.
-        $sale_bill = SaleBill::where('sale_bill_number', $sale_bill_number)->first();
+        $sale_bill = SaleBill::where('sale_bill_number', $sale_bill_number)
+            ->where('company_id', $company_id)->first();
         $elements = SaleBillElement::where('sale_bill_id', $sale_bill->id)->get();
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
         $currency = $extra_settings->currency;
@@ -1615,7 +1616,6 @@ class SaleBillController extends Controller
                 array_push($sum, $element->quantity_price);
             }
             $total = array_sum($sum);
-
             # calc discount value.
             $previous_extra = SaleBillExtra::where('sale_bill_id', $sale_bill->id)
                 ->where('action', 'extra')
@@ -1650,6 +1650,7 @@ class SaleBillController extends Controller
                     $after_discount = $total - $value;
                 }
             }
+            $totalTax = $sale_bill->value_added_tax ? round(($after_discount * $tax_value_added) / (100 + $tax_value_added), 2) : round(($after_discount * $tax_value_added / 100), 2);
 
 
             # calc final_total and tax
@@ -1694,8 +1695,21 @@ class SaleBillController extends Controller
                     'discount_note' => $discount_note,
                 ]);
             }
+            $afterTax = ['afterTax', 'poundAfterTax', 'poundAfterTaxPercent'];
 
-            $sale_bill->update(['final_total' => $after_total]);
+            // $sale_bill->update(['final_total' => $after_total, 'total_tax' => $totalTax, 'total_discount' => $discount_value,]);
+            $sale_bill->update(['final_total' => $after_total, 'total_discount' => $discount_value,]);
+            $fromEveryElement = $discount_value ? $discount_value / count($elements) : 0;
+            foreach ($elements as $element) {
+                $elementQuantityPrice =  in_array($discount_type, $afterTax) ? (float)$element->quantity_price : (float)$element->quantity_price - $fromEveryElement;
+                $elementTaxValue = $sale_bill->value_added_tax == 1
+                    ? ($elementQuantityPrice * $tax_value_added) / (100 + $tax_value_added)
+                    : round((float)($elementQuantityPrice) * (float)$tax_value_added / 100, 2);
+
+                // $element->update([
+                //     'tax_value' => $elementTaxValue,
+                // ]);
+            }
         }
     }
 
@@ -1863,13 +1877,13 @@ class SaleBillController extends Controller
             } else # so its inclusive
                 $after_total_all = $total;
         }
-
-        if ($previous_discount_type == "poundAfterTax") {
-            $after_total_all = $after_total_all - $previous_discount->value;
-        } elseif ($previous_discount_type == "poundAfterTaxPercent") {
-            $after_total_all = $after_total_all - (($total * $previous_discount->value) / 100);
+        if (!empty($previous_discount)) {
+            if ($previous_discount_type == "poundAfterTax") {
+                $after_total_all = $after_total_all - $previous_discount->value;
+            } elseif ($previous_discount_type == "poundAfterTaxPercent") {
+                $after_total_all = $after_total_all - (($total * $previous_discount->value) / 100);
+            }
         }
-
         $sale_bill->update([
             'final_total' => $after_total_all
         ]);

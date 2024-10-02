@@ -120,7 +120,7 @@
                                 {{ __('sidebar.electronic-stamp') }}
                             </h5>
                             <img style="width: 200px; display: block; border-radius: 8px; background: white; padding: 16px; border: 1px solid #c9c7c7;"
-                                src="{{ asset('assets/images/electronic_stamps/' . $electronicStamp->img) }}"
+                                src="{{ asset('assets/images/electronic_stamps/' . $electronicStamp?->img) }}"
                                 alt="electronic_stamp">
                         </div>
                         <div class="col-6" style="text-align:start;">

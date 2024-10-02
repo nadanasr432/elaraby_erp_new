@@ -7,12 +7,18 @@
 
 </style>
 @section('content')
-    @if (session('success'))
-        <div class="alert alert-success alert-dismissable fade show">
-            <button class="close" data-dismiss="alert" aria-label="Close">×</button>
-            {{ session('success') }}
-        </div>
-    @endif
+@if (session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+@endif
+
+@if (session('error'))
+<div class="alert alert-danger">
+    {{ session('error') }}
+</div>
+@endif
+
     <!-- row -->
     <div class="row row-sm">
         <div class="col-xl-12">
@@ -83,6 +89,7 @@
                                     <th class="text-center">@lang('home.creditor')</th>
                                     <th class="text-center">@lang('home.notes')</th>
                                     <th class="text-center">{{ __('main.amount') }}</th>
+                                    <th class="text-center">{{ __('main.action') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -104,7 +111,7 @@
                                         <td>
                                             @foreach ($credits as $credit)
                                                 <a
-                                                    href="{{ route('account.statement', ['accountId' => $credit?->accountingTree?->id]) }}">
+                                                    href="{{ route('account.statement', ['accountId' => $credit?->accountingTree?->id, 'from_date' => request('from_date'), 'to_date' => request('to_date')]) }}">
                                                     <span
                                                         class="badge badge-primary ml-2">{{ $credit?->accountingTree?->account_name }}</span>
                                                 </a>
@@ -113,7 +120,7 @@
                                         <td>
                                             @foreach ($depits as $depit)
                                                 <a
-                                                    href="{{ route('account.statement', ['accountId' => $depit?->accountingTree?->id]) }}">
+                                                    href="{{ route('account.statement', ['accountId' => $depit?->accountingTree?->id, 'from_date' => request('from_date'), 'to_date' => request('to_date')]) }}">
 
                                                     <span
                                                         class="badge badge-success ml-2">{{ $depit?->accountingTree->account_name }}</span>
@@ -121,6 +128,12 @@
                                             @endforeach
                                         <td>{{ $voucher->notation }}</td>
                                         <td>{{ $voucher->amount }}</td>
+                                        <td>
+                                            <a href="{{ route('client.voucher.edit', $voucher->id) }}" class="btn btn-info btn-sm">
+                                                <i class="fa fa-edit"></i>
+                                                {{-- @lang('main.edit') --}}
+                                            </a>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

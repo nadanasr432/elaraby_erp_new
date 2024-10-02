@@ -77,7 +77,10 @@
 
             @foreach ($saleBill->elements as $element)
                 @php
-                    $sum[] = $element->quantity_price;
+                    $sum[] =
+                        $element->tax_type == 2
+                            ? $element->quantity_price - $element->tax_value
+                            : $element->quantity_price;
                 @endphp
                 <tr>
                     <td>{{ ++$i }}</td>
@@ -86,7 +89,8 @@
                     <td>
                         {{ !empty($element->unit_id) ? $element->quantity . ' ' . $element->unit->unit_name : $element->quantity }}
                     </td>
-                    <td>{{ $element->quantity_price }}</td>
+                    <td> {{ $element->tax_type == 1 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
+                    </td>
                     <td>{{ $element->discount_value }}</td>
                     <td>{{ $element->tax_value }}</td>
                 </tr>
@@ -96,7 +100,7 @@
 
     {{-- Calculations --}}
     @php
-        $total = array_sum($sum) - $saleBill->total_tax + $saleBill->total_discount;
+        $total = array_sum($sum) + $saleBill->total_discount;
         $after_total = $saleBill->final_total;
         $tax_option = $saleBill->value_added_tax;
     @endphp
@@ -159,47 +163,53 @@
         </form> --}}
 
         <!------PRINT MAIN INVOICE---->
-        <!-- Button for طباعة 1 -->
-        <a href="{{ route('client.sale_bills.print', ['hashtoken' => $saleBill->token, 'invoiceType' => 1, 'printColor' => 0, 'isMoswada' => 0]) }}"
-            role="button"
-            class="btn save_btn1 btn-md btn-info text-white pull-right ml-1
-    @if (!isset($saleBill) || empty($saleBill)) disabled @endif"
-            style="height: 40px;">
-            طباعة 1
+        <!------PRINT MAIN INVOICE---->
+        <a class="btn btn-md btn-info text-white pull-right ml-1" role="button"
+            href="{{ route('client.sale_bills.print', $saleBill->token) }}" style="height: 40px;">
+            حفظ و طباعة 1
         </a>
 
-        <!-- Button for طباعة 2 -->
-        <a href="{{ route('client.sale_bills.print', ['hashtoken' => $saleBill->token, 'invoiceType' => 2, 'printColor' => 1, 'isMoswada' => 0]) }}"
-            role="button" class="btn save_btn2 btn-md pull-right ml-1"
-            style="height: 40px; border: 1px solid #085d4a; background: #085d4a !important; color: white !important;">
-            طباعة 2
+        <!------PRINT 1---->
+        <a href="{{ route('client.sale_bills.print', [$saleBill->token, 2, 1, 0]) }}" class="btn btn-md pull-right ml-1"
+            style="height: 40px;border:1px solid #085d4a;background: #085d4a !important;color:white !important;">
+            حفظ و طباعة 2
+        </a>
+        <!------PRINT 2---->
+        <a href="{{ route('client.sale_bills.print', [$saleBill->token, 4, 2, 0]) }}"
+            class="btn save_btn2 btn-md btn-primary pull-right ml-1"
+            style="height: 40px;border:1px solid #5e8b0b;background: #5e8b0b !important;color:white !important;">
+            حفظ و طباعة 3
+        </a>
+        <!------PRINT 2---->
+
+        <a href="{{ route('client.sale_bills.print', [$saleBill->token, 5, 2, 0]) }}" role="button"
+            style="height: 40px;border:1px solid #0bb3b3!important;background: #0bb3b3 !important ;color:white !important;"
+            class="btn save_btn5 btn-md btn-primary pull-right ml-1">
+            حفظ و طباعة 4
         </a>
 
-        <!-- Button for طباعة 3 -->
-        <a href="{{ route('client.sale_bills.print', ['hashtoken' => $saleBill->token, 'invoiceType' => 4, 'printColor' => 2, 'isMoswada' => 0]) }}"
-            role="button" class="btn save_btn2 btn-md btn-primary pull-right ml-1"
-            style="height: 40px; border: 1px solid #5e8b0b; background: #5e8b0b !important; color: white !important;">
-            طباعة 3
+        <a href="{{ route('client.sale_bills.print', [$saleBill->token, 2, 3, 0]) }}" style="height: 40px;"
+            class="btn btn-md btn-primary pull-right ml-1">
+            حفظ و طباعة 5
+
+        </a>
+        <a href="{{ route('client.sale_bills.print', [$saleBill->token, 7, 3, 0]) }}" role="button"
+            style="height: 40px;border:1px solid #9b4aad !important ;background: #9b4aad !important;color:white !important;"
+            class="btn save_btn2 btn-md btn-primary pull-right ml-1">
+            حفظ و طباعة 7
         </a>
 
-        <!-- Button for طباعة 4 -->
-        <a href="{{ route('client.sale_bills.print', ['hashtoken' => $saleBill->token, 'invoiceType' => 2, 'printColor' => 2, 'isMoswada' => 0]) }}"
-            role="button" class="btn save_btn2 btn-md btn-primary pull-right ml-1" style="height: 40px;">
-            طباعة 4
-        </a>
-
-        <!-- Button for فاتورة مسودة -->
-        <a href="{{ route('client.sale_bills.print', ['hashtoken' => $saleBill->token, 'invoiceType' => 2, 'printColor' => 2, 'isMoswada' => 1]) }}"
-            role="button" class="btn save_btn2 btn-md btn-warning pull-right ml-1" style="height: 40px;">
+        <!------FATOORAH MOSWADA---->
+        <a href="{{ route('client.sale_bills.print', [$saleBill->token, 2, 1, 1]) }}" style="height: 40px;"
+            class="btn btn-md btn-warning pull-right ml-1">
             فاتورة مسودة
         </a>
 
-        <!-- Button for فاتورة غير ضريبية -->
-        <a href="{{ route('client.sale_bills.print', ['hashtoken' => $saleBill->token, 'invoiceType' => 3, 'printColor' => 2, 'isMoswada' => 0]) }}"
-            role="button" class="btn save_btn2 btn-md btn-success pull-right ml-1" style="height: 40px;">
+        <!------FATOORAH No Tax---->
+        <a href="{{ route('client.sale_bills.print', [$saleBill->token, 3, 2, 0]) }}" style="height: 40px;"
+            class="btn btn-md btn-success pull-right ml-1">
             فاتورة غير ضريبية
         </a>
-
     </div>
     <div class="modal fade" dir="rtl" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
         <div class="modal-dialog modal-lg" role="document">

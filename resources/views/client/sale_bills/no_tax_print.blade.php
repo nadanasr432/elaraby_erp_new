@@ -412,7 +412,7 @@
                                         $ProdTax .
                                         '</td>-->
                                                                                                                     <td style="border: 1px solid rgba(161,161,161,0.63);">' .
-                                        $ProdTotal .
+                                        $sumWithOutTax .
                                         '</td>
                                                                                                                 </tr>';
                                 }
@@ -464,7 +464,7 @@
                                     echo '
                                                                                                                                                                 <tr style="font-size: 15px !important; height: 44px !important; text-align: center;background: #f2f2f2">
                                                                                                                                                                     <td style="border: 1px solid rgba(161,161,161,0.63);">' .
-                                        $ProdTotal .
+                                                                                                                                                                        $sumWithOutTax .
                                         '</td>
                                                                                                                                                                     <!--<td style="border: 1px solid rgba(161,161,161,0.63);">' .
                                         $ProdTax .

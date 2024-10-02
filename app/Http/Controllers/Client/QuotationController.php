@@ -61,7 +61,7 @@ class QuotationController extends Controller
     # =============== #
 
     # view create page #
-  public function create()
+    public function create()
     {
         $company_id = Auth::user()->company_id;
         $company = Company::FindOrFail($company_id);
@@ -102,7 +102,7 @@ class QuotationController extends Controller
             ->first();
 
         // If there are no existing quotations, start with 1
-        $newQuotationNumber = $highestQuotation ? $pre_quotation+1 : 1;
+        $newQuotationNumber = $highestQuotation ? $pre_quotation + 1 : 1;
 
         /*
         $pre_quotation = $company_id . rand();
@@ -111,8 +111,9 @@ class QuotationController extends Controller
         return view(
 
             'client.quotations.create',
-            compact("newQuotationNumber", 'company', 'outer_clients', 'units', 'stores', 'categories', 'extra_settings', 'company_id', 'all_products', 'pre_quotation'));
-         }
+            compact("newQuotationNumber", 'company', 'outer_clients', 'units', 'stores', 'categories', 'extra_settings', 'company_id', 'all_products', 'pre_quotation')
+        );
+    }
 
 
     # =============== #
@@ -210,54 +211,102 @@ class QuotationController extends Controller
 
 
     # store quotation #
-  public function save(Request $request)
-{
-    $data = $request->all();
-    $data['company_id'] = Auth::user()->company_id;
-    $data['client_id'] = Auth::user()->id;
+    public function store(Request $request)
+    {
+        $data = $request->all();
+        $data['company_id'] = Auth::user()->company_id;
+        $data['client_id'] = Auth::user()->id;
 
-    $company = Company::findOrFail($data['company_id']);
-    $quotation = Quotation::where('quotation_number', $data['quotation_number'])
-                          ->where('company_id', $company->id)
-                          ->first();
+        $company = Company::findOrFail($data['company_id']);
 
-    if (empty($quotation)) {
         $quotation = Quotation::create($data);
-    } else {
-        $quotation->update($data);
+
+
+        $data['quotation_id'] = $quotation->id;
+
+        foreach ($request['products'] as $product) {
+            // Create a new QuotationElement record for each product
+            QuotationElement::create([
+                'quotation_id' => $data['quotation_id'],          // The related quotation ID
+                'company_id' => $data['company_id'],              // The company ID
+                'product_id' => $product['product_id'],           // The product ID
+                'product_price' => $product['product_price'],     // The price of the product
+                'quantity' => $product['quantity'],               // The quantity of the product
+                'unit_id' => $product['unit_id'],                 // The unit ID
+                'quantity_price' => $product['total'],            // The total price (or use any other appropriate logic here)
+            ]);
+        }
+        $elements = $quotation->elements;
+        if ($data['discount_type'] && $data['discount_value']) {
+            QuotationExtra::create([
+                'quotation_id' => $quotation->id,
+                'action' => 'discount',
+                'action_type' => $data['discount_type'],
+                'value' => $data['discount_value'],
+                'company_id' => $data['company_id'],
+                'discount_note' => $data['discount_note'] ?? null,
+            ]);
+        }
+
+        if ($data['extra_type'] && $data['extra_value']) {
+            QuotationExtra::create([
+                'quotation_id' => $quotation->id,
+                'action' => 'extra',
+                'action_type' => $data['extra_type'],
+                'value' => $data['extra_value'],
+                'company_id' => $data['company_id'],
+            ]);
+        }
+        return $quotation;
     }
+    public function save(Request $request)
+    {
+        $data = $request->all();
+        $data['company_id'] = Auth::user()->company_id;
+        $data['client_id'] = Auth::user()->id;
 
-    $data['quotation_id'] = $quotation->id;
+        $company = Company::findOrFail($data['company_id']);
+        $quotation = Quotation::where('quotation_number', $data['quotation_number'])
+            ->where('company_id', $company->id)
+            ->first();
 
-    $check = QuotationElement::where('quotation_id', $quotation->id)
-                             ->where('product_id', $request->product_id)
-                             ->where('company_id', $company->id)
-                             ->first();
+        if (empty($quotation)) {
+            $quotation = Quotation::create($data);
+        } else {
+            $quotation->update($data);
+        }
 
-    if (empty($check)) {
-        QuotationElement::create($data);
-    } else {
-        $new_quantity = $check->quantity + $request->quantity;
-        $new_quantity_price = $new_quantity * $request->product_price;
+        $data['quotation_id'] = $quotation->id;
 
-        $check->update([
-            'product_price' => $request->product_price,
-            'quantity' => $new_quantity,
-            'unit_id' => $request->unit_id,
-            'quantity_price' => $new_quantity_price,
+        $check = QuotationElement::where('quotation_id', $quotation->id)
+            ->where('product_id', $request->product_id)
+            ->where('company_id', $company->id)
+            ->first();
+
+        if (empty($check)) {
+            QuotationElement::create($data);
+        } else {
+            $new_quantity = $check->quantity + $request->quantity;
+            $new_quantity_price = $new_quantity * $request->product_price;
+
+            $check->update([
+                'product_price' => $request->product_price,
+                'quantity' => $new_quantity,
+                'unit_id' => $request->unit_id,
+                'quantity_price' => $new_quantity_price,
+            ]);
+        }
+
+        $all_elements = QuotationElement::where('quotation_id', $quotation->id)
+            ->where('company_id', $company->id)
+            ->get();
+
+        return response()->json([
+            'status' => true,
+            'msg' => 'تمت الاضافة الى عرض السعر بنجاح',
+            'all_elements' => $all_elements,
         ]);
     }
-
-    $all_elements = QuotationElement::where('quotation_id', $quotation->id)
-                                    ->where('company_id', $company->id)
-                                    ->get();
-
-    return response()->json([
-        'status' => true,
-        'msg' => 'تمت الاضافة الى عرض السعر بنجاح',
-        'all_elements' => $all_elements,
-    ]);
-}
 
 
     # =============== #
@@ -608,119 +657,124 @@ class QuotationController extends Controller
 
     public function redirectANDprint(Request $request)
     {
-        $company_id = Auth::user()->company_id;
-        $company = Company::FindOrFail($company_id);
-
-        $products = $company->products;
-        $quotations = $company->quotations;
-        if (in_array('مدير النظام', Auth::user()->role_name)) {
-            $outer_clients = OuterClient::where('company_id', $company_id)->get();
-        } else {
-            $outer_clients = OuterClient::where('company_id', $company_id)
-                ->where(function ($query) {
-                    $query->where('client_id', Auth::user()->id)
-                        ->orWhereNull('client_id');
-                })->get();
-        }
-
-        $quotation_id = $request->quotation_id;
-
-        $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
-        $currency = $extra_settings->currency;
-
-        $quotation_k = Quotation::where('quotation_number', $quotation_id)->where('company_id', $company_id)->first();
-
-        $elements = $quotation_k->elements;
-        $extras = $quotation_k->extras;
+        $quotation_k = $this->store($request);
         // dd($quotation_k);
-        foreach ($extras as $key) {
-            if ($key->action == "discount") {
-                if ($key->action_type == "pound") {
-                    $quotation_discount_value = $key->value;
-                    $quotation_discount_type = "pound";
-                } else {
-                    $quotation_discount_value = $key->value;
-                    $quotation_discount_type = "percent";
-                }
-            } else {
-                if ($key->action_type == "pound") {
-                    $quotation_extra_value = $key->value;
-                    $quotation_extra_type = "pound";
-                } else {
-                    $quotation_extra_value = $key->value;
-                    $quotation_extra_type = "percent";
-                }
-            }
-        }
+        return $quotation_k->quotation_number;
+        // return redirect()->route('client.quotations.view', $quotation_k->quotation_number)->with('success', 'تم انشاء عرض السعر بنجاح');
 
-        if ($extras->isEmpty()) {
-            $quotation_discount_value = 0;
-            $quotation_extra_value = 0;
-            $quotation_discount_type = "pound";
-            $quotation_extra_type = "pound";
-        }
-        $tax_value_added = $company->tax_value_added;
-        $sum = array();
-        foreach ($elements as $element) {
-            array_push($sum, $element->quantity_price);
-        }
-        $total = array_sum($sum);
+        // $company_id = Auth::user()->company_id;
+        // $company = Company::FindOrFail($company_id);
 
-        $previous_extra = QuotationExtra::where('quotation_id', $quotation_k->id)
-            ->where('action', 'extra')->first();
-        if (!empty($previous_extra)) {
-            $previous_extra_type = $previous_extra->action_type;
-            $previous_extra_value = $previous_extra->value;
-            if (is_numeric($previous_extra_value)) {
-                if ($previous_extra_type == "percent") {
-                    $previous_extra_value = $previous_extra_value / 100 * $total;
-                }
-                if (is_numeric($total)) {
-                    $after_discount = $total + $previous_extra_value;
-                } else {
+        // $products = $company->products;
+        // $quotations = $company->quotations;
+        // if (in_array('مدير النظام', Auth::user()->role_name)) {
+        //     $outer_clients = OuterClient::where('company_id', $company_id)->get();
+        // } else {
+        //     $outer_clients = OuterClient::where('company_id', $company_id)
+        //         ->where(function ($query) {
+        //             $query->where('client_id', Auth::user()->id)
+        //                 ->orWhereNull('client_id');
+        //         })->get();
+        // }
 
-                    $after_discount = $total;
-                }
-            } else {
+        // $quotation_id = $request->quotation_id;
 
-                $after_discount = $total;
-            }
-        }
+        // $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
+        // $currency = $extra_settings->currency;
 
-        $previous_discount = QuotationExtra::where('quotation_id', $quotation_k->id)
-            ->where('action', 'discount')->first();
-        if (!empty($previous_discount)) {
-            $previous_discount_type = $previous_discount->action_type;
-            $previous_discount_value = $previous_discount->value;
-            if ($previous_discount_type == "percent") {
-                $previous_discount_value = $previous_discount_value / 100 * $total;
-            }
-            $after_discount = $total - $previous_discount_value;
-        }
+        // $quotation_k = Quotation::where('quotation_number', $quotation_id)->where('company_id', $company_id)->first();
 
-        if (!empty($previous_extra) && !empty($previous_discount)) {
-            $previous_discount_value = (float)$previous_discount_value;
-            $previous_extra_value = (float)$previous_extra_value;
-            $total = (float)$total;
+        // $elements = $quotation_k->elements;
+        // $extras = $quotation_k->extras;
+        // // dd($quotation_k);
+        // foreach ($extras as $key) {
+        //     if ($key->action == "discount") {
+        //         if ($key->action_type == "pound") {
+        //             $quotation_discount_value = $key->value;
+        //             $quotation_discount_type = "pound";
+        //         } else {
+        //             $quotation_discount_value = $key->value;
+        //             $quotation_discount_type = "percent";
+        //         }
+        //     } else {
+        //         if ($key->action_type == "pound") {
+        //             $quotation_extra_value = $key->value;
+        //             $quotation_extra_type = "pound";
+        //         } else {
+        //             $quotation_extra_value = $key->value;
+        //             $quotation_extra_type = "percent";
+        //         }
+        //     }
+        // }
 
-            $after_discount = $total - $previous_discount_value + $previous_extra_value;
-        } else {
-            $after_discount = (float)$total;
-        }
+        // if ($extras->isEmpty()) {
+        //     $quotation_discount_value = 0;
+        //     $quotation_extra_value = 0;
+        //     $quotation_discount_type = "pound";
+        //     $quotation_extra_type = "pound";
+        // }
+        // $tax_value_added = $company->tax_value_added;
+        // $sum = array();
+        // foreach ($elements as $element) {
+        //     array_push($sum, $element->quantity_price);
+        // }
+        // $total = array_sum($sum);
 
-        if (isset($after_discount) && $after_discount != 0) {
-            $tax_value_added = (float)$tax_value_added;
-            $after_discount = (float)$after_discount;
+        // $previous_extra = QuotationExtra::where('quotation_id', $quotation_k->id)
+        //     ->where('action', 'extra')->first();
+        // if (!empty($previous_extra)) {
+        //     $previous_extra_type = $previous_extra->action_type;
+        //     $previous_extra_value = $previous_extra->value;
+        //     if (is_numeric($previous_extra_value)) {
+        //         if ($previous_extra_type == "percent") {
+        //             $previous_extra_value = $previous_extra_value / 100 * $total;
+        //         }
+        //         if (is_numeric($total)) {
+        //             $after_discount = $total + $previous_extra_value;
+        //         } else {
 
-            $percentage = ($tax_value_added / 100) * $after_discount;
-            $after_total_all = $after_discount + $percentage;
-        } else {
-            $tax_value_added = (float)$tax_value_added;
-            $total = (float)$total;
+        //             $after_discount = $total;
+        //         }
+        //     } else {
 
-            $percentage = ($tax_value_added / 100) * $total;
-            $after_total_all = $total + $percentage;
-        }
+        //         $after_discount = $total;
+        //     }
+        // }
+
+        // $previous_discount = QuotationExtra::where('quotation_id', $quotation_k->id)
+        //     ->where('action', 'discount')->first();
+        // if (!empty($previous_discount)) {
+        //     $previous_discount_type = $previous_discount->action_type;
+        //     $previous_discount_value = $previous_discount->value;
+        //     if ($previous_discount_type == "percent") {
+        //         $previous_discount_value = $previous_discount_value / 100 * $total;
+        //     }
+        //     $after_discount = $total - $previous_discount_value;
+        // }
+
+        // if (!empty($previous_extra) && !empty($previous_discount)) {
+        //     $previous_discount_value = (float)$previous_discount_value;
+        //     $previous_extra_value = (float)$previous_extra_value;
+        //     $total = (float)$total;
+
+        //     $after_discount = $total - $previous_discount_value + $previous_extra_value;
+        // } else {
+        //     $after_discount = (float)$total;
+        // }
+
+        // if (isset($after_discount) && $after_discount != 0) {
+        //     $tax_value_added = (float)$tax_value_added;
+        //     $after_discount = (float)$after_discount;
+
+        //     $percentage = ($tax_value_added / 100) * $after_discount;
+        //     $after_total_all = $after_discount + $percentage;
+        // } else {
+        //     $tax_value_added = (float)$tax_value_added;
+        //     $total = (float)$total;
+
+        //     $percentage = ($tax_value_added / 100) * $total;
+        //     $after_total_all = $total + $percentage;
+        // }
 
         /*
         return view('client.quotations.sample',
@@ -1046,7 +1100,7 @@ class QuotationController extends Controller
     // view quotation template
     public function view($quotation_id)
     {
-       
+
         # get company data #
         $company_id = Auth::user()->company_id;
         $company = Company::findOrFail($company_id);
@@ -1066,9 +1120,10 @@ class QuotationController extends Controller
             array_push($productsTotal, $element->quantity_price);
         }
         $productsTotal = array_sum($productsTotal);
+        // dd($productsTotal);
 
         # chk for discount #
-        $totalQuotaitonPrice = 0;
+        $totalQuotaitonPrice = $productsTotal;
         $discount = QuotationExtra::where('quotation_id', $quotation->id)
             ->where('action', 'discount')
             ->first();
@@ -1078,21 +1133,28 @@ class QuotationController extends Controller
             if ($discount_type == "percent") {
                 $discount_value = $discount_value / 100 * $productsTotal;
             }
-            $totalQuotaitonPrice = $productsTotal - $discount_value;
+            $totalQuotaitonPrice = (float)$productsTotal - (float)$discount_value;
         }
 
         # calc tax #
         $tax_value_added = $company->tax_value_added;
+        // dd( $quotation);
         $taxValue = 0;
         if ($tax_value_added != 0) {
-            $taxValue = $totalQuotaitonPrice * $tax_value_added / 100;
-            $totalQuotaitonPrice += $taxValue;
+            // $taxValue = $totalQuotaitonPrice * $tax_value_added / 100;
+            $taxValue = ($productsTotal * $tax_value_added) / (100 + $tax_value_added);
+            $netPrice = $totalQuotaitonPrice - $taxValue;
+
+            // dd($taxValue);
+            // $totalQuotaitonPrice += $taxValue;
         }
 
         # chk for shipping #
         $shipping = QuotationExtra::where('quotation_id', $quotation->id)
             ->where('action', 'extra')
             ->first();
+        $shipping_value = null;
+        $discount_value = null;
         if (!empty($shipping)) {
             $shipping_type = $shipping->action_type;
 
@@ -1118,7 +1180,8 @@ class QuotationController extends Controller
                 'discount_value',
                 'productsTotal',
                 'tax_value_added',
-                'products'
+                'products',
+                'netPrice'
             )
         );
     }
