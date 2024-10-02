@@ -400,6 +400,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
                 'store' => 'client.products.store',
                 'show' => 'client.products.show',
             ]);
+            Route::get('products/create/service', [ProductController::class, 'createservice'])->name('client.products.createservice');
+
             Route::post('products_store', [ProductController::class, 'storeProduct'])->name('pos.product.store');
 
             Route::get('clients-products-empty', [ProductController::class, 'empty'])->name('client.products.empty');

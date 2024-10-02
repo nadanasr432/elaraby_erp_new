@@ -315,66 +315,42 @@
                     // Additional tags can be added here if needed
                 ])->render();
             @endphp
-            @if (app()->getLocale() == 'en')
-                <div class="header-container d-flex align-items-center">
-                    <div class="logo">
-                        <img class="logo" style="object-fit: scale-down;" width="204"
-                            src="{{ asset($company->company_logo) }}">
-                    </div>
-                    <div class="txtheader mx-auto text-center">
-                        @if (!$isMoswada)
-                            @lang('sales_bills.Tax invoice')
-                        @else
-                            @lang('sales_bills.Draft invoice')
-                        @endif
-                    </div>
 
+            <div class="header-container d-flex align-items-center">
 
-                    <div class="qrcode ">
+                <div class=" col-md-7 qrcode">
 
-                        @if (!$isMoswada)
-                            <img width="200" src="{{ $displayQRCodeAsBase64 }}" />
-                        @endif
-
-                    </div>
-
+                    @if (!$isMoswada)
+                        <img width="200" src="{{ $displayQRCodeAsBase64 }}" />
+                    @endif
                 </div>
-            @else
-                <div class="header-container d-flex align-items-center">
-
-                    <div class=" col-md-7 qrcode">
-
-                        @if (!$isMoswada)
-                            <img width="200" src="{{ $displayQRCodeAsBase64 }}" />
-                        @endif
-                    </div>
-                    <div class="col-md-5  mx-auto text-center">
-                        @if (!$isMoswada)
-                            <span class="txtheader text-muted"> @lang('sales_bills.Tax invoice')</span>
-                        @else
-                            <span class="txtheader text-muted">@lang('sales_bills.Draft invoice')</span>
-                        @endif
-                        <div class="d-flex justify-content-center mt-5 text-muted" style="font-size: 20px;font-weight:700">
-                            <div class="text-center pl-4 pr-4">
-                                {{-- @lang('sales_bills.Release Date') --}}التاريخ
-                                <br>
-                                {{ $sale_bill->created_at }}
-                            </div>
-                            <div class="text-center pl-4 pr-4">
-                                {{-- @lang('sales_bills.invoice number') --}}الرقم التسلسلي
-                                <br>
-                                SME00{{ $position }}
-                            </div>
+                <div class="col-md-5  mx-auto text-center">
+                    @if (!$isMoswada)
+                        <span class="txtheader text-muted"> @lang('sales_bills.Tax invoice')</span>
+                    @else
+                        <span class="txtheader text-muted">@lang('sales_bills.Draft invoice')</span>
+                    @endif
+                    <div class="d-flex justify-content-center mt-5 text-muted" style="font-size: 20px;font-weight:700">
+                        <div class="text-center pl-4 pr-4">
+                            @lang('sales_bills.Release Date')التاريخ
+                            <br>
+                            {{ $sale_bill->created_at }}
+                        </div>
+                        <div class="text-center pl-4 pr-4">
+                            @lang('sales_bills.invoice number')الرقم التسلسلي
+                            <br>
+                            SME00{{ $position }}
                         </div>
                     </div>
-                    {{-- 
-                    <div class="logo">
-                        <img class="logo" style="object-fit: scale-down;" width="204"
-                            src="{{ asset($company->company_logo) }}">
-                    </div> --}}
-
                 </div>
-            @endif
+
+                <!--<div class="logo">-->
+                <!--    <img class="logo" style="object-fit: scale-down;" width="204"-->
+                <!--        src="{{ asset($company->company_logo) }}">-->
+                <!--</div> -->
+
+            </div>
+
             <hr class="mt-5 pl-4 pr-4" style="border: 1px solid #c9c3c3;">
             <div class="row  pl-4 pr-4">
                 <div class="col-md-12 text-right text-muted" style="font-size:28px; font-weight:600">
@@ -385,7 +361,7 @@
                         <div class="col-md-2 d-flex flex-column mt-4 mb-4  text-right text-muted "
                             style="font-size:18px; font-weight:500">
                             <span>رقم التسجيل التجاري</span>
-                            <span class="mt-2">{{ $position }}</span>
+                            <span class="mt-2">{{ $company->civil_registration_number }}</span>
                         </div>
                         <div class="col-md-4 d-flex flex-column mt-4 mb-4 text-right border-left text-muted border-dark"
                             style="font-size:18px; font-weight:500">
@@ -416,7 +392,7 @@
                         <div class="col-md-2 d-flex flex-column mt-4 mb-4  text-right text-muted "
                             style="font-size:18px; font-weight:500">
                             <span>رقم التسجيل التجاري</span>
-                            <span class="mt-2">{{ $position }}</span>
+                            <span class="mt-2">{{ $sale_bill->outerClient->commercial_register }}</span>
                         </div>
                         <div class="col-md-4 d-flex flex-column mt-4 mb-4 text-right border-left text-muted border-dark"
                             style="font-size:18px; font-weight:500">
@@ -571,3 +547,4 @@
 </script>
 
 </html>
+

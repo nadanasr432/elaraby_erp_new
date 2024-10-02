@@ -585,6 +585,10 @@
             حفظ و طباعة 5
 
         </a>
+         <a href="{{route('client.sale_bills.print', [$saleBill->token,6,3,0])}}" role="button" style="height: 40px;border:1px solid #0b228b;background: #0b228b !important;color:white !important;" class="btn save_btn2 btn-md btn-primary pull-right ml-1
+            " printColor="2" isMoswada="0" invoiceType='6'>
+            حفظ و طباعة 6
+        </a>
         <a href="{{ route('client.sale_bills.print', [$saleBill->token, 6, 2, 0]) }}" role="button" style="height: 40px;border:1px solid #0b228b;background: #0b228b !important;color:white !important;" class="btn save_btn2 btn-md btn-primary pull-right ml-1
              " printColor="2" isMoswada="0" invoiceType='6'>
             حفظ و طباعة 6
