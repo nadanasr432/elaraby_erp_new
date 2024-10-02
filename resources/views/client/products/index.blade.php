@@ -46,6 +46,11 @@
                                 <i class="fa fa-plus"></i>
                                 {{__('products.addnewproduct')}}
                             </a>
+                            <a class="mr-1 btn btn-success btn-sm-new"
+                               href="{{ route('client.products.createservice') }}">
+                                <i class="fa fa-plus"></i>
+                                {{__('products.addnewproductseveces')}}
+                            </a>
                             <a class="btn btn-info btn-sm-new mr-1" href="{{ route('products.export') }}">
                                 {{__('products.exportproducts')}}
                             </a>

@@ -50,4 +50,5 @@ return [
     'man' => '',
     'man' => '',
     'man' => '',
+    'addnewproductseveces'=>'اضافة منتج خدمي جديد'
 ];

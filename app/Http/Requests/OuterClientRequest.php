@@ -25,6 +25,7 @@ class OuterClientRequest extends FormRequest
             'client_name' => 'required',
             'client_category' => 'required',
             'prev_balance' => 'required',
+            'commercial_register'=>'nullable'
         ];
     }
 }

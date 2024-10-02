@@ -9,7 +9,8 @@ class OuterClient extends Model
     protected $table = "outer_clients";
     protected $fillable = [
         'company_id','client_id','client_name','client_category',
-        'prev_balance','shop_name','client_email','client_national','tax_number'
+        'prev_balance','shop_name','client_email','client_national','tax_number',
+        'commercial_register'
     ];
     public function company(){
         return $this->belongsTo('\App\Models\Company','company_id','id');

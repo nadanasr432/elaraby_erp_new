@@ -59,4 +59,5 @@ return [
     'mana' => 'Man',
     'mana' => 'Man',
     'mana' => 'Man',
+    'addnewproductseveces' => 'Add new product service'
 ];

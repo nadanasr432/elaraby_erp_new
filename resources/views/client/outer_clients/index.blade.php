@@ -42,6 +42,7 @@
                                 <th class="text-center">{{ __('main.phone') }}</th>
                                 <th class="text-center">{{ __('main.address') }}</th>
                                 <th class="text-center">{{ __('main.tax-number') }}</th>
+                                <th class="text-center">@lang('sales_bills.commercial register')</th>
                                 <th class="text-center">{{ __('main.company') }}</th>
                                 <th class="text-center"> {{ __('main.indebtedness') }}</th>
                                 <th class="text-center" style="width: 20% !important;">{{ __('main.control') }}
@@ -74,6 +75,7 @@
                                         @endif
                                     </td>
                                     <td>{{ $outer_client->tax_number }}</td>
+                                    <td>{{ $outer_client->commercial_register }}</td>
                                     <td>{{ $outer_client->shop_name }}</td>
                                     <td>
                                         @if ($outer_client->prev_balance > 0)
