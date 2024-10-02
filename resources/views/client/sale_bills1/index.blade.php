@@ -207,6 +207,23 @@
                                                                 </svg>
                                                                 {{ __('sidebar.edit') }}
                                                             </a>
+                                                             <form
+                                                                action="{{ route('client.sale_bills.deleteBill', ['billid' => $sale_bill->id]) }}"
+                                                                method="POST" style="display: inline;"
+                                                                onsubmit="return confirmDelete()">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="dropdown-item"
+                                                                    style="font-size: 12px  !important; padding: 9px 11px;border-bottom: 1px solid #2d2d2d2d">
+                                                                    {{ __('main.delete') }}
+                                                                </button>
+                                                            </form>
+
+                                                            <script>
+                                                                function confirmDelete() {
+                                                                       return confirm("@lang('main.delete_confirm')");
+                                                                }
+                                                            </script>
                                                         </div>
                                                     </div>
 

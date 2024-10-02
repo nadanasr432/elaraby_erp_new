@@ -179,7 +179,6 @@
                                                         <div class="dropdown-menu p-0" aria-labelledby="dropdownMenuButton"
                                                             x-placement="bottom-start"
                                                             style="position: absolute; transform: translate3d(0px, 29px, 0px); top: 0px; left: 0px; will-change: transform;">
-
                                                             <!--SHOW--->
                                                             <a href="{{ route('client.sale_bills.print', $sale_bill->token) }}"
                                                                 class="dropdown-item" target="_blank"
@@ -193,7 +192,6 @@
                                                                 </svg>
                                                                 {{ __('sidebar.show') }}
                                                             </a>
-
                                                             <!--EDIT--->
                                                             <a href="{{ route('client.sale_bills.edit', [$sale_bill->token, $sale_bill->company_id]) }}"
                                                                 class="dropdown-item"
@@ -207,6 +205,24 @@
                                                                 </svg>
                                                                 {{ __('sidebar.edit') }}
                                                             </a>
+                                                            <form
+                                                                action="{{ route('client.sale_bills.deleteBill', ['billid' => $sale_bill->id]) }}"
+                                                                method="POST" style="display: inline;"
+                                                                onsubmit="return confirmDelete()">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="dropdown-item"
+                                                                    style="font-size: 12px  !important; padding: 9px 11px;border-bottom: 1px solid #2d2d2d2d">
+                                                                    {{ __('sidebar.delete') }}
+                                                                </button>
+                                                            </form>
+
+                                                            <script>
+                                                                function confirmDelete() {
+                                                                       return confirm("@lang('main.delete_confirm')");
+                                                                }
+                                                            </script>
+
                                                         </div>
                                                     </div>
 

@@ -19,6 +19,7 @@
         margin-top: 30px !important;
         min-height: 150px !important;
     }
+
 </style>
 @section('content')
     @if (session('success'))
@@ -53,9 +54,9 @@
         @csrf
         @method('POST')
         @if (isset($open_sale_bill) && !empty($open_sale_bill))
-            <input type="hidden" value="{{ $open_sale_bill->sale_bill_number }}" id="sale_bill_number" />
+            <input type="hidden" value="{{ $open_sale_bill->sale_bill_number }}" id="sale_bill_number"/>
         @else
-            <input type="hidden" value="{{ $pre_bill }}" id="sale_bill_number" />
+            <input type="hidden" value="{{ $pre_bill }}" id="sale_bill_number"/>
         @endif
         <h6 class="alert alert-info alert-sm text-center no-print  font-weight-bold" dir="rtl">
             <center>
@@ -80,8 +81,8 @@
         <!-----store_id------->
         <div class="col-lg-3 p-0 pull-right no-print">
             <label for=""> {{ __('sales_bills.choose-store') }} </label><br>
-            <select name="store_id" id="store_id" class="selectpicker w-70" data-style="btn-primary"
-                data-live-search="true" title="{{ __('sales_bills.choose-store') }}">
+            <select name="store_id" id="store_id" class="selectpicker w-70" data-style="btn-primary" data-live-search="true"
+                    title="{{ __('sales_bills.choose-store') }}">
                 <?php $i = 0; ?>
                 @foreach ($stores as $store)
                     @if ($stores->count() == 1)
@@ -97,7 +98,7 @@
                 @endforeach
             </select>
             <a target="_blank" href="{{ route('client.stores.create') }}" role="button"
-                style="width: 15%;display: inline;" class="btn btn-sm btn-primary open_popup">
+               style="width: 15%;display: inline;" class="btn btn-sm btn-primary open_popup">
                 <i class="fa fa-plus"></i>
             </a>
         </div>
@@ -106,8 +107,10 @@
         <div class="col-lg-3 p-0 pull-right no-print">
             <label for="" class="d-block">{{ __('sales_bills.client-name') }}</label>
             <select required name="outer_client_id" id="outer_client_id" class="selectpicker w-70" data-style="btn-danger"
-                data-live-search="true" title="{{ __('sales_bills.client-name') }}" required>
-                <option @if (isset($open_sale_bill) && !empty($open_sale_bill) && empty($open_sale_bill->outer_client_id)) selected @endif value="" disabled selected>اختر عميل
+                    data-live-search="true" title="{{ __('sales_bills.client-name') }}" required>
+                <option
+                    @if (isset($open_sale_bill) && !empty($open_sale_bill) && empty($open_sale_bill->outer_client_id)) selected
+                    @endif value="" disabled selected>اختر عميل
                 </option>
                 @foreach ($outer_clients as $outer_client)
                     <option
@@ -119,7 +122,7 @@
                 @endforeach
             </select>
             <a target="_blank" href="{{ route('client.outer_clients.create') }}" role="button"
-                style="width: 15%;display: inline;" class="btn btn-sm btn-danger open_popup">
+               style="width: 15%;display: inline;" class="btn btn-sm btn-danger open_popup">
                 <i class="fa fa-plus"></i>
             </a>
         </div>
@@ -129,8 +132,10 @@
             <div class="form-group" dir="rtl">
                 <label for="value_added_tax"> {{ __('sales_bills.prices-for-tax') }} </label>
                 <select required name="value_added_tax" id="value_added_tax" class="selectpicker w-100"
-                    data-style="btn-info" data-live-search="true" required>
-                    <option @if (isset($open_sale_bill) && !empty($open_sale_bill) && $open_sale_bill->value_added_tax == 0) selected @endif value="0">
+                        data-style="btn-info" data-live-search="true" required>
+                    <option
+                        @if (isset($open_sale_bill) && !empty($open_sale_bill) && $open_sale_bill->value_added_tax == 0) selected
+                        @endif value="0">
                         {{ __('sales_bills.not-including-tax') }}
                     </option>
                     <option
@@ -148,9 +153,12 @@
             <div class="col-sm-6 pull-right no-print">
                 <div class="form-group" dir="rtl">
                     <label>{{ __('sales_bills.invoice-date') }}</label>
-                    <input type="date" required name="date" id="date" class="form-control"
-                        @if (isset($open_sale_bill) && !empty($open_sale_bill)) value="{{ $open_sale_bill->date }}"
-                        @else value="{{ date('Y-m-d') }}" @endif />
+                    <input
+                        type="date" required name="date"
+                        id="date" class="form-control"
+                        @if (isset($open_sale_bill) && !empty($open_sale_bill))value="{{ $open_sale_bill->date }}"
+                        @else value="{{date('Y-m-d')}}" @endif
+                    />
                 </div>
             </div>
 
@@ -158,9 +166,11 @@
             <div class="col-sm-6 pull-right no-print p-0">
                 <div class="form-group" dir="rtl">
                     <label>{{ __('sales_bills.invoice-time') }}</label>
-                    <input type="time" required name="time" id="time" class="form-control"
+                    <input
+                        type="time" required name="time" id="time" class="form-control"
                         @if (isset($open_sale_bill) && !empty($open_sale_bill)) value="{{ $open_sale_bill->time }}"
-                        @else value="{{ date('H:i:s') }}" @endif />
+                        @else value="{{date('H:i:s')}}" @endif
+                    />
                 </div>
             </div>
         </div>
@@ -169,14 +179,10 @@
         <div class="col-sm-12 pull-right no-print">
             <div class="form-group" dir="rtl">
                 <label for="time">{{ __('main.notes') }}</label>
-                <textarea name="notes" id="notes" class="summernotes">
-@if (isset($open_sale_bill) && !empty($open_sale_bill))
-{{ $open_sale_bill->notes }}
-@endif
-</textarea>
+                <textarea name="notes" id="notes" class="summernotes">@if (isset($open_sale_bill) && !empty($open_sale_bill)) {{$open_sale_bill->notes}} @endif</textarea>
                 <a data-toggle="modal" data-target="#myModal3"
-                    class="btn btn-link add_extra_notes d-none @if (!isset($open_sale_bill) || empty($open_sale_bill)) disabled @endif"
-                    style="color: blue!important;">
+                   class="btn btn-link add_extra_notes d-none @if (!isset($open_sale_bill) || empty($open_sale_bill)) disabled @endif"
+                   style="color: blue!important;">
                     اضف ملاحظات اخرى
                 </a>
             </div>
@@ -185,61 +191,55 @@
         <div class="clearfix no-print"></div>
 
         <div class="outer_client_details no-print"
-            @if (!isset($open_sale_bill) || empty($open_sale_bill) || empty($open_sale_bill->outer_client_id)) style="display: none !important;" @endif>
+             @if (!isset($open_sale_bill) || empty($open_sale_bill) || empty($open_sale_bill->outer_client_id)) style="display: none !important;" @endif>
             <table class="table table-bordered table-striped table-condensed table-hover float-left">
                 <thead>
-                    <th>{{ __('main.type') }}</th>
-                    <th>{{ __('main.indebtedness') }}</th>
-                    <th>{{ __('main.nationality') }}</th>
-                    <th>{{ __('main.tax-number') }}</th>
-                    <th>{{ __('main.phone') }}</th>
-                    <th>{{ __('main.address') }}</th>
-                    <th>{{ __('main.company') }}</th>
+                <th>{{ __('main.type') }}</th>
+                <th>{{ __('main.indebtedness') }}</th>
+                <th>{{ __('main.nationality') }}</th>
+                <th>{{ __('main.tax-number') }}</th>
+                <th>{{ __('main.phone') }}</th>
+                <th>{{ __('main.address') }}</th>
+                <th>{{ __('main.company') }}</th>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td id="category">
-                            @if (isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->outer_client_id))
-                                {{ $open_sale_bill->OuterClient->client_category }}
-                            @endif
-                        </td>
-                        <td id="balance_before">
-                            @if (isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->outer_client_id))
-                                {{ $open_sale_bill->OuterClient->prev_balance }}
-                            @endif
-                        </td>
-                        <td id="client_national">
-                            @if (isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->outer_client_id))
-                                {{ $open_sale_bill->OuterClient->client_national }}
-                            @endif
-                        </td>
-                        <td id="tax_number">
-                            @if (isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->outer_client_id))
-                                {{ $open_sale_bill->OuterClient->tax_number }}
-                            @endif
-                        </td>
-                        <td id="client_phone">
-                            @if (isset($open_sale_bill) &&
-                                    !empty($open_sale_bill) &&
-                                    !empty($open_sale_bill->outer_client_id) &&
-                                    !$open_sale_bill->OuterClient->phones->isEmpty())
-                                {{ $open_sale_bill->OuterClient->phones[0]->client_phone }}
-                            @endif
-                        </td>
-                        <td id="client_address">
-                            @if (isset($open_sale_bill) &&
-                                    !empty($open_sale_bill) &&
-                                    !empty($open_sale_bill->outer_client_id) &&
-                                    !$open_sale_bill->OuterClient->addresses->isEmpty())
-                                {{ $open_sale_bill->OuterClient->addresses[0]->client_address }}
-                            @endif
-                        </td>
-                        <td id="shop_name">
-                            @if (isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->outer_client_id))
-                                {{ $open_sale_bill->OuterClient->shop_name }}
-                            @endif
-                        </td>
-                    </tr>
+                <tr>
+                    <td id="category">
+                        @if (isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->outer_client_id))
+                            {{ $open_sale_bill->OuterClient->client_category }}
+                        @endif
+                    </td>
+                    <td id="balance_before">
+                        @if (isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->outer_client_id))
+                            {{ $open_sale_bill->OuterClient->prev_balance }}
+                        @endif
+                    </td>
+                    <td id="client_national">
+                        @if (isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->outer_client_id))
+                            {{ $open_sale_bill->OuterClient->client_national }}
+                        @endif
+                    </td>
+                    <td id="tax_number">
+                        @if (isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->outer_client_id))
+                            {{ $open_sale_bill->OuterClient->tax_number }}
+                        @endif
+                    </td>
+                    <td id="client_phone">
+                        @if (isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->outer_client_id) && !$open_sale_bill->OuterClient->phones->isEmpty())
+                            {{ $open_sale_bill->OuterClient->phones[0]->client_phone }}
+                        @endif
+                    </td>
+                    <td id="client_address">
+                        @if (isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->outer_client_id) && !$open_sale_bill->OuterClient->addresses->isEmpty())
+                            {{ $open_sale_bill->OuterClient->addresses[0]->client_address }}
+                        @endif
+                    </td>
+                    <td id="shop_name">
+                        @if (isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->outer_client_id))
+                            {{ $open_sale_bill->OuterClient->shop_name }}
+                        @endif
+                    </td>
+                </tr>
                 </tbody>
             </table>
             <div class="clearfix"></div>
@@ -250,7 +250,7 @@
         <div class="options no-print">
             <div class="col-lg-3 pull-right">
                 <label for=""> {{ __('sales_bills.product-code') }} </label>
-                {{-- @dd($all_products->count())  --}}
+                  {{-- @dd($all_products->count())  --}}
                 <select name="product_id" id="product_id" class="selectpicker w-80" data-style="btn-success"
                     data-live-search="true" title="{{ __('sales_bills.product-code') }}">
                     @foreach ($all_products as $product)
@@ -259,7 +259,7 @@
                     @endforeach
                 </select>
                 <a target="_blank" href="{{ route('client.products.create') }}" role="button"
-                    style="width: 15%;display: inline;" class="btn btn-sm btn-danger open_popup">
+                   style="width: 15%;display: inline;" class="btn btn-sm btn-danger open_popup">
                     <i class="fa fa-plus"></i>
                 </a>
                 <div class="available text-center" style="color: #000; font-size: 14px; margin-top: 10px;"></div>
@@ -268,12 +268,12 @@
             <!------PRICE------>
             <div class="col-lg-3 pull-right">
                 <label for="">{{ __('sales_bills.product-price') }}</label>
-                <input style="margin-right:5px;margin-left:5px;" type="radio" name="price" id="sector" />
+                <input style="margin-right:5px;margin-left:5px;" type="radio" name="price" id="sector"/>
                 {{ __('main.retail') }}
-                <input style="margin-right:5px;margin-left:5px;" type="radio" name="price" id="wholesale" />
+                <input style="margin-right:5px;margin-left:5px;" type="radio" name="price" id="wholesale"/>
                 {{ __('main.wholesale') }}
                 <input type="number" name="product_price" value="0"
-                    @cannot('تعديل السعر في فاتورة البيع') readonly @endcan
+                       @cannot('تعديل السعر في فاتورة البيع') readonly @endcan
                        id="product_price" class="form-control"/>
             </div>
 
@@ -372,25 +372,19 @@
                         }
                         echo '<td>' . $element->quantity_price . '</td>';
                         echo "
-                            <td class='no-print'>
-                                <button type='button' sale_bill_number='" .
-                            $element->SaleBill->sale_bill_number .
-                            "' element_id='" .
-                            $element->id .
-                            "' class='btn btn-sm btn-info edit_element'>
-                                    <i class='fa fa-edit'></i>
-                                </button>
-            
-                                <button type='button' sale_bill_number='" .
-                            $element->SaleBill->sale_bill_number .
-                            "' element_id='" .
-                            $element->id .
-                            "' class='btn btn-sm btn-danger remove_element'><i
-                                        class='fa fa-trash'></i>
-                                </button>";
-            
+                <td class='no-print'>
+                    <button type='button' sale_bill_number='" . $element->SaleBill->sale_bill_number . "' element_id='" .
+                            $element->id . "' class='btn btn-sm btn-info edit_element'>
+                        <i class='fa fa-edit'></i>
+                    </button>
+
+                    <button type='button' sale_bill_number='" . $element->SaleBill->sale_bill_number . "' element_id='" .
+                            $element->id . "' class='btn btn-sm btn-danger remove_element'><i
+                            class='fa fa-trash'></i>
+                    </button>";
+
                         echo "
-                                        </td>";
+                            </td>";
                         echo '</tr>';
                     }
                     echo '</tbody>';
@@ -405,13 +399,13 @@
                         $percentage = (15 / 100) * $total_with_option;
                         $after_total = $percentage + $total_with_option;
                     }
-                    $previous_discount = \App\Models\SaleBillExtra::where('sale_bill_id', $open_sale_bill->id)
-                        ->where('action', 'discount')
-                        ->first();
+                    $previous_discount = \App\Models\SaleBillExtra::where('sale_bill_id', $open_sale_bill->id)->where('action', 'discount')->first();
                     if ($previous_discount->action_type == 'afterTax') {
-                        echo " <div class='clearfix'></div> <div class='alert alert-dark alert-sm text-center'><div class='pull-right col-lg-6 '> اجمالى الفاتورة " . round($total, 2) . ' ' . $currency . " </div> <div class='pull-left col-lg-6 '> اجمالى الفاتورة  بعد القيمة المضافة " . (round($after_total, 2) - (round($after_total, 2) / 100) * 5) . ' ' . $currency . " <div class='clearfix'></div> </div>";
+                        echo " <div class='clearfix'></div> <div class='alert alert-dark alert-sm text-center'><div class='pull-right col-lg-6 '> اجمالى الفاتورة " . round($total, 2) .
+                            ' ' . $currency . " </div> <div class='pull-left col-lg-6 '> اجمالى الفاتورة  بعد القيمة المضافة " . (round($after_total, 2) - (round($after_total, 2) / 100 * 5)) . ' ' . $currency . " <div class='clearfix'></div> </div>";
                     } else {
-                        echo " <div class='clearfix'></div> <div class='alert alert-dark alert-sm text-center'><div class='pull-right col-lg-6 '> اجمالى الفاتورة " . round($total, 2) . ' ' . $currency . " </div> <div class='pull-left col-lg-6 '> اجمالى الفاتورة  بعد القيمة المضافة " . round($after_total, 2) . ' ' . $currency . " <div class='clearfix'></div> </div>";
+                        echo " <div class='clearfix'></div> <div class='alert alert-dark alert-sm text-center'><div class='pull-right col-lg-6 '> اجمالى الفاتورة " . round($total, 2) .
+                            ' ' . $currency . " </div> <div class='pull-left col-lg-6 '> اجمالى الفاتورة  بعد القيمة المضافة " . round($after_total, 2) . ' ' . $currency . " <div class='clearfix'></div> </div>";
                     }
                 }
             }
@@ -428,26 +422,22 @@
                     array_push($sum, $element->quantity_price);
                 }
                 $total = array_sum($sum);
-                $previous_extra = \App\Models\SaleBillExtra::where('sale_bill_id', $open_sale_bill->id)
-                    ->where('action', 'extra')
-                    ->first();
+                $previous_extra = \App\Models\SaleBillExtra::where('sale_bill_id', $open_sale_bill->id)->where('action', 'extra')->first();
                 if (!empty($previous_extra)) {
                     $previous_extra_type = $previous_extra->action_type;
                     $previous_extra_value = $previous_extra->value;
                     if ($previous_extra_type == 'percent') {
                         $previous_extra_value = ($previous_extra_value / 100) * $total;
                     }
-                    if (!empty($previous_extra_value) || $previous_extra_value != 0) {
+                    if (!empty($previous_extra_value) || $previous_extra_value != 0)
                         $after_discount = $total + $previous_extra_value;
-                    } else {
+                    else {
                         $after_discount = $total;
                         $previous_extra_value = 0;
                     }
                 }
-            
-                $previous_discount = \App\Models\SaleBillExtra::where('sale_bill_id', $open_sale_bill->id)
-                    ->where('action', 'discount')
-                    ->first();
+
+                $previous_discount = \App\Models\SaleBillExtra::where('sale_bill_id', $open_sale_bill->id)->where('action', 'discount')->first();
                 if (!empty($previous_discount)) {
                     $previous_discount_type = $previous_discount->action_type;
                     $previous_discount_value = $previous_discount->value ? $previous_discount->value : 0;
@@ -456,13 +446,15 @@
                     }
                     $after_discount = $total - $previous_discount_value;
                 }
-            
+
+
                 if (!empty($previous_extra) && !empty($previous_discount)) {
                     $after_discount = $total - $previous_discount_value + $previous_extra_value;
                 } else {
                     $after_discount = $total;
                 }
-            
+
+
                 if (isset($after_discount) && $after_discount != 0) {
                     $percentage = ($compTaxValue / 100) * $after_discount;
                     $after_total_all = $after_discount + $percentage;
@@ -471,7 +463,7 @@
                     $after_total_all = $total + $percentage;
                 }
                 $tax_option = $open_sale_bill->value_added_tax;
-            
+
                 if ($tax_option == 1) {
                     $total_option = $total * (100 / 115);
                     $total_with_option = $total_option;
@@ -479,13 +471,9 @@
                     $after_total_all = $percentage + $total_with_option;
                 }
                 echo "
-                            <div class='clearfix'></div>
-                                <div class='alert alert-info alert-sm text-center'> اجمالى الفاتورة النهائى بعد الضريبة  : " .
-                    round($after_total_all, 2) .
-                    ' ' .
-                    $currency .
-                    ' </div>';
-                echo '</div>';
+                <div class='clearfix'></div>
+                    <div class='alert alert-info alert-sm text-center'> اجمالى الفاتورة النهائى بعد الضريبة  : " . round($after_total_all, 2) . ' ' . $currency . " </div>";
+                echo "</div>";
             }
             ?>
         </div>
@@ -504,7 +492,7 @@
                                     if ($key->action_type == 'pound') {
                                         $sale_bill_discount_value = $key->value;
                                         $sale_bill_discount_type = 'pound';
-                                    } elseif ($key->action_type == 'percent') {
+                                    } else if ($key->action_type == 'percent') {
                                         $sale_bill_discount_value = $key->value;
                                         $sale_bill_discount_type = 'percent';
                                     } else {
@@ -515,7 +503,7 @@
                                     if ($key->action_type == 'pound') {
                                         $sale_bill_extra_value = $key->value;
                                         $sale_bill_extra_type = 'pound';
-                                    } elseif ($key->action_type == 'percent') {
+                                    } else if ($key->action_type == 'percent') {
                                         $sale_bill_extra_value = $key->value;
                                         $sale_bill_extra_type = 'percent';
                                     } else {
@@ -545,9 +533,7 @@
                                     خصم علي اجمالي المبلغ شامل الضريبة
                                 </option>
                                 <option
-                                    @if (
-                                        (isset($sale_bill_discount_type) && $sale_bill_discount_type == 'poundAfterTax') ||
-                                            $sale_bill_discount_type == 'afterTax') selected
+                                    @if (isset($sale_bill_discount_type) && $sale_bill_discount_type == 'poundAfterTax' || $sale_bill_discount_type == 'afterTax') selected
                                     @endif value="poundAfterTax">
                                     ضمان اعمال (مسطح)
                                 </option>
@@ -606,7 +592,7 @@
                                     @endif value="percent">%
                                 </option>
                             </select>
-                            <input value="{{ isset($sale_bill_extra_value) ? $sale_bill_extra_value : 0 }}" type="text"
+                            <input value="{{ isset($sale_bill_extra_value) ? $sale_bill_extra_value :0 }}" type="text"
                                    name="extra_value"
                                    style="width: 50%;display: inline;float: right;" id="extra_value"
                                    class="form-control"/>
@@ -697,13 +683,10 @@
             @if (!isset($open_sale_bill) || empty($open_sale_bill)) disabled @endif " printColor="2" isMoswada="0" invoiceType='6'>
             حفظ و طباعة 6
         </a>
-        <a href="javascript:;" role="button" style="height: 40px;border:1px solid #9b4aad !important; background: #9b4aad !important; color:white !important;" 
-   class="btn save_btn2 btn-md btn-primary pull-right ml-1
-   @if (!isset($open_sale_bill) || empty($open_sale_bill)) disabled @endif"
-   title="اضافة تسحيل تجارى للعميل" printColor="2" isMoswada="0" invoiceType='7'>
-    حفظ و طباعة 7
-</a>
-
+        <a href="javascript:;" role="button" style="height: 40px;border:1px solid #9b4aad !important ;background: #9b4aad !important;color:white !important;" class="btn save_btn2 btn-md btn-primary pull-right ml-1
+            @if (!isset($open_sale_bill) || empty($open_sale_bill)) disabled @endif " printColor="2" isMoswada="0" invoiceType='7'>
+            حفظ و طباعة 7
+        </a>
 
         <!------FATOORAH MOSWADA---->
         <a href="javascript:;" role="button" style="height: 40px;" class="btn save_btn2 btn-md btn-warning pull-right ml-1
@@ -724,9 +707,7 @@
                     <h4 class="modal-title text-center" id="myModalLabel2">دفع نقدى</h4>
                 </div>
                 <div class="modal-body">
-                    @if (
-                        (isset($sale_bill_cash) && !$sale_bill_cash->isEmpty()) ||
-                            (isset($sale_bill_bank_cash) && !$sale_bill_bank_cash->isEmpty()))
+                    @if ((isset($sale_bill_cash) && !$sale_bill_cash->isEmpty()) || (isset($sale_bill_bank_cash) && !$sale_bill_bank_cash->isEmpty()))
                         <table class="table table-condensed table-striped table-hover">
                             <thead>
                             <tr>
@@ -862,13 +843,13 @@
                     </h4>
                 </div>
                 <div class="modal-body">
-                    <form id="myForm" action="{{ route('save.notes') }}" method="post">
+                    <form id="myForm" action="{{route('save.notes')}}" method="post">
                         @csrf
                         @method('POST')
                         @if (isset($open_sale_bill) && !empty($open_sale_bill))
-                            <input type="hidden" name="counter" value="{{ $open_sale_bill->company_counter }}"/>
+                            <input type="hidden" name="counter" value="{{$open_sale_bill->company_counter}}"/>
                         @else
-                            <input type="hidden" name="counter" value="{{ $pre_counter }}"/>
+                            <input type="hidden" name="counter" value="{{$pre_counter}}"/>
                         @endif
                         <div class="notes">
                             <div class="col-lg-6 pull-right">
@@ -877,11 +858,8 @@
                                         الملاحظة رقم 1
                                     </label>
                                     <input
-                                        @if (isset($open_sale_bill) &&
-                                                !empty($open_sale_bill) &&
-                                                !empty($open_sale_bill->sale_bill_notes[0]) &&
-                                                !$open_sale_bill->sale_bill_notes->isEmpty())
-                                        value="{{ $open_sale_bill->sale_bill_notes[0]->notes }}" @endif type="text"
+                                        @if(isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->sale_bill_notes[0]) && !$open_sale_bill->sale_bill_notes->isEmpty())
+                                        value="{{$open_sale_bill->sale_bill_notes[0]->notes}}" @endif type="text"
                                         class="form-control" name="notes[]"/>
                                 </div>
                             </div>
@@ -891,11 +869,8 @@
                                         الملاحظة رقم 2
                                     </label>
                                     <input
-                                        @if (isset($open_sale_bill) &&
-                                                !empty($open_sale_bill) &&
-                                                !empty($open_sale_bill->sale_bill_notes[1]) &&
-                                                !$open_sale_bill->sale_bill_notes->isEmpty())
-                                        value="{{ $open_sale_bill->sale_bill_notes[1]->notes }}" @endif type="text"
+                                        @if(isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->sale_bill_notes[1]) && !$open_sale_bill->sale_bill_notes->isEmpty())
+                                        value="{{$open_sale_bill->sale_bill_notes[1]->notes}}" @endif type="text"
                                         class="form-control" name="notes[]"/>
                                 </div>
                             </div>
@@ -904,11 +879,8 @@
                                     <label class="d-block">
                                         الملاحظة رقم 3
                                     </label><input
-                                        @if (isset($open_sale_bill) &&
-                                                !empty($open_sale_bill) &&
-                                                !empty($open_sale_bill->sale_bill_notes[2]) &&
-                                                !$open_sale_bill->sale_bill_notes->isEmpty())
-                                        value="{{ $open_sale_bill->sale_bill_notes[2]->notes }}" @endif type="text"
+                                        @if(isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->sale_bill_notes[2]) && !$open_sale_bill->sale_bill_notes->isEmpty())
+                                        value="{{$open_sale_bill->sale_bill_notes[2]->notes}}" @endif type="text"
                                         class="form-control" name="notes[]"/>
                                 </div>
                             </div>
@@ -918,11 +890,8 @@
                                         الملاحظة رقم 4
                                     </label>
                                     <input
-                                        @if (isset($open_sale_bill) &&
-                                                !empty($open_sale_bill) &&
-                                                !empty($open_sale_bill->sale_bill_notes[3]) &&
-                                                !$open_sale_bill->sale_bill_notes->isEmpty())
-                                        value="{{ $open_sale_bill->sale_bill_notes[3]->notes }}" @endif type="text"
+                                        @if(isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->sale_bill_notes[3]) && !$open_sale_bill->sale_bill_notes->isEmpty())
+                                        value="{{$open_sale_bill->sale_bill_notes[3]->notes}}" @endif type="text"
                                         class="form-control" name="notes[]"/>
                                 </div>
                             </div>
@@ -931,11 +900,8 @@
                                     <label class="d-block">
                                         الملاحظة رقم 5
                                     </label><input
-                                        @if (isset($open_sale_bill) &&
-                                                !empty($open_sale_bill) &&
-                                                !empty($open_sale_bill->sale_bill_notes[4]) &&
-                                                !$open_sale_bill->sale_bill_notes->isEmpty())
-                                        value="{{ $open_sale_bill->sale_bill_notes[4]->notes }}" @endif type="text"
+                                        @if(isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->sale_bill_notes[4]) && !$open_sale_bill->sale_bill_notes->isEmpty())
+                                        value="{{$open_sale_bill->sale_bill_notes[4]->notes}}" @endif type="text"
                                         class="form-control" name="notes[]"/>
                                 </div>
                             </div>
@@ -945,11 +911,8 @@
                                         الملاحظة رقم 6
                                     </label>
                                     <input
-                                        @if (isset($open_sale_bill) &&
-                                                !empty($open_sale_bill) &&
-                                                !empty($open_sale_bill->sale_bill_notes[5]) &&
-                                                !$open_sale_bill->sale_bill_notes->isEmpty())
-                                        value="{{ $open_sale_bill->sale_bill_notes[5]->notes }}" @endif type="text"
+                                        @if(isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->sale_bill_notes[5]) && !$open_sale_bill->sale_bill_notes->isEmpty())
+                                        value="{{$open_sale_bill->sale_bill_notes[5]->notes}}" @endif type="text"
                                         class="form-control" name="notes[]"/>
                                 </div>
                             </div>
@@ -1637,19 +1600,27 @@
             somethingChanged = true
         }
 
-        @if (isset($open_sale_bill) && !empty($open_sale_bill))
+        @if(isset($open_sale_bill) && !empty($open_sale_bill))
         $(window).bind('beforeunload', function (e) {
             if (!somethingChanged) {
                 // update invoice status //
                 $.post("{{ url('/client/sale-bills/updateStatusOnEdit') }}", {
                     "_token": "{{ csrf_token() }}",
-                    token: "{{ $open_sale_bill->token }}",
+                    token: "{{$open_sale_bill->token}}",
                 });
                 return 'هل بالفعل تريد الخروج من هذه الصحفة ؟';
             }
         });
         @endif
-                    window.addEventListener( "pageshow" , function ( event ) { var historyTraversal=event.persisted || (
-                    typeof window.performance !="undefined" && window.performance.navigation.type===2 ); if (
-                    historyTraversal ) { // Handle page restore. window.location.reload(); } }); </script>
-            @endsection
+
+        window.addEventListener( "pageshow", function ( event ) {
+            var historyTraversal = event.persisted ||
+                ( typeof window.performance != "undefined" &&
+                    window.performance.navigation.type === 2 );
+            if ( historyTraversal ) {
+                // Handle page restore.
+                window.location.reload();
+            }
+        });
+    </script>
+@endsection

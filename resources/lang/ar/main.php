@@ -336,4 +336,5 @@ return [
     "voucher_entry" => "القيود اليومية",
     "use the new sale bill" => "قسم المبيعات الجديد",
     "main" => "اجراءات",
+    'delete_confirm' => 'هل أنت متأكد أنك تريد حذف هذه الفاتورة؟',
 ];

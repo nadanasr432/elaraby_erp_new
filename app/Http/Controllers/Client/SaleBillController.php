@@ -75,8 +75,7 @@ class SaleBillController extends Controller
 
         // Fetching sale bills in chunks
         $sale_bills = collect();
-        SaleBill::withTrashed()
-            ->latest()
+        SaleBill::latest()
             ->where('company_id', $company_id)
             ->where('status', 'done')
             ->chunk(100, function ($bills) use ($sale_bills) {
@@ -96,8 +95,7 @@ class SaleBillController extends Controller
         $products = $company->products;
 
         // Count the collections
-        $sale_bills_count = SaleBill::withTrashed()
-            ->where('company_id', $company_id)
+        $sale_bills_count = SaleBill::where('company_id', $company_id)
             ->where('status', 'done')
             ->count();
         $outer_clients_count = $outer_clients->count();
@@ -167,16 +165,14 @@ class SaleBillController extends Controller
         }
         $check = SaleBill::where('company_id', $company_id)->count();
         if ($check == 0) {
-            $pre_bill = SaleBill::withTrashed()
-                ->where('company_id', $company_id)
+            $pre_bill = SaleBill::where('company_id', $company_id)
                 ->where('status', 'done')
                 ->count() + 1;
             $pre_counter = 1;
         } else {
             $old_pre_bill = SaleBill::max('sale_bill_number');
             $pre_bill = ++$old_pre_bill;
-            $old_pre_counter = SaleBill::withTrashed()
-                ->where('company_id', $company_id)
+            $old_pre_counter = SaleBill::where('company_id', $company_id)
                 ->where('status', 'done')
                 ->count();
             $pre_counter = $old_pre_counter + 1;
@@ -901,7 +897,7 @@ class SaleBillController extends Controller
         $client_id = Auth::user()->id;
         $bill_id = $request->billid;
         $sale_bill = SaleBill::FindOrFail($bill_id);
-        $elements = \App\Models\SaleBillElement::where('sale_bill_id', $sale_bill->id)
+        $elements = SaleBillElement::where('sale_bill_id', $sale_bill->id)
             ->where('company_id', $sale_bill->company_id)
             ->get();
         $extras = $sale_bill->extras;
@@ -964,7 +960,10 @@ class SaleBillController extends Controller
                 'prev_balance' => $balance_after
             ]);
         }
-
+        foreach ($sale_bill->vouchers as $voucher) {
+            $voucher->transactions()->delete();
+        }
+        $sale_bill->vouchers()->delete();
         $sale_bill->delete();
         return redirect()->route('client.sale_bills.index')
             ->with('success', 'تم حذف الفاتورة  بنجاح');

@@ -76,8 +76,7 @@ class SaleBillController1 extends Controller
 
         // Fetching sale bills in chunks
         $sale_bills = collect();
-        SaleBill1::withTrashed()
-            ->latest()
+        SaleBill1::latest()
             ->where('company_id', $company_id)
             ->where('status', 'done')
             ->chunk(100, function ($bills) use ($sale_bills) {
@@ -97,8 +96,7 @@ class SaleBillController1 extends Controller
         $products = $company->products;
 
         // Count the collections
-        $sale_bills_count = SaleBill1::withTrashed()
-            ->where('company_id', $company_id)
+        $sale_bills_count = SaleBill1::where('company_id', $company_id)
             ->where('status', 'done')
             ->count();
         $outer_clients_count = $outer_clients->count();
@@ -117,7 +115,84 @@ class SaleBillController1 extends Controller
     }
 
 
+    public function delete_bill(Request $request)
+    {
+        $company_id = Auth::user()->company_id;
+        $company = Company::FindOrFail($company_id);
+        $client_id = Auth::user()->id;
+        $bill_id = $request->billid;
+        $sale_bill = SaleBill::FindOrFail($bill_id);
+        $elements = SaleBillElement::where('sale_bill_id', $sale_bill->id)
+            ->where('company_id', $sale_bill->company_id)
+            ->get();
+        $extras = $sale_bill->extras;
+        $final_total = $sale_bill->final_total;
+        $paid = $sale_bill->paid;
+        $rest = $sale_bill->rest;
 
+        foreach ($elements as $element) {
+            $quantity = $element->quantity;
+            $product_id = $element->product_id;
+            $product = Product::FindOrFail($product_id);
+            $category_type = $product->category->category_type;
+            if ($category_type == "مخزونية") {
+                $prev_balance = $product->first_balance;
+                $curr_balance = $prev_balance + $quantity;
+                $product->update([
+                    'first_balance' => $curr_balance
+                ]);
+            }
+        }
+
+        $sale_bill->elements()->delete();
+        $sale_bill->extras()->delete();
+        $cash = Cash::where('bill_id', $sale_bill->sale_bill_number)
+            ->where('company_id', $company_id)
+            ->where('client_id', $sale_bill->client_id)
+            ->where('outer_client_id', $sale_bill->outer_client_id)
+            ->first();
+        if (!empty($cash)) {
+            $safe_id = $cash->safe_id;
+            $safe = Safe::FindOrFail($safe_id);
+            $safe_balance_before = $safe->balance;
+            $safe_balance_after = $safe_balance_before - $cash->amount;
+            $safe->update([
+                'balance' => $safe_balance_after
+            ]);
+
+            $cash->delete();
+        }
+        $bank_cash = BankCash::where('bill_id', $sale_bill->sale_bill_number)
+            ->where('company_id', $company_id)
+            ->where('client_id', $sale_bill->client_id)
+            ->where('outer_client_id', $sale_bill->outer_client_id)
+            ->first();
+        if (!empty($bank_cash)) {
+            $bank_id = $bank_cash->bank_id;
+            $bank = Bank::FindOrFail($bank_id);
+            $bank_balance_before = $bank->bank_balance;
+            $bank_balance_after = $bank_balance_before - $bank_cash->amount;
+            $bank->update([
+                'bank_balance' => $bank_balance_after
+            ]);
+            $bank_cash->delete();
+        }
+        if (!empty($sale_bill->outer_client_id)) {
+            $outer_client = OuterClient::FindOrFail($sale_bill->outer_client_id);
+            $balance_before = $outer_client->prev_balance;
+            $balance_after = $balance_before - $rest;
+            $outer_client->update([
+                'prev_balance' => $balance_after
+            ]);
+        }
+        foreach ($sale_bill->vouchers as $voucher) {
+            $voucher->transactions()->delete();
+        }
+        $sale_bill->vouchers()->delete();
+        $sale_bill->delete();
+        return redirect()->route('client.sale_bills1.index')
+            ->with('success', 'تم حذف الفاتورة  بنجاح');
+    }
     # create page #
     public function create()
     {
@@ -1202,81 +1277,81 @@ class SaleBillController1 extends Controller
     }
 
 
-    public function delete_bill(Request $request)
-    {
-        $company_id = Auth::user()->company_id;
-        $company = Company::FindOrFail($company_id);
-        $client_id = Auth::user()->id;
-        $bill_id = $request->billid;
-        $sale_bill = SaleBill1::FindOrFail($bill_id);
-        $elements = \App\Models\SaleBillElement1::where('sale_bill_id', $sale_bill->id)
-            ->where('company_id', $sale_bill->company_id)
-            ->get();
-        $extras = $sale_bill->extras;
-        $final_total = $sale_bill->final_total;
-        $paid = $sale_bill->paid;
-        $rest = $sale_bill->rest;
+    // public function delete_bill(Request $request)
+    // {
+    //     $company_id = Auth::user()->company_id;
+    //     $company = Company::FindOrFail($company_id);
+    //     $client_id = Auth::user()->id;
+    //     $bill_id = $request->billid;
+    //     $sale_bill = SaleBill1::FindOrFail($bill_id);
+    //     $elements = \App\Models\SaleBillElement1::where('sale_bill_id', $sale_bill->id)
+    //         ->where('company_id', $sale_bill->company_id)
+    //         ->get();
+    //     $extras = $sale_bill->extras;
+    //     $final_total = $sale_bill->final_total;
+    //     $paid = $sale_bill->paid;
+    //     $rest = $sale_bill->rest;
 
-        foreach ($elements as $element) {
-            $quantity = $element->quantity;
-            $product_id = $element->product_id;
-            $product = Product::FindOrFail($product_id);
-            $category_type = $product->category->category_type;
-            if ($category_type == "مخزونية") {
-                $prev_balance = $product->first_balance;
-                $curr_balance = $prev_balance + $quantity;
-                $product->update([
-                    'first_balance' => $curr_balance
-                ]);
-            }
-        }
+    //     foreach ($elements as $element) {
+    //         $quantity = $element->quantity;
+    //         $product_id = $element->product_id;
+    //         $product = Product::FindOrFail($product_id);
+    //         $category_type = $product->category->category_type;
+    //         if ($category_type == "مخزونية") {
+    //             $prev_balance = $product->first_balance;
+    //             $curr_balance = $prev_balance + $quantity;
+    //             $product->update([
+    //                 'first_balance' => $curr_balance
+    //             ]);
+    //         }
+    //     }
 
-        $sale_bill->elements()->delete();
-        $sale_bill->extras()->delete();
-        $cash = Cash::where('bill_id', $sale_bill->sale_bill_number)
-            ->where('company_id', $company_id)
-            ->where('client_id', $sale_bill->client_id)
-            ->where('outer_client_id', $sale_bill->outer_client_id)
-            ->first();
-        if (!empty($cash)) {
-            $safe_id = $cash->safe_id;
-            $safe = Safe::FindOrFail($safe_id);
-            $safe_balance_before = $safe->balance;
-            $safe_balance_after = $safe_balance_before - $cash->amount;
-            $safe->update([
-                'balance' => $safe_balance_after
-            ]);
+    //     $sale_bill->elements()->delete();
+    //     $sale_bill->extras()->delete();
+    //     $cash = Cash::where('bill_id', $sale_bill->sale_bill_number)
+    //         ->where('company_id', $company_id)
+    //         ->where('client_id', $sale_bill->client_id)
+    //         ->where('outer_client_id', $sale_bill->outer_client_id)
+    //         ->first();
+    //     if (!empty($cash)) {
+    //         $safe_id = $cash->safe_id;
+    //         $safe = Safe::FindOrFail($safe_id);
+    //         $safe_balance_before = $safe->balance;
+    //         $safe_balance_after = $safe_balance_before - $cash->amount;
+    //         $safe->update([
+    //             'balance' => $safe_balance_after
+    //         ]);
 
-            $cash->delete();
-        }
-        $bank_cash = BankCash::where('bill_id', $sale_bill->sale_bill_number)
-            ->where('company_id', $company_id)
-            ->where('client_id', $sale_bill->client_id)
-            ->where('outer_client_id', $sale_bill->outer_client_id)
-            ->first();
-        if (!empty($bank_cash)) {
-            $bank_id = $bank_cash->bank_id;
-            $bank = Bank::FindOrFail($bank_id);
-            $bank_balance_before = $bank->bank_balance;
-            $bank_balance_after = $bank_balance_before - $bank_cash->amount;
-            $bank->update([
-                'bank_balance' => $bank_balance_after
-            ]);
-            $bank_cash->delete();
-        }
-        if (!empty($sale_bill->outer_client_id)) {
-            $outer_client = OuterClient::FindOrFail($sale_bill->outer_client_id);
-            $balance_before = $outer_client->prev_balance;
-            $balance_after = $balance_before - $rest;
-            $outer_client->update([
-                'prev_balance' => $balance_after
-            ]);
-        }
+    //         $cash->delete();
+    //     }
+    //     $bank_cash = BankCash::where('bill_id', $sale_bill->sale_bill_number)
+    //         ->where('company_id', $company_id)
+    //         ->where('client_id', $sale_bill->client_id)
+    //         ->where('outer_client_id', $sale_bill->outer_client_id)
+    //         ->first();
+    //     if (!empty($bank_cash)) {
+    //         $bank_id = $bank_cash->bank_id;
+    //         $bank = Bank::FindOrFail($bank_id);
+    //         $bank_balance_before = $bank->bank_balance;
+    //         $bank_balance_after = $bank_balance_before - $bank_cash->amount;
+    //         $bank->update([
+    //             'bank_balance' => $bank_balance_after
+    //         ]);
+    //         $bank_cash->delete();
+    //     }
+    //     if (!empty($sale_bill->outer_client_id)) {
+    //         $outer_client = OuterClient::FindOrFail($sale_bill->outer_client_id);
+    //         $balance_before = $outer_client->prev_balance;
+    //         $balance_after = $balance_before - $rest;
+    //         $outer_client->update([
+    //             'prev_balance' => $balance_after
+    //         ]);
+    //     }
 
-        $sale_bill->delete();
-        return redirect()->route('client.sale_bills.index1')
-            ->with('success', 'تم حذف الفاتورة  بنجاح');
-    }
+    //     $sale_bill->delete();
+    //     return redirect()->route('client.sale_bills.index1')
+    //         ->with('success', 'تم حذف الفاتورة  بنجاح');
+    // }
 
     public function edit_element(Request $request)
     {
@@ -2630,39 +2705,39 @@ class SaleBillController1 extends Controller
                     $printColor = '#222751';
                     return view(
                         'client.sale_bills1.main',
-                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
                     );
                 } elseif ($invoiceType == 5) {
                     $printColor = '#222751';
                     return view(
                         'client.sale_bills1.print5',
-                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
                     );
                 } elseif ($invoiceType == 4) {
                     $printColor = '#222751';
                     return view(
                         'client.sale_bills1.print4',
-                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
                     );
                 } elseif ($invoiceType == 3) {
                     return view(
                         'client.sale_bills1.no_tax_print',
-                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
                     );
                 } elseif ($invoiceType == 6) {
                     return view(
                         'client.sale_bills1.print6',
-                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
                     );
                 } elseif ($invoiceType == 7) {
                     return view(
                         'client.sale_bills1.print7',
-                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
                     );
                 } else {
                     return view(
                         'client.sale_bills1.nPrint3',
-                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
                     );
                 }
             }
@@ -2794,35 +2869,35 @@ class SaleBillController1 extends Controller
                     $printColor = '#222751';
                     return view(
                         'client.sale_bills1.sentSalebill',
-                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
                     );
                 } elseif ($invoiceType == 5) {
                     $printColor = '#222751';
                     return view(
                         'client.sale_bills1.sentSalebill5',
-                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
                     );
                 } elseif ($invoiceType == 5) {
                     $printColor = '#222751';
                     return view(
                         'client.sale_bills1.print5',
-                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
                     );
                 } elseif ($invoiceType == 4) {
                     $printColor = '#222751';
                     return view(
                         'client.sale_bills1.sentSalebill4',
-                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
                     );
                 } elseif ($invoiceType == 3) {
                     return view(
                         'client.sale_bills1.sentSalebill3',
-                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
                     );
                 } else {
                     return view(
                         'client.sale_bills1.sentSalebill2',
-                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue','discountValueForEveryElement', 'position')
+                        compact('discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
                     );
                 }
             }
