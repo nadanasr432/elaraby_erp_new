@@ -315,41 +315,40 @@
                     // Additional tags can be added here if needed
                 ])->render();
             @endphp
-                <div class="header-container d-flex align-items-center">
+            <div class="header-container d-flex align-items-center">
 
-                    <div class=" col-md-7 qrcode">
+                <div class=" col-md-7 qrcode">
 
-                        @if (!$isMoswada)
-                            <img width="200" src="{{ $displayQRCodeAsBase64 }}" />
-                        @endif
-                    </div>
-                    <div class="col-md-5  mx-auto text-center">
-                        @if (!$isMoswada)
-                            <span class="txtheader text-muted"> @lang('sales_bills.Tax invoice')</span>
-                        @else
-                            <span class="txtheader text-muted">@lang('sales_bills.Draft invoice')</span>
-                        @endif
-                        <div class="d-flex justify-content-center mt-5 text-muted"
-                            style="font-size: 20px;font-weight:700">
-                            <div class="text-center pl-4 pr-4">
+                    @if (!$isMoswada)
+                        <img width="200" src="{{ $displayQRCodeAsBase64 }}" />
+                    @endif
+                </div>
+                <div class="col-md-5  mx-auto text-center">
+                    @if (!$isMoswada)
+                        <span class="txtheader text-muted"> @lang('sales_bills.Tax invoice')</span>
+                    @else
+                        <span class="txtheader text-muted">@lang('sales_bills.Draft invoice')</span>
+                    @endif
+                    <div class="d-flex justify-content-center mt-5 text-muted" style="font-size: 20px;font-weight:700">
+                        <div class="text-center pl-4 pr-4">
                             التاريخ
-                                <br>
-                                {{ $sale_bill->created_at }}
-                            </div>
-                            <div class="text-center pl-4 pr-4">
-                           الرقم التسلسلي
-                                <br>
-                                SME00{{ $position }}
-                            </div>
+                            <br>
+                            {{ $sale_bill->created_at }}
+                        </div>
+                        <div class="text-center pl-4 pr-4">
+                            الرقم التسلسلي
+                            <br>
+                            SME00{{ $position }}
                         </div>
                     </div>
-                    {{--
+                </div>
+                {{--
                     <div class="logo">
                         <img class="logo" style="object-fit: scale-down;" width="204"
                             src="{{ asset($company->company_logo) }}">
                     </div> --}}
 
-                </div>
+            </div>
 
             <hr class="mt-5 pl-4 pr-4" style="border: 1px solid #c9c3c3;">
             <div class="row  pl-4 pr-4">
@@ -470,17 +469,17 @@
                                     <tr class="text-muted"
                                         style="font-size:18px !important; height: 34px !important; text-align: center;">
                                         <td>
-                                            {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $element->discount_value : $element->quantity_price - $element->discount_value }}
+                                            {{ $element->tax_type == 0 ? round($element->quantity_price + $element->tax_value - $element->discount_value, 2) : round($element->quantity_price - $element->discount_value, 2) }}
                                         </td>
-                                        <td>{{ $element->tax_value }}</td>
-                                        <td>{{ $element->discount_value }}</td>
+                                        <td>{{ round($element->tax_value, 2) }}</td>
+                                        <td>{{ round($element->discount_value, 2) }}</td>
                                         <td>{{ $company->tax_value_added ?? '0' }}%</td>
-                                        <td>{{ $priceWithoutTax }}</td>
+                                        <td>{{ round($priceWithoutTax, 2) }}</td>
                                         <td class="text-center">
                                             <span>{{ $element->unit->unit_name }}</span>
                                             <span>{{ $element->quantity }}</span>
                                         </td>
-                                        <td>{{ $element->product_price }}</td>
+                                        <td>{{ round($element->product_price, 2) }}</td>
                                         <td>{{ $element->product->product_name }}</td>
                                     </tr>
                                 @endforeach
@@ -526,7 +525,7 @@
                     <div class="col-md-2 text-center text-muted" style="font-size: 24px; font-weight: 700;">
                         @if ($company->tax_value_added && $company->tax_value_added != 0)
                             {{-- @if ($discount->action_type == 'poundAfterTax') --}}
-                            {{ $sale_bill->final_total }}
+                            {{ round($sale_bill->final_total) }}
                             {{-- @else
                                 {{ $sumWithTax }}
                             @endif --}}
