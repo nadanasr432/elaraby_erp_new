@@ -281,18 +281,18 @@
                             <tr class="even"
                                 style="font-size: 16px !important; height: 40px !important; text-align: center;">
                                 <td class="borderLeftH">{{ $prodTax + $product->quantity_price }}
-                                    {{ $company->extra_settings->currency }}</td>
-                                <td class="borderLeftH">{{ $prodTax }} {{ $company->extra_settings->currency }}
+                                    </td>
+                                <td class="borderLeftH">{{ $prodTax }} 
                                 </td>
                                 <td class="borderLeftH" dir="rtl">
-                                    {{ $product->product_price }} {{ $company->extra_settings->currency }}
+                                    {{ $product->product_price }} 
                                 </td>
                                 <td class="borderLeftH" dir="rtl">
                                     {{ $product->quantity }}
                                     {{ $product->product->unit ? $product->product->unit->unit_name : '-' }}
                                 </td>
                                 <td class="borderLeftH" dir="rtl">
-                                    {{ $product->product_price }} {{ $company->extra_settings->currency }}
+                                    {{ $product->product_price }} 
                                 </td>
                                 <td class="borderLeftH" style="direction: rtl; unicode-bidi: embed;">
                                     {{ $product->product->description }}
