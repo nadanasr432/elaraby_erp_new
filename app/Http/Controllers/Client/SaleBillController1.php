@@ -23,11 +23,11 @@ use App\Mail\sendingSaleBill;
 use App\Models\BasicSettings;
 use App\Models\ExtraSettings;
 use App\Models\SaleBillExtra;
-use App\Models\accounting_tree;
 use App\Models\SaleBillReturn;
 use App\Services\StockService;
-use App\Models\SaleBillElement1;
+use App\Models\accounting_tree;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\SaleBillElement1;
 use App\Services\VoucherService;
 use App\Models\OuterClientAddress;
 use Illuminate\Support\Facades\DB;
@@ -39,6 +39,7 @@ use AIOSEO\Plugin\Common\Utils\Cache;
 use App\Http\Requests\SaleBillRequest;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\UpdateSaleBillRequest;
 
 class SaleBillController1 extends Controller
 {
@@ -204,17 +205,22 @@ class SaleBillController1 extends Controller
         $products = Product::with('category', 'stocks')
             ->where('company_id', $company_id)
             ->where(function ($query) {
-                $query->whereHas('stocks', function ($query) {
-                    $query->selectRaw('SUM(remaining) as total_remaining')
-                        ->having('total_remaining', '>', 0);
-                })
-                    ->orWhereHas('category', function ($query) {
-                        $query->where('category_type', 'خدمية');
-                    });
+                $query->where('first_balance', '>', 0)
+                    ->orWhereNull('first_balance');
             })
+            // ->where(function ($query) {
+            //     $query->whereHas('stocks', function ($query) {
+            //         $query->selectRaw('SUM(remaining) as total_remaining')
+            //             ->having('total_remaining', '>', 0);
+            //     })
+            //         ->orWhereHas('category', function ($query) {
+            //             $query->where('category_type', 'خدمية');
+            //         });
+            // })
             ->get()->map(function ($product) {
                 // Include the calculated total_remaining in the result
-                $product->total_remaining = $product->stocks->sum('remaining');
+                // $product->total_remaining = $product->stocks->sum('remaining');
+                $product->total_remaining = $product->first_balance;
                 $product->category_type = $product->category->category_type;
                 return $product;
             });
@@ -239,17 +245,23 @@ class SaleBillController1 extends Controller
 
             $all_products = Product::where('company_id', $company_id)
                 ->where(function ($query) use ($flatStores) {
-                    $query->whereHas('stocks', function ($query) use ($flatStores) {
-                        $query->whereIn('store_id', $flatStores)
-                            ->selectRaw('SUM(remaining) as total_remaining')
-                            ->having('total_remaining', '>', 0);
+                    // $query->whereHas('stocks', function ($query) use ($flatStores) {
+                    //     $query->whereIn('store_id', $flatStores)
+                    //         ->selectRaw('SUM(remaining) as total_remaining')
+                    //         ->having('total_remaining', '>', 0);
+                    // })
+                    $query->where(function ($q) {
+                        $q->where('first_balance', '>', 0)
+                            ->orWhereNull('first_balance');
                     })
                         ->orWhereHas('category', function ($query) {
                             $query->where('category_type', 'خدمية');
                         });
-                })->get()->map(function ($product) {
+                })
+                ->get()->map(function ($product) {
                     // Include the calculated total_remaining in the result
-                    $product->total_remaining = $product->stocks->sum('remaining');
+                    // $product->total_remaining = $product->stocks->sum('remaining');
+                    $product->total_remaining = $product->first_balance;
                     $product->category_type = $product->category->category_type;
                     return $product;
                 });
@@ -258,17 +270,23 @@ class SaleBillController1 extends Controller
             $flatStores = $stores->pluck('id')->toArray();
             $all_products = Product::where('company_id', $company_id)
                 ->where(function ($query) use ($flatStores) {
-                    $query->whereHas('stocks', function ($query) use ($flatStores) {
-                        $query->whereIn('store_id', $flatStores)
-                            ->selectRaw('SUM(remaining) as total_remaining')
-                            ->having('total_remaining', '>', 0);
+                    // $query->whereHas('stocks', function ($query) use ($flatStores) {
+                    //     $query->whereIn('store_id', $flatStores)
+                    //         ->selectRaw('SUM(remaining) as total_remaining')
+                    //         ->having('total_remaining', '>', 0);
+                    // })
+                    $query->where(function ($q) {
+                        $q->where('first_balance', '>', 0)
+                            ->orWhereNull('first_balance');
                     })
                         ->orWhereHas('category', function ($query) {
                             $query->where('category_type', 'خدمية');
                         });
                 })->get()->map(function ($product) {
                     // Include the calculated total_remaining in the result
-                    $product->total_remaining = $product->stocks->sum('remaining');
+                    // $product->total_remaining = $product->stocks->sum('remaining');
+                    $product->total_remaining = $product->first_balance;
+
                     $product->category_type = $product->category->category_type;
                     return $product;
                 });
@@ -1394,17 +1412,23 @@ class SaleBillController1 extends Controller
 
             $all_products = Product::where('company_id', $company_id)
                 ->where(function ($query) use ($flatStores) {
-                    $query->whereHas('stocks', function ($query) use ($flatStores) {
-                        $query->whereIn('store_id', $flatStores)
-                            ->selectRaw('SUM(remaining) as total_remaining')
-                            ->having('total_remaining', '>', 0);
+                    // $query->whereHas('stocks', function ($query) use ($flatStores) {
+                    //     $query->whereIn('store_id', $flatStores)
+                    //         ->selectRaw('SUM(remaining) as total_remaining')
+                    //         ->having('total_remaining', '>', 0);
+                    // })
+                    $query->where(function ($q) {
+                        $q->where('first_balance', '>', 0)
+                            ->orWhereNull('first_balance');
                     })
                         ->orWhereHas('category', function ($query) {
                             $query->where('category_type', 'خدمية');
                         });
-                })->get()->map(function ($product) {
+                })
+                ->get()->map(function ($product) {
                     // Include the calculated total_remaining in the result
-                    $product->total_remaining = $product->stocks->sum('remaining');
+                    // $product->total_remaining = $product->stocks->sum('remaining');
+                    $product->total_remaining = $product->first_balance;
                     $product->category_type = $product->category->category_type;
                     return $product;
                 });
@@ -1413,17 +1437,23 @@ class SaleBillController1 extends Controller
             $flatStores = $stores->pluck('id')->toArray();
             $all_products = Product::where('company_id', $company_id)
                 ->where(function ($query) use ($flatStores) {
-                    $query->whereHas('stocks', function ($query) use ($flatStores) {
-                        $query->whereIn('store_id', $flatStores)
-                            ->selectRaw('SUM(remaining) as total_remaining')
-                            ->having('total_remaining', '>', 0);
+                    // $query->whereHas('stocks', function ($query) use ($flatStores) {
+                    //     $query->whereIn('store_id', $flatStores)
+                    //         ->selectRaw('SUM(remaining) as total_remaining')
+                    //         ->having('total_remaining', '>', 0);
+                    // })
+                    $query->where(function ($q) {
+                        $q->where('first_balance', '>', 0)
+                            ->orWhereNull('first_balance');
                     })
                         ->orWhereHas('category', function ($query) {
                             $query->where('category_type', 'خدمية');
                         });
                 })->get()->map(function ($product) {
                     // Include the calculated total_remaining in the result
-                    $product->total_remaining = $product->stocks->sum('remaining');
+                    // $product->total_remaining = $product->stocks->sum('remaining');
+                    $product->total_remaining = $product->first_balance;
+
                     $product->category_type = $product->category->category_type;
                     return $product;
                 });
@@ -2974,7 +3004,7 @@ class SaleBillController1 extends Controller
     {
         return BasicSettings::where('company_id', Auth::user()->company_id)->firstOrFail()->update(['sale_bill_condition' => $request->condition]) ? 1 : 0;
     }
-    public function update(Request $request)
+    public function update(UpdateSaleBillRequest $request)
     {
         $data = $request->all();
         DB::beginTransaction();
@@ -3025,8 +3055,8 @@ class SaleBillController1 extends Controller
                         'tax_value' => (float)$product['tax_amount'],
                         'discount_value' => (float)$product['discount'],
                         'tax_type' => (float)$product['tax'],
-                        'price_type' => $product['price_type'],
-                        'discount_type' => $product['discount_type'],
+                        'price_type' => &$product['price_type'],
+                        'discount_type' => &$product['discount_type'],
                     ]
                 );
 
@@ -3080,12 +3110,6 @@ class SaleBillController1 extends Controller
                 $subTotal = StockService::getTotalCost($product, $product->quantity);
                 $subTotal += $subTotal;
             }
-
-            // foreach ($elements as $element) {
-            //     if ($element->product->category->category_type != 'خدمية') {
-            //         StockService::reduce($element, $request->input('store_id'), $element->quantity);
-            //     }
-            // }
             $outerClient = OuterClient::find($saleBill->outer_client_id);
             $store = Store::find($saleBill->store_id);
             //
@@ -3297,7 +3321,7 @@ class SaleBillController1 extends Controller
             return response()->json(['status' => true, 'msg' => 'تم التحديث بنجاح', 'id' => $saleBill->id]);
         } catch (\Exception $e) {
             DB::rollback();
-            return response()->json(['status' => false, 'msg' => 'حدث خطأ أثناء التحديث']);
+            return response()->json(['status' => false, 'msg' => 'حدث خطأ أثناء التحديث' . $e]);
         }
     }
 }

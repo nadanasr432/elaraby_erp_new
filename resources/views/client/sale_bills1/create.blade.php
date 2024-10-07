@@ -1429,8 +1429,8 @@
             var rowIndex = 0;
             var roductPrice = 0;
 
+            var taxRate = 0.15; // Tax rate of 15%
             function handleTaxCalculation(flag = 1) {
-                var taxRate = 0.15; // Tax rate of 15%
 
                 $('#products_table tbody tr').each(function() {
                     var row = $(this);
@@ -1479,42 +1479,56 @@
                     .val()) || 0;
                 var discountType = row.find(`input[name="products[${row.data('index')}][discount_type]"]:checked`)
                     .val();
-                var taxValue = parseFloat(row.find(`input[name="products[${row.data('index')}][tax_amount]"]`)
-                    .val()) || 0;
-                var discountApplication = $('#discount_application').val();
+                var taxRate = 0.15; // 15% tax rate
+                var discountApplication = $('#discount_application')
+                    .val(); // whether discount is applied before or after tax
 
                 var subtotal = quantity * price;
-                // var subtotalForDiscount = discountApplication === 'before_tax' ? subtotal - taxValue : subtotal;
-                if (taxType === "0") { // not include
-                    var subtotalForDiscount = discountApplication === 'before_tax' ? subtotal : subtotal + taxValue;
-                } else {
-                    var subtotalForDiscount = discountApplication === 'before_tax' ? subtotal - taxValue : subtotal;
+                var discountAmount = discountType === 'percent' ? (subtotal * discount / 100) : discount;
 
+                var total;
+                var taxValue = 0; // Default to no tax
+
+                // If discount is applied before tax
+                if (discountApplication === 'before_tax') {
+                    // Subtotal after applying discount
+                    var discountedSubtotal = subtotal - discountAmount;
+
+                    // Apply tax based on tax type
+                    if (taxType === "0") { // Not including tax
+                        taxValue = discountedSubtotal * taxRate;
+                    } else if (taxType === "2") { // Including tax
+                        // No additional tax, already included in price
+                        taxValue = 0;
+                    } else if (taxType === "1") { // Exempt from tax
+                        taxValue = 0;
+                    }
+
+                    total = discountedSubtotal + taxValue;
+
+                } else { // If discount is applied after tax
+                    // Apply tax based on the subtotal before discount
+                    if (taxType === "0") { // Not including tax
+                        taxValue = subtotal * taxRate;
+                    } else if (taxType === "2") { // Including tax
+                        // No additional tax, already included in price
+                        taxValue = 0;
+                    } else if (taxType === "1") { // Exempt from tax
+                        taxValue = 0;
+                    }
+
+                    // Total after applying tax and then subtracting the discount
+                    total = subtotal + taxValue - discountAmount;
                 }
 
-                var discountAmount = discountType === 'percent' ? (subtotalForDiscount * discount / 100) : discount;
-                var total = subtotal - discountAmount;
-
-                // Adjust the total based on tax type in the row
-                if (taxType === "2") { // Including tax
-                    // The tax is included in the price, so no need to adjust the total
-                    total = subtotal - discountAmount; // Total remains as calculated without adding tax
-                } else if (taxType === "0") { // Not including tax
-                    total += taxValue; // Add tax value to the total
-                } else if (taxType === "1") { // Exempt tax
-                    // Tax is exempt, no adjustment needed
-                }
-
-                // Update the row with calculated values
+                // Update row fields
                 row.find(`input[name="products[${row.data('index')}][applied_discount]"]`).val(discountAmount
                     .toFixed(2));
                 row.find(`input[name="products[${row.data('index')}][tax_amount]"]`).val(taxValue.toFixed(2));
                 row.find(`input[name="products[${row.data('index')}][total]"]`).val(total.toFixed(2));
 
-                // Recalculate the grand total
-                calculateGrandTotal();
+                calculateGrandTotal(); // Update the overall totals
             }
-
 
             function calculateGrandTotal() {
                 var grandTotal = 0;
@@ -1546,35 +1560,41 @@
                 });
 
                 // Apply discount to grand total based on the selected option
-                // var discountApplication = $('#discount_application').val();
-                // if (discountApplication === 'before_tax') {
-                if (discountType === 'pound' || discountType === 'poundAfterTax' || discountType ===
-                    'poundAfterTaxPercent') {
-                    discount = discountValue;
+                // var discount = 0;
+                // Apply discount based on type
+                // var oldgrandToatal = grandTotal;
+                // var oldgrandTax = grandTax;
+                var totalWithoutTax = grandTotal - grandTax;
+
+                if (discountType === 'pound') {
+                    total = totalWithoutTax - discountValue;
+                    grandTax = total * .15;
+                    grandTotal = totalWithoutTax + grandTax;
                 } else if (discountType === 'percent') {
-
-                    discount = ((grandTotal - grandTax) * discountValue / 100)
-                } else if (discountType === 'afterTax') {
-                    discount = (grandTotal * discountValue / 100);
+                    discountValue = (totalWithoutTax * discountValue / 100);
+                    total = totalWithoutTax - discount;
+                    grandTax = total * .15;
+                    grandTotal = totalWithoutTax + grandTax;
                 }
-                grandTotal -= discount;
 
-                // } else { // 'after_tax'
-                //     if (discountType === 'pound') {
-                //         grandTotal -= discountValue;
-                //     } else if (discountType === 'percent') {
-                //         grandTotal -= (grandTotal * discountValue / 100);
-                //     }
-                // }
+                // Apply discounts after tax if specified
+                if (discountType === 'poundAfterTax') {
+                    grandTotal -= discountValue; // Apply flat discount after tax
 
-                // Add extra charges
+                } else if (discountType === 'poundAfterTaxPercent') {
+                    discountValue = (grandTotal * discountValue / 100);
+                    grandTotal -= discount; // Apply percentage discount after tax
+                }
+
+                // Apply extra charges
                 if (extraType === 'percent') {
-                    grandTotal += (grandTotal * extraValue / 100);
+                    grandTotal += (grandTotal * extraValue / 100); // Extra as percentage
                 } else if (extraType === 'pound') {
-                    grandTotal += extraValue;
+                    grandTotal += extraValue; // Extra as fixed amount
                 }
 
-                totalDiscount = totalAppliedDiscount + discount;
+                // Total discount = row-level discounts + bill-level discounts
+                totalDiscount = totalAppliedDiscount + discountValue;
                 $('#grand_tax').text(grandTax.toFixed(2));
                 $('#grand_total').text(grandTotal.toFixed(2));
                 $('#grand_tax_input').val(grandTax.toFixed(2));
@@ -1630,75 +1650,75 @@
                     calculateRowTotal(existingRow);
                 } else {
                     var rowHtml = `
-<tr data-product-id="${productId}" data-index="${rowIndex}">
-    <td class="text-truncate">${productName}</td>
-    <td class="text-left">
-        <div class="d-flex flex-column">
-            <label class="form-check-inline">
-                <input type="radio" name="products[${rowIndex}][price_type]" value="sector" class="price_type form-check-input" checked>
-                ${translations.sector}
-            </label>
-            <label class="form-check-inline">
-                <input type="radio" name="products[${rowIndex}][price_type]" value="wholesale" class="price_type form-check-input">
-                ${translations.wholesale}
-            </label>
-        </div>
-    </td>
-    <td>
-        <div class="input-group">
-            <input type="number" min="1" name="products[${rowIndex}][product_price]" class="form-control w-100 price" value="${sectorPrice}" step="any">
-        </div>
-    </td>
-    <td>
-        <div class="input-group">
-            <input type="number" name="products[${rowIndex}][quantity]" class="form-control w-100 quantity" value="1" min="1" max="${remaining}" step="any">
-        </div>
-    </td>
-    <td>
-        <div class="input-group">
-            <select name="products[${rowIndex}][unit_id]" class="form-control w-100 unit">
-                <option disabled>${translations.choose_unit}</option>
-                @foreach ($units as $unit)
-                    <option value="{{ $unit->id }}" ${unitId === {{ $unit->id }} ? 'selected' : ''}>{{ $unit->unit_name }}</option>
-                @endforeach
-            </select>
-        </div>
-    </td>
-    <td>
-        <div class="d-flex flex-column">
-            <label class="form-check-inline">
-                <input type="radio" name="products[${rowIndex}][discount_type]" value="pound" class="discount_type form-check-input">
-                ${translations.pound}
-            </label>
-            <label class="form-check-inline">
-                <input type="radio" name="products[${rowIndex}][discount_type]" value="percent" class="discount_type form-check-input" checked>
-                ${translations.percent}
-            </label>
-            <input type="number" name="products[${rowIndex}][discount]" class="form-control discount w-100 mt-1" value="0" min="0" step="any">
-            <input type="number" hidden name="products[${rowIndex}][applied_discount]" class="form-control applied_discount w-100 mt-1" value="0" step="any">
-        </div>
-    </td>
-    <td>
-        <div class="input-group">
-            <select name="products[${rowIndex}][tax]" class="form-control tax_type w-100 mb-1">
-                <option value="0" ${valueAddedTax == 0 ? 'selected' : ''}>${translations.not_including_tax}</option>
-                <option value="1" ${valueAddedTax == 1 ? 'selected' : ''}>${translations.exempt_tax}</option>
-                <option value="2" ${valueAddedTax == 2 ? 'selected' : ''}>${translations.including_tax}</option>
-            </select>
-            <input type="number" readonly name="products[${rowIndex}][tax_amount]" class="form-control tax_amount w-100 mt-1" value="0" min="0" step="any">
-        </div>
-    </td>
-    <td>
-        <div class="input-group">
-            <input type="number" name="products[${rowIndex}][total]" class="form-control total w-100" value="0" readonly step="any">
-            <input type="number" hidden name="products[${rowIndex}][product_id]" class="form-control total w-100" value="${productId}">
-        </div>
-    </td>
-    <td>
-        <button type="button" class="btn btn-danger btn-sm remove-product">${translations.remove}</button>
-    </td>
-</tr>
-`;
+                            <tr data-product-id="${productId}" data-index="${rowIndex}">
+                                <td class="text-truncate">${productName}</td>
+                                <td class="text-left">
+                                    <div class="d-flex flex-column">
+                                        <label class="form-check-inline">
+                                            <input type="radio" name="products[${rowIndex}][price_type]" value="sector" class="price_type form-check-input" checked>
+                                            ${translations.sector}
+                                        </label>
+                                        <label class="form-check-inline">
+                                            <input type="radio" name="products[${rowIndex}][price_type]" value="wholesale" class="price_type form-check-input">
+                                            ${translations.wholesale}
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <input type="number" min="1" name="products[${rowIndex}][product_price]" class="form-control w-100 price" value="${sectorPrice}" step="any">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <input type="number" name="products[${rowIndex}][quantity]" class="form-control w-100 quantity" value="1" min="1" max="${remaining}" step="any">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <select name="products[${rowIndex}][unit_id]" class="form-control w-100 unit">
+                                            <option disabled>${translations.choose_unit}</option>
+                                            @foreach ($units as $unit)
+                                                <option value="{{ $unit->id }}" ${unitId === {{ $unit->id }} ? 'selected' : ''}>{{ $unit->unit_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-column">
+                                        <label class="form-check-inline">
+                                            <input type="radio" name="products[${rowIndex}][discount_type]" value="pound" class="discount_type form-check-input">
+                                            ${translations.pound}
+                                        </label>
+                                        <label class="form-check-inline">
+                                            <input type="radio" name="products[${rowIndex}][discount_type]" value="percent" class="discount_type form-check-input" checked>
+                                            ${translations.percent}
+                                        </label>
+                                        <input type="number" name="products[${rowIndex}][discount]" class="form-control discount w-100 mt-1" value="0" min="0" step="any">
+                                        <input type="number" hidden name="products[${rowIndex}][applied_discount]" class="form-control applied_discount w-100 mt-1" value="0" step="any">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <select name="products[${rowIndex}][tax]" class="form-control tax_type w-100 mb-1">
+                                            <option value="0" ${valueAddedTax == 0 ? 'selected' : ''}>${translations.not_including_tax}</option>
+                                            <option value="1" ${valueAddedTax == 1 ? 'selected' : ''}>${translations.exempt_tax}</option>
+                                            <option value="2" ${valueAddedTax == 2 ? 'selected' : ''}>${translations.including_tax}</option>
+                                        </select>
+                                        <input type="number" readonly name="products[${rowIndex}][tax_amount]" class="form-control tax_amount w-100 mt-1" value="0" min="0" step="any">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <input type="number" name="products[${rowIndex}][total]" class="form-control total w-100" value="0" readonly step="any">
+                                        <input type="number" hidden name="products[${rowIndex}][product_id]" class="form-control total w-100" value="${productId}">
+                                    </div>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger btn-sm remove-product">${translations.remove}</button>
+                                </td>
+                            </tr>
+                            `;
 
 
                     $('#products_table tbody').append(rowHtml);
