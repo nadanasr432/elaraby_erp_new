@@ -193,9 +193,14 @@ $currency = $extra_settings->currency;
                         </div>
                     </div>
                     <hr class="mt-1 mb-2">
+                    <?php
+                    $from_date = request()->get('from_date');
+                    $to_date = request()->get('to_date'); 
+                    ?>
                     <h3 class="alert alert-sm alert-light text-center" style="margin:20px auto;">
-                        كشف حساب عميل
+                        كشف حساب عميل من {{ $from_date }} إلى {{ $to_date }}
                     </h3>
+
                     <!---COMPANY DATA--->
                     <table width="100%">
                         <tbody>
@@ -214,7 +219,7 @@ $currency = $extra_settings->currency;
                     <!---COMPANY DATA--->
                     @if (isset($outer_client_k) && !empty($outer_client_k))
                         <p class="alert alert-sm alert-danger text-center">
-                            عرض بيانات العميل
+                            عرض بيانات العميل {{ $outer_client_k->client_name }}
                         </p>
                         <div class="table-respo mb-3">
                             <table
@@ -387,16 +392,14 @@ $currency = $extra_settings->currency;
                     <div class="clearfix"></div>
                     @if (isset($saleBills) && !$saleBills->isEmpty())
                         <p class="alert alert-sm alert-info mt-3 text-center">
-                            فواتير البيع لهذا العميل
+                            فواتير البيع للعميل {{ $outer_client_k->client_name }} 
                         </p>
                         <div class="table-respo ">
                             <table
-                                style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+                                style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid; box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                                 <thead style="font-size: 15px !important;">
-
                                     <tr
                                         style="font-size: 13px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
-
                                         <th>#</th>
                                         <th>رقم الفاتورة</th>
                                         <th>التاريخ</th>
@@ -407,8 +410,12 @@ $currency = $extra_settings->currency;
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php $i = 0;
-                                    $total = 0; ?>
+                                    <?php
+                                    $i = 0;
+                                    $total = 0;
+                                    $previous_balance = 0; // نبدأ برصيد سابق 0
+                                    $final_balance = 0; // متغير لتخزين الرصيد النهائي
+                                    ?>
                                     @foreach ($saleBills as $sale_bill)
                                         <tr>
                                             <td>{{ ++$i }}</td>
@@ -425,11 +432,13 @@ $currency = $extra_settings->currency;
                                             <td>{{ $sale_bill->paid }}</td>
                                             <td>
                                                 <?php
+                                                // حساب المجموع الكلي للمدين
                                                 $sum = 0;
                                                 foreach ($sale_bill->elements as $element) {
                                                     $sum += floatval($element->quantity_price);
                                                 }
                                                 
+                                                // حساب الخصومات والإضافات
                                                 $sale_bill_discount_value = 0;
                                                 $sale_bill_discount_type = 'pound';
                                                 $sale_bill_extra_value = 0;
@@ -438,57 +447,57 @@ $currency = $extra_settings->currency;
                                                 $extras = $sale_bill->extras;
                                                 foreach ($extras as $key) {
                                                     if ($key->action == 'discount') {
-                                                        if ($key->action_type == 'pound') {
-                                                            $sale_bill_discount_value = floatval($key->value);
-                                                            $sale_bill_discount_type = 'pound';
-                                                        } else {
-                                                            $sale_bill_discount_value = floatval($key->value);
-                                                            $sale_bill_discount_type = 'percent';
-                                                        }
+                                                        $sale_bill_discount_value = $key->action_type == 'pound' ? floatval($key->value) : ($key->value / 100) * $sum;
                                                     } else {
-                                                        if ($key->action_type == 'pound') {
-                                                            $sale_bill_extra_value = floatval($key->value);
-                                                            $sale_bill_extra_type = 'pound';
-                                                        } else {
-                                                            $sale_bill_extra_value = floatval($key->value);
-                                                            $sale_bill_extra_type = 'percent';
-                                                        }
+                                                        $sale_bill_extra_value = $key->action_type == 'pound' ? floatval($key->value) : ($key->value / 100) * $sum;
                                                     }
                                                 }
                                                 
-                                                if ($sale_bill_extra_type == 'percent') {
-                                                    $sale_bill_extra_value = ($sale_bill_extra_value / 100) * $sum;
-                                                }
-                                                $after_discount = $sum + $sale_bill_extra_value;
-                                                
-                                                if ($sale_bill_discount_type == 'percent') {
-                                                    $sale_bill_discount_value = ($sale_bill_discount_value / 100) * $sum;
-                                                }
+                                                // حساب المبلغ بعد الخصم
                                                 $after_discount = $sum - $sale_bill_discount_value + $sale_bill_extra_value;
                                                 
+                                                // حساب الضريبة
                                                 $tax_value_added = floatval($company->tax_value_added);
-                                                $percentage = ($tax_value_added / 100) * $after_discount;
-                                                $after_total = $after_discount + $percentage;
+                                                $tax_amount = ($tax_value_added / 100) * $after_discount;
                                                 
-                                                echo floatval($after_total) . ' ' . $currency;
+                                                // المبلغ الإجمالي بعد الضريبة
+                                                $debit = $after_discount + $tax_amount;
+                                                
+                                                // حساب المدين والدائن
+                                                $credit = floatval($sale_bill->paid);
+                                                
+                                                // حساب الرصيد الحالي بناءً على الرصيد السابق
+                                                $current_balance = $previous_balance + ($debit - $credit);
+                                                
+                                                // تحديث الرصيد السابق للسطر التالي
+                                                $previous_balance = $current_balance;
+                                                
+                                                // تحديث الرصيد النهائي
+                                                $final_balance = $current_balance;
+                                                
+                                                // عرض الرصيد الحالي
+                                                echo floatval($current_balance) . ' ' . $currency;
                                                 ?>
-                                                <?php $total += $after_total; ?>
                                             </td>
-
                                         </tr>
                                     @endforeach
                                 </tbody>
+                                <tfoot>
+                                    <tr
+                                        style="font-size: 15px; font-weight: bold; background: #f1f1f1; text-align: center;">
+                                        <td colspan="6">الرصيد النهائي</td>
+                                        <td>
+                                            <?php echo floatval($final_balance) . ' ' . $currency; ?>
+                                        </td>
+                                    </tr>
+                                </tfoot>
                             </table>
+
                         </div>
                     @endif
-
-
-
-
-
                     <!------------------------------------------------BONDS--------------------------------------------------->
                     <div class="clearfix"></div>
-                    <?= $i = 0 ?>
+                    <php?= $i = 0 ?>
                     @if (isset($bonds) && !$bonds->isEmpty())
                         <h3 class="alert alert-sm alert-light text-center" style="margin:20px auto;">
                             السندات للعميل
