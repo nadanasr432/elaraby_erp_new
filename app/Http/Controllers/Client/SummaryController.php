@@ -43,22 +43,31 @@ class SummaryController extends Controller
 
     public function post_clients_summary(ClientsSummaryRequest $request)
     {
-        //client id..
+        // Initialize variables
         $outer_client_id = $request->outer_client_id;
-
-        //date from
-        $from_date = $request->from_date;
-        //date to
-        $to_date = $request->to_date;
-        //type of getting data ==> all or just invoices for today..
+        $from_date = $request->from_date ? Carbon::parse($request->from_date) : null;
+        $to_date = $request->to_date ? Carbon::parse($request->to_date) : null;
         $submit = $request->submit;
-        $today = date('Y-m-d');
+        $today = Carbon::today();
 
+        // Find the client
         $outer_client_k = OuterClient::FindOrFail($outer_client_id);
-        if (isset($submit) && $submit == "all") {
-            if (empty($from_date) && empty($to_date)) {
 
-                // all summary results
+        // Initialize collections
+        $gifts = collect();
+        $quotations = collect();
+        $bonds = collect();
+        $saleBills = collect();
+        $cashs = collect();
+        $borrows = collect();
+        $bankcashs = collect();
+        $returns = collect();
+
+        // Determine the type of summary
+        if ($submit === "all") {
+            // Summary for all data
+            if (is_null($from_date) && is_null($to_date)) {
+                // No date filters
                 $gifts = $outer_client_k->gifts;
                 $quotations = $outer_client_k->quotations;
                 $bonds = Bondclient::where('client', $outer_client_k->client_name)->get();
@@ -68,32 +77,15 @@ class SummaryController extends Controller
                 $bankcashs = $outer_client_k->bankcashs;
                 $returns = $outer_client_k->saleBillReturns;
             } else {
-                // from - to
+                // With date filters
                 $gifts = Gift::where('outer_client_id', $outer_client_id)
                     ->whereBetween('created_at', [$from_date, $to_date])->get();
                 $quotations = Quotation::where('outer_client_id', $outer_client_id)
                     ->whereBetween('created_at', [$from_date, $to_date])->get();
-
                 $bonds = Bondclient::where('client', $outer_client_k->client_name)
                     ->whereBetween('created_at', [$from_date, $to_date])->get();
-
-//                $saleBills = SaleBill::where('outer_client_id', $outer_client_id)
-//                    ->whereBetween('created_at', [$from_date, $to_date])->get();
-
-                //convert time..
-                $from_date2 = new \DateTime($from_date);
-                $to_date2 = new \DateTime($to_date);
-
-                //get timeStampe ==> (time)
-                $from_date_timeStamp = $from_date2->getTimestamp();
-                $to_date_timeStamp = $to_date2->getTimestamp();
-
-                $from_date2 = new Carbon($from_date_timeStamp);
-                $to_date2 = new Carbon($to_date_timeStamp);
-
                 $saleBills = SaleBill::where('outer_client_id', $outer_client_id)
-                    ->whereBetween('date', [$from_date2->format('Y-m-d') . " 00:00:00", $to_date2->format('Y-m-d') . " 23:59:59"])->get();
-
+                    ->whereBetween('date', [$from_date->startOfDay(), $to_date->endOfDay()])->get();
                 $cashs = Cash::where('outer_client_id', $outer_client_id)
                     ->where('amount', '>', 0)
                     ->whereBetween('created_at', [$from_date, $to_date])->get();
@@ -105,33 +97,44 @@ class SummaryController extends Controller
                 $returns = SaleBillReturn::where('outer_client_id', $outer_client_id)
                     ->whereBetween('created_at', [$from_date, $to_date])->get();
             }
-        }
-        if (isset($submit) && $submit == "today") {
-            // today
+        } elseif ($submit === "today") {
+            // Summary for today
             $gifts = Gift::where('outer_client_id', $outer_client_id)
-                ->whereDate('created_at', 'LIKE', '%' . $today . '%')->get();
+                ->whereDate('created_at', $today)->get();
             $quotations = Quotation::where('outer_client_id', $outer_client_id)
-                ->whereDate('created_at', 'LIKE', '%' . $today . '%')->get();
+                ->whereDate('created_at', $today)->get();
             $saleBills = SaleBill::where('outer_client_id', $outer_client_id)
-                ->whereDate('created_at', 'LIKE', '%' . $today . '%')->get();
+                ->whereDate('created_at', $today)->get();
             $cashs = Cash::where('outer_client_id', $outer_client_id)
                 ->where('amount', '>', 0)
-                ->whereDate('created_at', 'LIKE', '%' . $today . '%')->get();
+                ->whereDate('created_at', $today)->get();
             $borrows = Cash::where('outer_client_id', $outer_client_id)
                 ->where('amount', '<', 0)
-                ->whereDate('created_at', 'LIKE', '%' . $today . '%')->get();
+                ->whereDate('created_at', $today)->get();
             $bankcashs = BankCash::where('outer_client_id', $outer_client_id)
-                ->whereDate('created_at', 'LIKE', '%' . $today . '%')->get();
+                ->whereDate('created_at', $today)->get();
             $returns = SaleBillReturn::where('outer_client_id', $outer_client_id)
-                ->whereDate('created_at', 'LIKE', '%' . $today . '%')->get();
+                ->whereDate('created_at', $today)->get();
             $bonds = Bondclient::where('client', $outer_client_k->client_name)
-                ->whereDate('created_at', 'LIKE', '%' . $today . '%')->get();
-
+                ->whereDate('created_at', $today)->get();
         }
-        return view('client.summary.clients_post',
-            compact('returns', 'from_date', 'to_date'
-                , 'outer_client_k', 'gifts', 'quotations', 'saleBills', 'cashs', 'bankcashs', 'borrows', 'bonds'));
+
+        // Return the view with the gathered data
+        return view('client.summary.clients_post', compact(
+            'returns',
+            'from_date',
+            'to_date',
+            'outer_client_k',
+            'gifts',
+            'quotations',
+            'saleBills',
+            'cashs',
+            'bankcashs',
+            'borrows',
+            'bonds'
+        ));
     }
+
 
     public function get_suppliers_summary()
     {
@@ -238,7 +241,7 @@ class SummaryController extends Controller
             'url' => $url,
             'subject' => 'مرفق مع هذه الرسالة رابط لكشف الحساب ',
         );
-        Mail::to($outer_client->client_email)->send(new sendingClientSummary($data));
+        Mail::to($outer_client_k->client_email)->send(new sendingClientSummary($data));
         return redirect()->to('/client/clients-summary-get')
             ->with('success', 'تم ارسال كشف الحساب الى بريد العميل بنجاح');
 

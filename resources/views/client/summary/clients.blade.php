@@ -34,7 +34,7 @@
                     </div>
                     <div class="clearfix no-print"></div>
                     <hr class="no-print">
-                    <form class="parsley-style-1 no-print" id="selectForm2" name="selectForm2"
+                    <form class=p"parsley-style-1 no-print" id="selectForm2" name="selectForm2"
                           action="{{route('clients.summary.post')}}" enctype="multipart/form-data"
                           method="get">
                         <div class="row mb-3">

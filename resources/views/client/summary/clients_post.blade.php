@@ -753,7 +753,8 @@ $currency = $extra_settings->currency;
                         <div class="col-lg-12 text-center mt-3 mb-3">
                             <span class="alert alert-info text-center ">
                                 مديونية العميل الحالية
-                                {{ floatval($outer_client_k->prev_balance) }} {{ $currency }}
+                                <!--{{ floatval($outer_client_k->prev_balance) }} {{ $currency }}-->
+                                     <?php echo floatval($final_balance) . ' ' . $currency; ?>
                             </span>
                         </div>
                     @endif
