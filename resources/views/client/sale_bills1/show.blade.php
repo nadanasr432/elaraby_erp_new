@@ -175,9 +175,10 @@
             حفظ و طباعة 2
         </a>
         <!------PRINT 2---->
-        <a href="{{ route('client.sale_bills.print', [$saleBill->token, 4, 2, 0]) }}"
-            class="btn save_btn2 btn-md btn-primary pull-right ml-1"
-            style="height: 40px;border:1px solid #5e8b0b;background: #5e8b0b !important;color:white !important;">
+        <a href="{{ route('client.sale_bills.print', [$saleBill->token, 4, 1, 0]) }}"
+            class="btn btn-md btn-primary pull-right ml-1"
+            style="height: 40px;border:1px solid #5e8b0b;background: #5e8b0b !important;color:white !important;"
+            printColor="2" isMoswada="0" invoiceType='4'>
             حفظ و طباعة 3
         </a>
         <!------PRINT 2---->
@@ -193,9 +194,15 @@
             حفظ و طباعة 5
 
         </a>
+        <a href="{{ route('client.sale_bills.print', [$saleBill->token, 6, 3, 0]) }}" role="button"
+            style="height: 40px;border:1px solid #0b228b;background: #0b228b !important;color:white !important;"
+            class="btn  btn-md btn-primary pull-right ml-1
+            " printColor="2" isMoswada="0" invoiceType='6'>
+            حفظ و طباعة 6
+        </a>
         <a href="{{ route('client.sale_bills.print', [$saleBill->token, 7, 3, 0]) }}" role="button"
             style="height: 40px;border:1px solid #9b4aad !important ;background: #9b4aad !important;color:white !important;"
-            class="btn save_btn2 btn-md btn-primary pull-right ml-1">
+            class="btn  btn-md btn-primary pull-right ml-1" printColor="2" isMoswada="0" invoiceType='7'>
             حفظ و طباعة 7
         </a>
 
