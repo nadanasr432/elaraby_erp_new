@@ -122,7 +122,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
 
     Route::get('/suppliers-summary-post', [\App\Http\Controllers\Client\SummaryController::class, 'post_suppliers_summary'])->name('suppliers.summary.post');
 
-    Route::get('/sale-bills/print/{hashtoken?}/{invoiceType?}/{printColor?}/{isMoswada?}', [\App\Http\Controllers\Client\SaleBillController1::class, 'print'])->name('client.sale_bills.print');
+    Route::get('/sale-bills/print/{hashtoken?}/{invoiceType?}/{printColor?}/{isMoswada?}', [\App\Http\Controllers\Client\SaleBillController1::class, 'print'])->name(name: 'client.sale_bills.print');
+    Route::get('/sale-bills/print2/{hashtoken?}/{invoiceType?}/{printColor?}/{isMoswada?}', [\App\Http\Controllers\Client\SaleBillController::class, 'print'])->name(name: 'client.sale_bills.print2');
     Route::get('/sent/sale-bills/print/{hashtoken?}/{invoiceType?}/{printColor?}/{isMoswada?}', [\App\Http\Controllers\Client\SaleBillController::class, 'sent'])->name('client.sale_bills.sent');
 
     Route::get('/buy-bills/print/{id?}', [\App\Http\Controllers\Client\BuyBillController::class, 'print'])->name('client.buy_bills.print');

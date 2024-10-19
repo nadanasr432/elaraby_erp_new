@@ -418,11 +418,10 @@
                                         $ProdTax = 0;
                                         if ($company->tax_value_added && $company->tax_value_added != 0) {
                                             $ProdTax = $sale_bill->value_added_tax
-                                                ? round(
-                                                    $element->quantity_price - ($element->quantity_price * 20) / 23,
-                                                    2,
-                                                )
-                                                : round(($element->quantity_price * 15) / 100, 2);
+                                                ? 
+                                                    $element->quantity_price - ($element->quantity_price * 20) / 23
+                                                
+                                                : ($element->quantity_price * 15) / 100;
                                         }
 
                                         // Calculate Product Total
@@ -430,10 +429,8 @@
                                         if ($company->tax_value_added && $company->tax_value_added != 0) {
                                             $ProdTotal = $sale_bill->value_added_tax
                                                 ? $element->quantity_price
-                                                : round(
-                                                    $element->quantity_price + ($element->quantity_price * 15) / 100,
-                                                    2,
-                                                );
+                                                : 
+                                                    $element->quantity_price + ($element->quantity_price * 15) / 100;
                                         }
                                         $productPrice =
                                             $element->tax_type == 0
@@ -502,11 +499,9 @@
                                         $ProdTax = 0;
                                         if ($company->tax_value_added && $company->tax_value_added != 0) {
                                             $ProdTax = $sale_bill->value_added_tax
-                                                ? round(
-                                                    $element->quantity_price - ($element->quantity_price * 20) / 23,
-                                                    2,
-                                                )
-                                                : round(($element->quantity_price * 15) / 100, 2);
+                                                ? 
+                                                    $element->quantity_price - ($element->quantity_price * 20) / 23
+                                                : ($element->quantity_price * 15) / 100;
                                         }
 
                                         // Calculate Product Total
@@ -514,10 +509,9 @@
                                         if ($company->tax_value_added && $company->tax_value_added != 0) {
                                             $ProdTotal = $sale_bill->value_added_tax
                                                 ? $element->quantity_price
-                                                : round(
-                                                    $element->quantity_price + ($element->quantity_price * 15) / 100,
-                                                    2,
-                                                );
+                                                :
+                                                    $element->quantity_price + ($element->quantity_price * 15) / 100
+                                                ;
                                         }
                                         $productPrice =
                                             $element->tax_type == 0
@@ -587,9 +581,17 @@
 
                                     <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.Discount')</td>
                                     <td dir="rtl">
-                                        {{ $discountNote ? $discountNote . ' || ' : '' }}
-                                        {{-- ({{ round(($discountValue / $realtotal) * 100, 1) }}%) --}}
-                                        {{ $discountValue }}
+                                        <!--{{ $discountNote ? $discountNote . ' || ' : '' }}-->
+                                        <!--{{-- ({{ round(($discountValue / $realtotal) * 100, 1) }}%) --}}-->
+                                        <!--{{ $discountValue }}-->
+                                        @if ($realtotal > 0)
+                                         @if($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
+                                            ({{ $discount2->value }})
+                                            {{ $currency }}
+                                        @elseif($discount2)
+                                            ({{ $discount2->value }}%)
+                                        @endif
+                                        @endif
 
                                     </td>
                                 </tr>
@@ -597,7 +599,17 @@
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                 <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
-                                <td dir="rtl">{{ $sumWithOutTax }} </td>
+                                <td dir="rtl">     {{-- @if ($discount->action_type == 'poundAfterTax')
+                                        @if ($realtotal > 0)
+                                            ({{ $realtotal }})
+
+                                        @endif
+                                    @else --}}
+                                    {{-- @if ($realtotal > 0) --}}
+                                    {{ $sale_bill->final_total - $sale_bill->total_tax }}
+                                    {{-- @endif --}}
+
+                                    {{-- @endif --}}</td>
 
                             </tr>
 
@@ -626,12 +638,22 @@
 
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: {{ $printColor }};color:white;">
-                                <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
-                                @if ($company->tax_value_added && $company->tax_value_added != 0)
-                                    <td dir="rtl">{{ $sumWithTax }}</td>
-                                @else
-                                    <td dir="rtl">{{ $sumWithOutTax }}</td>
-                                @endif
+                                <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.Total including tax')</td>
+                                {{-- @if ($company->tax_value_added && $company->tax_value_added != 0) --}}
+                                {{-- @if ($discount->action_type == 'poundAfterTax') --}}
+                                <td dir="rtl">
+                                    {{$sale_bill->final_total }}
+                                </td>
+                                {{-- @else
+                                        <td dir="rtl">
+                                            {{ $sumWithTax }}
+                                        </td>
+                                    @endif --}}
+                                {{-- @else
+                                    <td dir="rtl">
+                                        {{ $sale_bill->final_total - $sale_bill->total_tax }}
+                                    </td>
+                                @endif --}}
 
                             </tr>
                             <tr
@@ -718,9 +740,17 @@
                                 <tr
                                     style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                     <td dir="rtl">
-                                        {{ $discountNote ? $discountNote . ' || ' : '' }}
-                                        {{-- ({{ round(($discountValue / $realtotal) * 100, 1) }}%) --}}
-                                        {{ $discountValue }}
+                                        <!--{{ $discountNote ? $discountNote . ' || ' : '' }}-->
+                                        <!--{{-- ({{ round(($discountValue / $realtotal) * 100, 1) }}%) --}}-->
+                                        <!--{{ $discountValue }}-->
+                                        @if ($realtotal > 0)
+                                           @if($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
+                                            ({{ $discount2->value }})
+                                            {{ $currency }}
+                                        @elseif($discount2)
+                                            ({{ $discount2->value }}%)
+                                        @endif
+                                        @endif
 
                                     </td>
                                     <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Discount')</td>
@@ -728,7 +758,17 @@
                             @endif
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
-                                <td dir="rtl">{{ $sumWithOutTax }} </td>
+                                <td dir="rtl"> {{-- @if ($discount->action_type == 'poundAfterTax')
+                                        @if ($realtotal > 0)
+                                            ({{ $realtotal }})
+
+                                        @endif
+                                    @else --}}
+                                    {{-- @if ($realtotal > 0) --}}
+                                    {{ $sale_bill->final_total - $sale_bill->total_tax }}
+                                    {{-- @endif --}}
+
+                                    {{-- @endif --}} </td>
                                 <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
                             </tr>
 
@@ -755,11 +795,21 @@
 
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: {{ $printColor }};color:white;">
-                                @if ($company->tax_value_added && $company->tax_value_added != 0)
-                                    <td dir="rtl">{{ $sumWithTax }}</td>
-                                @else
-                                    <td dir="rtl">{{ $sumWithOutTax }}</td>
-                                @endif
+                                 {{-- @if ($company->tax_value_added && $company->tax_value_added != 0) --}}
+                                {{-- @if ($discount->action_type == 'poundAfterTax') --}}
+                                <td dir="rtl">
+                                    {{$sale_bill->final_total }}
+                                </td>
+                                {{-- @else
+                                        <td dir="rtl">
+                                            {{ $sumWithTax }}
+                                        </td>
+                                    @endif --}}
+                                {{-- @else
+                                    <td dir="rtl">
+                                        {{ $sale_bill->final_total - $sale_bill->total_tax }}
+                                    </td>
+                                @endif --}}
                                 <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total including tax')</td>
                             </tr>
                             <tr

@@ -329,8 +329,8 @@
                                     $ProdTax = 0;
                                     if ($company->tax_value_added && $company->tax_value_added != 0) {
                                         $ProdTax = $sale_bill->value_added_tax
-                                            ? round($element->quantity_price - ($element->quantity_price * 20) / 23, 2)
-                                            : round(($element->quantity_price * 15) / 100, 2);
+                                            ? $element->quantity_price - ($element->quantity_price * 20) / 23
+                                            : ($element->quantity_price * 15) / 100;
                                     }
 
                                     // Product Total Calculation
@@ -338,14 +338,12 @@
                                     if ($company->tax_value_added && $company->tax_value_added != 0) {
                                         $ProdTotal = $sale_bill->value_added_tax
                                             ? $element->quantity_price
-                                            : round(
-                                                $element->quantity_price + ($element->quantity_price * 15) / 100,
-                                                2,
-                                            );
+                                            : 
+                                                $element->quantity_price + ($element->quantity_price * 15) / 100;
                                     }
 
                                     $priceBeforeTax = $sale_bill->value_added_tax
-                                        ? round(($element->quantity_price * 20) / 23, 2)
+                                        ? ($element->quantity_price * 20) / 23
                                         : $element->quantity_price;
                                 @endphp
 
@@ -390,19 +388,27 @@
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                 <td dir="rtl">
-                                    {{ $discountNote ? $discountNote . ' || ' : '' }}
-                                    {{-- @if ($discount?->action_type == 'poundAfterTax') --}}
-                                    @if ($realtotal > 0)
-                                        ({{ round($discount) }})
-                                        {{ $currency }}
-                                    @endif
-                                    {{-- @else
-                                        @if ($realtotal > 0)
-                                            ({{ round(($discountValue / $realtotal) * 100, 1) }}%)
-                                            {{ $discountValue }}
+                                    <!--{{ $discountNote ? $discountNote . ' || ' : '' }}-->
+                                    <!--{{-- @if ($discount?->action_type == 'poundAfterTax') --}}-->
+                                    <!--@if ($realtotal > 0)-->
+                                    <!--    ({{ $discount }})-->
+                                    <!--    {{ $currency }}-->
+                                    <!--@endif-->
+                                    <!--{{-- @else-->
+                                    <!--    @if ($realtotal > 0)-->
+                                    <!--        ({{ ($discountValue / $realtotal) * 100 }}%)-->
+                                    <!--        {{ $discountValue }}-->
+                                    <!--    @endif-->
+                                    <!--    {{ $currency }}-->
+                                    <!--@endif --}}-->
+                                     @if ($realtotal > 0)
+                                            @if($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
+                                            ({{ $discount2->value }})
+                                            {{ $currency }}
+                                        @elseif($discount2)
+                                            ({{ $discount2->value }}%)
                                         @endif
-                                        {{ $currency }}
-                                    @endif --}}
+                                        @endif
                                 </td>
                                 <td style="text-align: right;padding-right: 14px;">(Discount) الخصم</td>
                             </tr>
@@ -411,18 +417,18 @@
                         <tr
                             style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                             <td dir="rtl">
-                                {{-- @if ($discount?->action_type == 'poundAfterTax') --}}
-                                @if ($realtotal > 0)
-                                    ({{ round($realtotal) }})
+                                  {{-- @if ($discount->action_type == 'poundAfterTax') --}}
+                                    {{-- @if ($realtotal > 0) --}}
+                                    ({{ number_format($sale_bill->final_total - $sale_bill->total_tax, 2, '.', '') }})
 
                                     {{ $currency }}
-                                @endif
-                                {{-- @else
-                                    @if ($realtotal > 0)
-                                        {{ $sumWithOutTax }} {{ $currency }}
-                                    @endif
+                                    {{-- @endif --}}
+                                    {{-- @else
+                                        @if ($realtotal > 0)
+                                            {{ $sale_bill->final_total - $sale_bill->total_tax }} {{ $currency }}
+                                        @endif
 
-                                @endif --}}
+                                    @endif --}}
                             </td>
                             <td style="text-align: right;padding-right: 14px;"style="background:#222751">
                                 (Total, excluding tax) الاجمالي باستثناء ضريبة القيمة المضافة</td>

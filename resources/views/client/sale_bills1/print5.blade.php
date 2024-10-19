@@ -584,21 +584,30 @@
 
                                     <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.Discount')</td>
                                     <td dir="rtl">
-                                        {{-- @dd( $discountValue) --}}
-                                        {{ $discountNote ? $discountNote . ' || ' : '' }}
-                                        {{-- @if ($discount->action_type == 'poundAfterTax') --}}
-                                        @if ($realtotal > 0)
-                                            ({{ round($discount) }})
+                                        <!--{{-- @dd( $discountValue) --}}-->
+                                        <!--{{ $discountNote ? $discountNote . ' || ' : '' }}-->
+                                        <!--{{-- @if ($discount->action_type == 'poundAfterTax') --}}-->
+                                        <!--@if ($realtotal > 0)-->
+                                        <!--    ({{ round($discount) }})-->
 
+                                        <!--    {{ $currency }}-->
+                                        <!--@endif-->
+                                        <!--{{-- @else --}}-->
+                                        <!--{{-- @if ($realtotal > 0)-->
+                                        <!--        ({{ round(($discountValue / $realtotal) * 100, 1) }}%)-->
+                                        <!--        {{ $discountValue }}-->
+                                        <!--    @endif-->
+                                        <!--    {{ $currency }} --}}-->
+                                        <!--{{-- @endif --}}-->
+                                         @if ($realtotal > 0)
+                                            @if($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
+                                            ({{ $discount2->value }})
                                             {{ $currency }}
+                                        @elseif($discount2)
+                                            ({{ $discount2->value }}%)
                                         @endif
-                                        {{-- @else --}}
-                                        {{-- @if ($realtotal > 0)
-                                                ({{ round(($discountValue / $realtotal) * 100, 1) }}%)
-                                                {{ $discountValue }}
-                                            @endif
-                                            {{ $currency }} --}}
-                                        {{-- @endif --}}
+                                        @endif
+
 
                                     </td>
                                 </tr>
@@ -607,14 +616,18 @@
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                 <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
                                 <td dir="rtl">
-                                    {{-- @if ($discount->action_type == 'poundAfterTax') --}}
-                                    {{--        {{ $sale_bill->final_total - $sale_bill->total_tax}} --}}
-                                    {{-- @else --}}
-                                    @if ($realtotal > 0)
-                                        {{ round($sumWithOutTax, 2) }} {{ $currency }}
-                                    @endif
+                                      {{-- @if ($discount->action_type == 'poundAfterTax') --}}
+                                    {{-- @if ($realtotal > 0) --}}
+                                    ({{ number_format($sale_bill->final_total - $sale_bill->total_tax, 2, '.', '') }})
 
+                                    {{ $currency }}
                                     {{-- @endif --}}
+                                    {{-- @else
+                                        @if ($realtotal > 0)
+                                            {{ $sale_bill->final_total - $sale_bill->total_tax }} {{ $currency }}
+                                        @endif
+
+                                    @endif --}}
                                 </td>
                             </tr>
 
@@ -730,19 +743,28 @@
                                 <tr
                                     style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                     <td dir="rtl">
-                                        {{ $discountNote ? $discountNote . ' || ' : '' }}
-                                        {{-- @if ($discount->action_type == 'poundAfterTax') --}}
-                                        @if ($realtotal > 0)
-                                            ({{ round($discount) }})
+                                        <!--{{ $discountNote ? $discountNote . ' || ' : '' }}-->
+                                        <!--{{-- @if ($discount->action_type == 'poundAfterTax') --}}-->
+                                        <!--@if ($realtotal > 0)-->
+                                        <!--    ({{ round($discount) }})-->
+                                        <!--    {{ $currency }}-->
+                                        <!--@endif-->
+                                        <!--{{-- @else-->
+                                        <!--    @if ($realtotal > 0)-->
+                                        <!--        ({{ round(($discountValue / $realtotal) * 100, 1) }}%)-->
+                                        <!--        {{ $discountValue }}-->
+                                        <!--    @endif-->
+                                        <!--    {{ $currency }}-->
+                                        <!--@endif --}}-->
+                                         @if ($realtotal > 0)
+                                            @if($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
+                                            ({{ $discount2->value }})
                                             {{ $currency }}
+                                        @elseif($discount2)
+                                            ({{ $discount2->value }}%)
                                         @endif
-                                        {{-- @else
-                                            @if ($realtotal > 0)
-                                                ({{ round(($discountValue / $realtotal) * 100, 1) }}%)
-                                                {{ $discountValue }}
-                                            @endif
-                                            {{ $currency }}
-                                        @endif --}}
+                                        @endif
+
                                     </td>
                                     <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Discount')</td>
                                 </tr>
@@ -751,11 +773,15 @@
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                 <td dir="rtl">
-                                    {{-- @if ($discount->action_type == 'poundAfterTax') --}}
-                                    {{ round($sale_bill->final_total - $sale_bill->total_tax,2) }}
+                                      {{-- @if ($discount->action_type == 'poundAfterTax') --}}
+                                    {{-- @if ($realtotal > 0) --}}
+                                    ({{ number_format($sale_bill->final_total - $sale_bill->total_tax, 2, '.', '') }})
+
+                                    {{ $currency }}
+                                    {{-- @endif --}}
                                     {{-- @else
                                         @if ($realtotal > 0)
-                                            {{ round($sumWithOutTax,2) }} {{ $currency }}
+                                            {{ $sale_bill->final_total - $sale_bill->total_tax }} {{ $currency }}
                                         @endif
 
                                     @endif --}}

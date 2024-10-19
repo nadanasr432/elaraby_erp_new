@@ -516,7 +516,7 @@
                                     <tr
                                         style="font-size: 15px !important; height: 44px !important; text-align: center; background: #f2f2f2">
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">{{ $quantityPrice }}
-                                        </td>$quantityPrice
+                                        </td>
                                         <!--<td style="border: 1px solid rgba(161,161,161,0.63);">{{ $ProdTax }}</td>-->
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
                                             {{ $quantityPrice . ' ' . $currency }}</td>
@@ -558,8 +558,16 @@
                                     style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;background: #f2f2f2">
                                     <td style="text-align: left;padding-left: 14px;">@lang('sales_bills.Discount')</td>
                                     <td dir="rtl">
-                                        {{ $discountNote . ' ' ?? '' }}
-                                        {{ $discountValue }} {{ $currency }}
+                                        <!--{{ $discountNote . ' ' ?? '' }}-->
+                                        <!--{{ $discountValue }} {{ $currency }}-->
+                                         @if ($realtotal > 0)
+                                            @if($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
+                                            ({{ $discount2->value }})
+                                            {{ $currency }}
+                                        @elseif($discount2)
+                                            ({{ $discount2->value }}%)
+                                        @endif
+                                        @endif
                                     </td>
 
                                 </tr>
@@ -627,8 +635,17 @@
                                     <tr
                                         style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;background: #f2f2f2">
                                         <td dir="rtl">
-                                            {{ $discountNote . '  ' ?? '' }}
-                                            {{ $discountValue }} {{ $currency }}
+                                            <!--{{ $discountNote . '  ' ?? '' }}-->
+                                            <!--{{ $discountValue }} {{ $currency }}-->
+                                             @if ($realtotal > 0)
+                                           @if($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound')
+                                            ({{ $discount2->value }})
+
+                                            {{ $currency }}
+                                            @else
+                                            ({{ $discount2->value }}%)
+                                            @endif
+                                        @endif
                                         </td>
                                         <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Discount')</td>
                                     </tr>

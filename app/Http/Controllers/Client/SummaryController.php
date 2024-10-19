@@ -135,7 +135,6 @@ class SummaryController extends Controller
         ));
     }
 
-
     public function get_suppliers_summary()
     {
         $company_id = Auth::user()->company_id;
@@ -241,7 +240,7 @@ class SummaryController extends Controller
             'url' => $url,
             'subject' => 'مرفق مع هذه الرسالة رابط لكشف الحساب ',
         );
-        Mail::to($outer_client_k->client_email)->send(new sendingClientSummary($data));
+        Mail::to($outer_client->client_email)->send(new sendingClientSummary($data));
         return redirect()->to('/client/clients-summary-get')
             ->with('success', 'تم ارسال كشف الحساب الى بريد العميل بنجاح');
 

@@ -442,11 +442,9 @@
                                         $ProdTax = 0;
                                         if ($company->tax_value_added && $company->tax_value_added != 0) {
                                             $ProdTax = $sale_bill->value_added_tax
-                                                ? round(
-                                                    $element->quantity_price - ($element->quantity_price * 20) / 23,
-                                                    2,
-                                                )
-                                                : round(($element->quantity_price * 15) / 100, 2);
+                                                ? 
+                                                    $element->quantity_price - ($element->quantity_price * 20) / 23
+                                                : ($element->quantity_price * 15) / 100;
                                         }
 
                                         // Calculate Product Total
@@ -454,32 +452,30 @@
                                         if ($company->tax_value_added && $company->tax_value_added != 0) {
                                             $ProdTotal = $sale_bill->value_added_tax
                                                 ? $element->quantity_price
-                                                : round(
-                                                    $element->quantity_price + ($element->quantity_price * 15) / 100,
-                                                    2,
-                                                );
+                                                :
+                                                    $element->quantity_price + ($element->quantity_price * 15) / 100;
                                         }
 
                                         // Calculate Quantity Price Without Tax
                                         $priceWithoutTax = $sale_bill->value_added_tax
-                                            ? round(($element->quantity_price * 20) / 23, 2)
+                                            ? ($element->quantity_price * 20) / 23
                                             : $element->quantity_price;
                                     @endphp
 
                                     <tr class="text-muted"
                                         style="font-size:18px !important; height: 34px !important; text-align: center;">
                                         <td>
-                                            {{ $element->tax_type == 0 ? round($element->quantity_price + $element->tax_value - $element->discount_value, 2) : round($element->quantity_price - $element->discount_value, 2) }}
+                                            {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $element->discount_value : $element->quantity_price - $element->discount_value }}
                                         </td>
-                                        <td>{{ round($element->tax_value, 2) }}</td>
-                                        <td>{{ round($element->discount_value, 2) }}</td>
+                                        <td>{{ $element->tax_value }}</td>
+                                        <td>{{$element->discount_value }}</td>
                                         <td>{{ $company->tax_value_added ?? '0' }}%</td>
-                                        <td>{{ round($priceWithoutTax, 2) }}</td>
+                                        <td>{{ $priceWithoutTax }}</td>
                                         <td class="text-center">
                                             <span>{{ $element->unit->unit_name }}</span>
                                             <span>{{ $element->quantity }}</span>
                                         </td>
-                                        <td>{{ round($element->product_price, 2) }}</td>
+                                        <td>{{$element->product_price }}</td>
                                         <td>{{ $element->product->product_name }}</td>
                                     </tr>
                                 @endforeach
@@ -497,7 +493,7 @@
                     <div class="col-md-2 text-center text-muted" style="font-size: 24px; font-weight: 700;">
                         {{-- @if ($discount->action_type == 'poundAfterTax') --}}
                         {{-- @if ($realtotal > 0) --}}
-                        ({{ round($sale_bill->final_total - $sale_bill->total_tax, 2) }})
+                        ({{ $sale_bill->final_total - $sale_bill->total_tax }})
                         {{-- @endif --}}
                         {{-- @else
                             @if ($realtotal > 0)
@@ -525,7 +521,7 @@
                     <div class="col-md-2 text-center text-muted" style="font-size: 24px; font-weight: 700;">
                         @if ($company->tax_value_added && $company->tax_value_added != 0)
                             {{-- @if ($discount->action_type == 'poundAfterTax') --}}
-                            {{ round($sale_bill->final_total) }}
+                            {{ $sale_bill->final_total }}
                             {{-- @else
                                 {{ $sumWithTax }}
                             @endif --}}

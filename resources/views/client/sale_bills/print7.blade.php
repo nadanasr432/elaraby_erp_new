@@ -315,42 +315,66 @@
                     // Additional tags can be added here if needed
                 ])->render();
             @endphp
+            <!--@if (app()->getLocale() == 'en')-->
+            <!--    <div class="header-container d-flex align-items-center">-->
+            <!--        <div class="logo">-->
+            <!--            <img class="logo" style="object-fit: scale-down;" width="204"-->
+            <!--                src="{{ asset($company->company_logo) }}">-->
+            <!--        </div>-->
+            <!--        <div class="txtheader mx-auto text-center">-->
+            <!--            @if (!$isMoswada)-->
+            <!--                @lang('sales_bills.Tax invoice')-->
+            <!--            @else-->
+            <!--                @lang('sales_bills.Draft invoice')-->
+            <!--            @endif-->
+            <!--        </div>-->
 
-            <div class="header-container d-flex align-items-center">
 
-                <div class=" col-md-7 qrcode">
+            <!--        <div class="qrcode ">-->
 
-                    @if (!$isMoswada)
-                        <img width="200" src="{{ $displayQRCodeAsBase64 }}" />
-                    @endif
-                </div>
-                <div class="col-md-5  mx-auto text-center">
-                    @if (!$isMoswada)
-                        <span class="txtheader text-muted"> @lang('sales_bills.Tax invoice')</span>
-                    @else
-                        <span class="txtheader text-muted">@lang('sales_bills.Draft invoice')</span>
-                    @endif
-                    <div class="d-flex justify-content-center mt-5 text-muted" style="font-size: 20px;font-weight:700">
-                        <div class="text-center pl-4 pr-4">
+            <!--            @if (!$isMoswada)-->
+            <!--                <img width="200" src="{{ $displayQRCodeAsBase64 }}" />-->
+            <!--            @endif-->
+
+            <!--        </div>-->
+
+            <!--    </div>-->
+            <!--@else-->
+                <div class="header-container d-flex align-items-center">
+
+                    <div class=" col-md-7 qrcode">
+
+                        @if (!$isMoswada)
+                            <img width="200" src="{{ $displayQRCodeAsBase64 }}" />
+                        @endif
+                    </div>
+                    <div class="col-md-5  mx-auto text-center">
+                        @if (!$isMoswada)
+                            <span class="txtheader text-muted"> @lang('sales_bills.Tax invoice')</span>
+                        @else
+                            <span class="txtheader text-muted">@lang('sales_bills.Draft invoice')</span>
+                        @endif
+                        <div class="d-flex justify-content-center mt-5 text-muted" style="font-size: 20px;font-weight:700">
+                            <div class="text-center pl-4 pr-4">
                             @lang('sales_bills.Release Date')التاريخ
-                            <br>
-                            {{ $sale_bill->created_at }}
-                        </div>
-                        <div class="text-center pl-4 pr-4">
+                                <br>
+                                {{ $sale_bill->created_at }}
+                            </div>
+                            <div class="text-center pl-4 pr-4">
                             @lang('sales_bills.invoice number')الرقم التسلسلي
-                            <br>
-                            SME00{{ $position }}
+                                <br>
+                                SME00{{ $position }}
+                            </div>
                         </div>
                     </div>
+                    {{-- 
+                    <div class="logo">
+                        <img class="logo" style="object-fit: scale-down;" width="204"
+                            src="{{ asset($company->company_logo) }}">
+                    </div> --}}
+
                 </div>
-
-                <!--<div class="logo">-->
-                <!--    <img class="logo" style="object-fit: scale-down;" width="204"-->
-                <!--        src="{{ asset($company->company_logo) }}">-->
-                <!--</div> -->
-
-            </div>
-
+            <!--@endif-->
             <hr class="mt-5 pl-4 pr-4" style="border: 1px solid #c9c3c3;">
             <div class="row  pl-4 pr-4">
                 <div class="col-md-12 text-right text-muted" style="font-size:28px; font-weight:600">
@@ -455,7 +479,7 @@
                                 <td><?php echo $ProdTotal; ?></td>
                                 <td><?php echo $ProdTax; ?></td>
                                 <td><?php echo $company->tax_value_added ?? '0'; ?>%</td>
-                                <td><?php echo $priceWithoutTax; ?></td>
+                                <td><?php echo  $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price ; ?></td>
                                 <td class="text-center">
                                     <span><?php echo $element->unit->unit_name; ?></span>
                                     <span><?php echo $element->quantity; ?></span>
@@ -547,4 +571,3 @@
 </script>
 
 </html>
-

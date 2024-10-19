@@ -1481,15 +1481,21 @@ class SaleBillController extends Controller
             }
             echo "</tbody>";
             echo "</table>";
-            $total = array_sum($sum);
+            $total = $elements->sum('quantity_price');
             $percentage = ($tax_value_added / 100) * $total;
             $after_total = $total + $percentage;
             $tax_option = $sale_bill->value_added_tax;
-            if ($tax_option == 1) {
+            // dd($tax_option);
+            $totalTax = $sale_bill->total_tax; 
+            // dd($totalTax);
+
+            if ($tax_option == 2) {
                 $after_total = $total;
+                $totalwithtax=  $total- $totalTax ;
             } else { // exclusive
                 $percentage = ($tax_value_added / 100) * $total;
                 $after_total = $total + $percentage;
+                $totalwithtax=$total;
             }
 
             echo "
@@ -1497,11 +1503,11 @@ class SaleBillController extends Controller
             <div class='alert alert-dark alert-sm text-center'>
                 <div class='pull-right col-lg-6 '>
                      الاجمالى قبل الخصم والضريبة
-                    " . round($total, 2) . " " . $currency . "
+                    " . $totalwithtax . " " . $currency . "
                 </div>
                 <div class='pull-left col-lg-6 '>
                     اجمالى الفاتورة بعد الخصم والضريبة
-                    " . round($after_total, 2) . " " . $currency . "
+                    " .  $after_total   . " " . $currency . "
                 </div>
                 <div class='clearfix'></div>
             </div>";
@@ -1632,31 +1638,40 @@ class SaleBillController extends Controller
                 }
             }
 
-            # check if discount is on pounds or % percent.
-            if ($discount_type == "pound") {
-                if (isset($previous_extra_value) && $previous_extra_value != 0) {
-                    $after_discount = $total - $discount_value + $previous_extra_value;
-                } else {
-                    $after_discount = $total - $discount_value;
-                }
-            } else if ($discount_type == "percent") {
-                $value = $discount_value / 100 * $total;
-                if (isset($previous_extra_value) && $previous_extra_value != 0) {
-                    $after_discount = $total - $value + $previous_extra_value;
-                } else {
-                    $after_discount = $total - $value;
-                }
-            } else if ($discount_type == "afterTax") {
-                $value = $discount_value / 100 * $total; // 10 / 100*100
-                if (isset($previous_extra_value) && $previous_extra_value != 0) {
-                    $after_discount = $total - $value + $tax_value_added;
-                } else {
-                    $after_discount = $total - $value;
-                }
-            }
-            $totalTax = $sale_bill->value_added_tax ? round(($after_discount * $tax_value_added) / (100 + $tax_value_added), 2) : round(($after_discount * $tax_value_added / 100), 2);
+           // Initialize $after_discount to a default value (e.g., total without any discounts)
+$after_discount = $total;
 
-            // dd($totalTax);
+// Check if discount is on pounds or percentage
+if ($discount_type == "pound") {
+    if (isset($previous_extra_value) && $previous_extra_value != 0) {
+        $after_discount = $total - $discount_value + $previous_extra_value;
+    } else {
+        $after_discount = $total - $discount_value;
+    }
+} else if ($discount_type == "percent") {
+    $value = $discount_value / 100 * $total;
+    if (isset($previous_extra_value) && $previous_extra_value != 0) {
+        $after_discount = $total - $value + $previous_extra_value;
+    } else {
+        $after_discount = $total - $value;
+    }
+} else if ($discount_type == "afterTax") {
+    $value = $discount_value / 100 * $total; // e.g. 10% discount
+    if (isset($previous_extra_value) && $previous_extra_value != 0) {
+        $after_discount = $total - $value + $tax_value_added;
+    } else {
+        $after_discount = $total - $value;
+    }
+}
+
+// Calculate the total tax based on after_discount value
+$totalTax = $sale_bill->value_added_tax
+    ? round(($after_discount * $tax_value_added) / (100 + $tax_value_added), 2) // If VAT is included
+    : round(($after_discount * $tax_value_added / 100), 2); // Standard VAT calculation
+
+// Use $after_discount and $totalTax in further calculations
+// dd($totalTax); // For debugging purposes
+
             $sale_bill->update(['total_tax' => $totalTax, 'total_discount' => $discount_value,]);
 
 
