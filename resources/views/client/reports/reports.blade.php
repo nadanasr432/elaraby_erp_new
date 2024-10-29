@@ -31,10 +31,12 @@
 
     .box .box-header {
         width: 100%;
-        height: 30px;text-shadow: 0px 0px 1px orangered!important;
-        padding: 0; color: orangered!important;
+        height: 30px;
+        text-shadow: 0px 0px 1px orangered !important;
+        padding: 0;
+        color: orangered !important;
         text-align: center;
-        font-size: 18px!important;
+        font-size: 18px !important;
         border-bottom: 1px solid #aaa;
     }
 
@@ -75,14 +77,12 @@
                             </div>
                             <div class="box-body">
                                 <li class="custom">
-                                    <a href="{{ url('/client/report2/get') }}"><i
-                                            class="fa fa-plus text-success tx-20"></i>
+                                    <a href="{{ url('/client/report2/get') }}"><i class="fa fa-plus text-success tx-20"></i>
                                         مبيعات حسب المنتج
                                     </a>
                                 </li>
                                 <li class="custom">
-                                    <a href="{{ url('/client/report4/get') }}"><i
-                                            class="fa fa-plus text-success tx-20"></i>
+                                    <a href="{{ url('/client/report4/get') }}"><i class="fa fa-plus text-success tx-20"></i>
                                         مشتريات حسب المنتج
                                     </a>
                                 </li>
@@ -115,6 +115,12 @@
                                     <a href="{{ url('/client/clients-summary-get') }}"><i
                                             class="fa fa-plus text-success tx-20"></i>
                                         كشف حساب عميل
+                                    </a>
+                                </li>
+                                <li class="custom">
+                                    <a href="{{ url('/client/clients-summary-get-new') }}"><i
+                                            class="fa fa-plus text-success tx-20"></i>
+                                      كشف حساب عميل  (معدل) 
                                     </a>
                                 </li>
                                 <li class="custom">
@@ -279,7 +285,5 @@
         </div>
     </div>
 @endsection
-<script src="{{asset('app-assets/js/jquery.min.js')}}"></script>
-<script>
-
-</script>
+<script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
+<script></script>

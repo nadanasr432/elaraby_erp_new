@@ -9,7 +9,7 @@ return [
     "about-us" => "About Us",
     "contact-us" => "Contact Us",
     "features" => "About us",
-    "deactivated"=> "Inactive",
+    "deactivated" => "Inactive",
     "einvoice" => "E-invoice",
     "add_product" => "Add Product",
     'activate_confirmation' => 'Are you sure you want to activate this sale bill?',
@@ -84,7 +84,7 @@ return [
     "click-to-import" => "Click to Import",
     "transfer" => "Transfer",
     "amount" => "Amount",
-    'delete'=> 'delete',
+    'delete' => 'delete',
     "notes" => "Notes",
     "client" => "Client",
     "date" => "Date",
@@ -339,5 +339,7 @@ return [
     "elaraby" => "Elaraby Erp",
     "manst-elaraby" => "Elaraby Platform",
     "use the new sale bill" => "New Sales",
+    'name_ar' =>  'Name Arabic',
+    'name_en' => 'Name English'
 
 ];

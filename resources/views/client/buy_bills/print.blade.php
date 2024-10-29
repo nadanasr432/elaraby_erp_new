@@ -203,7 +203,7 @@ $tax_value_added = $company->tax_value_added;
             echo "الاجمالى قبل الخصم والضريبة : " . $totalBeforeTax . "  " . $currency . "
                     </td>";
             echo "<td>";
-
+ 
             foreach ($extras as $key) {
                 if ($key->action == "discount") {
                     if ($key->action_type == "pound") {
@@ -234,6 +234,8 @@ $tax_value_added = $company->tax_value_added;
             if (!empty($previous_extra)) {
                 $previous_extra_type = $previous_extra->action_type;
                 $previous_extra_value = $previous_extra->value;
+                            dd( $previous_extra );
+
                 if ($previous_extra_type == "percent") {
                     $previous_extra_value = $previous_extra_value / 100 * $total;
                 }

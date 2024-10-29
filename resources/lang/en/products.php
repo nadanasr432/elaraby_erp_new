@@ -29,7 +29,7 @@ return [
     'choose_subcat' => 'Choose Subcategory',
     'pmodel' => ' Product Model',
     'pmodel1' => ' Product Model',
-    'pname' => 'Product Name',
+    'pname' => 'Product Name (Arabic)',
     'punit' => 'Product Unit',
     'choseunit' => 'Choose Unit',
     'barcodenum' => 'Barcode Num',
@@ -59,5 +59,6 @@ return [
     'mana' => 'Man',
     'mana' => 'Man',
     'mana' => 'Man',
-    'addnewproductseveces' => 'Add new product service'
+    'addnewproductseveces' => 'Add new product service',
+    'pname_en'=>"Product name (English)"
 ];

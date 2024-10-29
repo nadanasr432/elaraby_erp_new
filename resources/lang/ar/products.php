@@ -29,7 +29,7 @@ return [
     'choose_subcat' => 'اختر الفئة الفرعية',
     'pmodel' => ' موديل المنتج',
     'pmodel1' => 'رقم الموديل',
-    'pname' => 'اسم المنتج',
+    'pname' => 'اسم المنتج بالعربي',
     'punit' => 'وحدة المنتج',
     'choseunit' => 'اختر وحدة',
     'barcodenum' => 'رقم الباركود',
@@ -50,5 +50,6 @@ return [
     'man' => '',
     'man' => '',
     'man' => '',
-    'addnewproductseveces'=>'اضافة منتج خدمي جديد'
+    'addnewproductseveces'=>'اضافة منتج خدمي جديد',
+    'pname_en'=>'اسم المنتج بالانجليزية'
 ];

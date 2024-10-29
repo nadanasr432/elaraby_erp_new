@@ -119,6 +119,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
     Route::post('/company-safe-store', [\App\Http\Controllers\Site\CompanyController::class, 'safe_store'])->name('company.safe.store');
 
     Route::get('/clients-summary-post', [\App\Http\Controllers\Client\SummaryController::class, 'post_clients_summary'])->name('clients.summary.post');
+    Route::get('/clients-summary-post-new', [\App\Http\Controllers\Client\SummaryController::class, 'post_clients_summary_new'])->name('clients.summary.post.new');
 
     Route::get('/suppliers-summary-post', [\App\Http\Controllers\Client\SummaryController::class, 'post_suppliers_summary'])->name('suppliers.summary.post');
 
@@ -805,6 +806,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
 
             // summary routes
             Route::get('/clients-summary-get', [SummaryController::class, 'get_clients_summary']);
+            Route::get('/clients-summary-get-new', [SummaryController::class, 'get_clients_summary_new']);
             Route::get('/suppliers-summary-get', [SummaryController::class, 'get_suppliers_summary']);
 
             Route::get('/employees-summary-get', [SummaryController::class, 'get_employees_summary']);

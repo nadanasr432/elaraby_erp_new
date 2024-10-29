@@ -16,6 +16,7 @@ class Product extends Model
         'store_id',
         'category_id',
         'product_name',
+        'product_name_en',
         'wholesale_price',
         'sector_price',
         'first_balance',

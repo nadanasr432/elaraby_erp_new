@@ -45,9 +45,20 @@
                 @method('PATCH')
                 <input type="hidden" name="company_id" value="{{ $company->id }}" />
                 <div class="col-lg-4 col-xs-12 pull-right">
-                    <input type="text" class="form-control" name="company_name" id="brand_name"
-                        @if ($company->company_name) value="{{ $company->company_name }}"
-                                 disabled @endif />
+                    <div class="form-group">
+
+                        <label class="company_name"> @lang('main.name_ar')</label>
+                        <input type="text" class="form-control" name="company_name" id="brand_name"
+                            @if ($company->company_name) value="{{ $company->company_name }}" @endif />
+                    </div>
+                </div>
+                <div class="col-lg-4 col-xs-12 pull-right">
+                    <div class="form-group">
+
+                        <label for="company_name_en"> @lang('main.name_en')</label>
+                        <input type="text" class="form-control" name="company_name_en" id="brand_name"
+                            @if ($company->company_name_en) value="{{ $company->company_name_en }}" @endif />
+                    </div>
                 </div>
                 <div class="col-lg-4 col-xs-12 pull-right">
                     <div class="form-group">

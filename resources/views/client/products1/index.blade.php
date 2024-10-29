@@ -124,7 +124,8 @@
                         <thead>
                             <tr style="background: #222751;">
                                 <th>#</th>
-                                <th style="width:120px !important;">{{ __('products.name') }}</th>
+                                <th style="width:120px !important;">{{ __('products.pname') }}</th>
+                                <th style="width:120px !important;">{{ __('products.pname_en') }}</th>
                                 <th style="width:120px !important;">{{ __('products.store') }}</th>
                                 <th>{{ __('products.category') }}</th>
                                 <th>{{ __('products.whole') }}</th>
@@ -143,6 +144,7 @@
                                 <tr>
                                     <td>{{ ++$i }}</td>
                                     <td style="width: 120px !important;">{{ $product->product_name ?? ' ' }}</td>
+                                    <td style="width: 120px !important;">{{ $product->product_name_en ?? ' ' }}</td>
                                     <td style="width:120px !important;">
                                         @if (!empty($product->store_id))
                                             {{ $product->store->store_name ?? ' ' }}
