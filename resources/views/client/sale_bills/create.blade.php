@@ -1169,7 +1169,7 @@
             let sale_bill_number = $('#sale_bill_number').val();
             let product_id = $('#product_id').val();
             let product_price = $('#product_price').val();
-            let quantity = $('#quantity').val();
+            let quantity = parseFloat($('#quantity').val());
             let date = $('#date').val();
             let time = $('#time').val();
             let notes = $('#notes').val();
@@ -1182,11 +1182,17 @@
             let extra_value = $('#extra_value').val();
             let value_added_tax = $('#value_added_tax').val();
             let store_id = $('#store_id').val();
-
+        
             if (product_id == "" || product_id <= "0") {
                 alert("لابد ان تختار المنتج أولا");
+                return false;
             } else if (unit_id == "" || unit_id == "0") {
                 alert("اختر الوحدة");
+                return false;
+            } else if (quantity > first_balance) {
+                alert("الكمية المدخلة أكبر من الكمية المتاحة.");
+            return false;
+                
             } else {
 
                 $.post("{{ url('/client/sale-bills/post') }}", {

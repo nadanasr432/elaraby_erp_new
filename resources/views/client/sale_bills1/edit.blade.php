@@ -593,7 +593,7 @@
                         type="number" 
                         name="products[{{ $index }}][discount]" 
                         class="form-control discount" 
-                        value="{{ $element->discount_value == 0 ? 0 : ($element->discount_type == 'percent' ? $element->discount_value : $element->quantity_price - $element->discount_value) }}" 
+                        value="{{ $element->discount_value == 0 ? 0 : ($element->discount_type == 'percent' ? $element->discount_value : $element->discount_value) }}" 
                         min="0" 
                         step="any">
 
