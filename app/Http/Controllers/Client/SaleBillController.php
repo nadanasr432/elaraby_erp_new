@@ -65,11 +65,12 @@ class SaleBillController extends Controller
             }
         }
     }
+    // $this->reAssignPayments();
 
     # index page #
     public function index()
     {
-        $this->reAssignPayments();
+       
         $company_id = Auth::user()->company_id;
         $company = Company::findOrFail($company_id);
 
@@ -2192,7 +2193,7 @@ $totalTax = $sale_bill->value_added_tax
             $invoices = SaleBillReturn::where("bill_id", $invID->bill_id)->get();
             foreach ($invoices as $bill_return) {
                 $saleBill = SaleBill::find($bill_return->bill_id);
-                $bill_return->setAttribute('value_added_tax', $saleBill->value_added_tax);
+                $bill_return->setAttribute('value_added_tax', $saleBill->value_added_tax?? 0);
             }
             array_push($returnSaleInvoices, $invoices);
         }

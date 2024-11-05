@@ -48,7 +48,7 @@ public function createservice()
         $company_id = Auth::user()->company_id;
         $company = Company::FindOrFail($company_id);
         $stores = Store::where('company_id', $company_id)->get();
-        $categories = Category::where('company_id', $company_id)->get();
+        $categories = Category::where(['company_id'=> $company_id,'category_name'=> 'خدمية'])->get();
         $sub_categories = SubCategory::where('company_id', $company_id)->get();
         $units = $company->units;
         $check = Product::where('company_id', $company_id)->get();
@@ -159,10 +159,10 @@ public function createservice()
         return redirect()->route('client.products.index')
             ->with('success', 'تم اضافة المنتج بنجاح');
     }
-    public function storeProduct(ProductRequest $request)
+    public function storeProduct(Request $request)
     {
-        // dd($request);
         $data = $request->all();
+        // dd($data);
 
         if (empty($data['first_balance'])) $data['first_balance'] = 0;
         if (empty($data['qr'])) $company_id = $data['company_id'];

@@ -966,7 +966,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>{{ __('main.client') }}</th>
-                                        {{-- <th>{{ __('main.status') }}</th> --}}
+                                        <!--<th>{{ __('main.status') }}</th>-->
                                         <th>{{ __('main.date') }}</th>
                                         <th>{{ __('main.total') }}</th>
                                     </tr>
@@ -985,17 +985,17 @@
                                                     style="color: #637381 !important; font-size: 18px; font-family: Cairo; font-weight: 600;">
                                                     {{ $invoice->outerClient ? $invoice->outerClient->client_name : 'بيع نقدي' }}
                                                 </td>
-                                                {{-- <td class="text-truncate">
-                                                    <span
-                                                        class="badge p-1 font-weight-bold @if ($invoice->rest == 0) badge-success scsss @else badge-danger errr @endif"
-                                                        style="font-size: 10px !important; border-radius: 30px;">
-                                                        @if ($invoice->rest == 0)
-                                                            {{ __('main.t-paid') }}
-                                                        @else
-                                                            {{ __('main.notpaid') }}
-                                                        @endif
-                                                    </span>
-                                                </td> --}}
+                                                <!--<td class="text-truncate">-->
+                                                <!--    <span-->
+                                                <!--        class="badge p-1 font-weight-bold @if ($invoice->rest == 0) badge-success scsss @else badge-danger errr @endif"-->
+                                                <!--        style="font-size: 10px !important; border-radius: 30px;">-->
+                                                <!--        @if ($invoice->rest == 0)-->
+                                                <!--            {{ __('main.t-paid') }}-->
+                                                <!--        @else-->
+                                                <!--            {{ __('main.notpaid') }}-->
+                                                <!--        @endif-->
+                                                <!--    </span>-->
+                                                <!--</td>-->
                                                 <td class="text-truncate"
                                                     style="color: #637381 !important; font-size: 18px; font-family: Cairo; font-weight: 600;">
                                                     {{ $invoice->date }}</td>

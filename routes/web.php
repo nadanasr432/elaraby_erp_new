@@ -92,6 +92,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
         return view('site.index4');
     })->name('index4');
 
+
     Route::post('/company-store-step2', [\App\Http\Controllers\Site\CompanyController::class, 'store_s2'])->name('company.store.s2');
 
     Route::get('/step-5/{id?}', function () {
@@ -123,8 +124,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
 
     Route::get('/suppliers-summary-post', [\App\Http\Controllers\Client\SummaryController::class, 'post_suppliers_summary'])->name('suppliers.summary.post');
 
-    Route::get('/sale-bills/print/{hashtoken?}/{invoiceType?}/{printColor?}/{isMoswada?}', [\App\Http\Controllers\Client\SaleBillController1::class, 'print'])->name(name: 'client.sale_bills.print');
-    Route::get('/sale-bills/print2/{hashtoken?}/{invoiceType?}/{printColor?}/{isMoswada?}', [\App\Http\Controllers\Client\SaleBillController::class, 'print'])->name(name: 'client.sale_bills.print2');
+    // Route::get('/sale-bills/print/{hashtoken?}/{invoiceType?}/{printColor?}/{isMoswada?}', [\App\Http\Controllers\Client\SaleBillController::class, 'print'])->name('client.sale_bills.print');
+    Route::get('/sale-bills/print/{hashtoken?}/{invoiceType?}/{printColor?}/{isMoswada?}', [\App\Http\Controllers\Client\SaleBillController1::class, 'print'])->name('client.sale_bills.print');
     Route::get('/sent/sale-bills/print/{hashtoken?}/{invoiceType?}/{printColor?}/{isMoswada?}', [\App\Http\Controllers\Client\SaleBillController::class, 'sent'])->name('client.sale_bills.sent');
 
     Route::get('/buy-bills/print/{id?}', [\App\Http\Controllers\Client\BuyBillController::class, 'print'])->name('client.buy_bills.print');
@@ -402,8 +403,10 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
                 'store' => 'client.products.store',
                 'show' => 'client.products.show',
             ]);
+
             Route::get('products/create/service', [ProductController::class, 'createservice'])->name('client.products.createservice');
 
+            Route::post('products/store/service', [ProductController::class, 'storeProduct'])->name('client.product.store2');
             Route::post('products_store', [ProductController::class, 'storeProduct'])->name('pos.product.store');
 
             Route::get('clients-products-empty', [ProductController::class, 'empty'])->name('client.products.empty');
@@ -807,6 +810,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             // summary routes
             Route::get('/clients-summary-get', [SummaryController::class, 'get_clients_summary']);
             Route::get('/clients-summary-get-new', [SummaryController::class, 'get_clients_summary_new']);
+
             Route::get('/suppliers-summary-get', [SummaryController::class, 'get_suppliers_summary']);
 
             Route::get('/employees-summary-get', [SummaryController::class, 'get_employees_summary']);
@@ -995,7 +999,6 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::get('/voucher/create', [VoucherController::class, 'create_voucher_entries'])->name('client.voucher.create');
             Route::get('/voucher/edit/{id}', [VoucherController::class, 'edit_voucher_entries'])->name('client.voucher.edit');
             Route::put('/voucher/update/{id}', [VoucherController::class, 'update_voucher_entries'])->name('client.voucher.update');
-
             Route::get('/vouchers', [VoucherController::class, 'get_voucher_entries'])->name('client.voucher.get');
             Route::post('/voucher/store', [VoucherController::class, 'store'])->name('client.voucher.store');
             Route::get('/account/{accountId}/statement', [VoucherController::class, 'showAccountStatement'])->name('account.statement');

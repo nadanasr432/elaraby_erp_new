@@ -460,7 +460,7 @@
                                             {{ round($element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price,2) }}
                                         </td>
                                         <td>{{ $element->tax_value }}</td>
-                                        <td>{{ $element->discount_value }}</td>
+                                        <td>{{ $element->discount_value }}{{ $element->discount_type == "percent" ? ' %' : '' }}</td>
                                         <td>
                                             {{  round($element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $element->discount_value : $element->quantity_price - $element->discount_value,2) }}
                                         </td>
@@ -528,7 +528,7 @@
                                             {{  round($element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $element->discount_value : $element->quantity_price - $element->discount_value,2) }}
                                         </td>
                                         <td>{{ $element->tax_value }}</td>
-                                        <td>{{ $element->discount_value }}</td>
+                                        <td>{{ $element->discount_value }}{{ $element->discount_type == "percent" ? ' %' : '' }}</td>
                                         <td>
                                             {{ round( $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price,2) }}
                                         </td>
@@ -840,10 +840,8 @@
                             </tr>
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: #f8f9fb">
-
-                                {{-- @dd($sale_bill) --}}
                                 <td dir="rtl">
-                                    {{ $sale_bill->rest }} {{ $currency }}
+                                      {{ $sale_bill->final_total - $sale_bill->paid }} {{ $currency }}
                                 </td>
                                 <td style="text-align: right;padding-right: 14px;">
                                     @lang('sales_bills.Residual')

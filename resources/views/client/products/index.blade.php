@@ -37,25 +37,32 @@
                 <div class="card-header border-bottom border-secondary p-1">
                     <div class="d-flex justify-content-between align-items-baseline">
                         <h3 class="pull-right font-weight-bold ml-1">
-                            {{ __('products.manage_products') }}
-                            <span class="badge badge-success circle">{{ floatval($total_balances) }}</span>
+                            {{__('products.manage_products')}}
+                            <span class="badge badge-success circle">{{floatval( $total_balances  )}}</span>
                         </h3>
                         <div class="row">
-                            <a class="mr-1 btn btn-success btn-sm-new" href="{{ route('client.products.create') }}">
+                            <a class="mr-1 btn btn-success btn-sm-new"
+                               href="{{ route('client.products.create') }}">
                                 <i class="fa fa-plus"></i>
-                                {{ __('products.addnewproduct') }}
+                                {{__('products.addnewproduct')}}
+                            </a>
+                            <a class="mr-1 btn btn-success btn-sm-new"
+                               href="{{ route('client.products.createservice') }}">
+                                <i class="fa fa-plus"></i>
+                                {{__('products.addnewproductseveces')}}
                             </a>
                             <a class="btn btn-info btn-sm-new mr-1" href="{{ route('products.export') }}">
-                                {{ __('products.exportproducts') }}
+                                {{__('products.exportproducts')}}
                             </a>
-                            <button class="btn btn-primary btn-sm-new mr-1 open_box" href="{{ route('products.export') }}">
-                                {{ __('products.importproducts') }}
+                            <button class="btn btn-primary btn-sm-new mr-1 open_box"
+                                    href="{{ route('products.export') }}">
+                                {{__('products.importproducts')}}
 
                             </button>
-                            <a href="{{ route('client.products.print') }}" target="_blank" role="button"
-                                class="mr-1 btn-warning btn btn-sm-new " dir="rtl">
+                            <a href="{{route('client.products.print')}}" target="_blank" role="button"
+                               class="mr-1 btn-warning btn btn-sm-new " dir="rtl">
                                 <i class="fa fa-print"></i>
-                                {{ __('products.printproducts') }}
+                                {{__('products.printproducts')}}
                             </a>
 
                         </div>
@@ -96,23 +103,21 @@
                             </ul>
                             <div class="col-sm-6">
                                 <p>
-                                    {{ __('products.attachedImage') }}
+                                    {{__('products.attachedImage')}}
                                     <br>
                                     <br>
                                     <img style="width: 60%;border-radius: 5px; padding: 5px;border: 1px solid #000; "
-                                        src="{{ asset('images/products.png') }}" alt="">
+                                         src="{{asset('images/products.png')}}" alt="">
                                 </p>
                                 <form class="d-inline" action="{{ route('products.import') }}" method="POST"
-                                    enctype="multipart/form-data">
+                                      enctype="multipart/form-data">
                                     @csrf
                                     <div class="row">
                                         <div class="col-lg-6 pull-right p-1">
-                                            <label class="d-block mt-2"
-                                                for="">{{ __('products.importproducts') }}</label>
-                                            <input accept=".xlsx" required type="file" name="file"
-                                                class="form-control">
+                                            <label class="d-block mt-2" for="">{{__('products.importproducts')}}</label>
+                                            <input accept=".xlsx" required type="file" name="file" class="form-control">
                                             <button
-                                                class="btn btn-success mt-1">{{ __('products.clicktoimport') }}</button>
+                                                class="btn btn-success mt-1">{{__('products.clicktoimport')}}</button>
                                         </div>
                                     </div>
                                 </form>
@@ -120,7 +125,7 @@
                         </div>
                     </div>
 
-                    <table class="table table-striped text-center" id="example-table">
+<table class="table table-striped text-center" id="example-table">
                         <thead>
                             <tr style="background: #222751;">
                                 <th>#</th>
@@ -234,8 +239,7 @@
                                 </tr>
                             @endforeach
                         </tbody>
-                    </table>
-                </div>
+                    </table>                </div>
             </div>
         </div>
 
@@ -244,8 +248,8 @@
                 <div class="modal-content modal-content-demo">
                     <div class="modal-header text-center">
                         <h6 class="modal-title w-100" style="font-family: 'Cairo'; ">حذف منتج</h6>
-                        <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span
-                                aria-hidden="true">&times;</span></button>
+                        <button aria-label="Close" class="close"
+                                data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                     </div>
                     <form action="{{ route('client.products.destroy', 'test') }}" method="post">
                         {{ method_field('delete') }}
@@ -265,16 +269,16 @@
         </div>
     </div>
 @endsection
-<script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
+<script src="{{asset('app-assets/js/jquery.min.js')}}"></script>
 <script>
-    $(document).ready(function() {
-        $('.delete_product').on('click', function() {
+    $(document).ready(function () {
+        $('.delete_product').on('click', function () {
             var product_id = $(this).attr('product_id');
             var product_name = $(this).attr('product_name');
             $('.modal-body #productid').val(product_id);
             $('.modal-body #productname').val(product_name);
         });
-        $('.open_box').on('click', function() {
+        $('.open_box').on('click', function () {
             $('.box').slideToggle(700);
         });
     });

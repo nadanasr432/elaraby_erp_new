@@ -441,7 +441,7 @@
                                             {{ $quantityPrice . ' ' . $currency }}</td>
                                         <!--<td style="border: 1px solid rgba(161,161,161,0.63);">{{ $ProdTax }}</td>-->
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
-                                            {{ $element->discount_value }}</td>
+                                            {{ $element->discount_value }}{{ $element->discount_type == "percent" ? ' %' : '' }}</td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">{{ $quantityPrice }}
                                         </td>
                                     </tr>
@@ -637,14 +637,14 @@
                                         <td dir="rtl">
                                             <!--{{ $discountNote . '  ' ?? '' }}-->
                                             <!--{{ $discountValue }} {{ $currency }}-->
-                                             @if ($realtotal > 0)
-                                           @if($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound')
+                                            
+                                            @if ($realtotal > 0)
+                                            @if($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
                                             ({{ $discount2->value }})
-
                                             {{ $currency }}
-                                            @else
+                                        @elseif($discount2)
                                             ({{ $discount2->value }}%)
-                                            @endif
+                                        @endif
                                         @endif
                                         </td>
                                         <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Discount')</td>

@@ -353,7 +353,7 @@
                                         {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $element->discount_value : $element->quantity_price - $element->discount_value }}
                                     </td>
                                     <td>{{ $element->tax_value }}</td>
-                                    <td>{{ $element->discount_value }}</td>
+                                    <td>{{ $element->discount_value }}{{ $element->discount_type == "percent" ? ' %' : '' }}</td>
                                     <td>{{ $priceBeforeTax }}</td>
                                     <td class="text-center">
                                         <span>{{ $element->unit->unit_name }}</span>

@@ -435,6 +435,13 @@
                     printColor="2" isMoswada="0" invoiceType='7'>
                     حفظ و طباعة 7
                 </a>
+                <a href="javascript:;" role="button"
+                    style="height: 40px;border:1px solid #3d121264  !important ;background: #3d121264  !important;color:white !important;"
+                    class="btn save_btn2 btn-md btn-primary pull-right ml-1
+                @if (!isset($open_sale_bill) || empty($open_sale_bill))  @endif "
+                    printColor="2" isMoswada="0" invoiceType='8'>
+                    حفظ و طباعة 8
+                </a>
 
                 <!-- Draft Invoice Button -->
                 <a href="javascript:;" role="button" style="height: 40px" class="btn save_btn2 btn-md btn-warning m-1"

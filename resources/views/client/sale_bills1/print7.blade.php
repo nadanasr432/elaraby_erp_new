@@ -467,8 +467,9 @@
                                         <td>
                                             {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $element->discount_value : $element->quantity_price - $element->discount_value }}
                                         </td>
+                                        
                                         <td>{{ $element->tax_value }}</td>
-                                        <td>{{$element->discount_value }}</td>
+                                        <td>{{ $element->discount_value }}{{ $element->discount_type == "percent" ? ' %' : '' }}</td>
                                         <td>{{ $company->tax_value_added ?? '0' }}%</td>
                                         <td>{{ $priceWithoutTax }}</td>
                                         <td class="text-center">

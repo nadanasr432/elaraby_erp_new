@@ -71,7 +71,6 @@ class SaleBillController1 extends Controller
     # index page #
     public function index()
     {
-        $this->reAssignPayments();
         $company_id = Auth::user()->company_id;
         $company = Company::findOrFail($company_id);
 
@@ -86,6 +85,7 @@ class SaleBillController1 extends Controller
         $sale_bills = $sale_bills->flatten();
         if (in_array('مدير النظام', Auth::user()->role_name)) {
             $outer_clients = OuterClient::where('company_id', $company_id)->get();
+            // dd($outer_clients);
         } else {
             $outer_clients = OuterClient::where('company_id', $company_id)
                 ->where(function ($query) {
@@ -2658,13 +2658,13 @@ class SaleBillController1 extends Controller
                 ->where('status', 'done')
                 ->orderBy('created_at', 'asc')
                 ->get();
-            $company = Company::FindOrFail($sale_bill->company_id);
+                $company = Company::FindOrFail($sale_bill->company_id);
 
             // Find the position of the current sale_bill in the collection
             $position = $sale_bills_done->search(function ($item) use ($sale_bill) {
                 return $item->id === $sale_bill->id;
             }) + 1; // +1 to make it 1-based index
-
+            
             if ($company->id == 839 || $company->id == 840) {
                 $position = '22000' . $position;
             }
@@ -2712,7 +2712,7 @@ class SaleBillController1 extends Controller
                     ->where('action', 'extra')
                     ->first();
                 $discount = $discountValue = $sale_bill->total_discount;
-                $discount2 = SaleBillExtra::where('sale_bill_id', $sale_bill->id)
+                 $discount2 = SaleBillExtra::where('sale_bill_id', $sale_bill->id)
                     ->where('company_id', $sale_bill->company_id)
                     ->where('action', 'discount')
                     ->first();
@@ -2729,13 +2729,13 @@ class SaleBillController1 extends Controller
                 }
 
 
-                // Calculate the total after applying the discount
+                                // Calculate the total after applying the discount
                 $total = $total - $discount;
                 // dd($total);
                 // Apply discount once to the total
-
+                
                 // Calculate the discount for every element (if needed)
-
+                                  
 
                 $discountValueForEveryElement = $discountValue / count($elements);
                 // if( $discountValueForEveryElement)
@@ -2743,14 +2743,14 @@ class SaleBillController1 extends Controller
                 //     $total = $total - $discount - $discountValueForEveryElement ; 
                 // }
                 // Now calculate the total tax (based on the total amount after discount)
-                $totalTax = $sale_bill->total_tax;
-
+                $totalTax = $sale_bill->total_tax; 
+                
                 // Assuming tax is a fixed value or percentage
-
+                
                 // Calculate the sum including tax
-                $sumWithTax = $total + $totalTax;
-                // Tax should be applied after discount
-
+                $sumWithTax = $total + $totalTax; 
+               // Tax should be applied after discount
+                
                 // Calculate the sum without tax (i.e., just the total after discount)
                 $sumWithOutTax = $total; // This is simply the total after discount without tax
                 //   dd( $sumWithOutTax);
@@ -2765,44 +2765,44 @@ class SaleBillController1 extends Controller
                     $printColor = '#222751';
                     return view(
                         'client.sale_bills1.main',
-                        compact('discount2', 'discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
+                        compact('discount2','discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
                     );
                 } elseif ($invoiceType == 5) {
                     $printColor = '#222751';
                     return view(
                         'client.sale_bills1.print5',
-                        compact('discount2', 'discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
+                        compact('discount2','discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
                     );
                 } elseif ($invoiceType == 4) {
                     $printColor = '#222751';
                     return view(
                         'client.sale_bills1.print4',
-                        compact('discount2', 'discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
+                        compact('discount2','discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
                     );
                 } elseif ($invoiceType == 3) {
                     return view(
                         'client.sale_bills1.no_tax_print',
-                        compact('discount2', 'discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
+                        compact('discount2','discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
                     );
                 } elseif ($invoiceType == 6) {
                     return view(
                         'client.sale_bills1.print6',
-                        compact('discount2', 'discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
+                        compact('discount2','discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
                     );
                 } elseif ($invoiceType == 7) {
                     return view(
                         'client.sale_bills1.print7',
-                        compact('discount2', 'discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
+                        compact('discount2','discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
                     );
                 } elseif ($invoiceType == 8) {
                     return view(
                         'client.sale_bills1.print8',
                         compact('discount2', 'discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
                     );
-                } else {
+                }else {
                     return view(
                         'client.sale_bills1.nPrint3',
-                        compact('discount2', 'discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
+                        compact('discount2','discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
                     );
                 }
             }
@@ -3039,7 +3039,7 @@ class SaleBillController1 extends Controller
     {
         return BasicSettings::where('company_id', Auth::user()->company_id)->firstOrFail()->update(['sale_bill_condition' => $request->condition]) ? 1 : 0;
     }
-    public function update(UpdateSaleBillRequest $request)
+    public function update(Request $request)
     {
         $data = $request->all();
         DB::beginTransaction();

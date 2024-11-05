@@ -91,7 +91,7 @@
                     </td>
                     <td> {{ $element->tax_type == 1 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
                     </td>
-                    <td>{{ $element->discount_value }}</td>
+                   <td>{{ $element->discount_value }}{{ $element->discount_type == "percent" ? ' %' : '' }}</td>
                     <td>{{ $element->tax_value }}</td>
                 </tr>
             @endforeach
@@ -133,13 +133,18 @@
     </div>
 
     <div class="col-lg-12 no-print text-center"
-        style="padding-top: 25px;height: auto !important;display: flex;justify-content: center;">
+        style="padding-top: 25px;height: auto !important;display: flex;justify-content: start;overflow-x: auto">
 
-        <button type="button" @if ($saleBill->rest <= 0) disabled @endif data-toggle="modal" style="height: 40px;"
-            data-target="#myModal2" class="btn btn-md btn-dark pay_btn pull-right">
+          <button type="button" 
+            @if (($saleBill->final_total - $saleBill->paid) <= 0) disabled @endif 
+            data-toggle="modal" 
+            data-target="#myModal2" 
+            class="btn btn-md btn-dark pay_btn float-right pr-3 pl-3 d-flex align-items-center" 
+            style="height: 40px;">
             <i class="fa fa-money"></i>
-            {{ __('main.record') }}
+            <span class="d-none d-sm-inline"> {{ __('main.record') }} </span>
         </button>
+
         <a href="{{ route('client.sale_bills.edit1', [$saleBill->token, $saleBill->company_id]) }}"
             class="btn btn-info btn-md ml-1" style="height: 40px;">
             {{-- <i class="fa fa-plus"></i> --}}
@@ -155,13 +160,12 @@
 
 
             <!------CANCEL BTN---->
-            <button href="" type="submit" class="btn btn-md close_btn btn-danger pull-right ml-1"
+            <button href="" type="submit" class="btn btn-md close_btn btn-danger pull-right ml-1 "
                 style="height: 40px;" @if (!isset($saleBill) || empty($saleBill)) disabled @endif>
                 <i class="fa fa-trash"></i>
                 {{ __('main.cancel') }}
             </button>
         </form> --}}
-
         <!------PRINT MAIN INVOICE---->
         <!------PRINT MAIN INVOICE---->
         <a class="btn btn-md btn-info text-white pull-right ml-1" role="button"
@@ -201,6 +205,11 @@
             class="btn  btn-md btn-primary pull-right ml-1" printColor="2"  isMoswada="0" invoiceType='7'>
             حفظ و طباعة 7
         </a>
+         <a href="{{ route('client.sale_bills.print', [$saleBill->token, 8, 3, 0]) }}" role="button"
+            style="height: 40px;border:1px solid #3d121264 !important ;background: #3d121264 !important;color:white !important;"
+            class="btn  btn-md btn-primary pull-right ml-1" printColor="2" isMoswada="0" invoiceType='8'>
+            حفظ و طباعة 8
+        </a>
 
         <!------FATOORAH MOSWADA---->
         <a href="{{ route('client.sale_bills.print', [$saleBill->token, 2, 1, 1]) }}" style="height: 40px;"
@@ -235,7 +244,7 @@
                         <div class="col-md-4">
                             <label> المبلغ المدفوع <span class="text-danger">*</span></label>
                             <input required class="form-control" name="amount" id="amount" type="text"
-                                value="{{ $saleBill->rest }}" dir="ltr">
+                                value="{{   $saleBill->final_total - $saleBill->paid }}" dir="ltr">
                         </div>
                         <div class="col-md-4">
                             <label> طريقة الدفع <span class="text-danger">*</span></label>

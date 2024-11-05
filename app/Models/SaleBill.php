@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Store;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -32,6 +33,10 @@ class SaleBill extends Model
         'value_added_tax',
         'total_tax',
     ];
+    public function store()
+    {
+        return $this->belongsTo(Store::class);
+    }
     // protected static function boot()
     // {
     //     parent::boot();

@@ -125,6 +125,7 @@
                                             <th>{{ __('sidebar.customer name') }}</th>
                                             <th>{{ __('sidebar.Invoice date') }}</th>
                                             <th>{{ __('sidebar.Billing time') }}</th>
+                                            <th>{{ __('products.store') }}</th>
                                             <th>{{ __('sidebar.Final total') }}</th>
                                             <th>{{ __('sidebar.Number of items') }}</th>
                                             <th>{{ __('sidebar.Status') }}</th>
@@ -152,6 +153,7 @@
                                                 </td>
                                                 <td>{{ $sale_bill->date }}</td>
                                                 <td>{{ $sale_bill->time }}</td>
+                                                <td>{{ $sale_bill->store?->store_name ?? ' ' }}</td>
                                                 <td>
                                                     @php $total += $sale_bill->final_total; @endphp
                                                     {{ $sale_bill->final_total }} {{ $company->extra_settings->currency }}

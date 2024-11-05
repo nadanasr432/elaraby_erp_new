@@ -81,31 +81,24 @@
                             </div> --}}
                             <!---------------------->
 
-                            <!----category_id---->
-                            <div class="form-group col-lg-3 pr-0" dir="rtl">
-                                <label for="store_id">
-                                    {{ __('products.main_cat') }}
-                                    <span class="text-danger font-weight-bold">*</span>
-                                </label>
-                                <select disabled  required name="category_id" id="category" class="form-control">
-                                    <option value="">{{ __('products.choose_main_cat') }}</option>
-                                    <?php $i = 0; ?>
-                                    @foreach ($categories as $category)
-                                        @if ($category->category_name === 'فئه خدمية')
-                                            <option type="{{ $category->category_type }}" selected
-                                                value="{{ $category->id }}">
-                                                {{ $category->category_name }}
-                                            </option>
-                                        @else
-                                            <option type="{{ $category->category_type }}" value="{{ $category->id }}">
-                                                {{ $category->category_name }}
-                                            </option>
-                                        @endif
-                                        <?php $i++; ?>
-                                    @endforeach
-                                </select>
+                        <div class="form-group col-lg-3 pr-0" dir="rtl">
+                            <label for="store_id">
+                                {{ __('products.main_cat') }}
+                                <span class="text-danger font-weight-bold">*</span>
+                            </label>
+                            <select required name="category_id" id="category" class="form-control">
+                                <option value="">{{ __('products.choose_main_cat') }}</option>
+                                @foreach ($categories as $category)
+                                    @if ($category->category_name === 'خدمية')
+                                        <option type="{{ $category->category_type }}" selected value="{{ $category->id }}">
+                                            {{ $category->category_name }}
+                                        </option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
 
-                            </div>
+
                             <!---------------------->
 
                             <!----sub_category---->
@@ -189,7 +182,7 @@
                                     {{ __('products.costprice') }}
                                     <span class="text-danger font-weight-bold">*</span>
                                 </label>
-                                <input type="number" step="0.01" name="purchasing_price" id='purchasing_price'
+                                <input type="number" step="0.01"  name="purchasing_price" id='purchasing_price'
                                     value="0" class="form-control" placeholder="{{ __('products.costprice') }}">
                             </div>
                             <!---------------------->
@@ -200,7 +193,7 @@
                                     {{ __('products.wholeprice') }}
                                     <span class="text-danger font-weight-bold">*</span>
                                 </label>
-                                <input type="number" step="0.01" name="wholesale_price" value="0"
+                                <input type="number" required step="0.01" name="wholesale_price" value="0"
                                     id="wholesale_price" class="form-control"
                                     placeholder="{{ __('products.wholeprice') }}">
                             </div>
@@ -212,7 +205,7 @@
                                     {{ __('products.sectorprice') }}
                                     <span class="text-danger font-weight-bold">*</span>
                                 </label>
-                                <input type="number" step="0.01" value="0" name="sector_price"
+                                <input type="number" step="0.01" required value="0" name="sector_price"
                                     placeholder="{{ __('products.sectorprice') }}" id="sector_price"
                                     class="form-control">
                             </div>
@@ -331,38 +324,38 @@
             var min_balance = $("#min_balance").val();
 
 
-            if (isNaN(first_balance)) {
-                $("#showErrMsg").text(" number only !! غير مسموح بالاحرف في هذا الحقل ارقام فقط!!");
-                $("#showErrMsg").show("slow");
-                $("#first_balance").css("border-color", "red");
-                $("#first_balance").val("");
+            // if (isNaN(first_balance)) {
+            //     $("#showErrMsg").text(" number only !! غير مسموح بالاحرف في هذا الحقل ارقام فقط!!");
+            //     $("#showErrMsg").show("slow");
+            //     $("#first_balance").css("border-color", "red");
+            //     $("#first_balance").val("");
 
 
-                setTimeout(function() {
-                    $("#showErrMsg").hide("slow");
-                }, 4000);
+            //     setTimeout(function() {
+            //         $("#showErrMsg").hide("slow");
+            //     }, 4000);
 
-                return false;
-            } else {
-                $("#first_balance").css("border-color", "#CACFE7");
-            }
-
-
-            if (isNaN(purchasing_price)) {
-                $("#showErrMsg").text(" number only !!غير مسموح بالاحرف في هذا الحقل ارقام فقط!!");
-                $("#showErrMsg").show("slow");
-                $("#purchasing_price").css("border-color", "red");
-                $("#purchasing_price").val("");
+            //     return false;
+            // } else {
+            //     $("#first_balance").css("border-color", "#CACFE7");
+            // }
 
 
-                setTimeout(function() {
-                    $("#showErrMsg").hide("slow");
-                }, 4000);
+            // if (isNaN(purchasing_price)) {
+            //     $("#showErrMsg").text(" number only !!غير مسموح بالاحرف في هذا الحقل ارقام فقط!!");
+            //     $("#showErrMsg").show("slow");
+            //     $("#purchasing_price").css("border-color", "red");
+            //     $("#purchasing_price").val("");
 
-                return false;
-            } else {
-                $("#purchasing_price").css("border-color", "#CACFE7");
-            }
+
+            //     setTimeout(function() {
+            //         $("#showErrMsg").hide("slow");
+            //     }, 4000);
+
+            //     return false;
+            // } else {
+            //     $("#purchasing_price").css("border-color", "#CACFE7");
+            // }
 
             if (isNaN(wholesale_price)) {
                 $("#showErrMsg").text(" number only !!غير مسموح بالاحرف في هذا الحقل ارقام فقط!!");
@@ -396,22 +389,22 @@
                 $("#sector_price").css("border-color", "#CACFE7");
             }
 
-            if (isNaN(min_balance)) {
-                $("#showErrMsg").text(" number only !! غير مسموح بالاحرف في هذا الحقل ارقام فقط!!");
-                $("#showErrMsg").show("slow");
-                $("#min_balance").css("border-color", "red");
-                $("#min_balance").val("");
+            // if (isNaN(min_balance)) {
+            //     $("#showErrMsg").text(" number only !! غير مسموح بالاحرف في هذا الحقل ارقام فقط!!");
+            //     $("#showErrMsg").show("slow");
+            //     $("#min_balance").css("border-color", "red");
+            //     $("#min_balance").val("");
 
 
-                setTimeout(function() {
-                    $("#showErrMsg").hide("slow");
-                }, 4000);
+            //     setTimeout(function() {
+            //         $("#showErrMsg").hide("slow");
+            //     }, 4000);
 
-                return false;
-            } else {
-                $("#min_balance").css("border-color", "#CACFE7");
-            }
-
+            //     return false;
+            // } else {
+            //     $("#min_balance").css("border-color", "#CACFE7");
+            // }
+            $("#category").prop("disabled", false); 
             $(this).submit();
 
         });

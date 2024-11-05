@@ -127,13 +127,13 @@
                                             <td>{{ $quotation->start_date }}</td>
                                             <td>{{ $quotation->expiration_date }}</td>
                                             <td>
-                                                <?php
-                                                $sum = 0;
+                                                <?php 
+                                                $sum = 0; 
                                                 ?>
                                                 @foreach ($quotation->elements as $element)
-                                                    <?php
+                                                    <?php 
                                                     // Ensure that quantity_price is treated as a float
-                                                    $sum += floatval($element->quantity_price);
+                                                    $sum += floatval($element->quantity_price); 
                                                     ?>
                                                 @endforeach
                                                 <?php
@@ -142,11 +142,11 @@
                                                 $quotation_discount_type = '';
                                                 $quotation_extra_value = 0;
                                                 $quotation_extra_type = '';
-                                                
+                                            
                                                 foreach ($extras as $key) {
                                                     // Ensure the value is a number
                                                     $value = floatval($key->value);
-                                                
+                                            
                                                     if ($key->action == 'discount') {
                                                         if ($key->action_type == 'pound') {
                                                             $quotation_discount_value = $value;
@@ -165,29 +165,29 @@
                                                         }
                                                     }
                                                 }
-                                                
+                                            
                                                 if ($extras->isEmpty()) {
                                                     $quotation_discount_value = 0;
                                                     $quotation_extra_value = 0;
                                                     $quotation_discount_type = 'pound';
                                                     $quotation_extra_type = 'pound';
                                                 }
-                                                
+                                            
                                                 if ($quotation_extra_type == 'percent') {
                                                     $quotation_extra_value = ($quotation_extra_value / 100) * $sum;
                                                 }
-                                                
+                                            
                                                 $after_discount = $sum + $quotation_extra_value;
-                                                
+                                            
                                                 if ($quotation_discount_type == 'percent') {
                                                     $quotation_discount_value = ($quotation_discount_value / 100) * $sum;
                                                 }
-                                                
+                                            
                                                 $after_discount = $sum - $quotation_discount_value + $quotation_extra_value;
                                                 $tax_value_added = $company->tax_value_added;
                                                 $percentage = ($tax_value_added / 100) * $after_discount;
                                                 $after_total = $after_discount + $percentage;
-                                                
+                                            
                                                 echo floatval($after_total) . ' ' . $currency;
                                                 ?>
                                                 <?php $total += floatval($after_total); ?>

@@ -624,8 +624,8 @@
     </form>
     <hr>
     <div class="col-lg-12 no-print text-center"
-         style="padding-top: 25px;height: auto !important;display: flex;justify-content: center;">
-        <button type="button" @if (!isset($open_sale_bill) || empty($open_sale_bill)) disabled
+   style="padding-top: 25px;height: auto !important;display: flex;justify-content: start;overflow-x: auto">
+                <button type="button" @if (!isset($open_sale_bill) || empty($open_sale_bill)) disabled
                 @endif data-toggle="modal" style="height: 40px;"
                 data-target="#myModal2" class="btn btn-md btn-dark pay_btn pull-right">
             <i class="fa fa-money"></i>
@@ -686,6 +686,10 @@
         <a href="javascript:;" role="button" style="height: 40px;border:1px solid #9b4aad !important ;background: #9b4aad !important;color:white !important;" class="btn save_btn2 btn-md btn-primary pull-right ml-1
             @if (!isset($open_sale_bill) || empty($open_sale_bill)) disabled @endif " printColor="2" isMoswada="0" invoiceType='7'>
             حفظ و طباعة 7
+        </a>
+        <a href="javascript:;" role="button" style="height: 40px;border:1px solid #3d121264  !important ;background: #3d121264  !important;color:white !important;" class="btn save_btn2 btn-md btn-primary pull-right ml-1
+            @if (!isset($open_sale_bill) || empty($open_sale_bill)) disabled @endif " printColor="2" isMoswada="0" invoiceType='8'>
+            حفظ و طباعة 8
         </a>
 
         <!------FATOORAH MOSWADA---->

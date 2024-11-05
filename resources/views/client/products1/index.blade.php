@@ -120,7 +120,7 @@
                         </div>
                     </div>
 
-                    <table class="table table-striped text-center" id="example-table">
+<table class="table table-striped text-center" id="example-table">
                         <thead>
                             <tr style="background: #222751;">
                                 <th>#</th>
@@ -234,8 +234,7 @@
                                 </tr>
                             @endforeach
                         </tbody>
-                    </table>
-                </div>
+                    </table>                </div>
             </div>
         </div>
 

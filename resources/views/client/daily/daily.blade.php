@@ -134,7 +134,7 @@
                                                 </td>
                                                 <td>فاتورة مبيعات ضريبية</td>
                                                 <td>{{ $sale_bill->company_counter }}</td>
-                                                <td>{{ $after_total }} {{ $currency }}</td>
+                                                <td>{{ $sale_bill->final_total }} {{ $currency }}</td>
                                                 <td>{{ $sale_bill->created_at }}</td>
                                             </tr>
                                         @endforeach
@@ -192,7 +192,7 @@
                                                 </td>
                                                 <td>فاتورة مشتريات ضريبية</td>
                                                 <td>{{ $buy_bill->buy_bill_number }}</td>
-                                                <td>{{ $after_total }} {{ $currency }}</td>
+                                                <td>{{ $sale_bill->final_total }} {{ $currency }}</td>
                                                 <td>{{ $buy_bill->created_at }}</td>
                                             </tr>
                                         @endforeach
@@ -380,7 +380,7 @@
                                                     $tax_value_added = $company->tax_value_added;
                                                     $percentage = ($tax_value_added / 100) * $after_discount;
                                                     $after_total = $after_discount + $percentage;
-                                                    echo floatval($after_total) . ' ' . $currency;
+                                                    echo floatval($sale_bill->final_total) . ' ' . $currency;
                                                     ?>
                                                     <?php $total = $total + $after_total; ?>
                                                 </td>
@@ -506,9 +506,9 @@
                                                         } else {
                                                             echo 'شيك بنكى' . ' ( ' . $check2->bank->bank_name . ' ) ';
                                                             $paid = $check2->amount;
-                                                            $rest = $sum1 - $paid;
+                                                            $rest = $sale_bill->final_total - $paid;
                                                             echo '<br/>';
-                                                            echo 'مستحق ' . $sum1;
+                                                            echo 'مستحق ' . $sale_bill->final_total;
                                                             echo '<br/>';
                                                             echo 'مدفوع ' . $paid;
                                                             echo '<br/>';
@@ -517,9 +517,9 @@
                                                     } else {
                                                         echo 'نقدى كاش' . ' ( ' . $check->safe->safe_name . ' ) ';
                                                         $paid = $check->amount;
-                                                        $rest = $sum1 - $paid;
+                                                        $rest = $sale_bill->final_total - $paid;
                                                         echo '<br/>';
-                                                        echo 'مستحق ' . $sum1;
+                                                        echo 'مستحق ' . $sale_bill->final_total;
                                                         echo '<br/>';
                                                         echo 'مدفوع ' . $paid;
                                                         echo '<br/>';
@@ -619,7 +619,7 @@
                                                     $tax_value_added = $company->tax_value_added;
                                                     $percentage = ($tax_value_added / 100) * $after_discount;
                                                     $after_total = $after_discount + $percentage;
-                                                    echo floatval($after_total) . ' ' . $currency;
+                                                    echo floatval($sale_bill->final_total) . ' ' . $currency;
                                                     ?>
                                                     <?php $total = $total + $after_total; ?>
                                                 </td>
@@ -635,9 +635,9 @@
                                                         } else {
                                                             echo 'شيك بنكى' . ' ( ' . $check2->bank->bank_name . ' ) ';
                                                             $paid = $check2->amount;
-                                                            $rest = $total - $paid;
+                                                            $rest = $sale_bill->final_total - $paid;
                                                             echo '<br/>';
-                                                            echo 'مستحق ' . $total;
+                                                            echo 'مستحق ' . $sale_bill->final_total;
                                                             echo '<br/>';
                                                             echo 'مدفوع ' . $paid;
                                                             echo '<br/>';
@@ -646,9 +646,9 @@
                                                     } else {
                                                         echo ' نقدى كاش' . ' ( ' . $check->safe->safe_name . ' ) ';
                                                         $paid = $check->amount;
-                                                        $rest = $total - $paid;
+                                                        $rest = $sale_bill->final_total - $paid;
                                                         echo '<br/>';
-                                                        echo 'مستحق ' . $total;
+                                                        echo 'مستحق ' .$sale_bill->final_total;
                                                         echo '<br/>';
                                                         echo 'مدفوع ' . $paid;
                                                         echo '<br/>';
@@ -946,7 +946,7 @@
                                                     $tax_value_added = $company->tax_value_added;
                                                     $percentage = ($tax_value_added / 100) * $after_discount;
                                                     $after_total = $after_discount + $percentage;
-                                                    echo floatval($after_total) . ' ' . $currency;
+                                                    echo floatval($sale_bill->final_total) . ' ' . $currency;
                                                     ?>
                                                     <?php $total = $total + $after_total; ?>
                                                 </td>
@@ -962,9 +962,9 @@
                                                         } else {
                                                             echo 'شيك بنكى' . ' ( ' . $check2->bank->bank_name . ' ) ';
                                                             $paid = $check2->amount;
-                                                            $rest = $total - $paid;
+                                                            $rest = $sale_bill->final_total - $paid;
                                                             echo '<br/>';
-                                                            echo 'مستحق ' . $total;
+                                                            echo 'مستحق ' . $sale_bill->final_total;
                                                             echo '<br/>';
                                                             echo 'مدفوع ' . $paid;
                                                             echo '<br/>';
@@ -973,9 +973,9 @@
                                                     } else {
                                                         echo ' نقدى كاش' . ' ( ' . $check->safe->safe_name . ' ) ';
                                                         $paid = $check->amount;
-                                                        $rest = $total - $paid;
+                                                        $rest = $sale_bill->final_total - $paid;
                                                         echo '<br/>';
-                                                        echo 'مستحق ' . $total;
+                                                        echo 'مستحق ' . $sale_bill->final_total;
                                                         echo '<br/>';
                                                         echo 'مدفوع ' . $paid;
                                                         echo '<br/>';

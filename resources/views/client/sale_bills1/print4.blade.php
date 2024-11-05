@@ -451,7 +451,7 @@
                                             {{ $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
                                         </td>
                                         <td>{{ $element->tax_value }}</td>
-                                        <td>{{ $element->discount_value }}</td>
+                                        <td>{{ $element->discount_value }}{{ $element->discount_type == "percent" ? ' %' : '' }}</td>
                                         <td>{{ $element->product->description }}</td>
                                         <td>{{ $element->product->product_model }}</td>
                                         <td>{{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $element->discount_value : $element->quantity_price - $element->discount_value }}
@@ -526,7 +526,7 @@
                                         <td>{{ $element->product->product_model }}</td>
                                         <td>{{ $element->product->description }}</td>
                                         <td>{{ $element->tax_value }}</td>
-                                        <td>{{ $element->discount_value }}</td>
+                                        <td>{{ $element->discount_value }}{{ $element->discount_type == "percent" ? ' %' : '' }}</td>
                                         <td>
                                             {{ $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
                                         </td>

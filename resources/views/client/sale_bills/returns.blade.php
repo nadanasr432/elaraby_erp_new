@@ -41,7 +41,7 @@
                             @endphp
                             @foreach($returnSaleInvoices as $arr)
                                 <tr>
-                                    <th class="text-center">{{$arr[0]->bill->company_counter}}</th>
+                                    <th class="text-center">{{$arr[0]->bill->company_counter ?? ''}}</th>
                                     <th class="text-center">{{@$arr[0]->outerClient->client_name}}</th>
                                     <th class="text-center">{{$arr[0]->date}} - {{$arr[0]->time}}</th>
                                     <th class="text-center">

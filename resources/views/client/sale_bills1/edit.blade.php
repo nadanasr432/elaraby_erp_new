@@ -9,7 +9,7 @@
     <div class="alert alert-success alert-dismissable text-center box_success d-none no-print">
         <button class="close" data-dismiss="alert" aria-label="Close">×</button>
         <span class="msg_success"></span>
-    </div>
+    </div>F
 
     <div class="alert alert-dark alert-dismissable text-center box_error d-none no-print">
         <button class="close" data-dismiss="alert" aria-label="Close">×</button>
@@ -589,7 +589,14 @@
                         <input type="radio" name="products[{{ $index }}][discount_type]" value="percent" class="discount_type" {{ $element->discount_type == 'percent' ? 'checked' : '' }}>
                         ${translations.percent}
                     </label>
-                    <input type="number" name="products[{{ $index }}][discount]" class="form-control discount" value="{{ $element->discount_value }}" min="0" step="any">
+                    <input 
+                        type="number" 
+                        name="products[{{ $index }}][discount]" 
+                        class="form-control discount" 
+                        value="{{ $element->discount_value == 0 ? 0 : ($element->discount_type == 'percent' ? $element->discount_value : $element->quantity_price - $element->discount_value) }}" 
+                        min="0" 
+                        step="any">
+
                     <input type="number" hidden name="products[{{ $index }}][applied_discount]" class="form-control applied_discount" value="{{ $element->applied_discount }}" style="display:none;" step="any">
                 </td>
                 <td>

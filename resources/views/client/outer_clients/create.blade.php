@@ -151,11 +151,6 @@
                                     <input type="text" name="tax_number" class="form-control" dir="ltr" />
                                 </div>
                                 <div class="clearfix"></div>
-                                <div class="form-group  pull-right col-lg-4" dir="rtl">
-                                    <label for="commercial_register">@lang('sales_bills.commercial register')</label>
-                                    <input type="text" name="commercial_register" class="form-control" dir="ltr" />
-                                </div>
-                                <div class="clearfix"></div>
 
                             </div>
                         </div>

@@ -416,7 +416,7 @@
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
                                             {{ $element->tax_value }}</td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
-                                            {{ $element->discount_value }}</td>
+                                            {{ $element->discount_value }}{{ $element->discount_type == "percent" ? ' %' : '' }}</td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
                                             {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $element->discount_value : $element->quantity_price - $element->discount_value }}
                                         </td>
@@ -468,7 +468,7 @@
 
                                         </td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
-                                            {{ $element->discount_value }}</td>
+                                            {{ $element->discount_value }}{{ $element->discount_type == "percent" ? ' %' : '' }}</td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
                                             {{ $element->tax_value }}</td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
