@@ -591,9 +591,23 @@
                     return false;
                 }
 
+                // Check if start_date is before expiration_date
+                let startDate = $('#start_date').val();
+                let expirationDate = $('#expiration_date').val();
+
+                if (new Date(startDate) > new Date(expirationDate)) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'تحذير',
+                        text: 'تاريخ البداية يجب أن يكون قبل تاريخ الانتهاء',
+                        confirmButtonText: 'موافق'
+                    });
+                    return false;
+                }
+
                 var formData = $('#myForm').serialize();
 
-                $.post("{{ route('client.quotations.redirectANDprint') }} ", formData)
+                $.post("{{ route('client.quotations.redirectANDprint') }}", formData)
                     .done(function(data) {
                         location.href = '/client/quotations/view/' + data;
                     })
@@ -619,7 +633,8 @@
                         });
                     });
             });
-            
+
+
 
             // Save button 2
             $('.save_btn2').on('click', function() {
@@ -657,6 +672,20 @@
                     });
                     return false;
                 }
+                 // Check if start_date is before expiration_date
+                let startDate = $('#start_date').val();
+                let expirationDate = $('#expiration_date').val();
+
+                if (new Date(startDate) > new Date(expirationDate)) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'تحذير',
+                        text: 'تاريخ البداية يجب أن يكون قبل تاريخ الانتهاء',
+                        confirmButtonText: 'موافق'
+                    });
+                    return false;
+                }
+
 
                 var formData = $('#myForm').serialize();
 
