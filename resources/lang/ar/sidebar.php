@@ -219,6 +219,7 @@ return [
     "products-are-expired" => "المنتجات منتهية الصلاحية",
     "Manufacture"=> "قائمة التصنيع",
     "New sales"=> "المبيعات الجديدة",
+    "edit or return"=>"تعديل او استرجاع",
 
 
 ];
