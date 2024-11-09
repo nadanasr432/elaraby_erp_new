@@ -380,7 +380,7 @@
                                                     $tax_value_added = $company->tax_value_added;
                                                     $percentage = ($tax_value_added / 100) * $after_discount;
                                                     $after_total = $after_discount + $percentage;
-                                                    echo floatval($sale_bill->final_total) . ' ' . $currency;
+                                                    echo floatval($sale_bill->final_total ?? '') . ' ' . $currency;
                                                     ?>
                                                     <?php $total = $total + $after_total; ?>
                                                 </td>
