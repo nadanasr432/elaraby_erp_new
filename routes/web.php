@@ -602,6 +602,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
 
             // quotations Routes
             Route::get('quotations/view/{quotation_id?}', [QuotationController::class, 'view'])->name('client.quotations.view');
+            Route::get('quotations/print/{quotation_id?}', [QuotationController::class, 'print'])->name('client.quotations.print');
+
             Route::resource('quotations', QuotationController::class)->names([
                 'index' => 'client.quotations.index',
                 'create' => 'client.quotations.create',
@@ -630,6 +632,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::get('/quotations/send/{id?}', [QuotationController::class, 'send'])->name('client.quotations.send');
             Route::get('/quotations-redirect', [QuotationController::class, 'redirect'])->name('client.quotations.redirect');
             Route::post('/quotations-save', [QuotationController::class, 'redirectANDprint'])->name('client.quotations.redirectANDprint');
+            Route::post('/quotations-save-print', [QuotationController::class, 'redirectANDprint2'])->name('client.quotations.redirectANDprint2');
 
             Route::post('clients-quotations-filter-key', [QuotationController::class, 'filter_key'])->name('client.quotations.filter.key');
             Route::post('clients-quotations-filter-client', [QuotationController::class, 'filter_client'])->name('client.quotations.filter.client');

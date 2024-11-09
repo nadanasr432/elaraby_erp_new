@@ -43,12 +43,12 @@ class ProductController extends Controller
         $total_balances = array_sum($balances);
         return view('client.products.index', compact('company', 'total_balances', 'total_purchase_prices', 'company_id', 'products'));
     }
-public function createservice()
+    public function createservice()
     {
         $company_id = Auth::user()->company_id;
         $company = Company::FindOrFail($company_id);
         $stores = Store::where('company_id', $company_id)->get();
-        $categories = Category::where(['company_id'=> $company_id,'category_name'=> 'خدمية'])->get();
+        $categories = Category::where(['company_id' => $company_id, 'category_name' => 'خدمية'])->get();
         $sub_categories = SubCategory::where('company_id', $company_id)->get();
         $units = $company->units;
         $check = Product::where('company_id', $company_id)->get();
