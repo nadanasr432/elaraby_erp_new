@@ -589,12 +589,12 @@
                         <input type="radio" name="products[{{ $index }}][discount_type]" value="percent" class="discount_type" {{ $element->discount_type == 'percent' ? 'checked' : '' }}>
                         ${translations.percent}
                     </label>
-                    <input 
-                        type="number" 
-                        name="products[{{ $index }}][discount]" 
-                        class="form-control discount" 
-                        value="{{ $element->discount_value == 0 ? 0 : ($element->discount_type == 'percent' ? $element->discount_value : $element->discount_value) }}" 
-                        min="0" 
+                    <input
+                        type="number"
+                        name="products[{{ $index }}][discount]"
+                        class="form-control discount"
+                        value="{{ $element->discount_value == 0 ? 0 : ($element->discount_type == 'percent' ? $element->discount_value : $element->discount_value) }}"
+                        min="0"
                         step="any">
 
                     <input type="number" hidden name="products[{{ $index }}][applied_discount]" class="form-control applied_discount" value="{{ $element->applied_discount }}" style="display:none;" step="any">
@@ -1038,7 +1038,7 @@
                             icon: 'error',
                             title: 'خطأ',
                             html: errorMessage + '<br>' +
-                            errorDetails, // Combine the general message with the field-specific errors
+                                errorDetails, // Combine the general message with the field-specific errors
                             confirmButtonText: 'موافق'
                         });
                     }
@@ -1492,17 +1492,19 @@
                 // Apply discount based on type
                 // var oldgrandToatal = grandTotal;
                 // var oldgrandTax = grandTax;
-                var totalWithoutTax = grandTotal - grandTax;
+                var valueAddedTax = $('#value_added_tax').val(); // الحصول على إعداد الضريبة المختار
 
+                var totalWithoutTax = grandTotal - grandTax;
+                var taxRatio = valueAddedTax == 0 ? .15 : 0;
                 if (discountType === 'pound') {
                     total = totalWithoutTax - discountValue;
-                    grandTax = total * .15;
-                    grandTotal = totalWithoutTax + grandTax;
+                    // grandTax = total * taxRatio;
+                    grandTotal = total + grandTax;
                 } else if (discountType === 'percent') {
                     discountValue = (totalWithoutTax * discountValue / 100);
-                    total = totalWithoutTax - discount;
-                    grandTax = total * .15;
-                    grandTotal = totalWithoutTax + grandTax;
+                    total = totalWithoutTax - discountValue;
+                    // grandTax = total * taxRatio;
+                    grandTotal = total + grandTax;
                 }
 
                 // Apply discounts after tax if specified
@@ -1511,7 +1513,7 @@
 
                 } else if (discountType === 'poundAfterTaxPercent') {
                     discountValue = (grandTotal * discountValue / 100);
-                    grandTotal -= discount; // Apply percentage discount after tax
+                    grandTotal -= discountValue; // Apply percentage discount after tax
                 }
 
                 // Apply extra charges

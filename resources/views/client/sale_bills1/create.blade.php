@@ -1571,17 +1571,19 @@
                 // Apply discount based on type
                 // var oldgrandToatal = grandTotal;
                 // var oldgrandTax = grandTax;
-                var totalWithoutTax = grandTotal - grandTax;
+                var valueAddedTax = $('#value_added_tax').val(); // الحصول على إعداد الضريبة المختار
 
+                var totalWithoutTax = grandTotal - grandTax;
+                var taxRatio = valueAddedTax == 0 ? .15 : 0;
                 if (discountType === 'pound') {
                     total = totalWithoutTax - discountValue;
-                    grandTax = total * .15;
-                    grandTotal = totalWithoutTax + grandTax;
+                    // grandTax = total * taxRatio;
+                    grandTotal = total + grandTax;
                 } else if (discountType === 'percent') {
                     discountValue = (totalWithoutTax * discountValue / 100);
-                    total = totalWithoutTax - discount;
-                    grandTax = total * .15;
-                    grandTotal = totalWithoutTax + grandTax;
+                    total = totalWithoutTax - discountValue;
+                    // grandTax = total * taxRatio;
+                    grandTotal = total + grandTax;
                 }
 
                 // Apply discounts after tax if specified
@@ -1590,7 +1592,7 @@
 
                 } else if (discountType === 'poundAfterTaxPercent') {
                     discountValue = (grandTotal * discountValue / 100);
-                    grandTotal -= discount; // Apply percentage discount after tax
+                    grandTotal -= discountValue; // Apply percentage discount after tax
                 }
 
                 // Apply extra charges
@@ -1640,7 +1642,6 @@
                 var remaining = categoryType !== "خدمية" ? $('option:selected', this).data('remaining') :
                     99999;
                 var valueAddedTax = $('#value_added_tax').val(); // الحصول على إعداد الضريبة المختار
-                console.log(valueAddedTax);
                 $(this).val("");
                 if (existingRow.length > 0) {
                     var quantityInput = existingRow.find(

@@ -193,9 +193,9 @@ $currency = $extra_settings->currency;
                         </div>
                     </div>
                     <hr class="mt-1 mb-2">
-                     <?php
+                    <?php
                     $from_date = request()->get('from_date');
-                    $to_date = request()->get('to_date'); 
+                    $to_date = request()->get('to_date');
                     ?>
                     <h3 class="alert alert-sm alert-light text-center" style="margin:20px auto;">
                         كشف حساب عميل من {{ $from_date }} إلى {{ $to_date }}
@@ -364,16 +364,20 @@ $currency = $extra_settings->currency;
                                                     $quotation_discount_type = 'pound';
                                                     $quotation_extra_type = 'pound';
                                                 }
-                                                if ($quotation_extra_type == 'percent') {
+                                                if (isset($quotation_extra_type) && $quotation_extra_type == 'percent') {
                                                     $quotation_extra_value = ($quotation_extra_value / 100) * $sum;
                                                 }
+                                                $quotation_extra_value = $quotation_extra_value ?? 0;
                                                 $after_discount = $sum + $quotation_extra_value;
-                                                
+
                                                 if ($quotation_discount_type == 'percent') {
                                                     $quotation_discount_value = ($quotation_discount_value / 100) * $sum;
                                                 }
                                                 $after_discount = $sum - $quotation_discount_value;
-                                                $after_discount = $sum - $quotation_discount_value + $quotation_extra_value;
+
+
+                                                    $after_discount = $sum - $quotation_discount_value + $quotation_extra_value;
+
                                                 $tax_value_added = $company->tax_value_added;
                                                 $percentage = ($tax_value_added / 100) * $after_discount;
                                                 $after_total = $after_discount + $percentage;
@@ -433,12 +437,12 @@ $currency = $extra_settings->currency;
                                                 foreach ($sale_bill->elements as $element) {
                                                     $sum += floatval($element->quantity_price);
                                                 }
-                                                
+
                                                 $sale_bill_discount_value = 0;
                                                 $sale_bill_discount_type = 'pound';
                                                 $sale_bill_extra_value = 0;
                                                 $sale_bill_extra_type = 'pound';
-                                                
+
                                                 $extras = $sale_bill->extras;
                                                 foreach ($extras as $key) {
                                                     if ($key->action == 'discount') {
@@ -459,21 +463,21 @@ $currency = $extra_settings->currency;
                                                         }
                                                     }
                                                 }
-                                                
+
                                                 if ($sale_bill_extra_type == 'percent') {
                                                     $sale_bill_extra_value = ($sale_bill_extra_value / 100) * $sum;
                                                 }
                                                 $after_discount = $sum + $sale_bill_extra_value;
-                                                
+
                                                 if ($sale_bill_discount_type == 'percent') {
                                                     $sale_bill_discount_value = ($sale_bill_discount_value / 100) * $sum;
                                                 }
                                                 $after_discount = $sum - $sale_bill_discount_value + $sale_bill_extra_value;
-                                                
+
                                                 $tax_value_added = floatval($company->tax_value_added);
                                                 $percentage = ($tax_value_added / 100) * $after_discount;
                                                 $after_total = $after_discount + $percentage;
-                                                
+
                                                 echo floatval($after_total) . ' ' . $currency;
                                                 ?>
                                                 <?php $total += $after_total; ?>
@@ -488,266 +492,266 @@ $currency = $extra_settings->currency;
 
                     <!------------------------------------------------BONDS--------------------------------------------------->
                     <div class="clearfix"></div>
-                    <php?= $i = 0 ?>
-                    @if (isset($bonds) && !$bonds->isEmpty())
-                        <h3 class="alert alert-sm alert-light text-center" style="margin:20px auto;">
-                            السندات للعميل
-                        </h3>
-                        <div class="table-respo ">
-                            <table
-                                style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                                <thead style="font-size: 15px !important;">
+                    <php?= $i=0 ?>
+                        @if (isset($bonds) && !$bonds->isEmpty())
+                            <h3 class="alert alert-sm alert-light text-center" style="margin:20px auto;">
+                                السندات للعميل
+                            </h3>
+                            <div class="table-respo ">
+                                <table
+                                    style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+                                    <thead style="font-size: 15px !important;">
 
-                                    <tr
-                                        style="font-size: 13px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
-                                        <th>رقم السند</th>
-                                        <th>التاريخ</th>
-                                        <th>الحساب</th>
-                                        <th>النوع</th>
-                                        <th>المبلغ</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($bonds as $bond)
-                                        <tr>
-                                            <td>{{ ++$i }}</td>
-                                            <td>{{ $bond->date }}</td>
-                                            <td>{{ $bond->account }}</td>
-                                            <td>{{ $bond->type }}</td>
-                                            <td>{{ $bond->amount }}</td>
+                                        <tr
+                                            style="font-size: 13px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
+                                            <th>رقم السند</th>
+                                            <th>التاريخ</th>
+                                            <th>الحساب</th>
+                                            <th>النوع</th>
+                                            <th>المبلغ</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @endif
-                    <!------------------------------------------------BONDS--------------------------------------------------->
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($bonds as $bond)
+                                            <tr>
+                                                <td>{{ ++$i }}</td>
+                                                <td>{{ $bond->date }}</td>
+                                                <td>{{ $bond->account }}</td>
+                                                <td>{{ $bond->type }}</td>
+                                                <td>{{ $bond->amount }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
+                        <!------------------------------------------------BONDS--------------------------------------------------->
 
 
-                    <div class="clearfix"></div>
-                    @if (isset($returns) && !$returns->isEmpty())
-                        <p class="alert alert-sm alert-dark mt-3 text-center">
-                            مرتجعات العميل
-                        </p>
-                        <div class="table-respo">
-                            <table
-                                style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                                <thead style="font-size: 15px !important;">
+                        <div class="clearfix"></div>
+                        @if (isset($returns) && !$returns->isEmpty())
+                            <p class="alert alert-sm alert-dark mt-3 text-center">
+                                مرتجعات العميل
+                            </p>
+                            <div class="table-respo">
+                                <table
+                                    style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+                                    <thead style="font-size: 15px !important;">
 
-                                    <tr
-                                        style="font-size: 13px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
+                                        <tr
+                                            style="font-size: 13px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
 
-                                        <th class="text-center">رقم الفاتورة</th>
-                                        <th class="text-center"> العميل</th>
-                                        <th class="text-center"> المنتج</th>
-                                        <th class="text-center"> الكمية المرتجعة</th>
-                                        <th class="text-center"> الوقت</th>
-                                        <th class="text-center"> التاريخ</th>
-                                        <th class="text-center"> سعر المنتج</th>
-                                        <th class="text-center"> سعر الكمية</th>
-                                        <th class="text-center"> مديونية العميل قبل الارتجاع</th>
-                                        <th class="text-center"> مديونية العميل بعد الارتجاع</th>
-                                        <th class="text-center"> رصيد المنتج قبل الارتجاع</th>
-                                        <th class="text-center"> رصيد المنتج بعد الارتجاع</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                        $i = 0;
-                                    @endphp
-                                    @foreach ($returns as $key => $return)
-                                        <tr>
-                                            <td>{{ $return->bill_id }}</td>
-                                            <td>{{ $return->outerClient->client_name }}</td>
-                                            <td>{{ $return->product->product_name }}</td>
-                                            <td>
-                                                {{ floatval($return->return_quantity) }}
-                                            </td>
-                                            <td>{{ $return->date }}</td>
-                                            <td>{{ $return->time }}</td>
-                                            <td>
-                                                {{ floatval($return->product_price) }}
-                                            </td>
-                                            <td>
-                                                {{ floatval($return->quantity_price) }}
-                                            </td>
-
-                                            <td>
-                                                {{ floatval($return->balance_before) }}
-                                            </td>
-                                            <td>
-                                                {{ floatval($return->balance_after) }}
-                                            </td>
-
-                                            <td>
-                                                {{ floatval($return->before_return) }}
-                                            </td>
-                                            <td>
-                                                {{ floatval($return->after_return) }}
-                                            </td>
+                                            <th class="text-center">رقم الفاتورة</th>
+                                            <th class="text-center"> العميل</th>
+                                            <th class="text-center"> المنتج</th>
+                                            <th class="text-center"> الكمية المرتجعة</th>
+                                            <th class="text-center"> الوقت</th>
+                                            <th class="text-center"> التاريخ</th>
+                                            <th class="text-center"> سعر المنتج</th>
+                                            <th class="text-center"> سعر الكمية</th>
+                                            <th class="text-center"> مديونية العميل قبل الارتجاع</th>
+                                            <th class="text-center"> مديونية العميل بعد الارتجاع</th>
+                                            <th class="text-center"> رصيد المنتج قبل الارتجاع</th>
+                                            <th class="text-center"> رصيد المنتج بعد الارتجاع</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @endif
-                    <div class="clearfix"></div>
-                    @if (isset($cashs) && !$cashs->isEmpty())
-                        <p class="alert alert-sm alert-warning mt-3 text-center">
-                            مدفوعات نقدية لهذا العميل
-                        </p>
-                        <div class="table-respo">
-                            <table
-                                style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                                <thead style="font-size: 15px !important;">
+                                    </thead>
+                                    <tbody>
+                                        @php
+                                            $i = 0;
+                                        @endphp
+                                        @foreach ($returns as $key => $return)
+                                            <tr>
+                                                <td>{{ $return->bill_id }}</td>
+                                                <td>{{ $return->outerClient->client_name }}</td>
+                                                <td>{{ $return->product->product_name }}</td>
+                                                <td>
+                                                    {{ floatval($return->return_quantity) }}
+                                                </td>
+                                                <td>{{ $return->date }}</td>
+                                                <td>{{ $return->time }}</td>
+                                                <td>
+                                                    {{ floatval($return->product_price) }}
+                                                </td>
+                                                <td>
+                                                    {{ floatval($return->quantity_price) }}
+                                                </td>
 
-                                    <tr
-                                        style="font-size: 13px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
+                                                <td>
+                                                    {{ floatval($return->balance_before) }}
+                                                </td>
+                                                <td>
+                                                    {{ floatval($return->balance_after) }}
+                                                </td>
 
-                                        <th class="text-center">رقم العملية</th>
-                                        <th class="text-center">العميل</th>
-                                        <th class="text-center">المبلغ</th>
-                                        <th class="text-center">رصيد قبل</th>
-                                        <th class="text-center">رصيد بعد</th>
-                                        <th class="text-center">رقم الفاتورة</th>
-                                        <th class="text-center">التاريخ</th>
-                                        <th class="text-center">الوقت</th>
-                                        <th class="text-center">خزنة الدفع</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                        $i = 0;
-                                    @endphp
-                                    @foreach ($cashs as $key => $cash)
-                                        <tr>
-                                            <td>{{ $cash->cash_number }}</td>
-                                            <td>{{ $cash->outerClient->client_name }}</td>
-                                            <td>
-                                                {{ floatval($cash->amount) }}
-                                            </td>
-                                            <td>
-                                                {{ floatval($cash->balance_before) }}
-                                            </td>
-                                            <td>
-                                                {{ floatval($cash->balance_after) }}
-                                            </td>
-                                            <td>{{ $cash->bill_id }}</td>
-                                            <td>{{ $cash->date }}</td>
-                                            <td>{{ $cash->time }}</td>
-                                            <td>{{ $cash->safe->safe_name }}</td>
+                                                <td>
+                                                    {{ floatval($return->before_return) }}
+                                                </td>
+                                                <td>
+                                                    {{ floatval($return->after_return) }}
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
+                        <div class="clearfix"></div>
+                        @if (isset($cashs) && !$cashs->isEmpty())
+                            <p class="alert alert-sm alert-warning mt-3 text-center">
+                                مدفوعات نقدية لهذا العميل
+                            </p>
+                            <div class="table-respo">
+                                <table
+                                    style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+                                    <thead style="font-size: 15px !important;">
+
+                                        <tr
+                                            style="font-size: 13px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
+
+                                            <th class="text-center">رقم العملية</th>
+                                            <th class="text-center">العميل</th>
+                                            <th class="text-center">المبلغ</th>
+                                            <th class="text-center">رصيد قبل</th>
+                                            <th class="text-center">رصيد بعد</th>
+                                            <th class="text-center">رقم الفاتورة</th>
+                                            <th class="text-center">التاريخ</th>
+                                            <th class="text-center">الوقت</th>
+                                            <th class="text-center">خزنة الدفع</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @endif
-                    @if (isset($borrows) && !$borrows->isEmpty())
-                        <p class="alert alert-sm alert-warning mt-3 text-center">
-                            سلفيات الى العميل
-                        </p>
-                        <div class="table-respo">
-                            <table
-                                style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                                <thead style="font-size: 15px !important;">
+                                    </thead>
+                                    <tbody>
+                                        @php
+                                            $i = 0;
+                                        @endphp
+                                        @foreach ($cashs as $key => $cash)
+                                            <tr>
+                                                <td>{{ $cash->cash_number }}</td>
+                                                <td>{{ $cash->outerClient->client_name }}</td>
+                                                <td>
+                                                    {{ floatval($cash->amount) }}
+                                                </td>
+                                                <td>
+                                                    {{ floatval($cash->balance_before) }}
+                                                </td>
+                                                <td>
+                                                    {{ floatval($cash->balance_after) }}
+                                                </td>
+                                                <td>{{ $cash->bill_id }}</td>
+                                                <td>{{ $cash->date }}</td>
+                                                <td>{{ $cash->time }}</td>
+                                                <td>{{ $cash->safe->safe_name }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
+                        @if (isset($borrows) && !$borrows->isEmpty())
+                            <p class="alert alert-sm alert-warning mt-3 text-center">
+                                سلفيات الى العميل
+                            </p>
+                            <div class="table-respo">
+                                <table
+                                    style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+                                    <thead style="font-size: 15px !important;">
 
-                                    <tr
-                                        style="font-size: 13px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
+                                        <tr
+                                            style="font-size: 13px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
 
-                                        <th class="text-center">رقم العملية</th>
-                                        <th class="text-center">العميل</th>
-                                        <th class="text-center">المبلغ</th>
-                                        <th class="text-center">رصيد قبل</th>
-                                        <th class="text-center">رصيد بعد</th>
-                                        <th class="text-center">رقم الفاتورة</th>
-                                        <th class="text-center">التاريخ</th>
-                                        <th class="text-center">الوقت</th>
-                                        <th class="text-center">خزنة الدفع</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                        $i = 0;
-                                    @endphp
-                                    @foreach ($borrows as $key => $cash)
-                                        <tr>
-                                            <td>{{ $cash->cash_number }}</td>
-                                            <td>{{ $cash->outerClient->client_name }}</td>
-                                            <td>
-                                                {{ floatval(abs($cash->amount)) }}
-                                            </td>
-                                            <td>
-                                                {{ floatval($cash->balance_before) }}
-                                            </td>
-                                            <td>
-                                                {{ floatval($cash->balance_after) }}
-                                            </td>
-                                            <td>{{ $cash->bill_id }}</td>
-                                            <td>{{ $cash->date }}</td>
-                                            <td>{{ $cash->time }}</td>
-                                            <td>{{ $cash->safe->safe_name }}</td>
+                                            <th class="text-center">رقم العملية</th>
+                                            <th class="text-center">العميل</th>
+                                            <th class="text-center">المبلغ</th>
+                                            <th class="text-center">رصيد قبل</th>
+                                            <th class="text-center">رصيد بعد</th>
+                                            <th class="text-center">رقم الفاتورة</th>
+                                            <th class="text-center">التاريخ</th>
+                                            <th class="text-center">الوقت</th>
+                                            <th class="text-center">خزنة الدفع</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @endif
-                    @if (isset($bankcashs) && !$bankcashs->isEmpty())
-                        <p class="alert alert-sm alert-warning mt-3 text-center">
-                            مدفوعات بنكية لهذا العميل
-                        </p>
-                        <div class="table-respo">
-                            <table
-                                style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                                <thead style="font-size: 15px !important;">
+                                    </thead>
+                                    <tbody>
+                                        @php
+                                            $i = 0;
+                                        @endphp
+                                        @foreach ($borrows as $key => $cash)
+                                            <tr>
+                                                <td>{{ $cash->cash_number }}</td>
+                                                <td>{{ $cash->outerClient->client_name }}</td>
+                                                <td>
+                                                    {{ floatval(abs($cash->amount)) }}
+                                                </td>
+                                                <td>
+                                                    {{ floatval($cash->balance_before) }}
+                                                </td>
+                                                <td>
+                                                    {{ floatval($cash->balance_after) }}
+                                                </td>
+                                                <td>{{ $cash->bill_id }}</td>
+                                                <td>{{ $cash->date }}</td>
+                                                <td>{{ $cash->time }}</td>
+                                                <td>{{ $cash->safe->safe_name }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
+                        @if (isset($bankcashs) && !$bankcashs->isEmpty())
+                            <p class="alert alert-sm alert-warning mt-3 text-center">
+                                مدفوعات بنكية لهذا العميل
+                            </p>
+                            <div class="table-respo">
+                                <table
+                                    style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+                                    <thead style="font-size: 15px !important;">
 
-                                    <tr
-                                        style="font-size: 13px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
+                                        <tr
+                                            style="font-size: 13px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
 
-                                        <th class="text-center">رقم العملية</th>
-                                        <th class="text-center">العميل</th>
-                                        <th class="text-center">المبلغ</th>
-                                        <th class="text-center">رصيد قبل</th>
-                                        <th class="text-center">رصيد بعد</th>
-                                        <th class="text-center">رقم الفاتورة</th>
-                                        <th class="text-center">التاريخ</th>
-                                        <th class="text-center">الوقت</th>
-                                        <th class="text-center">البنك</th>
-                                        <th class="text-center">رقم المعاملة</th>
-                                        <th class="text-center">ملاحظات</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                        $i = 0;
-                                    @endphp
-                                    @foreach ($bankcashs as $key => $cash)
-                                        <tr>
-                                            <td>{{ $cash->cash_number }}</td>
-                                            <td>{{ $cash->outerClient->client_name }}</td>
-                                            <td>{{ floatval($cash->amount) }}</td>
-                                            <td>{{ floatval($cash->balance_before) }}</td>
-                                            <td>{{ floatval($cash->balance_after) }}</td>
-                                            <td>{{ $cash->bill_id }}</td>
-                                            <td>{{ $cash->date }}</td>
-                                            <td>{{ $cash->time }}</td>
-                                            <td>{{ $cash->bank->bank_name }}</td>
-                                            <td>{{ $cash->bank_check_number }}</td>
-                                            <td>{{ $cash->notes }}</td>
+                                            <th class="text-center">رقم العملية</th>
+                                            <th class="text-center">العميل</th>
+                                            <th class="text-center">المبلغ</th>
+                                            <th class="text-center">رصيد قبل</th>
+                                            <th class="text-center">رصيد بعد</th>
+                                            <th class="text-center">رقم الفاتورة</th>
+                                            <th class="text-center">التاريخ</th>
+                                            <th class="text-center">الوقت</th>
+                                            <th class="text-center">البنك</th>
+                                            <th class="text-center">رقم المعاملة</th>
+                                            <th class="text-center">ملاحظات</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @endif
-                    @if (isset($outer_client_k) && !empty($outer_client_k))
-                        <div class="col-lg-12 text-center mt-3 mb-3">
-                            <span class="alert alert-info text-center ">
-                                مديونية العميل الحالية
-                                {{ floatval($outer_client_k->prev_balance) }} {{ $currency }}
-                            </span>
-                        </div>
-                    @endif
+                                    </thead>
+                                    <tbody>
+                                        @php
+                                            $i = 0;
+                                        @endphp
+                                        @foreach ($bankcashs as $key => $cash)
+                                            <tr>
+                                                <td>{{ $cash->cash_number }}</td>
+                                                <td>{{ $cash->outerClient->client_name }}</td>
+                                                <td>{{ floatval($cash->amount) }}</td>
+                                                <td>{{ floatval($cash->balance_before) }}</td>
+                                                <td>{{ floatval($cash->balance_after) }}</td>
+                                                <td>{{ $cash->bill_id }}</td>
+                                                <td>{{ $cash->date }}</td>
+                                                <td>{{ $cash->time }}</td>
+                                                <td>{{ $cash->bank->bank_name }}</td>
+                                                <td>{{ $cash->bank_check_number }}</td>
+                                                <td>{{ $cash->notes }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
+                        @if (isset($outer_client_k) && !empty($outer_client_k))
+                            <div class="col-lg-12 text-center mt-3 mb-3">
+                                <span class="alert alert-info text-center ">
+                                    مديونية العميل الحالية
+                                    {{ floatval($outer_client_k->prev_balance) }} {{ $currency }}
+                                </span>
+                            </div>
+                        @endif
 
                 </td>
             </tr>
