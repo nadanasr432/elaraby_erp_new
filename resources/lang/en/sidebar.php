@@ -188,4 +188,5 @@ return [
     "Manufacture"=> "Manufacture",
     "Status"=> "Status",
     "New sales"=> "New sales",
+    "edit or return"=> "edit or return",
 ];

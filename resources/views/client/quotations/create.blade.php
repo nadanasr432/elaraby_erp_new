@@ -374,6 +374,12 @@
                     isMoswada="0" invoiceType="2" style="height: 40px">
                     حفظ و طباعة
                 </button>
+                <button type="button" role="button" class="btn save_btn2 btn-md btn-success text-white m-1"
+                    isMoswada="0" invoiceType="2" style="height: 40px">
+                    حفظ و طباعة
+                    2
+                </button>
+
 
             </div>
         </div>
@@ -585,9 +591,23 @@
                     return false;
                 }
 
+                // Check if start_date is before expiration_date
+                let startDate = $('#start_date').val();
+                let expirationDate = $('#expiration_date').val();
+
+                if (new Date(startDate) > new Date(expirationDate)) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'تحذير',
+                        text: 'تاريخ البداية يجب أن يكون قبل تاريخ الانتهاء',
+                        confirmButtonText: 'موافق'
+                    });
+                    return false;
+                }
+
                 var formData = $('#myForm').serialize();
 
-                $.post("{{ route('client.quotations.redirectANDprint') }} ", formData)
+                $.post("{{ route('client.quotations.redirectANDprint') }}", formData)
                     .done(function(data) {
                         location.href = '/client/quotations/view/' + data;
                     })
@@ -614,11 +634,10 @@
                     });
             });
 
+
+
             // Save button 2
             $('.save_btn2').on('click', function() {
-                let printColor = $(this).attr('printColor');
-                let isMoswada = $(this).attr('isMoswada');
-                let invoiceType = $(this).attr('invoiceType');
                 let outerClientId = $('#outer_client_id').val();
 
                 // Check if the outer client ID is selected
@@ -653,12 +672,26 @@
                     });
                     return false;
                 }
+                 // Check if start_date is before expiration_date
+                let startDate = $('#start_date').val();
+                let expirationDate = $('#expiration_date').val();
+
+                if (new Date(startDate) > new Date(expirationDate)) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'تحذير',
+                        text: 'تاريخ البداية يجب أن يكون قبل تاريخ الانتهاء',
+                        confirmButtonText: 'موافق'
+                    });
+                    return false;
+                }
+
 
                 var formData = $('#myForm').serialize();
 
-                $.post("{{ url('/client/sale-bills/saveAll1') }}", formData)
+                $.post("{{ route('client.quotations.redirectANDprint2') }} ", formData)
                     .done(function(data) {
-                        location.href = '/client/quotations/view/' + data;
+                        location.href = '/client/quotations/print/' + data;
                     })
                     .fail(function(jqXHR) {
                         // Check if responseJSON exists and try to extract message
@@ -682,6 +715,73 @@
                         });
                     });
             });
+            // $('.save_btn2').on('click', function() {
+            //     let printColor = $(this).attr('printColor');
+            //     let isMoswada = $(this).attr('isMoswada');
+            //     let invoiceType = $(this).attr('invoiceType');
+            //     let outerClientId = $('#outer_client_id').val();
+
+            //     // Check if the outer client ID is selected
+            //     if (!outerClientId) {
+            //         Swal.fire({
+            //             icon: 'warning',
+            //             title: 'تحذير',
+            //             text: 'يجب اختيار العميل',
+            //             confirmButtonText: 'موافق'
+            //         });
+            //         return false;
+            //     }
+
+            //     // Validate that at least one product is selected
+            //     let hasProduct = false;
+            //     $('#products_table tbody tr').each(function() {
+            //         let quantity = $(this).find('input[name*="[quantity]"]').val();
+            //         let price = $(this).find('input[name*="[product_price]"]').val();
+            //         let unit = $(this).find('select[name*="[unit_id]"]').val();
+
+            //         if (quantity > 0 && price > 0 && unit) {
+            //             hasProduct = true;
+            //         }
+            //     });
+
+            //     if (!hasProduct) {
+            //         Swal.fire({
+            //             icon: 'warning',
+            //             title: 'تحذير',
+            //             text: 'يجب اختيار منتج واحد على الأقل، وتحديد الكمية، والسعر، والوحدة لكل منتج',
+            //             confirmButtonText: 'موافق'
+            //         });
+            //         return false;
+            //     }
+
+            //     var formData = $('#myForm').serialize();
+
+            //     $.post("{{ url('/client/sale-bills/saveAll1') }}", formData)
+            //         .done(function(data) {
+            //             location.href = '/client/quotations/view/' + data;
+            //         })
+            //         .fail(function(jqXHR) {
+            //             // Check if responseJSON exists and try to extract message
+            //             let errorMessage = "حدث خطأ أثناء حفظ البيانات";
+
+            //             if (jqXHR.responseJSON) {
+            //                 if (jqXHR.responseJSON.message) {
+            //                     errorMessage = jqXHR.responseJSON.message;
+            //                 } else if (jqXHR.responseJSON.error) {
+            //                     errorMessage = jqXHR.responseJSON.error;
+            //                 }
+            //             } else if (jqXHR.responseText) {
+            //                 errorMessage = jqXHR.responseText;
+            //             }
+
+            //             Swal.fire({
+            //                 icon: 'error',
+            //                 title: errorMessage, // Replace title with the error message
+            //                 text: '',
+            //                 confirmButtonText: 'إغلاق'
+            //             });
+            //         });
+            // });
 
 
 

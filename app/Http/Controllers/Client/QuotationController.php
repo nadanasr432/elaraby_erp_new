@@ -784,6 +784,13 @@ class QuotationController extends Controller
         */
         return redirect()->route('client.quotations.view', $quotation_k->quotation_number)->with('success', 'تم انشاء عرض السعر بنجاح');
     }
+    public function redirectANDprint2(Request $request)
+    {
+        $quotation_k = $this->store($request);
+        // dd($quotation_k);
+        return $quotation_k->quotation_number;
+        return redirect()->route('client.quotations.print', $quotation_k->quotation_number)->with('success', 'تم انشاء عرض السعر بنجاح');
+    }
 
     public function get_outer_client_details(Request $request)
     {
@@ -1113,86 +1120,166 @@ class QuotationController extends Controller
 
     // view quotation template
     // view quotation template
-   public function view($quotation_id)
-{
-    # get company data #
-    $company_id = Auth::user()->company_id;
-    $company = Company::findOrFail($company_id);
-    $shipping_value = 0;
-    $discount_value = 0;
-    $netPrice = 0;  // Initialize netPrice
+    public function view($quotation_id)
+    {
+        # get company data #
+        $company_id = Auth::user()->company_id;
+        $company = Company::findOrFail($company_id);
+        $shipping_value = 0;
+        $discount_value = 0;
+        $netPrice = 0;  // Initialize netPrice
 
-    # get quotation data #
-    $quotation = Quotation::where('quotation_number', $quotation_id)
-        ->where('company_id', $company_id)
-        ->firstOrFail();
-    $products = QuotationElement::where('quotation_id', $quotation->id)
-        ->where('company_id', $company_id)
-        ->get();
+        # get quotation data #
+        $quotation = Quotation::where('quotation_number', $quotation_id)
+            ->where('company_id', $company_id)
+            ->firstOrFail();
+        $products = QuotationElement::where('quotation_id', $quotation->id)
+            ->where('company_id', $company_id)
+            ->get();
 
-    # chk for totalPrice for Products #
-    $elements = $quotation->elements;
-    $productsTotal = array();
-    foreach ($elements as $element) {
-        array_push($productsTotal, $element->quantity_price);
-    }
-    $productsTotal = array_sum($productsTotal);
-
-    # chk for discount #
-    $totalQuotaitonPrice = $productsTotal;
-    $discount = QuotationExtra::where('quotation_id', $quotation->id)
-        ->where('action', 'discount')
-        ->first();
-    if (!empty($discount)) {
-        $discount_type = $discount->action_type;
-        $discount_value = $discount->value;
-        if ($discount_type == "percent") {
-            $discount_value = $discount_value / 100 * $productsTotal;
+        # chk for totalPrice for Products #
+        $elements = $quotation->elements;
+        $productsTotal = array();
+        foreach ($elements as $element) {
+            array_push($productsTotal, $element->quantity_price);
         }
-        $totalQuotaitonPrice = (float)$productsTotal - (float)$discount_value;
-    }
+        $productsTotal = array_sum($productsTotal);
 
-    # calc tax #
-    $tax_value_added = $company->tax_value_added;
-    $taxValue = 0;
-    $netPrice = $totalQuotaitonPrice;  // Set netPrice initially to totalQuotaitonPrice
-    if ($tax_value_added != 0) {
-        $taxValue = $totalQuotaitonPrice * $tax_value_added / 100;
-        $netPrice = $totalQuotaitonPrice - $taxValue;
-    }
-
-    # chk for shipping #
-    $shipping = QuotationExtra::where('quotation_id', $quotation->id)
-        ->where('action', 'extra')
-        ->first();
-
-    if (!empty($shipping)) {
-        $shipping_type = $shipping->action_type;
-        $shipping_value = (float)$shipping->value;
-
-        if ($shipping_type == "percent") {
-            $shipping_value = $shipping_value / 100 * $totalQuotaitonPrice;
+        # chk for discount #
+        $totalQuotaitonPrice = $productsTotal;
+        $discount = QuotationExtra::where('quotation_id', $quotation->id)
+            ->where('action', 'discount')
+            ->first();
+        if (!empty($discount)) {
+            $discount_type = $discount->action_type;
+            $discount_value = $discount->value;
+            if ($discount_type == "percent") {
+                $discount_value = $discount_value / 100 * $productsTotal;
+            }
+            $totalQuotaitonPrice = (float)$productsTotal - (float)$discount_value;
         }
 
-        $totalQuotaitonPrice += $shipping_value;
-    }
+        # calc tax #
+        $tax_value_added = $company->tax_value_added;
+        $taxValue = 0;
+        $netPrice = $totalQuotaitonPrice;  // Set netPrice initially to totalQuotaitonPrice
+        if ($tax_value_added != 0) {
+            $taxValue = $totalQuotaitonPrice * $tax_value_added / 100;
+            $netPrice = $totalQuotaitonPrice - $taxValue;
+        }
 
-    return view(
-        'client.quotations.sample',
-        compact(
-            'company',
-            'quotation',
-            'totalQuotaitonPrice',
-            'taxValue',
-            'shipping_value',
-            'discount_value',
-            'productsTotal',
-            'tax_value_added',
-            'products',
-            'netPrice'
-        )
-    );
-}
+        # chk for shipping #
+        $shipping = QuotationExtra::where('quotation_id', $quotation->id)
+            ->where('action', 'extra')
+            ->first();
+
+        if (!empty($shipping)) {
+            $shipping_type = $shipping->action_type;
+            $shipping_value = (float)$shipping->value;
+
+            if ($shipping_type == "percent") {
+                $shipping_value = $shipping_value / 100 * $totalQuotaitonPrice;
+            }
+
+            $totalQuotaitonPrice += $shipping_value;
+        }
+
+        return view(
+            'client.quotations.sample',
+            compact(
+                'company',
+                'quotation',
+                'totalQuotaitonPrice',
+                'taxValue',
+                'shipping_value',
+                'discount_value',
+                'productsTotal',
+                'tax_value_added',
+                'products',
+                'netPrice'
+            )
+        );
+    }
+    public function print($quotation_id)
+    {
+        # get company data #
+        $company_id = Auth::user()->company_id;
+        $company = Company::findOrFail($company_id);
+        $shipping_value = 0;
+        $discount_value = 0;
+        $netPrice = 0;  // Initialize netPrice
+
+        # get quotation data #
+        $quotation = Quotation::where('quotation_number', $quotation_id)
+            ->where('company_id', $company_id)
+            ->firstOrFail();
+        $products = QuotationElement::where('quotation_id', $quotation->id)
+            ->where('company_id', $company_id)
+            ->get();
+
+        # chk for totalPrice for Products #
+        $elements = $quotation->elements;
+        $productsTotal = array();
+        foreach ($elements as $element) {
+            array_push($productsTotal, $element->quantity_price);
+        }
+        $productsTotal = array_sum($productsTotal);
+
+        # chk for discount #
+        $totalQuotaitonPrice = $productsTotal;
+        $discount = QuotationExtra::where('quotation_id', $quotation->id)
+            ->where('action', 'discount')
+            ->first();
+        if (!empty($discount)) {
+            $discount_type = $discount->action_type;
+            $discount_value = $discount->value;
+            if ($discount_type == "percent") {
+                $discount_value = $discount_value / 100 * $productsTotal;
+            }
+            $totalQuotaitonPrice = (float)$productsTotal - (float)$discount_value;
+        }
+
+        # calc tax #
+        $tax_value_added = $company->tax_value_added;
+        $taxValue = 0;
+        $netPrice = $totalQuotaitonPrice;  // Set netPrice initially to totalQuotaitonPrice
+        if ($tax_value_added != 0) {
+            $taxValue = $totalQuotaitonPrice * $tax_value_added / 100;
+            $netPrice = $totalQuotaitonPrice - $taxValue;
+        }
+
+        # chk for shipping #
+        $shipping = QuotationExtra::where('quotation_id', $quotation->id)
+            ->where('action', 'extra')
+            ->first();
+
+        if (!empty($shipping)) {
+            $shipping_type = $shipping->action_type;
+            $shipping_value = (float)$shipping->value;
+
+            if ($shipping_type == "percent") {
+                $shipping_value = $shipping_value / 100 * $totalQuotaitonPrice;
+            }
+
+            $totalQuotaitonPrice += $shipping_value;
+        }
+
+        return view(
+            'client.quotations.print',
+            compact(
+                'company',
+                'quotation',
+                'totalQuotaitonPrice',
+                'taxValue',
+                'shipping_value',
+                'discount_value',
+                'productsTotal',
+                'tax_value_added',
+                'products',
+                'netPrice'
+            )
+        );
+    }
 
 
 
