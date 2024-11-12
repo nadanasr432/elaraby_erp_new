@@ -70,7 +70,7 @@ class SaleBillController extends Controller
     # index page #
     public function index()
     {
-       
+
         $company_id = Auth::user()->company_id;
         $company = Company::findOrFail($company_id);
 
@@ -524,11 +524,11 @@ class SaleBillController extends Controller
         # get invoiceData.
         $sale_bills = SaleBill::where('company_id', $company_id)->get();
         // if ($sale_bills) {
-            // foreach($sale_bills as $key=>$bill)
-            // {
-            //     $bill->sale_bill_number=$key+1;
-            //     $bill->save();
-            // }
+        // foreach($sale_bills as $key=>$bill)
+        // {
+        //     $bill->sale_bill_number=$key+1;
+        //     $bill->save();
+        // }
         // }
         $sale_bill = SaleBill::where('sale_bill_number', $request->sale_bill_number)
             ->where('company_id', $company_id)->first();
@@ -1487,16 +1487,16 @@ class SaleBillController extends Controller
             $after_total = $total + $percentage;
             $tax_option = $sale_bill->value_added_tax;
             // dd($tax_option);
-            $totalTax = $sale_bill->total_tax; 
+            $totalTax = $sale_bill->total_tax;
             // dd($totalTax);
 
             if ($tax_option == 2) {
                 $after_total = $total;
-                $totalwithtax=  $total- $totalTax ;
+                $totalwithtax =  $total - $totalTax;
             } else { // exclusive
                 $percentage = ($tax_value_added / 100) * $total;
                 $after_total = $total + $percentage;
-                $totalwithtax=$total;
+                $totalwithtax = $total;
             }
 
             echo "
@@ -1639,39 +1639,39 @@ class SaleBillController extends Controller
                 }
             }
 
-           // Initialize $after_discount to a default value (e.g., total without any discounts)
-$after_discount = $total;
+            // Initialize $after_discount to a default value (e.g., total without any discounts)
+            $after_discount = $total;
 
-// Check if discount is on pounds or percentage
-if ($discount_type == "pound") {
-    if (isset($previous_extra_value) && $previous_extra_value != 0) {
-        $after_discount = $total - $discount_value + $previous_extra_value;
-    } else {
-        $after_discount = $total - $discount_value;
-    }
-} else if ($discount_type == "percent") {
-    $value = $discount_value / 100 * $total;
-    if (isset($previous_extra_value) && $previous_extra_value != 0) {
-        $after_discount = $total - $value + $previous_extra_value;
-    } else {
-        $after_discount = $total - $value;
-    }
-} else if ($discount_type == "afterTax") {
-    $value = $discount_value / 100 * $total; // e.g. 10% discount
-    if (isset($previous_extra_value) && $previous_extra_value != 0) {
-        $after_discount = $total - $value + $tax_value_added;
-    } else {
-        $after_discount = $total - $value;
-    }
-}
+            // Check if discount is on pounds or percentage
+            if ($discount_type == "pound") {
+                if (isset($previous_extra_value) && $previous_extra_value != 0) {
+                    $after_discount = $total - $discount_value + $previous_extra_value;
+                } else {
+                    $after_discount = $total - $discount_value;
+                }
+            } else if ($discount_type == "percent") {
+                $value = $discount_value / 100 * $total;
+                if (isset($previous_extra_value) && $previous_extra_value != 0) {
+                    $after_discount = $total - $value + $previous_extra_value;
+                } else {
+                    $after_discount = $total - $value;
+                }
+            } else if ($discount_type == "afterTax") {
+                $value = $discount_value / 100 * $total; // e.g. 10% discount
+                if (isset($previous_extra_value) && $previous_extra_value != 0) {
+                    $after_discount = $total - $value + $tax_value_added;
+                } else {
+                    $after_discount = $total - $value;
+                }
+            }
 
-// Calculate the total tax based on after_discount value
-$totalTax = $sale_bill->value_added_tax
-    ? round(($after_discount * $tax_value_added) / (100 + $tax_value_added), 2) // If VAT is included
-    : round(($after_discount * $tax_value_added / 100), 2); // Standard VAT calculation
+            // Calculate the total tax based on after_discount value
+            $totalTax = $sale_bill->value_added_tax
+                ? round(($after_discount * $tax_value_added) / (100 + $tax_value_added), 2) // If VAT is included
+                : round(($after_discount * $tax_value_added / 100), 2); // Standard VAT calculation
 
-// Use $after_discount and $totalTax in further calculations
-// dd($totalTax); // For debugging purposes
+            // Use $after_discount and $totalTax in further calculations
+            // dd($totalTax); // For debugging purposes
 
             $sale_bill->update(['total_tax' => $totalTax, 'total_discount' => $discount_value,]);
 
@@ -2193,7 +2193,7 @@ $totalTax = $sale_bill->value_added_tax
             $invoices = SaleBillReturn::where("bill_id", $invID->bill_id)->get();
             foreach ($invoices as $bill_return) {
                 $saleBill = SaleBill::find($bill_return->bill_id);
-                $bill_return->setAttribute('value_added_tax', $saleBill->value_added_tax?? 0);
+                $bill_return->setAttribute('value_added_tax', $saleBill->value_added_tax ?? 0);
             }
             array_push($returnSaleInvoices, $invoices);
         }
@@ -2210,11 +2210,20 @@ $totalTax = $sale_bill->value_added_tax
     {
         $store_id = $request->store_id;
         $products = Product::where('store_id', $store_id)->get();
+
         foreach ($products as $product) {
-            echo "<option value='" . $product->id . "'>" . $product->product_name . "</option>";
+            echo "<option value='" . $product->id . "'
+                     data-name='" . strtolower($product->product_name) . "'
+                     data-sectorprice='" . $product->sector_price . "'
+                     data-wholesaleprice='" . $product->wholesale_price . "'
+                     data-tokens='" . $product->code_universal . "'
+                     data-remaining='" . $product->total_remaining . "'
+                     data-categorytype='" . $product->category_type . "'
+                     data-unitid='" . $product->unit_id . "'>"
+                . $product->product_name .
+                "</option>";
         }
     }
-
     public function print($hashtoken, $invoiceType = 1, $printColor = null, $isMoswada = null)
     {
         // Fetch the sale_bill using the provided token

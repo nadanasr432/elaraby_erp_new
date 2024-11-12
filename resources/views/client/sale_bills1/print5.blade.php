@@ -111,7 +111,25 @@
 </head>
 
 <body>
+    @php
+        $companyId = Auth::user()->company_id;
+        $currentColor = \App\Services\SettingsService::getSettingValue($companyId, 'color', 'print4', '#222751');
+        // If the form was submitted, set the color in the settings
+        if (request()->isMethod('post')) {
+            if (Auth::check()) {
+                $color = request('page_color', '#222751'); // Default to white if no color is selected
+                // Call the setSetting function directly in Blade
+                \App\Services\SettingsService::setSetting($companyId, 'color', $color, 'print4');
+            } else {
+                // Optionally, handle unauthenticated users if needed (e.g., redirect or show an error message)
+                return redirect()->route('login'); // Redirect to login or show an error
+            }
+        $currentColor = \App\Services\SettingsService::getSettingValue($companyId, 'color', 'print4', '#222751');
+        }
 
+        // Get the current page color from the settings
+
+    @endphp
     <div class="invoice-container border mt-4">
         <div class="text-center" id="buttons">
             <button class="btn btn-sm btn-success" onclick="window.print()">@lang('sales_bills.Print the invoice')</button>
@@ -128,6 +146,14 @@
                 <i class="fa fa-whatsapp"></i>
                 @lang('sales_bills.Send to whatsapp')
             </button>
+            <form method="POST" action="{{ url()->current() }}"> <!-- Submit to the same page -->
+                @csrf
+                <label for="page_color">Select Page Color:</label>
+                <input type="color" id="page_color" name="page_color"
+                    value="{{ old('page_color', $currentColor ?? '#222751') }}">
+
+                <button type="submit">Save Color</button>
+            </form>
         </div>
         <div class="all-data" style="border-top: 1px solid #2d2d2d20;padding-top: 25px;">
 
@@ -213,7 +239,7 @@
                         style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                         <thead style="font-size:18px !important;">
                             <tr
-                                style="font-size:18px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
+                                style="font-size:18px !important; background:{{$currentColor}}; color: white; height: 44px !important; text-align: center;">
                                 <th>@lang('sales_bills.Release Date')</th>
                                 <th>@lang('sales_bills.invoice number')</th>
                                 <th>@lang('sales_bills.commercial register')</th>
@@ -237,7 +263,7 @@
                         style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                         <thead style="font-size:18px !important;">
                             <tr
-                                style="font-size:18px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
+                                style="font-size:18px !important; background:{{$currentColor}}; color: white; height: 44px !important; text-align: center;">
                                 <th>@lang('sales_bills.commercial register')</th>
                                 <th>@lang('sales_bills.invoice number')</th>
                                 <th>@lang('sales_bills.Release Date')</th>
@@ -261,7 +287,7 @@
                     <div class="col-12 pr-2 pl-2">
                         <table style="width: 100%;">
                             <tr class="d-flex pt-1"
-                                style="background: #222751; color: white; font-size: 16px;border-radius: 7px 7px 0 0;padding: 8px !important;">
+                                style="background:{{$currentColor}}; color: white; font-size: 16px;border-radius: 7px 7px 0 0;padding: 8px !important;">
 
                                 <td width="50%" class="text-left pr-2">@lang('sales_bills.invoice from')</td>
                                 <td width="50%" class="text-left pr-2">@lang('sales_bills.Customer data')</td>
@@ -333,7 +359,7 @@
                     <div class="col-12 pr-2 pl-2">
                         <table style="width: 100%;">
                             <tr class="d-flex pt-1"
-                                style="background: #222751; color: white; font-size: 16px;border-radius: 7px 7px 0 0;padding: 8px !important;">
+                                style="background:{{$currentColor}}; color: white; font-size: 16px;border-radius: 7px 7px 0 0;padding: 8px !important;">
                                 <td width="50%" class="text-right pr-2">@lang('sales_bills.Customer data')</td>
                                 <td width="50%" class="text-right pr-2">@lang('sales_bills.invoice from')</td>
                             </tr>
@@ -398,7 +424,7 @@
                         style="width: 100%;background:#222751; border-radius: 8px !important; overflow: hidden;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                         <thead>
                             <tr
-                                style="font-size:18px !important; background: {{ $printColor }}; color: white; height: 44px !important; text-align: center;">
+                                style="font-size:18px !important; background:{{$currentColor}}; color: white; height: 44px !important; text-align: center;">
                                 <th>@lang('sales_bills.Product number')</th>
                                 <th>@lang('main.name')</th>
                                 <th>@lang('sales_bills.unit price')</th>
@@ -464,7 +490,8 @@
                                         <td> {{ $element->tax_type == 2 ? round($element->quantity_price - $element->tax_value, 2) : round($element->quantity_price, 2) }}
                                         </td>
                                         <td>{{ $element->tax_value }}</td>
-                                        <td>{{ $element->discount_value }}{{ $element->discount_type == "percent" ? ' %' : '' }}</td>
+                                        <td>{{ $element->discount_value }}{{ $element->discount_type == 'percent' ? ' %' : '' }}
+                                        </td>
                                         <td>
                                             {{ $element->tax_type == 0 ? round($element->quantity_price + $element->tax_value - $element->discount_value, 2) : round($element->quantity_price - $element->discount_value, 2) }}
                                         </td>
@@ -483,7 +510,7 @@
                         style="width: 100%;width: 100%;background:#222751; border-radius: 8px !important; overflow: hidden;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                         <thead>
                             <tr
-                                style="font-size:18px !important; background: {{ $printColor }}; color: white; height: 44px !important; text-align: center;">
+                                style="font-size:18px !important; background:{{$currentColor}}; color: white; height: 44px !important; text-align: center;">
                                 <th>@lang('sales_bills.total')</th>
                                 <th>@lang('sales_bills.Tax')</th>
                                 <th>@lang('sales_bills.Discount')</th>
@@ -541,7 +568,8 @@
                                         </td>
                                         </td>
                                         <td>{{ $element->tax_value }}</td>
-                                        <td>{{ $element->discount_value }}{{ $element->discount_type == "percent" ? ' %' : '' }}</td>
+                                        <td>{{ $element->discount_value }}{{ $element->discount_type == 'percent' ? ' %' : '' }}
+                                        </td>
                                         <td>
                                             {{ $element->tax_type == 2 ? round($element->quantity_price - $element->tax_value, 2) : round($element->quantity_price, 2) }}
 
@@ -565,10 +593,10 @@
             <?php
             if ($sale_bill->company_id == 20) {
                 echo "<p style='text-align: justify; direction: rtl; font-size: 12px; padding: 11px; background: #f3f3f3; margin: 2px 10px; border-radius: 6px; border: 1px solid #2d2d2d10;'>
-                                                                                                                                                                                                                                                                                                                                                                                            <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
-                                                                                                                                                                                                                                                                                                                                                                                            شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
-                                                                                                                                                                                                                                                                                                                                                                                            (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
-                                                                                                                                                                                                                                                                                                                                                                                        </p>";
+                                                                                                                                                                                                                                                                                                                                                                                                        <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
+                                                                                                                                                                                                                                                                                                                                                                                                        شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
+                                                                                                                                                                                                                                                                                                                                                                                                        (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
+                                                                                                                                                                                                                                                                                                                                                                                                    </p>";
             }
             ?>
             @if (app()->getLocale() == 'en')
@@ -587,11 +615,13 @@
                                         <!--{{-- @dd( $discountValue) --}}-->
                                         <!--{{ $discountNote ? $discountNote . ' || ' : '' }}-->
                                         <!--{{-- @if ($discount->action_type == 'poundAfterTax') --}}-->
-                                        <!--@if ($realtotal > 0)-->
+                                        <!--@if ($realtotal > 0)
+-->
                                         <!--    ({{ round($discount) }})-->
 
                                         <!--    {{ $currency }}-->
-                                        <!--@endif-->
+                                        <!--
+@endif-->
                                         <!--{{-- @else --}}-->
                                         <!--{{-- @if ($realtotal > 0)-->
                                         <!--        ({{ round(($discountValue / $realtotal) * 100, 1) }}%)-->
@@ -599,13 +629,13 @@
                                         <!--    @endif-->
                                         <!--    {{ $currency }} --}}-->
                                         <!--{{-- @endif --}}-->
-                                         @if ($realtotal > 0)
-                                            @if($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
-                                            ({{ $discount2->value }})
-                                            {{ $currency }}
-                                        @elseif($discount2)
-                                            ({{ $discount2->value }}%)
-                                        @endif
+                                        @if ($realtotal > 0)
+                                            @if ($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
+                                                ({{ $discount2->value }})
+                                                {{ $currency }}
+                                            @elseif($discount2)
+                                                ({{ $discount2->value }}%)
+                                            @endif
                                         @endif
 
 
@@ -616,7 +646,7 @@
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                 <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
                                 <td dir="rtl">
-                                      {{-- @if ($discount->action_type == 'poundAfterTax') --}}
+                                    {{-- @if ($discount->action_type == 'poundAfterTax') --}}
                                     {{-- @if ($realtotal > 0) --}}
                                     ({{ number_format($sale_bill->final_total - $sale_bill->total_tax, 2, '.', '') }})
 
@@ -657,7 +687,7 @@
 
 
                             <tr
-                                style="background:#222751;border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:16px !important; height: 37px !important; text-align: center;background: {{ $printColor }};color:white;">
+                                style="background:#222751;border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:16px !important; height: 37px !important; text-align: center;background:{{$currentColor}};color:white;">
                                 <td style="text-align: left;padding-right: 14px;background:#222751;">
                                     @lang('sales_bills.total')
                                 </td>
@@ -715,7 +745,7 @@
                                 style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                                 <tbody>
                                     <tr
-                                        style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 44px !important; text-align: center;background: {{ $printColor }};color:white;">
+                                        style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 44px !important; text-align: center;background:{{$currentColor}};color:white;">
                                         <td style="text-align: left;padding-left: 14px;font-size: 14px;"
                                             colspan="2">
                                             @lang('sales_bills.Terms and Conditions')
@@ -745,10 +775,12 @@
                                     <td dir="rtl">
                                         <!--{{ $discountNote ? $discountNote . ' || ' : '' }}-->
                                         <!--{{-- @if ($discount->action_type == 'poundAfterTax') --}}-->
-                                        <!--@if ($realtotal > 0)-->
+                                        <!--@if ($realtotal > 0)
+-->
                                         <!--    ({{ round($discount) }})-->
                                         <!--    {{ $currency }}-->
-                                        <!--@endif-->
+                                        <!--
+@endif-->
                                         <!--{{-- @else-->
                                         <!--    @if ($realtotal > 0)-->
                                         <!--        ({{ round(($discountValue / $realtotal) * 100, 1) }}%)-->
@@ -756,13 +788,13 @@
                                         <!--    @endif-->
                                         <!--    {{ $currency }}-->
                                         <!--@endif --}}-->
-                                         @if ($realtotal > 0)
-                                            @if($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
-                                            ({{ $discount2->value }})
-                                            {{ $currency }}
-                                        @elseif($discount2)
-                                            ({{ $discount2->value }}%)
-                                        @endif
+                                        @if ($realtotal > 0)
+                                            @if ($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
+                                                ({{ $discount2->value }})
+                                                {{ $currency }}
+                                            @elseif($discount2)
+                                                ({{ $discount2->value }}%)
+                                            @endif
                                         @endif
 
                                     </td>
@@ -773,7 +805,7 @@
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                 <td dir="rtl">
-                                      {{-- @if ($discount->action_type == 'poundAfterTax') --}}
+                                    {{-- @if ($discount->action_type == 'poundAfterTax') --}}
                                     {{-- @if ($realtotal > 0) --}}
                                     ({{ number_format($sale_bill->final_total - $sale_bill->total_tax, 2, '.', '') }})
 
@@ -811,7 +843,7 @@
                                 </td>
                             </tr>
                             <tr
-                                style="background:#222751;border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: {{ $printColor }};color:white;">
+                                style="background:#222751;border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background:{{$currentColor}};color:white;">
                                 @if ($company->tax_value_added && $company->tax_value_added != 0)
                                     {{-- @if ($discount->action_type == 'poundAfterTax') --}}
                                     <td dir="rtl">
@@ -867,7 +899,7 @@
                                 style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                                 <tbody>
                                     <tr
-                                        style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 44px !important; text-align: center;background: {{ $printColor }};color:white;">
+                                        style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 44px !important; text-align: center;background:{{$currentColor}};color:white;">
                                         <td style="text-align: right;padding-right: 14px;font-size: 14px;"
                                             colspan="2">
                                             @lang('sales_bills.Terms and Conditions')

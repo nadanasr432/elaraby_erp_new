@@ -125,13 +125,24 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
     Route::get('/suppliers-summary-post', [\App\Http\Controllers\Client\SummaryController::class, 'post_suppliers_summary'])->name('suppliers.summary.post');
 
     // Route::get('/sale-bills/print/{hashtoken?}/{invoiceType?}/{printColor?}/{isMoswada?}', [\App\Http\Controllers\Client\SaleBillController::class, 'print'])->name('client.sale_bills.print');
-    Route::get('/sale-bills/print/{hashtoken?}/{invoiceType?}/{printColor?}/{isMoswada?}', [\App\Http\Controllers\Client\SaleBillController1::class, 'print'])->name('client.sale_bills.print');
-    Route::get('/sent/sale-bills/print/{hashtoken?}/{invoiceType?}/{printColor?}/{isMoswada?}', [\App\Http\Controllers\Client\SaleBillController::class, 'sent'])->name('client.sale_bills.sent');
+    Route::middleware(['auth:client-web', \App\Http\Middleware\CheckStatus::class])
+        ->group(function () {
+            // Route for printing sale bills
+            Route::any('/sale-bills/print/{hashtoken?}/{invoiceType?}/{printColor?}/{isMoswada?}', [SaleBillController1::class, 'print'])
+                ->name('client.sale_bills.print');
 
-    Route::get('/buy-bills/print/{id?}', [\App\Http\Controllers\Client\BuyBillController::class, 'print'])->name('client.buy_bills.print');
+            // Route for viewing sent sale bills
+            Route::get('/sent/sale-bills/print/{hashtoken?}/{invoiceType?}/{printColor?}/{isMoswada?}', [SaleBillController::class, 'sent'])
+                ->name('client.sale_bills.sent');
 
-    Route::get('/pos-print/{pos_id?}', [\App\Http\Controllers\Client\PosController::class, 'print'])->name('pos.open.print');
+            // Route for printing buy bills
+            Route::get('/buy-bills/print/{id?}', [BuyBillController::class, 'print'])
+                ->name('client.buy_bills.print');
 
+            // Route for printing POS receipts
+            Route::get('/pos-print/{pos_id?}', [PosController::class, 'print'])
+                ->name('pos.open.print');
+        });
     // *********  Admin Routes ******** //
 
     Route::group(['namespace' => 'Admin'], function () {
