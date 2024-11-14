@@ -123,7 +123,7 @@
                 $currentColor = \App\Services\SettingsService::getSettingValue(
                     $companyId,
                     'color',
-                    'print4',
+                    'print1',
                     '#222751',
                 );
             } else {

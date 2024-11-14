@@ -121,6 +121,30 @@
 </head>
 
 <body>
+    @php
+    $companyId = Auth::user()->company_id;
+    $currentColor = \App\Services\SettingsService::getSettingValue($companyId, 'color', 'print6', '#222751');
+    // If the form was submitted, set the color in the settings
+    if (request()->isMethod('post')) {
+        if (Auth::check()) {
+            $color = request('page_color', '#222751'); // Default to white if no color is selected
+            // Call the setSetting function directly in Blade
+            \App\Services\SettingsService::setSetting($companyId, 'color', $color, 'print6');
+            $currentColor = \App\Services\SettingsService::getSettingValue(
+                $companyId,
+                'color',
+                'print6',
+                '#222751',
+            );
+        } else {
+            // Optionally, handle unauthenticated users if needed (e.g., redirect or show an error message)
+            return redirect()->route('login'); // Redirect to login or show an error
+        }
+    }
+
+    // Get the current page color from the settings
+
+@endphp
     <div class="invoice-container border mt-4">
         <div class="text-center" id="buttons">
             <button class="btn btn-sm btn-success" onclick="window.print()">@lang('sales_bills.Print the invoice')</button>
@@ -137,6 +161,14 @@
                 <i class="fa fa-whatsapp"></i>
                 @lang('sales_bills.Send to whatsapp')
             </button>
+            <form method="POST" action="{{ url()->current() }}"> <!-- Submit to the same page -->
+                @csrf
+                <label for="page_color">Select Page Color:</label>
+                <input type="color" id="page_color" name="page_color"
+                    value="{{ old('page_color', $currentColor ?? '#222751') }}">
+
+                <button type="submit">Save Color</button>
+            </form>
         </div>
         <div class="all-data" style="border-top: 1px solid #2d2d2d20;padding-top: 25px;">
 
@@ -197,7 +229,7 @@
                     style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                     <thead style="font-size:18px !important;">
                         <tr
-                            style="font-size:18px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
+                            style="font-size:18px !important; background: {{$currentColor}} ;color: white; height: 44px !important; text-align: center;">
                             <th>السجل التجاري <br>Commercial register</th>
                             <th>رقم الفاتورة <br> Invoice number</th>
                             <th>تاريخ الاصدار
@@ -230,7 +262,7 @@
                 <div class="col-12 pr-2 pl-2">
                     <table style="width: 100%;">
                         <tr class="d-flex pt-1"
-                            style="background: #222751; color: white; font-size: 16px;border-radius: 7px 7px 0 0;padding: 8px !important;">
+                            style="background: {{$currentColor}} ;color: white; font-size: 16px;border-radius: 7px 7px 0 0;padding: 8px !important;">
                             <td width="50%" class="d-flex justify-content-between text-right pr-2">
                                 <div style="display: flex; justify-content: space-between;">
                                     <span style="text-align: left;"> رقم العميل : <span
@@ -302,7 +334,7 @@
                     style="width: 100%;width: 100%;background:#222751 !important; border-radius: 8px !important; overflow: hidden;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                     <thead>
                         <tr
-                            style="font-size:18px !important; background: {{ $printColor }}; color: white; height: 44px !important; text-align: center;">
+                            style="font-size:18px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
                             <th>الإجمالي<br> Total</th>
                             <th>الضريبة<br>Tax</th>
                             <th>الخصم<br>Discount</th>
@@ -338,7 +370,7 @@
                                     if ($company->tax_value_added && $company->tax_value_added != 0) {
                                         $ProdTotal = $sale_bill->value_added_tax
                                             ? $element->quantity_price
-                                            : 
+                                            :
                                                 $element->quantity_price + ($element->quantity_price * 15) / 100;
                                     }
 
@@ -456,7 +488,7 @@
                         </tr>
 
                         <tr
-                            style="background:#222751;border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: {{ $printColor }};color:white;">
+                            style="background:#222751;border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: {{ $currentColor }};color:white;">
                             @if ($company->tax_value_added && $company->tax_value_added != 0)
                                 {{-- @if ($discount?->action_type == 'poundAfterTax') --}}
                                 <td dir="rtl">
@@ -530,7 +562,7 @@
                             style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                             <tbody>
                                 <tr
-                                    style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 44px !important; text-align: center;background: {{ $printColor }};color:white;">
+                                    style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 44px !important; text-align: center;background: {{ $currentColor }};color:white;">
                                     <td style="text-align: right;padding-right: 14px;font-size: 14px;" colspan="2">
                                         الحساب البنكي <br> Bank account
                                     </td>
