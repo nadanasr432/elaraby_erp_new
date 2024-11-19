@@ -19,7 +19,7 @@
     <style type="text/css" media="screen">
             .table thead th ,td{
             vertical-align: middle !important;
-                
+
             }
           .text-container {
                text-decoration: underline !important;
@@ -104,7 +104,7 @@
         }
         .container {
             width: 100%;
-           
+
         }
 
         .bordernone {
@@ -161,21 +161,21 @@
             width: 100%;
             object-fit: scale-down;
         }
-        .custom-print-table { 
+        .custom-print-table {
         background-color: #dbdbdb !important;
         border: 1px solid black !important;
     }
     </style>
     <style type="text/css" media="print">
      tr {
-       
+
             font-size: 11px !important;
         }
      .table thead th ,td {
             vertical-align: middle !important;
-                
+
             }
-    
+
     .table-bordered thead tr th,
     .table-bordered tbody tr td {
         border-left: 2px solid black !important;  /* Vertical left border color */
@@ -186,11 +186,11 @@
         .table-bordered th {
             border: 2px solid black ;
         }
-        .table-custom-sm td{ 
+        .table-custom-sm td{
             background-color: #dbdbdb !important;
-          
+
         }
-       .table-one { 
+       .table-one {
         background-color: #dbdbdb !important;
         border: 1px solid black !important; /* Proper border syntax */
     }
@@ -198,7 +198,7 @@
                text-decoration: underline !important;
                padding: 10px 0;
           }
-      
+
         #buttons {
             display: none !important;
         }
@@ -254,7 +254,7 @@
         <div class="col-md-4 text-container d-flex justify-content-end  pl-2">
             <span class=" text-center" style="font-weight: bold;font-size:27px"> {{ $company->company_name_en }} </span>
        </div>
-    
+
         <div class="logo col-md-4 d-flex justify-content-center ">
         <img class="logo" style="object-fit: scale-down;" width="130" src="{{ asset($company->company_logo) }}">
         </div>
@@ -526,7 +526,7 @@
                     <td>{{ ++$i }}</td>
                     <td class="d-flex justify-content-between" style="white-space: nowrap; gap: 100px; border: black !important;">
                         <span>{{ $element->product->product_name_en }}</span>
-                        <span>{{ $element->product->product_name }}</span> 
+                        <span>{{ $element->product->product_name }}</span>
 
                     </td>
 
@@ -588,16 +588,16 @@
                                     new Seller($company->company_name), // seller name
                                     new TaxNumber($company->tax_number), // seller tax number
                                     new InvoiceDate($invoiceDate), // invoice date in ISO 8601 format
-                                    new InvoiceTotalAmount(number_format($sumWithTax, 2, '.', '')), // invoice total amount
+                                    new InvoiceTotalAmount(number_format($sale_bill->final_total, 2, '.', '')), // invoice total amount
                                     new InvoiceTaxAmount(number_format($totalTax, 2, '.', '')), // invoice tax amount
                                     // Additional tags can be added here if needed
                                 ])->render();
                             @endphp
-                           
+
                                 @if (!$isMoswada)
                                     <img width="200" class="mt-3 mb-3" src="{{ $displayQRCodeAsBase64 }}" />
                                 @endif
-                            
+
                         </td>
                         <td >الاجمالي Total</td>
                         <td>{{ number_format($sale_bill->final_total - $sale_bill->total_tax, 2, '.', '') }}</td>
@@ -609,7 +609,7 @@
                                          @if ($realtotal > 0)
                                            @if($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
                                             {{ $discount2->value}}
-                                          
+
                                         @elseif($discount2)
                                             {{ $discount2->value }}%
                                             @else
@@ -622,8 +622,8 @@
                         <td>{{ number_format($sale_bill->final_total - $sale_bill->total_tax, 2, '.', '') }}</td>
                     </tr>
                     <tr   style="font-weight: bold;">
-                        <td>    
-                         ضريبة القيمة المضافة  
+                        <td>
+                         ضريبة القيمة المضافة
                          VAT {{ $company->tax_value_added ?? '0' }}%</td>
                         <td>{{ $sale_bill->total_tax }}</td>
                     </tr>
@@ -642,7 +642,7 @@
                 </tbody>
             </table>
         </div>
-        
+
     </div>
 
 </body>

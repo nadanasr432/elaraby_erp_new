@@ -444,7 +444,7 @@
                             </svg>
                             <span class="menu-title">
                                 {{ __('sidebar.New sales') }}
-                                <span class="badge badge-success">{{ __('sidebar.new') }}</span> <!-- Add this line -->
+                                <span class="badge badge-success">{{ __('sidebar.new') }}</span> 
                             </span>
                         </a>
                         <ul class="menu-content">

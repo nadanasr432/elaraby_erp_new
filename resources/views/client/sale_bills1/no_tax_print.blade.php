@@ -138,7 +138,7 @@
                             new Seller($company->company_name), // seller name
                             new TaxNumber($company->tax_number), // seller tax number
                             new InvoiceDate($invoiceDate), // invoice date in ISO 8601 format
-                            new InvoiceTotalAmount(number_format($sumWithTax, 2, '.', '')), // invoice total amount
+                            new InvoiceTotalAmount(number_format($sale_bill->final_total, 2, '.', '')), // invoice total amount
                             new InvoiceTaxAmount(number_format($totalTax, 2, '.', '')), // invoice tax amount
                             // Additional tags can be added here if needed
                         ])->render();
@@ -637,7 +637,7 @@
                                         <td dir="rtl">
                                             <!--{{ $discountNote . '  ' ?? '' }}-->
                                             <!--{{ $discountValue }} {{ $currency }}-->
-                                            
+
                                             @if ($realtotal > 0)
                                             @if($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
                                             ({{ $discount2->value }})

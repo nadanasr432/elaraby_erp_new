@@ -310,7 +310,7 @@
                     new Seller($company->company_name), // seller name
                     new TaxNumber($company->tax_number), // seller tax number
                     new InvoiceDate($invoiceDate), // invoice date in ISO 8601 format
-                    new InvoiceTotalAmount(number_format($sumWithTax, 2, '.', '')), // invoice total amount
+                    new InvoiceTotalAmount(number_format($sale_bill->final_total, 2, '.', '')), // invoice total amount
                     new InvoiceTaxAmount(number_format($totalTax, 2, '.', '')), // invoice tax amount
                     // Additional tags can be added here if needed
                 ])->render();
@@ -442,7 +442,7 @@
                                         $ProdTax = 0;
                                         if ($company->tax_value_added && $company->tax_value_added != 0) {
                                             $ProdTax = $sale_bill->value_added_tax
-                                                ? 
+                                                ?
                                                     $element->quantity_price - ($element->quantity_price * 20) / 23
                                                 : ($element->quantity_price * 15) / 100;
                                         }
@@ -467,7 +467,7 @@
                                         <td>
                                             {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $element->discount_value : $element->quantity_price - $element->discount_value }}
                                         </td>
-                                        
+
                                         <td>{{ $element->tax_value }}</td>
                                         <td>{{ $element->discount_value }}{{ $element->discount_type == "percent" ? ' %' : '' }}</td>
                                         <td>{{ $company->tax_value_added ?? '0' }}%</td>
