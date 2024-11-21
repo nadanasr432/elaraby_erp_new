@@ -554,7 +554,7 @@
                 <td style="border: 2px solid black; font-weight: bold;">{{ number_format($totalProductPrice, 2) }}</td>
                 <td style="border: 2px solid black; font-weight: bold;">{{ number_format($totalDiscount, 2) }}</td>
                 <td style="border: 2px solid black; font-weight: bold;">{{ number_format($totalTaxableAmount, 2) }}</td>
-                <td style="border: 2px solid black; font-weight: bold;">{{ number_format($totalTax, 2) }}</td>
+                <td style="border: 2px solid black; font-weight: bold;">{{ number_format($sale_bill->total_tax, 2) }}</td>
                 <td style="border: 2px solid black; font-weight: bold;">{{ number_format($totalInclVAT, 2) }}</td>
                 <td style="border: 2px solid black; font-weight: bold;">{{ number_format($totalRetention, 2) }}</td>
                 <td style="border: 2px solid black; font-weight: bold;">{{ number_format($totalNetAmount, 2) }}</td>
@@ -589,7 +589,7 @@
                                     new TaxNumber($company->tax_number), // seller tax number
                                     new InvoiceDate($invoiceDate), // invoice date in ISO 8601 format
                                     new InvoiceTotalAmount(number_format($sale_bill->final_total, 2, '.', '')), // invoice total amount
-                                    new InvoiceTaxAmount(number_format($totalTax, 2, '.', '')), // invoice tax amount
+                                    new InvoiceTaxAmount(number_format($sale_bill->total_tax, 2, '.', '')), // invoice tax amount
                                     // Additional tags can be added here if needed
                                 ])->render();
                             @endphp

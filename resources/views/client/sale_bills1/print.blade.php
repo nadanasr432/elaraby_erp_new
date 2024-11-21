@@ -676,7 +676,7 @@ $print_demo = $company->print_demo;
                                 new TaxNumber($company->tax_number), // seller tax number
                                 new InvoiceDate($invoiceDate), // invoice date in ISO 8601 format
                                 new InvoiceTotalAmount(number_format($sale_bill->final_total, 2, '.', '')), // invoice total amount
-                                new InvoiceTaxAmount(number_format($totalTax, 2, '.', '')), // invoice tax amount
+                                new InvoiceTaxAmount(number_format($sale_bill->total_tax, 2, '.', '')), // invoice tax amount
                                 // Additional tags can be added here if needed
                             ])->render();
                         @endphp

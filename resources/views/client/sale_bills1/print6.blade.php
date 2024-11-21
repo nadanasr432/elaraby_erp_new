@@ -193,7 +193,7 @@
                     new TaxNumber($company->tax_number), // seller tax number
                     new InvoiceDate($invoiceDate), // invoice date in ISO 8601 format
                     new InvoiceTotalAmount(number_format($sale_bill->final_total, 2, '.', '')), // invoice total amount
-                    new InvoiceTaxAmount(number_format($totalTax, 2, '.', '')), // invoice tax amount
+                    new InvoiceTaxAmount(number_format($sale_bill->total_tax, 2, '.', '')), // invoice tax amount
                     // Additional tags can be added here if needed
                 ])->render();
             @endphp
@@ -477,7 +477,7 @@
                         <tr
                             style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                             @if ($company->tax_value_added && $company->tax_value_added != 0)
-                                <td dir="rtl">{{ $totalTax }} {{ $currency }} </td>
+                                <td dir="rtl">{{ $sale_bill->total_tax }} {{ $currency }} </td>
                             @else
                                 <td dir="rtl">0 {{ $currency }} </td>
                             @endif
