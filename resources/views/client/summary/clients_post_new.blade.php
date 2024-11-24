@@ -265,15 +265,9 @@ $currency = $extra_settings->currency;
                                         <td>{{ $outer_client_k->client_national }}</td>
                                         <td>{{ $outer_client_k->tax_number }}</td>
                                         <td>
-                                            @if (
-                                                $outer_client_k->created_at->between(Carbon\Carbon::parse($from_date), Carbon\Carbon::parse($to_date)) &&
-                                                    $outer_client_k->prev_balance != 0)
+                                           
                                                 {{ floatval($outer_client_k->prev_balance) }}
-                                            @elseif (!$from_date && !$to_date && $outer_client_k->prev_balance != 0)
-                                                {{ floatval($outer_client_k->prev_balance) }}
-                                            @else
-                                                0
-                                            @endif
+                                         
                                         </td>
                                     </tr>
                                 </tbody>
