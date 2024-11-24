@@ -16,6 +16,8 @@
     </title>
     <meta charset="utf-8" />
     <link href="{{ asset('/assets/css/bootstrap.min.css') }}" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <style type="text/css" media="screen">
         @font-face {
             font-family: 'Cairo';
@@ -146,14 +148,37 @@
                 <i class="fa fa-whatsapp"></i>
                 @lang('sales_bills.Send to whatsapp')
             </button>
-            <form method="POST" action="{{ url()->current() }}"> <!-- Submit to the same page -->
-                @csrf
-                <label for="page_color">Select Page Color:</label>
-                <input type="color" id="page_color" name="page_color"
-                    value="{{ old('page_color', $currentColor ?? '#222751') }}">
-
-                <button type="submit">Save Color</button>
-            </form>
+             <div class="col-md-2">
+                <div class="card shadow-sm border-light rounded p-3 mb-3">
+                    <button type="button" class="btn btn-sm btn-primary rounded-pill shadow-sm w-100" data-bs-toggle="modal" data-bs-target="#colorModal"
+                    style="border-color: {{ old('page_color', $currentColor ?? '#222751') }}; background-color: {{ old('page_color', $currentColor ?? '#222751') }};">
+                       @lang('main.Choose Print Color')
+                    </button>
+                </div>
+            </div>
+    
+            <!-- Modal -->
+            <div class="modal fade" id="colorModal" tabindex="-1" aria-labelledby="colorModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="colorModalLabel">@lang('main.Select Print Color')</h5>
+                            <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" action="{{ url()->current() }}">
+                                @csrf
+                               <div class="mb-3 text-center">
+                                <input type="color" class="form-control form-control-color mx-auto"
+                                    id="page_color" name="page_color" value="{{ old('page_color', $currentColor ?? '#222751') }}"
+                                    title="Choose your color" style="width: 120px; height: 40px; cursor: pointer;">
+                                </div>
+                                <button type="submit" class="btn btn-secondary">@lang('main.save')</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="all-data" style="border-top: 1px solid #2d2d2d20;padding-top: 25px;">
 

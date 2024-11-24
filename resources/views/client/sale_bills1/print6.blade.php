@@ -16,6 +16,8 @@
     </title>
     <meta charset="utf-8" />
     <link href="{{ asset('/assets/css/bootstrap.min.css') }}" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <style type="text/css" media="screen">
         .border-black {
             border: 2px solid black;
@@ -122,29 +124,29 @@
 
 <body>
     @php
-    $companyId = Auth::user()->company_id;
-    $currentColor = \App\Services\SettingsService::getSettingValue($companyId, 'color', 'print6', '#222751');
-    // If the form was submitted, set the color in the settings
-    if (request()->isMethod('post')) {
-        if (Auth::check()) {
-            $color = request('page_color', '#222751'); // Default to white if no color is selected
-            // Call the setSetting function directly in Blade
-            \App\Services\SettingsService::setSetting($companyId, 'color', $color, 'print6');
-            $currentColor = \App\Services\SettingsService::getSettingValue(
-                $companyId,
-                'color',
-                'print6',
-                '#222751',
-            );
-        } else {
-            // Optionally, handle unauthenticated users if needed (e.g., redirect or show an error message)
-            return redirect()->route('login'); // Redirect to login or show an error
+        $companyId = Auth::user()->company_id;
+        $currentColor = \App\Services\SettingsService::getSettingValue($companyId, 'color', 'print6', '#222751');
+        // If the form was submitted, set the color in the settings
+        if (request()->isMethod('post')) {
+            if (Auth::check()) {
+                $color = request('page_color', '#222751'); // Default to white if no color is selected
+                // Call the setSetting function directly in Blade
+                \App\Services\SettingsService::setSetting($companyId, 'color', $color, 'print6');
+                $currentColor = \App\Services\SettingsService::getSettingValue(
+                    $companyId,
+                    'color',
+                    'print6',
+                    '#222751',
+                );
+            } else {
+                // Optionally, handle unauthenticated users if needed (e.g., redirect or show an error message)
+                return redirect()->route('login'); // Redirect to login or show an error
+            }
         }
-    }
 
-    // Get the current page color from the settings
+        // Get the current page color from the settings
 
-@endphp
+    @endphp
     <div class="invoice-container border mt-4">
         <div class="text-center" id="buttons">
             <button class="btn btn-sm btn-success" onclick="window.print()">@lang('sales_bills.Print the invoice')</button>
@@ -161,14 +163,41 @@
                 <i class="fa fa-whatsapp"></i>
                 @lang('sales_bills.Send to whatsapp')
             </button>
-            <form method="POST" action="{{ url()->current() }}"> <!-- Submit to the same page -->
-                @csrf
-                <label for="page_color">Select Page Color:</label>
-                <input type="color" id="page_color" name="page_color"
-                    value="{{ old('page_color', $currentColor ?? '#222751') }}">
+            <div class="col-md-2">
+                <div class="card shadow-sm border-light rounded p-3 mb-3">
+                    <button type="button" class="btn btn-sm btn-primary rounded-pill shadow-sm w-100"
+                        data-bs-toggle="modal" data-bs-target="#colorModal"
+                        style="border-color: {{ old('page_color', $currentColor ?? '#222751') }}; background-color: {{ old('page_color', $currentColor ?? '#222751') }};">
+                        @lang('main.Choose Print Color')
+                    </button>
+                </div>
+            </div>
 
-                <button type="submit">Save Color</button>
-            </form>
+            <!-- Modal -->
+            <div class="modal fade" id="colorModal" tabindex="-1" aria-labelledby="colorModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="colorModalLabel">@lang('main.Select Print Color')</h5>
+                            <button type="button" class="btn btn-close" data-bs-dismiss="modal"
+                                aria-label="Close">X</button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" action="{{ url()->current() }}">
+                                @csrf
+                                <div class="mb-3 text-center">
+                                    <input type="color" class="form-control form-control-color mx-auto"
+                                        id="page_color" name="page_color"
+                                        value="{{ old('page_color', $currentColor ?? '#222751') }}"
+                                        title="Choose your color" style="width: 120px; height: 40px; cursor: pointer;">
+                                </div>
+                                <button type="submit" class="btn btn-secondary">@lang('main.save')</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
         <div class="all-data" style="border-top: 1px solid #2d2d2d20;padding-top: 25px;">
 
@@ -229,7 +258,7 @@
                     style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                     <thead style="font-size:18px !important;">
                         <tr
-                            style="font-size:18px !important; background: {{$currentColor}} ;color: white; height: 44px !important; text-align: center;">
+                            style="font-size:18px !important; background: {{ $currentColor }} ;color: white; height: 44px !important; text-align: center;">
                             <th>السجل التجاري <br>Commercial register</th>
                             <th>رقم الفاتورة <br> Invoice number</th>
                             <th>تاريخ الاصدار
@@ -262,7 +291,7 @@
                 <div class="col-12 pr-2 pl-2">
                     <table style="width: 100%;">
                         <tr class="d-flex pt-1"
-                            style="background: {{$currentColor}} ;color: white; font-size: 16px;border-radius: 7px 7px 0 0;padding: 8px !important;">
+                            style="background: {{ $currentColor }} ;color: white; font-size: 16px;border-radius: 7px 7px 0 0;padding: 8px !important;">
                             <td width="50%" class="d-flex justify-content-between text-right pr-2">
                                 <div style="display: flex; justify-content: space-between;">
                                     <span style="text-align: left;"> رقم العميل : <span
@@ -370,8 +399,7 @@
                                     if ($company->tax_value_added && $company->tax_value_added != 0) {
                                         $ProdTotal = $sale_bill->value_added_tax
                                             ? $element->quantity_price
-                                            :
-                                                $element->quantity_price + ($element->quantity_price * 15) / 100;
+                                            : $element->quantity_price + ($element->quantity_price * 15) / 100;
                                     }
 
                                     $priceBeforeTax = $sale_bill->value_added_tax
@@ -385,7 +413,8 @@
                                         {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $element->discount_value : $element->quantity_price - $element->discount_value }}
                                     </td>
                                     <td>{{ $element->tax_value }}</td>
-                                    <td>{{ $element->discount_value }}{{ $element->discount_type == "percent" ? ' %' : '' }}</td>
+                                    <td>{{ $element->discount_value }}{{ $element->discount_type == 'percent' ? ' %' : '' }}
+                                    </td>
                                     <td>{{ $priceBeforeTax }}</td>
                                     <td class="text-center">
                                         <span>{{ $element->unit->unit_name }}</span>
@@ -404,10 +433,10 @@
             <?php
             if ($sale_bill->company_id == 20) {
                 echo "<p style='text-align: justify; direction: rtl; font-size: 12px; padding: 11px; background: #f3f3f3; margin: 2px 10px; border-radius: 6px; border: 1px solid #2d2d2d10;'>
-                                                                                                                                                                                                                                                                                                                                                                                                                                <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
-                                                                                                                                                                                                                                                                                                                                                                                                                                شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
-                                                                                                                                                                                                                                                                                                                                                                                                                                (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
-                                                                                                                                                                                                                                                                                                                                                                                                                            </p>";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
+                                                                                                                                                                                                                                                                                                                                                                                                                                                    </p>";
             }
             ?>
             <div class="row px-4 pt-2 d-flex justify-content-between">
@@ -422,10 +451,12 @@
                                 <td dir="rtl">
                                     <!--{{ $discountNote ? $discountNote . ' || ' : '' }}-->
                                     <!--{{-- @if ($discount?->action_type == 'poundAfterTax') --}}-->
-                                    <!--@if ($realtotal > 0)-->
+                                    <!--@if ($realtotal > 0)
+-->
                                     <!--    ({{ $discount }})-->
                                     <!--    {{ $currency }}-->
-                                    <!--@endif-->
+                                    <!--
+@endif-->
                                     <!--{{-- @else-->
                                     <!--    @if ($realtotal > 0)-->
                                     <!--        ({{ ($discountValue / $realtotal) * 100 }}%)-->
@@ -433,14 +464,14 @@
                                     <!--    @endif-->
                                     <!--    {{ $currency }}-->
                                     <!--@endif --}}-->
-                                     @if ($realtotal > 0)
-                                            @if($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
+                                    @if ($realtotal > 0)
+                                        @if ($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
                                             ({{ $discount2->value }})
                                             {{ $currency }}
                                         @elseif($discount2)
                                             ({{ $discount2->value }}%)
                                         @endif
-                                        @endif
+                                    @endif
                                 </td>
                                 <td style="text-align: right;padding-right: 14px;">(Discount) الخصم</td>
                             </tr>
@@ -449,13 +480,13 @@
                         <tr
                             style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                             <td dir="rtl">
-                                  {{-- @if ($discount->action_type == 'poundAfterTax') --}}
-                                    {{-- @if ($realtotal > 0) --}}
-                                    ({{ number_format($sale_bill->final_total - $sale_bill->total_tax, 2, '.', '') }})
+                                {{-- @if ($discount->action_type == 'poundAfterTax') --}}
+                                {{-- @if ($realtotal > 0) --}}
+                                ({{ number_format($sale_bill->final_total - $sale_bill->total_tax, 2, '.', '') }})
 
-                                    {{ $currency }}
-                                    {{-- @endif --}}
-                                    {{-- @else
+                                {{ $currency }}
+                                {{-- @endif --}}
+                                {{-- @else
                                         @if ($realtotal > 0)
                                             {{ $sale_bill->final_total - $sale_bill->total_tax }} {{ $currency }}
                                         @endif

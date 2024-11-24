@@ -70,7 +70,6 @@ return [
     "tax-number" => "Tax number",
     "order-tax" => "Order tax",
     "taxes" => "Taxes",
-    'delete_confirm' => 'Are you sure you want to delete this bill?',
     "name" => "Name",
     "user" => "User",
     "category" => "Category",
@@ -84,7 +83,6 @@ return [
     "click-to-import" => "Click to Import",
     "transfer" => "Transfer",
     "amount" => "Amount",
-    'delete' => 'delete',
     "notes" => "Notes",
     "client" => "Client",
     "date" => "Date",
@@ -339,7 +337,11 @@ return [
     "elaraby" => "Elaraby Erp",
     "manst-elaraby" => "Elaraby Platform",
     "use the new sale bill" => "New Sales",
+    'delete_confirm' => 'Are you sure you want to delete this bill?',
     'name_ar' =>  'Name Arabic',
-    'name_en' => 'Name English'
+    'name_en' => 'Name English',
+    'Choose Print Color' => 'Choose Print Color',
+    "Select Print Color" => "Select Print Color"
+
 
 ];
