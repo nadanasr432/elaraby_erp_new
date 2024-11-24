@@ -115,9 +115,9 @@ class CashController extends Controller
         $old_balance = $safe->balance;
         $new_balance = $old_balance + $amount;
         $cash = Cash::create($data);
-        $outer_client->update([
-            'prev_balance' => $balance_after,
-        ]);
+        // $outer_client->update([
+        //     'prev_balance' => $balance_after,
+        // ]);
         $safe->update([
             'balance' => $new_balance,
         ]);
@@ -143,9 +143,9 @@ class CashController extends Controller
         $new_balance = $old_balance - $amount;
         $data['amount'] = -$amount;
         $cash = Cash::create($data);
-        $outer_client->update([
-            'prev_balance' => $balance_after,
-        ]);
+        // $outer_client->update([
+        //     'prev_balance' => $balance_after,
+        // ]);
         $safe->update([
             'balance' => $new_balance,
         ]);
@@ -188,9 +188,9 @@ class CashController extends Controller
         $safe = Safe::FindOrFail($safe_id);
         $old_balance = $safe->balance;
         $new_balance = $old_balance + $amount;
-        $outer_client->update([
-            'prev_balance' => $balance_after,
-        ]);
+        // $outer_client->update([
+        //     'prev_balance' => $balance_after,
+        // ]);
         $safe->update([
             'balance' => $new_balance,
         ]);
@@ -237,9 +237,9 @@ class CashController extends Controller
         $safe = Safe::FindOrFail($safe_id);
         $old_balance = $safe->balance;
         $new_balance = $old_balance - $amount;
-        $outer_client->update([
-            'prev_balance' => $balance_after,
-        ]);
+        // $outer_client->update([
+        //     'prev_balance' => $balance_after,
+        // ]);
         $safe->update([
             'balance' => $new_balance,
         ]);

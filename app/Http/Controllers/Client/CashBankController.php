@@ -68,9 +68,9 @@ class CashBankController extends Controller
         $old_balance = $bank->bank_balance;
         $new_balance = $old_balance + $amount;
         $cash = BankCash::create($data);
-        $outer_client->update([
-            'prev_balance' => $balance_after,
-        ]);
+        // $outer_client->update([
+        //     'prev_balance' => $balance_after,
+        // ]);
         $bank->update([
             'bank_balance' => $new_balance,
         ]);
@@ -114,9 +114,9 @@ class CashBankController extends Controller
         $bank = Bank::FindOrFail($bank_id);
         $old_balance = $bank->bank_balance;
         $new_balance = $old_balance + $amount;
-        $outer_client->update([
-            'prev_balance' => $balance_after,
-        ]);
+        // $outer_client->update([
+        //     'prev_balance' => $balance_after,
+        // ]);
         $bank->update([
             'bank_balance' => $new_balance,
         ]);

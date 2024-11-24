@@ -692,9 +692,9 @@ class SaleBillController extends Controller
                 $outer_client = OuterClient::FindOrFail($sale_bill->outer_client_id);
                 $balance_before = $outer_client->prev_balance;
                 $balance_after = $balance_before + $rest;
-                $outer_client->update([
-                    'prev_balance' => $balance_after
-                ]);
+                // $outer_client->update([
+                //     'prev_balance' => $balance_after
+                // ]);
             }
 
             $safe_id = $cash->safe_id;
@@ -730,9 +730,9 @@ class SaleBillController extends Controller
                 $outer_client = OuterClient::FindOrFail($sale_bill->outer_client_id);
                 $balance_before = $outer_client->prev_balance;
                 $balance_after = $balance_before + $rest;
-                $outer_client->update([
-                    'prev_balance' => $balance_after
-                ]);
+                // $outer_client->update([
+                //     'prev_balance' => $balance_after
+                // ]);
             }
 
             $bank_id = $bank_cash->bank_id;
@@ -957,9 +957,9 @@ class SaleBillController extends Controller
             $outer_client = OuterClient::FindOrFail($sale_bill->outer_client_id);
             $balance_before = $outer_client->prev_balance;
             $balance_after = $balance_before - $rest;
-            $outer_client->update([
-                'prev_balance' => $balance_after
-            ]);
+            // $outer_client->update([
+            //     'prev_balance' => $balance_after
+            // ]);
         }
         foreach ($sale_bill->vouchers as $voucher) {
             $voucher->transactions()->delete();

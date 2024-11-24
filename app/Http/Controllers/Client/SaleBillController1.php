@@ -182,9 +182,9 @@ class SaleBillController1 extends Controller
             $outer_client = OuterClient::FindOrFail($sale_bill->outer_client_id);
             $balance_before = $outer_client->prev_balance;
             $balance_after = $balance_before - $rest;
-            $outer_client->update([
-                'prev_balance' => $balance_after
-            ]);
+            // $outer_client->update([
+            //     'prev_balance' => $balance_after
+            // ]);
         }
         foreach ($sale_bill->vouchers as $voucher) {
             $voucher->transactions()->delete();
