@@ -81,22 +81,23 @@
                             </div> --}}
                             <!---------------------->
 
-                        <div class="form-group col-lg-3 pr-0" dir="rtl">
-                            <label for="store_id">
-                                {{ __('products.main_cat') }}
-                                <span class="text-danger font-weight-bold">*</span>
-                            </label>
-                            <select required name="category_id" id="category" class="form-control">
-                                <option value="">{{ __('products.choose_main_cat') }}</option>
-                                @foreach ($categories as $category)
-                                    @if ($category->category_name === 'خدمية')
-                                        <option type="{{ $category->category_type }}" selected value="{{ $category->id }}">
-                                            {{ $category->category_name }}
-                                        </option>
-                                    @endif
-                                @endforeach
-                            </select>
-                        </div>
+                            <div class="form-group col-lg-3 pr-0" dir="rtl">
+                                <label for="store_id">
+                                    {{ __('products.main_cat') }}
+                                    <span class="text-danger font-weight-bold">*</span>
+                                </label>
+                                <select required name="category_id" id="category" class="form-control">
+                                    <option value="">{{ __('products.choose_main_cat') }}</option>
+                                    @foreach ($categories as $category)
+                                        @if ($category->category_name === 'خدمية')
+                                            <option type="{{ $category->category_type }}" selected
+                                                value="{{ $category->id }}">
+                                                {{ $category->category_name }}
+                                            </option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
 
 
                             <!---------------------->
@@ -134,6 +135,14 @@
                                 </label>
                                 <input type="text" name="product_name" id="order_name"
                                     placeholder="{{ __('products.pname') }}" class="form-control" required>
+                            </div>
+                            <div class="form-group col-lg-3 pr-0" dir="rtl">
+                                <label>
+                                    {{ __('products.pname_en') }}
+                                    <span class="text-danger font-weight-bold">*</span>
+                                </label>
+                                <input type="text" name="product_name_en" id="order_name"
+                                    placeholder="{{ __('products.pname_en') }}" class="form-control" required>
                             </div>
                             <!---------------------->
 
@@ -182,7 +191,7 @@
                                     {{ __('products.costprice') }}
                                     <span class="text-danger font-weight-bold">*</span>
                                 </label>
-                                <input type="number" step="0.01"  name="purchasing_price" id='purchasing_price'
+                                <input type="number" step="0.01" name="purchasing_price" id='purchasing_price'
                                     value="0" class="form-control" placeholder="{{ __('products.costprice') }}">
                             </div>
                             <!---------------------->
@@ -404,7 +413,7 @@
             // } else {
             //     $("#min_balance").css("border-color", "#CACFE7");
             // }
-            $("#category").prop("disabled", false); 
+            $("#category").prop("disabled", false);
             $(this).submit();
 
         });

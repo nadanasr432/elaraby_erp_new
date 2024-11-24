@@ -44,22 +44,24 @@
                 @csrf
                 @method('PATCH')
                 <input type="hidden" name="company_id" value="{{ $company->id }}" />
-                 <div class="col-lg-4 col-xs-12 pull-right">
-                    <div class="form-group">
-
-                        <label class="company_name"> @lang('main.name_ar')</label>
-                        <input type="text" disabled class="form-control" name="company_name" id="brand_name"
-                            @if ($company->company_name) value="{{ $company->company_name }}" @endif />
-                    </div>
-                </div>
                 <div class="col-lg-4 col-xs-12 pull-right">
                     <div class="form-group">
-
-                        <label for="company_name_en"> @lang('main.name_en')</label>
-                        <input type="text" disabled class="form-control" name="company_name_en" id="brand_name"
-                            @if ($company->company_name_en) value="{{ $company->company_name_en }}" @endif />
+                        <label class="company_name"> @lang('main.name_ar')</label>
+                        <input type="text" class="form-control" name="company_name" id="company_name"
+                            @if ($company->company_name) value="{{ $company->company_name }}" @endif
+                            {{ $company->company_name ? 'disabled' : '' }} />
                     </div>
                 </div>
+
+                <div class="col-lg-4 col-xs-12 pull-right">
+                    <div class="form-group">
+                        <label for="company_name_en"> @lang('main.name_en')</label>
+                        <input type="text" class="form-control" name="company_name_en" id="company_name_en"
+                            @if ($company->company_name_en) value="{{ $company->company_name_en }}" @endif
+                            {{ $company->company_name_en ? 'disabled' : '' }} />
+                    </div>
+                </div>
+
                 <div class="col-lg-4 col-xs-12 pull-right">
                     <div class="form-group">
                         <label for="person_name">اسم صاحب المشروع</label>
@@ -144,4 +146,31 @@
         </div>
 
     </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    // إذا كان هناك قيمة محفوظة بالفعل للـcompany_name أو company_name_en
+    const companyNameField = document.getElementById('company_name');
+    const companyNameEnField = document.getElementById('company_name_en');
+    
+    // إذا كان الإدخال موجودًا، اجعل الحقل معطل (disabled)
+    if (companyNameField.value) {
+        companyNameField.disabled = true;
+    }
+    if (companyNameEnField.value) {
+        companyNameEnField.disabled = true;
+    }
+
+    // حدث عند إرسال النموذج
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function () {
+        // إضافة حالة disable بعد الحفظ
+        if (companyNameField.value) {
+            companyNameField.disabled = true;
+        }
+        if (companyNameEnField.value) {
+            companyNameEnField.disabled = true;
+        }
+    });
+});
+</script>
 @endsection
