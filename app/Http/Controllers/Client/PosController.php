@@ -1402,7 +1402,7 @@ class PosController extends Controller
             if (isset($billDetails['outer_client_id']) && !empty($billDetails['outer_client_id'])) {
                 $outer_client = OuterClient::FindOrFail($posOpen->outer_client_id);
                 $new_balance = $outer_client->prev_balance + $rest;
-                $outer_client->update(['prev_balance' => $new_balance]);
+                // $outer_client->update(['prev_balance' => $new_balance]);
             }
             # =============================== #
 
@@ -2362,9 +2362,9 @@ class PosController extends Controller
                 $prev_balance = $outer_client->prev_balance;
 
                 $new_balance = $prev_balance - $rest;
-                $outer_client->update([
-                    'prev_balance' => $new_balance
-                ]);
+                // $outer_client->update([
+                //     'prev_balance' => $new_balance
+                // ]);
             }
         }
         foreach ($elements as $element) {

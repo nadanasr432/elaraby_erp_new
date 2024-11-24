@@ -97,9 +97,9 @@ class CashBankController extends Controller
         $old_bank->update([
             'bank_balance' => $new_bank_balance,
         ]);
-        $old_outer_client->update([
-            'prev_balance' => $new_outer_client_balance,
-        ]);
+        // $old_outer_client->update([
+        //     'prev_balance' => $new_outer_client_balance,
+        // ]);
         // Assign the new values of the operation
         $company_id = $data['company_id'];
         $data['client_id'] = Auth::user()->id;
@@ -145,9 +145,9 @@ class CashBankController extends Controller
         $old_bank->update([
             'bank_balance' => $new_bank_balance,
         ]);
-        $old_outer_client->update([
-            'prev_balance' => $new_outer_client_balance,
-        ]);
+        // $old_outer_client->update([
+        //     'prev_balance' => $new_outer_client_balance,
+        // ]);
         $cash = BankCash::FindOrFail($id);
         $cash->delete();
 

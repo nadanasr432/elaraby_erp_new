@@ -2454,9 +2454,9 @@ class SaleBillController1 extends Controller
         $sale_bill = $element->SaleBill;
         if (!empty($sale_bill->outer_client_id)) {
             $outer_client = OuterClient::FindOrFail($request->outer_client_id);
-            $outer_client->update([
-                'prev_balance' => $request->balance_after
-            ]);
+            // $outer_client->update([
+            //     'prev_balance' => $request->balance_after
+            // ]);
         }
 
         $quantity_before_return = $element->quantity;

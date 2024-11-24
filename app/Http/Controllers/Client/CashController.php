@@ -171,9 +171,9 @@ class CashController extends Controller
         $old_safe->update([
             'balance' => $new_safe_balance,
         ]);
-        $old_outer_client->update([
-            'prev_balance' => $new_outer_client_balance,
-        ]);
+        // $old_outer_client->update([
+        //     'prev_balance' => $new_outer_client_balance,
+        // ]);
         // Assign the new values of the operation
         $company_id = $data['company_id'];
         $data['client_id'] = Auth::user()->id;
@@ -219,9 +219,9 @@ class CashController extends Controller
         $old_safe->update([
             'balance' => $new_safe_balance,
         ]);
-        $old_outer_client->update([
-            'prev_balance' => $new_outer_client_balance,
-        ]);
+        // $old_outer_client->update([
+        //     'prev_balance' => $new_outer_client_balance,
+        // ]);
         // Assign the new values of the operation
         $company_id = $data['company_id'];
         $data['client_id'] = Auth::user()->id;
@@ -268,9 +268,9 @@ class CashController extends Controller
         $old_safe->update([
             'balance' => $new_safe_balance,
         ]);
-        $old_outer_client->update([
-            'prev_balance' => $new_outer_client_balance,
-        ]);
+        // $old_outer_client->update([
+        //     'prev_balance' => $new_outer_client_balance,
+        // ]);
         $cash = Cash::FindOrFail($id);
         $cash->delete();
 
@@ -296,9 +296,9 @@ class CashController extends Controller
         $old_safe->update([
             'balance' => $new_safe_balance,
         ]);
-        $old_outer_client->update([
-            'prev_balance' => $new_outer_client_balance,
-        ]);
+        // $old_outer_client->update([
+        //     'prev_balance' => $new_outer_client_balance,
+        // ]);
         $cash = Cash::FindOrFail($id);
         $cash->delete();
 
@@ -453,9 +453,9 @@ class CashController extends Controller
         $old_safe->update([
             'balance' => $new_safe_balance,
         ]);
-        $old_supplier->update([
-            'prev_balance' => $new_supplier_balance,
-        ]);
+        // $old_supplier->update([
+        //     'prev_balance' => $new_supplier_balance,
+        // ]);
         // Assign the new values of the operation
         $company_id = $data['company_id'];
         $data['client_id'] = Auth::user()->id;

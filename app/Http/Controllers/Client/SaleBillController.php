@@ -755,9 +755,9 @@ class SaleBillController extends Controller
             $rest = $after_total_all;
             if (!empty($sale_bill->outer_client_id)) {
                 $outer_client = OuterClient::FindOrFail($sale_bill->outer_client_id);
-                $outer_client->update([
-                    'prev_balance' => ($outer_client->prev_balance) + $rest,
-                ]);
+                // $outer_client->update([
+                //     'prev_balance' => ($outer_client->prev_balance) + $rest,
+                // ]);
             }
             $sale_bill->update([
                 'final_total' => $after_total_all,
@@ -2035,9 +2035,9 @@ class SaleBillController extends Controller
         $sale_bill = $element->SaleBill;
         if (!empty($sale_bill->outer_client_id)) {
             $outer_client = OuterClient::FindOrFail($request->outer_client_id);
-            $outer_client->update([
-                'prev_balance' => $request->balance_after
-            ]);
+            // $outer_client->update([
+            //     'prev_balance' => $request->balance_after
+            // ]);
         }
 
         $quantity_before_return = $element->quantity;

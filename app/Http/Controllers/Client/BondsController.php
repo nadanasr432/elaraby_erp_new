@@ -48,12 +48,12 @@ class BondsController extends Controller
         $company_id = Auth::user()->company_id;
         $outerClient = OuterClient::where("client_name", $request->client)->where('company_id', $company_id)->first();
 
-        if ($request->type == "قبض") {
-            $outerClient->prev_balance -= $request->amount;
-        } else {
-            $outerClient->prev_balance += $request->amount;
-        }
-        $outerClient->save();
+        // if ($request->type == "قبض") {
+        //     $outerClient->prev_balance -= $request->amount;
+        // } else {
+        //     $outerClient->prev_balance += $request->amount;
+        // }
+        // $outerClient->save();
 
         try {
             $bond = Bondclient::create($request->all());
@@ -114,12 +114,12 @@ class BondsController extends Controller
 
         $supplier = Supplier::where("supplier_name", $request->supplier)->where('company_id', $company_id)->first();
 
-        if ($request->type == "قبض") {
-            $supplier->prev_balance -= $request->amount;
-        } else {
-            $supplier->prev_balance += $request->amount;
-        }
-        $supplier->save();
+        // if ($request->type == "قبض") {
+        //     $supplier->prev_balance -= $request->amount;
+        // } else {
+        //     $supplier->prev_balance += $request->amount;
+        // }
+        // $supplier->save();
 
         try {
             $bond = Bondsupplier::create([
