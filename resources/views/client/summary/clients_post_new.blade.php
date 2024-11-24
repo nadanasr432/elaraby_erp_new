@@ -236,7 +236,22 @@ $currency = $extra_settings->currency;
                                         <th class="text-center">البريد الالكترونى</th>
                                         <th class="text-center">الجنسية</th>
                                         <th class="text-center">الرقم الضريبى</th>
-                                        <th class="text-center"> مديونية</th>
+                                        <th class="text-center">
+                                            @if ($outer_client_k->prev_balance == 0)
+                                                مديونية
+                                            @else
+                                                @if (
+                                                    $outer_client_k->created_at->between(Carbon\Carbon::parse($from_date), Carbon\Carbon::parse($to_date)) ||
+                                                        $outer_client_k->created_at->isToday())
+                                                    مديونية
+                                                @elseif (!$from_date && !$to_date && $outer_client_k->prev_balance != 0)
+                                                    مديونية بتاريخ ( {{ $outer_client_k->created_at->format('d-m-Y') }}
+                                                    )
+                                                @else
+                                                    مديونية
+                                                @endif
+                                            @endif
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -250,7 +265,15 @@ $currency = $extra_settings->currency;
                                         <td>{{ $outer_client_k->client_national }}</td>
                                         <td>{{ $outer_client_k->tax_number }}</td>
                                         <td>
-                                            {{ floatval($outer_client_k->prev_balance) }}
+                                            @if (
+                                                $outer_client_k->created_at->between(Carbon\Carbon::parse($from_date), Carbon\Carbon::parse($to_date)) &&
+                                                    $outer_client_k->prev_balance != 0)
+                                                {{ floatval($outer_client_k->prev_balance) }}
+                                            @elseif (!$from_date && !$to_date && $outer_client_k->prev_balance != 0)
+                                                {{ floatval($outer_client_k->prev_balance) }}
+                                            @else
+                                                0
+                                            @endif
                                         </td>
                                     </tr>
                                 </tbody>
@@ -476,7 +499,12 @@ $currency = $extra_settings->currency;
                                                 $final_balance = $current_balance;
                                                 
                                                 // عرض الرصيد الحالي
-                                                echo floatval($current_balance) . ' ' . $currency;
+                                                if ($current_balance < 0) {
+                                                    echo '(' . floatval(abs($current_balance)) . ') ' . $currency;
+                                                } else {
+                                                    echo floatval($current_balance) . ' ' . $currency;
+                                                }
+                                                
                                                 ?>
                                             </td>
                                         </tr>
@@ -487,7 +515,14 @@ $currency = $extra_settings->currency;
                                         style="font-size: 15px; font-weight: bold; background: #f1f1f1; text-align: center;">
                                         <td colspan="6">اجمالي المديونية للمبيعات </td>
                                         <td>
-                                            <?php echo floatval($final_balance) . ' ' . $currency; ?>
+                                            <?php
+                                            if ($final_balance < 0) {
+                                                echo '(' . floatval(abs($final_balance)) . ') ' . $currency;
+                                            } else {
+                                                echo floatval($final_balance) . ' ' . $currency;
+                                            }
+                                            ?>
+
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -541,28 +576,37 @@ $currency = $extra_settings->currency;
                                     </tbody>
                                     <tfoot>
                                         @php
-                                            $difference = $totalPayments -$totalReceipts ; // الفارق بين القبض والصرف
+                                            $difference = $totalPayments - $totalReceipts; // الفارق بين القبض والصرف
                                         @endphp
-                                       
+
                                         <tr
                                             style="font-size: 13px !important; background: #f1f1f1; color: #222751; text-align: center;">
                                             <td colspan="3" class="text-center"><strong>إجمالي الصرف</strong></td>
                                             <td colspan="2" class="text-center">
-                                                <strong>{{ $totalPayments }}</strong></td>
+                                                <strong>{{ $totalPayments }}</strong>
+                                            </td>
                                         </tr>
-                                         <tr
+                                        <tr
                                             style="font-size: 13px !important; background: #f1f1f1; color: #222751; text-align: center;">
                                             <td colspan="3" class="text-center"><strong>إجمالي القبض</strong></td>
                                             <td colspan="2" class="text-center">
-                                                <strong>{{ $totalReceipts }}</strong></td>
+                                                <strong>{{ $totalReceipts }}</strong>
+                                            </td>
                                         </tr>
                                         <tr
                                             style="font-size: 13px !important; background: #e6e6e6; color: #222751; text-align: center;">
                                             <td colspan="3" class="text-center"><strong>
-                                                اجمالي المديونية 
-                                            (الصرف -  القبض)</strong></td>
+                                                    اجمالي المديونية
+                                                    (الصرف - القبض)</strong></td>
                                             <td colspan="2" class="text-center">
-                                                <strong>{{ $difference }}</strong></td>
+                                                <strong>
+                                                    @if ($difference < 0)
+                                                        ({{ abs($difference) }})
+                                                    @else
+                                                        {{ $difference }}
+                                                    @endif
+                                                </strong>
+                                            </td>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -632,7 +676,13 @@ $currency = $extra_settings->currency;
                                             <td colspan="11" class="text-center"><strong>إجمالي المديونية</strong>
                                             </td>
                                             <td class="text-center">
-                                                <strong>{{ $totalDifference }}</strong>
+                                                <strong>
+                                                    @if ($totalDifference < 0)
+                                                        ({{ abs($totalDifference) }})
+                                                    @else
+                                                        {{ $totalDifference }}
+                                                    @endif
+                                                </strong>
                                             </td>
                                         </tr>
                                     </tfoot>
@@ -688,7 +738,13 @@ $currency = $extra_settings->currency;
                                             style="font-size: 13px !important; background: #f1f1f1; color: #222751; text-align: center;">
                                             <td colspan="2" class="text-center"><strong> إجمالي المبلغ
                                                     المدفوع</strong></td>
-                                            <td class="text-center"><strong>{{ $totalAmountCash }}</strong></td>
+                                            <td class="text-center"><strong>
+                                                    @if ($totalAmountCash < 0)
+                                                        ({{ abs($totalAmountCash) }})
+                                                    @else
+                                                        {{ $totalAmountCash }}
+                                                    @endif
+                                                </strong></td>
                                             <td colspan="6"></td>
                                         </tr>
                                     </tfoot>
@@ -746,7 +802,13 @@ $currency = $extra_settings->currency;
                                             style="font-size: 13px !important; background: #e9ecef; color: #222751; text-align: center;">
                                             <td colspan="2" class="text-center"><strong>إجمالي المبلغ
                                                     المستلف</strong></td>
-                                            <td class="text-center"><strong>{{ $totalBorrowedAmount }}</strong></td>
+                                            <td class="text-center"><strong>
+                                                    @if ($totalBorrowedAmount < 0)
+                                                        ({{ abs($totalBorrowedAmount) }})
+                                                    @else
+                                                        {{ $totalBorrowedAmount }}
+                                                    @endif
+                                                </strong></td>
                                             <td colspan="6"></td>
                                         </tr>
                                     </tfoot>
@@ -805,7 +867,13 @@ $currency = $extra_settings->currency;
                                             style="font-size: 13px !important; background: #f1f1f1; color: #222751; text-align: center;">
                                             <td colspan="2" class="text-center"><strong>إجمالي المبلغ المدفوع
                                                     بنكيًا</strong></td>
-                                            <td class="text-center"><strong>{{ $totalAmount }}</strong></td>
+                                            <td class="text-center"><strong>
+                                                    @if ($totalAmount < 0)
+                                                        ({{ abs($totalAmount) }})
+                                                    @else
+                                                        {{ $totalAmount }}
+                                                    @endif
+                                                </strong></td>
                                             <td colspan="8"></td>
                                         </tr>
                                     </tfoot>
@@ -834,7 +902,12 @@ $currency = $extra_settings->currency;
                                     $totalIndebtedness = floatval($totalDepit - $totalCridit + $outer_client_k->prev_balance);
                                     
                                     // Output the total indebtedness with currency
-                                    echo floatval($totalIndebtedness) . ' ' . $currency;
+                                    
+                                    if ($totalIndebtedness < 0) {
+                                        echo '(' . floatval(abs($totalIndebtedness)) . ') ' . $currency;
+                                    } else {
+                                        echo floatval($totalIndebtedness) . ' ' . $currency;
+                                    }
                                     ?>
 
                                 </span>
