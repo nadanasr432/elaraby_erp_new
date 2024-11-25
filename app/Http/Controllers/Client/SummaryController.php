@@ -79,7 +79,7 @@ class SummaryController extends Controller
                 $quotations = $outer_client_k->quotations;
                 $bonds = Bondclient::where('client', $outer_client_k->client_name)->get();
 
-                $saleBills = $outer_client_k->saleBills;
+                $saleBills = $outer_client_k->saleBills->where('status', 'done');
                 $cashs = Cash::where('outer_client_id', $outer_client_id)->where('amount', '>', 0)->get();
                 $borrows = Cash::where('outer_client_id', $outer_client_id)->where('amount', '<', 0)->get();
                 $bankcashs = $outer_client_k->bankcashs;
@@ -95,7 +95,7 @@ class SummaryController extends Controller
                     ->whereDate('created_at', '<=', $to_date)
                     ->get();
 
-                $saleBills = SaleBill::where('outer_client_id', $outer_client_id)
+                $saleBills = SaleBill::where('status', 'done')->where('outer_client_id', $outer_client_id)
                     ->whereBetween('date', [$from_date->startOfDay(), $to_date->endOfDay()])->get();
                 $cashs = Cash::where('outer_client_id', $outer_client_id)
                     ->where('amount', '>', 0)
@@ -177,7 +177,7 @@ class SummaryController extends Controller
                 $quotations = $outer_client_k->quotations;
                 $bonds = Bondclient::where('client', $outer_client_k->client_name)->get();
 
-                $saleBills = $outer_client_k->saleBills;
+                $saleBills = $outer_client_k->saleBills->where('status', 'done');
                 $cashs = Cash::where('outer_client_id', $outer_client_id)->where('amount', '>', 0)->get();
                 $borrows = Cash::where('outer_client_id', $outer_client_id)->where('amount', '<', 0)->get();
                 $bankcashs = $outer_client_k->bankcashs;
@@ -193,7 +193,7 @@ class SummaryController extends Controller
                     ->whereDate('created_at', '<=', $to_date)
                     ->get();
 
-                $saleBills = SaleBill::where('outer_client_id', $outer_client_id)
+                $saleBills = SaleBill::where('status', 'done')->where('outer_client_id', $outer_client_id)
                     ->whereBetween('date', [$from_date->startOfDay(), $to_date->endOfDay()])->get();
                 $cashs = Cash::where('outer_client_id', $outer_client_id)
                     ->where('amount', '>', 0)
