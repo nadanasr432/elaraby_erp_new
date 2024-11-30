@@ -140,8 +140,8 @@
                                 <label for="tax_value">قيمة الضريبة</label>
                                 <div class="input-group">
                                     <span class="input-group-addon" style="font-size: 18px;font-weight: bold;">%</span>
-                                    <input required type="number" class="form-control input-spec" name="tax_value"
-                                        id="tax_value" />
+                                   <input required type="number" class="form-control input-spec" name="tax_value"
+                                    id="tax_value" min="0" oninput="this.value = Math.max(0, this.value)" />
                                 </div>
                             </div>
                         </div>
