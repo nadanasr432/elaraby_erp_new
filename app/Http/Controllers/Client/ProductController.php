@@ -162,7 +162,6 @@ class ProductController extends Controller
     public function storeProduct(Request $request)
     {
         $data = $request->all();
-        // dd($data);
 
         if (empty($data['first_balance'])) $data['first_balance'] = 0;
         if (empty($data['qr'])) $company_id = $data['company_id'];
@@ -192,8 +191,8 @@ class ProductController extends Controller
             }
         }
 
-        return back()->with('success', 'تم اضافة المنتج بنجاح');
-    }
+        return redirect()->route('client.products.index')
+            ->with('success', 'تم اضافة المنتج بنجاح');    }
 
     public function show($id)
     {

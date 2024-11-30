@@ -27,6 +27,7 @@ class ProductRequest extends FormRequest
             "sub_category_id" => 'nullable',
             "product_model" => 'nullable',
             "product_name" => 'required',
+            "product_name_en"=>'nullable',
             "unit_id" => 'required',
             "code_universal" => 'nullable',
             "purchasing_price" => 'required',

@@ -155,10 +155,9 @@
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>
                                     {{ __('products.pname_en') }}
-                                    <span class="text-danger font-weight-bold">*</span>
                                 </label>
                                 <input type="text" name="product_name_en" id="order_name"
-                                    placeholder="{{ __('products.pname_en') }}" class="form-control" required>
+                                    placeholder="{{ __('products.pname_en') }}" class="form-control">
                             </div>
                             <!---------------------->
 

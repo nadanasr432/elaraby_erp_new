@@ -38,7 +38,7 @@
                 <!------HEADER----->
                 <div class="card-body p-2">
                     <form class="parsley-style-1" id="selectForm2" name="selectForm2"
-                        action="{{ route('client.products.store', 'test') }}" enctype="multipart/form-data" method="post">
+                        action="{{ route('client.product.store2', 'test') }}" enctype="multipart/form-data" method="post">
                         {{ csrf_field() }}
                         <input type="hidden" name="company_id" value="{{ $company_id }}">
                         <div class="alert alert-danger" id="showErrMsg" style="display:none">
@@ -137,12 +137,11 @@
                                     placeholder="{{ __('products.pname') }}" class="form-control" required>
                             </div>
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
-                                <label>
+                                <label for="product_name_en">
                                     {{ __('products.pname_en') }}
-                                    <span class="text-danger font-weight-bold">*</span>
                                 </label>
-                                <input type="text" name="product_name_en" id="order_name"
-                                    placeholder="{{ __('products.pname_en') }}" class="form-control" required>
+                                <input type="text" name="product_name_en"
+                                    placeholder="{{ __('products.pname_en') }}" class="form-control" >
                             </div>
                             <!---------------------->
 
@@ -185,7 +184,7 @@
                             </div> --}}
                             <!---------------------->
 
-                            <!----purchasing_price--->
+                            {{-- <!----purchasing_price--->
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>
                                     {{ __('products.costprice') }}
@@ -193,7 +192,7 @@
                                 </label>
                                 <input type="number" step="0.01" name="purchasing_price" id='purchasing_price'
                                     value="0" class="form-control" placeholder="{{ __('products.costprice') }}">
-                            </div>
+                            </div> --}}
                             <!---------------------->
 
                             <!----wholesale_price--->
