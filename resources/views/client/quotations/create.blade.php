@@ -554,11 +554,56 @@
                 // Save the current value as previous for potential reset
                 $(this).data('previous-value', newTaxType);
             });
+            // const discountType = document.getElementById('discount_type');
+            // const discountValue = document.getElementById('discount_value');
+            // const grandTotalElement = document.getElementById('grand_total');
+
+            // if (discountValue && discountType && grandTotalElement) {
+            //     discountValue.addEventListener('input', function() {
+            //         const grandTotal = parseFloat(grandTotalElement.textContent) || 0;
+            //         const discountTypeValue = discountType.value;
+
+            //         if (
+            //             (discountTypeValue === 'pound' || discountTypeValue === 'poundAfterTax') &&
+            //             parseFloat(discountValue.value) > grandTotal
+            //         ) {
+            //             Swal.fire({
+            //                 icon: 'warning',
+            //                 title: 'تحذير',
+            //                 text: 'لا يمكن أن يكون الخصم أكبر من الإجمالي!',
+            //                 confirmButtonText: 'موافق'
+            //             }).then(() => {
+            //                 discountValue.value = 0; // Optionally reset the discount value
+            //             });
+            //         }
+            //     });
+            // }
+
             // Save button 1
-            $('.save_btn1').on('click', function() {
+            $('.save_btn1').on('click', function(e) {
+                e.preventDefault(); // Prevent default form submission
+
+                const discountType = document.getElementById('discount_type').value;
+                const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
+                const grandTotal = parseFloat(document.getElementById('grand_total').textContent) || 0;
+
+                // Check if discount exceeds grand total
+                if (
+                    (discountType === 'pound' || discountType === 'poundAfterTax') &&
+                    discountValue > grandTotal
+                ) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'تحذير',
+                        text: 'لا يمكن أن يكون الخصم أكبر من الإجمالي!',
+                        confirmButtonText: 'موافق'
+                    });
+                    return false; // Stop submission
+                }
+
                 let outerClientId = $('#outer_client_id').val();
 
-                // Check if the outer client ID is selected
+                // Validate outer client ID
                 if (!outerClientId) {
                     Swal.fire({
                         icon: 'warning',
@@ -591,7 +636,7 @@
                     return false;
                 }
 
-                // Check if start_date is before expiration_date
+                // Validate start_date and expiration_date
                 let startDate = $('#start_date').val();
                 let expirationDate = $('#expiration_date').val();
 
@@ -605,14 +650,14 @@
                     return false;
                 }
 
-                var formData = $('#myForm').serialize();
+                // Submit the form via AJAX
+                let formData = $('#myForm').serialize();
 
                 $.post("{{ route('client.quotations.redirectANDprint') }}", formData)
                     .done(function(data) {
                         location.href = '/client/quotations/view/' + data;
                     })
                     .fail(function(jqXHR) {
-                        // Check if responseJSON exists and try to extract message
                         let errorMessage = "حدث خطأ أثناء حفظ البيانات";
 
                         if (jqXHR.responseJSON) {
@@ -627,18 +672,33 @@
 
                         Swal.fire({
                             icon: 'error',
-                            title: errorMessage, // Replace title with the error message
+                            title: errorMessage,
                             text: '',
                             confirmButtonText: 'إغلاق'
                         });
                     });
             });
-
-
-
             // Save button 2
             $('.save_btn2').on('click', function() {
                 let outerClientId = $('#outer_client_id').val();
+                const discountType = document.getElementById('discount_type').value;
+                const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
+                const grandTotal = parseFloat(document.getElementById('grand_total').textContent) || 0;
+
+                // Check if discount exceeds grand total
+                if (
+                    (discountType === 'pound' || discountType === 'poundAfterTax') &&
+                    discountValue > grandTotal
+                ) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'تحذير',
+                        text: 'لا يمكن أن يكون الخصم أكبر من الإجمالي!',
+                        confirmButtonText: 'موافق'
+                    });
+                    return false; // Stop submission
+                }
+
 
                 // Check if the outer client ID is selected
                 if (!outerClientId) {
@@ -672,7 +732,7 @@
                     });
                     return false;
                 }
-                 // Check if start_date is before expiration_date
+                // Check if start_date is before expiration_date
                 let startDate = $('#start_date').val();
                 let expirationDate = $('#expiration_date').val();
 
