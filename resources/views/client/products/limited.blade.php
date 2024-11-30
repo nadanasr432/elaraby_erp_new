@@ -16,9 +16,9 @@
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
                         <div class="col-lg-12 margin-tb">
-                            <a class="btn pull-left btn-primary btn-sm"
+                            {{-- <a class="btn pull-left btn-primary btn-sm"
                                href="{{ route('client.products.create') }}"><i
-                                    class="fa fa-plus"></i> اضافة منتج جديد </a>
+                                    class="fa fa-plus"></i> اضافة منتج جديد </a> --}}
                             <h5 class="pull-right alert alert-sm alert-danger">عرض المنتجات التى اوشكت على النفاذ </h5>
                         </div>
                         <br>
