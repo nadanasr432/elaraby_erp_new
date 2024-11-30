@@ -20,7 +20,7 @@
                             عرض باينات المنتج
                         </h3>
                         <a class="btn btn-danger btn-sm pull-left p-1"
-                           onclick="history.back()">
+                          href="{{ route('client.products.index') }}">
                             عودة للخلف
                         </a>
                     </div>
