@@ -118,7 +118,7 @@
                                     <th style="width: 15% !important;border-radius: 11px 0 0 0;">@lang('sales_bills.control')</th>
                                 </thead>
                                 <tbody>
-                                    <?php $i = 0;
+                                    <?php $i = count($all_quotations)-1;
                                     $total = 0; ?>
                                     @foreach ($all_quotations as $quotation)
                                         <tr class="@if ($i % 2 == 0) even @else odd @endif">
