@@ -50,7 +50,7 @@
                             @endphp
                             @foreach ($cashs as $key => $cash)
                                 <tr>
-                                    <td>{{ $cash->cash_number }}</td>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>
                                         @if(empty($cash->outer_client_id))
                                             عميل مبيعات نقدية

@@ -237,12 +237,10 @@ $currency = $extra_settings->currency;
                                         <th class="text-center">الجنسية</th>
                                         <th class="text-center">الرقم الضريبى</th>
                                         <th class="text-center">
-                                            @if($outer_client_k->prev_balance == 0)
+                                            @if ($outer_client_k->prev_balance == 0)
                                                 مديونية
                                             @else
-                                               
-                                                    مديونية بتاريخ ( {{ $outer_client_k->created_at->format('d-m-Y') }} )
-                                                     
+                                                مديونية بتاريخ ( {{ $outer_client_k->created_at->format('d-m-Y') }} )
                                             @endif
                                         </th>
                                     </tr>
@@ -258,7 +256,7 @@ $currency = $extra_settings->currency;
                                         <td>{{ $outer_client_k->client_national }}</td>
                                         <td>{{ $outer_client_k->tax_number }}</td>
                                         <td>
-                                           {{ floatval($outer_client_k->prev_balance) }}
+                                            {{ floatval($outer_client_k->prev_balance) }}
                                         </td>
                                     </tr>
                                 </tbody>
@@ -425,18 +423,18 @@ $currency = $extra_settings->currency;
                                     $final_balance = 0; // متغير لتخزين الرصيد النهائي
                                     $allSaleBills = App\Models\SaleBill::where('company_id', $outer_client_k->company_id)
                                         ->where('status', 'done')
-                                        ->orderBy('id') 
+                                        ->orderBy('id')
                                         ->pluck('id')
-                                        ->toArray(); 
+                                        ->toArray();
                                     
                                     $saleBills = $outer_client_k->saleBills->where('status', 'done');
                                     
                                     $globalIndexMap = array_flip($allSaleBills); // ID => Position
                                     ?>
-                                    @foreach ($saleBills as  $index => $sale_bill)
-                                         <tr class="{{ $index % 2 == 0 ? 'even' : 'odd' }}" role="row">
-                                                <td>{{ $i++ }}</td>
-                                                <td>{{ $globalIndexMap[$sale_bill->id] + 1 }}</td> <!-- Index + 1 -->
+                                    @foreach ($saleBills as $index => $sale_bill)
+                                        <tr class="{{ $index % 2 == 0 ? 'even' : 'odd' }}" role="row">
+                                            <td>{{ $i++ }}</td>
+                                            <td>{{ $globalIndexMap[$sale_bill->id] + 1 }}</td> <!-- Index + 1 -->
                                             <td>{{ $sale_bill->date }}</td>
                                             <td>
                                                 @if ($sale_bill->paid == 0)
@@ -445,7 +443,7 @@ $currency = $extra_settings->currency;
                                                     فاتورة مبيعات نقدي
                                                 @endif
                                             </td>
-                                            <td>{{ $sale_bill->final_total - $sale_bill->paid}}</td>
+                                            <td>{{ $sale_bill->final_total - $sale_bill->paid }}</td>
                                             <td>{{ $sale_bill->paid }}</td>
                                             <td>
                                                 <?php
@@ -498,7 +496,7 @@ $currency = $extra_settings->currency;
                                                 } else {
                                                     echo floatval($current_balance) . ' ' . $currency;
                                                 }
-
+                                                
                                                 ?>
                                             </td>
                                         </tr>
@@ -509,12 +507,12 @@ $currency = $extra_settings->currency;
                                         style="font-size: 15px; font-weight: bold; background: #f1f1f1; text-align: center;">
                                         <td colspan="6">اجمالي المديونية للمبيعات </td>
                                         <td>
-                                           <?php
-                                                if ($final_balance < 0) {
-                                                    echo '(' . floatval(abs($final_balance)) . ') ' . $currency;
-                                                } else {
-                                                    echo floatval($final_balance) . ' ' . $currency;
-                                                }
+                                            <?php
+                                            if ($final_balance < 0) {
+                                                echo '(' . floatval(abs($final_balance)) . ') ' . $currency;
+                                            } else {
+                                                echo floatval($final_balance) . ' ' . $currency;
+                                            }
                                             ?>
 
                                         </td>
@@ -570,33 +568,37 @@ $currency = $extra_settings->currency;
                                     </tbody>
                                     <tfoot>
                                         @php
-                                            $difference = $totalPayments -$totalReceipts ; // الفارق بين القبض والصرف
+                                            $difference = $totalPayments - $totalReceipts; // الفارق بين القبض والصرف
                                         @endphp
-                                       
+
                                         <tr
                                             style="font-size: 13px !important; background: #f1f1f1; color: #222751; text-align: center;">
                                             <td colspan="3" class="text-center"><strong>إجمالي الصرف</strong></td>
                                             <td colspan="2" class="text-center">
-                                                <strong>{{ $totalPayments }}</strong></td>
+                                                <strong>{{ $totalPayments }}</strong>
+                                            </td>
                                         </tr>
-                                         <tr
+                                        <tr
                                             style="font-size: 13px !important; background: #f1f1f1; color: #222751; text-align: center;">
                                             <td colspan="3" class="text-center"><strong>إجمالي القبض</strong></td>
                                             <td colspan="2" class="text-center">
-                                                <strong>{{ $totalReceipts }}</strong></td>
+                                                <strong>{{ $totalReceipts }}</strong>
+                                            </td>
                                         </tr>
                                         <tr
                                             style="font-size: 13px !important; background: #e6e6e6; color: #222751; text-align: center;">
                                             <td colspan="3" class="text-center"><strong>
-                                                اجمالي المديونية 
-                                            (الصرف -  القبض)</strong></td>
+                                                    اجمالي المديونية
+                                                    (الصرف - القبض)</strong></td>
                                             <td colspan="2" class="text-center">
-                                                <strong>@if ($difference < 0)
-                                                            ({{ abs($difference) }})
-                                                        @else
-                                                            {{ $difference }}
-                                                        @endif
-                                                </strong></td>
+                                                <strong>
+                                                    @if ($difference < 0)
+                                                        ({{ abs($difference) }})
+                                                    @else
+                                                        {{ $difference }}
+                                                    @endif
+                                                </strong>
+                                            </td>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -633,33 +635,39 @@ $currency = $extra_settings->currency;
                                         </tr>
                                     </thead>
                                     <tbody>
-                                       @php
+                                        @php
                                             $totalDifference = 0;
-                                        
+
                                             // Get all SaleBill IDs globally (e.g., ordered by `id`)
-                                            $allSaleBills = App\Models\SaleBill::where('company_id', $outer_client_k->company_id)
-                                                                                ->where('status', 'done')
-                                                                                ->orderBy('id') 
-                                                                                ->pluck('id')
-                                                                                ->toArray(); 
-                                        
+                                            $allSaleBills = App\Models\SaleBill::where(
+                                                'company_id',
+                                                $outer_client_k->company_id,
+                                            )
+                                                ->where('status', 'done')
+                                                ->orderBy('id')
+                                                ->pluck('id')
+                                                ->toArray();
+
                                             // Create a mapping: SaleBill ID => Global Index (starting from 1)
                                             $globalIndexMap = array_flip($allSaleBills); // Flip to create ID => Index mapping
-                                        
-                                            
+
                                         @endphp
-                                        
+
                                         @foreach ($returns as $key => $return)
                                             @php
-                                                $differences = floatval($return->balance_before) - floatval($return->balance_after);
+                                                $differences =
+                                                    floatval($return->balance_before) -
+                                                    floatval($return->balance_after);
                                                 $totalDifference += $differences;
-                                        
+
                                                 // Get the global index of the SaleBill
-                                                $globalIndex = isset($globalIndexMap[$return->bill_id]) ? $globalIndexMap[$return->bill_id] + 1 : 'N/A';
+                                                $globalIndex = isset($globalIndexMap[$return->bill_id])
+                                                    ? $globalIndexMap[$return->bill_id] + 1
+                                                    : 'N/A';
                                             @endphp
                                             <tr>
                                                 <td>{{ $globalIndex }}</td> <!-- Correct syntax for Blade output -->
-    
+
                                                 <td>{{ $return->outerClient->client_name }}</td>
                                                 <td>{{ $return->product->product_name }}</td>
                                                 <td>{{ floatval($return->return_quantity) }}</td>
@@ -682,10 +690,11 @@ $currency = $extra_settings->currency;
                                             <td class="text-center">
                                                 <strong>
                                                     @if ($totalDifference < 0)
-                                                            ({{ abs($totalDifference) }})
-                                                        @else
-                                                            {{ $totalDifference }}
-                                                    @endif</strong>
+                                                        ({{ abs($totalDifference) }})
+                                                    @else
+                                                        {{ $totalDifference }}
+                                                    @endif
+                                                </strong>
                                             </td>
                                         </tr>
                                     </tfoot>
@@ -718,13 +727,25 @@ $currency = $extra_settings->currency;
                                     <tbody>
                                         @php
                                             $totalAmountCash = 0;
+                                            $cash_entries = App\Models\Cash::where(
+                                                'company_id',
+                                                $outer_client_k->company_id,
+                                            )
+                                                ->orderBy('id')
+                                                ->get();
                                         @endphp
+
                                         @foreach ($cashs as $key => $cash)
                                             @php
+                                                $cash_position =
+                                                    $cash_entries->search(function ($item) use ($cash) {
+                                                        return $item->id == $cash->id; // Use $cash->id if $id is undefined
+                                                    }) + 1;
+
                                                 $totalAmountCash += floatval($cash->amount);
                                             @endphp
                                             <tr>
-                                                <td>{{ $cash->cash_number }}</td>
+                                                <td>{{ $cash_position }}</td>
                                                 <td>{{ $cash->outerClient->client_name }}</td>
                                                 <td>{{ floatval($cash->amount) }}</td>
                                                 <td>{{ floatval($cash->balance_before) }}</td>
@@ -735,17 +756,20 @@ $currency = $extra_settings->currency;
                                                 <td>{{ $cash->safe->safe_name }}</td>
                                             </tr>
                                         @endforeach
+
                                     </tbody>
                                     <tfoot>
                                         <tr
                                             style="font-size: 13px !important; background: #f1f1f1; color: #222751; text-align: center;">
                                             <td colspan="2" class="text-center"><strong> إجمالي المبلغ
                                                     المدفوع</strong></td>
-                                            <td class="text-center"><strong>@if ($totalAmountCash < 0)
-                                                            ({{ abs($totalAmountCash) }})
-                                                        @else
-                                                            {{ $totalAmountCash }}
-                                                    @endif</strong></td>
+                                            <td class="text-center"><strong>
+                                                    @if ($totalAmountCash < 0)
+                                                        ({{ abs($totalAmountCash) }})
+                                                    @else
+                                                        {{ $totalAmountCash }}
+                                                    @endif
+                                                </strong></td>
                                             <td colspan="6"></td>
                                         </tr>
                                     </tfoot>
@@ -803,11 +827,13 @@ $currency = $extra_settings->currency;
                                             style="font-size: 13px !important; background: #e9ecef; color: #222751; text-align: center;">
                                             <td colspan="2" class="text-center"><strong>إجمالي المبلغ
                                                     المستلف</strong></td>
-                                            <td class="text-center"><strong>@if ($totalBorrowedAmount < 0)
-                                                            ({{ abs($totalBorrowedAmount) }})
-                                                        @else
-                                                            {{ $totalBorrowedAmount }}
-                                                    @endif</strong></td>
+                                            <td class="text-center"><strong>
+                                                    @if ($totalBorrowedAmount < 0)
+                                                        ({{ abs($totalBorrowedAmount) }})
+                                                    @else
+                                                        {{ $totalBorrowedAmount }}
+                                                    @endif
+                                                </strong></td>
                                             <td colspan="6"></td>
                                         </tr>
                                     </tfoot>
@@ -866,11 +892,13 @@ $currency = $extra_settings->currency;
                                             style="font-size: 13px !important; background: #f1f1f1; color: #222751; text-align: center;">
                                             <td colspan="2" class="text-center"><strong>إجمالي المبلغ المدفوع
                                                     بنكيًا</strong></td>
-                                            <td class="text-center"><strong>@if ($totalAmount < 0)
-                                                            ({{ abs($totalAmount) }})
-                                                        @else
-                                                            {{ $totalAmount }}
-                                                    @endif</strong></td>
+                                            <td class="text-center"><strong>
+                                                    @if ($totalAmount < 0)
+                                                        ({{ abs($totalAmount) }})
+                                                    @else
+                                                        {{ $totalAmount }}
+                                                    @endif
+                                                </strong></td>
                                             <td colspan="8"></td>
                                         </tr>
                                     </tfoot>
@@ -894,11 +922,10 @@ $currency = $extra_settings->currency;
                                     $currency = isset($currency) ? $currency : ''; // Default to empty string if currency isn't set
                                     
                                     // Calculate totals
-                                    $totalDepit = $final_balance + $difference +$totalBorrowedAmount;
+                                    $totalDepit = $final_balance + $difference + $totalBorrowedAmount;
                                     $totalCridit = $totalAmountCash + $totalAmount + $totalDifference;
-                        
-
-                                    $totalIndebtedness = $totalIndebtedness = round(($totalDepit - $totalCridit )+ $outer_client_k->prev_balance, 3);
+                                    
+                                    $totalIndebtedness = $totalIndebtedness = round($totalDepit - $totalCridit + $outer_client_k->prev_balance, 3);
                                     
                                     // Output the total indebtedness with currency
                                     

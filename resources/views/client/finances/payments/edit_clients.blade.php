@@ -50,7 +50,7 @@
                         <div class="row mb-3">
                             <div class="col-md-4">
                                 <label> رقم العملية <span class="text-danger">*</span></label>
-                                <input required readonly value="{{ $cash->cash_number }}" class="form-control"
+                                <input required readonly value="{{ $cash_position }}" class="form-control"
                                     name="cash_number" type="text">
                             </div>
                             <div class="col-md-4">

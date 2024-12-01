@@ -24,12 +24,12 @@ class CashController extends Controller
     {
         $company_id = Auth::user()->company_id;
         $company = Company::FindOrFail($company_id);
-        $check = Cash::all();
+        $check = Cash::where('company_id', $company_id)->get();
         if ($check->isEmpty()) {
             $pre_cash = 1;
         } else {
-            $old_cash = Cash::max('cash_number');
-            $pre_cash = ++$old_cash;
+            // $old_cash = Cash::max('cash_number');
+            $pre_cash =count($check)+1;
         }
         $outer_clients = OuterClient::where('company_id', $company_id)->get();
         $safes = $company->safes;
@@ -59,15 +59,28 @@ class CashController extends Controller
     public function edit_cash_clients($id)
     {
         $company_id = Auth::user()->company_id;
-        $company = Company::FindOrFail($company_id);
-        $cash = Cash::FindOrFail($id);
+        $company = Company::findOrFail($company_id);
+        $cash = Cash::findOrFail($id);
+
+        // Retrieve all cash entries for the company, sorted (e.g., by ID)
+        $cash_entries = Cash::where('company_id', $company_id)->orderBy('id')->get();
+        $cash_position = $cash_entries->search(function ($item) use ($id) {
+            return $item->id == $id;
+        }) + 1;
 
         $outer_clients = OuterClient::where('company_id', $company_id)->get();
         $safes = Safe::where('company_id', $company_id)->get();
 
-        return view('client.finances.payments.edit_clients', compact('outer_clients',
-            'safes', 'company_id', 'cash', 'company'));
+        return view('client.finances.payments.edit_clients', compact(
+            'outer_clients',
+            'safes',
+            'company_id',
+            'cash',
+            'company',
+            'cash_position'
+        ));
     }
+
 
     public function edit_borrow_clients($id)
     {
