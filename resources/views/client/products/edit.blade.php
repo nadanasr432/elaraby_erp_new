@@ -143,7 +143,8 @@
                                     <span class="text-danger font-weight-bold">*</span>
                                 </label>
                                 <input type="text" name="product_name_en" id="order_name"
-                                    placeholder="{{ __('products.pname_en') }}" class="form-control" value="{{ $product->product_name_en }}" required>
+                                    placeholder="{{ __('products.pname_en') }}" class="form-control"
+                                    value="{{ $product->product_name_en }}" required>
                             </div>
                             <!---------------------->
 
@@ -421,6 +422,7 @@
                 $('#store').attr('disabled', true);
                 $('#start_date').attr('disabled', true);
                 $('#end_date').attr('disabled', true);
+                $('#purchasing_price').attr('disabled', true);
             } else {
                 $('#first_balance').attr('readonly', false);
                 $('#model').attr('readonly', false);
@@ -429,8 +431,13 @@
                 $('#store').attr('disabled', false);
                 $('#start_date').attr('disabled', false);
                 $('#end_date').attr('disabled', false);
+                $('#purchasing_price').attr('disabled', false);
             }
         });
+
+        // Trigger the change event automatically on page load
+        $('#category').trigger('change');
+
         $(document).ready(function() {
             function performSearch() {
                 var query = $('#productSearch').val();
