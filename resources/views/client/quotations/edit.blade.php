@@ -57,7 +57,7 @@
             <center>تعديل عرض سعر
                 <span>
                         ( رقم العملية  :
-                        {{$quotation->id}}
+                        {{$quotation->quotation_number-1}}
                         )</span></center>
         </h6>
         <div class="col-lg-3 pull-right no-print">

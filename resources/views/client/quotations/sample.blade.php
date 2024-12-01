@@ -180,7 +180,7 @@
                         <tr class="even"
                             style="font-size: 16px !important; height: 40px !important; text-align: center;">
                             <td>{{ $company->civil_registration_number }}</td>
-                            <td>{{ $quotation->quotation_number }}</td>
+                            <td>{{ $quotation->quotation_number-1 }}</td>
                             <td>{{ $quotation->created_at }}</td>
                             <td>{{ $quotation->expiration_date }}</td>
                             <td>{{ $quotation->start_date }}</td>
@@ -289,7 +289,7 @@
                                 </td>
                                 <td class="borderLeftH" dir="rtl">
                                     {{ $product->quantity }}
-                                    {{ $product->product->unit ? $product->product->unit->unit_name : '-' }}
+                                    {{ $product->product->unit ? $product->product->unit->unit_name : ' ' }}
                                 </td>
                                 <td class="borderLeftH" dir="rtl">
                                     {{ $product->product_price }} {{ $company->extra_settings->currency }}

@@ -1,4 +1,26 @@
 @extends('client.layouts.app-main')
+<style>
+    .btn.dropdown-toggle.bs-placeholder,
+    .form-control {
+        height: 40px !important;
+    }
+
+    a,
+    a:hover {
+        text-decoration: none;
+        color: #444;
+    }
+
+    .bootstrap-select {
+        width: 80% !important;
+    }
+
+    .bill_details {
+        margin-top: 30px !important;
+        min-height: 150px !important;
+    }
+
+</style>
 @section('content')
     @if (session('success'))
         <div class="alert alert-success alert-dismissable fade show text-center">
@@ -28,257 +50,216 @@
             </ul>
         </div>
     @endif
-    <form id="myForm" target="_blank" action="#" method="POST">
+    <form target="_blank" action="#" method="POST">
         @csrf
         @method('POST')
-        <h6 class="alert alert-info alert-sm text-center no-print  font-weight-bold" dir="rtl"
-            style="background-color: #d8daf5 !important; border:#d8daf5">
+        @if (isset($open_sale_bill) && !empty($open_sale_bill))
+            <input type="hidden" value="{{ $open_sale_bill->sale_bill_number }}" id="sale_bill_number"/>
+        @else
+            <input type="hidden" value="{{ $pre_bill }}" id="sale_bill_number"/>
+        @endif
+        <h6 class="alert alert-info alert-sm text-center no-print  font-weight-bold" dir="rtl">
             <center>
-                {{ __('sidebar.add-new-sales-invoice') }}
+                @if (isset($open_sale_bill) && !empty($open_sale_bill))
+                    {{ __('sales_bills.modify-customer-sales-invoice') }}
+                @else
+                    {{ __('sidebar.add-new-sales-invoice') }}
+                @endif
+
+                <span class="badge badge-warning text-dark  font-weight-bold">
+                    (
+                    @if (isset($open_sale_bill) && !empty($open_sale_bill))
+                        {{ $open_sale_bill->company_counter }}
+                    @else
+                        {{ $pre_counter }}
+                    @endif
+                    )
+                </span>
             </center>
         </h6>
 
-        <div class="row">
-            <!----DATE--->
-            <div class="col-md-6 pull-right no-print">
+        <!-----store_id------->
+        <div class="col-lg-3 p-0 pull-right no-print">
+            <label for=""> {{ __('sales_bills.choose-store') }} </label><br>
+            <select name="store_id" id="store_id" class="selectpicker w-70" data-style="btn-primary" data-live-search="true"
+                    title="{{ __('sales_bills.choose-store') }}">
+                <?php $i = 0; ?>
+                @foreach ($stores as $store)
+                    @if ($stores->count() == 1)
+                        <option selected value="{{ $store->id }}">{{ $store->store_name }}</option>
+                    @else
+                        @if ($i == 0)
+                            <option selected value="{{ $store->id }}">{{ $store->store_name }}</option>
+                        @else
+                            <option value="{{ $store->id }}">{{ $store->store_name }}</option>
+                        @endif
+                    @endif
+                    <?php $i++; ?>
+                @endforeach
+            </select>
+            <a target="_blank" href="{{ route('client.stores.create') }}" role="button"
+               style="width: 15%;display: inline;" class="btn btn-sm btn-primary open_popup">
+                <i class="fa fa-plus"></i>
+            </a>
+        </div>
+
+        <!-----outer_client_id------->
+        <div class="col-lg-3 p-0 pull-right no-print">
+            <label for="" class="d-block">{{ __('sales_bills.client-name') }}</label>
+            <select required name="outer_client_id" id="outer_client_id" class="selectpicker w-70" data-style="btn-danger"
+                    data-live-search="true" title="{{ __('sales_bills.client-name') }}" required>
+                <option
+                    @if (isset($open_sale_bill) && !empty($open_sale_bill) && empty($open_sale_bill->outer_client_id)) selected
+                    @endif value="" disabled selected>اختر عميل
+                </option>
+                @foreach ($outer_clients as $outer_client)
+                    <option
+                        @if (isset($open_sale_bill) && !empty($open_sale_bill) && $outer_client->id == $open_sale_bill->outer_client_id) selected
+                        value="{{ $open_sale_bill->outer_client_id }}"
+                        @else
+                        value="{{ $outer_client->id }}" @endif>
+                        {{ $outer_client->client_name }}</option>
+                @endforeach
+            </select>
+            <a target="_blank" href="{{ route('client.outer_clients.create') }}" role="button"
+               style="width: 15%;display: inline;" class="btn btn-sm btn-danger open_popup">
+                <i class="fa fa-plus"></i>
+            </a>
+        </div>
+
+        <!-----value_added_tax------->
+        <div class="col-lg-3 pr-0 pull-right">
+            <div class="form-group" dir="rtl">
+                <label for="value_added_tax"> {{ __('sales_bills.prices-for-tax') }} </label>
+                <select required name="value_added_tax" id="value_added_tax" class="selectpicker w-100"
+                        data-style="btn-info" data-live-search="true" required>
+                    <option
+                        @if (isset($open_sale_bill) && !empty($open_sale_bill) && $open_sale_bill->value_added_tax == 0) selected
+                        @endif value="0">
+                        {{ __('sales_bills.not-including-tax') }}
+                    </option>
+                    <option
+                        @if (isset($open_sale_bill) && !empty($open_sale_bill) && $open_sale_bill->value_added_tax == 1) selected
+                        @endif value="1">
+                        {{ __('sales_bills.including-tax') }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <!-----date % time------->
+        <div class="row col-sm-3 p-0 pr-1">
+            <!-----date------->
+            <div class="col-sm-6 pull-right no-print">
                 <div class="form-group" dir="rtl">
                     <label>{{ __('sales_bills.invoice-date') }}</label>
-                    <span class="text-danger font-weight-bold">*</span>
-                    <input type="date" required name="date" id="date" class="form-control"
-                        value="{{ date('Y-m-d') }}" />
+                    <input
+                        type="date" required name="date"
+                        id="date" class="form-control"
+                        @if (isset($open_sale_bill) && !empty($open_sale_bill))value="{{ $open_sale_bill->date }}"
+                        @else value="{{date('Y-m-d')}}" @endif
+                    />
                 </div>
             </div>
 
-            <!----TIME--->
-            <div class="col-md-6 pull-right no-print">
+            <!-----time------->
+            <div class="col-sm-6 pull-right no-print p-0">
                 <div class="form-group" dir="rtl">
                     <label>{{ __('sales_bills.invoice-time') }}</label>
-                    <span class="text-danger font-weight-bold">*</span>
-                    <input type="time" required name="time" id="time" class="form-control"
-                        value="{{ date('H:i:s') }}" />
+                    <input
+                        type="time" required name="time" id="time" class="form-control"
+                        @if (isset($open_sale_bill) && !empty($open_sale_bill)) value="{{ $open_sale_bill->time }}"
+                        @else value="{{date('H:i:s')}}" @endif
+                    />
                 </div>
             </div>
         </div>
-        <!----Store--->
-        <div class="row">
-            <div class="col-md-6 pull-right no-print">
-                <label>
-                    {{ __('sales_bills.select-store') }}
-                    <span class="text-danger font-weight-bold">*</span>
-                </label>
-                <div class="d-flex justify-content-between">
-                    <select name="store_id" id="store_id" class="selectpicker me-2" data-style="btn-new_color"
-                        data-live-search="true" title="{{ __('sales_bills.select-store') }}">
-                        <?php $i = 0; ?>
-                        @foreach ($stores as $store)
-                            @if ($stores->count() == 1)
-                                <option selected value="{{ $store->id }}">{{ $store->store_name }}</option>
-                            @else
-                                @if ($i == 0)
-                                    <option selected value="{{ $store->id }}">{{ $store->store_name }}</option>
-                                @else
-                                    <option value="{{ $store->id }}">{{ $store->store_name }}</option>
-                                @endif
-                            @endif
-                            <?php $i++; ?>
-                        @endforeach
-                    </select>
-                    <a target="_blank" href="{{ route('client.stores.create') }}" role="button" class="btn btn-primary ">
-                        <i class="fa fa-plus" aria-hidden="true"> </i>
-                        {{ __('sales_bills.add-store') }}
-                    </a>
-                </div>
-            </div>
-            <!----CLIENT--->
-            <div class="col-md-6 pull-right no-print">
-                <label>
-                    {{ __('sales_bills.client-name') }}
-                    <span class="text-danger font-weight-bold">*</span>
-                </label>
-                <div class="d-flex align-items-center justify-content-between">
-                    <select name="outer_client_id" id="outer_client_id" data-style="btn-new_color"
-                        title="{{ __('sales_bills.client-name') }}" class="selectpicker w-100 me-2"
-                        data-live-search="true">
-                        @foreach ($outer_clients as $outer_client)
-                            <option value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
-                        @endforeach
-                    </select>
-                    <a target="_blank" href="{{ route('client.outer_clients.create') }}" role="button"
-                        class="btn btn-primary">
-                        <i class="fa fa-plus" aria-hidden="true"> </i> {{ __('sales_bills.add-client') }}
-                    </a>
-                </div>
-            </div>
-        </div>
-        <!--tax-->
-        <div class="row mt-2">
-            <!----->
-            <div class="col-md-6 pull-right no-print">
-                <label>
-                    {{ __('sales_bills.product-code') }}
-                    <span class="text-danger font-weight-bold">*</span>
-                </label>
-                <div class="d-flex align-items-center justify-content-between">
-                    <select name="product_id" id="product_id" class="selectpicker w-50" data-style="btn-new_color"
-                        data-live-search="true" title="{{ __('sales_bills.product-code') }}">
-                        @foreach ($all_products as $product)
-                            <option value="{{ $product->id }}" data-name="{{ strtolower($product->product_name) }}"
-                                data-sectorprice="{{ $product->sector_price }}"
-                                data-wholesaleprice="{{ $product->wholesale_price }}"
-                                data-tokens="{{ $product->code_universal }}"
-                                data-remaining="{{ $product->total_remaining }}"
-                                data-categorytype="{{ $product->category_type }}" data-unitid="{{ $product->unit_id }}">
-                                {{ $product->product_name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    {{-- <select name="outer_client_id" id="outer_client_id" data-style="btn-new_color"
-                    title="{{ __('sales_bills.client-name') }}" class="selectpicker w-100 me-2" data-live-search="true">
-                    @foreach ($outer_clients as $outer_client)
-                        <option value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
-                    @endforeach
-                </select> --}}
-                    <a target="_blank" href="{{ route('client.products.create') }} }}" role="button"
-                        class="btn btn-primary">
-                        <i class="fa fa-plus" aria-hidden="true"> </i> {{ __('sales_bills.add-product') }}
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-6 pull-right no-print">
-                <label for="value_added_tax">{{ __('sales_bills.prices-for-tax') }}
-                    <span class="text-danger font-weight-bold">*</span>
 
-                </label>
-
-                <div class="d-flex align-items-center justify-content-between">
-                    <select required name="value_added_tax" id="value_added_tax" class="selectpicker w-100"
-                        data-style="btn-new_color" data-live-search="true">
-                        <option value="0">
-                            {{ __('sales_bills.not-including-tax') }}</option>
-                        <option value="2" selected>
-                            {{ __('sales_bills.including-tax') }}</option>
-                        <option value="1">
-                            {{ __('sales_bills.exempt-tax') }}</option>
-                    </select>
-                </div>
+        <!-----notes------->
+        <div class="col-sm-12 pull-right no-print">
+            <div class="form-group" dir="rtl">
+                <label for="time">{{ __('main.notes') }}</label>
+                <textarea name="notes" id="notes" class="summernotes">@if (isset($open_sale_bill) && !empty($open_sale_bill)) {{$open_sale_bill->notes}} @endif</textarea>
+                <a data-toggle="modal" data-target="#myModal3"
+                   class="btn btn-link add_extra_notes d-none @if (!isset($open_sale_bill) || empty($open_sale_bill)) disabled @endif"
+                   style="color: blue!important;">
+                    اضف ملاحظات اخرى
+                </a>
             </div>
         </div>
+
         <div class="clearfix no-print"></div>
 
-        <input type="number" id='grand_total_input' name="grand_total" hidden>
-        <input type="number" id='grand_tax_input' name="grand_tax" hidden>
-        <input type="number" id='grand_discount_input' name="total_discount" hidden>
-
-        <!-- Table to display selected products
-                        <table class="table table-bordered mt-2" id="products_table">
-                            <thead>
-                                <tr>
-                                    <th>{{ __('sales_bills.product') }}</th>
-                                    <th>{{ __('sales_bills.price_type') }}</th>
-                                    <th>{{ __('sales_bills.price') }}</th>
-                                    <th>{{ __('sales_bills.quantity') }}</th>
-                                    <th>{{ __('sales_bills.unit') }}</th>
-                                    <th>{{ __('sales_bills.discount') }}
-                                        <div class="tax_discount"
-                                            style="display: inline-block; margin-left: 10px; vertical-align: middle;">
-                                            <select id="discount_application" class="form-control form-control-sm"
-                                                style="font-size: 12px; width: 20px; height: 20px;" name="products_discount_type">
-                                                <option value="before_tax">{{ __('sales_bills.discount_before_tax') }}</option>
-                                                <option value="after_tax">{{ __('sales_bills.discount_after_tax') }}</option>
-                                            </select>
-                                        </div>
-                                    </th>
-                                    <th>{{ __('sales_bills.tax') }}</th>
-                                    <th>{{ __('sales_bills.total') }}</th>
-                                    <th>{{ __('sales_bills.actions') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="6">{{ __('sales_bills.grand_tax') }}</td>
-                                    <td colspan="3" id="grand_tax" class="text-right">0.00</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="6">{{ __('sales_bills.grand_total') }}</td>
-                                    <td colspan="3" id="grand_total" class="text-right">0.00</td>
-                                </tr>
-                            </tfoot>
-                        </table> -->
-        <table class="table table-bordered mt-2" id="products_table"
-            style="background-color: #ffffff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); border-radius: 5px;">
-            <thead>
+        <div class="outer_client_details no-print"
+             @if (!isset($open_sale_bill) || empty($open_sale_bill) || empty($open_sale_bill->outer_client_id)) style="display: none !important;" @endif>
+            <table class="table table-bordered table-striped table-condensed table-hover float-left">
+                <thead>
+                <th>{{ __('main.type') }}</th>
+                <th>{{ __('main.indebtedness') }}</th>
+                <th>{{ __('main.nationality') }}</th>
+                <th>{{ __('main.tax-number') }}</th>
+                <th>{{ __('main.phone') }}</th>
+                <th>{{ __('main.address') }}</th>
+                <th>{{ __('main.company') }}</th>
+                </thead>
+                <tbody>
                 <tr>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                        {{ __('sales_bills.product') }}</th>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                        {{ __('sales_bills.price_type') }}</th>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                        {{ __('sales_bills.price') }}</th>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                        {{ __('sales_bills.quantity') }}</th>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                        {{ __('sales_bills.unit') }}</th>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 5px; font-weight: bold;">
-                        {{ __('sales_bills.discount') }}
-                        <div class="tax_discount"
-                            style="display: inline-block; margin-left: 10px; vertical-align: middle;">
-                            <select id="discount_application" class="form-control" style="font-size: 12px; height: 30px;"
-                                name="products_discount_type">
-                                <option value="before_tax">{{ __('sales_bills.discount_before_tax') }}</option>
-                                <option value="after_tax">{{ __('sales_bills.discount_after_tax') }}</option>
-                            </select>
-                        </div>
-                    </th>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                        {{ __('sales_bills.tax') }}</th>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                        {{ __('sales_bills.total') }}</th>
-                    <th
-                        style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                        {{ __('sales_bills.actions') }}</th>
+                    <td id="category">
+                        @if (isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->outer_client_id))
+                            {{ $open_sale_bill->OuterClient->client_category }}
+                        @endif
+                    </td>
+                    <td id="balance_before">
+                        @if (isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->outer_client_id))
+                            {{ $open_sale_bill->OuterClient->prev_balance }}
+                        @endif
+                    </td>
+                    <td id="client_national">
+                        @if (isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->outer_client_id))
+                            {{ $open_sale_bill->OuterClient->client_national }}
+                        @endif
+                    </td>
+                    <td id="tax_number">
+                        @if (isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->outer_client_id))
+                            {{ $open_sale_bill->OuterClient->tax_number }}
+                        @endif
+                    </td>
+                    <td id="client_phone">
+                        @if (isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->outer_client_id) && !$open_sale_bill->OuterClient->phones->isEmpty())
+                            {{ $open_sale_bill->OuterClient->phones[0]->client_phone }}
+                        @endif
+                    </td>
+                    <td id="client_address">
+                        @if (isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->outer_client_id) && !$open_sale_bill->OuterClient->addresses->isEmpty())
+                            {{ $open_sale_bill->OuterClient->addresses[0]->client_address }}
+                        @endif
+                    </td>
+                    <td id="shop_name">
+                        @if (isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->outer_client_id))
+                            {{ $open_sale_bill->OuterClient->shop_name }}
+                        @endif
+                    </td>
                 </tr>
-            </thead>
-            <tbody style="text-align: center;">
-                <!-- هنا يتم عرض البيانات -->
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="6" style="background-color: #f9f9f9; font-weight: bold;">
-                        {{ __('sales_bills.grand_tax') }}</td>
-                    <td colspan="3" id="grand_tax" class="text-right" style="background-color: #f9f9f9;">0.00</td>
-                </tr>
-                <tr>
-                    <td colspan="6" style="background-color: #f9f9f9; font-weight: bold;">
-                        {{ __('sales_bills.grand_total') }}</td>
-                    <td colspan="3" id="grand_total" class="text-right" style="background-color: #f9f9f9;">0.00</td>
-                </tr>
-            </tfoot>
-        </table>
+                </tbody>
+            </table>
+            <div class="clearfix"></div>
+        </div>
 
-
-
-        {{-- <div class="row options no-print products">
+        <div class="clearfix"></div>
+        <hr class="no-print">
+        <div class="options no-print">
             <div class="col-lg-3 pull-right">
                 <label for=""> {{ __('sales_bills.product-code') }} </label>
-               <select name="product_id" id="product_id" class="selectpicker w-80" data-style="btn-success"
+                  {{-- @dd($all_products->count())  --}}
+                <select name="product_id" id="product_id" class="selectpicker w-80" data-style="btn-success"
                     data-live-search="true" title="{{ __('sales_bills.product-code') }}">
-
                     @foreach ($all_products as $product)
                         <option value="{{ $product->id }}" data-tokens="{{ $product->code_universal }}">
                             {{ $product->product_name }}</option>
                     @endforeach
                 </select>
                 <a target="_blank" href="{{ route('client.products.create') }}" role="button"
-                   style="width: 15%;display: inline;" class="btn btn-primary btn-danger open_popup">
+                   style="width: 15%;display: inline;" class="btn btn-sm btn-danger open_popup">
                     <i class="fa fa-plus"></i>
                 </a>
                 <div class="available text-center" style="color: #000; font-size: 14px; margin-top: 10px;"></div>
@@ -318,62 +299,18 @@
                 <input type="number" name="quantity_price" readonly
                        id="quantity_price" class="form-control"/>
             </div>
-        </div> --}}
-        <div class="row">
-            <div class="col-md-6 pull-right">
-                <div class="form-group" dir="rtl">
-                    <label for="discount">{{ __('sales_bills.discount-on-the-total-bill') }}</label> <br>
-                    <select name="discount_type" id="discount_type" class="form-control"
-                        style="width: 60%;display: inline;float: right; margin-left:5px;">
-                        <option value="">اختر نوع الخصم</option>
-                        <option value="pound">خصم قبل الضريبة (مسطح)</option>
-                        <option value="percent">خصم قبل الضريبة (%)</option>
-                        <option value="poundAfterTax">ضمان اعمال (مسطح)</option>
-                        <option value="poundAfterTaxPercent">ضمان اعمال (%)</option>
-                        <option value="afterTax" class="d-none">
-                            خصم علي اجمالي المبلغ شامل الضريبة
-                        </option>
-                    </select>
-                    <input type="number" value="0" name="discount_value" min="0"
-                        style="width: 20%;display: inline;float: right;" id="discount_value" class="form-control "
-                        step = "any" />
-                          <input type="text" name="discount_note" id="discount_note" placeholder="ملاحظات الخصم. . ."
-                class="form-control mt-5"  style="width: 80%;">
-                    {{-- <span id="dicountForBill"></span> --}}
-                </div>
-
-
-            </div>
-            <div class="col-md-6 pull-right">
-                <div class="form-group" dir="rtl">
-                    <label for="extra">{{ __('main.shipping-expenses') }}</label> <br>
-
-                    <select name="extra_type" id="extra_type" class="form-control"
-                        style="width:60%;display: inline;float: right;margin-left: 5px">
-                        <option value="">اختر نوع الشحن</option>
-                        <option value="pound">{{ $extra_settings->currency }}</option>
-                        <option value="percent">%</option>
-                    </select>
-                    <input value="0" type="number" name="extra_value" min='0'
-                        style="width: 20%;display: inline;float: right;" id="extra_value" class="form-control"
-                        step = "any" />
-                </div>
-            </div>
-        </div><!--  End Row -->
-        <!-----notes------->
-        <div class="col-sm-12 pull-right no-print">
-            <div class="form-group" dir="rtl">
-                <label for="time">{{ __('main.notes') }}</label>
-                <textarea name="main_notes" id="notes" class="summernotes">
-                  </textarea>
-                <a data-toggle="modal" data-target="#myModal3" class="btn btn-link add_extra_notes d-none"
-                    style="color: blue!important;">
-                    اضف ملاحظات اخرى
-                </a>
-            </div>
         </div>
-        <div class="clearfix no-print"></div>
-
+        <div class="clearfix"></div>
+        <div class="col-lg-12 text-center">
+            <button type="button" id="add" class="btn btn-info btn-md mt-3">
+                <i class="fa fa-plus"></i>
+                {{ __('sidebar.add-new-sales-invoice') }}
+            </button>
+            <button type="button" id="edit" style="display: none" class="btn btn-success btn-md mt-3">
+                <i class="fa fa-pencil"></i>
+                {{ __('main.edit') }}
+            </button>
+        </div>
         <hr>
         </div>
         <div class="company_details printy" style="display: none;">
@@ -383,691 +320,989 @@
             <div class="text-center">
                 <div class="col-lg-12 text-center justify-content-center">
                     <p class="alert alert-info text-center alert-sm"
-                        style="margin: 10px auto; font-size: 17px;line-height: 1.9;" dir="rtl">
+                       style="margin: 10px auto; font-size: 17px;line-height: 1.9;" dir="rtl">
                         {{ $company->company_name }} -- {{ $company->business_field }} <br>
                         {{ $company->company_owner }} -- {{ $company->phone_number }} <br>
                     </p>
                 </div>
             </div>
         </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 bill_details mt-1">
+            <h6 class="alert alert-sm alert-dark text-center">
+                <i class="fa fa-success-circle"></i>
+                {{ __('sales_bills.sales-invoice-item-data-no') }}
 
-        <div class="col-lg-12 no-print text-center"
-            style="padding-top: 25px;height: auto !important;display: flex;justify-content: center;">
-            <button type="button" data-toggle="modal" style="height: 40px;" data-target="#myModal2"
-                class="btn btn-md btn-dark pay_btn pull-right">
-                <i class="fa fa-money"></i>
-                {{ __('main.record') }}
-            </button>
+                @if (isset($open_sale_bill) && !empty($open_sale_bill))
+                    {{ $open_sale_bill->company_counter }}
+                @else
+                    {{ $pre_counter }}
+                @endif
+            </h6>
 
+            <?php
+            if (isset($open_sale_bill) && !empty($open_sale_bill)) {
+                $elements = \App\Models\SaleBillElement::where('sale_bill_id', $open_sale_bill->id)->get();
+                $extras = \App\Models\SaleBillExtra::where('sale_bill_id', $open_sale_bill->id)->get();
+                $extra_settings = \App\Models\ExtraSettings::where('company_id', $company_id)->first();
+                $currency = $extra_settings->currency;
+                $compTaxValue = $company->tax_value_added;
+                $sum = [];
+                if (!$elements->isEmpty()) {
+                    $i = 0;
+                    echo "<table class='table table-condensed table-striped table-bordered'>";
+                    echo '<thead>';
+                    echo '<th>  # </th>';
+                    echo '<th> اسم المنتج </th>';
+                    echo '<th> سعر الوحدة </th>';
+                    echo '<th> الكمية </th>';
+                    echo '<th>  الاجمالى </th>';
+                    echo "<th class='no-print'>  تحكم </th>";
+                    echo '</thead>';
+                    echo '<tbody>';
+                    foreach ($elements as $element) {
+                        array_push($sum, $element->quantity_price);
+                        echo '<tr>';
+                        echo '<td>' . ++$i . '</td>';
+                        echo '<td>' . $element->product->product_name . '</td>';
+                        echo '<td>' . $element->product_price . '</td>';
+                        if (!empty($element->unit_id)) {
+                            echo '<td>' . $element->quantity . ' ' . $element->unit->unit_name . '</td>';
+                        } else {
+                            echo '<td>' . $element->quantity . '</td>';
+                        }
+                        echo '<td>' . $element->quantity_price . '</td>';
+                        echo "
+                <td class='no-print'>
+                    <button type='button' sale_bill_number='" . $element->SaleBill->sale_bill_number . "' element_id='" .
+                            $element->id . "' class='btn btn-sm btn-info edit_element'>
+                        <i class='fa fa-edit'></i>
+                    </button>
 
+                    <button type='button' sale_bill_number='" . $element->SaleBill->sale_bill_number . "' element_id='" .
+                            $element->id . "' class='btn btn-sm btn-danger remove_element'><i
+                            class='fa fa-trash'></i>
+                    </button>";
 
-            <!------PRINT MAIN INVOICE---->
-            {{-- <a href="javascript:;" role="button" class="btn save_btn1 btn-md btn-info text-white pull-right ml-1 "
-                isMoswada="0" invoiceType='2' style="height: 40px;">
-                حفظ و طباعة 1
-            </a> --}}
-            <button type="button" id="add" class="btn btn-info btn-md ml-1" style="height: 40px;">
-                <i class="fa fa-plus"></i>
-                {{ __('sales_bills.save') }}
-            </button>
-            <button type="button" role="button" class="btn save_btn1 btn-md btn-info text-white pull-right ml-1"
-                isMoswada="0" invoiceType='2' style="height: 40px;">
-                حفظ و طباعة 1
-            </button>
-
-            <!------PRINT 1---->
-            <a href="javascript:;"
-                style="height: 40px;border:1px solid #085d4a;background: #085d4a !important;color:white !important;"
-                role="button" class="btn save_btn2 btn-md pull-right ml-1" printColor="1" isMoswada="0"
-                invoiceType='2'>
-                حفظ و طباعة 2
-            </a>
-
-            <a href="javascript:;" role="button"
-                style="height: 40px;border:1px solid #5e8b0b;background: #5e8b0b !important;color:white !important;"
-                class="btn save_btn2 btn-md btn-primary pull-right ml-1" printColor="2" isMoswada="0" invoiceType='4'>
-                حفظ و طباعة 3
-            </a>
-            <!------PRINT 2---->
-            <a href="javascript:;" role="button" style="height: 40px;"
-                class="btn save_btn2 btn-md btn-primary pull-right ml-1" printColor="2" isMoswada="0" invoiceType='2'>
-                حفظ و طباعة 4
-            </a>
-
-            <!------FATOORAH MOSWADA---->
-            <a href="javascript:;" role="button" style="height: 40px;"
-                class="btn save_btn2 btn-md btn-warning pull-right ml-1" printColor="2" isMoswada="1" invoiceType='2'>
-                فاتورة مسودة
-            </a>
-            <!------FATOORAH No Tax---->
-            <a href="javascript:;" role="button" style="height: 40px;"
-                class="btn save_btn2 btn-md btn-success pull-right ml-1" printColor="2" isMoswada="0" invoiceType='3'>
-                فاتورة غير ضريبية
-            </a>
+                        echo "
+                            </td>";
+                        echo '</tr>';
+                    }
+                    echo '</tbody>';
+                    echo '</table>';
+                    $total = array_sum($sum);
+                    $percentage = ($compTaxValue / 100) * $total;
+                    $after_total = $total + $percentage;
+                    $tax_option = $open_sale_bill->value_added_tax;
+                    if ($tax_option == 1) {
+                        $total = $total * (100 / 115);
+                        $total_with_option = $total;
+                        $percentage = (15 / 100) * $total_with_option;
+                        $after_total = $percentage + $total_with_option;
+                    }
+                    $previous_discount = \App\Models\SaleBillExtra::where('sale_bill_id', $open_sale_bill->id)->where('action', 'discount')->first();
+                    if ($previous_discount->action_type == 'afterTax') {
+                        echo " <div class='clearfix'></div> <div class='alert alert-dark alert-sm text-center'><div class='pull-right col-lg-6 '> اجمالى الفاتورة " . round($total, 2) .
+                            ' ' . $currency . " </div> <div class='pull-left col-lg-6 '> اجمالى الفاتورة  بعد القيمة المضافة " . (round($after_total, 2) - (round($after_total, 2) / 100 * 5)) . ' ' . $currency . " <div class='clearfix'></div> </div>";
+                    } else {
+                        echo " <div class='clearfix'></div> <div class='alert alert-dark alert-sm text-center'><div class='pull-right col-lg-6 '> اجمالى الفاتورة " . round($total, 2) .
+                            ' ' . $currency . " </div> <div class='pull-left col-lg-6 '> اجمالى الفاتورة  بعد القيمة المضافة " . round($after_total, 2) . ' ' . $currency . " <div class='clearfix'></div> </div>";
+                    }
+                }
+            }
+            ?>
+            <div class="clearfix"></div>
         </div>
-        <div class="modal fade" dir="rtl" id="myModal2" tabindex="-1" role="dialog"
-            aria-labelledby="myModalLabel2">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header w-100">
-                        <h4 class="modal-title text-center" id="myModalLabel2">دفع نقدى</h4>
-                    </div>
-                    <div class="modal-body">
-                        <input type="hidden" id="company_id" value="{{ $company_id }}">
-                        <h5 class="col-lg-12 d-block mb-2">{{ __('main.main-information') }}</h5>
-                        <hr>
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                <label> رقم العملية <span class="text-danger">*</span></label>
-                                <input required readonly value="{{ $pre_cash }}" class="form-control"
-                                    id="cash_number" name="cash_number" type="text">
-                            </div>
-                            <div class="col-md-4">
-                                <label> المبلغ المدفوع <span class="text-danger">*</span></label>
-                                <input required class="form-control" name="amount" id="amount" type="text"
-                                    dir="ltr">
-                            </div>
-                            <div class="col-md-4">
-                                <label> طريقة الدفع <span class="text-danger">*</span></label>
-                                <select required id="payment_method" name="payment_method" class="form-control">
-                                    <option value="">اختر طريقة الدفع</option>
-                                    <option value="cash">دفع كاش نقدى</option>
-                                    <option value="bank">دفع بنكى شبكة</option>
-                                </select>
-                            </div>
-                        </div>
 
-                        <div class="row mb-3 cash" style="display: none;">
-                            <div class="col-md-4">
-                                <label> خزنة الدفع <span class="text-danger">*</span></label>
-                                <select style="width: 80% !important; display: inline !important;" required id="safe_id"
-                                    name="safe_id" class="form-control">
-                                    <option value="">اختر خزنة الدفع</option>
-                                    @foreach ($safes as $safe)
-                                        <option value="{{ $safe->id }}">{{ $safe->safe_name }}</option>
-                                    @endforeach
-                                </select>
-                                <a target="_blank" href="{{ route('client.safes.create') }}" role="button"
-                                    style="width: 15%;display: inline;" class="btn btn-primary btn-danger open_popup">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="row mb-3 bank" style="display: none;">
-                            <div class="col-md-4">
-                                <label class="d-block"> البنك <span class="text-danger">*</span></label>
-                                <select style="width: 80% !important; display: inline !important;" required id="bank_id"
-                                    name="bank_id" class="form-control">
-                                    <option value="">اختر البنك</option>
-                                    @foreach ($banks as $bank)
-                                        <option value="{{ $bank->id }}">{{ $bank->bank_name }}</option>
-                                    @endforeach
-                                </select>
-                                <a target="_blank" href="{{ route('client.banks.create') }}" role="button"
-                                    style="width: 15%;display: inline;" class="btn btn-primary btn-danger open_popup">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="">رقم المعاملة</label>
-                                <input type="text" class="form-control" id="bank_check_number"
-                                    name="bank_check_number" />
-                            </div>
-                            <div class="col-md-4">
-                                <label for="">ملاحظات</label>
-                                <input type="text" class="form-control" id="bank_notes" name="bank_notes" />
-                            </div>
-                        </div>
-                        {{-- <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                            <button class="btn btn-success pd-x-20 pay_cash" type="button">تسجيل الدفع</button>
-                        </div> --}}
-                    </div>
-                    <div class="modal-footer">
-                        <input type="hidden" name="client_name" id="client_name" />
-                        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i>
-                            اغلاق
-                        </button>
+        <div class="col-lg-12 col-md-12 col-sm-12 after_totals">
+            <?php
+            if (isset($open_sale_bill) && !empty($open_sale_bill)) {
+                $compTaxValue = $company->tax_value_added;
+                $sum = [];
+                foreach ($elements as $element) {
+                    array_push($sum, $element->quantity_price);
+                }
+                $total = array_sum($sum);
+                $previous_extra = \App\Models\SaleBillExtra::where('sale_bill_id', $open_sale_bill->id)->where('action', 'extra')->first();
+                if (!empty($previous_extra)) {
+                    $previous_extra_type = $previous_extra->action_type;
+                    $previous_extra_value = $previous_extra->value;
+                    if ($previous_extra_type == 'percent') {
+                        $previous_extra_value = ($previous_extra_value / 100) * $total;
+                    }
+                    if (!empty($previous_extra_value) || $previous_extra_value != 0)
+                        $after_discount = $total + $previous_extra_value;
+                    else {
+                        $after_discount = $total;
+                        $previous_extra_value = 0;
+                    }
+                }
+
+                $previous_discount = \App\Models\SaleBillExtra::where('sale_bill_id', $open_sale_bill->id)->where('action', 'discount')->first();
+                if (!empty($previous_discount)) {
+                    $previous_discount_type = $previous_discount->action_type;
+                    $previous_discount_value = $previous_discount->value ? $previous_discount->value : 0;
+                    if ($previous_discount_type == 'percent') {
+                        $previous_discount_value = ($previous_discount_value / 100) * $total;
+                    }
+                    $after_discount = $total - $previous_discount_value;
+                }
+
+
+                if (!empty($previous_extra) && !empty($previous_discount)) {
+                    $after_discount = $total - $previous_discount_value + $previous_extra_value;
+                } else {
+                    $after_discount = $total;
+                }
+
+
+                if (isset($after_discount) && $after_discount != 0) {
+                    $percentage = ($compTaxValue / 100) * $after_discount;
+                    $after_total_all = $after_discount + $percentage;
+                } else {
+                    $percentage = ($compTaxValue / 100) * $total;
+                    $after_total_all = $total + $percentage;
+                }
+                $tax_option = $open_sale_bill->value_added_tax;
+
+                if ($tax_option == 1) {
+                    $total_option = $total * (100 / 115);
+                    $total_with_option = $total_option;
+                    $percentage = (15 / 100) * $total_with_option;
+                    $after_total_all = $percentage + $total_with_option;
+                }
+                echo "
+                <div class='clearfix'></div>
+                    <div class='alert alert-info alert-sm text-center'> اجمالى الفاتورة النهائى بعد الضريبة  : " . round($after_total_all, 2) . ' ' . $currency . " </div>";
+                echo "</div>";
+            }
+            ?>
+        </div>
+
+        <div class="clearfix no-print"></div>
+        <hr class="no-print">
+        <div class="row no-print" style="margin: 20px auto;">
+            <div class="col-lg-12">
+                <div class="col-lg-6 col-md-6 col-xs-6 pull-right">
+                    <div class="form-group" dir="rtl">
+                        <label for="discount">{{ __('sales_bills.discount-on-the-total-bill') }}</label> <br>
+                        <?php
+                        if (isset($open_sale_bill) && !empty($open_sale_bill)) {
+                            foreach ($extras as $key) {
+                                if ($key->action == 'discount') {
+                                    if ($key->action_type == 'pound') {
+                                        $sale_bill_discount_value = $key->value;
+                                        $sale_bill_discount_type = 'pound';
+                                    } else if ($key->action_type == 'percent') {
+                                        $sale_bill_discount_value = $key->value;
+                                        $sale_bill_discount_type = 'percent';
+                                    } else {
+                                        $sale_bill_discount_value = $key->value;
+                                        $sale_bill_discount_type = 'afterTax';
+                                    }
+                                } else {
+                                    if ($key->action_type == 'pound') {
+                                        $sale_bill_extra_value = $key->value;
+                                        $sale_bill_extra_type = 'pound';
+                                    } else if ($key->action_type == 'percent') {
+                                        $sale_bill_extra_value = $key->value;
+                                        $sale_bill_extra_type = 'percent';
+                                    } else {
+                                        $sale_bill_extra_value = $key->value;
+                                        $sale_bill_extra_type = 'afterTax';
+                                    }
+                                }
+                            }
+                        }
+                        ?>
+                        @if (isset($open_sale_bill) && !empty($open_sale_bill))
+                            <select name="discount_type" id="discount_type" class="form-control"
+                                    style="width: 20%;display: inline;float: right; margin-left:5px;">
+                                <option
+                                    @if (isset($sale_bill_discount_type) && $sale_bill_discount_type == 'pound') selected
+                                    @endif value="pound">
+                                    خصم قبل الضريبة (مسطح)
+                                </option>
+                                <option
+                                    @if (isset($sale_bill_discount_type) && $sale_bill_discount_type == 'percent') selected
+                                    @endif value="percent">
+                                    خصم قبل الضريبة (%)
+                                </option>
+                                <option class="d-none"
+                                        @if (isset($sale_bill_discount_type) && $sale_bill_discount_type == 'afterTaxx') selected
+                                        @endif value="afterTax">
+                                    خصم علي اجمالي المبلغ شامل الضريبة
+                                </option>
+                                <option
+                                    @if (isset($sale_bill_discount_type) && $sale_bill_discount_type == 'poundAfterTax' || $sale_bill_discount_type == 'afterTax') selected
+                                    @endif value="poundAfterTax">
+                                    ضمان اعمال (مسطح)
+                                </option>
+                                <option
+                                    @if (isset($sale_bill_discount_type) && $sale_bill_discount_type == 'poundAfterTaxPercent') selected
+                                    @endif value="poundAfterTaxPercent">
+                                    ضمان اعمال (نسبة)
+                                </option>
+                            </select>
+                            <input type="text"
+                                   value="{{ isset($sale_bill_discount_value) ? $sale_bill_discount_value : 0 }}"
+                                   name="discount_value"
+                                   style="width: 50%;display: inline;float: right;" id="discount_value"
+                                   class="form-control "/>
+                            <button type="button" class="btn btn-md btn-success pull-right text-center"
+                                    style="display: inline !important;width: 20% !important; height: 40px;margin-right: 20px; "
+                                    id="exec_discount">{{ __('main.apply') }}
+                            </button>
+                            <input type="text" id="discount_note" placeholder="ملاحظات الخصم. . ." class="form-control"
+                                   style="position:relative;top: 15px;width:93%; ">
+                        @else
+                            <select name="discount_type" id="discount_type" class="form-control" disabled
+                                    style="width: 20%;display: inline;float: right; margin-left:5px;">
+                                <option value="pound">خصم قبل الضريبة (مسطح)</option>
+                                <option value="percent">خصم قبل الضريبة (%)</option>
+                                <option value="poundAfterTax">ضمان اعمال (مسطح)</option>
+                                <option value="poundAfterTaxPercent">ضمان اعمال (%)</option>
+                                <option value="afterTax" class="d-none">
+                                    خصم علي اجمالي المبلغ شامل الضريبة
+                                </option>
+                            </select>
+                            <input type="text" value="0" name="discount_value"
+                                   style="width: 50%;display: inline;float: right;" disabled id="discount_value"
+                                   class="form-control "/>
+                            <button type="button" disabled class="btn btn-md btn-success pull-right text-center"
+                                    style="display: inline !important;width: 20% !important; height: 40px;margin-right: 20px; "
+                                    id="exec_discount">{{ __('main.apply') }}
+                            </button>
+                            <input type="text" id="discount_note" placeholder="ملاحظات الخصم. . ." class="form-control"
+                                   style="position:relative;top: 15px;width:93%; ">
+
+                        @endif
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="modal fade" dir="rtl" id="myModal3" tabindex="-1" role="dialog"
-            aria-labelledby="myModalLabel3">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header w-100">
-                        <h4 class="modal-title w-100 text-center" id="myModalLabel3">
-                            ملاحظات على الفاتورة
-                        </h4>
-                    </div>
-                    <div class="modal-body">
-                        <form action="{{ route('save.notes') }}" method="post">
-                            @csrf
-                            @method('POST')
-
-                            <div class="notes">
-                                <div class="col-lg-6 pull-right">
-                                    <div class="form-group">
-                                        <label class="d-block">
-                                            الملاحظة رقم 1
-                                        </label>
-                                        <input type="text" class="form-control" name="notes[]" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 pull-right">
-                                    <div class="form-group">
-                                        <label class="d-block">
-                                            الملاحظة رقم 2
-                                        </label>
-                                        <input type="text" class="form-control" name="notes[]" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 pull-right">
-                                    <div class="form-group">
-                                        <label class="d-block">
-                                            الملاحظة رقم 3
-                                        </label><input type="text" class="form-control" name="notes[]" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 pull-right">
-                                    <div class="form-group">
-                                        <label class="d-block">
-                                            الملاحظة رقم 4
-                                        </label>
-                                        <input type="text" class="form-control" name="notes[]" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 pull-right">
-                                    <div class="form-group">
-                                        <label class="d-block">
-                                            الملاحظة رقم 5
-                                        </label><input type="text" class="form-control" name="notes[]" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 pull-right">
-                                    <div class="form-group">
-                                        <label class="d-block">
-                                            الملاحظة رقم 6
-                                        </label>
-                                        <input type="text" class="form-control" name="notes[]" />
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button form="myForm" type="submit" class="btn btn-md btn-success">
-                            <i class="fa fa-save"></i>
-                            حفظ الملاحظات
-                        </button>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i>
-                            اغلاق
-                        </button>
+                <div class="col-lg-6 col-md-6 col-xs-6 pull-right">
+                    <div class="form-group" dir="rtl">
+                        <label for="extra">{{ __('main.shipping-expenses') }}</label> <br>
+                        @if (isset($open_sale_bill) && !empty($open_sale_bill))
+                            <select name="extra_type" id="extra_type" class="form-control"
+                                    style="width: 20%;display: inline;float: right;margin-left: 5px">
+                                <option @if (isset($sale_bill_extra_type) && $sale_bill_extra_type == 'pound') selected
+                                        @endif value="pound">
+                                    {{ $extra_settings->currency }}</option>
+                                <option
+                                    @if (isset($sale_bill_extra_type) && $sale_bill_extra_type == 'percent') selected
+                                    @endif value="percent">%
+                                </option>
+                            </select>
+                            <input value="{{ isset($sale_bill_extra_value) ? $sale_bill_extra_value :0 }}" type="text"
+                                   name="extra_value"
+                                   style="width: 50%;display: inline;float: right;" id="extra_value"
+                                   class="form-control"/>
+                            <button type="button" class="btn btn-md btn-success pull-right text-center"
+                                    style="display: inline !important;width: 20% !important; height: 40px;margin-right: 20px; "
+                                    id="exec_extra">
+                                تطبيق
+                            </button>
+                        @else
+                            <select disabled name="extra_type" id="extra_type" class="form-control"
+                                    style="width: 20%;display: inline;float: right;margin-left: 5px">
+                                <option value="pound">{{ $extra_settings->currency }}</option>
+                                <option value="percent">%</option>
+                            </select>
+                            <input disabled value="0" type="text" name="extra_value"
+                                   style="width: 50%;display: inline;float: right;" id="extra_value"
+                                   class="form-control"/>
+                            <button disabled type="button" class="btn btn-md btn-success pull-right text-center"
+                                    style="display: inline !important;width: 20% !important; height: 40px;margin-right: 20px; "
+                                    id="exec_extra">
+                                {{ __('main.apply') }}
+                            </button>
+                        @endif
                     </div>
                 </div>
-            </div>
-        </div>
+                <div class="clearfix"></div>
+            </div> <!--  End Col-lg-12 -->
+        </div><!--  End Row -->
     </form>
+    <hr>
+    <div class="col-lg-12 no-print text-center"
+         style="padding-top: 25px;height: auto !important;display: flex;justify-content: center;">
+        <button type="button" @if (!isset($open_sale_bill) || empty($open_sale_bill)) disabled
+                @endif data-toggle="modal" style="height: 40px;"
+                data-target="#myModal2" class="btn btn-md btn-dark pay_btn pull-right">
+            <i class="fa fa-money"></i>
+            {{ __('main.record') }}
+        </button>
 
+        <form class="d-inline" method="POST" onsubmit="return checkChanges()"
+              action="{{ route('client.sale_bills.cancel') }}">
+            @csrf
+            @method('POST')
+            @if (isset($open_sale_bill) && !empty($open_sale_bill))
+                <input type="hidden" value="{{ $open_sale_bill->sale_bill_number }}" name="sale_bill_number"/>
+            @else
+                <input type="hidden" value="{{ $pre_bill }}" name="sale_bill_number"/>
+        @endif
 
-    <input type="hidden" id="final_total" />
-    <input type="hidden" id="product" placeholder="product" name="product" />
-    <input type="hidden" id="net_total" placeholder="اجمالى قبل الخصم" name="total" />
-    <input type="hidden" value="0" id="check" />
+        <!------CANCEL BTN---->
+            <button href="" type="submit" class="btn btn-md close_btn btn-danger pull-right ml-1" style="height: 40px;"
+                    @if (!isset($open_sale_bill) || empty($open_sale_bill)) disabled @endif>
+                <i class="fa fa-trash"></i>
+                {{ __('main.cancel') }}
+            </button>
+        </form>
+
+        <!------PRINT MAIN INVOICE---->
+        <a href="javascript:;" role="button" class="btn save_btn1 btn-md btn-info text-white pull-right ml-1
+            @if (!isset($open_sale_bill) || empty($open_sale_bill)) disabled @endif " isMoswada="0" invoiceType='2'
+           style="height: 40px;">
+            حفظ و طباعة 1
+        </a>
+        <!------PRINT 1---->
+        <a href="javascript:;"
+           style="height: 40px;border:1px solid #085d4a;background: #085d4a !important;color:white !important;"
+           role="button" class="btn save_btn2 btn-md pull-right ml-1
+            @if (!isset($open_sale_bill) || empty($open_sale_bill)) disabled @endif " printColor="1" isMoswada="0" invoiceType='2'>
+            حفظ و طباعة 2
+        </a>
+
+        <a href="javascript:;" role="button" style="height: 40px;border:1px solid #5e8b0b;background: #5e8b0b !important;color:white !important;" class="btn save_btn2 btn-md btn-primary pull-right ml-1
+            @if (!isset($open_sale_bill) || empty($open_sale_bill)) disabled @endif " printColor="2" isMoswada="0" invoiceType='4'>
+            حفظ و طباعة 3
+        </a>
+
+         <a href="javascript:;" role="button" style="height: 40px;border:1px solid #0bb3b3!important;background: #0bb3b3 !important ;color:white !important;" class="btn save_btn2 btn-md btn-primary pull-right ml-1
+            @if (!isset($open_sale_bill) || empty($open_sale_bill)) disabled @endif " printColor="3" isMoswada="0" invoiceType='5'>
+            حفظ و طباعة 4
+        </a>
+        <!------PRINT 2---->
+        <a href="javascript:;" role="button" style="height: 40px;" class="btn save_btn2 btn-md btn-primary pull-right ml-1
+            @if (!isset($open_sale_bill) || empty($open_sale_bill)) disabled @endif " printColor="2" isMoswada="0" invoiceType='2'>
+            حفظ و طباعة 5
+        </a>
+       
+        <!------FATOORAH MOSWADA---->
+        <a href="javascript:;" role="button" style="height: 40px;" class="btn save_btn2 btn-md btn-warning pull-right ml-1
+            @if (!isset($open_sale_bill) || empty($open_sale_bill)) disabled @endif " printColor="2" isMoswada="1" invoiceType='2'>
+            فاتورة مسودة
+        </a>
+        <!------FATOORAH No Tax---->
+        <a href="javascript:;" role="button" style="height: 40px;" class="btn save_btn2 btn-md btn-success pull-right ml-1
+            @if (!isset($open_sale_bill) || empty($open_sale_bill)) disabled @endif " printColor="2" isMoswada="0" invoiceType='3'>
+            فاتورة غير ضريبية
+        </a>
+    </div>
+
+    <div class="modal fade" dir="rtl" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header w-100">
+                    <h4 class="modal-title text-center" id="myModalLabel2">دفع نقدى</h4>
+                </div>
+                <div class="modal-body">
+                    @if ((isset($sale_bill_cash) && !$sale_bill_cash->isEmpty()) || (isset($sale_bill_bank_cash) && !$sale_bill_bank_cash->isEmpty()))
+                        <table class="table table-condensed table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>{{ __('main.amount') }}</th>
+                                <th>{{ __('main.payment') }}</th>
+                                <th>{{ __('main.delete') }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php $j = 0; ?>
+                            @if (isset($sale_bill_cash) && !$sale_bill_cash->isEmpty())
+                                @foreach ($sale_bill_cash as $cash)
+                                    <tr>
+                                        <td>{{ ++$j }}</td>
+                                        <td>{{ $cash->amount }}</td>
+                                        <td>دفع كاش نقدى
+                                            <br>
+                                            ({{ $cash->safe->safe_name }})
+                                        </td>
+                                        <td>
+                                            <button type="button" payment_method="cash" cash_id="{{ $cash->id }}"
+                                                    class="btn btn-danger delete_pay">{{ __('main.delete') }}
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                            @if (isset($sale_bill_bank_cash) && !$sale_bill_bank_cash->isEmpty())
+                                @foreach ($sale_bill_bank_cash as $cash)
+                                    <tr>
+                                        <td>{{ ++$j }}</td>
+                                        <td>{{ $cash->amount }}</td>
+                                        <td>دفع بنكى شبكة
+                                            <br>
+                                            ({{ $cash->bank->bank_name }})
+                                            <br>
+                                            ( {{ $cash->bank_check_number }} )
+                                        </td>
+                                        <td>
+                                            <button type="button" payment_method="bank" cash_id="{{ $cash->id }}"
+                                                    class="btn btn-danger delete_pay">حذف
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                            </tbody>
+                        </table>
+                    @endif
+                    <input type="hidden" id="company_id" value="{{ $company_id }}">
+                    <h5 class="col-lg-12 d-block mb-2">{{ __('main.main-information') }}</h5>
+                    <hr>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label> رقم العملية <span class="text-danger">*</span></label>
+                            <input required readonly value="{{ $pre_cash }}" class="form-control" id="cash_number"
+                                   type="text">
+                        </div>
+                        <div class="col-md-4">
+                            <label> المبلغ المدفوع <span class="text-danger">*</span></label>
+                            <input required class="form-control" id="amount" type="text" dir="ltr">
+                        </div>
+                        <div class="col-md-4">
+                            <label> طريقة الدفع <span class="text-danger">*</span></label>
+                            <select required id="payment_method" name="payment_method" class="form-control">
+                                <option value="">اختر طريقة الدفع</option>
+                                <option value="cash">دفع كاش نقدى</option>
+                                <option value="bank">دفع بنكى شبكة</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3 cash" style="display: none;">
+                        <div class="col-md-4">
+                            <label> خزنة الدفع <span class="text-danger">*</span></label>
+                            <select style="width: 80% !important; display: inline !important;" required id="safe_id"
+                                    class="form-control">
+                                <option value="">اختر خزنة الدفع</option>
+                                @foreach ($safes as $safe)
+                                    <option value="{{ $safe->id }}">{{ $safe->safe_name }}</option>
+                                @endforeach
+                            </select>
+                            <a target="_blank" href="{{ route('client.safes.create') }}" role="button"
+                               style="width: 15%;display: inline;" class="btn btn-sm btn-danger open_popup">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row mb-3 bank" style="display: none;">
+                        <div class="col-md-4">
+                            <label class="d-block"> البنك <span class="text-danger">*</span></label>
+                            <select style="width: 80% !important; display: inline !important;" required id="bank_id"
+                                    class="form-control">
+                                <option value="">اختر البنك</option>
+                                @foreach ($banks as $bank)
+                                    <option value="{{ $bank->id }}">{{ $bank->bank_name }}</option>
+                                @endforeach
+                            </select>
+                            <a target="_blank" href="{{ route('client.banks.create') }}" role="button"
+                               style="width: 15%;display: inline;" class="btn btn-sm btn-danger open_popup">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="">رقم المعاملة</label>
+                            <input type="text" class="form-control" id="bank_check_number"/>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="">ملاحظات</label>
+                            <input type="text" class="form-control" id="bank_notes"/>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                        <button class="btn btn-success pd-x-20 pay_cash" type="button">تسجيل الدفع</button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="client_name" id="client_name"/>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i>
+                        اغلاق
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" dir="rtl" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header w-100">
+                    <h4 class="modal-title w-100 text-center" id="myModalLabel3">
+                        ملاحظات على الفاتورة
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form id="myForm" action="{{route('save.notes')}}" method="post">
+                        @csrf
+                        @method('POST')
+                        @if (isset($open_sale_bill) && !empty($open_sale_bill))
+                            <input type="hidden" name="counter" value="{{$open_sale_bill->company_counter}}"/>
+                        @else
+                            <input type="hidden" name="counter" value="{{$pre_counter}}"/>
+                        @endif
+                        <div class="notes">
+                            <div class="col-lg-6 pull-right">
+                                <div class="form-group">
+                                    <label class="d-block">
+                                        الملاحظة رقم 1
+                                    </label>
+                                    <input
+                                        @if(isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->sale_bill_notes[0]) && !$open_sale_bill->sale_bill_notes->isEmpty())
+                                        value="{{$open_sale_bill->sale_bill_notes[0]->notes}}" @endif type="text"
+                                        class="form-control" name="notes[]"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 pull-right">
+                                <div class="form-group">
+                                    <label class="d-block">
+                                        الملاحظة رقم 2
+                                    </label>
+                                    <input
+                                        @if(isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->sale_bill_notes[1]) && !$open_sale_bill->sale_bill_notes->isEmpty())
+                                        value="{{$open_sale_bill->sale_bill_notes[1]->notes}}" @endif type="text"
+                                        class="form-control" name="notes[]"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 pull-right">
+                                <div class="form-group">
+                                    <label class="d-block">
+                                        الملاحظة رقم 3
+                                    </label><input
+                                        @if(isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->sale_bill_notes[2]) && !$open_sale_bill->sale_bill_notes->isEmpty())
+                                        value="{{$open_sale_bill->sale_bill_notes[2]->notes}}" @endif type="text"
+                                        class="form-control" name="notes[]"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 pull-right">
+                                <div class="form-group">
+                                    <label class="d-block">
+                                        الملاحظة رقم 4
+                                    </label>
+                                    <input
+                                        @if(isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->sale_bill_notes[3]) && !$open_sale_bill->sale_bill_notes->isEmpty())
+                                        value="{{$open_sale_bill->sale_bill_notes[3]->notes}}" @endif type="text"
+                                        class="form-control" name="notes[]"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 pull-right">
+                                <div class="form-group">
+                                    <label class="d-block">
+                                        الملاحظة رقم 5
+                                    </label><input
+                                        @if(isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->sale_bill_notes[4]) && !$open_sale_bill->sale_bill_notes->isEmpty())
+                                        value="{{$open_sale_bill->sale_bill_notes[4]->notes}}" @endif type="text"
+                                        class="form-control" name="notes[]"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 pull-right">
+                                <div class="form-group">
+                                    <label class="d-block">
+                                        الملاحظة رقم 6
+                                    </label>
+                                    <input
+                                        @if(isset($open_sale_bill) && !empty($open_sale_bill) && !empty($open_sale_bill->sale_bill_notes[5]) && !$open_sale_bill->sale_bill_notes->isEmpty())
+                                        value="{{$open_sale_bill->sale_bill_notes[5]->notes}}" @endif type="text"
+                                        class="form-control" name="notes[]"/>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button form="myForm" type="submit" class="btn btn-md btn-success">
+                        <i class="fa fa-save"></i>
+                        حفظ الملاحظات
+                    </button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i>
+                        اغلاق
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="final_total"
+           @if (isset($open_sale_bill) && !empty($open_sale_bill)) value="{{ $open_sale_bill->final_total }}" @endif />
+    <input type="hidden" id="product" placeholder="product" name="product"/>
+    <input type="hidden" id="total" placeholder="اجمالى قبل الخصم" name="total"/>
+    <input type="hidden" value="0" id="check"/>
     <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
     <script>
-        var translations = {
-            sector: "{{ __('sales_bills.sector') }}",
-            wholesale: "{{ __('sales_bills.wholesale') }}",
-            choose_unit: "{{ __('sales_bills.choose_unit') }}",
-            pound: "{{ __('sales_bills.pound') }}",
-            percent: "{{ __('sales_bills.percent') }}",
-            include_tax: "{{ __('sales_bills.include_tax') }}",
-            remove: "{{ __('sales_bills.remove') }}",
-            max_quantity: "{{ __('sales_bills.max_quantity') }}",
-            not_including_tax: "{{ __('sales_bills.not-including-tax') }}",
-            including_tax: "{{ __('sales_bills.including-tax') }}",
-            exempt_tax: "{{ __('sales_bills.exempt-tax') }}",
-        };
-    </script>
-    <script>
         var somethingChanged = false;
-        $(document).ready(function() {
+        $(document).ready(function(){
             $('.summernotes').summernote({
                 height: 100,
                 direction: 'rtl',
             });
         })
         //onsave btn حفظ الفاتورة
-        $(document).ready(function() {
-            $('#value_added_tax').on('change', function() {
-                const newTaxType = $(this).val();
+        $('.save_btn1').on('click', function () {
+            checkChanges();
+            let sale_bill_number = $('#sale_bill_number').val();
+            let payment_method = $('#payment_method').val();
 
-                // Show a SweetAlert confirmation dialog
-                Swal.fire({
-                    title: 'تأكيد التغيير',
-                    text: 'سيتم تغيير نوع الضريبة لجميع العناصر في الجدول إلى القيمة المحددة. هل تريد المتابعة؟',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'نعم، تغيير',
-                    cancelButtonText: 'إلغاء',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Update all tax types in the table to match the selected value
-                        $('#products_table tbody tr').each(function() {
-                            $(this).find('select[name*="[tax]"]').val(newTaxType).trigger(
-                                'change');
-                        });
+            $.post("{{ url('/client/sale-bills/saveAll') }}", {
+                sale_bill_number: sale_bill_number,
+                payment_method: payment_method,
+                "_token": "{{ csrf_token() }}"
+            }, function (data) {
 
-                        handleTaxCalculation(); // Recalculate taxes after the update
-                        Swal.fire(
-                            'تم التغيير!',
-                            'تم تحديث نوع الضريبة بنجاح.',
-                            'success'
-                        );
-                    } else {
-                        // Reset the dropdown to its previous value
-                        $(this).val($(this).data('previous-value'));
-                    }
-                });
-
-                // Save the current value as previous for potential reset
-                $(this).data('previous-value', newTaxType);
+                location.href = '/sale-bills/print/' + data;
             });
-            $('.save_btn1').on('click', function() {
-                let outerClientId = $('#outer_client_id').val();
-
-                // Check if the outer client ID is selected
-                if (!outerClientId) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'تحذير',
-                        text: 'يجب اختيار العميل',
-                        confirmButtonText: 'موافق'
-                    });
-                    return false;
-                }
-
-                // Validate that at least one product is selected
-                let hasProduct = false;
-                $('#products_table tbody tr').each(function() {
-                    let quantity = $(this).find('input[name*="[quantity]"]').val();
-                    let price = $(this).find('input[name*="[product_price]"]').val();
-
-                    let unit = $(this).find('select[name*="[unit_id]"]').val();
-
-                    if (quantity > 0 && price > 0 && unit) {
-                        hasProduct = true;
-                    }
-                });
-
-                if (!hasProduct) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'تحذير',
-                        text: 'يجب اختيار منتج واحد على الأقل، وتحديد الكمية، والسعر، والوحدة لكل منتج',
-                        confirmButtonText: 'موافق'
-                    });
-                    return false;
-                }
-                var formData = $('#myForm').serialize();
-
-                $.post("{{ url('/client/sale-bills/saveAll') }}", formData, function(data) {
-
-                    location.href = '/sale-bills/print/' + data;
-                });
-            });
-
-            //onsave btn حفظ الفاتورة
-            $('.save_btn2').on('click', function() {
-                let printColor = $(this).attr('printColor');
-                let isMoswada = $(this).attr('isMoswada');
-                let invoiceType = $(this).attr('invoiceType');
-                let outerClientId = $('#outer_client_id').val();
-
-                // Check if the outer client ID is selected
-                if (!outerClientId) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'تحذير',
-                        text: 'يجب اختيار العميل',
-                        confirmButtonText: 'موافق'
-                    });
-                    return false;
-                }
-
-                // Validate that at least one product is selected
-                let hasProduct = false;
-                $('#products_table tbody tr').each(function() {
-                    let quantity = $(this).find('input[name*="[quantity]"]').val();
-                    let price = $(this).find('input[name*="[product_price]"]').val();
-                    let unit = $(this).find('select[name*="[unit_id]"]').val();
-
-                    if (quantity > 0 && price > 0 && unit) {
-                        hasProduct = true;
-                    }
-                });
-
-                if (!hasProduct) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'تحذير',
-                        text: 'يجب اختيار منتج واحد على الأقل، وتحديد الكمية، والسعر، والوحدة لكل منتج',
-                        confirmButtonText: 'موافق'
-                    });
-                    return false;
-                }
-                var formData = $('#myForm').serialize();
-
-                $.post("{{ url('/client/sale-bills/saveAll') }}", formData, function(data) {
-                    location.href = '/sale-bills/print/' + data + '/' + invoiceType + '/' +
-                        printColor + '/' +
-                        isMoswada;
-                });
-            });
-
-
-            $('.pay_cash').on('click', function() {
-                let company_id = $('#company_id').val();
-                let outer_client_id = $('#outer_client_id').val();
-                let sale_bill_number = $('#sale_bill_number').val();
-                let date = $('#date').val();
-                let time = $('#time').val()
-                let cash_number = $('#cash_number').val();
-                let amount = $('#amount').val();
-                let safe_id = $('#safe_id').val();
-                let bank_id = $('#bank_id').val();
-                let bank_check_number = $('#bank_check_number').val();
-                let notes = $('#bank_notes').val();
-                let payment_method = $('#payment_method').val();
-                if (payment_method == "cash" && safe_id == "") {
-                    alert('اختر الخزنة اولا');
-                } else if (payment_method == "bank" && bank_id == "") {
-                    alert('اختر البنك اولا ');
-                } else if (payment_method == "") {
-                    alert('اختر طريقة الدفع اولا ');
-                } else {
-                    $.post("{{ route('client.store.cash.outerClients.SaleBill', 'test') }}", {
-                        outer_client_id: outer_client_id,
-                        company_id: company_id,
-                        bill_id: sale_bill_number,
-                        date: date,
-                        time: time,
-                        cash_number: cash_number,
-                        amount: amount,
-                        safe_id: safe_id,
-                        bank_id: bank_id,
-                        bank_check_number: bank_check_number,
-                        notes: notes,
-                        payment_method: payment_method,
-                        "_token": "{{ csrf_token() }}"
-                    }, function(data) {
-                        if (data.status == true) {
-                            $('<div class="alert alert-dark alert-sm"> ' + data.msg + '</div>')
-                                .insertAfter(
-                                    '#company_id');
-
-                            $('.delete_pay').on('click', function() {
-                                let payment_method = $(this).attr('payment_method');
-                                let cash_id = $(this).attr('cash_id');
-                                $.post("{{ route('sale_bills.pay.delete') }}", {
-                                    '_token': "{{ csrf_token() }}",
-                                    payment_method: payment_method,
-                                    cash_id: cash_id,
-                                }, function(data) {
-
-                                });
-                                $(this).parent().hide();
-
-                            });
-                            setTimeout(function() {
-                                $('#myModal2').hide();
-                                $('#myModal2').removeClass('show');
-                                $('#myModal2').css('display', 'none')
-                                $('body').removeClass('modal-open');
-                                $('.modal-backdrop').remove();
-                            }, 2000);
-
-                        } else {
-                            $('<br/><br/> <p class="alert alert-dark alert-sm"> ' + data.msg +
-                                    '</p>')
-                                .insertAfter('#company_id');
-                        }
-                    });
-                }
-            });
-            $('.delete_pay').on('click', function() {
-                let payment_method = $(this).attr('payment_method');
-                let cash_id = $(this).attr('cash_id');
-                $.post("{{ route('sale_bills.pay.delete') }}", {
-                    '_token': "{{ csrf_token() }}",
-                    payment_method: payment_method,
-                    cash_id: cash_id,
-                }, function(data) {
-
-                });
-                $(this).parent().parent().hide();
-
-            });
-            $('#outer_client_id').on('change', function() {
-                let outer_client_id = $(this).val();
-                if (outer_client_id != "") {
-                    $('.outer_client_details').fadeIn(200);
-                    $.post("{{ url('/client/sale-bills/getOuterClientDetails') }}", {
-                        outer_client_id: outer_client_id,
-                        "_token": "{{ csrf_token() }}"
-                    }, function(data) {
-                        $('#category').html(data.category);
-                        $('#balance_before').html(data.balance_before);
-                        $('#client_national').html(data.client_national);
-                        $('#tax_number').html(data.tax_number);
-                        $('#shop_name').html(data.shop_name);
-                        $('#client_phone').html(data.client_phone);
-                        $('#client_address').html(data.client_address);
-                    });
-                } else {
-                    $('.outer_client_details').fadeOut(200);
-                }
-            });
-            $('#store_id').on('change', function() {
-                let store_id = $(this).val();
-                if (store_id != "" || store_id != "0") {
-                    $('.options').fadeIn(200);
-                    $.post("{{ url('/client/sale-bills/getProducts') }}", {
-                        store_id: store_id,
-                        "_token": "{{ csrf_token() }}"
-                    }, function(data) {
-                        $('select#product_id').html(data);
-                        $('select#product_id').selectpicker('refresh');
-                    });
-                } else {
-                    $('.options').fadeOut(200);
-                }
-            });
-            $('#product_id').on('change', function() {
-                $('#sector').prop('checked', false);
-                $('#quantity').val('');
-                $('#quantity_price').val('');
-                let sale_bill_number = $('#sale_bill_number').val();
-                let product_id = $(this).val();
-                $.post("{{ url('/client/sale-bills/get') }}", {
-                    product_id: product_id,
-                    sale_bill_number: sale_bill_number,
-                    "_token": "{{ csrf_token() }}"
-                }, function(data) {
-                    $('#wholesale').prop('checked', true);
-                    $('input#product_price').val(data.wholesale_price);
-                    $('input#quantity_price').val(data.wholesale_price);
-                    $('input#quantity').val("1");
-                    $('select#unit_id').val(data.unit_id);
-                    $('input#quantity').attr('max', data.first_balance);
-                    $('.available').html('الكمية المتاحة : ' + data.first_balance);
-                });
-            });
-            $('#wholesale').on('click', function() {
-                let product_id = $('#product_id').val();
-                $.post("{{ url('/client/sale-bills/get') }}", {
-                    product_id: product_id,
-                    "_token": "{{ csrf_token() }}"
-                }, function(data) {
-                    $('input#product_price').val(data.wholesale_price);
-                    let quantity = $('#quantity').val();
-                    let quantity_price = quantity * data.wholesale_price;
-                    $('#quantity_price').val(quantity_price);
-                });
-            });
-            $('#sector').on('click', function() {
-                let product_id = $('#product_id').val();
-                $.post("{{ url('/client/sale-bills/get') }}", {
-                    product_id: product_id,
-                    "_token": "{{ csrf_token() }}"
-                }, function(data) {
-                    $('input#product_price').val(data.sector_price);
-                    let quantity = $('#quantity').val();
-                    let quantity_price = quantity * data.sector_price;
-                    $('#quantity_price').val(quantity_price);
-                });
-            });
-            $('#quantity').on('keyup change', function() {
-                let product_id = $('#product_id').val();
-                let product_price = $('#product_price').val();
-                let quantity = $(this).val();
-                let quantity_price = quantity * product_price;
-                $('#quantity_price').val(quantity_price);
-            });
-            $('#product_price').on('keyup change', function() {
-                let product_id = $('#product_id').val();
-                let product_price = $(this).val();
-                let quantity = $('#quantity').val();
-                let quantity_price = quantity * product_price;
-                $('#quantity_price').val(quantity_price);
-            });
-
         });
 
-        //add-new-sale-bill button --- اضافة فاتورة بيع جديدة.
-        $(document).ready(function() {
-            $('#myModal2').on('hide.bs.modal', function(e) {
-                let amount = $('#amount').val();
-
-                // Check if #amount exists and has a value greater than 0
-                if (amount && parseFloat(amount) > 0) {
-                    let paymentMethod = $('#payment_method').val();
-                    let safeId = $('#safe_id').val();
-                    let bankId = $('#bank_id').val();
-
-                    // Validate payment method based on the value of #amount
-                    if (paymentMethod === "cash" && !safeId) {
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'تحذير',
-                            text: 'اختر الخزنة اولا',
-                            confirmButtonText: 'موافق'
-                        });
-                        e.preventDefault(); // Prevent the modal from closing
-                    } else if (paymentMethod === "bank" && !bankId) {
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'تحذير',
-                            text: 'اختر البنك اولا',
-                            confirmButtonText: 'موافق'
-                        });
-                        e.preventDefault(); // Prevent the modal from closing
-                    } else if (!paymentMethod) {
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'تحذير',
-                            text: 'اختر طريقة الدفع اولا',
-                            confirmButtonText: 'موافق'
-                        });
-                        e.preventDefault(); // Prevent the modal from closing
-                    }
-                }
+        //onsave btn حفظ الفاتورة
+        $('.save_btn2').on('click', function () {
+            checkChanges();
+            let sale_bill_number = $('#sale_bill_number').val();
+            let payment_method = $('#payment_method').val();
+            let printColor = $(this).attr('printColor');
+            let isMoswada = $(this).attr('isMoswada');
+            let invoiceType = $(this).attr('invoiceType');
+            $.post("{{ url('/client/sale-bills/saveAll') }}", {
+                sale_bill_number: sale_bill_number,
+                payment_method: payment_method,
+                "_token": "{{ csrf_token() }}"
+            }, function (data) {
+                // console.log(data);
+                location.href = '/sale-bills/print/' + data + '/'+invoiceType+'/' + printColor + '/' + isMoswada;
             });
+        });
 
-            $('#add').on('click', function() {
-                let outerClientId = $('#outer_client_id').val();
 
-                // Check if the outer client ID is selected
-                if (!outerClientId) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'تحذير',
-                        text: 'يجب اختيار العميل',
-                        confirmButtonText: 'موافق'
-                    });
-                    return false;
-                }
+        $('.pay_cash').on('click', function () {
+            let company_id = $('#company_id').val();
+            let outer_client_id = $('#outer_client_id').val();
+            let sale_bill_number = $('#sale_bill_number').val();
+            let date = $('#date').val();
+            let time = $('#time').val()
+            let cash_number = $('#cash_number').val();
+            let amount = $('#amount').val();
+            let safe_id = $('#safe_id').val();
+            let bank_id = $('#bank_id').val();
+            let bank_check_number = $('#bank_check_number').val();
+            let notes = $('#bank_notes').val();
+            let payment_method = $('#payment_method').val();
+            if (payment_method == "cash" && safe_id == "") {
+                alert('اختر الخزنة اولا');
+            } else if (payment_method == "bank" && bank_id == "") {
+                alert('اختر البنك اولا ');
+            } else if (payment_method == "") {
+                alert('اختر طريقة الدفع اولا ');
+            } else {
+                $.post("{{ route('client.store.cash.outerClients.SaleBill', 'test') }}", {
+                    outer_client_id: outer_client_id,
+                    company_id: company_id,
+                    bill_id: sale_bill_number,
+                    date: date,
+                    time: time,
+                    cash_number: cash_number,
+                    amount: amount,
+                    safe_id: safe_id,
+                    bank_id: bank_id,
+                    bank_check_number: bank_check_number,
+                    notes: notes,
+                    payment_method: payment_method,
+                    "_token": "{{ csrf_token() }}"
+                }, function (data) {
+                    if (data.status == true) {
+                        $('<div class="alert alert-dark alert-sm"> ' + data.msg + '</div>').insertAfter(
+                            '#company_id');
 
-                // Validate that at least one product is selected
-                let hasProduct = false;
-                $('#products_table tbody tr').each(function() {
-                    let quantity = $(this).find('input[name*="[quantity]"]').val();
-                    let price = $(this).find('input[name*="[product_price]"]').val();
+                        $('.delete_pay').on('click', function () {
+                            let payment_method = $(this).attr('payment_method');
+                            let cash_id = $(this).attr('cash_id');
+                            $.post("{{ route('sale_bills.pay.delete') }}", {
+                                '_token': "{{ csrf_token() }}",
+                                payment_method: payment_method,
+                                cash_id: cash_id,
+                            }, function (data) {
 
-                    let unit = $(this).find('select[name*="[unit_id]"]').val();
+                            });
+                            $(this).parent().hide();
 
-                    if (quantity > 0 && price > 0 && unit) {
-                        hasProduct = true;
+                        });
+                        setTimeout(function () {
+                            $('#myModal2').hide();
+                            $('#myModal2').removeClass('show');
+                            $('#myModal2').css('display', 'none')
+                            $('body').removeClass('modal-open');
+                            $('.modal-backdrop').remove();
+                }, 2000);
+
+                    } else {
+                        $('<br/><br/> <p class="alert alert-dark alert-sm"> ' + data.msg + '</p>')
+                            .insertAfter('#company_id');
                     }
                 });
+            }
+        });
+        $('.delete_pay').on('click', function () {
+            let payment_method = $(this).attr('payment_method');
+            let cash_id = $(this).attr('cash_id');
+            $.post("{{ route('sale_bills.pay.delete') }}", {
+                '_token': "{{ csrf_token() }}",
+                payment_method: payment_method,
+                cash_id: cash_id,
+            }, function (data) {
 
-                if (!hasProduct) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'تحذير',
-                        text: 'يجب اختيار منتج واحد على الأقل، وتحديد الكمية، والسعر، والوحدة لكل منتج',
-                        confirmButtonText: 'موافق'
-                    });
-                    return false;
-                }
+            });
+            $(this).parent().parent().hide();
+
+        });
+        $('#outer_client_id').on('change', function () {
+            let outer_client_id = $(this).val();
+            if (outer_client_id != "") {
+                $('.outer_client_details').fadeIn(200);
+                $.post("{{ url('/client/sale-bills/getOuterClientDetails') }}", {
+                    outer_client_id: outer_client_id,
+                    "_token": "{{ csrf_token() }}"
+                }, function (data) {
+                    $('#category').html(data.category);
+                    $('#balance_before').html(data.balance_before);
+                    $('#client_national').html(data.client_national);
+                    $('#tax_number').html(data.tax_number);
+                    $('#shop_name').html(data.shop_name);
+                    $('#client_phone').html(data.client_phone);
+                    $('#client_address').html(data.client_address);
+                });
+            } else {
+                $('.outer_client_details').fadeOut(200);
+            }
+        });
+        $('#store_id').on('change', function () {
+            let store_id = $(this).val();
+            if (store_id != "" || store_id != "0") {
+                $('.options').fadeIn(200);
+                $.post("{{ url('/client/sale-bills/getProducts') }}", {
+                    store_id: store_id,
+                    "_token": "{{ csrf_token() }}"
+                }, function (data) {
+                    $('select#product_id').html(data);
+                    $('select#product_id').selectpicker('refresh');
+                });
+            } else {
+                $('.options').fadeOut(200);
+            }
+        });
+        $('#product_id').on('change', function () {
+            $('#sector').prop('checked', false);
+            $('#quantity').val('');
+            $('#quantity_price').val('');
+            let sale_bill_number = $('#sale_bill_number').val();
+            let product_id = $(this).val();
+            $.post("{{ url('/client/sale-bills/get') }}", {
+                product_id: product_id,
+                sale_bill_number: sale_bill_number,
+                "_token": "{{ csrf_token() }}"
+            }, function (data) {
+                $('#wholesale').prop('checked', true);
+                $('input#product_price').val(data.wholesale_price);
+                $('input#quantity_price').val(data.wholesale_price);
+                $('input#quantity').val("1");
+                $('select#unit_id').val(data.unit_id);
+                $('input#quantity').attr('max', data.first_balance);
+                $('.available').html('الكمية المتاحة : ' + data.first_balance);
+            });
+        });
+        $('#wholesale').on('click', function () {
+            let product_id = $('#product_id').val();
+            $.post("{{ url('/client/sale-bills/get') }}", {
+                product_id: product_id,
+                "_token": "{{ csrf_token() }}"
+            }, function (data) {
+                $('input#product_price').val(data.wholesale_price);
+                let quantity = $('#quantity').val();
+                let quantity_price = quantity * data.wholesale_price;
+                $('#quantity_price').val(quantity_price);
+            });
+        });
+        $('#sector').on('click', function () {
+            let product_id = $('#product_id').val();
+            $.post("{{ url('/client/sale-bills/get') }}", {
+                product_id: product_id,
+                "_token": "{{ csrf_token() }}"
+            }, function (data) {
+                $('input#product_price').val(data.sector_price);
+                let quantity = $('#quantity').val();
+                let quantity_price = quantity * data.sector_price;
+                $('#quantity_price').val(quantity_price);
+            });
+        });
+        $('#quantity').on('keyup change', function () {
+            let product_id = $('#product_id').val();
+            let product_price = $('#product_price').val();
+            let quantity = $(this).val();
+            let quantity_price = quantity * product_price;
+            $('#quantity_price').val(quantity_price);
+        });
+        $('#product_price').on('keyup change', function () {
+            let product_id = $('#product_id').val();
+            let product_price = $(this).val();
+            let quantity = $('#quantity').val();
+            let quantity_price = quantity * product_price;
+            $('#quantity_price').val(quantity_price);
+        });
 
 
-                var formData = $('#myForm').serialize();
-                $.post("{{ url('/client/sale-bills/post') }}", formData, function(data) {
-                    //     $('#outer_client_id').attr('disabled', true).addClass('disabled');
-                    //     $('#product_id').val('').trigger('change');
-                    //     $('#unit_id').val('');
-                    //     $('#discount_type').attr('disabled', false);
-                    //     $('.print_btn').removeClass('disabled');
-                    //     $('.pay_btn').attr('disabled', false);
-                    //     $('.close_btn').attr('disabled', false);
-                    //     $('.save_btn1').removeClass('disabled');
-                    //     $('.save_btn2').removeClass('disabled');
-                    //     $('.send_btn').removeClass('disabled');
-                    //     $('.add_extra_notes').removeClass('disabled');
-                    //     $('#discount_value').attr('disabled', false);
-                    //     $('#exec_discount').attr('disabled', false);
-                    //     $('#extra_type').attr('disabled', false);
-                    //     $('#extra_value').attr('disabled', false);
-                    //     $('#exec_extra').attr('disabled', false);
-                    //     $('#value_added_tax').attr('disabled', true).addClass('disabled');
-                    //     $('.available').html("");
-                    //     $('#product_price').val('0');
-                    //     $('#quantity').val('');
-                    //     $('#quantity_price').val('');
+        //add-new-sale-bill button --- اضافة فاتورة بيع جديدة.
+        $('#add').on('click', function () {
+            let outer_client_id = $('#outer_client_id').val();
+            if(outer_client_id == null){
+                alert('يجب اختيار العميل');
+                return false;
+            }
+            let sale_bill_number = $('#sale_bill_number').val();
+            let product_id = $('#product_id').val();
+            let product_price = $('#product_price').val();
+            let quantity = $('#quantity').val();
+            let date = $('#date').val();
+            let time = $('#time').val();
+            let notes = $('#notes').val();
+            let quantity_price = quantity * product_price;
+            let unit_id = $('#unit_id').val();
+            let first_balance = parseFloat($('#quantity').attr('max'));
+            let discount_type = $('#discount_type').val();
+            let discount_value = $('#discount_value').val();
+            let extra_type = $('#extra_type').val();
+            let extra_value = $('#extra_value').val();
+            let value_added_tax = $('#value_added_tax').val();
+            let store_id = $('#store_id').val();
 
-                    if (data.status === true) {
+            if (product_id == "" || product_id <= "0") {
+                alert("لابد ان تختار المنتج أولا");
+            } else if (unit_id == "" || unit_id == "0") {
+                alert("اختر الوحدة");
+            } else {
+
+                $.post("{{ url('/client/sale-bills/post') }}", {
+                    outer_client_id: outer_client_id,
+                    value_added_tax: value_added_tax,
+                    sale_bill_number: sale_bill_number,
+                    product_id: product_id,
+                    product_price: product_price,
+                    quantity: quantity,
+                    unit_id: unit_id,
+                    store_id: store_id,
+                    quantity_price: quantity_price,
+                    date: date,
+                    notes: notes,
+                    time: time,
+                    "_token": "{{ csrf_token() }}"
+                }, function (data) {
+                    $('#outer_client_id').attr('disabled', true).addClass('disabled');
+                    $('#product_id').val('').trigger('change');
+                    $('#unit_id').val('');
+                    $('#discount_type').attr('disabled', false);
+                    $('.print_btn').removeClass('disabled');
+                    $('.pay_btn').attr('disabled', false);
+                    $('.close_btn').attr('disabled', false);
+                    $('.save_btn1').removeClass('disabled');
+                    $('.save_btn2').removeClass('disabled');
+                    $('.send_btn').removeClass('disabled');
+                    $('.add_extra_notes').removeClass('disabled');
+                    $('#discount_value').attr('disabled', false);
+                    $('#exec_discount').attr('disabled', false);
+                    $('#extra_type').attr('disabled', false);
+                    $('#extra_value').attr('disabled', false);
+                    $('#exec_extra').attr('disabled', false);
+                    $('#value_added_tax').attr('disabled', true).addClass('disabled');
+                    $('.available').html("");
+                    $('#product_price').val('0');
+                    $('#quantity').val('');
+                    $('#quantity_price').val('');
+                    if (data.status == true) {
+
                         //-----show success msg.------//
                         $('.box_success').removeClass('d-none').fadeIn(200);
                         $('.msg_success').html(data.msg);
                         $('.box_success').delay(3000).fadeOut(300);
-                        window.location.href = `/client/sale-bill/${data.id}`;
+
+                        //-----get and show added elements.-----//
+                        $.post("{{ url('/client/sale-bills/elements') }}", {
+                            "_token": "{{ csrf_token() }}",
+                            sale_bill_number: sale_bill_number
+                        }, function (elements) {
+                            $('.bill_details').html(elements);
+                        });
+
+                        //-----apply discount-----//
+                        $.post("{{ url('/client/sale-bills/discount') }}", {
+                            "_token": "{{ csrf_token() }}",
+                            sale_bill_number: sale_bill_number,
+                            discount_type: discount_type,
+                            discount_value: discount_value
+                        }, function (data) {
+                            $('.after_totals').html(data);
+                        });
+
+                        //-----apply extra_value which is shipping discount-----//
+                        $.post("{{ url('/client/sale-bills/extra') }}", {
+                            "_token": "{{ csrf_token() }}",
+                            sale_bill_number: sale_bill_number,
+                            extra_type: extra_type,
+                            extra_value: extra_value
+                        }, function (data) {
+                            $('.after_totals').html(data);
+                        });
+
+                        $.post("{{ url('/client/sale-bills/refresh') }}", {
+                            "_token": "{{ csrf_token() }}",
+                            sale_bill_number: sale_bill_number,
+                        }, function (data) {
+                            $('#final_total').val(data.final_total);
+                        });
+
                     } else {
                         $('.box_error').removeClass('d-none').fadeIn(200);
                         $('.msg_error').html(data.msg);
                         $('.box_error').delay(3000).fadeOut(300);
+
+
+                        $.post("{{ url('/client/sale-bills/elements') }}", {
+                            "_token": "{{ csrf_token() }}",
+                            sale_bill_number: sale_bill_number
+                        }, function (elements) {
+                            $('.bill_details').html(elements);
+                        });
+
+                        $.post("{{ url('/client/sale-bills/discount') }}", {
+                            "_token": "{{ csrf_token() }}",
+                            sale_bill_number: sale_bill_number,
+                            discount_type: discount_type,
+                            discount_value: discount_value
+                        }, function (data) {
+                            alert('تم تطبيق الخصم');
+                            $('.after_totals').html(data);
+                        });
+
+                        $.post("{{ url('/client/sale-bills/extra') }}", {
+                            "_token": "{{ csrf_token() }}",
+                            sale_bill_number: sale_bill_number,
+                            extra_type: extra_type,
+                            extra_value: extra_value
+                        }, function (data) {
+                            $('.after_totals').html(data);
+                        });
+
+
+                        $.post("{{ url('/client/sale-bills/refresh') }}", {
+                            "_token": "{{ csrf_token() }}",
+                            sale_bill_number: sale_bill_number,
+                        }, function (data) {
+                            $('#final_total').val(data.final_total);
+                        });
+
+
                     }
                 });
-            });
+            }
 
         });
 
-
-
-
         // apply discount //
-        $('#exec_discount').on('click', function() {
+        $('#exec_discount').on('click', function () {
             let sale_bill_number = $('#sale_bill_number').val();
             let discount_type = $('#discount_type').val();
             let discount_value = $('#discount_value').val();
@@ -1080,7 +1315,7 @@
                 discount_type: discount_type,
                 discount_value: discount_value,
                 discount_note: discount_note
-            }, function(data) {
+            }, function (data) {
                 alert('تم تطبيق الخصم');
                 $('.after_totals').html(data);
             });
@@ -1089,17 +1324,17 @@
             $.post("{{ url('/client/sale-bills/refresh') }}", {
                 "_token": "{{ csrf_token() }}",
                 sale_bill_number: sale_bill_number,
-            }, function(data) {
+            }, function (data) {
                 $('#final_total').val(data.final_total);
             });
         });
 
-        $('.pay_btn').on('click', function() {
-            let final_total = $('#grand_total_input').val();
+        $('.pay_btn').on('click', function () {
+            let final_total = $('#final_total').val();
             $('#amount').val(final_total);
         })
 
-        $('.edit_element').on('click', function() {
+        $('.edit_element').on('click', function () {
             let element_id = $(this).attr('element_id');
             let sale_bill_number = $(this).attr('sale_bill_number');
 
@@ -1107,7 +1342,7 @@
                 "_token": "{{ csrf_token() }}",
                 sale_bill_number: sale_bill_number,
                 element_id: element_id
-            }, function(data) {
+            }, function (data) {
                 $('#product_id').val(data.product_id);
                 $('#product_id').selectpicker('refresh');
                 $('#product_price').val(data.product_price);
@@ -1119,7 +1354,7 @@
                     product_id: product_id,
                     sale_bill_number: sale_bill_number,
                     "_token": "{{ csrf_token() }}"
-                }, function(data) {
+                }, function (data) {
                     $('input#quantity').attr('max', data.first_balance);
                     $('.available').html('الكمية المتاحة : ' + data.first_balance);
                 });
@@ -1131,7 +1366,7 @@
             });
         });
 
-        $('#edit').on('click', function() {
+        $('#edit').on('click', function () {
             let element_id = $(this).attr('element_id');
             let sale_bill_number = $(this).attr('sale_bill_number');
 
@@ -1168,11 +1403,11 @@
                         quantity: quantity,
                         quantity_price: quantity_price,
                         unit_id: unit_id,
-                    }, function(data) {
+                    }, function (data) {
                         $.post('/client/sale-bills/elements', {
                             '_token': "{{ csrf_token() }}",
                             sale_bill_number: sale_bill_number
-                        }, function(elements) {
+                        }, function (elements) {
                             $('.bill_details').html(elements);
                         });
 
@@ -1190,7 +1425,7 @@
                         sale_bill_number: sale_bill_number,
                         discount_type: discount_type,
                         discount_value: discount_value
-                    }, function(data) {
+                    }, function (data) {
                         alert('تم تطبيق الخصم');
                         $('.after_totals').html(data);
                     });
@@ -1200,13 +1435,13 @@
                         sale_bill_number: sale_bill_number,
                         extra_type: extra_type,
                         extra_value: extra_value
-                    }, function(data) {
+                    }, function (data) {
                         $('.after_totals').html(data);
                     });
                     $.post("{{ url('/client/sale-bills/refresh') }}", {
                         "_token": "{{ csrf_token() }}",
                         sale_bill_number: sale_bill_number,
-                    }, function(data) {
+                    }, function (data) {
                         $('#final_total').val(data.final_total);
                     });
                 }
@@ -1221,11 +1456,11 @@
                     quantity: quantity,
                     quantity_price: quantity_price,
                     unit_id: unit_id,
-                }, function(data) {
+                }, function (data) {
                     $.post('/client/sale-bills/elements', {
                         '_token': "{{ csrf_token() }}",
                         sale_bill_number: sale_bill_number
-                    }, function(elements) {
+                    }, function (elements) {
                         $('.bill_details').html(elements);
                     });
                     $('#add').show();
@@ -1243,7 +1478,7 @@
                     sale_bill_number: sale_bill_number,
                     discount_type: discount_type,
                     discount_value: discount_value
-                }, function(data) {
+                }, function (data) {
                     alert('تم تطبيق الخصم');
                     $('.after_totals').html(data);
                 });
@@ -1253,21 +1488,21 @@
                     sale_bill_number: sale_bill_number,
                     extra_type: extra_type,
                     extra_value: extra_value
-                }, function(data) {
+                }, function (data) {
                     $('.after_totals').html(data);
                 });
 
                 $.post("{{ url('/client/sale-bills/refresh') }}", {
                     "_token": "{{ csrf_token() }}",
                     sale_bill_number: sale_bill_number,
-                }, function(data) {
+                }, function (data) {
                     $('#final_total').val(data.final_total);
                 });
             }
 
         });
 
-        $('.remove_element').on('click', function() {
+        $('.remove_element').on('click', function () {
             let element_id = $(this).attr('element_id');
             let sale_bill_number = $(this).attr('sale_bill_number');
 
@@ -1280,11 +1515,11 @@
             $.post('/client/sale-bills/element/delete', {
                 '_token': "{{ csrf_token() }}",
                 element_id: element_id
-            }, function(data) {
+            }, function (data) {
                 $.post('/client/sale-bills/elements', {
                     '_token': "{{ csrf_token() }}",
                     sale_bill_number: sale_bill_number
-                }, function(elements) {
+                }, function (elements) {
                     $('.bill_details').html(elements);
                 });
             });
@@ -1294,7 +1529,7 @@
                 sale_bill_number: sale_bill_number,
                 discount_type: discount_type,
                 discount_value: discount_value
-            }, function(data) {
+            }, function (data) {
                 $('.after_totals').html(data);
             });
 
@@ -1303,21 +1538,21 @@
                 sale_bill_number: sale_bill_number,
                 extra_type: extra_type,
                 extra_value: extra_value
-            }, function(data) {
+            }, function (data) {
                 $('.after_totals').html(data);
             });
 
             $.post("{{ url('/client/sale-bills/refresh') }}", {
                 "_token": "{{ csrf_token() }}",
                 sale_bill_number: sale_bill_number,
-            }, function(data) {
+            }, function (data) {
                 $('#final_total').val(data.final_total);
             });
 
             $(this).parent().parent().fadeOut(300);
         });
 
-        $('#exec_extra').on('click', function() {
+        $('#exec_extra').on('click', function () {
             let sale_bill_number = $('#sale_bill_number').val();
             let extra_type = $('#extra_type').val();
             let extra_value = $('#extra_value').val();
@@ -1326,19 +1561,19 @@
                 sale_bill_number: sale_bill_number,
                 extra_type: extra_type,
                 extra_value: extra_value
-            }, function(data) {
+            }, function (data) {
                 $('.after_totals').html(data);
             });
 
             $.post("{{ url('/client/sale-bills/refresh') }}", {
                 "_token": "{{ csrf_token() }}",
                 sale_bill_number: sale_bill_number,
-            }, function(data) {
+            }, function (data) {
                 $('#final_total').val(data.final_total);
             });
         });
 
-        $('#payment_method').on('change', function() {
+        $('#payment_method').on('change', function () {
             let payment_method = $(this).val();
             if (payment_method == "cash") {
                 $('.cash').show();
@@ -1356,384 +1591,27 @@
             somethingChanged = true
         }
 
+        @if(isset($open_sale_bill) && !empty($open_sale_bill))
+        $(window).bind('beforeunload', function (e) {
+            if (!somethingChanged) {
+                // update invoice status //
+                $.post("{{ url('/client/sale-bills/updateStatusOnEdit') }}", {
+                    "_token": "{{ csrf_token() }}",
+                    token: "{{$open_sale_bill->token}}",
+                });
+                return 'هل بالفعل تريد الخروج من هذه الصحفة ؟';
+            }
+        });
+        @endif
 
-        window.addEventListener("pageshow", function(event) {
+        window.addEventListener( "pageshow", function ( event ) {
             var historyTraversal = event.persisted ||
-                (typeof window.performance != "undefined" &&
-                    window.performance.navigation.type === 2);
-            if (historyTraversal) {
+                ( typeof window.performance != "undefined" &&
+                    window.performance.navigation.type === 2 );
+            if ( historyTraversal ) {
                 // Handle page restore.
                 window.location.reload();
             }
-        });
-
-        $(document).ready(function() {
-            var rowIndex = 0;
-            var roductPrice = 0;
-
-            function handleTaxCalculation(flag = 1) {
-                var taxRate = 0.15; // Tax rate of 15%
-
-                $('#products_table tbody tr').each(function() {
-                    var row = $(this);
-                    var taxTypeSelect = row.find(`select[name="products[${row.data('index')}][tax]"]`);
-                    var taxAmountField = row.find(
-                        `input[name="products[${row.data('index')}][tax_amount]"]`);
-                    var productPrice = parseFloat(row.find(
-                        `input[name="products[${row.data('index')}][product_price]"]`).val()) || 0;
-                    var quantity = parseFloat(row.find(
-                        `input[name="products[${row.data('index')}][quantity]"]`).val()) || 0;
-                    var taxType = taxTypeSelect.val();
-                    var tax = 0;
-
-                    switch (taxType) {
-                        case "2": // Including tax
-                            tax = (productPrice - (productPrice / (1 + taxRate))) *
-                                quantity; // Calculate the tax amount considering quantity
-                            taxAmountField.show().val(tax.toFixed(2));
-                            break;
-                        case "0": // Not including tax
-                            tax = (productPrice * taxRate) *
-                                quantity; // Calculate the tax amount considering quantity
-                            taxAmountField.show().val(tax.toFixed(2));
-                            break;
-                        case "1": // Exempt from tax
-                        default:
-                            taxAmountField.show().val(0); // Set tax to 0 if exempt
-                            break;
-                    }
-
-                    calculateRowTotal(row); // Recalculate the row total after updating the tax
-                });
-
-                calculateGrandTotal(); // Recalculate the grand total after updating all rows
-            }
-
-            function calculateRowTotal(row) {
-                var taxType = row.find(`select[name="products[${row.data('index')}][tax]"]`)
-                    .val(); // Get tax type for this row
-
-                var quantity = parseFloat(row.find(`input[name="products[${row.data('index')}][quantity]"]`)
-                    .val()) || 0;
-                var price = parseFloat(row.find(`input[name="products[${row.data('index')}][product_price]"]`)
-                    .val()) || 0;
-                var discount = parseFloat(row.find(`input[name="products[${row.data('index')}][discount]"]`)
-                    .val()) || 0;
-                var discountType = row.find(`input[name="products[${row.data('index')}][discount_type]"]:checked`)
-                    .val();
-                var taxValue = parseFloat(row.find(`input[name="products[${row.data('index')}][tax_amount]"]`)
-                    .val()) || 0;
-                var discountApplication = $('#discount_application').val();
-
-                var subtotal = quantity * price;
-                // var subtotalForDiscount = discountApplication === 'before_tax' ? subtotal - taxValue : subtotal;
-                if (taxType === "0") { // not include
-                    var subtotalForDiscount = discountApplication === 'before_tax' ? subtotal : subtotal + taxValue;
-                } else {
-                    var subtotalForDiscount = discountApplication === 'before_tax' ? subtotal - taxValue : subtotal;
-
-                }
-
-                var discountAmount = discountType === 'percent' ? (subtotalForDiscount * discount / 100) : discount;
-                var total = subtotal - discountAmount;
-
-                // Adjust the total based on tax type in the row
-                if (taxType === "2") { // Including tax
-                    // The tax is included in the price, so no need to adjust the total
-                    total = subtotal - discountAmount; // Total remains as calculated without adding tax
-                } else if (taxType === "0") { // Not including tax
-                    total += taxValue; // Add tax value to the total
-                } else if (taxType === "1") { // Exempt tax
-                    // Tax is exempt, no adjustment needed
-                }
-
-                // Update the row with calculated values
-                row.find(`input[name="products[${row.data('index')}][applied_discount]"]`).val(discountAmount
-                    .toFixed(2));
-                row.find(`input[name="products[${row.data('index')}][tax_amount]"]`).val(taxValue.toFixed(2));
-                row.find(`input[name="products[${row.data('index')}][total]"]`).val(total.toFixed(2));
-
-                // Recalculate the grand total
-                calculateGrandTotal();
-            }
-
-
-            function calculateGrandTotal() {
-                var grandTotal = 0;
-                var grandTotalWithoutChange = 0;
-                var totalAppliedDiscount = 0;
-                var totalDiscount = 0;
-                var discount = 0;
-                var grandTax = 0;
-                var discountType = $('#discount_type').val();
-                var discountValue = parseFloat($('#discount_value').val()) || 0;
-                var extraType = $('#extra_type').val();
-                var extraValue = parseFloat($('#extra_value').val()) || 0;
-
-                $('#products_table tbody tr').each(function() {
-                    var total = parseFloat($(this).find(
-                        `input[name="products[${$(this).data('index')}][total]"]`).val()) || 0;
-                    var appliedDiscount = parseFloat($(this).find(
-                            `input[name="products[${$(this).data('index')}][applied_discount]"]`).val()) ||
-                        0;
-                    var totalWithoutChange = parseFloat($(this).find(
-                        `input[name="products[${$(this).data('index')}][product_price]"]`).val()) || 0;
-
-                    var taxAmount = parseFloat($(this).find(
-                        `input[name="products[${$(this).data('index')}][tax_amount]"]`).val()) || 0;
-                    grandTotal += total;
-                    grandTotalWithoutChange += totalWithoutChange;
-                    totalAppliedDiscount += appliedDiscount;
-                    grandTax += taxAmount;
-                });
-
-                // Apply discount to grand total based on the selected option
-                // var discountApplication = $('#discount_application').val();
-                // if (discountApplication === 'before_tax') {
-                if (discountType === 'pound' || discountType === 'poundAfterTax' || discountType ===
-                    'poundAfterTaxPercent') {
-                    discount = discountValue;
-                } else if (discountType === 'percent') {
-
-                    discount = ((grandTotal - grandTax) * discountValue / 100)
-                } else if (discountType === 'afterTax') {
-                    discount = (grandTotal * discountValue / 100);
-                }
-                grandTotal -= discount;
-
-                // } else { // 'after_tax'
-                //     if (discountType === 'pound') {
-                //         grandTotal -= discountValue;
-                //     } else if (discountType === 'percent') {
-                //         grandTotal -= (grandTotal * discountValue / 100);
-                //     }
-                // }
-
-                // Add extra charges
-                if (extraType === 'percent') {
-                    grandTotal += (grandTotal * extraValue / 100);
-                } else if (extraType === 'pound') {
-                    grandTotal += extraValue;
-                }
-
-                totalDiscount = totalAppliedDiscount + discount;
-                $('#grand_tax').text(grandTax.toFixed(2));
-                $('#grand_total').text(grandTotal.toFixed(2));
-                $('#grand_tax_input').val(grandTax.toFixed(2));
-                $('#grand_total_input').val(grandTotal.toFixed(2));
-                $('#grand_discount_input').val(totalDiscount.toFixed(2));
-                $('#dicountForBill').text(discount);
-
-            }
-
-            function reindexRows() {
-                $('#products_table tbody tr').each(function(index) {
-                    $(this).data('index', index);
-                    $(this).find('input, select').each(function() {
-                        var name = $(this).attr('name');
-                        if (name) {
-                            var newName = name.replace(/\[\d+\]/, `[${index}]`);
-                            $(this).attr('name', newName);
-                        }
-                    });
-                });
-                rowIndex = $('#products_table tbody tr').length;
-            }
-
-            $('#value_added_tax').on('change', function() {
-                handleTaxCalculation();
-            });
-
-            $('#product_id').on('change', function() {
-                var productId = $(this).val();
-                var productName = $('option:selected', this).data('name');
-                var sectorPrice = $('option:selected', this).data('sectorprice');
-                var wholesalePrice = $('option:selected', this).data('wholesaleprice');
-                var categoryType = $('option:selected', this).data('categorytype');
-                var unitId = $('option:selected', this).data('unitid') || 191; // Default to 191 if null
-                var existingRow = $(`#products_table tbody tr[data-product-id="${productId}"]`);
-                var remaining = categoryType !== "خدمية" ? $('option:selected', this).data('remaining') :
-                    99999;
-                var valueAddedTax = $('#value_added_tax').val(); // الحصول على إعداد الضريبة المختار
-                console.log(valueAddedTax);
-
-                if (existingRow.length > 0) {
-                    var quantityInput = existingRow.find(
-                        `input[name="products[${existingRow.data('index')}][quantity]"]`);
-                    var currentQuantity = parseFloat(quantityInput.val()) || 0;
-                    var newQuantity = currentQuantity + 1;
-
-                    if (categoryType !== "خدمية" && newQuantity > remaining) {
-                        alert(`${translations.max_quantity} ${remaining}`);
-                        newQuantity = remaining;
-                    }
-
-                    quantityInput.val(newQuantity);
-                    calculateRowTotal(existingRow);
-                } else {
-                    var rowHtml = `
-                     <tr data-product-id="${productId}" data-index="${rowIndex}">
-                        <td>${productName}</td>
-                        <td class="text-left">
-                            <label>
-                                <input type="radio" name="products[${rowIndex}][price_type]" value="sector" class="price_type" checked>
-                                ${translations.sector}
-                            </label>
-                            <label>
-                                <input type="radio" name="products[${rowIndex}][price_type]" value="wholesale" class="price_type">
-                                ${translations.wholesale}
-                            </label>
-                        </td>
-                        <td>
-                            <input type="number" min="1" name="products[${rowIndex}][product_price]" class="form-control price" value="${sectorPrice}" step="any">
-                        </td>
-                        <td>
-                            <input type="number" name="products[${rowIndex}][quantity]" class="form-control quantity" value="1" min="1" max="${remaining}" step="any">
-                        </td>
-                        <td>
-                            <select name="products[${rowIndex}][unit_id]" class="form-control unit">
-                                <option disabled>${translations.choose_unit}</option>
-                                @foreach ($units as $unit)
-                                    <option value="{{ $unit->id }}" ${unitId === {{ $unit->id }} ? 'selected' : ''}>{{ $unit->unit_name }}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                        <td>
-                            <label>
-                                <input type="radio" name="products[${rowIndex}][discount_type]" value="pound" class="discount_type">
-                                ${translations.pound}
-                            </label>
-                            <label>
-                                <input type="radio" name="products[${rowIndex}][discount_type]" value="percent" checked class="discount_type">
-                                ${translations.percent}
-                            </label>
-                            <input type="number" name="products[${rowIndex}][discount]" class="form-control discount" value="0" min="0" step="any">
-                            <input type="number" hidden name="products[${rowIndex}][applied_discount]" class="form-control applied_discount" value="0" style="display:none;" step="any">
-                        </td>
-                        <td>
-                            <select name="products[${rowIndex}][tax]" class="form-control tax_type w-100 mb-1">
-                                <option value="0" ${valueAddedTax == 0 ? 'selected' : ''}>${translations.not_including_tax}</option>
-                                <option value="1" ${valueAddedTax == 1 ? 'selected' : ''}>${translations.exempt_tax}</option>
-                                <option value="2" ${valueAddedTax == 2 ? 'selected' : ''}>${translations.including_tax}</option>
-                            </select>
-                            <input type="number" readonly name="products[${rowIndex}][tax_amount]" class="form-control tax_amount" value="0" min="0" step="any">
-                        </td>
-                        <td>
-                            <input type="number" name="products[${rowIndex}][total]" class="form-control total" value="0" readonly step="any">
-                            <input type="number" hidden name="products[${rowIndex}][product_id]" class="form-control total" value="${productId}">
-                        </td>
-                        <td>
-                            <button type="button" class="btn btn-danger remove-product">${translations.remove}</button>
-                        </td>
-                    </tr>
-                    `;
-
-                    $('#products_table tbody').append(rowHtml);
-                    handleTaxCalculation();
-                    rowIndex++;
-                }
-
-                calculateGrandTotal();
-            });
-
-
-
-            $('#products_table').on('input', '.quantity', function() {
-                var row = $(this).closest('tr');
-                var maxQty = parseFloat($(this).attr('max')) || Infinity;
-
-                if ($(this).val() > maxQty) {
-                    alert(`Maximum available quantity is ${maxQty}`);
-                    $(this).val(maxQty);
-                }
-
-                calculateRowTotal(row);
-            });
-
-
-            $('#products_table').on('input', '.quantity', function() {
-                var row = $(this).closest('tr');
-                var maxQty = parseFloat($(this).attr('max')) || Infinity;
-
-                if ($(this).val() > maxQty) {
-                    alert(`Maximum available quantity is ${maxQty}`);
-                    $(this).val(maxQty);
-                }
-
-                calculateRowTotal(row);
-            });
-
-
-            $('#products_table').on('change', '.price_type', function() {
-                var row = $(this).closest('tr');
-                var productId = row.data('product-id');
-                var selectedPriceType = $(this).val();
-                var sectorPrice = $('option[value="' + productId + '"]').data('sectorprice');
-                var wholesalePrice = $('option[value="' + productId + '"]').data('wholesaleprice');
-                var selectedPrice = selectedPriceType === 'sector' ? sectorPrice : wholesalePrice;
-
-                row.find(`input[name="products[${row.data('index')}][product_price]"]`).val(selectedPrice);
-                handleTaxCalculation();
-            });
-
-            $('#products_table').on('input', '.price, .quantity, .discount, .tax_amount', function() {
-                var row = $(this).closest('tr');
-                handleTaxCalculation();
-            });
-
-            $('#products_table').on('change', '.tax_type', function() {
-                var row = $(this).closest('tr');
-                var taxAmountField = row.find(`input[name="products[${row.data('index')}][tax_amount]"]`);
-                if ($(this).is(':checked')) {
-                    flag = 1;
-                } else {
-                    flag = 0;
-
-                }
-                handleTaxCalculation(flag);
-            });
-
-            $('#products_table').on('change', '.discount_type', function() {
-                var row = $(this).closest('tr');
-                calculateRowTotal(row);
-            });
-
-            $('#discount_application').on('change', function() {
-                $('#products_table tbody tr').each(function() {
-                    calculateRowTotal($(this));
-                });
-                calculateGrandTotal();
-            });
-
-            $('#discount_type, #discount_value').on('change', function() {
-                calculateGrandTotal();
-            });
-
-            $('#extra_type, #extra_value').on('change', function() {
-                calculateGrandTotal();
-            });
-
-            $('#products_table').on('click', '.remove-product', function() {
-                $(this).closest('tr').remove();
-                calculateGrandTotal();
-                reindexRows();
-            });
-
-            function reindexRows() {
-                $('#products_table tbody tr').each(function(index) {
-                    $(this).data('index', index);
-                    $(this).find('input, select').each(function() {
-                        var name = $(this).attr('name');
-                        if (name) {
-                            var newName = name.replace(/\[\d+\]/, `[${index}]`);
-                            $(this).attr('name', newName);
-                        }
-                    });
-                });
-                rowIndex = $('#products_table tbody tr').length;
-            }
-
-            handleTaxCalculation(); // Initial call to set the correct tax logic
         });
     </script>
 @endsection

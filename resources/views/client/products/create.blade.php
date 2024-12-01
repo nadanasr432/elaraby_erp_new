@@ -47,14 +47,14 @@
 
                         <div class="row p-0">
                             <!-- Form Input for Start Date and End Date -->
-                            {{-- <div class="form-group col-lg-6">
+                            <div class="form-group col-lg-6">
                                 <label for="start_date">{{ __('Start Date') }}</label>
                                 <input type="date" class="form-control" id="start_date" name="start_date">
                             </div>
                             <div class="form-group col-lg-6">
                                 <label for="end_date">{{ __('End Date') }}</label>
                                 <input type="date" class="form-control" id="end_date" name="end_date">
-                            </div> --}}
+                            </div>
 
                             <!----store---->
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
@@ -138,7 +138,7 @@
                             <!----product_model---->
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>{{ __('products.pmodel') }}</label>
-                                <input type="text" name="product_model" placeholder="موديل المنتج" class="form-control"
+                                <input type="text" name="product_model" placeholder="{{ __('products.pmodel') }}" class="form-control"
                                     id='model'>
                             </div>
                             <!---------------------->
@@ -182,7 +182,7 @@
                             <!---------------------->
 
                             <!----first_balance---->
-                            {{-- <div class="form-group col-lg-3 pr-0" dir="rtl">
+                            <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>
                                     {{ __('products.storeqty') }}
                                     <span class="text-danger font-weight-bold">*</span>
@@ -190,7 +190,7 @@
                                 <input type="number" step="0.01" placeholder="{{ __('products.storeqty') }}"
                                     name="first_balance" id="first_balance" value="0" class="form-control"
                                     required>
-                            </div> --}}
+                            </div>
                             <!---------------------->
 
                             <!----purchasing_price--->
@@ -229,11 +229,11 @@
                             <!-------------------->
 
                             <!----min_balance--->
-                            {{-- <div class="form-group pull-right col-lg-3" dir="rtl">
+                            <div class="form-group pull-right col-lg-3" dir="rtl">
                                 <label>{{ __('products.minimumqty') }}</label>
                                 <input type="number" step="0.01" value="0" name="min_balance" id="min_balance"
                                     class="form-control" />
-                            </div> --}}
+                            </div>
                             <!-------------------->
 
                             <!-------color------->
@@ -275,13 +275,6 @@
                                 <select class="selectpicker" data-style="btn-success" data-live-search="true"
                                     id="productSearch">
                                     <option value="" disabled selected>{{ __('Search Products') }}</option>
-                                    @foreach ($products as $product)
-                                        <option value="{{ $product->id }}"
-                                            data-product-name="{{ $product->product_name }}"
-                                            data-product-cost="{{ $product->purchasing_price ?? 0 }}"
-                                            data-product-qty="1">
-                                            {{ $product->product_name }} </option>
-                                    @endforeach
                                 </select>
                             </div>
                             <!-- Add this div for the checkbox -->
@@ -302,7 +295,7 @@
                                     <tr>
                                         <th>{{ __('products.pname') }}</th>
                                         <th>{{ __('products.costprice') }}</th>
-                                        <th>{{ __('products.qty') }}</th>
+                                        <th>{{ __('products.storeqty') }}</th>
                                         <th>{{ __('products.actions') }}</th>
                                     </tr>
                                 </thead>
@@ -348,21 +341,21 @@
             var min_balance = $("#min_balance").val();
 
 
-            // if (isNaN(first_balance)) {
-            //     $("#showErrMsg").text(" number only !! غير مسموح بالاحرف في هذا الحقل ارقام فقط!!");
-            //     $("#showErrMsg").show("slow");
-            //     $("#first_balance").css("border-color", "red");
-            //     $("#first_balance").val("");
+            if (isNaN(first_balance)) {
+                $("#showErrMsg").text(" number only !! غير مسموح بالاحرف في هذا الحقل ارقام فقط!!");
+                $("#showErrMsg").show("slow");
+                $("#first_balance").css("border-color", "red");
+                $("#first_balance").val("");
 
 
-            //     setTimeout(function() {
-            //         $("#showErrMsg").hide("slow");
-            //     }, 4000);
+                setTimeout(function() {
+                    $("#showErrMsg").hide("slow");
+                }, 4000);
 
-            //     return false;
-            // } else {
-            //     $("#first_balance").css("border-color", "#CACFE7");
-            // }
+                return false;
+            } else {
+                $("#first_balance").css("border-color", "#CACFE7");
+            }
 
 
             if (isNaN(purchasing_price)) {
@@ -398,7 +391,7 @@
             }
 
             if (isNaN(sector_price)) {
-                $("#showErrMsg").text(" number only !! غير مسموح بالاحرف في هذا حقل سعر القطاعي ارقام فقط!!");
+                $("#showErrMsg").text(" number only !! غير مسموح بالاحرف في هذا الحقل ارقام فقط!!");
                 $("#showErrMsg").show("slow");
                 $("#sector_price").css("border-color", "red");
                 $("#sector_price").val("");
@@ -413,21 +406,21 @@
                 $("#sector_price").css("border-color", "#CACFE7");
             }
 
-            // if (isNaN(min_balance)) {
-            //     $("#showErrMsg").text(" number only !! غير مسموح بالاحرف في هذا الحقل ارقام فقط!!");
-            //     $("#showErrMsg").show("slow");
-            //     $("#min_balance").css("border-color", "red");
-            //     $("#min_balance").val("");
+            if (isNaN(min_balance)) {
+                $("#showErrMsg").text(" number only !! غير مسموح بالاحرف في هذا الحقل ارقام فقط!!");
+                $("#showErrMsg").show("slow");
+                $("#min_balance").css("border-color", "red");
+                $("#min_balance").val("");
 
 
-            //     setTimeout(function() {
-            //         $("#showErrMsg").hide("slow");
-            //     }, 4000);
+                setTimeout(function() {
+                    $("#showErrMsg").hide("slow");
+                }, 4000);
 
-            //     return false;
-            // } else {
-            //     $("#min_balance").css("border-color", "#CACFE7");
-            // }
+                return false;
+            } else {
+                $("#min_balance").css("border-color", "#CACFE7");
+            }
 
             $(this).submit();
 
@@ -455,102 +448,98 @@
                 $('#end_date').attr('disabled', false);
             }
         });
-        $(document).ready(function() {
-            function performSearch() {
-                var query = $('#productSearch').val();
+       $(document).ready(function() {
+    function performSearch() {
+        var query = $('#productSearch').val();
 
-                // $.ajax({
-                //     url: '{{ route('client.products.search') }}',
-                //     method: 'GET',
-                //     data: { query: query },
-                //     dataType: 'json',
-                //     success: function(data) {
-                //         var searchResults = '<option value="" disabled selected>{{ __('Search Products') }}</option>';
-                //         $.each(data, function(index, product) {
-                //             searchResults += '<option value="' + product.id +
-                //                 '" data-product-name="' + product.product_name +
-                //                 '" data-product-cost="' + product.purchasing_price +
-                //                 '" data-product-qty="' + product.first_balance + '">' + product.product_name + '</option>';
-                //         });
-                //         $('#productSearch').html(searchResults).selectpicker('refresh');
-                //     },
-                //     error: function(xhr, status, error) {
-                //         console.error(xhr.responseText);
-                //     }
-                // });
+        $.ajax({
+            url: '{{ route('client.products.search') }}',
+            method: 'GET',
+            data: { query: query },
+            dataType: 'json',
+            success: function(data) {
+                var searchResults = '<option value="" disabled selected>{{ __('Search Products') }}</option>';
+                $.each(data, function(index, product) {
+                    searchResults += '<option value="' + product.id +
+                        '" data-product-name="' + product.product_name +
+                        '" data-product-cost="' + product.purchasing_price +
+                        '" data-product-qty="' + product.first_balance + '">' + product.product_name + '</option>';
+                });
+                $('#productSearch').html(searchResults).selectpicker('refresh');
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
             }
-
-            $('#mySwitch').change(function() {
-                $(this).val($(this).is(':checked') ? '1' : '0');
-            });
-
-            $('#productSearch').on('input', performSearch);
-
-            $('#category').change(function() {
-                var categoryType = $(this).children("option:selected").attr('type');
-                if (categoryType === 'مجمع') {
-                    $('#searchContainer').show();
-                    $('#newTableContainer').show();
-                    $('#checkboxContainer').show();
-                    performSearch();
-                } else {
-                    $('#searchContainer').hide();
-                    $('#newTableContainer').hide();
-                    $('#checkboxContainer').hide();
-                    $('#productSearch').empty().selectpicker('refresh');
-                }
-            });
-
-            function addProductToTable(productId, productName, purchasingPrice, storeQty) {
-                var newRow = '<tr data-product-id="' + productId + '">' +
-                    '<td>' + productName + '</td>' +
-                    '<td><input type="number" step="0.01" class="form-control edit-cost-price" name="combo_products[' + productId + '][price]" value="' +
-                    purchasingPrice + '"></td>' +
-                    '<td><input type="number" step="0.01" class="form-control edit-store-qty" name="combo_products[' + productId + '][quantity]" value="' + storeQty +
-                    '"></td>' +
-                    '<td><button class="btn btn-danger delete-product-btn">Delete</button></td>' +
-                    '</tr>';
-                $('#newTableBody').append(newRow);
-                addHiddenProductFields(productId, purchasingPrice, storeQty);
-            }
-
-            function addHiddenProductFields(productId, purchasingPrice, storeQty) {
-                var hiddenFields = '<input type="hidden" name="combo_products[' + productId +
-                    '][product_id]" value="' + productId + '">' +
-                    '<input type="hidden" name="combo_products[' + productId + '][price]" value="' +
-                    purchasingPrice + '">' +
-                    '<input type="hidden" name="combo_products[' + productId + '][quantity]" value="' + storeQty +
-                    '">';
-                $('#hiddenProductFields').append(hiddenFields);
-            }
-
-            function removeHiddenProductFields(productId) {
-                $('#hiddenProductFields input[name^="combo_products[' + productId + ']"]').remove();
-            }
-
-            $(document).on('change', '#productSearch', function() {
-                var selectedOption = $(this).find('option:selected');
-                var productId = selectedOption.val();
-                var productName = selectedOption.data('product-name');
-                var purchasingPrice = selectedOption.data('product-cost');
-                var storeQty = selectedOption.data('product-qty');
-
-                if (productId) {
-                    $('#newTableContainer').show();
-                    $('#checkboxContainer').show();
-                    addProductToTable(productId, productName, purchasingPrice, storeQty);
-                    $(this).val('').selectpicker('refresh');
-                }
-            });
-
-            $(document).on('click', '.delete-product-btn', function() {
-                var productId = $(this).closest('tr').data('product-id');
-                $(this).closest('tr').remove();
-                removeHiddenProductFields(productId);
-            });
-
-            $('.selectpicker').selectpicker();
         });
+    }
+
+    $('#mySwitch').change(function() {
+        $(this).val($(this).is(':checked') ? '1' : '0');
+    });
+
+    $('#productSearch').on('input', performSearch);
+
+    $('#category').change(function() {
+        var categoryType = $(this).children("option:selected").attr('type');
+        if (categoryType === 'مجمع') {
+            $('#searchContainer').show();
+            $('#newTableContainer').show();
+            $('#checkboxContainer').show();
+            performSearch();
+        } else {
+            $('#searchContainer').hide();
+            $('#newTableContainer').hide();
+            $('#checkboxContainer').hide();
+            $('#productSearch').empty().selectpicker('refresh');
+        }
+    });
+
+    function addProductToTable(productId, productName, purchasingPrice, storeQty) {
+        var newRow = '<tr data-product-id="' + productId + '">' +
+            '<td>' + productName + '</td>' +
+            '<td><input type="number" step="0.01" class="form-control edit-cost-price" value="' + purchasingPrice + '"></td>' +
+            '<td><input type="number" step="0.01" class="form-control edit-store-qty" value="' + storeQty + '"></td>' +
+            '<td><button class="btn btn-danger delete-product-btn">Delete</button></td>' +
+            '</tr>';
+        $('#newTableBody').append(newRow);
+        addHiddenProductFields(productId, purchasingPrice, storeQty);
+    }
+
+    function addHiddenProductFields(productId, purchasingPrice, storeQty) {
+        var hiddenFields = '<input type="hidden" name="combo_products[' + productId + '][product_id]" value="' + productId + '">' +
+            '<input type="hidden" name="combo_products[' + productId + '][price]" value="' + purchasingPrice + '">' +
+            '<input type="hidden" name="combo_products[' + productId + '][quantity]" value="' + storeQty + '">';
+        $('#hiddenProductFields').append(hiddenFields);
+    }
+
+    function removeHiddenProductFields(productId) {
+        $('#hiddenProductFields input[name^="combo_products[' + productId + ']"]').remove();
+    }
+
+    $(document).on('change', '#productSearch', function() {
+        var selectedOption = $(this).find('option:selected');
+        var productId = selectedOption.val();
+        var productName = selectedOption.data('product-name');
+        var purchasingPrice = selectedOption.data('product-cost');
+        var storeQty = selectedOption.data('product-qty');
+
+        if (productId) {
+            $('#newTableContainer').show();
+            $('#checkboxContainer').show();
+            addProductToTable(productId, productName, purchasingPrice, storeQty);
+            $(this).val('').selectpicker('refresh');
+        }
+    });
+
+    $(document).on('click', '.delete-product-btn', function() {
+        var productId = $(this).closest('tr').data('product-id');
+        $(this).closest('tr').remove();
+        removeHiddenProductFields(productId);
+    });
+
+    $('.selectpicker').selectpicker();
+});
+
     </script>
 
 @endsection

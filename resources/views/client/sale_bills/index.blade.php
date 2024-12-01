@@ -181,7 +181,7 @@
                                                             style="position: absolute; transform: translate3d(0px, 29px, 0px); top: 0px; left: 0px; will-change: transform;">
 
                                                             <!--SHOW--->
-                                                            <a href="{{ route('sale-bill-show', $sale_bill->id) }}"
+                                                            <a href="{{ route('client.sale_bills.print', $sale_bill->token) }}"
                                                                 class="dropdown-item" target="_blank"
                                                                 style="font-size: 12px !important; padding: 9px 11px;border-bottom: 1px solid #2d2d2d2d">
                                                                 <svg style="width: 15px; fill: forestgreen;display: inline;margin-left: 5px;"
