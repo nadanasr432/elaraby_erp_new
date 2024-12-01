@@ -140,11 +140,10 @@
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>
                                     {{ __('products.pname_en') }}
-                                    <span class="text-danger font-weight-bold">*</span>
                                 </label>
                                 <input type="text" name="product_name_en" id="order_name"
                                     placeholder="{{ __('products.pname_en') }}" class="form-control"
-                                    value="{{ $product->product_name_en }}" required>
+                                    value="{{ $product->product_name_en }}">
                             </div>
                             <!---------------------->
 
@@ -411,7 +410,7 @@
         });
 
 
-        $('#category').on('change', function() {
+         $('#category').on('change', function() {
             var category_name = $(this).val();
             var category_type = $(this).children("option:selected").attr('type');
             if (category_type == 'خدمية') {
@@ -422,7 +421,7 @@
                 $('#store').attr('disabled', true);
                 $('#start_date').attr('disabled', true);
                 $('#end_date').attr('disabled', true);
-                $('#purchasing_price').attr('disabled', true);
+                $('#purchasing_price').val("0").attr('readonly', true);
             } else {
                 $('#first_balance').attr('readonly', false);
                 $('#model').attr('readonly', false);
@@ -434,6 +433,7 @@
                 $('#purchasing_price').attr('disabled', false);
             }
         });
+
 
         // Trigger the change event automatically on page load
         $('#category').trigger('change');
