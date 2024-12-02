@@ -87,10 +87,12 @@ class ProductController extends Controller
         if ($check->isEmpty()) {
             $code_universal = "100000001";
         } else {
-            // $old_order = Product::where('company_id',$company_id)->max('code_universal');
-            // $code_universal = ++$old_order;
-            $code_universal = time() . substr(time(), 0, 2);
+            do {
+                $code_universal = time() . substr(time(), 0, 2);
+                $exists = Product::where('code_universal', $code_universal)->exists();
+            } while ($exists);
         }
+
         return view(
             'client.products.create',
             compact('company_id', 'units', 'sub_categories', 'code_universal', 'categories', 'stores', 'company')
@@ -192,7 +194,8 @@ class ProductController extends Controller
         }
 
         return redirect()->route('client.products.index')
-            ->with('success', 'تم اضافة المنتج بنجاح');    }
+            ->with('success', 'تم اضافة المنتج بنجاح');
+    }
 
     public function show($id)
     {

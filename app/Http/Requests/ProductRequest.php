@@ -29,7 +29,7 @@ class ProductRequest extends FormRequest
             "product_name" => 'required',
             "product_name_en"=>'nullable',
             "unit_id" => 'required',
-            "code_universal" => 'nullable',
+            'code_universal' => 'nullable|unique:products,code_universal',
             "purchasing_price" => 'required',
             "wholesale_price" => 'required',
             "sector_price" => 'required',
