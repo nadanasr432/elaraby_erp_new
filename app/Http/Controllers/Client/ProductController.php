@@ -14,6 +14,7 @@ use App\Services\StockService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ProductRequest;
+use App\Http\Requests\ServiceRequest;
 
 class ProductController extends Controller
 {
@@ -55,9 +56,10 @@ class ProductController extends Controller
         if ($check->isEmpty()) {
             $code_universal = "100000001";
         } else {
-            // $old_order = Product::where('company_id',$company_id)->max('code_universal');
-            // $code_universal = ++$old_order;
-            $code_universal = time() . substr(time(), 0, 2);
+            do {
+                $code_universal = time() . substr(time(), 0, 2);
+                $exists = Product::where('code_universal', $code_universal)->exists();
+            } while ($exists);
         }
         return view(
             'client.products.createservice',
@@ -161,10 +163,9 @@ class ProductController extends Controller
         return redirect()->route('client.products.index')
             ->with('success', 'تم اضافة المنتج بنجاح');
     }
-    public function storeProduct(Request $request)
+    public function storeProduct(ServiceRequest $request)
     {
         $data = $request->all();
-
         if (empty($data['first_balance'])) $data['first_balance'] = 0;
         if (empty($data['qr'])) $company_id = $data['company_id'];
 

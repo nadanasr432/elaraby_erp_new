@@ -637,6 +637,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
 
             Route::post('/quotations/get-edit', [QuotationController::class, 'get_edit_product_price']);
             Route::post('/quotations/element/update', [QuotationController::class, 'update_element']);
+            Route::post('/quotation/update/{id}', [QuotationController::class, 'updateqoutation']);
             Route::post('/quotations/edit-element', [QuotationController::class, 'edit_element']);
 
 
@@ -1081,4 +1082,4 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
     );
 });
 
-Route::get('/get_csid', 'FatooraController@get_csid');
+// Route::get('/get_csid', 'FatooraController@get_csid');

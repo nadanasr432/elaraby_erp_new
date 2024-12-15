@@ -138,8 +138,8 @@
                             <!----product_model---->
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>{{ __('products.pmodel') }}</label>
-                                <input type="text" name="product_model" placeholder="{{ __('products.pmodel') }}" class="form-control"
-                                    id='model'>
+                                <input type="text" name="product_model" placeholder="{{ __('products.pmodel') }}"
+                                    class="form-control" id='model'>
                             </div>
                             <!---------------------->
 
@@ -435,6 +435,16 @@
 
 
         $('#category').on('change', function() {
+            let selectedCategoryText = $('#category option:selected').text().trim();
+            console.log(selectedCategoryText);
+
+            if (selectedCategoryText === 'مخزونية') {
+                $('#first_balance').prop('required', true).attr('min', 0.01);
+                $('#first_balance').closest('.form-group').find('label span').removeClass('d-none');
+            } else {
+                $('#first_balance').prop('required', false).removeAttr('min');
+                $('#first_balance').closest('.form-group').find('label span').addClass('d-none');
+            }
             var category_name = $(this).val();
             var category_type = $(this).children("option:selected").attr('type');
             if (category_type == 'خدمية') {
@@ -455,98 +465,130 @@
                 $('#end_date').attr('disabled', false);
             }
         });
-       $(document).ready(function() {
-    function performSearch() {
-        var query = $('#productSearch').val();
+        $(document).ready(function() {
+            function performSearch() {
+                var query = $('#productSearch').val();
 
-        $.ajax({
-            url: '{{ route('client.products.search') }}',
-            method: 'GET',
-            data: { query: query },
-            dataType: 'json',
-            success: function(data) {
-                var searchResults = '<option value="" disabled selected>{{ __('Search Products') }}</option>';
-                $.each(data, function(index, product) {
-                    searchResults += '<option value="' + product.id +
-                        '" data-product-name="' + product.product_name +
-                        '" data-product-cost="' + product.purchasing_price +
-                        '" data-product-qty="' + product.first_balance + '">' + product.product_name + '</option>';
+                $.ajax({
+                    url: '{{ route('client.products.search') }}',
+                    method: 'GET',
+                    data: {
+                        query: query
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        var searchResults =
+                            '<option value="" disabled selected>{{ __('Search Products') }}</option>';
+                        $.each(data, function(index, product) {
+                            searchResults += '<option value="' + product.id +
+                                '" data-product-name="' + product.product_name +
+                                '" data-product-cost="' + product.purchasing_price +
+                                '" data-product-qty="' + product.first_balance + '">' + product
+                                .product_name + '</option>';
+                        });
+                        $('#productSearch').html(searchResults).selectpicker('refresh');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
                 });
-                $('#productSearch').html(searchResults).selectpicker('refresh');
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
             }
+
+            $('#mySwitch').change(function() {
+                $(this).val($(this).is(':checked') ? '1' : '0');
+            });
+
+            $('#productSearch').on('input', performSearch);
+
+            $('#category').change(function() {
+                var categoryType = $(this).children("option:selected").attr('type');
+                if (categoryType === 'مجمع') {
+                    $('#searchContainer').show();
+                    $('#newTableContainer').show();
+                    $('#checkboxContainer').show();
+                    performSearch();
+                } else {
+                    $('#searchContainer').hide();
+                    $('#newTableContainer').hide();
+                    $('#checkboxContainer').hide();
+                    $('#productSearch').empty().selectpicker('refresh');
+                }
+            });
+
+            function addProductToTable(productId, productName, purchasingPrice, storeQty) {
+                var newRow = '<tr data-product-id="' + productId + '">' +
+                    '<td>' + productName + '</td>' +
+                    '<td><input type="number" step="0.01" class="form-control edit-cost-price" value="' +
+                    purchasingPrice + '"></td>' +
+                    '<td><input type="number" step="0.01" class="form-control edit-store-qty" value="' + storeQty +
+                    '"></td>' +
+                    '<td><button class="btn btn-danger delete-product-btn">Delete</button></td>' +
+                    '</tr>';
+                $('#newTableBody').append(newRow);
+                addHiddenProductFields(productId, purchasingPrice, storeQty);
+            }
+
+            function addHiddenProductFields(productId, purchasingPrice, storeQty) {
+                var hiddenFields = '<input type="hidden" name="combo_products[' + productId +
+                    '][product_id]" value="' + productId + '">' +
+                    '<input type="hidden" name="combo_products[' + productId + '][price]" value="' +
+                    purchasingPrice + '">' +
+                    '<input type="hidden" name="combo_products[' + productId + '][quantity]" value="' + storeQty +
+                    '">';
+                $('#hiddenProductFields').append(hiddenFields);
+            }
+
+            function removeHiddenProductFields(productId) {
+                $('#hiddenProductFields input[name^="combo_products[' + productId + ']"]').remove();
+            }
+
+            $(document).on('change', '#productSearch', function() {
+                var selectedOption = $(this).find('option:selected');
+                var productId = selectedOption.val();
+                var productName = selectedOption.data('product-name');
+                var purchasingPrice = selectedOption.data('product-cost');
+                var storeQty = selectedOption.data('product-qty');
+
+                if (productId) {
+                    $('#newTableContainer').show();
+                    $('#checkboxContainer').show();
+                    addProductToTable(productId, productName, purchasingPrice, storeQty);
+                    $(this).val('').selectpicker('refresh');
+                }
+            });
+
+            $(document).on('click', '.delete-product-btn', function() {
+                var productId = $(this).closest('tr').data('product-id');
+                $(this).closest('tr').remove();
+                removeHiddenProductFields(productId);
+            });
+
+            $('.selectpicker').selectpicker();
         });
-    }
+        $(document).ready(function() {
+            let selectedCategoryText = $('#category option:selected').text().trim();
+            console.log(selectedCategoryText);
 
-    $('#mySwitch').change(function() {
-        $(this).val($(this).is(':checked') ? '1' : '0');
-    });
+            if (selectedCategoryText === 'مخزونية') {
+                $('#first_balance').prop('required', true).attr('min', 0.01);
+                $('#first_balance').closest('.form-group').find('label span').removeClass('d-none');
+            } else {
+                $('#first_balance').prop('required', false).removeAttr('min');
+                $('#first_balance').closest('.form-group').find('label span').addClass('d-none');
+            }
+            // $('#category').on('change', function() {
+            //     let selectedCategoryText = $('#category option:selected').text().trim();
+            //     console.log(selectedCategoryText);
 
-    $('#productSearch').on('input', performSearch);
-
-    $('#category').change(function() {
-        var categoryType = $(this).children("option:selected").attr('type');
-        if (categoryType === 'مجمع') {
-            $('#searchContainer').show();
-            $('#newTableContainer').show();
-            $('#checkboxContainer').show();
-            performSearch();
-        } else {
-            $('#searchContainer').hide();
-            $('#newTableContainer').hide();
-            $('#checkboxContainer').hide();
-            $('#productSearch').empty().selectpicker('refresh');
-        }
-    });
-
-    function addProductToTable(productId, productName, purchasingPrice, storeQty) {
-        var newRow = '<tr data-product-id="' + productId + '">' +
-            '<td>' + productName + '</td>' +
-            '<td><input type="number" step="0.01" class="form-control edit-cost-price" value="' + purchasingPrice + '"></td>' +
-            '<td><input type="number" step="0.01" class="form-control edit-store-qty" value="' + storeQty + '"></td>' +
-            '<td><button class="btn btn-danger delete-product-btn">Delete</button></td>' +
-            '</tr>';
-        $('#newTableBody').append(newRow);
-        addHiddenProductFields(productId, purchasingPrice, storeQty);
-    }
-
-    function addHiddenProductFields(productId, purchasingPrice, storeQty) {
-        var hiddenFields = '<input type="hidden" name="combo_products[' + productId + '][product_id]" value="' + productId + '">' +
-            '<input type="hidden" name="combo_products[' + productId + '][price]" value="' + purchasingPrice + '">' +
-            '<input type="hidden" name="combo_products[' + productId + '][quantity]" value="' + storeQty + '">';
-        $('#hiddenProductFields').append(hiddenFields);
-    }
-
-    function removeHiddenProductFields(productId) {
-        $('#hiddenProductFields input[name^="combo_products[' + productId + ']"]').remove();
-    }
-
-    $(document).on('change', '#productSearch', function() {
-        var selectedOption = $(this).find('option:selected');
-        var productId = selectedOption.val();
-        var productName = selectedOption.data('product-name');
-        var purchasingPrice = selectedOption.data('product-cost');
-        var storeQty = selectedOption.data('product-qty');
-
-        if (productId) {
-            $('#newTableContainer').show();
-            $('#checkboxContainer').show();
-            addProductToTable(productId, productName, purchasingPrice, storeQty);
-            $(this).val('').selectpicker('refresh');
-        }
-    });
-
-    $(document).on('click', '.delete-product-btn', function() {
-        var productId = $(this).closest('tr').data('product-id');
-        $(this).closest('tr').remove();
-        removeHiddenProductFields(productId);
-    });
-
-    $('.selectpicker').selectpicker();
-});
-
+            //     if (selectedCategoryText === 'مخزونية') {
+            //         $('#first_balance').prop('required', true).attr('min', 0.01);
+            //         $('#first_balance').closest('.form-group').find('label span').removeClass('d-none');
+            //     } else {
+            //         $('#first_balance').prop('required', false).removeAttr('min');
+            //         $('#first_balance').closest('.form-group').find('label span').addClass('d-none');
+            //     }
+            // });
+        });
     </script>
 
 @endsection

@@ -829,6 +829,12 @@ class QuotationController extends Controller
         $units = $company->units;
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
         $currency = $extra_settings->currency;
+        $discount = QuotationExtra::where('quotation_id', $id)
+            ->where('action', 'discount')
+            ->first();
+        $shipping = QuotationExtra::where('quotation_id', $id)
+            ->where('action', 'extra')
+            ->first();
         if (in_array('مدير النظام', Auth::user()->role_name)) {
             $outer_clients = OuterClient::where('company_id', $company_id)->get();
         } else {
@@ -840,6 +846,7 @@ class QuotationController extends Controller
         }
         $safes = $company->safes;
         $banks = $company->banks;
+        // dd($quotation);
         return view(
             'client.quotations.edit',
             compact(
@@ -853,7 +860,9 @@ class QuotationController extends Controller
                 'banks',
                 'outer_clients',
                 'company_id',
-                'company'
+                'company',
+                'discount',
+                'shipping',
             )
         );
     }
@@ -1288,5 +1297,67 @@ class QuotationController extends Controller
     public function updateConditions(Request $request)
     {
         return BasicSettings::where('company_id', Auth::user()->company_id)->firstOrFail()->update(['quotation_condition' => $request->condition]) ? 1 : 0;
+    }
+    public function updateqoutation(Request $request, $id)
+    {
+        $data = $request->all();
+        $data['company_id'] = Auth::user()->company_id;
+        $data['client_id'] = Auth::user()->id;
+
+        // Find the existing quotation by ID
+        $quotation = Quotation::findOrFail($id);
+
+        // Update the quotation details
+        $quotation->update($data);
+
+        // Delete existing elements before re-adding
+        $quotation->elements()->delete();
+
+        // Re-add each product as a new QuotationElement record
+        foreach ($request['products'] as $product) {
+            $quantityPrice = $product['product_price'] * $product['quantity'];
+            QuotationElement::create([
+                'quotation_id' => $quotation->id,
+                'company_id' => $data['company_id'],
+                'product_id' => $product['product_id'],
+                'product_price' => $product['product_price'],
+                'quantity' => $product['quantity'],
+                'unit_id' => $product['unit_id'],
+                'quantity_price' => $quantityPrice,
+            ]);
+        }
+
+        // Delete existing extras before re-adding
+        $quotation->extras()->delete();
+
+        // Add discount if provided
+        if (!empty($data['discount_type']) && !empty($data['discount_value'])) {
+            QuotationExtra::create([
+                'quotation_id' => $quotation->id,
+                'action' => 'discount',
+                'action_type' => $data['discount_type'],
+                'value' => $data['discount_value'],
+                'company_id' => $data['company_id'],
+                'discount_note' => $data['discount_note'] ?? null,
+            ]);
+        }
+
+        // Add extra if provided
+        if (!empty($data['extra_type']) && !empty($data['extra_value'])) {
+            QuotationExtra::create([
+                'quotation_id' => $quotation->id,
+                'action' => 'extra',
+                'action_type' => $data['extra_type'],
+                'value' => $data['extra_value'],
+                'company_id' => $data['company_id'],
+            ]);
+        }
+
+        return response()->json([
+            'status' => true,
+            'msg' => 'تم تحديث العرض بنجاح',
+            'id' => $quotation->id,
+            'quotation_number' => $quotation->quotation_number,
+        ]);
     }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProductRequest extends FormRequest
+class ServiceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -36,7 +36,6 @@ class ProductRequest extends FormRequest
                     ->where('company_id', $this->company_id)
                     ->ignore($this->product), // Handles the update scenario
             ],
-            "purchasing_price" => 'nullable',
             "wholesale_price" => 'nullable',
             "sector_price" => 'nullable',
             "color" => 'nullable',
