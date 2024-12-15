@@ -622,10 +622,23 @@ $currency = $extra_settings->currency;
                                     <tbody>
                                         @php
                                             $i = 0;
+                                            $cash_entries = App\Models\Cash::where(
+                                                'company_id',
+                                                $outer_client_k->company_id,
+                                            )
+                                                ->orderBy('id')
+                                                ->get();
+                                        
                                         @endphp
                                         @foreach ($cashs as $key => $cash)
+                                         @php
+                                                $cash_position =
+                                                    $cash_entries->search(function ($item) use ($cash) {
+                                                        return $item->id == $cash->id; // Use $cash->id if $id is undefined
+                                                    }) + 1;
+                                            @endphp
                                             <tr>
-                                                <td>{{ $cash->cash_number }}</td>
+                                                <td>{{ $cash_position }}</td>
                                                 <td>{{ $cash->outerClient->client_name }}</td>
                                                 <td>
                                                     {{ floatval($cash->amount) }}
