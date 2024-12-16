@@ -165,7 +165,7 @@
                             <div class="form-group col-lg-3 pr-0">
                                 <label>
                                     {{ __('products.punit') }}
-                                    <span class="text-danger font-weight-bold">*</span>
+                                    <!--<span class="text-danger font-weight-bold">*</span>-->
                                 </label>
                                 <select name="unit_id" class="form-control">
                                     <option value="">{{ __('products.choseunit') }}</option>
@@ -204,7 +204,7 @@
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>
                                     {{ __('products.costprice') }}
-                                    <span class="text-danger font-weight-bold">*</span>
+                                    <!--<span class="text-danger font-weight-bold">*</span>-->
                                 </label>
                                 <input type="number" step="0.01" name="purchasing_price" id='purchasing_price'
                                     value="0" class="form-control" placeholder="{{ __('products.costprice') }}">
@@ -215,7 +215,7 @@
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>
                                     {{ __('products.wholeprice') }}
-                                    <span class="text-danger font-weight-bold">*</span>
+                                    <!--<span class="text-danger font-weight-bold">*</span>-->
                                 </label>
                                 <input type="number" step="0.01" name="wholesale_price" value="0"
                                     id="wholesale_price" class="form-control"
@@ -227,7 +227,7 @@
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>
                                     {{ __('products.sectorprice') }}
-                                    <span class="text-danger font-weight-bold">*</span>
+                                    <!--<span class="text-danger font-weight-bold">*</span>-->
                                 </label>
                                 <input type="number" step="0.01" value="0" name="sector_price"
                                     placeholder="{{ __('products.sectorprice') }}" id="sector_price"

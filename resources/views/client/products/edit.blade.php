@@ -142,8 +142,7 @@
                                     {{ __('products.pname_en') }}
                                 </label>
                                 <input type="text" name="product_name_en" id="order_name"
-                                    placeholder="{{ __('products.pname_en') }}" class="form-control"
-                                    value="{{ $product->product_name_en }}">
+                                    placeholder="{{ __('products.pname_en') }}" class="form-control" value="{{ $product->product_name_en }}">
                             </div>
                             <!---------------------->
 
@@ -151,7 +150,7 @@
                             <div class="form-group col-lg-3 pr-0">
                                 <label>
                                     {{ __('products.punit') }}
-                                    <span class="text-danger font-weight-bold">*</span>
+                                    <!--<span class="text-danger font-weight-bold">*</span>-->
                                 </label>
                                 <select name="unit_id" class="form-control">
                                     <option value="">{{ __('products.choseunit') }}</option>
@@ -168,7 +167,7 @@
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>
                                     {{ __('products.barcodenum') }}
-                                    <span class="text-danger font-weight-bold">*</span>
+                                    <!--<span class="text-danger font-weight-bold">*</span>-->
                                 </label>
                                 <input type="text" class="form-control" value="{{ $product->code_universal }}"
                                     dir="ltr" placeholder="{{ __('products.barcodenum') }}" id="order_universal"
@@ -192,7 +191,7 @@
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>
                                     {{ __('products.costprice') }}
-                                    <span class="text-danger font-weight-bold">*</span>
+                                    <!--<span class="text-danger font-weight-bold">*</span>-->
                                 </label>
                                 <input type="number" step="0.01" name="purchasing_price" id='purchasing_price'
                                     class="form-control" value="{{ $product->purchasing_price }}"
@@ -204,7 +203,7 @@
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>
                                     {{ __('products.wholeprice') }}
-                                    <span class="text-danger font-weight-bold">*</span>
+                                    <!--<span class="text-danger font-weight-bold">*</span>-->
                                 </label>
                                 <input type="number" step="0.01" name="wholesale_price" id="wholesale_price"
                                     class="form-control" value="{{ $product->wholesale_price }}"
@@ -216,7 +215,7 @@
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>
                                     {{ __('products.sectorprice') }}
-                                    <span class="text-danger font-weight-bold">*</span>
+                                    <!--<span class="text-danger font-weight-bold">*</span>-->
                                 </label>
                                 <input type="number" step="0.01" name="sector_price"
                                     placeholder=" {{ __('products.sectorprice') }}" id="sector_price"
@@ -410,7 +409,7 @@
         });
 
 
-         $('#category').on('change', function() {
+        $('#category').on('change', function() {
             var category_name = $(this).val();
             var category_type = $(this).children("option:selected").attr('type');
             if (category_type == 'خدمية') {
@@ -434,10 +433,8 @@
             }
         });
 
-
         // Trigger the change event automatically on page load
         $('#category').trigger('change');
-
         $(document).ready(function() {
             function performSearch() {
                 var query = $('#productSearch').val();
