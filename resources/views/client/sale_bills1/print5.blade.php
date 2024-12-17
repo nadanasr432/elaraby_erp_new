@@ -720,7 +720,7 @@
                                     {{-- @if ($discount->action_type == 'poundAfterTax') --}}
                                     <td dir="rtl">
                                         {{-- Apply discount after tax --}}
-                                        {{ round($sale_bill->final_total) }}
+                                        {{$sale_bill->final_total }}
                                         {{ $currency }}
                                     </td>
                                     {{-- @else
@@ -873,7 +873,7 @@
                                     {{-- @if ($discount->action_type == 'poundAfterTax') --}}
                                     <td dir="rtl">
                                         {{-- Apply discount after tax --}}
-                                        {{ round($sale_bill->final_total) }}
+                                        {{ $sale_bill->final_total }}
                                         {{ $currency }}
                                     </td>
                                     {{-- @else
