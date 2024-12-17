@@ -1453,8 +1453,10 @@
 
                     switch (taxType) {
                         case "2": // Including tax
-                            tax = (productPrice - (productPrice / (1 + taxRate))) *
-                                quantity; // Calculate the tax amount considering quantity
+
+                            // Calculate the tax amount considering quantity
+                            tax = (productPrice - (productPrice / (1 + taxRate))) * quantity;
+                            console.log(taxAmountField);
                             taxAmountField.show().val(tax.toFixed(2));
                             break;
                         case "0": // Not including tax
@@ -1497,35 +1499,45 @@
                 var taxValue = 0; // Default to no tax
 
                 // If discount is applied before tax
-                if (discountApplication === 'before_tax') {
+                if (discountApplication === 'before_tax' && discount) {
                     // Subtotal after applying discount
                     var discountedSubtotal = subtotal - discountAmount;
 
                     // Apply tax based on tax type
                     if (taxType === "0") { // Not including tax
                         taxValue = discountedSubtotal * taxRate;
+                        total = discountedSubtotal + taxValue;
+
                     } else if (taxType === "2") { // Including tax
                         // No additional tax, already included in price
-                        taxValue = 0;
+                        taxValue = (price - (price / (1 + taxRate))) * quantity;
+                        total = discountedSubtotal;
+
+                        // taxValue = 0;
                     } else if (taxType === "1") { // Exempt from tax
                         taxValue = 0;
+                        total = discountedSubtotal;
+
                     }
 
-                    total = discountedSubtotal + taxValue;
 
                 } else { // If discount is applied after tax
                     // Apply tax based on the subtotal before discount
                     if (taxType === "0") { // Not including tax
                         taxValue = subtotal * taxRate;
+                        total = subtotal + taxValue - discountAmount;
+
                     } else if (taxType === "2") { // Including tax
                         // No additional tax, already included in price
-                        taxValue = 0;
+                        taxValue = (price - (price / (1 + taxRate))) * quantity;
+                        total = subtotal - discountAmount;
                     } else if (taxType === "1") { // Exempt from tax
                         taxValue = 0;
+                        total = subtotal + taxValue - discountAmount;
+
                     }
 
                     // Total after applying tax and then subtracting the discount
-                    total = subtotal + taxValue - discountAmount;
                 }
 
                 // Update row fields

@@ -9,7 +9,7 @@
     <div class="alert alert-success alert-dismissable text-center box_success d-none no-print">
         <button class="close" data-dismiss="alert" aria-label="Close">×</button>
         <span class="msg_success"></span>
-    </div>F
+    </div>
 
     <div class="alert alert-dark alert-dismissable text-center box_error d-none no-print">
         <button class="close" data-dismiss="alert" aria-label="Close">×</button>
@@ -280,7 +280,7 @@
         <div class="col-sm-12 pull-right no-print">
             <div class="form-group" dir="rtl">
                 <label for="time">{{ __('main.notes') }}</label>
-                <textarea name="main_notes" id="notes" class="summernotes">
+                <textarea name="notes" id="notes" class="summernotes">
                 {{ $quotation->notes }}
                   </textarea>
                 <a data-toggle="modal" data-target="#myModal3" class="btn btn-link add_extra_notes d-none"
@@ -319,82 +319,6 @@
 
         </div>
 
-        <div class="modal fade" dir="rtl" id="myModal3" tabindex="-1" role="dialog"
-            aria-labelledby="myModalLabel3">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header w-100">
-                        <h4 class="modal-title w-100 text-center" id="myModalLabel3">
-                            ملاحظات على الفاتورة
-                        </h4>
-                    </div>
-                    <div class="modal-body">
-                        <form action="{{ route('save.notes') }}" method="post">
-                            @csrf
-                            @method('POST')
-
-                            <div class="notes">
-                                <div class="col-lg-6 pull-right">
-                                    <div class="form-group">
-                                        <label class="d-block">
-                                            الملاحظة رقم 1
-                                        </label>
-                                        <input type="text" class="form-control" name="notes[]" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 pull-right">
-                                    <div class="form-group">
-                                        <label class="d-block">
-                                            الملاحظة رقم 2
-                                        </label>
-                                        <input type="text" class="form-control" name="notes[]" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 pull-right">
-                                    <div class="form-group">
-                                        <label class="d-block">
-                                            الملاحظة رقم 3
-                                        </label><input type="text" class="form-control" name="notes[]" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 pull-right">
-                                    <div class="form-group">
-                                        <label class="d-block">
-                                            الملاحظة رقم 4
-                                        </label>
-                                        <input type="text" class="form-control" name="notes[]" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 pull-right">
-                                    <div class="form-group">
-                                        <label class="d-block">
-                                            الملاحظة رقم 5
-                                        </label><input type="text" class="form-control" name="notes[]" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 pull-right">
-                                    <div class="form-group">
-                                        <label class="d-block">
-                                            الملاحظة رقم 6
-                                        </label>
-                                        <input type="text" class="form-control" name="notes[]" />
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button form="myForm" type="submit" class="btn btn-md btn-success">
-                            <i class="fa fa-save"></i>
-                            حفظ الملاحظات
-                        </button>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i>
-                            اغلاق
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </form>
 
 
@@ -434,68 +358,66 @@
         // Function to populate existing elements into the table
         @foreach ($quotation->elements as $index => $element)
             var rowHtml = `
-            <tr data-product-id="{{ $element->product_id }}" data-index="{{ $index }}">
-                <td>{{ $element->product->product_name }}</td>
-                <td class="text-left">
-                    <label>
-                        <input type="radio" name="products[{{ $index }}][price_type]" required value="sector" class="price_type" {{ $element->price_type == 'sector' ? 'checked' : '' }}>
-                        ${translations.sector}
-                    </label>
-                    <label>
-                        <input type="radio" name="products[{{ $index }}][price_type]"  required value="wholesale" class="price_type" {{ $element->price_type == 'wholesale' ? 'checked' : '' }}>
-                        ${translations.wholesale}
-                    </label>
-                </td>
-                <td>
-                    <input type="number" min="1" name="products[{{ $index }}][product_price]" class="form-control price" value="{{ $element->product_price }}" step="any">
-                </td>
-                <td>
-                    <input type="number" name="products[{{ $index }}][quantity]" class="form-control quantity" value="{{ $element->quantity }}" min="1" max="{{ $element->remaining }}" step="any">
-                </td>
-                <td>
-                    <select name="products[{{ $index }}][unit_id]" class="form-control unit">
-                        <option disabled>${translations.choose_unit}</option>
-                        @foreach ($units as $unit)
-                            <option value="{{ $unit->id }}" {{ $element->unit_id == $unit->id ? 'selected' : '' }}>{{ $unit->unit_name }}</option>
-                        @endforeach
-                    </select>
-                </td>
-                <td>
-                    <label>
-                        <input type="radio" name="products[{{ $index }}][discount_type]" value="pound" class="discount_type" {{ $element->discount_type == 'pound' ? 'checked' : '' }}>
-                        ${translations.pound}
-                    </label>
-                    <label>
-                        <input type="radio" name="products[{{ $index }}][discount_type]" value="percent" class="discount_type" {{ $element->discount_type == 'percent' ? 'checked' : '' }}>
-                        ${translations.percent}
-                    </label>
-                    <input
-                        type="number"
-                        name="products[{{ $index }}][discount]"
-                        class="form-control discount"
-                        value="{{ $element->discount_value == 0 ? 0 : ($element->discount_type == 'percent' ? $element->discount_value : $element->discount_value) }}"
-                        min="0"
-                        step="any">
-
-                    <input type="number" hidden name="products[{{ $index }}][applied_discount]" class="form-control applied_discount" value="{{ $element->applied_discount }}" style="display:none;" step="any">
-                </td>
-                <td>
-                    <select name="products[{{ $index }}][tax]" class="form-control tax_type w-100 mb-1">
-                        <option value="0" {{ $element->tax_type == 0 ? 'selected' : '' }}>${translations.not_including_tax}</option>
-                        <option value="1" {{ $element->tax_type == 1 ? 'selected' : '' }}>${translations.exempt_tax}</option>
-                        <option value="2" {{ $element->tax_type == 2 ? 'selected' : '' }}>${translations.including_tax}</option>
-                    </select>
-                    <input type="number" readonly name="products[{{ $index }}][tax_amount]" class="form-control tax_amount" value="{{ $element->tax_value }}" min="0" step="any">
-                </td>
-                <td>
-                    <input type="number" name="products[{{ $index }}][total]" class="form-control total" value="{{ $element->quantity_price }}" readonly step="any">
-                    <input type="number" hidden name="products[{{ $index }}][product_id]" class="form-control total" value="{{ $element->product_id }}">
-                </td>
-                <td>
-                    <button type="button" class="btn btn-danger remove-product">${translations.remove}</button>
-                </td>
-            </tr>
-            `;
+                <tr data-product-id="{{ $element->product_id }}" data-index="{{ $index }}">
+                    <td>{{ $element->product->product_name }}</td>
+                    <td class="text-left">
+                        <label>
+                            <input type="radio" name="products[{{ $index }}][price_type]" required value="sector" class="price_type" {{ $element->price_type == 'sector' ? 'checked' : '' }}>
+                            ${translations.sector}
+                        </label>
+                        <label>
+                            <input type="radio" name="products[{{ $index }}][price_type]" required value="wholesale" class="price_type" {{ $element->price_type == 'wholesale' ? 'checked' : '' }}>
+                            ${translations.wholesale}
+                        </label>
+                    </td>
+                    <td>
+                        <input type="number" min="1" name="products[{{ $index }}][product_price]" class="form-control price" value="{{ $element->product_price }}" step="any">
+                    </td>
+                    <td>
+                        <input type="number" name="products[{{ $index }}][quantity]" class="form-control quantity" value="{{ $element->quantity }}" min="1" max="{{ $element->remaining }}" step="any">
+                    </td>
+                    <td>
+                        <select name="products[{{ $index }}][unit_id]" class="form-control unit">
+                            <option disabled>${translations.choose_unit}</option>
+                            @foreach ($units as $unit)
+                                <option value="{{ $unit->id }}" {{ $element->unit_id == $unit->id ? 'selected' : '' }}>{{ $unit->unit_name }}</option>
+                            @endforeach
+                        </select>
+                    </td>
+                    <td class="hidden">
+                        <label>
+                            <input type="radio" name="products[{{ $index }}][discount_type]" value="pound" class="discount_type" {{ $element->discount_type == 'pound' ? 'checked' : '' }}>
+                            ${translations.pound}
+                        </label>
+                        <label>
+                            <input type="radio" name="products[{{ $index }}][discount_type]" value="percent" class="discount_type" {{ $element->discount_type == 'percent' ? 'checked' : '' }}>
+                            ${translations.percent}
+                        </label>
+                        <input
+                            type="number"
+                            name="products[{{ $index }}][discount]"
+                            class="form-control discount"
+                            value="{{ $element->discount_value }}"
+                            min="0"
+                            step="any">
+                    </td>
+                    <td class="hidden">
+                        <select name="products[{{ $index }}][tax]" class="form-control tax_type w-100 mb-1">
+                            <option value="0" {{ $element->tax_type == 0 ? 'selected' : '' }}>${translations.not_including_tax}</option>
+                            <option value="1" {{ $element->tax_type == 1 ? 'selected' : '' }}>${translations.exempt_tax}</option>
+                            <option value="2" {{ $element->tax_type == 2 ? 'selected' : '' }}>${translations.including_tax}</option>
+                        </select>
+                        <input type="number" name="products[{{ $index }}][tax_amount]" class="form-control tax_amount" value="{{ $element->tax_value }}" readonly step="any">
+                    </td>
+                    <td>
+                        <input type="number" name="products[{{ $index }}][total]" class="form-control total" value="{{ $element->quantity_price }}" readonly step="any">
+                        <input type="number" hidden name="products[{{ $index }}][product_id]" class="form-control" value="{{ $element->product_id }}">
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger remove-product">${translations.remove}</button>
+                    </td>
+                </tr>
+                `;
 
             $('#products_table tbody').append(rowHtml);
         @endforeach
@@ -1342,6 +1264,7 @@
             });
 
             $('#product_id').on('change', function() {
+                let rowIndex = $('#products_table tbody tr').length;
                 var productId = $(this).val();
                 var productName = $('option:selected', this).data('name');
                 var sectorPrice = $('option:selected', this).data('sectorprice');
