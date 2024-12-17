@@ -1622,7 +1622,7 @@
         @if (empty($package) || $package->reports == '1')
             @if ($screen_settings->reports == '1')
                 @can('تقارير عامة')
-                    <li class="nav-item {{ Request::is('*/HRM*') ? 'active' : '' }}">
+                    {{-- <li class="nav-item {{ Request::is('*/HRM*') ? 'active' : '' }}">
                         <a href="https://hrm.elaraby-erp.net/admin/auth/login" target="_blank">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
                                 <path
@@ -1632,7 +1632,7 @@
                                 {{ __('HRM') }}
                             </span>
                         </a>
-                    </li>
+                    </li> --}}
                 @endcan
             @endif
         @endif
