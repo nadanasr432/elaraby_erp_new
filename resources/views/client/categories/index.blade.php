@@ -46,19 +46,21 @@
                                         <td>{{ $category->category_name }}</td>
                                         <td>{{ $category->category_type }}</td>
                                         <td>
-                                            <a href="{{ route('client.categories.edit', $category->id) }}"
-                                                class="btn btn-sm btn-info" data-toggle="tooltip"
-                                                title="{{ __('main.edit') }}" data-placement="top"><i
-                                                    class="fa fa-edit"></i></a>
-
-                                            <a class="modal-effect btn btn-sm btn-danger delete_category"
-                                                category_id="{{ $category->id }}"
-                                                category_name="{{ $category->category_name }}" data-toggle="modal"
-                                                href="#modaldemo9" title="delete"><i class="fa fa-trash"></i></a>
+                                            @if ($i > 2)
+                                                <a href="{{ route('client.categories.edit', $category->id) }}"
+                                                    class="btn btn-sm btn-info" data-toggle="tooltip"
+                                                    title="{{ __('main.edit') }}" data-placement="top"><i
+                                                        class="fa fa-edit"></i></a>
+                                                <a class="modal-effect btn btn-sm btn-danger delete_category"
+                                                    category_id="{{ $category->id }}"
+                                                    category_name="{{ $category->category_name }}" data-toggle="modal"
+                                                    href="#modaldemo9" title="delete"><i class="fa fa-trash"></i></a>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
+
                         </table>
                     </div>
                 </div>

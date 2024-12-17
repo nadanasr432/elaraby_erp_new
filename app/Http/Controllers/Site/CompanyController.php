@@ -34,10 +34,16 @@ class CompanyController extends Controller
 {
     public function store(Request $request)
     {
+        $request->validate([
+            'company_name' => 'required|string|regex:/\S+/',
+            'phone_number' => 'nullable|string|regex:/\S+/',
+        ]);
+
         $data = $request->all();
         $data['status'] = 'active';
         $data['all_users_access_main_branch'] = 'no';
         $company = Company::create($data);
+
         if ($request->hasFile('company_logo')) {
             $image = $request->file('company_logo');
             $fileName = $image->getClientOriginalName();
@@ -46,9 +52,11 @@ class CompanyController extends Controller
             $company->company_logo = $uploadDir . '/' . $fileName;
             $company->save();
         }
+
         $check = Type::where('type_name', 'تجربة')
-            ->where('type_price', '0')
-            ->first();
+        ->where('type_price', '0')
+        ->first();
+
         if (empty($check)) {
             $type = Type::create([
                 'type_name' => 'تجربة',
@@ -58,35 +66,39 @@ class CompanyController extends Controller
         } else {
             $type = $check;
         }
+
         $subscription = Subscription::create([
             'type_id' => $type->id,
             'period' => $type->period,
             'start_date' => date('Y-m-d'),
             'end_date' => date("Y-m-d", strtotime("+$type->period day")),
             'status' => 'active',
-            'company_id' => $company->id
+            'company_id' => $company->id,
         ]);
+
         $basic_settings = BasicSettings::create([
             'header' => '',
             'footer' => '',
             'electronic_stamp' => '',
-            'company_id' => $company->id
+            'company_id' => $company->id,
         ]);
+
         $extra_settings = ExtraSettings::create([
             'timezone' => $request->country,
             'currency' => $request->currency,
             'company_id' => $company->id,
-            'font_size' => '12'
+            'font_size' => '12',
         ]);
-        $unit = Unit::create([
+
+        Unit::create([
             'unit_name' => 'كيلو',
             'company_id' => $company->id,
         ]);
-        $unit = Unit::create([
+        Unit::create([
             'unit_name' => 'طن',
             'company_id' => $company->id,
         ]);
-        $unit = Unit::create([
+        Unit::create([
             'unit_name' => 'وحدة',
             'company_id' => $company->id,
         ]);
