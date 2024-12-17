@@ -37,8 +37,8 @@
                                     <th class="text-center">{{ __('bonds.client_name') }}</th>
                                     <th class="text-center">{{ __('bonds.account') }}</th>
                                     <th class="text-center">{{ __('bonds.type') }}</th>
-                                    <th class="text-center">{{ __('bonds.date') }}</th>
                                     <th class="text-center">{{ __('bonds.amount') }}</th>
+                                    <th class="text-center">{{ __('bonds.date') }}</th>
                                     <th class="text-center">{{ __('main.control') }}</th>
                                 </tr>
                             </thead>
