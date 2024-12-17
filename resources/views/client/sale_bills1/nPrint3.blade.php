@@ -135,6 +135,14 @@
         <div class="text-center" id="buttons">
             <button class="btn btn-sm btn-success" onclick="window.print()">@lang('sales_bills.Print the invoice') </button>
             <a class="btn btn-sm btn-danger" href="{{ route('client.sale_bills.create') }}"> @lang('sales_bills.back') </a>
+            <button class="show_hide_header btn btn-sm btn-warning no-print" dir="ltr">
+                <i class="fa fa-eye-slash"></i>
+                @lang('sales_bills.Show or hide the header')
+            </button>
+            <button class="show_hide_footer btn btn-sm btn-primary no-print" dir="ltr">
+                <i class="fa fa-eye-slash"></i>
+                @lang('sales_bills.Show or hide the footer')
+            </button>
             <button class="btn btn-sm btn-success" dir="ltr" onclick="sendToWhatsApp()">
                 <i class="fa fa-whatsapp"></i>
                 @lang('sales_bills.Send to whatsapp')
