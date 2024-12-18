@@ -1229,7 +1229,19 @@ class SaleBillController1 extends Controller
     {
         $saleBill = SaleBill1::find($id);
         $company_id = Auth::user()->company_id;
+        $sale_bills_done = SaleBill1::where('company_id', $saleBill->company_id)
+            ->where('status', 'done')
+            ->orderBy('created_at', 'asc')
+            ->get();
         $company = Company::FindOrFail($company_id);
+
+
+        // Find the position of the current sale_bill in the collection
+        $position = $sale_bills_done->search(function ($item) use ($saleBill) {
+            return $item->id === $saleBill->id;
+        }) + 1; // +1 to make it 1-based index
+        $saleBill->sale_bill_number = $position;
+        $saleBill->save();
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
         $check = Cash::all();
         if ($check->isEmpty()) {
@@ -1252,7 +1264,8 @@ class SaleBillController1 extends Controller
                 'safes',
                 'banks',
                 'units',
-                'pre_cash'
+                'pre_cash',
+                'position',
             )
         );
     }

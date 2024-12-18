@@ -135,11 +135,11 @@
     <div class="col-lg-12 no-print text-center"
         style="padding-top: 25px;height: auto !important;display: flex;justify-content: start;overflow-x: auto">
 
-          <button type="button" 
-            @if (($saleBill->final_total - $saleBill->paid) <= 0) disabled @endif 
-            data-toggle="modal" 
-            data-target="#myModal2" 
-            class="btn btn-md btn-dark pay_btn float-right pr-3 pl-3 d-flex align-items-center" 
+          <button type="button"
+            @if (($saleBill->final_total - $saleBill->paid) <= 0) disabled @endif
+            data-toggle="modal"
+            data-target="#myModal2"
+            class="btn btn-md btn-dark pay_btn float-right pr-3 pl-3 d-flex align-items-center"
             style="height: 40px;">
             <i class="fa fa-money"></i>
             <span class="d-none d-sm-inline"> {{ __('main.record') }} </span>
@@ -170,45 +170,45 @@
         <!------PRINT MAIN INVOICE---->
         <a class="btn btn-md btn-info text-white pull-right ml-1" role="button"
             href="{{ route('client.sale_bills.print', $saleBill->token) }}" style="height: 40px;">
-            حفظ و طباعة 1
+             طباعة 1
         </a>
 
         <!------PRINT 1---->
         <a href="{{ route('client.sale_bills.print', [$saleBill->token, 2, 1, 0]) }}" class="btn btn-md pull-right ml-1"
             style="height: 40px;border:1px solid #085d4a;background: #085d4a !important;color:white !important;">
-            حفظ و طباعة 2
+             طباعة 2
         </a>
         <!------PRINT 2---->
        <a href="{{ route('client.sale_bills.print', [$saleBill->token, 4,1, 0]) }}"
           class="btn btn-md btn-primary pull-right ml-1" style="height: 40px;border:1px solid #5e8b0b;background: #5e8b0b !important;color:white !important;"  printColor="2"  isMoswada="0" invoiceType='4'>
-            حفظ و طباعة 3
+             طباعة 3
         </a>
         <!------PRINT 2---->
 
         <a href="{{ route('client.sale_bills.print', [$saleBill->token, 5, 2, 0]) }}" role="button"
             style="height: 40px;border:1px solid #0bb3b3!important;background: #0bb3b3 !important ;color:white !important;"
             class="btn save_btn5 btn-md btn-primary pull-right ml-1">
-            حفظ و طباعة 4
+             طباعة 4
         </a>
 
         <a href="{{ route('client.sale_bills.print', [$saleBill->token, 2, 3, 0]) }}" style="height: 40px;"
             class="btn btn-md btn-primary pull-right ml-1">
-            حفظ و طباعة 5
+             طباعة 5
 
         </a>
          <a href="{{route('client.sale_bills.print', [$saleBill->token,6,3,0])}}" role="button" style="height: 40px;border:1px solid #0b228b;background: #0b228b !important;color:white !important;" class="btn  btn-md btn-primary pull-right ml-1
             " printColor="2" isMoswada="0" invoiceType='6'>
-            حفظ و طباعة 6
+             طباعة 6
         </a>
         <a href="{{ route('client.sale_bills.print', [$saleBill->token,7,3,0]) }}" role="button"
             style="height: 40px;border:1px solid #9b4aad !important ;background: #9b4aad !important;color:white !important;"
             class="btn  btn-md btn-primary pull-right ml-1" printColor="2"  isMoswada="0" invoiceType='7'>
-            حفظ و طباعة 7
+             طباعة 7
         </a>
          <a href="{{ route('client.sale_bills.print', [$saleBill->token, 8, 3, 0]) }}" role="button"
             style="height: 40px;border:1px solid #3d121264 !important ;background: #3d121264 !important;color:white !important;"
             class="btn  btn-md btn-primary pull-right ml-1" printColor="2" isMoswada="0" invoiceType='8'>
-            حفظ و طباعة 8
+             طباعة 8
         </a>
 
         <!------FATOORAH MOSWADA---->
