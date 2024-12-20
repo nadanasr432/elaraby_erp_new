@@ -111,12 +111,12 @@
                                 تقارير كشف الحساب
                             </div>
                             <div class="box-body">
-                                <li class="custom">
+                                {{-- <li class="custom">
                                     <a href="{{ url('/client/clients-summary-get') }}"><i
                                             class="fa fa-plus text-success tx-20"></i>
                                         كشف حساب عميل
                                     </a>
-                                </li>
+                                </li> --}}
                                 <li class="custom">
                                     <a href="{{ url('/client/clients-summary-get-new') }}"><i
                                             class="fa fa-plus text-success tx-20"></i>

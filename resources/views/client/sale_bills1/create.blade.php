@@ -363,8 +363,9 @@
             </div>
         </div>
 
-        <div class="col-lg-12 no-print text-center pt-3" style="overflow-x: auto">
-            <div class="d-flex justify-content-center align-items-center flex-nowrap">
+        <div class="col-lg-12 no-print text-center pt-3">
+            <div class="d-flex justify-content-start align-items-center flex-nowrap"
+                style="overflow-x: auto; white-space: nowrap;">
                 <!-- Record Button -->
                 <button type="button" data-toggle="modal" style="height: 40px" data-target="#myModal2"
                     class="btn btn-md btn-dark pay_btn m-1">
@@ -373,84 +374,69 @@
                 <button type="button" id="add" class="btn btn-info btn-md m-1" style="height: 40px">
                     <i class="fa fa-plus"></i> {{ __('sales_bills.save and show') }}
                 </button>
+
                 <!-- Save and Print 1 Button -->
                 <button type="button" role="button" class="btn save_btn1 btn-md btn-info text-white m-1"
                     isMoswada="0" invoiceType="2" style="height: 40px">
                     حفظ و طباعة 1
                 </button>
 
-                <!-- Add Button -->
-
-
                 <!-- Save and Print 2 Button -->
-                <a href="javascript:;" role="button"
-                    style="
-                  height: 40px;
-                  border: 1px solid #085d4a;
-                  background: #085d4a !important;
-                  color: white !important;
-                "
-                    class="btn save_btn2 btn-md m-1" printColor="1" isMoswada="0" invoiceType="2">
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md m-1"
+                    style="height: 40px; border: 1px solid #085d4a !important; background: #085d4a !important; color: white;" printColor="1"
+                    isMoswada="0" invoiceType="2">
                     حفظ و طباعة 2
                 </a>
 
                 <!-- Save and Print 3 Button -->
-                <a href="javascript:;" role="button"
-                    style="
-                  height: 40px;
-                  border: 1px solid #5e8b0b;
-                  background: #5e8b0b !important;
-                  color: white !important;
-                "
-                    class="btn save_btn2 btn-md btn-primary m-1" printColor="2" isMoswada="0" invoiceType="4">
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-primary m-1"
+                    style="height: 40px; border: 1px solid #5e8b0b !important; background: #5e8b0b !important; color: white;" printColor="2"
+                    isMoswada="0" invoiceType="4">
                     حفظ و طباعة 3
                 </a>
 
                 <!-- Save and Print 4 Button -->
-                <a href="javascript:;" role="button"
-                    style="height: 40px;border:1px solid #0bb3b3!important;background: #0bb3b3 !important ;color:white !important;"
-                    class="btn save_btn2 btn-md btn-primary pull-right ml-1
-                @if (!isset($open_sale_bill) || empty($open_sale_bill))  @endif "
-                    printColor="3" isMoswada="0" invoiceType='5'>
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-primary pull-right m-1"
+                    style="height: 40px; border: 1px solid #0bb3b3 !important; background: #0bb3b3 !important; color: white;" printColor="3"
+                    isMoswada="0" invoiceType="5">
                     حفظ و طباعة 4
                 </a>
-                <a href="javascript:;" role="button" style="height: 40px;"
-                    class="btn save_btn2 btn-md btn-primary pull-right ml-1
-                @if (!isset($open_sale_bill) || empty($open_sale_bill))  @endif "
-                    printColor="2" isMoswada="0" invoiceType='2'>
+
+                <!-- Save and Print 5 Button -->
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-primary pull-right m-1"
+                    style="height: 40px;" printColor="2" isMoswada="0" invoiceType="2">
                     حفظ و طباعة 5
                 </a>
-                <!------PRINT 2---->
-                <a href="javascript:;" role="button"
-                    style="height: 40px;border:1px solid #0b228b;background: #0b228b !important;color:white !important;"
-                    class="btn save_btn2 btn-md btn-primary pull-right ml-1
-                @if (!isset($open_sale_bill) || empty($open_sale_bill))  @endif "
-                    printColor="2" isMoswada="0" invoiceType='6'>
+
+                <!-- Save and Print 6 Button -->
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-primary pull-right m-1"
+                    style="height: 40px; border: 1px solid #0b228b !important; background: #0b228b !important; color: white;" printColor="2"
+                    isMoswada="0" invoiceType="6">
                     حفظ و طباعة 6
                 </a>
-                <a href="javascript:;" role="button"
-                    style="height: 40px;border:1px solid #9b4aad !important ;background: #9b4aad !important;color:white !important;"
-                    class="btn save_btn2 btn-md btn-primary pull-right ml-1
-                @if (!isset($open_sale_bill) || empty($open_sale_bill))  @endif "
-                    printColor="2" isMoswada="0" invoiceType='7'>
+
+                <!-- Save and Print 7 Button -->
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-primary pull-right m-1"
+                    style="height: 40px; border: 1px solid #9b4aad !important; background: #9b4aad !important; color: white;" printColor="2"
+                    isMoswada="0" invoiceType="7">
                     حفظ و طباعة 7
                 </a>
-                <a href="javascript:;" role="button"
-                    style="height: 40px;border:1px solid #3d121264  !important ;background: #3d121264  !important;color:white !important;"
-                    class="btn save_btn2 btn-md btn-primary pull-right ml-1
-                @if (!isset($open_sale_bill) || empty($open_sale_bill))  @endif "
-                    printColor="2" isMoswada="0" invoiceType='8'>
+
+                <!-- Save and Print 8 Button -->
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-primary pull-right m-1"
+                    style="height: 40px; border: 1px solid #3d121264 !important; background: #3d121264 !important; color: white;" printColor="2"
+                    isMoswada="0" invoiceType="8">
                     حفظ و طباعة 8
                 </a>
 
                 <!-- Draft Invoice Button -->
-                <a href="javascript:;" role="button" style="height: 40px" class="btn save_btn2 btn-md btn-warning m-1"
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-warning m-1" style="height: 40px;"
                     printColor="2" isMoswada="1" invoiceType="2">
                     فاتورة مسودة
                 </a>
 
                 <!-- Non-Tax Invoice Button -->
-                <a href="javascript:;" role="button" style="height: 40px" class="btn save_btn2 btn-md btn-success m-1"
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-success m-1" style="height: 40px;"
                     printColor="2" isMoswada="0" invoiceType="3">
                     فاتورة غير ضريبية
                 </a>
