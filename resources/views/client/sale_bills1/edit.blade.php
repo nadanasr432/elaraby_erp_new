@@ -976,9 +976,29 @@
                 }
             });
 
-            $('#add').on('click', function() {
+            $('#add').on('click', function(e) { // Add 'e' as the event parameter
+                e.preventDefault(); // Prevent default form submission
+            
                 let outerClientId = $('#outer_client_id').val();
-
+            
+                const discountType = document.getElementById('discount_type').value;
+                const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
+                const grandTotal = parseFloat(document.getElementById('grand_total').textContent) || 0;
+            
+                // Check if discount exceeds grand total
+                if (
+                    (discountType === 'pound' || discountType === 'poundAfterTax') &&
+                    discountValue > grandTotal
+                ) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'تحذير',
+                        text: 'لا يمكن أن يكون الخصم أكبر من الإجمالي!',
+                        confirmButtonText: 'موافق'
+                    });
+                    return false; // Stop submission
+                }
+            
                 // Check if the outer client ID is selected
                 if (!outerClientId) {
                     Swal.fire({
@@ -989,19 +1009,19 @@
                     });
                     return false;
                 }
-
+            
                 // Validate that at least one product is selected
                 let hasProduct = false;
                 $('#products_table tbody tr').each(function() {
                     let quantity = $(this).find('input[name*="[quantity]"]').val();
                     let price = $(this).find('input[name*="[product_price]"]').val();
                     let unit = $(this).find('select[name*="[unit_id]"]').val();
-
+            
                     if (quantity > 0 && price > 0 && unit) {
                         hasProduct = true;
                     }
                 });
-
+            
                 if (!hasProduct) {
                     Swal.fire({
                         icon: 'warning',
@@ -1011,10 +1031,9 @@
                     });
                     return false;
                 }
-
+              
                 var formData = $('#myForm').serialize();
                 $.post("{{ url('/client/sale-bills/update') }}", formData, function(data) {
-
                     if (data.status === true) {
                         // Show success message
                         $('.box_success').removeClass('d-none').fadeIn(200);
@@ -1025,14 +1044,14 @@
                         // Show error message using SweetAlert
                         let errorMessage = data.message;
                         let errorDetails = '';
-
+            
                         // If there are errors in the 'errors' object, build the message
                         if (data.errors) {
                             $.each(data.errors, function(field, messages) {
                                 errorDetails += messages.join('<br>') + '<br>';
                             });
                         }
-
+            
                         // Use SweetAlert to display the error message
                         Swal.fire({
                             icon: 'error',
@@ -1043,8 +1062,9 @@
                         });
                     }
                 });
-
+            
             });
+
 
 
         });

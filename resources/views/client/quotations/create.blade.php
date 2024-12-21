@@ -554,7 +554,8 @@
                 // Save the current value as previous for potential reset
                 $(this).data('previous-value', newTaxType);
             });
-            // const discountType = document.getElementById('discount_type');
+            // Save button 1
+             // const discountType = document.getElementById('discount_type');
             // const discountValue = document.getElementById('discount_value');
             // const grandTotalElement = document.getElementById('grand_total');
 

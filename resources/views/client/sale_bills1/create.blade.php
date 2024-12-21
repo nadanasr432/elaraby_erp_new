@@ -383,22 +383,22 @@
 
                 <!-- Save and Print 2 Button -->
                 <a href="javascript:;" role="button" class="btn save_btn2 btn-md m-1"
-                    style="height: 40px; border: 1px solid #085d4a !important; background: #085d4a !important; color: white;" printColor="1"
-                    isMoswada="0" invoiceType="2">
+                    style="height: 40px; border: 1px solid #085d4a !important; background: #085d4a !important; color: white;"
+                    printColor="1" isMoswada="0" invoiceType="2">
                     حفظ و طباعة 2
                 </a>
 
                 <!-- Save and Print 3 Button -->
                 <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-primary m-1"
-                    style="height: 40px; border: 1px solid #5e8b0b !important; background: #5e8b0b !important; color: white;" printColor="2"
-                    isMoswada="0" invoiceType="4">
+                    style="height: 40px; border: 1px solid #5e8b0b !important; background: #5e8b0b !important; color: white;"
+                    printColor="2" isMoswada="0" invoiceType="4">
                     حفظ و طباعة 3
                 </a>
 
                 <!-- Save and Print 4 Button -->
                 <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-primary pull-right m-1"
-                    style="height: 40px; border: 1px solid #0bb3b3 !important; background: #0bb3b3 !important; color: white;" printColor="3"
-                    isMoswada="0" invoiceType="5">
+                    style="height: 40px; border: 1px solid #0bb3b3 !important; background: #0bb3b3 !important; color: white;"
+                    printColor="3" isMoswada="0" invoiceType="5">
                     حفظ و طباعة 4
                 </a>
 
@@ -410,22 +410,22 @@
 
                 <!-- Save and Print 6 Button -->
                 <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-primary pull-right m-1"
-                    style="height: 40px; border: 1px solid #0b228b !important; background: #0b228b !important; color: white;" printColor="2"
-                    isMoswada="0" invoiceType="6">
+                    style="height: 40px; border: 1px solid #0b228b !important; background: #0b228b !important; color: white;"
+                    printColor="2" isMoswada="0" invoiceType="6">
                     حفظ و طباعة 6
                 </a>
 
                 <!-- Save and Print 7 Button -->
                 <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-primary pull-right m-1"
-                    style="height: 40px; border: 1px solid #9b4aad !important; background: #9b4aad !important; color: white;" printColor="2"
-                    isMoswada="0" invoiceType="7">
+                    style="height: 40px; border: 1px solid #9b4aad !important; background: #9b4aad !important; color: white;"
+                    printColor="2" isMoswada="0" invoiceType="7">
                     حفظ و طباعة 7
                 </a>
 
                 <!-- Save and Print 8 Button -->
                 <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-primary pull-right m-1"
-                    style="height: 40px; border: 1px solid #3d121264 !important; background: #3d121264 !important; color: white;" printColor="2"
-                    isMoswada="0" invoiceType="8">
+                    style="height: 40px; border: 1px solid #3d121264 !important; background: #3d121264 !important; color: white;"
+                    printColor="2" isMoswada="0" invoiceType="8">
                     حفظ و طباعة 8
                 </a>
 
@@ -681,7 +681,38 @@
                 $(this).data('previous-value', newTaxType);
             });
             // Save button 1
-            $('.save_btn1').on('click', function() {
+            $('.save_btn1').on('click', function(e) {
+                e.preventDefault(); // Prevent default form submission
+
+                const discountType = document.getElementById('discount_type').value;
+                const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
+                const grandTotal = parseFloat(document.getElementById('grand_total').textContent) || 0;
+
+                // Check if discount exceeds grand total
+                if (
+                    (discountType === 'pound' || discountType === 'poundAfterTax') &&
+                    discountValue > grandTotal
+                ) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'تحذير',
+                        text: 'لا يمكن أن يكون الخصم أكبر من الإجمالي!',
+                        confirmButtonText: 'موافق'
+                    });
+                    return false; // Stop submission
+                }
+
+                // Ensure discount is less than or equal to the grand total
+                if (discountValue > grandTotal) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'تحذير',
+                        text: 'يجب أن يكون الخصم أقل أو مساوياً للإجمالي!',
+                        confirmButtonText: 'موافق'
+                    });
+                    return false; // Stop submission
+                }
+
                 let outerClientId = $('#outer_client_id').val();
 
                 // Check if the outer client ID is selected
@@ -724,9 +755,7 @@
                         location.href = '/sale-bills/print/' + data;
                     })
                     .fail(function(jqXHR) {
-                        // Check if responseJSON exists and try to extract message
                         let errorMessage = "حدث خطأ أثناء حفظ البيانات";
-
                         if (jqXHR.responseJSON) {
                             if (jqXHR.responseJSON.message) {
                                 errorMessage = jqXHR.responseJSON.message;
@@ -747,11 +776,41 @@
             });
 
             // Save button 2
-            $('.save_btn2').on('click', function() {
+            $('.save_btn2').on('click', function(e) {
                 let printColor = $(this).attr('printColor');
                 let isMoswada = $(this).attr('isMoswada');
                 let invoiceType = $(this).attr('invoiceType');
                 let outerClientId = $('#outer_client_id').val();
+                e.preventDefault(); // Prevent default form submission
+
+                const discountType = document.getElementById('discount_type').value;
+                const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
+                const grandTotal = parseFloat(document.getElementById('grand_total').textContent) || 0;
+
+                // Check if discount exceeds grand total
+                if (
+                    (discountType === 'pound' || discountType === 'poundAfterTax') &&
+                    discountValue > grandTotal
+                ) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'تحذير',
+                        text: 'لا يمكن أن يكون الخصم أكبر من الإجمالي!',
+                        confirmButtonText: 'موافق'
+                    });
+                    return false; // Stop submission
+                }
+
+                // Ensure discount is less than or equal to the grand total
+                if (discountValue > grandTotal) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'تحذير',
+                        text: 'يجب أن يكون الخصم أقل أو مساوياً للإجمالي!',
+                        confirmButtonText: 'موافق'
+                    });
+                    return false; // Stop submission
+                }
 
                 // Check if the outer client ID is selected
                 if (!outerClientId) {
@@ -794,9 +853,7 @@
                             printColor + '/' + isMoswada;
                     })
                     .fail(function(jqXHR) {
-                        // Check if responseJSON exists and try to extract message
                         let errorMessage = "حدث خطأ أثناء حفظ البيانات";
-
                         if (jqXHR.responseJSON) {
                             if (jqXHR.responseJSON.message) {
                                 errorMessage = jqXHR.responseJSON.message;
@@ -1036,8 +1093,28 @@
                 }
             });
 
-            $('#add').on('click', function() {
+            $('#add').on('click', function(e) { // Add 'e' as the event parameter
+                e.preventDefault(); // Prevent default form submission
+
                 let outerClientId = $('#outer_client_id').val();
+
+                const discountType = document.getElementById('discount_type').value;
+                const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
+                const grandTotal = parseFloat(document.getElementById('grand_total').textContent) || 0;
+
+                // Check if discount exceeds grand total
+                if (
+                    (discountType === 'pound' || discountType === 'poundAfterTax') &&
+                    discountValue > grandTotal
+                ) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'تحذير',
+                        text: 'لا يمكن أن يكون الخصم أكبر من الإجمالي!',
+                        confirmButtonText: 'موافق'
+                    });
+                    return false; // Stop submission
+                }
 
                 // Check if the outer client ID is selected
                 if (!outerClientId) {
@@ -1055,7 +1132,6 @@
                 $('#products_table tbody tr').each(function() {
                     let quantity = $(this).find('input[name*="[quantity]"]').val();
                     let price = $(this).find('input[name*="[product_price]"]').val();
-
                     let unit = $(this).find('select[name*="[unit_id]"]').val();
 
                     if (quantity > 0 && price > 0 && unit) {
@@ -1073,33 +1149,10 @@
                     return false;
                 }
 
-
                 var formData = $('#myForm').serialize();
                 $.post("{{ url('/client/sale-bills/post1') }}", formData, function(data) {
-                    //     $('#outer_client_id').attr('disabled', true).addClass('disabled');
-                    //     $('#product_id').val('').trigger('change');
-                    //     $('#unit_id').val('');
-                    //     $('#discount_type').attr('disabled', false);
-                    //     $('.print_btn').removeClass('disabled');
-                    //     $('.pay_btn').attr('disabled', false);
-                    //     $('.close_btn').attr('disabled', false);
-                    //     $('.save_btn1').removeClass('disabled');
-                    //     $('.save_btn2').removeClass('disabled');
-                    //     $('.send_btn').removeClass('disabled');
-                    //     $('.add_extra_notes').removeClass('disabled');
-                    //     $('#discount_value').attr('disabled', false);
-                    //     $('#exec_discount').attr('disabled', false);
-                    //     $('#extra_type').attr('disabled', false);
-                    //     $('#extra_value').attr('disabled', false);
-                    //     $('#exec_extra').attr('disabled', false);
-                    //     $('#value_added_tax').attr('disabled', true).addClass('disabled');
-                    //     $('.available').html("");
-                    //     $('#product_price').val('0');
-                    //     $('#quantity').val('');
-                    //     $('#quantity_price').val('');
-
                     if (data.status === true) {
-                        //-----show success msg.------//
+                        // Show success message
                         $('.box_success').removeClass('d-none').fadeIn(200);
                         $('.msg_success').html(data.msg);
                         $('.box_success').delay(3000).fadeOut(300);
@@ -1111,6 +1164,7 @@
                     }
                 });
             });
+
 
         });
 
