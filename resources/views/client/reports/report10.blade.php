@@ -78,7 +78,7 @@
 
 
                     <?php $i = 0; $total_pieces = 0; ?>
-                    @if(isset($posBills) && !$posBills->isEmpty())
+                    @if(isset($posBills) && collect($posBills)->isNotEmpty())
                         <p class="alert alert-sm alert-primary mt-3 text-center">
                             فواتير الكاشير ( نقطة البيع )
                         </p>
