@@ -314,6 +314,11 @@
                                             <?php
 
                                             //---get discount and shipping---//
+                                            // Initialize variables
+                                            $sale_bill_discount_value = 0;
+                                            $sale_bill_extra_value = 0;
+                                            $sale_bill_discount_type = "pound";
+                                            $sale_bill_extra_type = "pound";
                                             $extras = $sale_bill->extras;
                                             foreach ($extras as $key) {
                                                 if ($key->action == "discount") {

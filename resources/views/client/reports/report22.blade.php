@@ -88,6 +88,10 @@
                                             @endforeach
                                             <?php
                                             $extras = $sale_bill->extras;
+                                            $sale_bill_discount_value = 0;
+                                            $sale_bill_extra_value = 0;
+                                            $sale_bill_discount_type = "pound";
+                                            $sale_bill_extra_type = "pound";
                                             foreach ($extras as $key) {
                                                 if ($key->action == "discount") {
                                                     if ($key->action_type == "pound") {
