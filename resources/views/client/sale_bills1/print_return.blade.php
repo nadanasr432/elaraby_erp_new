@@ -342,7 +342,7 @@ $company = \App\Models\Company::FindOrFail($itemsInSaleBillReturn[0]->company_id
         </tfoot>
     </table>
     <button onclick="window.print();" class="no-print btn btn-md btn-success text-white">اضغط للطباعة</button>
-    <a href="{{ route('client.sale_bills.create') }}" class="no-print btn btn-md btn-danger text-white"> العودة الى
+    <a href="{{ route('client.sale_bills.create1') }}" class="no-print btn btn-md btn-danger text-white"> العودة الى
         فاتورة
         المبيعات </a>
 
