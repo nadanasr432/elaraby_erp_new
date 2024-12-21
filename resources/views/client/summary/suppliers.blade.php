@@ -35,38 +35,28 @@
                     <div class="clearfix no-print"></div>
                     <hr class="no-print">
                     <form class="parsley-style-1 no-print" id="selectForm2" name="selectForm2"
-                          action="{{route('suppliers.summary.post')}}" enctype="multipart/form-data"
-                          method="get">
+                        action="{{ route('suppliers.summary.post') }}" enctype="multipart/form-data" method="get"
+                        onsubmit="return validateDates()">
                         <div class="row mb-3">
                             <div class="col-md-4">
                                 <label class="d-block"> اختر المورد <span class="text-danger">*</span></label>
                                 <select required name="supplier_id" id="supplier_id" class="selectpicker"
-                                        data-style="btn-info" data-live-search="true"
-                                        title="اكتب او اختار اسم المورد">
-                                    @foreach($suppliers as $supplier)
-                                        <option
-                                            @if(isset($supplier_k) && $supplier_k->id == $supplier->id)
-                                            selected
-                                            @endif
-                                            value="{{$supplier->id}}">{{$supplier->supplier_name}}</option>
+                                    data-style="btn-info" data-live-search="true" title="اكتب او اختار اسم المورد">
+                                    @foreach ($suppliers as $supplier)
+                                        <option @if (isset($supplier_k) && $supplier_k->id == $supplier->id) selected @endif
+                                            value="{{ $supplier->id }}">{{ $supplier->supplier_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-md-4">
                                 <label class="d-block"> من تاريخ <span class="text-danger">*</span></label>
-                                <input type="date"
-                                       @if(isset($from_date) && !empty($from_date))
-                                       value="{{$from_date}}"
-                                       @endif
-                                       class="form-control" name="from_date"/>
+                                <input type="date" @if (isset($from_date) && !empty($from_date)) value="{{ $from_date }}" @endif
+                                    class="form-control" name="from_date" />
                             </div>
                             <div class="col-md-4">
                                 <label class="d-block"> الى تاريخ <span class="text-danger">*</span></label>
-                                <input
-                                    @if(isset($to_date) && !empty($to_date))
-                                    value="{{$to_date}}"
-                                    @endif
-                                    type="date" class="form-control" name="to_date"/>
+                                <input @if (isset($to_date) && !empty($to_date)) value="{{ $to_date }}" @endif type="date"
+                                    class="form-control" name="to_date" />
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
@@ -80,8 +70,29 @@
                             </button>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>
     </div>
 @endsection
+
+
+<script>
+    function validateDates() {
+        const fromDate = document.querySelector('[name="from_date"]').value;
+        const toDate = document.querySelector('[name="to_date"]').value;
+
+        if (fromDate && !toDate) {
+            alert('يرجى اختيار المده من تاريخ - الى تاريخ .');
+            return false;
+        }
+
+        if (toDate && !fromDate) {
+            alert('يرجى اختيار المده من تاريخ - الى تاريخ .');
+            return false;
+        }
+
+        return true;
+    }
+</script>
