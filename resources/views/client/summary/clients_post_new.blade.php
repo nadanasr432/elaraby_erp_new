@@ -375,7 +375,7 @@ $currency = $extra_settings->currency;
                                                     $quotation_extra_value = ($quotation_extra_value / 100) * $sum;
                                                 }
                                                 $after_discount = $sum + $quotation_extra_value;
-                                                
+
                                                 if ($quotation_discount_type == 'percent') {
                                                     $quotation_discount_value = ($quotation_discount_value / 100) * $sum;
                                                 }
@@ -426,15 +426,15 @@ $currency = $extra_settings->currency;
                                         ->orderBy('id')
                                         ->pluck('id')
                                         ->toArray();
-                                    
+
                                     $saleBills = $outer_client_k->saleBills->where('status', 'done');
-                                    
+
                                     $globalIndexMap = array_flip($allSaleBills); // ID => Position
                                     ?>
                                     @foreach ($saleBills as $index => $sale_bill)
                                         <tr class="{{ $index % 2 == 0 ? 'even' : 'odd' }}" role="row">
                                             <td>{{ $i++ }}</td>
-                                            <td>{{ $globalIndexMap[$sale_bill->id] + 1 }}</td> <!-- Index + 1 -->
+                                            <td>{{ $sale_bill->sale_bill_number }}</td> <!-- Index + 1 -->
                                             <td>{{ $sale_bill->date }}</td>
                                             <td>
                                                 @if ($sale_bill->paid == 0)
@@ -452,13 +452,13 @@ $currency = $extra_settings->currency;
                                                 foreach ($sale_bill->elements as $element) {
                                                     $sum += floatval($element->quantity_price);
                                                 }
-                                                
+
                                                 // حساب الخصومات والإضافات
                                                 $sale_bill_discount_value = 0;
                                                 $sale_bill_discount_type = 'pound';
                                                 $sale_bill_extra_value = 0;
                                                 $sale_bill_extra_type = 'pound';
-                                                
+
                                                 $extras = $sale_bill->extras;
                                                 foreach ($extras as $key) {
                                                     if ($key->action == 'discount') {
@@ -467,36 +467,36 @@ $currency = $extra_settings->currency;
                                                         $sale_bill_extra_value = $key->action_type == 'pound' ? floatval($key->value) : ($key->value / 100) * $sum;
                                                     }
                                                 }
-                                                
+
                                                 // حساب المبلغ بعد الخصم
                                                 $after_discount = $sum - $sale_bill_discount_value + $sale_bill_extra_value;
-                                                
+
                                                 // حساب الضريبة
                                                 $tax_value_added = floatval($company->tax_value_added);
                                                 $tax_amount = ($tax_value_added / 100) * $after_discount;
-                                                
+
                                                 // المبلغ الإجمالي بعد الضريبة
                                                 $debit = $sale_bill->final_total - $sale_bill->paid;
-                                                
+
                                                 // حساب المدين والدائن
                                                 $credit = floatval($sale_bill->paid);
-                                                
+
                                                 // حساب الرصيد الحالي بناءً على الرصيد السابق
                                                 $current_balance = $previous_balance + ($debit - $credit);
-                                                
+
                                                 // تحديث الرصيد السابق للسطر التالي
                                                 $previous_balance = $current_balance;
-                                                
+
                                                 // تحديث الرصيد النهائي
                                                 $final_balance = $current_balance;
-                                                
+
                                                 // عرض الرصيد الحالي
                                                 if ($current_balance < 0) {
                                                     echo '(' . floatval(abs($current_balance)) . ') ' . $currency;
                                                 } else {
                                                     echo floatval($current_balance) . ' ' . $currency;
                                                 }
-                                                
+
                                                 ?>
                                             </td>
                                         </tr>
@@ -920,15 +920,15 @@ $currency = $extra_settings->currency;
                                     $totalAmount = isset($totalAmount) ? $totalAmount : 0;
                                     $totalDifference = isset($totalDifference) ? $totalDifference : 0;
                                     $currency = isset($currency) ? $currency : ''; // Default to empty string if currency isn't set
-                                    
+
                                     // Calculate totals
                                     $totalDepit = $final_balance + $difference + $totalBorrowedAmount;
                                     $totalCridit = $totalAmountCash + $totalAmount + $totalDifference;
-                                    
+
                                     $totalIndebtedness = $totalIndebtedness = round($totalDepit - $totalCridit + $outer_client_k->prev_balance, 3);
-                                    
+
                                     // Output the total indebtedness with currency
-                                    
+
                                     if ($totalIndebtedness < 0) {
                                         echo '(' . floatval(abs($totalIndebtedness)) . ') ' . $currency;
                                     } else {

@@ -228,7 +228,18 @@ class SummaryController extends Controller
             $bonds = Bondclient::where('client', $outer_client_k->client_name)
                 ->whereDate('created_at', $today)->get();
         }
-
+        $sale_bills_done = SaleBill::where('company_id', $outer_client_k->company_id)
+            ->where('status', 'done')
+            ->orderBy('created_at', 'asc')
+            ->get();
+        // dd($sale_bills_done->pluck('id'),$outer_client_k->company_id, $outer_client_k->id);
+        foreach ($sale_bills_done as $saleBill) {
+            $position = $sale_bills_done->search(function ($item) use ($saleBill) {
+                return $item->id === $saleBill->id;
+            }) + 1; // +1 to make it 1-based index
+            $saleBill->sale_bill_number = $position;
+            $saleBill->save();
+        }
         // Return the view with the gathered data
         return view('client.summary.clients_post_new', compact(
             'returns',
