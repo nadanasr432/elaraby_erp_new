@@ -21,29 +21,41 @@ class ProductController extends Controller
     public function index()
     {
         $company_id = Auth::user()->company_id;
-        $company = Company::FindOrFail($company_id);
+
+        // Validate that the company exists
+        $company = Company::findOrFail($company_id);
+
+        // Fetch products explicitly tied to the company
         $products = Product::where('company_id', $company_id)
             ->where(function ($query) {
                 $query->where('first_balance', '>', 0)
                     ->orWhereNull('first_balance');
-            })->get();
-        $purchase_prices = array();
-        $balances = array();
+            })
+            ->get();
+            
+
+        $purchase_prices = [];
+        $balances = [];
+
         foreach ($products as $product) {
             $product_price = $product->purchasing_price;
             $product_balance = $product->first_balance;
+
             array_push($balances, $product_balance);
 
-            //check if the values are integer or not..
-            if (is_int($product_balance) && is_int($product_price)) {
+            // Calculate only if both are integers
+            if (is_numeric($product_balance) && is_numeric($product_price)) {
                 $total_price = $product_price * $product_balance;
                 array_push($purchase_prices, $total_price);
             }
         }
+
         $total_purchase_prices = array_sum($purchase_prices);
         $total_balances = array_sum($balances);
+
         return view('client.products.index', compact('company', 'total_balances', 'total_purchase_prices', 'company_id', 'products'));
     }
+
     public function createservice()
     {
         $company_id = Auth::user()->company_id;

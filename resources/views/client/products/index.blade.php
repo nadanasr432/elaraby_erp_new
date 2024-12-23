@@ -38,7 +38,7 @@
                     <div class="d-flex justify-content-between align-items-baseline">
                         <h3 class="pull-right font-weight-bold ml-1">
                             {{__('products.manage_products')}}
-                            <span class="badge badge-success circle">{{floatval( $total_balances  )}}</span>
+                            <span class="badge badge-success circle">{{floatval( $products->count()  )}}</span>
                         </h3>
                         <div class="row">
                             <a class="mr-1 btn btn-success btn-sm-new"
