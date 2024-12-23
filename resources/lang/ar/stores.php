@@ -9,5 +9,8 @@ return [
     "delete-store" => "حذف مخزن",
     "inventory-all-stores" => "جرد كل المخازن",
     "choose-store" => "اختر المخزن",
-    "choose-product" => "اختر المنتج"
+    "choose-product" => "اختر المنتج",
+    'from-store'=>"من خزنة",
+    'to-store'=>"الي خزنة"
+
 ];

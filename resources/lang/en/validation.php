@@ -147,5 +147,7 @@ return [
     */
 
     'attributes' => [],
+    'transfer_amount_exceeds_balance' => 'The transfer amount cannot exceed the available balance of the selected safe.',
+
 
 ];

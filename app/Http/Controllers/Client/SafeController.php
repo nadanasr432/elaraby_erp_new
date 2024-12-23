@@ -74,6 +74,21 @@ class SafeController extends Controller
 
     public function transfer_post(Request $request)
     {
+        $request->validate([
+            'from_safe' => 'required|exists:safes,id',
+            'to_safe' => 'required|exists:safes,id|different:from_safe',
+            'amount' => 'required|numeric|min:1',
+            'reason' => 'nullable|string',
+        ]);
+
+        $fromSafe = Safe::findOrFail($request->from_safe);
+
+        if ($request->amount > $fromSafe->balance) {
+            return redirect()->back()->withErrors([
+                'amount' => __('validation.transfer_amount_exceeds_balance'),
+            ])->withInput();
+        }
+
         $company_id = Auth::user()->company_id;
         $company = Company::FindOrFail($company_id);
         $safes = $company->safes;

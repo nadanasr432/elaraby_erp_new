@@ -147,5 +147,6 @@ return [
     */
 
     'attributes' => [],
+    'transfer_amount_exceeds_balance' => 'لا يمكن لمبلغ التحويل أن يتجاوز الرصيد المتاح للخزنة المحددة.',
 
 ];

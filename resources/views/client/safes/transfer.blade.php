@@ -58,10 +58,13 @@
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <label class="d-block"> {{ __('main.amount') }} <span
-                                        class="text-danger">*</span></label>
+                                <label class="d-block"> {{ __('main.amount') }} <span class="text-danger">*</span></label>
                                 <input type="number" class="form-control" name="amount" min="1" required />
+                                @error('amount')
+                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                @enderror
                             </div>
+
                             <div class="col-md-3">
                                 <label class="d-block"> {{ __('safes.notes') }} <span
                                         class="text-danger">*</span></label>

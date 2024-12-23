@@ -43,6 +43,7 @@ class ProductRequest extends FormRequest
             "description" => 'nullable',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
+            'product_pic' => 'nullable|image|mimes:jpg,jpeg,png',
         ];
     }
 }
