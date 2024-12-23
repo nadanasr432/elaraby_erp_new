@@ -691,7 +691,7 @@
                 // Check if discount exceeds grand total
                 if (
                     (discountType === 'pound' || discountType === 'poundAfterTax') &&
-                    discountValue > grandTotal
+                    discountValue > grandTotal+discountValue
                 ) {
                     Swal.fire({
                         icon: 'warning',
@@ -703,7 +703,7 @@
                 }
 
                 // Ensure discount is less than or equal to the grand total
-                if (discountValue > grandTotal) {
+                if (discountValue >  grandTotal+discountValue) {
                     Swal.fire({
                         icon: 'warning',
                         title: 'تحذير',
@@ -790,7 +790,7 @@
                 // Check if discount exceeds grand total
                 if (
                     (discountType === 'pound' || discountType === 'poundAfterTax') &&
-                    discountValue > grandTotal
+                    discountValue > grandTotal+discountValue
                 ) {
                     Swal.fire({
                         icon: 'warning',
@@ -802,7 +802,7 @@
                 }
 
                 // Ensure discount is less than or equal to the grand total
-                if (discountValue > grandTotal) {
+                if (discountValue > grandTotal+discountValue) {
                     Swal.fire({
                         icon: 'warning',
                         title: 'تحذير',
@@ -1105,7 +1105,7 @@
                 // Check if discount exceeds grand total
                 if (
                     (discountType === 'pound' || discountType === 'poundAfterTax') &&
-                    discountValue > grandTotal
+                    discountValue > grandTotal+discountValue
                 ) {
                     Swal.fire({
                         icon: 'warning',
@@ -1115,6 +1115,17 @@
                     });
                     return false; // Stop submission
                 }
+                  // Ensure discount is less than or equal to the grand total
+                if (discountValue > grandTotal+discountValue) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'تحذير',
+                        text: 'يجب أن يكون الخصم أقل أو مساوياً للإجمالي!',
+                        confirmButtonText: 'موافق'
+                    });
+                    return false; // Stop submission
+                }
+
 
                 // Check if the outer client ID is selected
                 if (!outerClientId) {

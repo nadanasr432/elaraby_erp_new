@@ -591,7 +591,19 @@
                 // Check if discount exceeds grand total
                 if (
                     (discountType === 'pound' || discountType === 'poundAfterTax') &&
-                    discountValue > grandTotal
+                    discountValue > grandTotal+discountValue
+                ) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'تحذير',
+                        text: 'لا يمكن أن يكون الخصم أكبر من الإجمالي!',
+                        confirmButtonText: 'موافق'
+                    });
+                    return false; // Stop submission
+                }
+                    if (
+                
+                    discountValue > grandTotal+discountValue
                 ) {
                     Swal.fire({
                         icon: 'warning',
@@ -689,7 +701,19 @@
                 // Check if discount exceeds grand total
                 if (
                     (discountType === 'pound' || discountType === 'poundAfterTax') &&
-                    discountValue > grandTotal
+                    discountValue > grandTotal+discountValue
+                ) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'تحذير',
+                        text: 'لا يمكن أن يكون الخصم أكبر من الإجمالي!',
+                        confirmButtonText: 'موافق'
+                    });
+                    return false; // Stop submission
+                }
+                   if (
+                
+                    discountValue > grandTotal+discountValue
                 ) {
                     Swal.fire({
                         icon: 'warning',
