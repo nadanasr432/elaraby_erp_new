@@ -83,7 +83,7 @@
                             </div>
                             <!---------------------->
 
-                            <!----category_id---->
+                           <!----category_id---->
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label for="store_id">
                                     {{ __('products.main_cat') }}
@@ -91,29 +91,17 @@
                                 </label>
                                 <select required name="category_id" id="category" class="form-control">
                                     <option value="">{{ __('products.choose_main_cat') }}</option>
-                                    <?php $i = 0; ?>
                                     @foreach ($categories as $category)
-                                        @if ($categories->count() == 1)
-                                            <option type="{{ $category->category_type }}" selected
-                                                value="{{ $category->id }}">
-                                                {{ $category->category_name }}
-                                            </option>
-                                        @else
-                                            @if ($i == 0)
-                                                <option type="{{ $category->category_type }}" selected
-                                                    value="{{ $category->id }}">
-                                                    {{ $category->category_name }}
-                                                </option>
-                                            @else
-                                                <option type="{{ $category->category_type }}" value="{{ $category->id }}">
-                                                    {{ $category->category_name }}
-                                                </option>
-                                            @endif
-                                        @endif
-                                        <?php $i++; ?>
+                                        <option 
+                                            type="{{ $category->category_type }}" 
+                                            value="{{ $category->id }}" 
+                                            {{ $category->category_name == 'مخزونية' ? 'selected' : '' }}>
+                                            {{ $category->category_name }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
+
                             <!---------------------->
 
 
@@ -455,6 +443,7 @@
                 $('#store').attr('disabled', true);
                 $('#start_date').attr('disabled', true);
                 $('#end_date').attr('disabled', true);
+                $('#purchasing_price').attr('disabled', true);
             } else {
                 $('#first_balance').attr('readonly', false);
                 $('#model').attr('readonly', false);
@@ -463,6 +452,7 @@
                 $('#store').attr('disabled', false);
                 $('#start_date').attr('disabled', false);
                 $('#end_date').attr('disabled', false);
+                $('#purchasing_price').attr('disabled', false);
             }
         });
         $(document).ready(function() {

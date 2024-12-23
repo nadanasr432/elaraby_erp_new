@@ -60,8 +60,9 @@
 
                             <div class="col-md-3">
                                 <label> {{ __('safes.safe-balance') }} <span class="text-danger">*</span></label>
-                                <input dir="ltr" required class="form-control" name="balance" type="text">
+                                <input dir="ltr" required class="form-control" name="balance" type="number" min="0.001" step="0.001">
                             </div>
+
 
                             <div class="col-md-3">
                                 <label> {{ __('safes.safe-type') }} <span class="text-danger">*</span></label>
