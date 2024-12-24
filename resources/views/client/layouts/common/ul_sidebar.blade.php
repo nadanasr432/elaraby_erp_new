@@ -332,7 +332,7 @@
 
 
             <!------------------------------------SALES SECTION------------------------------------>
-            {{-- @if (empty($package) || $package->sales == '1')
+            @if (empty($package) || $package->sales == '1')
                 @if ($screen_settings->sales == '1')
                     <li class="nav-item {{ Request::is('*/quotations*', '*/sale_bills*') ? 'active open' : '' }}">
                         <a href="javascript:;">
@@ -431,7 +431,7 @@
                         </ul>
                     </li>
                 @endif
-            @endif --}}
+            @endif
             <!----------------------------------------SALES SECTION------------------------------------>
             <!------------------------------------new SALES SECTION------------------------------------>
             @if (empty($package) || $package->sales == '1')
