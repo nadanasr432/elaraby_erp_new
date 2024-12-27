@@ -438,12 +438,15 @@
                             @if (!$elements->isEmpty())
                                 @foreach ($elements as $element)
                                     @php
+                                        $elementDiscount =
+                                            $element->discount_type == 'percent'
+                                                ? ($element->quantity_price * $element->discount_value) / 100
+                                                : $element->discount_value;
                                         // Calculate Product Tax
                                         $ProdTax = 0;
                                         if ($company->tax_value_added && $company->tax_value_added != 0) {
                                             $ProdTax = $sale_bill->value_added_tax
-                                                ?
-                                                    $element->quantity_price - ($element->quantity_price * 20) / 23
+                                                ? $element->quantity_price - ($element->quantity_price * 20) / 23
                                                 : ($element->quantity_price * 15) / 100;
                                         }
 
@@ -452,8 +455,7 @@
                                         if ($company->tax_value_added && $company->tax_value_added != 0) {
                                             $ProdTotal = $sale_bill->value_added_tax
                                                 ? $element->quantity_price
-                                                :
-                                                    $element->quantity_price + ($element->quantity_price * 15) / 100;
+                                                : $element->quantity_price + ($element->quantity_price * 15) / 100;
                                         }
 
                                         // Calculate Quantity Price Without Tax
@@ -465,18 +467,19 @@
                                     <tr class="text-muted"
                                         style="font-size:18px !important; height: 34px !important; text-align: center;">
                                         <td>
-                                            {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $element->discount_value : $element->quantity_price - $element->discount_value }}
+                                            {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
                                         </td>
 
                                         <td>{{ $element->tax_value }}</td>
-                                        <td>{{ $element->discount_value }}{{ $element->discount_type == "percent" ? ' %' : '' }}</td>
+                                        <td>{{ $element->discount_value }}{{ $element->discount_type == 'percent' ? ' %' : '' }}
+                                        </td>
                                         <td>{{ $company->tax_value_added ?? '0' }}%</td>
                                         <td>{{ $priceWithoutTax }}</td>
                                         <td class="text-center">
                                             <span>{{ $element->unit->unit_name }}</span>
                                             <span>{{ $element->quantity }}</span>
                                         </td>
-                                        <td>{{$element->product_price }}</td>
+                                        <td>{{ $element->product_price }}</td>
                                         <td>{{ $element->product->product_name }}</td>
                                     </tr>
                                 @endforeach

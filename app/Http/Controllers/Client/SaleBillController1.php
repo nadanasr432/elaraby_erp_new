@@ -594,7 +594,7 @@ class SaleBillController1 extends Controller
                 'unit_id' => $product['unit_id'],
                 'quantity_price' => (float)$product['product_price'] * $product['quantity'],
                 'tax_value' => (float)$product['tax_amount'],
-                'discount_value' => (float)$product['applied_discount'],
+                'discount_value' => (float)$product['discount'],
                 'tax_type' => (float)$product['tax'],
                 'price_type' => $product['price_type'],
                 'discount_type' => $product['discount_type'],

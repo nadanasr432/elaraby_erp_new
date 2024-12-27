@@ -454,6 +454,10 @@
                                 @php $i = 0; @endphp
                                 @foreach ($elements as $element)
                                     @php
+                                    $elementDiscount =
+                                            $element->discount_type == 'percent'
+                                                ? ($element->quantity_price * $element->discount_value) / 100
+                                                : $element->discount_value;
                                         // Calculate Product Tax
                                         $ProdTax = 0 . ' ' . $currency;
                                         if ($company->tax_value_added && $company->tax_value_added != 0) {
@@ -503,7 +507,7 @@
                                             {{ $element->discount_value }}{{ $element->discount_type == 'percent' ? ' %' : '' }}
                                         </td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
-                                            {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $element->discount_value : $element->quantity_price - $element->discount_value }}
+                                            {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
                                         </td>
                                     </tr>
                                 @endforeach
@@ -540,16 +544,21 @@
                                 @php $i = 0; @endphp
                                 @foreach ($elements as $element)
                                     @php
+                                    $elementDiscount =
+                                            $element->discount_type == 'percent'
+                                                ? ($element->quantity_price * $element->discount_value) / 100
+                                                : $element->discount_value;
                                         $productPrice =
                                             $element->tax_type == 0
                                                 ? $element->product_price + $element->tax_value
                                                 : $element->product_price;
+
                                     @endphp
 
                                     <tr
                                         style="font-size: 15px !important; height: 44px !important; text-align: center; {{ $currentColor }}">
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
-                                            {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $element->discount_value : $element->quantity_price - $element->discount_value }}
+                                            {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
 
                                         </td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">

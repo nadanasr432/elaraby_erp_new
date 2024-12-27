@@ -17,15 +17,18 @@
     <meta charset="utf-8" />
     <link href="{{ asset('/assets/css/bootstrap.min.css') }}" rel="stylesheet" />
     <style type="text/css" media="screen">
-            .table thead th ,td{
+        .table thead th,
+        td {
             vertical-align: middle !important;
 
-            }
-          .text-container {
-               text-decoration: underline !important;
-               padding: 10px 0;
-          }
-        .table thead th{
+        }
+
+        .text-container {
+            text-decoration: underline !important;
+            padding: 10px 0;
+        }
+
+        .table thead th {
             border-bottom: 1px solid black;
         }
 
@@ -43,7 +46,7 @@
         .table-bordered td,
         .table-bordered tr,
         .table-bordered th {
-            border: 1px solid black ;
+            border: 1px solid black;
         }
 
         .custom-table td:nth-child(1),
@@ -102,6 +105,7 @@
             width: 80%;
             margin: auto;
         }
+
         .container {
             width: 100%;
 
@@ -161,43 +165,53 @@
             width: 100%;
             object-fit: scale-down;
         }
+
         .custom-print-table {
-        background-color: #dbdbdb !important;
-        border: 1px solid black !important;
-    }
+            background-color: #dbdbdb !important;
+            border: 1px solid black !important;
+        }
     </style>
     <style type="text/css" media="print">
-     tr {
+        tr {
 
             font-size: 11px !important;
         }
-     .table thead th ,td {
+
+        .table thead th,
+        td {
             vertical-align: middle !important;
 
-            }
+        }
 
-    .table-bordered thead tr th,
-    .table-bordered tbody tr td {
-        border-left: 2px solid black !important;  /* Vertical left border color */
-        border-right: 2px solid black !important; /* Vertical right border color */
-    }
-     .table-bordered td,
+        .table-bordered thead tr th,
+        .table-bordered tbody tr td {
+            border-left: 2px solid black !important;
+            /* Vertical left border color */
+            border-right: 2px solid black !important;
+            /* Vertical right border color */
+        }
+
+        .table-bordered td,
         .table-bordered tr,
         .table-bordered th {
-            border: 2px solid black ;
+            border: 2px solid black;
         }
-        .table-custom-sm td{
+
+        .table-custom-sm td {
             background-color: #dbdbdb !important;
 
         }
-       .table-one {
-        background-color: #dbdbdb !important;
-        border: 1px solid black !important; /* Proper border syntax */
-    }
-     .text-container {
-               text-decoration: underline !important;
-               padding: 10px 0;
-          }
+
+        .table-one {
+            background-color: #dbdbdb !important;
+            border: 1px solid black !important;
+            /* Proper border syntax */
+        }
+
+        .text-container {
+            text-decoration: underline !important;
+            padding: 10px 0;
+        }
 
         #buttons {
             display: none !important;
@@ -232,11 +246,12 @@
         .tete>* {
             text-align: right !important;
         }
-       .table-one {
-    background-color: #dbdbdb !important;
-    border: 1px solid black; /* Proper border syntax */
-}
 
+        .table-one {
+            background-color: #dbdbdb !important;
+            border: 1px solid black;
+            /* Proper border syntax */
+        }
     </style>
 </head>
 
@@ -250,21 +265,24 @@
         </button>
     </div>
     <div class="invoice-container border">
-         <div class="row d-flex justify-content-between mt-4 mb-3">
-        <div class="col-md-4 text-container d-flex justify-content-end  pl-2">
-            <span class=" text-center" style="font-weight: bold;font-size:27px"> {{ $company->company_name_en }} </span>
-       </div>
+        <div class="row d-flex justify-content-between mt-4 mb-3">
+            <div class="col-md-4 text-container d-flex justify-content-end  pl-2">
+                <span class=" text-center" style="font-weight: bold;font-size:27px"> {{ $company->company_name_en }}
+                </span>
+            </div>
 
-        <div class="logo col-md-4 d-flex justify-content-center ">
-        <img class="logo" style="object-fit: scale-down;" width="130" src="{{ asset($company->company_logo) }}">
+            <div class="logo col-md-4 d-flex justify-content-center ">
+                <img class="logo" style="object-fit: scale-down;" width="130"
+                    src="{{ asset($company->company_logo) }}">
+            </div>
+            <div class="col-md-4 text-container d-flex justify-content-start">
+                <span class="text-center" style="font-weight: bold;font-size:27px"> {{ $company->company_name }} </span>
+            </div>
         </div>
-        <div class="col-md-4 text-container d-flex justify-content-start">
-            <span class="text-center" style="font-weight: bold;font-size:27px"> {{ $company->company_name }} </span>
-       </div>
-       </div>
 
         <div class="container">
-            <table class="table table-custom-sm table-sm table-bordered text-center "  style="background-color: #dbdbdb  !important;border:black;">
+            <table class="table table-custom-sm table-sm table-bordered text-center "
+                style="background-color: #dbdbdb  !important;border:black;">
 
                 <tbody>
                     <!-- First row -->
@@ -306,16 +324,20 @@
                         <td>
                             <div class="d-flex justify-content-between text-black"
                                 style="font-size: 16px;font-weight:600">
-                                <div class="col-md-3 text-start d-flex justify-start pl-4 pr-4" style=" font-size: 12px !important;" >
+                                <div class="col-md-3 text-start d-flex justify-start pl-4 pr-4"
+                                    style=" font-size: 12px !important;">
                                     Sub Contractor Name
                                 </div>
-                                <div class="col-md-7 text-center d-flex justify-content-between pl-4 pr-4" style="font-weight: bold;">
-                                   <span> {{ $company->company_name_en }}</span> <span> {{ $company->company_name }}</span>
+                                <div class="col-md-7 text-center d-flex justify-content-between pl-4 pr-4"
+                                    style="font-weight: bold;">
+                                    <span> {{ $company->company_name_en }}</span> <span>
+                                        {{ $company->company_name }}</span>
                                 </div>
                                 <!--<div class="col-md-3 text-center d-flex justify-content-end pl-4 pr-4" style="font-weight: bold;">-->
                                 <!--    {{ $company->company_name }}-->
                                 <!--</div>-->
-                                <div class="col-md-2 text-end d-flex justify-content-end pl-4 pr-4"  style=" font-size: 12px !important;" >
+                                <div class="col-md-2 text-end d-flex justify-content-end pl-4 pr-4"
+                                    style=" font-size: 12px !important;">
                                     اسم المقاول
                                 </div>
                             </div>
@@ -327,13 +349,15 @@
                         <td>
                             <div class="d-flex justify-content-between text-black"
                                 style="font-size: 16px;font-weight:600">
-                                <div class="col-md-4 text-start d-flex justify-start pl-4 pr-4" style=" font-size: 12px !important;">
+                                <div class="col-md-4 text-start d-flex justify-start pl-4 pr-4"
+                                    style=" font-size: 12px !important;">
                                     CR No
                                 </div>
                                 <div class="col-md-4 text-center d-flex justify-content-center pl-4 pr-4">
                                     {{ $company->civil_registration_number }}
                                 </div>
-                                <div class="col-md-4 text-end d-flex justify-content-end pl-4 pr-4"  style=" font-size: 12px !important;">
+                                <div class="col-md-4 text-end d-flex justify-content-end pl-4 pr-4"
+                                    style=" font-size: 12px !important;">
                                     رقم السجل التجاري
                                 </div>
                             </div>
@@ -343,13 +367,15 @@
                         <td>
                             <div class="d-flex justify-content-between text-black"
                                 style="font-size: 16px;font-weight:600">
-                                <div class="col-md-4 text-start d-flex justify-start pl-4 pr-4" style=" font-size: 12px !important;">
+                                <div class="col-md-4 text-start d-flex justify-start pl-4 pr-4"
+                                    style=" font-size: 12px !important;">
                                     VAT Registration No
                                 </div>
                                 <div class="col-md-4 text-center d-flex justify-content-center pl-4 pr-4">
                                     {{ $company->tax_number ?? '-' }}
                                 </div>
-                                <div class="col-md-4 text-end d-flex justify-content-end pl-4 pr-4"  style=" font-size: 12px !important;">
+                                <div class="col-md-4 text-end d-flex justify-content-end pl-4 pr-4"
+                                    style=" font-size: 12px !important;">
                                     رقم الضريبة
                                 </div>
                             </div>
@@ -359,13 +385,15 @@
                         <td>
                             <div class="d-flex justify-content-between text-black"
                                 style="font-size: 16px;font-weight:600">
-                                <div class="col-md-4 text-start d-flex justify-start pl-4 pr-4" style=" font-size: 12px !important;">
+                                <div class="col-md-4 text-start d-flex justify-start pl-4 pr-4"
+                                    style=" font-size: 12px !important;">
                                     Official Address
                                 </div>
                                 <div class="col-md-4 text-center d-flex justify-content-center pl-4 pr-4">
                                     {{ $company->company_address ?? '-' }}
                                 </div>
-                                <div class="col-md-4 text-end d-flex justify-content-end pl-4 pr-4"  style=" font-size: 12px !important;">
+                                <div class="col-md-4 text-end d-flex justify-content-end pl-4 pr-4"
+                                    style=" font-size: 12px !important;">
                                     العنوان
                                 </div>
                             </div>
@@ -383,13 +411,16 @@
                         <td>
                             <div class="d-flex justify-content-between text-black"
                                 style="font-size: 20px;font-weight:600">
-                                <div class="col-md-4 text-start d-flex justify-start pl-4 pr-4" style=" font-size: 12px !important;">
+                                <div class="col-md-4 text-start d-flex justify-start pl-4 pr-4"
+                                    style=" font-size: 12px !important;">
                                     Company Name
                                 </div>
-                                <div class="col-md-4 text-center d-flex justify-content-center pl-4 pr-4" style="font-weight: bold;">
+                                <div class="col-md-4 text-center d-flex justify-content-center pl-4 pr-4"
+                                    style="font-weight: bold;">
                                     {{ $sale_bill->outerClient->shop_name ?? $sale_bill->outerClient->client_name }}
                                 </div>
-                                <div class="col-md-4 text-end d-flex justify-content-end pl-4 pr-4"  style=" font-size: 12px !important;">
+                                <div class="col-md-4 text-end d-flex justify-content-end pl-4 pr-4"
+                                    style=" font-size: 12px !important;">
                                     اسم العميل
                                 </div>
                             </div>
@@ -401,13 +432,15 @@
                         <td>
                             <div class="d-flex justify-content-between text-black"
                                 style="font-size: 16px;font-weight:600">
-                                <div class="col-md-4 text-start d-flex justify-start pl-4 pr-4" style=" font-size: 12px !important;">
+                                <div class="col-md-4 text-start d-flex justify-start pl-4 pr-4"
+                                    style=" font-size: 12px !important;">
                                     CR No
                                 </div>
                                 <div class="col-md-4 text-center d-flex justify-content-center pl-4 pr-4">
                                     {{ $sale_bill->outerClient->commercial_register }}
                                 </div>
-                                <div class="col-md-4 text-end d-flex justify-content-end pl-4 pr-4"  style=" font-size: 12px !important;">
+                                <div class="col-md-4 text-end d-flex justify-content-end pl-4 pr-4"
+                                    style=" font-size: 12px !important;">
                                     رقم السجل التجاري
                                 </div>
                             </div>
@@ -417,13 +450,15 @@
                         <td>
                             <div class="d-flex justify-content-between text-black"
                                 style="font-size: 16px;font-weight:600">
-                                <div class="col-md-4 text-start d-flex justify-start pl-4 pr-4" style=" font-size: 12px !important;">
+                                <div class="col-md-4 text-start d-flex justify-start pl-4 pr-4"
+                                    style=" font-size: 12px !important;">
                                     VAT Registration No
                                 </div>
                                 <div class="col-md-4 text-center d-flex justify-content-center pl-4 pr-4">
                                     {{ $sale_bill->outerClient->tax_number ?? '-' }}
                                 </div>
-                                <div class="col-md-4 text-end d-flex justify-content-end pl-4 pr-4"  style=" font-size: 12px !important;">
+                                <div class="col-md-4 text-end d-flex justify-content-end pl-4 pr-4"
+                                    style=" font-size: 12px !important;">
                                     رقم الضريبة
                                 </div>
                             </div>
@@ -433,13 +468,15 @@
                         <td>
                             <div class="d-flex justify-content-between text-black"
                                 style="font-size: 16px;font-weight:600">
-                                <div class="col-md-4 text-start d-flex justify-start pl-4 pr-4" style=" font-size: 12px !important;">
+                                <div class="col-md-4 text-start d-flex justify-start pl-4 pr-4"
+                                    style=" font-size: 12px !important;">
                                     Official Address
                                 </div>
                                 <div class="col-md-4 text-center d-flex justify-content-center pl-4 pr-4">
                                     {{ $sale_bill->outerClient->addresses[0]->client_address ?? '-' }}
                                 </div>
-                                <div class="col-md-4 text-end d-flex justify-content-end pl-4 pr-4"  style=" font-size: 12px !important;">
+                                <div class="col-md-4 text-end d-flex justify-content-end pl-4 pr-4"
+                                    style=" font-size: 12px !important;">
                                     العنوان
                                 </div>
                             </div>
@@ -449,126 +486,148 @@
             </table>
         </div>
         <div class="container">
-<table class="table table-sm table-bordered  text-center">
-    <thead>
-        <tr>
-            <th style="font-size:14px !important">S.No. الرقم</th>
-            <th style="font-size:14px !important">Work Description البيانات</th>
-            <th style="font-size:14px !important">الكمية .Quantity</th>
-            <th style="font-size:14px !important">السعر Price</th>
-            <th style="font-size:14px !important">Deduction الخصم</th>
-            <th style="font-size:14px !important">Total Taxable Amount المجموع بدون ضريبة</th>
-            <th style="font-size:14px !important">Tax Amount {{ $company->tax_value_added ?? '0' }}% مبلغ الضريبة</th>
-            <th style="font-size:14px !important">Total (Incl) VAT الاجمالي شامل الضريبة</th>
-            <th style="font-size:14px !important">Retention 10% تأمين اعمال</th>
-            <th style="font-size:14px !important">Net Amount To Pay صافي المبلغ المستحق</th>
-        </tr>
-    </thead>
-    <tbody>
-        @php
-            $extras = $sale_bill->extras;
+            <table class="table table-sm table-bordered  text-center">
+                <thead>
+                    <tr>
+                        <th style="font-size:14px !important">S.No. الرقم</th>
+                        <th style="font-size:14px !important">Work Description البيانات</th>
+                        <th style="font-size:14px !important">الكمية .Quantity</th>
+                        <th style="font-size:14px !important">السعر Price</th>
+                        <th style="font-size:14px !important">Deduction الخصم</th>
+                        <th style="font-size:14px !important">Total Taxable Amount المجموع بدون ضريبة</th>
+                        <th style="font-size:14px !important">Tax Amount {{ $company->tax_value_added ?? '0' }}% مبلغ
+                            الضريبة</th>
+                        <th style="font-size:14px !important">Total (Incl) VAT الاجمالي شامل الضريبة</th>
+                        <th style="font-size:14px !important">Retention 10% تأمين اعمال</th>
+                        <th style="font-size:14px !important">Net Amount To Pay صافي المبلغ المستحق</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                        $extras = $sale_bill->extras;
 
-            // Initialize variables to store totals for each column
-            $totalQuantity = 0;
-            $totalProductPrice = 0;
-            $totalDiscount = 0;
-            $totalTaxableAmount = 0;
-            $totalTax = 0;
-            $totalInclVAT = 0;
-            $totalRetention = 0;
-            $totalNetAmount = 0;
-        @endphp
+                        // Initialize variables to store totals for each column
+                        $totalQuantity = 0;
+                        $totalProductPrice = 0;
+                        $totalDiscount = 0;
+                        $totalTaxableAmount = 0;
+                        $totalTax = 0;
+                        $totalInclVAT = 0;
+                        $totalRetention = 0;
+                        $totalNetAmount = 0;
+                    @endphp
 
-        @if (!$elements->isEmpty())
-            @php $i = 0; @endphp
-            @foreach ($elements as $element)
-                @php
-                    // Calculate Product Tax
-                    $ProdTax = 0;
-                    if ($company->tax_value_added && $company->tax_value_added != 0) {
-                        $ProdTax = $sale_bill->value_added_tax
-                            ? $element->quantity_price - ($element->quantity_price * 20) / 23
-                            : ($element->quantity_price * 15) / 100;
-                    }
+                    @if (!$elements->isEmpty())
+                        @php $i = 0; @endphp
+                        @foreach ($elements as $element)
+                            @php
+                                $elementDiscount =
+                                    $element->discount_type == 'percent'
+                                        ? ($element->quantity_price * $element->discount_value) / 100
+                                        : $element->discount_value;
+                                // Calculate Product Tax
+                                $ProdTax = 0;
+                                if ($company->tax_value_added && $company->tax_value_added != 0) {
+                                    $ProdTax = $sale_bill->value_added_tax
+                                        ? $element->quantity_price - ($element->quantity_price * 20) / 23
+                                        : ($element->quantity_price * 15) / 100;
+                                }
 
-                    // Calculate Product Total
-                    $ProdTotal = $element->quantity_price;
-                    if ($company->tax_value_added && $company->tax_value_added != 0) {
-                        $ProdTotal = $sale_bill->value_added_tax
-                            ? $element->quantity_price
-                            : $element->quantity_price + ($element->quantity_price * 15) / 100;
-                    }
+                                // Calculate Product Total
+                                $ProdTotal = $element->quantity_price;
+                                if ($company->tax_value_added && $company->tax_value_added != 0) {
+                                    $ProdTotal = $sale_bill->value_added_tax
+                                        ? $element->quantity_price
+                                        : $element->quantity_price + ($element->quantity_price * 15) / 100;
+                                }
 
-                    // Calculate product price
-                    $productPrice =
-                        $element->tax_type == 0
-                            ? $element->product_price + $element->tax_value
-                            : $element->product_price;
+                                // Calculate product price
+                                $productPrice =
+                                    $element->tax_type == 0
+                                        ? $element->product_price + $element->tax_value
+                                        : $element->product_price;
 
-                    // Update totals for each column
-                    $totalQuantity += $element->quantity;
-                    $totalProductPrice += $element->product_price;
-                    $totalDiscount += $element->discount_value;
-                    $totalTaxableAmount += $element->tax_type == 2
-                        ? $element->quantity_price - $element->tax_value
-                        : $element->quantity_price;
-                    $totalTax += $element->tax_value;
-                    $totalInclVAT += $element->tax_type == 0
-                        ? $element->quantity_price + $element->tax_value
-                        : $element->quantity_price;
-                    $totalRetention += $element->quantity_price * 0.10;
-                    $totalNetAmount += $element->tax_type == 0
-                        ? $element->quantity_price + $element->tax_value - $element->discount_value
-                        : $element->quantity_price - $element->discount_value;
-                @endphp
+                                // Update totals for each column
+                                $totalQuantity += $element->quantity;
+                                $totalProductPrice += $element->product_price;
+                                $totalDiscount += $element->discount_value;
+                                $totalTaxableAmount +=
+                                    $element->tax_type == 2
+                                        ? $element->quantity_price - $element->tax_value
+                                        : $element->quantity_price;
+                                $totalTax += $element->tax_value;
+                                $totalInclVAT +=
+                                    $element->tax_type == 0
+                                        ? $element->quantity_price + $element->tax_value
+                                        : $element->quantity_price;
+                                $totalRetention += $element->quantity_price * 0.1;
+                                $totalNetAmount +=
+                                    $element->tax_type == 0
+                                        ? $element->quantity_price + $element->tax_value - $elementDiscount
+                                        : $element->quantity_price - $elementDiscount;
+                            @endphp
 
-                <tr >
-                    <td>{{ ++$i }}</td>
-                    <td class="d-flex justify-content-between" style="white-space: nowrap; gap: 100px; border: black !important;">
-                        <span>{{ $element->product->product_name_en }}</span>
-                        <span>{{ $element->product->product_name }}</span>
+                            <tr>
+                                <td>{{ ++$i }}</td>
+                                <td class="d-flex justify-content-between"
+                                    style="white-space: nowrap; gap: 100px; border: black !important;">
+                                    <span>{{ $element->product->product_name_en }}</span>
+                                    <span>{{ $element->product->product_name }}</span>
 
-                    </td>
+                                </td>
 
 
-                    <td class="text-center">
-                        <span>{{ $element->quantity }}</span>
-                        <span>{{ $element->unit->unit_name }}</span>
-                    </td>
-                    <td>{{ round($element->product_price, 2) }}</td>
-                    <td>{{ $element->discount_value }}{{ $element->discount_type == "percent" ? ' %' : '' }}</td>
-                    <td>{{ round($element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price, 2) }}</td>
-                    <td>{{ $element->tax_value }}</td>
-                    <td>{{ round($element->tax_type == 0 ? $element->quantity_price + $element->tax_value : $element->quantity_price, 2) }}</td>
-                    <td>{{ number_format($element->quantity_price * 0.10, 2) }}</td>
-                    <td>{{ round($element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $element->discount_value : $element->quantity_price - $element->discount_value, 2) }}</td>
-                </tr>
-            @endforeach
+                                <td class="text-center">
+                                    <span>{{ $element->quantity }}</span>
+                                    <span>{{ $element->unit->unit_name }}</span>
+                                </td>
+                                <td>{{ round($element->product_price, 2) }}</td>
+                                <td>{{ $element->discount_value }}{{ $element->discount_type == 'percent' ? ' %' : '' }}
+                                </td>
+                                <td>{{ round($element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price, 2) }}
+                                </td>
+                                <td>{{ $element->tax_value }}</td>
+                                <td>{{ round($element->tax_type == 0 ? $element->quantity_price + $element->tax_value : $element->quantity_price, 2) }}
+                                </td>
+                                <td>{{ number_format($element->quantity_price * 0.1, 2) }}</td>
+                                <td>{{ round($element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount, 2) }}
+                                </td>
+                            </tr>
+                        @endforeach
 
-            <!-- Total Row -->
-            <tr style="border: 3px solid black !important;">
-                <td colspan="2">
-                    <span class="d-flex justify-content-end text-right"style="font-size:20px;">Total =</span>
-                </td>
-                <td style="border: 2px solid black; font-weight: bold;">{{ number_format($totalQuantity, 2) }}</td>
-                <td style="border: 2px solid black; font-weight: bold;">{{ number_format($totalProductPrice, 2) }}</td>
-                <td style="border: 2px solid black; font-weight: bold;">{{ number_format($totalDiscount, 2) }}</td>
-                <td style="border: 2px solid black; font-weight: bold;">{{ number_format($totalTaxableAmount, 2) }}</td>
-                <td style="border: 2px solid black; font-weight: bold;">{{ number_format($sale_bill->total_tax, 2) }}</td>
-                <td style="border: 2px solid black; font-weight: bold;">{{ number_format($totalInclVAT, 2) }}</td>
-                <td style="border: 2px solid black; font-weight: bold;">{{ number_format($totalRetention, 2) }}</td>
-                <td style="border: 2px solid black; font-weight: bold;">{{ number_format($totalNetAmount, 2) }}</td>
-            </tr>
+                        <!-- Total Row -->
+                        <tr style="border: 3px solid black !important;">
+                            <td colspan="2">
+                                <span class="d-flex justify-content-end text-right"style="font-size:20px;">Total
+                                    =</span>
+                            </td>
+                            <td style="border: 2px solid black; font-weight: bold;">
+                                {{ number_format($totalQuantity, 2) }}</td>
+                            <td style="border: 2px solid black; font-weight: bold;">
+                                {{ number_format($totalProductPrice, 2) }}</td>
+                            <td style="border: 2px solid black; font-weight: bold;">
+                                {{ number_format($totalDiscount, 2) }}</td>
+                            <td style="border: 2px solid black; font-weight: bold;">
+                                {{ number_format($totalTaxableAmount, 2) }}</td>
+                            <td style="border: 2px solid black; font-weight: bold;">
+                                {{ number_format($sale_bill->total_tax, 2) }}</td>
+                            <td style="border: 2px solid black; font-weight: bold;">
+                                {{ number_format($totalInclVAT, 2) }}</td>
+                            <td style="border: 2px solid black; font-weight: bold;">
+                                {{ number_format($totalRetention, 2) }}</td>
+                            <td style="border: 2px solid black; font-weight: bold;">
+                                {{ number_format($totalNetAmount, 2) }}</td>
+                        </tr>
 
-        @endif
-    </tbody>
-</table>
+                    @endif
+                </tbody>
+            </table>
 
         </div>
         <div class="container">
             <table class="table table-sm table-bordered  text-center"">
                 <tbody>
-                    <tr   style="font-weight: bold;">
+                    <tr style="font-weight: bold;">
                         <td rowspan="8" class="qr-code">
                             @php
                                 use Salla\ZATCA\GenerateQrCode;
@@ -594,50 +653,51 @@
                                 ])->render();
                             @endphp
 
-                                @if (!$isMoswada)
-                                    <img width="200" class="mt-3 mb-3" src="{{ $displayQRCodeAsBase64 }}" />
-                                @endif
+                            @if (!$isMoswada)
+                                <img width="200" class="mt-3 mb-3" src="{{ $displayQRCodeAsBase64 }}" />
+                            @endif
 
                         </td>
-                        <td >الاجمالي Total</td>
+                        <td>الاجمالي Total</td>
                         <td>{{ number_format($sale_bill->final_total - $sale_bill->total_tax, 2, '.', '') }}</td>
                     </tr>
-                    <tr  style="font-weight: bold;">
+                    <tr style="font-weight: bold;">
                         <td>الخصم Deduction</td>
                         <td>{{ $discountNote ? $discountNote . ' || ' : '' }}
-                                        {{-- @if ($discount->action_type == 'poundAfterTax') --}}
-                                         @if ($realtotal > 0)
-                                           @if($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
-                                            {{ $discount2->value}}
-
-                                        @elseif($discount2)
-                                            {{ $discount2->value }}%
-                                            @else
-                                            0.00
-                                        @endif
-                                        @endif</td>
+                            {{-- @if ($discount->action_type == 'poundAfterTax') --}}
+                            @if ($realtotal > 0)
+                                @if ($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
+                                    {{ $discount2->value }}
+                                @elseif($discount2)
+                                    {{ $discount2->value }}%
+                                @else
+                                    0.00
+                                @endif
+                            @endif
+                        </td>
                     </tr>
-                    <tr   style="font-weight: bold;">
+                    <tr style="font-weight: bold;">
                         <td>الاجمالي الخاضع للضريبة Total Taxable Amount</td>
                         <td>{{ number_format($sale_bill->final_total - $sale_bill->total_tax, 2, '.', '') }}</td>
                     </tr>
-                    <tr   style="font-weight: bold;">
+                    <tr style="font-weight: bold;">
                         <td>
-                         ضريبة القيمة المضافة
-                         VAT {{ $company->tax_value_added ?? '0' }}%</td>
+                            ضريبة القيمة المضافة
+                            VAT {{ $company->tax_value_added ?? '0' }}%</td>
                         <td>{{ $sale_bill->total_tax }}</td>
                     </tr>
-                    <tr   style="font-weight: bold;">
+                    <tr style="font-weight: bold;">
                         <td>الاجمالي شامل الضريبة Total (Incl. VAT)</td>
-                        <td>{{$sale_bill->final_total }}</td>
-                    </tr   style="font-weight: bold;">
-                    <tr   style="font-weight: bold;">
+                        <td>{{ $sale_bill->final_total }}</td>
+                    </tr style="font-weight: bold;">
+                    <tr style="font-weight: bold;">
                         <td>تامين اعمال Retention 10%</td>
-                        <td>{{ number_format($sale_bill->final_total * 0.10, 2) }}</td>
+                        <td>{{ number_format($sale_bill->final_total * 0.1, 2) }}</td>
                     </tr>
-                    <tr   style="font-weight: bold;">
+                    <tr style="font-weight: bold;">
                         <td>صافي المبلغ المستحق الدفع Net Current Amount To Pay</td>
-                    <td>{{ number_format($sale_bill->final_total - $sale_bill->paid - ($sale_bill->final_total * 0.10), 2) }}</td>
+                        <td>{{ number_format($sale_bill->final_total - $sale_bill->paid - $sale_bill->final_total * 0.1, 2) }}
+                        </td>
                     </tr>
                 </tbody>
             </table>

@@ -360,6 +360,8 @@
                             if (!$elements->isEmpty()) {
                                 $i = 0;
                                 foreach ($elements as $element) {
+                                    $elementDiscount = $element->discount_type == 'percent' ? ($element->quantity_price * $element->discount_value) / 100 : $element->discount_value;
+
                                     #--PRODUCT TAX--#
                                     if ($company->tax_value_added && $company->tax_value_added != 0) {
                                         $ProdTax = ($sale_bill->value_added_tax ? round($element->quantity_price - ($element->quantity_price * 20) / 23, 2) : round(($element->quantity_price * 15) / 100, 2)) . ' ' . $currency;
@@ -406,7 +408,7 @@
                                         $ProdTax .
                                         '</td>
                                                                                                                                                 <td style="border: 1px solid rgba(161,161,161,0.63);">' .
-                                        $ProdTotal .
+                                        $ProdTotal - $elementDiscount.
                                         '</td>
                                                                                                                                             </tr>';
                                 }
@@ -439,6 +441,8 @@
                             if (!$elements->isEmpty()) {
                                 $i = 0;
                                 foreach ($elements as $element) {
+                                    $elementDiscount = $element->discount_type == 'percent' ? ($element->quantity_price * $element->discount_value) / 100 : $element->discount_value;
+
                                     #--PRODUCT TAX--#
                                     if ($company->tax_value_added && $company->tax_value_added != 0) {
                                         $ProdTax = ($sale_bill->value_added_tax ? round($element->quantity_price - ($element->quantity_price * 20) / 23, 2) : round(($element->quantity_price * 15) / 100, 2)) . ' ' . $currency;
@@ -458,7 +462,7 @@
                                     echo '
                                                                                                                                                                                             <tr style="font-size: 15px !important; height: 44px !important; text-align: center;background: #f2f2f2">
                                                                                                                                                                                                 <td style="border: 1px solid rgba(161,161,161,0.63);">' .
-                                        $ProdTotal .
+                                        $ProdTotal - $elementDiscount.
                                         '</td>
                                                                                                                                                                                                 <td style="border: 1px solid rgba(161,161,161,0.63);">' .
                                         $ProdTax .
