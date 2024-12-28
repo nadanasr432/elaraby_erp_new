@@ -83,7 +83,7 @@
                             </div>
                             <!---------------------->
 
-                           <!----category_id---->
+                            <!----category_id---->
                             <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label for="store_id">
                                     {{ __('products.main_cat') }}
@@ -92,9 +92,7 @@
                                 <select required name="category_id" id="category" class="form-control">
                                     <option value="">{{ __('products.choose_main_cat') }}</option>
                                     @foreach ($categories as $category)
-                                        <option 
-                                            type="{{ $category->category_type }}" 
-                                            value="{{ $category->id }}" 
+                                        <option type="{{ $category->category_type }}" value="{{ $category->id }}"
                                             {{ $category->category_name == 'مخزونية' ? 'selected' : '' }}>
                                             {{ $category->category_name }}
                                         </option>
@@ -242,9 +240,11 @@
                             <!----description---->
                             <div class="form-group col-lg-6" dir="rtl">
                                 <label>{{ __('products.pdesc') }}</label>
-                                <textarea name="description" id="description" class="form-control" placeholder="{{ __('products.pdesc2') }}"
-                                    style="height: 60% !important;" rows="2"></textarea>
+                                <textarea name="description" id="description" class="form-control" placeholder="{{ __('products.pdesc2') }}"></textarea>
                             </div>
+
+
+
                             <!-------------------->
 
                             <div class="form-group col-lg-6 pull-right" dir="rtl">
@@ -325,7 +325,21 @@
     @endif
 
     <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/38.0.1/classic/ckeditor.js"></script>
     <script>
+        ClassicEditor.create(document.querySelector('#description'), {
+                language: 'ar',
+                toolbar: [
+                    'heading', 'bold', 'italic', 'underline', 'strikethrough', '|',
+                    'link', 'bulletedList', 'numberedList', 'blockQuote', '|',
+                    'insertTable', 'tableColumn', 'tableRow', 'mergeTableCells', '|',
+                    'undo', 'redo', 'alignment', 'fontColor', 'fontBackgroundColor', '|',
+                    'mediaEmbed', 'imageUpload', 'codeBlock'
+                ], // Set language to Arabic for RTL support
+            })
+            .catch(error => {
+                console.error(error);
+            });
         $("#selectForm2").submit(function(e) {
             e.preventDefault();
 

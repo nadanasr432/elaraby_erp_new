@@ -14,8 +14,9 @@
             <?php echo 'فاتورة بيع نقدى' . ' - فاتورة رقم ' . $sale_bill->company_counter; ?>
         @endif
     </title>
-    <meta charset="utf-8" />
     <link href="{{ asset('/assets/css/bootstrap.min.css') }}" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <style type="text/css" media="screen">
         @font-face {
             font-family: 'Cairo';
@@ -125,11 +126,34 @@
 </head>
 
 <body>
+    @php
+        $companyId = Auth::user()->company_id;
+        $currentColor = \App\Services\SettingsService::getSettingValue($companyId, 'color', 'print3', '#222751');
+        // If the form was submitted, set the color in the settings
+        if (request()->isMethod('post')) {
+            if (Auth::check()) {
+                $color = request('page_color', '#222751'); // Default to white if no color is selected
+                // Call the setSetting function directly in Blade
+                \App\Services\SettingsService::setSetting($companyId, 'color', $color, 'print3');
+                $currentColor = \App\Services\SettingsService::getSettingValue(
+                    $companyId,
+                    'color',
+                    'print4',
+                    '#222751',
+                );
+            } else {
+                // Optionally, handle unauthenticated users if needed (e.g., redirect or show an error message)
+                return redirect()->route('login'); // Redirect to login or show an error
+            }
+        }
 
+        // Get the current page color from the settings
+
+    @endphp
     <div class="invoice-container border mt-4">
         <div class="text-center" id="buttons">
             <button class="btn btn-sm btn-success" onclick="window.print()">@lang('sales_bills.Print the invoice')</button>
-            <a class="btn btn-sm btn-danger" href="{{ route('client.sale_bills.create') }}">@lang('sales_bills.back') </a>
+            <a class="btn btn-sm btn-danger" href="{{ route('client.sale_bills.create1') }}">@lang('sales_bills.back') </a>
             <button class="show_hide_header btn btn-sm btn-warning no-print" dir="ltr">
                 <i class="fa fa-eye-slash"></i>
                 @lang('sales_bills.Show or hide the header')
@@ -142,6 +166,41 @@
                 <i class="fa fa-whatsapp"></i>
                 @lang('sales_bills.Send to whatsapp')
             </button>
+            <div class="col-md-2">
+                <div class="card shadow-sm border-light rounded p-3 mb-3">
+                    <button type="button" class="btn btn-sm btn-primary rounded-pill shadow-sm w-100"
+                        data-bs-toggle="modal" data-bs-target="#colorModal"
+                        style="border-color: {{ old('page_color', $currentColor ?? '#222751') }}; background-color: {{ old('page_color', $currentColor ?? '#222751') }};">
+                        @lang('main.Choose Print Color')
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="colorModal" tabindex="-1" aria-labelledby="colorModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="colorModalLabel">@lang('main.Select Print Color')</h5>
+                            <button type="button" class="btn btn-close" data-bs-dismiss="modal"
+                                aria-label="Close">X</button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" action="{{ url()->current() }}">
+                                @csrf
+                                <div class="mb-3 text-center">
+                                    <input type="color" class="form-control form-control-color mx-auto"
+                                        id="page_color" name="page_color"
+                                        value="{{ old('page_color', $currentColor ?? '#222751') }}"
+                                        title="Choose your color" style="width: 120px; height: 40px; cursor: pointer;">
+                                </div>
+                                <button type="submit" class="btn btn-secondary">@lang('main.save')</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
         <div class="all-data" style="border-top: 1px solid #2d2d2d20;padding-top: 25px;">
 
@@ -165,8 +224,8 @@
                     new Seller($company->company_name), // seller name
                     new TaxNumber($company->tax_number), // seller tax number
                     new InvoiceDate($invoiceDate), // invoice date in ISO 8601 format
-                    new InvoiceTotalAmount(number_format($sumWithTax, 2, '.', '')), // invoice total amount
-                    new InvoiceTaxAmount(number_format($totalTax, 2, '.', '')), // invoice tax amount
+                    new InvoiceTotalAmount(number_format($sale_bill->final_total, 2, '.', '')), // invoice total amount
+                    new InvoiceTaxAmount(number_format($sale_bill->total_tax, 2, '.', '')), // invoice tax amount
                     // Additional tags can be added here if needed
                 ])->render();
             @endphp
@@ -231,7 +290,7 @@
                         style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                         <thead style="font-size: 16px !important;">
                             <tr
-                                style="font-size: 16px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
+                                style="font-size: 16px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
                                 <th>@lang('sales_bills.Release Date')</th>
                                 <th>@lang('sales_bills.invoice number')</th>
                                 <th>@lang('sales_bills.commercial register')</th>
@@ -255,7 +314,7 @@
                         style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                         <thead style="font-size: 16px !important;">
                             <tr
-                                style="font-size: 16px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
+                                style="font-size: 16px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
                                 <th>@lang('sales_bills.commercial register')</th>
                                 <th>@lang('sales_bills.invoice number')</th>
                                 <th>@lang('sales_bills.Release Date')</th>
@@ -281,7 +340,7 @@
                         style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                         <thead>
                             <tr
-                                style="font-size: 16px !important; background: {{ $printColor }}; color: white; height: 44px !important; text-align: center;">
+                                style="font-size: 16px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
                                 <th>@lang('sales_bills.client-name')</th>
                                 <th>@lang('sales_bills.Tax Number')</th>
                                 <th>@lang('sales_bills.phone')</th>
@@ -347,7 +406,7 @@
                         style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                         <thead>
                             <tr
-                                style="font-size: 16px !important; background: {{ $printColor }}; color: white; height: 44px !important; text-align: center;">
+                                style="font-size: 16px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
 
 
 
@@ -390,13 +449,14 @@
                         style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                         <thead>
                             <tr
-                                style="font-size: 16px !important; background: {{ $printColor }}; color: white; height: 44px !important; text-align: center;">
+                                style="font-size: 16px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
                                 <th>#</th>
                                 <th>@lang('sales_bills.product name')</th>
                                 <th>@lang('sales_bills.unit price')</th>
                                 <th>@lang('sales_bills.Quantity')</th>
                                 <th>@lang('sales_bills.The amount does not include tax')</th>
                                 <th>@lang('sales_bills.Tax')</th>
+                                <th>@lang('sales_bills.Discount')</th>
                                 <th>@lang('products.pdesc')</th>
                                 <th>@lang('products.pmodel1')</th>
                                 <th>@lang('sales_bills.total')</th>
@@ -405,48 +465,61 @@
 
                         </thead>
                         <tbody style="font-size: 14px !important;">
-                            <?php
-                            $extras = $sale_bill->extras;
-                            if (!$elements->isEmpty()) {
-                                $i = 0;
-                                foreach ($elements as $element) {
-                                    #--PRODUCT TAX--#
-                                    if ($company->tax_value_added && $company->tax_value_added != 0) {
-                                        $ProdTax = $sale_bill->value_added_tax ? round($element->quantity_price - ($element->quantity_price * 20) / 23, 2) : round(($element->quantity_price * 15) / 100, 2);
-                                    } else {
+                            @php
+                                $extras = $sale_bill->extras;
+                            @endphp
+
+                            @if (!$elements->isEmpty())
+                                @php $i = 0; @endphp
+                                @foreach ($elements as $element)
+                                    @php
+                                        // Calculate Product Tax
                                         $ProdTax = 0;
-                                    }
-                                    #--PRODUCT TAX--#
-
-                                    #--PRODUCT TOTAL--#
-                                    if ($company->tax_value_added && $company->tax_value_added != 0) {
-                                        $ProdTotal = $sale_bill->value_added_tax ? $element->quantity_price : round($element->quantity_price + ($element->quantity_price * 15) / 100, 2);
-                                    } else {
+                                        if ($company->tax_value_added && $company->tax_value_added != 0) {
+                                            $ProdTax = $sale_bill->value_added_tax
+                                                ? $element->quantity_price - ($element->quantity_price * 20) / 23
+                                                : ($element->quantity_price * 15) / 100;
+                                        }
+                                        $elementDiscount =
+                                            $element->discount_type == 'percent'
+                                                ? ($element->quantity_price * $element->discount_value) / 100
+                                                : $element->discount_value;
+                                        // Calculate Product Total
                                         $ProdTotal = $element->quantity_price;
-                                    }
-                                    #--PRODUCT TOTAL--#
+                                        if ($company->tax_value_added && $company->tax_value_added != 0) {
+                                            $ProdTotal = $sale_bill->value_added_tax
+                                                ? $element->quantity_price
+                                                : $element->quantity_price + ($element->quantity_price * 15) / 100;
+                                        }
+                                        $productPrice =
+                                            $element->tax_type == 0
+                                                ? $element->product_price + $element->tax_value
+                                                : $element->product_price;
+                                    @endphp
 
-                                    $tableRows = [];
-                                    $tableRow = '<tr style="font-size: 16px !important; height: 34px !important; text-align: center;background: #f8f9fb">';
+                                    <tr
+                                        style="font-size: 16px !important; height: 34px !important; text-align: center; background: #f8f9fb">
+                                        <td>{{ ++$i }}</td>
+                                        <td>{{ $element->product->product_name }}</td>
+                                        <td>{{ $element->product_price }}</td>
+                                        <td class="text-center">
+                                            <span>{{ $element->quantity }}</span>
+                                            <span>{{ $element->unit->unit_name }}</span>
+                                        </td>
+                                        <td>
+                                            {{ $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
+                                        </td>
+                                        <td>{{ $element->tax_value }}</td>
+                                        <td>{{ $element->discount_value }}{{ $element->discount_type == 'percent' ? ' %' : '' }}
+                                        </td>
+                                        <td>{!! $element->product->description !!}</td>
+                                        <td>{{ $element->product->product_model }}</td>
+                                        <td>{{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
 
-                                    // Reversed order of <td> elements
-                                    $tableRow .= '<td>' . ++$i . '</td>';
-                                    $tableRow .= '<td>' . $element->product->product_name . '</td>';
-                                    $tableRow .= '<td>' . $element->product_price . '</td>';
-                                    $tableRow .= '<td class="text-center"><span>' . $element->quantity . '</span><span>' . $element->unit->unit_name . '</span></td>';
-                                    $tableRow .= '<td>' . ($sale_bill->value_added_tax ? round(($element->quantity_price * 20) / 23, 2) : $element->quantity_price) . '</td>';
-                                    $tableRow .= '<td>' . $ProdTax . '</td>';
-                                    $tableRow .= '<td>' . $element->product->description . '</td>';
-                                    $tableRow .= '<td>' . $element->product->product_model . '</td>';
-                                    $tableRow .= '<td>' . $ProdTotal . '</td>';
-
-                                    $tableRow .= '</tr>';
-
-                                    // Output the table row
-                                    echo $tableRow;
-                                }
-                            }
-                            ?>
 
                         </tbody>
                     </table>
@@ -457,11 +530,13 @@
                         style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                         <thead>
                             <tr
-                                style="font-size: 16px !important; background: {{ $printColor }}; color: white; height: 44px !important; text-align: center;">
+                                style="font-size: 16px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
                                 <th>@lang('sales_bills.total')</th>
                                 <th>@lang('products.pmodel1')</th>
                                 <th>@lang('products.pdesc')</th>
+
                                 <th>@lang('sales_bills.Tax')</th>
+                                <th>@lang('sales_bills.Discount')</th>
                                 <th>@lang('sales_bills.The amount does not include tax')</th>
                                 <th>@lang('sales_bills.Quantity')</th>
                                 <th>@lang('sales_bills.unit price')</th>
@@ -471,67 +546,63 @@
 
                         </thead>
                         <tbody style="font-size: 14px !important;">
-                            <?php
-                            $extras = $sale_bill->extras;
-                            if (!$elements->isEmpty()) {
-                                $i = 0;
-                                foreach ($elements as $element) {
-                                    #--PRODUCT TAX--#
-                                    if ($company->tax_value_added && $company->tax_value_added != 0) {
-                                        $ProdTax = $sale_bill->value_added_tax ? round($element->quantity_price - ($element->quantity_price * 20) / 23, 2) : round(($element->quantity_price * 15) / 100, 2);
-                                    } else {
+                            @php
+                                $extras = $sale_bill->extras;
+
+                            @endphp
+
+                            @if (!$elements->isEmpty())
+                                @php $i = 0; @endphp
+                                @foreach ($elements as $element)
+                                    @php
+                                        $elementDiscount =
+                                            $element->discount_type == 'percent'
+                                                ? ($element->quantity_price * $element->discount_value) / 100
+                                                : $element->discount_value;
+                                        // Calculate Product Tax
                                         $ProdTax = 0;
-                                    }
-                                    #--PRODUCT TAX--#
+                                        if ($company->tax_value_added && $company->tax_value_added != 0) {
+                                            $ProdTax = $sale_bill->value_added_tax
+                                                ? $element->quantity_price - ($element->quantity_price * 20) / 23
+                                                : ($element->quantity_price * 15) / 100;
+                                        }
 
-                                    #--PRODUCT TOTAL--#
-                                    if ($company->tax_value_added && $company->tax_value_added != 0) {
-                                        $ProdTotal = $sale_bill->value_added_tax ? $element->quantity_price : round($element->quantity_price + ($element->quantity_price * 15) / 100, 2);
-                                    } else {
+                                        // Calculate Product Total
                                         $ProdTotal = $element->quantity_price;
-                                    }
+                                        if ($company->tax_value_added && $company->tax_value_added != 0) {
+                                            $ProdTotal = $sale_bill->value_added_tax
+                                                ? $element->quantity_price
+                                                : $element->quantity_price + ($element->quantity_price * 15) / 100;
+                                        }
+                                        $productPrice =
+                                            $element->tax_type == 0
+                                                ? $element->product_price + $element->tax_value
+                                                : $element->product_price;
+                                    @endphp
 
-                                    #--PRODUCT TOTAL--#
+                                    <tr
+                                        style="font-size: 16px !important; height: 34px !important; text-align: center; background: #f8f9fb">
+                                        <td>{{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
+                                        </td>
+                                        <td>{{ $element->product->product_model }}</td>
+                                        <td>{!! $element->product->description !!}</td>
+                                        <td>{{ $element->tax_value }}</td>
+                                        <td>{{ $element->discount_value }}{{ $element->discount_type == 'percent' ? ' %' : '' }}
+                                        </td>
+                                        <td>
+                                            {{ $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
+                                        </td>
+                                        <td class="text-center">
+                                            <span>{{ $element->quantity }}</span>
+                                            <span>{{ $element->unit->unit_name }}</span>
+                                        </td>
+                                        <td>{{ $element->product_price }}</td>
+                                        <td>{{ $element->product->product_name }}</td>
+                                        <td>{{ ++$i }}</td>
+                                    </tr>
+                                @endforeach
+                            @endif
 
-                                    echo '
-                                                                                                                                                                                                                                                            <tr style="font-size: 16px !important; height: 34px !important; text-align: center;background: #f8f9fb">
-                                                                                                                                                                                                                                                                <td>' .
-                                        $ProdTotal .
-                                        '</td>
-                                                                                                                                                                                                                                                                <td>' .
-                                        $element->product->product_model .
-                                        '</td>
-                                                                                                                                                                                                                                                                <td>' .
-                                        $element->product->description .
-                                        '</td>
-
-                                                                                                                                                                                                                                                                <td>' .
-                                        $ProdTax .
-                                        '</td>
-                                                                                                                                                                                                                                                                <td>' .
-                                        ($sale_bill->value_added_tax ? round(($element->quantity_price * 20) / 23, 2) : $element->quantity_price) .
-                                        '</td>
-                                                                                                                                                                                                                                                                <td class="text-center">
-                                                                                                                                                                                                                                                                    <span>' .
-                                        $element->quantity .
-                                        '</span>
-                                                                                                                                                                                                                                                                    <span>' .
-                                        $element->unit->unit_name .
-                                        '</span>
-                                                                                                                                                                                                                                                                </td>
-                                                                                                                                                                                                                                                                <td>' .
-                                        $element->product_price .
-                                        '</td>
-                                                                                                                                                                                                                                                                <td>' .
-                                        $element->product->product_name .
-                                        '</td>
-                                                                                                                                                                                                                                                                <td>' .
-                                        ++$i .
-                                        '</td>
-                                                                                                                                                                                                                                                            </tr>';
-                                }
-                            }
-                            ?>
 
                         </tbody>
                     </table>
@@ -540,10 +611,10 @@
             <?php
             if ($sale_bill->company_id == 20) {
                 echo "<p style='text-align: justify; direction: rtl; font-size: 12px; padding: 11px; background: #f3f3f3; margin: 2px 10px; border-radius: 6px; border: 1px solid #2d2d2d10;'>
-                                                                                                                                                                                                                                                                    <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
-                                                                                                                                                                                                                                                                    شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
-                                                                                                                                                                                                                                                                    (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
-                                                                                                                                                                                                                                                                </p>";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </p>";
             }
             ?>
             @if (app()->getLocale() == 'en')
@@ -566,14 +637,23 @@
                         style="border: 1px solid #2d2d2d1c; border-radius: 7px; overflow: hidden; box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;">
                         <table
                             style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                            @if (!empty($discount) && $discount->value > 0)
+                            @if (!empty($discount) && $discount > 0)
                                 <tr
                                     style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
 
                                     <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.Discount')</td>
                                     <td dir="rtl">
-                                        {{ $discountNote ? $discountNote . ' || ' : '' }}
-                                        ({{ round(($discountValue / $realtotal) * 100, 1) }}%) {{ $discountValue }}
+                                        <!--{{ $discountNote ? $discountNote . ' || ' : '' }}-->
+                                        <!--{{-- ({{ round(($discountValue / $realtotal) * 100, 1) }}%) --}}-->
+                                        <!--{{ $discountValue }}-->
+                                        @if ($realtotal > 0)
+                                            @if ($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
+                                                ({{ $discount2->value }})
+                                                {{ $currency }}
+                                            @elseif($discount2)
+                                                ({{ $discount2->value }}%)
+                                            @endif
+                                        @endif
 
                                     </td>
                                 </tr>
@@ -581,7 +661,17 @@
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                 <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
-                                <td dir="rtl">{{ $sumWithOutTax }} </td>
+                                <td dir="rtl"> {{-- @if ($discount->action_type == 'poundAfterTax')
+                                        @if ($realtotal > 0)
+                                            ({{ $realtotal }})
+
+                                        @endif
+                                    @else --}}
+                                    {{-- @if ($realtotal > 0) --}}
+                                    {{ number_format($sale_bill->final_total - $sale_bill->total_tax, 2) }}
+                                    {{-- @endif --}}
+
+                                    {{-- @endif --}}</td>
 
                             </tr>
 
@@ -609,13 +699,23 @@
                             </tr>
 
                             <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: {{ $printColor }};color:white;">
-                                <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
-                                @if ($company->tax_value_added && $company->tax_value_added != 0)
-                                    <td dir="rtl">{{ $sumWithTax }}</td>
-                                @else
-                                    <td dir="rtl">{{ $sumWithOutTax }}</td>
-                                @endif
+                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: {{ $currentColor }};color:white;">
+                                <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.Total including tax')</td>
+                                {{-- @if ($company->tax_value_added && $company->tax_value_added != 0) --}}
+                                {{-- @if ($discount->action_type == 'poundAfterTax') --}}
+                                <td dir="rtl">
+                                    {{ $sale_bill->final_total }}
+                                </td>
+                                {{-- @else
+                                        <td dir="rtl">
+                                            {{ $sumWithTax }}
+                                        </td>
+                                    @endif --}}
+                                {{-- @else
+                                    <td dir="rtl">
+                                        {{ $sale_bill->final_total - $sale_bill->total_tax }}
+                                    </td>
+                                @endif --}}
 
                             </tr>
                             <tr
@@ -670,7 +770,7 @@
                                 style="width:100%;border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                                 <tbody>
                                     <tr
-                                        style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 44px !important; text-align: center;background: {{ $printColor }};color:white;">
+                                        style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 44px !important; text-align: center;background: {{ $currentColor }};color:white;">
                                         <td style="text-align: left;padding-left: 14px;font-size: 14px;"
                                             colspan="2">
                                             @lang('sales_bills.Terms and Conditions')
@@ -698,12 +798,21 @@
                         style="border: 1px solid #2d2d2d1c; border-radius: 7px; overflow: hidden; box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;">
                         <table
                             style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                            @if (!empty($discount) && $discount->value > 0)
+                            @if (!empty($discount) && $discount > 0)
                                 <tr
                                     style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                     <td dir="rtl">
-                                        {{ $discountNote ? $discountNote . ' || ' : '' }}
-                                        ({{ round(($discountValue / $realtotal) * 100, 1) }}%) {{ $discountValue }}
+                                        <!--{{ $discountNote ? $discountNote . ' || ' : '' }}-->
+                                        <!--{{-- ({{ round(($discountValue / $realtotal) * 100, 1) }}%) --}}-->
+                                        <!--{{ $discountValue }}-->
+                                        @if ($realtotal > 0)
+                                            @if ($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
+                                                ({{ $discount2->value }})
+                                                {{ $currency }}
+                                            @elseif($discount2)
+                                                ({{ $discount2->value }}%)
+                                            @endif
+                                        @endif
 
                                     </td>
                                     <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Discount')</td>
@@ -711,7 +820,17 @@
                             @endif
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
-                                <td dir="rtl">{{ $sumWithOutTax }} </td>
+                                <td dir="rtl"> {{-- @if ($discount->action_type == 'poundAfterTax')
+                                        @if ($realtotal > 0)
+                                            ({{ $realtotal }})
+
+                                        @endif
+                                    @else --}}
+                                    {{-- @if ($realtotal > 0) --}}
+                                    {{ number_format($sale_bill->final_total - $sale_bill->total_tax, 2) }}
+                                    {{-- @endif --}}
+
+                                    {{-- @endif --}} </td>
                                 <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
                             </tr>
 
@@ -737,12 +856,22 @@
                             </tr>
 
                             <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: {{ $printColor }};color:white;">
-                                @if ($company->tax_value_added && $company->tax_value_added != 0)
-                                    <td dir="rtl">{{ $sumWithTax }}</td>
-                                @else
-                                    <td dir="rtl">{{ $sumWithOutTax }}</td>
-                                @endif
+                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: {{ $currentColor }};color:white;">
+                                {{-- @if ($company->tax_value_added && $company->tax_value_added != 0) --}}
+                                {{-- @if ($discount->action_type == 'poundAfterTax') --}}
+                                <td dir="rtl">
+                                    {{ $sale_bill->final_total }}
+                                </td>
+                                {{-- @else
+                                        <td dir="rtl">
+                                            {{ $sumWithTax }}
+                                        </td>
+                                    @endif --}}
+                                {{-- @else
+                                    <td dir="rtl">
+                                        {{ $sale_bill->final_total - $sale_bill->total_tax }}
+                                    </td>
+                                @endif --}}
                                 <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total including tax')</td>
                             </tr>
                             <tr
@@ -812,7 +941,7 @@
                             style="width:100%;border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                             <tbody>
                                 <tr
-                                    style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 44px !important; text-align: center;background: {{ $printColor }};color:white;">
+                                    style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 44px !important; text-align: center;background: {{ $currentColor }};color:white;">
                                     <td style="text-align: right;padding-right: 14px;font-size: 14px;" colspan="2">
                                         @lang('sales_bills.Terms and Conditions')
                                     </td>
@@ -847,8 +976,8 @@
 <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
 <script>
     function sendToWhatsApp() {
-        const clientPhone = '{{ $sale_bill->outerClient->phones[0]->client_phone ?? '-'}}';
-        const invoiceUrl = '{{ route('client.sale_bills.sent', [$sale_bill->token,4,2,0]) }}';
+        const clientPhone = '{{ $sale_bill->outerClient->phones[0]->client_phone ?? '-' }}';
+        const invoiceUrl = '{{ route('client.sale_bills.sent', [$sale_bill->token, 4, 2, 0]) }}';
         const message = `Please check your invoice at the following link: ${invoiceUrl}`;
         const whatsappUrl = `https://wa.me/${clientPhone}?text=${encodeURIComponent(message)}`;
         setTimeout(() => {

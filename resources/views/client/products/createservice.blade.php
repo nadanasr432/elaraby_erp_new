@@ -140,8 +140,8 @@
                                 <label for="product_name_en">
                                     {{ __('products.pname_en') }}
                                 </label>
-                                <input type="text" name="product_name_en"
-                                    placeholder="{{ __('products.pname_en') }}" class="form-control" >
+                                <input type="text" name="product_name_en" placeholder="{{ __('products.pname_en') }}"
+                                    class="form-control">
                             </div>
                             <!---------------------->
 
@@ -214,8 +214,7 @@
                                     <!--<span class="text-danger font-weight-bold">*</span>-->
                                 </label>
                                 <input type="number" step="0.01" required value="0" name="sector_price"
-                                    placeholder="{{ __('products.sectorprice') }}" id="sector_price"
-                                    class="form-control">
+                                    placeholder="{{ __('products.sectorprice') }}" id="sector_price" class="form-control">
                             </div>
                             <!-------------------->
 
@@ -319,9 +318,22 @@
             </ul>
         </div>
     @endif
-
     <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/38.0.1/classic/ckeditor.js"></script>
     <script>
+        ClassicEditor.create(document.querySelector('#description'), {
+                language: 'ar',
+                toolbar: [
+                    'heading', 'bold', 'italic', 'underline', 'strikethrough', '|',
+                    'link', 'bulletedList', 'numberedList', 'blockQuote', '|',
+                    'insertTable', 'tableColumn', 'tableRow', 'mergeTableCells', '|',
+                    'undo', 'redo', 'alignment', 'fontColor', 'fontBackgroundColor', '|',
+                    'mediaEmbed', 'imageUpload', 'codeBlock'
+                ], // Set language to Arabic for RTL support
+            })
+            .catch(error => {
+                console.error(error);
+            });
         $("#selectForm2").submit(function(e) {
             e.preventDefault();
 

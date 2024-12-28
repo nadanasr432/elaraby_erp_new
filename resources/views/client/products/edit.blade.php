@@ -311,8 +311,22 @@
     </div>
 
 
-    <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>    <script src="https://cdn.ckeditor.com/ckeditor5/38.0.1/classic/ckeditor.js"></script>
+
     <script>
+         ClassicEditor.create(document.querySelector('#description'), {
+                language: 'ar',
+                toolbar: [
+                    'heading', 'bold', 'italic', 'underline', 'strikethrough', '|',
+                    'link', 'bulletedList', 'numberedList', 'blockQuote', '|',
+                    'insertTable', 'tableColumn', 'tableRow', 'mergeTableCells', '|',
+                    'undo', 'redo', 'alignment', 'fontColor', 'fontBackgroundColor', '|',
+                    'mediaEmbed', 'imageUpload', 'codeBlock'
+                ], // Set language to Arabic for RTL support
+            })
+            .catch(error => {
+                console.error(error);
+            });
         $("#selectForm2").submit(function(e) {
             e.preventDefault();
 
