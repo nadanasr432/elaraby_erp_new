@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Category;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -28,7 +29,7 @@ class ProductRequest extends FormRequest
             "sub_category_id" => 'nullable',
             "product_model" => 'nullable',
             "product_name" => 'required',
-            "product_name_en"=>'nullable',
+            "product_name_en" => 'nullable',
             "unit_id" => 'nullable',
             'code_universal' => [
                 'nullable',
@@ -44,6 +45,22 @@ class ProductRequest extends FormRequest
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'product_pic' => 'nullable|image|mimes:jpg,jpeg,png',
+            'first_balance' => [
+                'nullable', // Allow it to be null by default
+                function ($attribute, $value, $fail) {
+                    // Get category_id from input
+                    $categoryId = $this->input('category_id');
+
+                    // Retrieve the category name based on category_id
+                    $category = Category::find($categoryId);
+
+                    if ($category && $category->name === 'مخزونية' && $value > 0) {
+                        if (empty($value)) {
+                            $fail('The first_balance field is required when category is مخزونية and value is greater than 0.');
+                        }
+                    }
+                },
+            ],
         ];
     }
 }

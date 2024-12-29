@@ -189,4 +189,6 @@ return [
     "Status"=> "Status",
     "New sales"=> "New sales",
     "edit or return"=> "edit or return",
+    "start_date"=> "Start date",
+
 ];

@@ -220,6 +220,7 @@ return [
     "Manufacture"=> "قائمة التصنيع",
     "New sales"=> "المبيعات الجديدة",
     "edit or return"=>"تعديل او استرجاع",
+    "start_date"=>"تاريخ البداية",
 
 
 ];

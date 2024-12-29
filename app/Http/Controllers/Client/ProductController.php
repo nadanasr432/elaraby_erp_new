@@ -32,7 +32,7 @@ class ProductController extends Controller
                     ->orWhereNull('first_balance');
             })
             ->get();
-            
+
 
         $purchase_prices = [];
         $balances = [];
@@ -97,6 +97,9 @@ class ProductController extends Controller
         $categories = Category::where('company_id', $company_id)->get();
         $sub_categories = SubCategory::where('company_id', $company_id)->get();
         $units = $company->units;
+        $products = Product::where('company_id', $company_id)->whereHas('category', function ($query) {
+            $query->where('category_type', 'مخزونية');
+        })->get();
         $check = Product::where('company_id', $company_id)->get();
         if ($check->isEmpty()) {
             $code_universal = "100000001";
@@ -109,7 +112,7 @@ class ProductController extends Controller
 
         return view(
             'client.products.create',
-            compact('company_id', 'units', 'sub_categories', 'code_universal', 'categories', 'stores', 'company')
+            compact('company_id', 'units', 'sub_categories', 'code_universal', 'categories', 'stores', 'company','products')
         );
     }
 

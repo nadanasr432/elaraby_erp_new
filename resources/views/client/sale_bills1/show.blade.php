@@ -56,47 +56,48 @@
     </h6>
 
 
-    {{-- Table --}}
-    <table class="table table-condensed table-striped table-bordered">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>اسم المنتج</th>
-                <th>سعر الوحدة</th>
-                <th>الكمية</th>
-                <th>الاجمالى</th>
-                <th>الخصم</th>
-                <th>الضريبة</th>
-            </tr>
-        </thead>
-        <tbody>
-            @php
-                $i = 0;
-                $sum = [];
-            @endphp
-
-            @foreach ($saleBill->elements as $element)
-                @php
-                    $sum[] =
-                        $element->tax_type == 2
-                            ? $element->quantity_price - $element->tax_value
-                            : $element->quantity_price;
-                @endphp
+    <div class="table-responsive">
+        <table class="table table-condensed table-striped table-bordered">
+            <thead>
                 <tr>
-                    <td>{{ ++$i }}</td>
-                    <td>{{ $element->product->product_name }}</td>
-                    <td>{{ $element->product_price }}</td>
-                    <td>
-                        {{ !empty($element->unit_id) ? $element->quantity . ' ' . $element->unit->unit_name : $element->quantity }}
-                    </td>
-                    <td> {{ $element->tax_type == 1 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
-                    </td>
-                   <td>{{ $element->discount_value }}{{ $element->discount_type == "percent" ? ' %' : '' }}</td>
-                    <td>{{ $element->tax_value }}</td>
+                    <th>#</th>
+                    <th>اسم المنتج</th>
+                    <th>سعر الوحدة</th>
+                    <th>الكمية</th>
+                    <th>الاجمالى</th>
+                    <th>الخصم</th>
+                    <th>الضريبة</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @php
+                    $i = 0;
+                    $sum = [];
+                @endphp
+
+                @foreach ($saleBill->elements as $element)
+                    @php
+                        $sum[] =
+                            $element->tax_type == 2
+                                ? $element->quantity_price - $element->tax_value
+                                : $element->quantity_price;
+                    @endphp
+                    <tr>
+                        <td>{{ ++$i }}</td>
+                        <td>{{ $element->product->product_name }}</td>
+                        <td>{{ $element->product_price }}</td>
+                        <td>
+                            {{ !empty($element->unit_id) ? $element->quantity . ' ' . $element->unit->unit_name : $element->quantity }}
+                        </td>
+                        <td> {{ $element->tax_type == 1 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
+                        </td>
+                        <td>{{ $element->discount_value }}{{ $element->discount_type == 'percent' ? ' %' : '' }}</td>
+                        <td>{{ $element->tax_value }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 
     {{-- Calculations --}}
     @php
@@ -135,12 +136,8 @@
     <div class="col-lg-12 no-print text-center"
         style="padding-top: 25px;height: auto !important;display: flex;justify-content: start;overflow-x: auto">
 
-          <button type="button"
-            @if (($saleBill->final_total - $saleBill->paid) <= 0) disabled @endif
-            data-toggle="modal"
-            data-target="#myModal2"
-            class="btn btn-md btn-dark pay_btn float-right pr-3 pl-3 d-flex align-items-center"
-            style="height: 40px;">
+        <button type="button" @if ($saleBill->final_total - $saleBill->paid <= 0) disabled @endif data-toggle="modal" data-target="#myModal2"
+            class="btn btn-md btn-dark pay_btn float-right pr-3 pl-3 d-flex align-items-center" style="height: 40px;">
             <i class="fa fa-money"></i>
             <span class="d-none d-sm-inline"> {{ __('main.record') }} </span>
         </button>
@@ -170,45 +167,49 @@
         <!------PRINT MAIN INVOICE---->
         <a class="btn btn-md btn-info text-white pull-right ml-1" role="button"
             href="{{ route('client.sale_bills.print', $saleBill->token) }}" style="height: 40px;">
-             طباعة 1
+            طباعة 1
         </a>
 
         <!------PRINT 1---->
         <a href="{{ route('client.sale_bills.print', [$saleBill->token, 2, 1, 0]) }}" class="btn btn-md pull-right ml-1"
             style="height: 40px;border:1px solid #085d4a;background: #085d4a !important;color:white !important;">
-             طباعة 2
+            طباعة 2
         </a>
         <!------PRINT 2---->
-       <a href="{{ route('client.sale_bills.print', [$saleBill->token, 4,1, 0]) }}"
-          class="btn btn-md btn-primary pull-right ml-1" style="height: 40px;border:1px solid #5e8b0b;background: #5e8b0b !important;color:white !important;"  printColor="2"  isMoswada="0" invoiceType='4'>
-             طباعة 3
+        <a href="{{ route('client.sale_bills.print', [$saleBill->token, 4, 1, 0]) }}"
+            class="btn btn-md btn-primary pull-right ml-1"
+            style="height: 40px;border:1px solid #5e8b0b;background: #5e8b0b !important;color:white !important;"
+            printColor="2" isMoswada="0" invoiceType='4'>
+            طباعة 3
         </a>
         <!------PRINT 2---->
 
         <a href="{{ route('client.sale_bills.print', [$saleBill->token, 5, 2, 0]) }}" role="button"
             style="height: 40px;border:1px solid #0bb3b3!important;background: #0bb3b3 !important ;color:white !important;"
             class="btn save_btn5 btn-md btn-primary pull-right ml-1">
-             طباعة 4
+            طباعة 4
         </a>
 
         <a href="{{ route('client.sale_bills.print', [$saleBill->token, 2, 3, 0]) }}" style="height: 40px;"
             class="btn btn-md btn-primary pull-right ml-1">
-             طباعة 5
+            طباعة 5
 
         </a>
-         <a href="{{route('client.sale_bills.print', [$saleBill->token,6,3,0])}}" role="button" style="height: 40px;border:1px solid #0b228b;background: #0b228b !important;color:white !important;" class="btn  btn-md btn-primary pull-right ml-1
+        <a href="{{ route('client.sale_bills.print', [$saleBill->token, 6, 3, 0]) }}" role="button"
+            style="height: 40px;border:1px solid #0b228b;background: #0b228b !important;color:white !important;"
+            class="btn  btn-md btn-primary pull-right ml-1
             " printColor="2" isMoswada="0" invoiceType='6'>
-             طباعة 6
+            طباعة 6
         </a>
-        <a href="{{ route('client.sale_bills.print', [$saleBill->token,7,3,0]) }}" role="button"
+        <a href="{{ route('client.sale_bills.print', [$saleBill->token, 7, 3, 0]) }}" role="button"
             style="height: 40px;border:1px solid #9b4aad !important ;background: #9b4aad !important;color:white !important;"
-            class="btn  btn-md btn-primary pull-right ml-1" printColor="2"  isMoswada="0" invoiceType='7'>
-             طباعة 7
+            class="btn  btn-md btn-primary pull-right ml-1" printColor="2" isMoswada="0" invoiceType='7'>
+            طباعة 7
         </a>
-         <a href="{{ route('client.sale_bills.print', [$saleBill->token, 8, 3, 0]) }}" role="button"
+        <a href="{{ route('client.sale_bills.print', [$saleBill->token, 8, 3, 0]) }}" role="button"
             style="height: 40px;border:1px solid #3d121264 !important ;background: #3d121264 !important;color:white !important;"
             class="btn  btn-md btn-primary pull-right ml-1" printColor="2" isMoswada="0" invoiceType='8'>
-             طباعة 8
+            طباعة 8
         </a>
 
         <!------FATOORAH MOSWADA---->
@@ -244,7 +245,7 @@
                         <div class="col-md-4">
                             <label> المبلغ المدفوع <span class="text-danger">*</span></label>
                             <input required class="form-control" name="amount" id="amount" type="text"
-                                value="{{   $saleBill->final_total - $saleBill->paid }}" dir="ltr">
+                                value="{{ $saleBill->final_total - $saleBill->paid }}" dir="ltr">
                         </div>
                         <div class="col-md-4">
                             <label> طريقة الدفع <span class="text-danger">*</span></label>
