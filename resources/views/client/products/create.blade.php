@@ -270,6 +270,13 @@
                                 <select class="selectpicker" data-style="btn-success" data-live-search="true"
                                     id="productSearch">
                                     <option value="" disabled selected>{{ __('Search Products') }}</option>
+                                    @foreach ($products as $product)
+                                        <option value="{{ $product->id }}"
+                                            data-product-name="{{ $product->product_name }}"
+                                            data-product-cost="{{ $product->purchasing_price ?? 0 }}"
+                                            data-product-qty="1">
+                                            {{ $product->product_name }} </option>
+                                    @endforeach
                                 </select>
                             </div>
                             <!-- Add this div for the checkbox -->
@@ -473,29 +480,29 @@
             function performSearch() {
                 var query = $('#productSearch').val();
 
-                $.ajax({
-                    url: '{{ route('client.products.search') }}',
-                    method: 'GET',
-                    data: {
-                        query: query
-                    },
-                    dataType: 'json',
-                    success: function(data) {
-                        var searchResults =
-                            '<option value="" disabled selected>{{ __('Search Products') }}</option>';
-                        $.each(data, function(index, product) {
-                            searchResults += '<option value="' + product.id +
-                                '" data-product-name="' + product.product_name +
-                                '" data-product-cost="' + product.purchasing_price +
-                                '" data-product-qty="' + product.first_balance + '">' + product
-                                .product_name + '</option>';
-                        });
-                        $('#productSearch').html(searchResults).selectpicker('refresh');
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                    }
-                });
+                // $.ajax({
+                //     url: '{{ route('client.products.search') }}',
+                //     method: 'GET',
+                //     data: {
+                //         query: query
+                //     },
+                //     dataType: 'json',
+                //     success: function(data) {
+                //         var searchResults =
+                //             '<option value="" disabled selected>{{ __('Search Products') }}</option>';
+                //         $.each(data, function(index, product) {
+                //             searchResults += '<option value="' + product.id +
+                //                 '" data-product-name="' + product.product_name +
+                //                 '" data-product-cost="' + product.purchasing_price +
+                //                 '" data-product-qty="' + product.first_balance + '">' + product
+                //                 .product_name + '</option>';
+                //         });
+                //         $('#productSearch').html(searchResults).selectpicker('refresh');
+                //     },
+                //     error: function(xhr, status, error) {
+                //         console.error(xhr.responseText);
+                //     }
+                // });
             }
 
             $('#mySwitch').change(function() {
