@@ -22,6 +22,11 @@
             font-family: 'Cairo';
             src: url({{ asset('fonts/Cairo.ttf') }});
         }
+        
+        .borderLeftH {
+            border-left: 1px solid rgba(229, 229, 229, 0.94) !important;
+        }
+
 
         .invoice-container {
             width: 80%;
@@ -446,7 +451,7 @@
             @if (app()->getLocale() == 'en')
                 <div class="products-details mt-2" style=" padding: 0px 16px;">
                     <table
-                        style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+                        style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px !important;">
                         <thead>
                             <tr
                                 style="font-size: 16px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
@@ -499,22 +504,22 @@
 
                                     <tr
                                         style="font-size: 16px !important; height: 34px !important; text-align: center; background: #f8f9fb">
-                                        <td>{{ ++$i }}</td>
-                                        <td>{{ $element->product->product_name }}</td>
-                                        <td>{{ $element->product_price }}</td>
-                                        <td class="text-center">
+                                        <td class="borderLeftH">{{ ++$i }}</td>
+                                        <td class="borderLeftH">{{ $element->product->product_name }}</td>
+                                        <td class="borderLeftH">{{ $element->product_price }}</td>
+                                        <td class="borderLeftH text-center">
                                             <span>{{ $element->quantity }}</span>
                                             <span>{{ $element->unit->unit_name }}</span>
                                         </td>
-                                        <td>
+                                        <td class="borderLeftH">
                                             {{ $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
                                         </td>
-                                        <td>{{ $element->tax_value }}</td>
+                                        <td class="borderLeftH">{{ $element->tax_value }}</td>
                                         <td>{{ $element->discount_value }}{{ $element->discount_type == 'percent' ? ' %' : '' }}
                                         </td>
-                                        <td>{!! $element->product->description !!}</td>
-                                        <td>{{ $element->product->product_model }}</td>
-                                        <td>{{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
+                                        <td class="borderLeftH d-flex justify-content-center"><div class="text-center" style="text-align: start !important;">{!! $element->product->description !!}</div></td>
+                                        <td class="borderLeftH">{{ $element->product->product_model }}</td>
+                                        <td class="borderLeftH">{{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
                                         </td>
                                     </tr>
                                 @endforeach
@@ -582,23 +587,23 @@
 
                                     <tr
                                         style="font-size: 16px !important; height: 34px !important; text-align: center; background: #f8f9fb">
-                                        <td>{{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
+                                        <td class="borderLeftH">{{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
                                         </td>
-                                        <td>{{ $element->product->product_model }}</td>
-                                        <td>{!! $element->product->description !!}</td>
-                                        <td>{{ $element->tax_value }}</td>
-                                        <td>{{ $element->discount_value }}{{ $element->discount_type == 'percent' ? ' %' : '' }}
+                                        <td class="borderLeftH">{{ $element->product->product_model }}</td>
+                                        <td class="borderLeftH d-flex justify-content-center"><div class="text-center" style="text-align: start !important;">{!! $element->product->description !!}</div></td>
+                                        <td class="borderLeftH">{{ $element->tax_value }}</td>
+                                        <td class="borderLeftH">{{ $element->discount_value }}{{ $element->discount_type == 'percent' ? ' %' : '' }}
                                         </td>
-                                        <td>
+                                        <td class="borderLeftH">
                                             {{ $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
                                         </td>
-                                        <td class="text-center">
+                                        <td class="borderLeftH text-center">
                                             <span>{{ $element->quantity }}</span>
                                             <span>{{ $element->unit->unit_name }}</span>
                                         </td>
-                                        <td>{{ $element->product_price }}</td>
-                                        <td>{{ $element->product->product_name }}</td>
-                                        <td>{{ ++$i }}</td>
+                                        <td class="borderLeftH">{{ $element->product_price }}</td>
+                                        <td class="borderLeftH">{{ $element->product->product_name }}</td>
+                                        <td class="borderLeftH">{{ ++$i }}</td>
                                     </tr>
                                 @endforeach
                             @endif

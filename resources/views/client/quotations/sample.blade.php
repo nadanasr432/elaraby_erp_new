@@ -295,7 +295,7 @@
                                     {{ $product->product_price }} 
                                 </td>
                                 <td class="borderLeftH" style="direction: rtl; unicode-bidi: embed;">
-                                    {{ $product->product->description }}
+                                   <div class="text-center" style="text-align: start !important;">{!! $product->product->description !!}</div>
                                 </td>
 
                                 <td class="borderLeftH">{{ $product->product->product_name }}</td>
