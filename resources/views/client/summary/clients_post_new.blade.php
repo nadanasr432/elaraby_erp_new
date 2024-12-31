@@ -431,9 +431,6 @@ $currency = $extra_settings->currency;
                                         ->orderBy('id')
                                         ->pluck('id')
                                         ->toArray();
-
-                                    $saleBills = $outer_client_k->saleBills->where('status', 'done');
-
                                     $globalIndexMap = array_flip($allSaleBills); // ID => Position
                                     ?>
                                     @foreach ($saleBills as $index => $sale_bill)

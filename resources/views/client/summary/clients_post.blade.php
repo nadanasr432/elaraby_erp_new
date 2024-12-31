@@ -427,7 +427,6 @@ $currency = $extra_settings->currency;
                                         ->pluck('id')
                                         ->toArray();
                                     
-                                    $saleBills = $outer_client_k->saleBills->where('status', 'done');
                                     
                                     $globalIndexMap = array_flip($allSaleBills); // ID => Position
                                     ?>
