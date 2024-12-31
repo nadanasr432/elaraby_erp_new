@@ -345,6 +345,11 @@ $currency = $extra_settings->currency;
                                                     <?php $sum = $sum + $element->quantity_price; ?>
                                                 @endforeach
                                                 <?php
+                                                $quotation_discount_value = 0;
+                                                $quotation_extra_value = 0;
+                                                $quotation_discount_type = 'pound';
+                                                $quotation_extra_type = 'pound';
+
                                                 $extras = $quotation->extras;
                                                 foreach ($extras as $key) {
                                                     if ($key->action == 'discount') {
