@@ -47,6 +47,13 @@ class SummaryController extends Controller
         $outer_clients = $company->outerClients;
         return view('client.summary.clients_new', compact('company', 'company_id', 'outer_clients'));
     }
+    public function get_clients_summary_new3()
+    {
+        $company_id = Auth::user()->company_id;
+        $company = Company::FindOrFail($company_id);
+        $outer_clients = $company->outerClients;
+        return view('client.summary.clients_new3', compact('company', 'company_id', 'outer_clients'));
+    }
 
     public function post_clients_summary(ClientsSummaryRequest $request)
     {
@@ -96,7 +103,9 @@ class SummaryController extends Controller
                     ->get();
 
                 $saleBills = SaleBill::where('status', 'done')->where('outer_client_id', $outer_client_id)
-                    ->whereBetween('date', [$from_date->startOfDay(), $to_date->endOfDay()])->get();
+                     ->whereDate('date', '>=', $from_date->startOfDay())
+                     ->whereDate('date', '<=', $to_date->endOfDay())->get();
+                    //  dd($saleBills);
                 $cashs = Cash::where('outer_client_id', $outer_client_id)
                     ->where('amount', '>', 0)
                     ->whereDate('created_at', '>=', $from_date)
@@ -255,7 +264,115 @@ class SummaryController extends Controller
             'bonds'
         ));
     }
+ public function post_clients_summary_new3(ClientsSummaryRequest $request)
+    {
+        // Initialize variables
+        $outer_client_id = $request->outer_client_id;
+        $from_date = $request->from_date ? Carbon::parse($request->from_date) : null;
+        $to_date = $request->to_date ? Carbon::parse($request->to_date) : null;
+        $submit = $request->submit;
+        $today = Carbon::today();
 
+        // Find the client
+        $outer_client_k = OuterClient::FindOrFail($outer_client_id);
+
+        // Initialize collections
+        $gifts = collect();
+        $quotations = collect();
+        $bonds = collect();
+        $saleBills = collect();
+        $cashs = collect();
+        $borrows = collect();
+        $bankcashs = collect();
+        $returns = collect();
+
+        // Determine the type of summary
+        if ($submit === "all") {
+            // Summary for all data
+            if (is_null($from_date) && is_null($to_date)) {
+                // No date filters
+                $gifts = $outer_client_k->gifts;
+                $quotations = $outer_client_k->quotations;
+                $bonds = Bondclient::where('client', $outer_client_k->client_name)->get();
+
+                $saleBills = $outer_client_k->saleBills->where('status', 'done');
+                $cashs = Cash::where('outer_client_id', $outer_client_id)->where('amount', '>', 0)->get();
+                $borrows = Cash::where('outer_client_id', $outer_client_id)->where('amount', '<', 0)->get();
+                $bankcashs = $outer_client_k->bankcashs;
+                $returns = $outer_client_k->saleBillReturns;
+            } else {
+                // With date filters
+                $gifts = Gift::where('outer_client_id', $outer_client_id)
+                    ->whereDate('created_at', '>=', $from_date)->whereDate('created_at', '<=', $to_date)->get();
+                $quotations = Quotation::where('outer_client_id', $outer_client_id)
+                    ->whereDate('created_at', '>=', $from_date)->whereDate('created_at', '<=', $to_date)->get();
+                $bonds = Bondclient::where('client', $outer_client_k->client_name)
+                    ->whereDate('created_at', '>=', $from_date)
+                    ->whereDate('created_at', '<=', $to_date)
+                    ->get();
+
+                $saleBills = SaleBill::where('status', 'done')->where('outer_client_id', $outer_client_id)
+                    ->whereBetween('date', [$from_date->startOfDay(), $to_date->endOfDay()])->get();
+                $cashs = Cash::where('outer_client_id', $outer_client_id)
+                    ->where('amount', '>', 0)
+                    ->whereDate('created_at', '>=', $from_date)
+                    ->whereDate('created_at', '<=', $to_date)->get();
+                $borrows = Cash::where('outer_client_id', $outer_client_id)
+                    ->where('amount', '<', 0)
+                    ->whereDate('created_at', '>=', $from_date)->whereDate('created_at', '<=', $to_date)->get();
+                $bankcashs = BankCash::where('outer_client_id', $outer_client_id)
+                    ->whereDate('created_at', '>=', $from_date)->whereDate('created_at', '<=', $to_date)->get();
+                $returns = SaleBillReturn::where('outer_client_id', $outer_client_id)
+                    ->whereDate('created_at', '>=', $from_date)->whereDate('created_at', '<=', $to_date)->get();
+            }
+        } elseif ($submit === "today") {
+            // Summary for today
+            $gifts = Gift::where('outer_client_id', $outer_client_id)
+                ->whereDate('created_at', $today)->get();
+            $quotations = Quotation::where('outer_client_id', $outer_client_id)
+                ->whereDate('created_at', $today)->get();
+            $saleBills = SaleBill::where('outer_client_id', $outer_client_id)
+                ->whereDate('created_at', $today)->get();
+            $cashs = Cash::where('outer_client_id', $outer_client_id)
+                ->where('amount', '>', 0)
+                ->whereDate('created_at', $today)->get();
+            $borrows = Cash::where('outer_client_id', $outer_client_id)
+                ->where('amount', '<', 0)
+                ->whereDate('created_at', $today)->get();
+            $bankcashs = BankCash::where('outer_client_id', $outer_client_id)
+                ->whereDate('created_at', $today)->get();
+            $returns = SaleBillReturn::where('outer_client_id', $outer_client_id)
+                ->whereDate('created_at', $today)->get();
+            $bonds = Bondclient::where('client', $outer_client_k->client_name)
+                ->whereDate('created_at', $today)->get();
+        }
+        $sale_bills_done = SaleBill::where('company_id', $outer_client_k->company_id)
+            ->where('status', 'done')
+            ->orderBy('created_at', 'asc')
+            ->get();
+        // dd($sale_bills_done->pluck('id'),$outer_client_k->company_id, $outer_client_k->id);
+        foreach ($sale_bills_done as $saleBill) {
+            $position = $sale_bills_done->search(function ($item) use ($saleBill) {
+                return $item->id === $saleBill->id;
+            }) + 1; // +1 to make it 1-based index
+            $saleBill->sale_bill_number = $position;
+            $saleBill->save();
+        }
+        // Return the view with the gathered data
+        return view('client.summary.clients_post_new3', compact(
+            'returns',
+            'from_date',
+            'to_date',
+            'outer_client_k',
+            'gifts',
+            'quotations',
+            'saleBills',
+            'cashs',
+            'bankcashs',
+            'borrows',
+            'bonds'
+        ));
+    }
     public function get_suppliers_summary()
     {
         $company_id = Auth::user()->company_id;

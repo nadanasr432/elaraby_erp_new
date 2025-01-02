@@ -111,16 +111,22 @@
                                 تقارير كشف الحساب
                             </div>
                             <div class="box-body">
-                                {{-- <li class="custom">
+                                - <li class="custom">
                                     <a href="{{ url('/client/clients-summary-get') }}"><i
                                             class="fa fa-plus text-success tx-20"></i>
-                                        كشف حساب عميل
+                                        كشف حساب عميل 1
                                     </a>
-                                </li> --}}
+                                </li>
                                 <li class="custom">
                                     <a href="{{ url('/client/clients-summary-get-new') }}"><i
                                             class="fa fa-plus text-success tx-20"></i>
-                                      كشف حساب عميل  (معدل) 
+                                      كشف حساب عميل 2
+                                    </a>
+                                </li>
+                                <li class="custom">
+                                    <a href="{{ url('/client/clients-summary-get-new3') }}"><i
+                                            class="fa fa-plus text-success tx-20"></i>
+                                      كشف حساب عميل 3
                                     </a>
                                 </li>
                                 <li class="custom">
