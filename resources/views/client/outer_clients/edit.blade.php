@@ -99,7 +99,7 @@
                                     name="balance" /> عليه
 
                                 <input required value="{{ abs((float)$outer_client->prev_balance) }}" type="number"
-                                  name="prev_balance" class="form-control" dir="ltr" />
+                                  name="prev_balance" disabled class="form-control" dir="ltr" />
 
                             </div>
                             <div class="form-group pull-right col-lg-6" dir="ltr">
