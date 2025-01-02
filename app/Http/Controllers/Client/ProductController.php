@@ -55,6 +55,53 @@ class ProductController extends Controller
 
         return view('client.products.index', compact('company', 'total_balances', 'total_purchase_prices', 'company_id', 'products'));
     }
+    public function deleted_products()
+    {
+        $company_id = Auth::user()->company_id;
+
+        // Validate that the company exists
+        $company = Company::findOrFail($company_id);
+
+        // Fetch products explicitly tied to the company
+        $products = Product::where('company_id', $company_id)->onlyTrashed()
+            ->where(function ($query) {
+                $query->where('first_balance', '>', 0)
+                    ->orWhereNull('first_balance');
+            })
+            ->get();
+
+
+        $purchase_prices = [];
+        $balances = [];
+
+        foreach ($products as $product) {
+            $product_price = $product->purchasing_price;
+            $product_balance = $product->first_balance;
+
+            array_push($balances, $product_balance);
+
+            // Calculate only if both are integers
+            if (is_numeric($product_balance) && is_numeric($product_price)) {
+                $total_price = $product_price * $product_balance;
+                array_push($purchase_prices, $total_price);
+            }
+        }
+
+        $total_purchase_prices = array_sum($purchase_prices);
+        $total_balances = array_sum($balances);
+
+        return view('client.products.deleted_products', compact('company', 'total_balances', 'total_purchase_prices', 'company_id', 'products'));
+    }
+    public function restore(Request $request)
+    {
+        $request->validate([
+            'productid' => 'required|exists:products,id',
+        ]);
+        $product = Product::withTrashed()->findOrFail($request->productid);
+        $product->restore();
+        return back()
+        ->with('success', 'تم استرجاع المنتج بنجاح');
+    }
 
     public function createservice()
     {
@@ -257,11 +304,12 @@ class ProductController extends Controller
 
     public function destroy(Request $request)
     {
-        $product = Product::FindOrFail($request->productid);
-        $product->delete();
+        $product = Product::findOrFail($request->productid);
+        $product->delete(); // Now performs a soft delete
         return redirect()->route('client.products.index')
-            ->with('success', 'تم حذف المنتج بنجاح');
+        ->with('success', 'تم حذف المنتج بنجاح');
     }
+
     public function print()
     {
         $company_id = Auth::user()->company_id;

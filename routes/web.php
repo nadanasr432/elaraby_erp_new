@@ -405,6 +405,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             // routes/web.php
             Route::get('/client/products/search', [ProductController::class, 'search'])->name('client.products.search');
             Route::get('/client/products-expires', [ProductController::class, 'products_expires'])->name('client.products.expires');
+            Route::get('/client/products-deleted', [ProductController::class, 'deleted_products'])->name('client.products.deleted');
+            Route::post('/client/products/restore', [ProductController::class, 'restore'])->name('products.restore');
 
             Route::resource('products', ProductController::class)->names([
                 'index' => 'client.products.index',

@@ -60,5 +60,6 @@ return [
     'mana' => 'Man',
     'mana' => 'Man',
     'addnewproductseveces' => 'Add new product service',
-    'pname_en'=>"Product name (English)"
+    'pname_en'=>"Product name (English)",
+    "restore"=> "Restore"
 ];
