@@ -22,6 +22,9 @@
             vertical-align: middle !important;
 
         }
+        .btn {
+            font-size:1.2rem !important;
+        }
 
         .text-container {
             text-decoration: underline !important;
@@ -257,9 +260,9 @@
 
 <body>
     <div class="text-center" id="buttons">
-        <button class="btn btn-sm btn-success" onclick="window.print()">@lang('sales_bills.Print the invoice')</button>
-        <a class="btn btn-sm btn-danger" href="{{ route('client.sale_bills.create1') }}">@lang('sales_bills.back') </a>
-        <button class="btn btn-sm btn-success" dir="ltr" onclick="sendToWhatsApp()">
+        <button class="btn  btn-success" onclick="window.print()">@lang('sales_bills.Print the invoice')</button>
+        <a class="btn  btn-danger" href="{{ route('client.sale_bills.create1') }}">@lang('sales_bills.back') </a>
+        <button class="btn  btn-success" dir="ltr" onclick="sendToWhatsApp()">
             <i class="fa fa-whatsapp"></i>
             @lang('sales_bills.Send to whatsapp')
         </button>

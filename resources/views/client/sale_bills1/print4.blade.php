@@ -14,7 +14,6 @@
             <?php echo 'فاتورة بيع نقدى' . ' - فاتورة رقم ' . $sale_bill->company_counter; ?>
         @endif
     </title>
-    <meta charset="utf-8" />
     <link href="{{ asset('/assets/css/bootstrap.min.css') }}" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -23,6 +22,13 @@
             font-family: 'Cairo';
             src: url({{ asset('fonts/Cairo.ttf') }});
         }
+        .btn {
+            font-size:1.2rem !important;
+        }
+        .borderLeftH {
+            border-left: 1px solid rgba(229, 229, 229, 0.94) !important;
+        }
+
 
         .invoice-container {
             width: 80%;
@@ -153,23 +159,23 @@
     @endphp
     <div class="invoice-container border mt-4">
         <div class="text-center" id="buttons">
-            <button class="btn btn-sm btn-success" onclick="window.print()">@lang('sales_bills.Print the invoice')</button>
-            <a class="btn btn-sm btn-danger" href="{{ route('client.sale_bills.create1') }}">@lang('sales_bills.back') </a>
-            <button class="show_hide_header btn btn-sm btn-warning no-print" dir="ltr">
+            <button class="btn  btn-success" onclick="window.print()">@lang('sales_bills.Print the invoice')</button>
+            <a class="btn  btn-danger" href="{{ route('client.sale_bills.create1') }}">@lang('sales_bills.back') </a>
+            <button class="show_hide_header btn  btn-warning no-print" dir="ltr">
                 <i class="fa fa-eye-slash"></i>
                 @lang('sales_bills.Show or hide the header')
             </button>
-            <button class="show_hide_footer btn btn-sm btn-primary no-print" dir="ltr">
+            <button class="show_hide_footer btn  btn-primary no-print" dir="ltr">
                 <i class="fa fa-eye-slash"></i>
                 @lang('sales_bills.Show or hide the footer')
             </button>
-            <button class="btn btn-sm btn-success" dir="ltr" onclick="sendToWhatsApp()">
+            <button class="btn  btn-success" dir="ltr" onclick="sendToWhatsApp()">
                 <i class="fa fa-whatsapp"></i>
                 @lang('sales_bills.Send to whatsapp')
             </button>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="card shadow-sm border-light rounded p-3 mb-3">
-                    <button type="button" class="btn btn-sm btn-primary rounded-pill shadow-sm w-100"
+                    <button type="button" class="btn  btn-primary rounded-pill shadow-sm w-100"
                         data-bs-toggle="modal" data-bs-target="#colorModal"
                         style="border-color: {{ old('page_color', $currentColor ?? '#222751') }}; background-color: {{ old('page_color', $currentColor ?? '#222751') }};">
                         @lang('main.Choose Print Color')
@@ -447,7 +453,7 @@
             @if (app()->getLocale() == 'en')
                 <div class="products-details mt-2" style=" padding: 0px 16px;">
                     <table
-                        style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+                        style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px !important;">
                         <thead>
                             <tr
                                 style="font-size: 16px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
@@ -500,22 +506,22 @@
 
                                     <tr
                                         style="font-size: 16px !important; height: 34px !important; text-align: center; background: #f8f9fb">
-                                        <td>{{ ++$i }}</td>
-                                        <td>{{ $element->product->product_name }}</td>
-                                        <td>{{ $element->product_price }}</td>
-                                        <td class="text-center">
+                                        <td class="borderLeftH">{{ ++$i }}</td>
+                                        <td class="borderLeftH">{{ $element->product->product_name }}</td>
+                                        <td class="borderLeftH">{{ $element->product_price }}</td>
+                                        <td class="borderLeftH text-center">
                                             <span>{{ $element->quantity }}</span>
                                             <span>{{ $element->unit->unit_name }}</span>
                                         </td>
-                                        <td>
+                                        <td class="borderLeftH">
                                             {{ $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
                                         </td>
-                                        <td>{{ $element->tax_value }}</td>
+                                        <td class="borderLeftH">{{ $element->tax_value }}</td>
                                         <td>{{ $element->discount_value }}{{ $element->discount_type == 'percent' ? ' %' : '' }}
                                         </td>
-                                        <td>{{ $element->product->description }}</td>
-                                        <td>{{ $element->product->product_model }}</td>
-                                        <td>{{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
+                                        <td class="borderLeftH d-flex justify-content-center"><div class="text-center" style="text-align: start !important;">{!! $element->product->description !!}</div></td>
+                                        <td class="borderLeftH">{{ $element->product->product_model }}</td>
+                                        <td class="borderLeftH">{{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
                                         </td>
                                     </tr>
                                 @endforeach
@@ -583,23 +589,23 @@
 
                                     <tr
                                         style="font-size: 16px !important; height: 34px !important; text-align: center; background: #f8f9fb">
-                                        <td>{{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
+                                        <td class="borderLeftH">{{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
                                         </td>
-                                        <td>{{ $element->product->product_model }}</td>
-                                        <td>{{ $element->product->description }}</td>
-                                        <td>{{ $element->tax_value }}</td>
-                                        <td>{{ $element->discount_value }}{{ $element->discount_type == 'percent' ? ' %' : '' }}
+                                        <td class="borderLeftH">{{ $element->product->product_model }}</td>
+                                        <td class="borderLeftH d-flex justify-content-center"><div class="text-center" style="text-align: start !important;">{!! $element->product->description !!}</div></td>
+                                        <td class="borderLeftH">{{ $element->tax_value }}</td>
+                                        <td class="borderLeftH">{{ $element->discount_value }}{{ $element->discount_type == 'percent' ? ' %' : '' }}
                                         </td>
-                                        <td>
+                                        <td class="borderLeftH">
                                             {{ $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
                                         </td>
-                                        <td class="text-center">
+                                        <td class="borderLeftH text-center">
                                             <span>{{ $element->quantity }}</span>
                                             <span>{{ $element->unit->unit_name }}</span>
                                         </td>
-                                        <td>{{ $element->product_price }}</td>
-                                        <td>{{ $element->product->product_name }}</td>
-                                        <td>{{ ++$i }}</td>
+                                        <td class="borderLeftH">{{ $element->product_price }}</td>
+                                        <td class="borderLeftH">{{ $element->product->product_name }}</td>
+                                        <td class="borderLeftH">{{ ++$i }}</td>
                                     </tr>
                                 @endforeach
                             @endif

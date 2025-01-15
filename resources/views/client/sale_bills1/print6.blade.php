@@ -23,6 +23,9 @@
             border: 2px solid black;
             /* Black border for table and sections */
         }
+         .btn {
+            font-size:1.2rem !important;
+        }
 
         @font-face {
             font-family: 'Cairo';
@@ -149,23 +152,23 @@
     @endphp
     <div class="invoice-container border mt-4">
         <div class="text-center" id="buttons">
-            <button class="btn btn-sm btn-success" onclick="window.print()">@lang('sales_bills.Print the invoice')</button>
-            <a class="btn btn-sm btn-danger" href="{{ route('client.sale_bills.create1') }}">@lang('sales_bills.back') </a>
-            <button class="show_hide_header btn btn-sm btn-warning no-print" dir="ltr">
+            <button class="btn  btn-success" onclick="window.print()">@lang('sales_bills.Print the invoice')</button>
+            <a class="btn  btn-danger" href="{{ route('client.sale_bills.create1') }}">@lang('sales_bills.back') </a>
+            <button class="show_hide_header btn  btn-warning no-print" dir="ltr">
                 <i class="fa fa-eye-slash"></i>
                 @lang('sales_bills.Show or hide the header')
             </button>
-            <button class="show_hide_footer btn btn-sm btn-primary no-print" dir="ltr">
+            <button class="show_hide_footer btn  btn-primary no-print" dir="ltr">
                 <i class="fa fa-eye-slash"></i>
                 @lang('sales_bills.Show or hide the footer')
             </button>
-            <button class="btn btn-sm btn-success" dir="ltr" onclick="sendToWhatsApp()">
+            <button class="btn  btn-success" dir="ltr" onclick="sendToWhatsApp()">
                 <i class="fa fa-whatsapp"></i>
                 @lang('sales_bills.Send to whatsapp')
             </button>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="card shadow-sm border-light rounded p-3 mb-3">
-                    <button type="button" class="btn btn-sm btn-primary rounded-pill shadow-sm w-100"
+                    <button type="button" class="btn  btn-primary rounded-pill shadow-sm w-100"
                         data-bs-toggle="modal" data-bs-target="#colorModal"
                         style="border-color: {{ old('page_color', $currentColor ?? '#222751') }}; background-color: {{ old('page_color', $currentColor ?? '#222751') }};">
                         @lang('main.Choose Print Color')
