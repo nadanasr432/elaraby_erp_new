@@ -119,4 +119,5 @@ return [
     'Product qty executed' => "كمية المنتج نفذت",
     "save and show" => "حفظ وعرض",
     "description" => "وصف",
+    "Add immediate product" => 'اضافة منتج مباشر',
 ];

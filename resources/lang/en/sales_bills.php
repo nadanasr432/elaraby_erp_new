@@ -117,4 +117,5 @@ return [
     'Product qty executed' => 'Product qty executed',
     "save and show" => "Save and Show",
     "description" => "description",
+    "Add immediate product" => "Add immediate product",
 ];

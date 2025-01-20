@@ -115,6 +115,7 @@
                 <div class="d-flex align-items-center justify-content-between">
                     <select name="product_id" id="product_id" class="selectpicker w-50" data-style="btn-new_color"
                         data-live-search="true" title="{{ __('sales_bills.product-code') }}">
+                        <option value="new" style="color: red;">{{ __('sales_bills.Add immediate product') }}</option>
                         @foreach ($all_products as $product)
                             <option value="{{ $product->id }}" data-name="{{ strtolower($product->product_name) }}"
                                 data-sectorprice="{{ $product->sector_price }}"
@@ -545,6 +546,8 @@
             not_including_tax: "{{ __('sales_bills.not-including-tax') }}",
             including_tax: "{{ __('sales_bills.including-tax') }}",
             exempt_tax: "{{ __('sales_bills.exempt-tax') }}",
+            enter_product_name: "{{ __('products.pname') }}",
+            enter_product_price: "{{ __('products.sectorprice') }}",
         };
     </script>
     <script>
@@ -978,13 +981,13 @@
 
             $('#add').on('click', function(e) { // Add 'e' as the event parameter
                 e.preventDefault(); // Prevent default form submission
-            
+
                 let outerClientId = $('#outer_client_id').val();
-            
+
                 const discountType = document.getElementById('discount_type').value;
                 const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
                 const grandTotal = parseFloat(document.getElementById('grand_total').textContent) || 0;
-            
+
                 // Check if discount exceeds grand total
                 if (
                     (discountType === 'pound' || discountType === 'poundAfterTax') &&
@@ -998,7 +1001,7 @@
                     });
                     return false; // Stop submission
                 }
-            
+
                 // Check if the outer client ID is selected
                 if (!outerClientId) {
                     Swal.fire({
@@ -1009,19 +1012,19 @@
                     });
                     return false;
                 }
-            
+
                 // Validate that at least one product is selected
                 let hasProduct = false;
                 $('#products_table tbody tr').each(function() {
                     let quantity = $(this).find('input[name*="[quantity]"]').val();
                     let price = $(this).find('input[name*="[product_price]"]').val();
                     let unit = $(this).find('select[name*="[unit_id]"]').val();
-            
+
                     if (quantity > 0 && price > 0 && unit) {
                         hasProduct = true;
                     }
                 });
-            
+
                 if (!hasProduct) {
                     Swal.fire({
                         icon: 'warning',
@@ -1031,7 +1034,7 @@
                     });
                     return false;
                 }
-              
+
                 var formData = $('#myForm').serialize();
                 $.post("{{ url('/client/sale-bills/update') }}", formData, function(data) {
                     if (data.status === true) {
@@ -1044,14 +1047,14 @@
                         // Show error message using SweetAlert
                         let errorMessage = data.message;
                         let errorDetails = '';
-            
+
                         // If there are errors in the 'errors' object, build the message
                         if (data.errors) {
                             $.each(data.errors, function(field, messages) {
                                 errorDetails += messages.join('<br>') + '<br>';
                             });
                         }
-            
+
                         // Use SweetAlert to display the error message
                         Swal.fire({
                             icon: 'error',
@@ -1062,7 +1065,7 @@
                         });
                     }
                 });
-            
+
             });
 
 
@@ -1586,7 +1589,7 @@
                 let rowIndex = $('#products_table tbody tr').length;
                 console.log(rowIndex);
 
-                var productId = $(this).val();
+                var productId = $(this).val() || 'new';
                 var productName = $('option:selected', this).data('name');
                 var sectorPrice = $('option:selected', this).data('sectorprice');
                 var wholesalePrice = $('option:selected', this).data('wholesaleprice');
@@ -1598,7 +1601,7 @@
                 var valueAddedTax = $('#value_added_tax').val(); // الحصول على إعداد الضريبة المختار
                 console.log(valueAddedTax);
                 $(this).val("");
-                if (existingRow.length > 0) {
+                if (existingRow.length > 0 && productId != 'new') {
                     var quantityInput = existingRow.find(
                         `input[name="products[${existingRow.data('index')}][quantity]"]`);
                     var currentQuantity = parseFloat(quantityInput.val()) || 0;
@@ -1612,62 +1615,149 @@
                     quantityInput.val(newQuantity);
                     calculateRowTotal(existingRow);
                 } else {
-                    var rowHtml = `
-                     <tr data-product-id="${productId}" data-index="${rowIndex}">
-                        <td>${productName}</td>
-                        <td class="text-left">
-                            <label>
-                                <input type="radio" name="products[${rowIndex}][price_type]" required value="sector" class="price_type" checked>
-                                ${translations.sector}
-                            </label>
-                            <label>
-                                <input type="radio" name="products[${rowIndex}][price_type]" required value="wholesale" class="price_type">
-                                ${translations.wholesale}
-                            </label>
-                        </td>
-                        <td>
-                            <input type="number" min="1" name="products[${rowIndex}][product_price]" class="form-control price" value="${sectorPrice}" step="any">
-                        </td>
-                        <td>
-                            <input type="number" name="products[${rowIndex}][quantity]" class="form-control quantity" value="1" min="1" max="${remaining}" step="any">
-                        </td>
-                        <td>
-                            <select name="products[${rowIndex}][unit_id]" class="form-control unit">
-                                <option disabled>${translations.choose_unit}</option>
-                                @foreach ($units as $unit)
-                                    <option value="{{ $unit->id }}" ${unitId === {{ $unit->id }} ? 'selected' : ''}>{{ $unit->unit_name }}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                        <td>
-                            <label>
-                                <input type="radio" name="products[${rowIndex}][discount_type]" value="pound" class="discount_type">
-                                ${translations.pound}
-                            </label>
-                            <label>
-                                <input type="radio" name="products[${rowIndex}][discount_type]" value="percent" checked class="discount_type">
-                                ${translations.percent}
-                            </label>
-                            <input type="number" name="products[${rowIndex}][discount]" class="form-control discount" value="0" min="0" step="any">
-                            <input type="number" hidden name="products[${rowIndex}][applied_discount]" class="form-control applied_discount" value="0" style="display:none;" step="any">
-                        </td>
-                        <td>
-                            <select name="products[${rowIndex}][tax]" class="form-control tax_type w-100 mb-1">
-                                <option value="0" ${valueAddedTax == 0 ? 'selected' : ''}>${translations.not_including_tax}</option>
-                                <option value="1" ${valueAddedTax == 1 ? 'selected' : ''}>${translations.exempt_tax}</option>
-                                <option value="2" ${valueAddedTax == 2 ? 'selected' : ''}>${translations.including_tax}</option>
-                            </select>
-                            <input type="number" readonly name="products[${rowIndex}][tax_amount]" class="form-control tax_amount" value="0" min="0" step="any">
-                        </td>
-                        <td>
-                            <input type="number" name="products[${rowIndex}][total]" class="form-control total" value="0" readonly step="any">
-                            <input type="number" hidden name="products[${rowIndex}][product_id]" class="form-control total" value="${productId}">
-                        </td>
-                        <td>
-                            <button type="button" class="btn btn-danger remove-product">${translations.remove}</button>
-                        </td>
-                    </tr>
-                    `;
+                    if (productId === 'new') {
+                        var rowHtml = `
+                            <tr data-index="${rowIndex}">
+                                <td>
+                                    <input type="text" name="products[${rowIndex}][product_name]" class="form-control" placeholder="${translations.enter_product_name}">
+                                </td>
+                                <td class="text-left">
+                               <div class="d-flex flex-column">
+                                        <label class="form-check-inline">
+                                            <input type="radio" name="products[${rowIndex}][price_type]" value="sector" class="price_type form-check-input" checked>
+                                            ${translations.sector}
+                                        </label>
+                                        <label class="form-check-inline">
+                                            <input type="radio" name="products[${rowIndex}][price_type]" value="wholesale" class="price_type form-check-input">
+                                            ${translations.wholesale}
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="text-left">
+                                    <div class="input-group">
+                                        <input type="number" min="1" name="products[${rowIndex}][product_price]" class="form-control w-100 price" value="${sectorPrice}" step="any">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <input type="number" name="products[${rowIndex}][quantity]" class="form-control w-100 quantity" value="1" min="1" max="${remaining}" step="any">
+                                    </div>
+                                </td>
+                                 <td>
+                                    <div class="input-group">
+                                        <select name="products[${rowIndex}][unit_id]" class="form-control w-100 unit">
+                                            <option disabled>${translations.choose_unit}</option>
+                                            @foreach ($units as $unit)
+                                                <option value="{{ $unit->id }}" ${unitId === {{ $unit->id }} ? 'selected' : ''}>{{ $unit->unit_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-column">
+                                        <label class="form-check-inline">
+                                            <input type="radio" name="products[${rowIndex}][discount_type]" value="pound" class="form-check-input">
+                                            ${translations.pound}
+                                        </label>
+                                        <label class="form-check-inline">
+                                            <input type="radio" name="products[${rowIndex}][discount_type]" value="percent" class="form-check-input" checked>
+                                            ${translations.percent}
+                                        </label>
+                                        <input type="number" name="products[${rowIndex}][discount]" class="form-control w-100 mt-1" placeholder="${translations.enter_discount}" value="0" min="0" step="any">
+                                        <input type="number" hidden name="products[${rowIndex}][applied_discount]" class="form-control applied_discount w-100 mt-1" value="0" step="any">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <select name="products[${rowIndex}][tax]" class="form-control tax_type w-100 mb-1">
+                                            <option value="0" ${valueAddedTax == 0 ? 'selected' : ''}>${translations.not_including_tax}</option>
+                                            <option value="1" ${valueAddedTax == 1 ? 'selected' : ''}>${translations.exempt_tax}</option>
+                                            <option value="2" ${valueAddedTax == 2 ? 'selected' : ''}>${translations.including_tax}</option>
+                                        </select>
+                                        <input type="number" readonly name="products[${rowIndex}][tax_amount]" class="form-control tax_amount w-100 mt-1" value="0" min="0" step="any">
+                                    </div>
+                                </td>
+                                <td>
+                                        <input type="number" name="products[${rowIndex}][total]" class="form-control total w-100" value="0" readonly step="any">
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger btn-sm remove-product">${translations.remove}</button>
+                                </td>
+                            </tr>
+                                `;
+                    } else {
+                        var rowHtml = `
+                            <tr data-product-id="${productId}" data-index="${rowIndex}">
+                                <td class="text-truncate">${productName}</td>
+                                <td class="text-left">
+                                    <div class="d-flex flex-column">
+                                        <label class="form-check-inline">
+                                            <input type="radio" name="products[${rowIndex}][price_type]" value="sector" class="price_type form-check-input" checked>
+                                            ${translations.sector}
+                                        </label>
+                                        <label class="form-check-inline">
+                                            <input type="radio" name="products[${rowIndex}][price_type]" value="wholesale" class="price_type form-check-input">
+                                            ${translations.wholesale}
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <input type="number" min="1" name="products[${rowIndex}][product_price]" class="form-control w-100 price" value="${sectorPrice}" step="any">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <input type="number" name="products[${rowIndex}][quantity]" class="form-control w-100 quantity" value="1" min="1" max="${remaining}" step="any">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <select name="products[${rowIndex}][unit_id]" class="form-control w-100 unit">
+                                            <option disabled>${translations.choose_unit}</option>
+                                            @foreach ($units as $unit)
+                                                <option value="{{ $unit->id }}" ${unitId === {{ $unit->id }} ? 'selected' : ''}>{{ $unit->unit_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-column">
+                                        <label class="form-check-inline">
+                                            <input type="radio" name="products[${rowIndex}][discount_type]" value="pound" class="discount_type form-check-input">
+                                            ${translations.pound}
+                                        </label>
+                                        <label class="form-check-inline">
+                                            <input type="radio" name="products[${rowIndex}][discount_type]" value="percent" class="discount_type form-check-input" checked>
+                                            ${translations.percent}
+                                        </label>
+                                        <input type="number" name="products[${rowIndex}][discount]" class="form-control discount w-100 mt-1" value="0" min="0" step="any">
+                                        <input type="number" hidden name="products[${rowIndex}][applied_discount]" class="form-control applied_discount w-100 mt-1" value="0" step="any">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <select name="products[${rowIndex}][tax]" class="form-control tax_type w-100 mb-1">
+                                            <option value="0" ${valueAddedTax == 0 ? 'selected' : ''}>${translations.not_including_tax}</option>
+                                            <option value="1" ${valueAddedTax == 1 ? 'selected' : ''}>${translations.exempt_tax}</option>
+                                            <option value="2" ${valueAddedTax == 2 ? 'selected' : ''}>${translations.including_tax}</option>
+                                        </select>
+                                        <input type="number" readonly name="products[${rowIndex}][tax_amount]" class="form-control tax_amount w-100 mt-1" value="0" min="0" step="any">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <input type="number" name="products[${rowIndex}][total]" class="form-control total w-100" value="0" readonly step="any">
+                                        <input type="number" hidden name="products[${rowIndex}][product_id]" class="form-control total w-100" value="${productId}">
+                                    </div>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger btn-sm remove-product">${translations.remove}</button>
+                                </td>
+                            </tr>
+                            `;
+
+                    }
 
                     $('#products_table tbody').append(rowHtml);
                     handleTaxCalculation();

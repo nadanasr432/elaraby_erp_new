@@ -553,7 +553,6 @@ class SaleBillController1 extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        // dd($data);
         DB::beginTransaction();
         $data['company_id'] = $company_id = Auth::user()->company_id;
         $company = Company::findOrFail($data['company_id']);
@@ -585,6 +584,19 @@ class SaleBillController1 extends Controller
             'value_added_tax' => $data['value_added_tax'] ? 1 : 0,
         ]);
         foreach ($data['products'] as $product) {
+            // Handle new product creation
+            if (empty($product['product_id'])) {
+                $newProduct = Product::create([
+                    'product_name' => $product['product_name'],
+                    'product_name_en' => $product['product_name'],
+                    'price' => $product['product_price'],
+                    'unit_id' => $product['unit_id'],
+                    'company_id' => $data['company_id'],
+                    'first_balance' => $product['quantity'],
+                    'category_id' => 818,
+                ]);
+                $product['product_id'] = $newProduct->id;
+            }
             $element = SaleBillElement1::create([
                 'sale_bill_id' => $saleBill->id,
                 'product_id' => $product['product_id'],
@@ -2665,6 +2677,8 @@ class SaleBillController1 extends Controller
     {
         // Fetch the sale_bill using the provided token
         $sale_bill = SaleBill1::where('token', $hashtoken)->first();
+        // dd($sale_bill);
+
         if (!empty($sale_bill)) {
             // Get all sale bills with 'done' status for the same company
             $sale_bills_done = SaleBill1::where('company_id', $sale_bill->company_id)
@@ -3087,6 +3101,18 @@ class SaleBillController1 extends Controller
             // Update existing elements or create new ones if needed
             foreach ($data['products'] as $product) {
                 // Find existing sale bill element or create a new one
+                if (empty($product['product_id'])) {
+                    $newProduct = Product::create([
+                        'product_name' => $product['product_name'],
+                        'product_name_en' => $product['product_name'],
+                        'price' => $product['product_price'],
+                        'unit_id' => $product['unit_id'],
+                        'company_id' => $data['company_id'],
+                        'first_balance' => $product['quantity'],
+                        'category_id' => 818,
+                    ]);
+                    $product['product_id'] = $newProduct->id;
+                }
                 SaleBillElement1::updateOrCreate(
                     [
                         'sale_bill_id' => $saleBill->id,

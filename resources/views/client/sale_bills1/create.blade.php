@@ -121,6 +121,8 @@
                 <div class="d-flex align-items-center justify-content-between">
                     <select name="product_id" id="product_id" class="selectpicker w-50" data-style="btn-new_color"
                         data-live-search="true" title="{{ __('sales_bills.choose product') }}">
+                        <option value="new" style="color: red;">{{ __('sales_bills.Add immediate product') }}</option>
+
                         @foreach ($all_products as $product)
                             <option value="{{ $product->id }}" data-name="{{ strtolower($product->product_name) }}"
                                 data-sectorprice="{{ $product->sector_price }}"
@@ -634,6 +636,9 @@
             not_including_tax: "{{ __('sales_bills.not-including-tax') }}",
             including_tax: "{{ __('sales_bills.including-tax') }}",
             exempt_tax: "{{ __('sales_bills.exempt-tax') }}",
+            enter_product_name: "{{ __('products.pname') }}",
+            enter_product_price: "{{ __('products.sectorprice') }}",
+
         };
     </script>
     <script>
@@ -691,7 +696,7 @@
                 // Check if discount exceeds grand total
                 if (
                     (discountType === 'pound' || discountType === 'poundAfterTax') &&
-                    discountValue > grandTotal+discountValue
+                    discountValue > grandTotal + discountValue
                 ) {
                     Swal.fire({
                         icon: 'warning',
@@ -703,7 +708,7 @@
                 }
 
                 // Ensure discount is less than or equal to the grand total
-                if (discountValue >  grandTotal+discountValue) {
+                if (discountValue > grandTotal + discountValue) {
                     Swal.fire({
                         icon: 'warning',
                         title: 'تحذير',
@@ -737,7 +742,6 @@
                         hasProduct = true;
                     }
                 });
-
                 if (!hasProduct) {
                     Swal.fire({
                         icon: 'warning',
@@ -790,7 +794,7 @@
                 // Check if discount exceeds grand total
                 if (
                     (discountType === 'pound' || discountType === 'poundAfterTax') &&
-                    discountValue > grandTotal+discountValue
+                    discountValue > grandTotal + discountValue
                 ) {
                     Swal.fire({
                         icon: 'warning',
@@ -802,7 +806,7 @@
                 }
 
                 // Ensure discount is less than or equal to the grand total
-                if (discountValue > grandTotal+discountValue) {
+                if (discountValue > grandTotal + discountValue) {
                     Swal.fire({
                         icon: 'warning',
                         title: 'تحذير',
@@ -1105,7 +1109,7 @@
                 // Check if discount exceeds grand total
                 if (
                     (discountType === 'pound' || discountType === 'poundAfterTax') &&
-                    discountValue > grandTotal+discountValue
+                    discountValue > grandTotal + discountValue
                 ) {
                     Swal.fire({
                         icon: 'warning',
@@ -1115,8 +1119,8 @@
                     });
                     return false; // Stop submission
                 }
-                  // Ensure discount is less than or equal to the grand total
-                if (discountValue > grandTotal+discountValue) {
+                // Ensure discount is less than or equal to the grand total
+                if (discountValue > grandTotal + discountValue) {
                     Swal.fire({
                         icon: 'warning',
                         title: 'تحذير',
@@ -1706,7 +1710,7 @@
                     99999;
                 var valueAddedTax = $('#value_added_tax').val(); // الحصول على إعداد الضريبة المختار
                 $(this).val("");
-                if (existingRow.length > 0) {
+                if (existingRow.length > 0 && productId != 'new') {
                     var quantityInput = existingRow.find(
                         `input[name="products[${existingRow.data('index')}][quantity]"]`);
                     var currentQuantity = parseFloat(quantityInput.val()) || 0;
@@ -1720,7 +1724,78 @@
                     quantityInput.val(newQuantity);
                     calculateRowTotal(existingRow);
                 } else {
-                    var rowHtml = `
+                    if (productId === 'new') {
+                        var rowHtml = `
+                            <tr data-index="${rowIndex}">
+                                <td>
+                                    <input type="text" name="products[${rowIndex}][product_name]" class="form-control" placeholder="${translations.enter_product_name}">
+                                </td>
+                                <td class="text-left">
+                               <div class="d-flex flex-column">
+                                        <label class="form-check-inline">
+                                            <input type="radio" name="products[${rowIndex}][price_type]" value="sector" class="price_type form-check-input" checked>
+                                            ${translations.sector}
+                                        </label>
+                                        <label class="form-check-inline">
+                                            <input type="radio" name="products[${rowIndex}][price_type]" value="wholesale" class="price_type form-check-input">
+                                            ${translations.wholesale}
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="text-left">
+                                    <div class="input-group">
+                                        <input type="number" min="1" name="products[${rowIndex}][product_price]" class="form-control w-100 price" value="${sectorPrice}" step="any">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <input type="number" name="products[${rowIndex}][quantity]" class="form-control w-100 quantity" value="1" min="1" max="${remaining}" step="any">
+                                    </div>
+                                </td>
+                                 <td>
+                                    <div class="input-group">
+                                        <select name="products[${rowIndex}][unit_id]" class="form-control w-100 unit">
+                                            <option disabled>${translations.choose_unit}</option>
+                                            @foreach ($units as $unit)
+                                                <option value="{{ $unit->id }}" ${unitId === {{ $unit->id }} ? 'selected' : ''}>{{ $unit->unit_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-column">
+                                        <label class="form-check-inline">
+                                            <input type="radio" name="products[${rowIndex}][discount_type]" value="pound" class="form-check-input">
+                                            ${translations.pound}
+                                        </label>
+                                        <label class="form-check-inline">
+                                            <input type="radio" name="products[${rowIndex}][discount_type]" value="percent" class="form-check-input" checked>
+                                            ${translations.percent}
+                                        </label>
+                                        <input type="number" name="products[${rowIndex}][discount]" class="form-control w-100 mt-1" placeholder="${translations.enter_discount}" value="0" min="0" step="any">
+                                        <input type="number" hidden name="products[${rowIndex}][applied_discount]" class="form-control applied_discount w-100 mt-1" value="0" step="any">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <select name="products[${rowIndex}][tax]" class="form-control tax_type w-100 mb-1">
+                                            <option value="0" ${valueAddedTax == 0 ? 'selected' : ''}>${translations.not_including_tax}</option>
+                                            <option value="1" ${valueAddedTax == 1 ? 'selected' : ''}>${translations.exempt_tax}</option>
+                                            <option value="2" ${valueAddedTax == 2 ? 'selected' : ''}>${translations.including_tax}</option>
+                                        </select>
+                                        <input type="number" readonly name="products[${rowIndex}][tax_amount]" class="form-control tax_amount w-100 mt-1" value="0" min="0" step="any">
+                                    </div>
+                                </td>
+                                <td>
+                                        <input type="number" name="products[${rowIndex}][total]" class="form-control total w-100" value="0" readonly step="any">
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger btn-sm remove-product">${translations.remove}</button>
+                                </td>
+                            </tr>
+                                `;
+                    } else {
+                        var rowHtml = `
                             <tr data-product-id="${productId}" data-index="${rowIndex}">
                                 <td class="text-truncate">${productName}</td>
                                 <td class="text-left">
@@ -1791,7 +1866,7 @@
                             </tr>
                             `;
 
-
+                    }
                     $('#products_table tbody').append(rowHtml);
                     handleTaxCalculation();
                     rowIndex++;
