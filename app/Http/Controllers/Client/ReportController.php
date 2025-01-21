@@ -74,7 +74,7 @@ class ReportController extends Controller
         } else {
             if ($outer_client_id == "all") {
                 $saleBills = SaleBill::where('company_id', $company_id)
-                    ->whereBetween('created_at', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
+                    ->whereBetween('date', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
 
                 $posBills = PosOpen::where('company_id', $company_id)
                     ->whereBetween('created_at', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
@@ -82,7 +82,7 @@ class ReportController extends Controller
                 $outer_client_k = OuterClient::FindOrFail($outer_client_id);
                 $saleBills = SaleBill::where('company_id', $company_id)
                     ->where('outer_client_id', $outer_client_k->id)
-                    ->whereBetween('created_at', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
+                    ->whereBetween('date', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
 
                 $posBills = PosOpen::where('company_id', $company_id)
                     ->where('outer_client_id', $outer_client_k->id)
@@ -1075,6 +1075,8 @@ class ReportController extends Controller
             $sale_elements = SaleBillElement::where('product_id', $product_k->id)
                 ->whereBetween('created_at', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])
                 ->get();
+                                // dd($sale_elements );
+
             $total_sale_elements = 0;
             foreach ($sale_elements as $sale_element) {
                 $total_sale_elements = $total_sale_elements + $sale_element->quantity;

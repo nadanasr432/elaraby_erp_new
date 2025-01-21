@@ -97,10 +97,9 @@
                                 value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
                         @endforeach
                     </select>
-                    <a target="_blank" href="{{ route('client.outer_clients.create') }}" role="button"
-                        class="btn btn-primary">
-                        <i class="fa fa-plus" aria-hidden="true"> </i> {{ __('sales_bills.add-client') }}
-                    </a>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClientModal">
+                        <i class="fa fa-plus" aria-hidden="true"> </i> {{ __('main.add immediate client') }}
+                    </button>
                 </div>
             </div>
         </div>
@@ -517,8 +516,67 @@
             </div>
         </div>
     </form>
+    <div class="modal fade" id="addClientModal" tabindex="-1" aria-labelledby="addClientModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="addClientForm" action="{{ route('client.outer_clients.storeApi') }}" method="POST">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addClientModalLabel">{{ __('sales_bills.add-client') }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="client_name">{{ __('clients.client-name') }}</label>
+                            <input type="text" name="client_name" id="client_name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">{{ __('clients.phone-with-code') }}</label>
+                            <input type="text" name="phones[]" id="phone" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label style="display: block" for="address"> {{ __('clients.client-address') }} </label>
+                            <input type="text" name="addresses[]" class="form-control">
 
+                            <div class="clearfix"></div>
+                            <div class="dom3"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="client_category">{{ __('clients.dealing-type') }}</label>
+                            <select name="client_category" class="form-control" required>
+                                <option value="">{{ __('clients.choose-type') }}</option>
+                                <option selected value="جملة">جملة</option>
+                                <option value="قطاعى">قطاعى</option>
+                            </select>
+                        </div>
 
+                        <div class="form-group">
+                            <label for="prev_balance">{{ __('clients.client-indebtedness') }}</label>
+                            <input style="margin-right:5px;margin-left:5px;" type="radio" value="for"
+                                name="balance" />
+                            {{ __('main.for') }}
+                            <input style="margin-right:5px;margin-left:5px;" checked type="radio" value="on"
+                                name="balance" /> {{ __('main.on') }}
+                            <input required type="number" value="0" name="prev_balance" class="form-control"
+                                step="1" dir="ltr" />
+                            <input type="hidden" name="company_id" value="{{ $company_id }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="tax_number">{{ __('main.tax-number') }}</label>
+                            <input type="text" name="tax_number" class="form-control" dir="ltr" />
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">{{ __('main.close') }}</button>
+                        <button type="submit" class="btn btn-primary">{{ __('main.add') }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <input type="hidden" id="final_total" />
     <input type="hidden" id="product" placeholder="product" name="product" />
     <input type="hidden" id="net_total" placeholder="اجمالى قبل الخصم" name="total" />
@@ -1036,35 +1094,68 @@
                 }
 
                 var formData = $('#myForm').serialize();
-                $.post("{{ url('/client/sale-bills/update') }}", formData, function(data) {
-                    if (data.status === true) {
-                        // Show success message
-                        $('.box_success').removeClass('d-none').fadeIn(200);
-                        $('.msg_success').html(data.msg);
-                        $('.box_success').delay(3000).fadeOut(300);
-                        window.location.href = `/client/sale-bill1/${data.id}`;
-                    } else {
-                        // Show error message using SweetAlert
-                        let errorMessage = data.message;
-                        let errorDetails = '';
+                $.post("{{ url('/client/sale-bills/update') }}", formData)
+                    .done(function(data) {
+                        if (data.status === true) {
+                            // Show success message
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'تم التحديث بنجاح',
+                                text: 'سيتم توجيهك إلى الصفحة المطلوبة',
+                                confirmButtonText: 'حسنًا'
+                            }).then(() => {
+                                // Redirect to the specific page
+                                window.location.href = `/client/sale-bill1/${data.id}`;
+                            });
+                        } else {
+                            // Handle the case where data.status is false
+                            let errorMessage = data.message ||
+                            "حدث خطأ أثناء التحديث"; // Fallback error message
+                            let errorDetails = '';
 
-                        // If there are errors in the 'errors' object, build the message
-                        if (data.errors) {
-                            $.each(data.errors, function(field, messages) {
-                                errorDetails += messages.join('<br>') + '<br>';
+                            // If there are field-specific errors, build the detailed error message
+                            if (data.errors) {
+                                $.each(data.errors, function(field, messages) {
+                                    errorDetails += messages.join('<br>') + '<br>';
+                                });
+                            }
+
+                            // Use SweetAlert to display the error message
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'خطأ',
+                                html: errorMessage + '<br>' +
+                                errorDetails, // Combine general and detailed errors
+                                confirmButtonText: 'موافق'
                             });
                         }
+                    })
+                    .fail(function(jqXHR) {
+                        // Handle request failure
+                        let errorMessage = "حدث خطأ أثناء الاتصال بالخادم";
+                        let errorDetails = '';
 
-                        // Use SweetAlert to display the error message
+                        // Extract error details from the response, if available
+                        if (jqXHR.responseJSON) {
+                            if (jqXHR.responseJSON.message) {
+                                errorMessage = jqXHR.responseJSON.message;
+                            }
+                            if (jqXHR.responseJSON.errors) {
+                                $.each(jqXHR.responseJSON.errors, function(field, messages) {
+                                    errorDetails += messages.join('<br>') + '<br>';
+                                });
+                            }
+                        }
+
+                        // Show error alert with SweetAlert
                         Swal.fire({
                             icon: 'error',
                             title: 'خطأ',
-                            html: errorMessage + '<br>' +
-                                errorDetails, // Combine the general message with the field-specific errors
+                            html: errorMessage + '<br>' + errorDetails,
                             confirmButtonText: 'موافق'
                         });
-                    }
-                });
+                    });
+
 
             });
 
@@ -1364,7 +1455,45 @@
         function checkChanges() {
             somethingChanged = true
         }
+        document.getElementById('addClientForm').addEventListener('submit', function(e) {
+            e.preventDefault();
 
+            const formData = new FormData(this);
+            const url = this.action;
+
+            fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                            'content'),
+                        'Accept': 'application/json',
+                    },
+                    body: formData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Append the new client to the dropdown
+                        const newOption = new Option(data.client.client_name, data.client.id, false, false);
+                        document.getElementById('outer_client_id').add(newOption);
+
+                        // Refresh the selectpicker (if using Bootstrap Select)
+                        $('.selectpicker').selectpicker('refresh');
+
+                        // Close the modal
+                        $('#addClientModal').modal('hide');
+
+                        // Optionally, display a success message
+                        alert(data.message || '{{ __('main.client-added-successfully') }}');
+                    } else {
+                        alert(data.message || '{{ __('main.error-adding-client') }}');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('{{ __('main.error-adding-client') }}');
+                });
+        });
 
         window.addEventListener("pageshow", function(event) {
             var historyTraversal = event.persisted ||

@@ -450,6 +450,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::post('/supplier_bonds_delete', [BondsController::class, 'deleteSupplierBond'])->name("supplier_bonds_delete");
             Route::get('/showSupplierBondPrint/{supplierid}', [BondsController::class, 'showSupplierBondPrint'])->name("showSupplierBondPrint");
 
+            Route::post('/client/api', [OuterClientController::class, 'storeApi'])->name("client.outer_clients.storeApi");
 
             // outer_clients Routes
             Route::resource('outer_clients', OuterClientController::class)->names([

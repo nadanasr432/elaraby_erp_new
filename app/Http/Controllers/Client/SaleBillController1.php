@@ -586,6 +586,27 @@ class SaleBillController1 extends Controller
         foreach ($data['products'] as $product) {
             // Handle new product creation
             if (empty($product['product_id'])) {
+                $validatedData = validator($product, [
+                    'product_name' => 'required|string|max:255',
+                    'product_price' => 'required|numeric|min:0',
+                    'unit_id' => 'required|integer|exists:units,id',
+                    'quantity' => 'required|integer|min:0',
+                ], [
+                    'product_name.required' => 'رجاء كتابة اسم المنتج.',
+                    'product_name.string' => 'اسم المنتج يجب أن يكون نصًا.',
+                    'product_name.max' => 'اسم المنتج لا يمكن أن يتجاوز 255 حرفًا.',
+                    'product_price.required' => 'سعر المنتج مطلوب.',
+                    'product_price.numeric' => 'سعر المنتج يجب أن يكون رقمًا.',
+                    'product_price.min' => 'سعر المنتج يجب أن يكون أكبر من أو يساوي 0.',
+                    'unit_id.required' => 'الوحدة مطلوبة.',
+                    'unit_id.integer' => 'رقم الوحدة يجب أن يكون رقمًا صحيحًا.',
+                    'unit_id.exists' => 'الوحدة المحددة غير موجودة.',
+                    'quantity.required' => 'الكمية مطلوبة.',
+                    'quantity.integer' => 'الكمية يجب أن تكون رقمًا صحيحًا.',
+                    'quantity.min' => 'الكمية يجب أن تكون على الأقل 0.',
+                ])->validate();
+
+
                 $newProduct = Product::create([
                     'product_name' => $product['product_name'],
                     'product_name_en' => $product['product_name'],
@@ -3072,6 +3093,7 @@ class SaleBillController1 extends Controller
         DB::beginTransaction();
         try {
             $saleBill = SaleBill1::where(['sale_bill_number' => $data['sale_bill_number'], 'company_id' => $data['company_id']])->first(); // Assuming the ID is passed from the form
+
             // Update the sale bill with the new data
             $saleBill->update([
                 'outer_client_id' => $data['outer_client_id'],
@@ -3102,6 +3124,26 @@ class SaleBillController1 extends Controller
             foreach ($data['products'] as $product) {
                 // Find existing sale bill element or create a new one
                 if (empty($product['product_id'])) {
+                    $validatedData = validator($product, [
+                        'product_name' => 'required|string|max:255',
+                        'product_price' => 'required|numeric|min:0',
+                        'unit_id' => 'required|integer|exists:units,id',
+                        'quantity' => 'required|integer|min:0',
+                    ], [
+                        'product_name.required' => 'رجاء كتابة اسم المنتج.',
+                        'product_name.string' => 'اسم المنتج يجب أن يكون نصًا.',
+                        'product_name.max' => 'اسم المنتج لا يمكن أن يتجاوز 255 حرفًا.',
+                        'product_price.required' => 'سعر المنتج مطلوب.',
+                        'product_price.numeric' => 'سعر المنتج يجب أن يكون رقمًا.',
+                        'product_price.min' => 'سعر المنتج يجب أن يكون أكبر من أو يساوي 0.',
+                        'unit_id.required' => 'الوحدة مطلوبة.',
+                        'unit_id.integer' => 'رقم الوحدة يجب أن يكون رقمًا صحيحًا.',
+                        'unit_id.exists' => 'الوحدة المحددة غير موجودة.',
+                        'quantity.required' => 'الكمية مطلوبة.',
+                        'quantity.integer' => 'الكمية يجب أن تكون رقمًا صحيحًا.',
+                        'quantity.min' => 'الكمية يجب أن تكون على الأقل 0.',
+                    ])->validate();
+
                     $newProduct = Product::create([
                         'product_name' => $product['product_name'],
                         'product_name_en' => $product['product_name'],

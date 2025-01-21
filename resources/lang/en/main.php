@@ -341,7 +341,9 @@ return [
     'name_ar' =>  'Name Arabic',
     'name_en' => 'Name English',
     'Choose Print Color' => 'Choose Print Color',
-    "Select Print Color" => "Select Print Color"
-
-
+    "Select Print Color" => "Select Print Color",
+    "client-added-successfully" => "client added successfully",
+    "error-adding-client" => "error adding client",
+    "close" => "close",
+    "add immediate client" => "add immediate client",
 ];

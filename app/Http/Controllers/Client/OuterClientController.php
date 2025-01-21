@@ -22,15 +22,14 @@ class OuterClientController extends Controller
     {
         $company_id = Auth::user()->company_id;
         $company = Company::FindOrFail($company_id);
-        if(in_array('مدير النظام',Auth::user()->role_name)){
+        if (in_array('مدير النظام', Auth::user()->role_name)) {
             $outer_clients = OuterClient::where('company_id', $company_id)->get();
-        }
-        else{
+        } else {
             $outer_clients = OuterClient::where('company_id', $company_id)
-            ->where(function ($query) {
-                $query->where('client_id',Auth::user()->id)
-                ->orWhereNull('client_id');
-            })->get();
+                ->where(function ($query) {
+                    $query->where('client_id', Auth::user()->id)
+                        ->orWhereNull('client_id');
+                })->get();
         }
         $balances = array();
         foreach ($outer_clients as $outer_client) {
@@ -57,10 +56,10 @@ class OuterClientController extends Controller
         }
         $company_outer_clients_count = $company->outerClients->count();
         if ($outer_clients_count == "غير محدود") {
-            return view('client.outer_clients.create', compact('company_id','clients', 'timezones', 'company'));
+            return view('client.outer_clients.create', compact('company_id', 'clients', 'timezones', 'company'));
         } else {
             if ($outer_clients_count > $company_outer_clients_count) {
-                return view('client.outer_clients.create', compact('company_id','clients', 'timezones', 'company'));
+                return view('client.outer_clients.create', compact('company_id', 'clients', 'timezones', 'company'));
             } else {
                 return redirect()->route('client.home')->with('error', 'باقتك الحالية لا تسمح بالمزيد من العملاء');
             }
@@ -205,6 +204,64 @@ class OuterClientController extends Controller
         return redirect()->route('client.outer_clients.index')
             ->with('success', 'تم اضافة العميل بنجاح');
     }
+    public function storeApi(Request $request)
+    {
+        $validated = $request->validate([
+            'client_name' => 'required',
+            'client_category' => 'required',
+            'prev_balance' => 'required',
+            'commercial_register' => 'nullable'
+        ]);
+
+        $data = $request->all();
+        $company_id = $data['company_id'];
+        $balance = $request->balance;
+        if ($balance == "for") {
+            $data['prev_balance'] = -1 * $request->prev_balance;
+        } elseif ($balance == "on") {
+            $data['prev_balance'] = $request->prev_balance;
+        }
+        $outer_client = OuterClient::create($data);
+        $notes = $request->notes;
+        $phones = $request->phones;
+        $addresses = $request->addresses;
+
+        if (isset($notes) && !empty($notes)) {
+            foreach ($notes as $note) {
+                OuterClientNote::create([
+                    'outer_client_id' => $outer_client->id,
+                    'client_note' => $note,
+                    'company_id' => $company_id,
+                ]);
+            }
+        }
+
+        if (isset($addresses) && !empty($addresses)) {
+            foreach ($addresses as $address) {
+                OuterClientAddress::create([
+                    'outer_client_id' => $outer_client->id,
+                    'client_address' => $address,
+                    'company_id' => $company_id,
+                ]);
+            }
+        }
+
+        if (isset($phones) && !empty($phones)) {
+            foreach ($phones as $phone) {
+                OuterClientPhone::create([
+                    'outer_client_id' => $outer_client->id,
+                    'client_phone' => $phone,
+                    'company_id' => $company_id,
+                ]);
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'client' => $outer_client,
+            'message' => __('main.client-added-successfully'),
+        ]);
+    }
     public function storeClient(OuterClientRequest  $request)
     {
         $data = $request->all();
@@ -265,7 +322,7 @@ class OuterClientController extends Controller
         $timezones = TimeZone::all();
         $clients = $company->clients;
         $outer_client = OuterClient::findOrFail($id);
-        return view('client.outer_clients.edit', compact('timezones','clients', 'outer_client', 'company_id', 'company'));
+        return view('client.outer_clients.edit', compact('timezones', 'clients', 'outer_client', 'company_id', 'company'));
     }
 
     public function update(OuterClientRequest  $request, $id)
@@ -332,10 +389,10 @@ class OuterClientController extends Controller
         $company_id = Auth::user()->company_id;
         $company = Company::FindOrFail($company_id);
         $outer_clients = OuterClient::where('company_id', $company_id)
-        ->where(function ($query) {
-            $query->where('client_id',Auth::user()->id)
-            ->orWhereNull('client_id');
-        })->get();
+            ->where(function ($query) {
+                $query->where('client_id', Auth::user()->id)
+                    ->orWhereNull('client_id');
+            })->get();
         return view('client.outer_clients.print', compact('outer_clients', 'company'));
     }
 
@@ -345,7 +402,7 @@ class OuterClientController extends Controller
         $company = Company::FindOrFail($company_id);
         $nationals = OuterClient::where('company_id', $company_id)
             ->groupBy('client_national')
-            ->where('client_id',Auth::user()->id)
+            ->where('client_id', Auth::user()->id)
             ->select('client_national')
             ->get();
         return view('client.outer_clients.filter', compact('nationals', 'company'));
@@ -358,19 +415,19 @@ class OuterClientController extends Controller
         $nationals = OuterClient::where('company_id', $company_id)
             ->groupBy('client_national')
             ->select('client_national')
-            ->where('client_id',Auth::user()->id)
+            ->where('client_id', Auth::user()->id)
             ->get();
         if (isset($request->national)) {
             $national = $request->national;
             $outer_clients = OuterClient::where('company_id', $company_id)
-                ->where('client_id',Auth::user()->id)
+                ->where('client_id', Auth::user()->id)
                 ->where('client_national', 'like', '%' . $national . '%')
                 ->get();
         } elseif (isset($request->category)) {
             $category = $request->category;
             $outer_clients = OuterClient::where('company_id', $company_id)
                 ->where('client_category', 'like', '%' . $category . '%')
-                ->where('client_id',Auth::user()->id)
+                ->where('client_id', Auth::user()->id)
                 ->get();
         }
         return view('client.outer_clients.filter', compact('outer_clients', 'nationals', 'company'));
@@ -383,7 +440,7 @@ class OuterClientController extends Controller
         $client_name = $request->client_name;
         $OuterClient = OuterClient::where('company_id', $company_id)
             ->where('client_name', 'LIKE', '%' . $client_name . '%')
-            ->where('client_id',Auth::user()->id)
+            ->where('client_id', Auth::user()->id)
             ->first();
         if (empty($OuterClient)) {
             return redirect()->route('client.home')->with('error', 'لا يوجد عميل بهذا الاسم');

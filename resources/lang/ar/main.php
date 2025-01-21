@@ -340,5 +340,9 @@ return [
     'name_ar' => 'الاسم بالعربي',
     'name_en' => 'الاسم بالانجليزي',
     'Choose Print Color' => 'تغيير لون الطباعة',
-    "Select Print Color" => "اختر لون الطباعة"
+    "Select Print Color" => "اختر لون الطباعة",
+    "client-added-successfully" => "تم اضافة العميل بنجاح",
+    "error-adding-client" => "حدث مكلة في اضافة العميل",
+    "close" => "اغلاق",
+    "add immediate client" => "اضافة عميل سريع",
 ];
