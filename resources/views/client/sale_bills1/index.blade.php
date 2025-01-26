@@ -66,6 +66,11 @@
         overflow-x: hidden !important;
     }
 
+    table tr:hover {
+        background-color: #f5f5f5;
+    }
+
+
     /*=======NEW TABLE DESIGN==========*/
 </style>
 @section('content')
@@ -74,47 +79,76 @@
             <div class="card">
                 <!------HEADER----->
                 <div class="card-header border-bottom border-secondary p-1">
+
                     <div class="d-flex justify-content-between align-items-baseline">
                         <h3 class="pull-right font-weight-bold">
                             {{ __('sidebar.sales-invoices') }}
                             <span class="badge badge-success">{{ count($sale_bills) }}</span>
                         </h3>
+
                         <div class="row mr-1 justify-content-end">
-                            <a class="btn btn-primary pull-left p-1 mainBtnNewDes d-flex align-items-center"
-                                href="{{ route('client.sale_bills.create1') }}">
-                                <span
-                                    style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
-                                    <svg style="width: 10px;height: 15px;fill: #f5f1f1;margin-top: 1px;"
-                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                                        <path
-                                            d="M240 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H176V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H384c17.7 0 32-14.3 32-32s-14.3-32-32-32H240V80z">
-                                        </path>
-                                    </svg>
-                                </span>
-                                {{ __('sidebar.Add a new sales invoice') }}
-                            </a>
-                            <a onclick="history.back()"
-                                class="btn btn-danger pull-left text-white d-flex align-items-center ml-1"
-                                style="height: 37px; font-size: 11px !important;">
-                                <span
-                                    style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
-                                    <svg style="width: 10px;height: 15px;fill: #f5f1f1;margin-top: 1px;"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome  - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                                        <path
-                                            d="M177.5 414c-8.8 3.8-19 2-26-4.6l-144-136C2.7 268.9 0 262.6 0 256s2.7-12.9 7.5-17.4l144-136c7-6.6 17.2-8.4 26-4.6s14.5 12.5 14.5 22l0 72 288 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32l-288 0 0 72c0 9.6-5.7 18.2-14.5 22z">
-                                        </path>
-                                    </svg>
-                                </span>
-                                {{ __('sidebar.back') }}
-                            </a>
+                            <div>
+                                <a class="btn btn-primary pull-left p-1 mainBtnNewDes d-flex align-items-center"
+                                    href="{{ route('client.sale_bills.create1') }}">
+                                    <span
+                                        style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
+                                        <svg style="width: 10px;height: 15px;fill: #f5f1f1;margin-top: 1px;"
+                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                            <path
+                                                d="M240 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H176V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H384c17.7 0 32-14.3 32-32s-14.3-32-32-32H240V80z">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                    {{ __('sidebar.Add a new sales invoice') }}
+                                </a>
+
+                                <a onclick="history.back()"
+                                    class="btn btn-danger pull-left text-white d-flex align-items-center ml-1"
+                                    style="height: 37px; font-size: 11px !important;">
+                                    <span
+                                        style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
+                                        <svg style="width: 10px;height: 15px;fill: #f5f1f1;margin-top: 1px;"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome  - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                            <path
+                                                d="M177.5 414c-8.8 3.8-19 2-26-4.6l-144-136C2.7 268.9 0 262.6 0 256s2.7-12.9 7.5-17.4l144-136c7-6.6 17.2-8.4 26-4.6s14.5 12.5 14.5 22l0 72 288 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32l-288 0 0 72c0 9.6-5.7 18.2-14.5 22z">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                    {{ __('sidebar.back') }}
+                                </a>
+                            </div>
                         </div>
+
                     </div>
                 </div>
 
-                <!------HEADER----->
                 <div class="card-body p-1">
                     <div id="example-table_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer p-0">
+                        <div class="d-flex justify-content-between align-items-top">
+                            <div class="col-sm-4">
+                                <form method="GET" action="{{ route('client.sale_bills.index1') }}" id="dateFilterForm">
+                                    <input type="date" name="date" class="form-control" placeholder="Date"
+                                        value="{{ request('date') }}" id="dateFilter">
+                                </form>
+                            </div>
+                            <div id="example1_wrapper" class="col-lg-8 dataTables_wrapper dt-bootstrap4 no-footer">
+                                <div class="dt-buttons btn-group">
+                                    <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
+                                        aria-controls="example1" type="button">
+                                        <a href="{{route('sale_bills.export.excel', ['date' => request('date')])  }}"
+                                            style="color: inherit; text-decoration: none;">إكسيل</a>
+                                    </button>
+                                    {{-- <button class="btn btn-secondary buttons-print" type="button" onclick="window.print()">
+                                        <span>طباعة</span>
+                                    </button> --}}
+                                </div>
+                                <div id="example1_processing" class="dataTables_processing card" style="display: none;">
+                                    الرجاء الإنتظار جاري تحميل البيانات
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row p-0">
                             <div class="col-sm-12 p-0">
                                 <table style="border-radius: 5px !important; overflow-x: hidden;"
@@ -137,6 +171,7 @@
 
                                         <?php
                                         $total = 0;
+                                        $totalTax = 0;
                                         ?>
                                         @foreach ($sale_bills as $index => $sale_bill)
                                             <tr class="{{ $index % 2 == 0 ? 'even' : 'odd' }}" role="row">
@@ -153,9 +188,12 @@
                                                 </td>
                                                 <td>{{ $sale_bill->date }}</td>
                                                 <td>{{ $sale_bill->time }}</td>
-                                                <td>{{  $sale_bill->store?->store_name ?? ' '}}</td>
+                                                <td>{{ $sale_bill->store?->store_name ?? ' ' }}</td>
                                                 <td>
-                                                    @php $total += $sale_bill->final_total; @endphp
+                                                    @php
+                                                        $total += $sale_bill->final_total;
+                                                        $totalTax += $sale_bill->total_tax;
+                                                    @endphp
                                                     {{ $sale_bill->final_total }} {{ $company->extra_settings->currency }}
                                                 </td>
                                                 <td>{{ $sale_bill->elements->count() }}</td>
@@ -209,7 +247,7 @@
                                                                 </svg>
                                                                 {{ __('sidebar.edit or return') }}
                                                             </a>
-                                                             <form
+                                                            <form
                                                                 action="{{ route('client.sale_bills.deleteBill', ['billid' => $sale_bill->id]) }}"
                                                                 method="POST" style="display: inline;"
                                                                 onsubmit="return confirmDelete()">
@@ -223,7 +261,7 @@
 
                                                             <script>
                                                                 function confirmDelete() {
-                                                                       return confirm("@lang('main.delete_confirm')");
+                                                                    return confirm("@lang('main.delete_confirm')");
                                                                 }
                                                             </script>
                                                         </div>
@@ -239,12 +277,21 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="mt-1 mb-1">
-                        <span class="badge badge-success p-1 font-weight-bold">
-                            {{ __('sidebar.Total billing prices') }}
-                            ( {{ floatval($total) }} ) {{ $company->extra_settings->currency }}
-                        </span>
+                    <div class="d-flex justify-content-between mt-1 mb-1">
+                        <div>
+                            <span class="badge badge-success p-1 font-weight-bold">
+                                {{ __('sidebar.Total billing prices') }}
+                                ( {{ floatval($total) }} ) {{ $company->extra_settings->currency }}
+                            </span>
+                        </div>
+                        <div>
+                            <span class="badge badge-success p-1 font-weight-bold">
+                                {{ __('sidebar.Total billing taxes') }}
+                                ( {{ floatval($totalTax) }} ) {{ $company->extra_settings->currency }}
+                            </span>
+                        </div>
                     </div>
+
 
                 </div>
             </div>
@@ -374,5 +421,9 @@
                 $(this).prop('checked', !$(this).is(':checked'));
             }
         });
+        $('#dateFilter').on('change', function() {
+            $('#dateFilterForm').submit();
+        });
+
     });
 </script>

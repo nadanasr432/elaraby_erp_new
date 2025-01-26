@@ -1055,6 +1055,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::get('/groups/export/excel', [GroupeController::class, 'exportExcel'])->name('groupe.export.excel');
             Route::get('/countries/export/excel', [CountryController::class, 'exportExcel'])->name('countries.export.excel');
             Route::get('/building_roles/export/excel', [BuildingRoleController::class, 'exportExcel'])->name('building_roles.export.excel');
+            Route::get('/sale-bills/export/excel', [SaleBillController1::class, 'exportExcel'])->name('sale_bills.export.excel');
             Route::get('/rooms/export/excel', [RoomController::class, 'exportExcel'])->name('rooms.export.excel');
             Route::get('/places/export/excel', [PlaceController::class, 'exportExcel'])->name('places.export.excel');
 

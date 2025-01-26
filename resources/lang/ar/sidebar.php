@@ -221,7 +221,6 @@ return [
     "New sales"=> "المبيعات الجديدة",
     "edit or return"=>"تعديل او استرجاع",
     "start_date"=>"تاريخ البداية",
-    "products-deleted"=>"المنتجات المحذوفه"
-
-
+    "products-deleted"=>"المنتجات المحذوفه",
+    "Total billing taxes" => " اجمالى ضرائب الفواتير",
 ];

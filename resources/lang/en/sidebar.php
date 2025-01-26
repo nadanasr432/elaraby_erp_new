@@ -190,6 +190,7 @@ return [
     "New sales"=> "New sales",
     "edit or return"=> "edit or return",
     "start_date"=> "Start date",
-    "products-deleted"=> "Deleted Products"
+    "products-deleted"=> "Deleted Products",
+    "Total billing taxes"=>"Total billing taxes",
 
 ];
