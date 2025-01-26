@@ -127,22 +127,42 @@
                     <div id="example-table_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer p-0">
                         <div class="d-flex justify-content-between align-items-top">
                             <div class="col-sm-4">
-                                <form method="GET" action="{{ route('client.sale_bills.index1') }}" id="dateFilterForm">
-                                    <input type="date" name="date" class="form-control" placeholder="Date"
-                                        value="{{ request('date') }}" id="dateFilter">
+                                <form method="GET" action="{{ route('client.sale_bills.index1') }}" id="dateFilterForm"
+                                    class="d-flex align-items-end  gap-3">
+                                    <div class="d-flex flex-column align-items-start">
+                                        <label for="fromDate" class="form-label mb-1">{{ __('main.from') }}</label>
+                                        <input type="date" name="from" class="form-control" placeholder="From Date"
+                                            value="{{ request('from') }}" id="fromDate">
+                                    </div>
+                                    <div class="d-flex flex-column align-items-start ml-2 mr-2">
+                                        <label for="toDate" class="form-label mb-1">{{ __('main.to') }}</label>
+                                        <input type="date" name="to" class="form-control" placeholder="To Date"
+                                            value="{{ request('to') }}" id="toDate">
+                                    </div>
+                                    <div class="d-flex flex-column align-items-end ml-2 mr-2">
+                                        <button type="submit"
+                                            class="btn btn-primary pull-left  mainBtnNewDes  d-flex align-items-center">
+                                            {{ __('main.save') }}
+                                        </button>
+                                    </div>
                                 </form>
-                            </div>
-                            <div id="example1_wrapper" class="col-lg-8 dataTables_wrapper dt-bootstrap4 no-footer">
-                                <div class="dt-buttons btn-group">
-                                    <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
-                                        aria-controls="example1" type="button">
-                                        <a href="{{route('sale_bills.export.excel', ['date' => request('date')])  }}"
-                                            style="color: inherit; text-decoration: none;">إكسيل</a>
+                                <div class="dt-buttons btn-group d-flex  align-items-end ">
+                                    <button class="btn btn-primary pull-left p-1 mainBtnNewDes buttons-excel buttons-html5"
+                                        tabindex="0" aria-controls="example1" type="button">
+                                        <a href="{{ route('sale_bills.export.excel', [
+                                            'from' => request('from', 'default_from_value'),
+                                            'to' => request('to', 'default_to_value'),
+                                        ]) }}"
+                                            style="color: inherit; text-decoration: none;">تصدير كشيت إكسيل</a>
+
                                     </button>
                                     {{-- <button class="btn btn-secondary buttons-print" type="button" onclick="window.print()">
                                         <span>طباعة</span>
                                     </button> --}}
                                 </div>
+                            </div>
+                            <div id="example1_wrapper" class="col-lg-4 dataTables_wrapper dt-bootstrap4 no-footer ">
+
                                 <div id="example1_processing" class="dataTables_processing card" style="display: none;">
                                     الرجاء الإنتظار جاري تحميل البيانات
                                 </div>

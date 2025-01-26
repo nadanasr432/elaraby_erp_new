@@ -14,6 +14,7 @@ use App\Models\Company;
 use App\Models\Product;
 use App\Models\Voucher;
 use App\Models\BankCash;
+use App\Models\SaleBill;
 use App\Models\SaleBill1;
 use App\Models\OuterClient;
 use App\Models\Transaction;
@@ -27,6 +28,7 @@ use App\Models\SaleBillReturn;
 use App\Services\StockService;
 use App\Exports\saleBillExport;
 use App\Models\accounting_tree;
+use App\Models\SaleBillElement;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Exports\SaleBillsExport;
 use App\Models\SaleBillElement1;
@@ -77,15 +79,16 @@ class SaleBillController1 extends Controller
         $company_id = Auth::user()->company_id;
         $company = Company::findOrFail($company_id);
 
-        // Get the date filter value from the request
-        $date = $request->input('date');
+        // Get the 'from' and 'to' date filter values from the request
+        $from = $request->input('from');
+        $to = $request->input('to');
 
-        // Fetching sale bills filtered by the date
+        // Fetching sale bills filtered by the date range
         $sale_bills = SaleBill1::latest()
             ->where('company_id', $company_id)
             ->where('status', 'done')
-            ->when($date, function ($query) use ($date) {
-                $query->whereDate('date', $date); // Replace 'date' with your actual date column
+            ->when($from && $to, function ($query) use ($from, $to) {
+                $query->whereBetween('date', [$from, $to]); // Replace 'date' with your actual date column
             })
             ->get();
 
@@ -106,8 +109,8 @@ class SaleBillController1 extends Controller
         // Count filtered collections
         $sale_bills_count = SaleBill1::where('company_id', $company_id)
             ->where('status', 'done')
-            ->when($date, function ($query) use ($date) {
-                $query->whereDate('date', $date);
+            ->when($from && $to, function ($query) use ($from, $to) {
+                $query->whereBetween('date', [$from, $to]); // Replace 'date' with your actual date column
             })
             ->count();
 
@@ -123,11 +126,10 @@ class SaleBillController1 extends Controller
             'sale_bills_count',
             'outer_clients_count',
             'products_count',
-            'date'
+            'from',
+            'to'
         ));
     }
-
-
 
 
     public function delete_bill(Request $request)
@@ -3454,6 +3456,6 @@ class SaleBillController1 extends Controller
     }
     public function exportExcel(Request $request)
     {
-        return Excel::download(new SaleBillsExport($request->date), 'sale_bills.xlsx');
+        return Excel::download(new SaleBillsExport($request->from,$request->to), 'sale_bills.xlsx');
     }
 }
