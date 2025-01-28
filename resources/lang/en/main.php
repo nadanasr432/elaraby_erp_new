@@ -346,4 +346,6 @@ return [
     "error-adding-client" => "error adding client",
     "close" => "close",
     "add immediate client" => "add immediate client",
+    'value_cannot_exceed_100' => 'The value cannot exceed 100.',
+
 ];

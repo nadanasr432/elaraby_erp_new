@@ -942,6 +942,30 @@
     <input type="hidden" value="0" id="check"/>
     <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        const discountType = document.getElementById('discount_type');
+        const discountValue = document.getElementById('discount_value');
+        const applyButton = document.getElementById('exec_discount');
+
+        discountType.addEventListener('change', function () {
+            validateDiscountValue();
+        });
+
+        discountValue.addEventListener('input', function () {
+            validateDiscountValue();
+        });
+
+        function validateDiscountValue() {
+            const selectedType = discountType.value;
+            const value = parseFloat(discountValue.value);
+
+            // Check if the type requires value <= 100
+            if ((selectedType === 'percent' || selectedType === 'poundAfterTaxPercent') && value > 100) {
+                discountValue.value = 100; 
+                alert('{{ __("main.value_cannot_exceed_100") }}'); 
+            }
+        }
+        });
         var somethingChanged = false;
         $(document).ready(function(){
             $('.summernotes').summernote({
