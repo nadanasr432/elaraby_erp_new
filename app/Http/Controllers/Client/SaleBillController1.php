@@ -502,8 +502,8 @@ class SaleBillController1 extends Controller
                     ->where('client_id', $data['client_id'])
                     ->where('outer_client_id', $outer_client_id)
                     ->first();
-                $data->date = Carbon::now()->toDateString();
-                $data->time = Carbon::now()->toTimeString();
+                $data['date'] = Carbon::now()->toDateString();
+                $data['time'] = Carbon::now()->toTimeString();
                 if (empty($check)) {
                     $cash = BankCash::create($data);
                 } else {

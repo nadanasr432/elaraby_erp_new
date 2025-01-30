@@ -345,4 +345,6 @@ return [
     "error-adding-client" => "حدث مكلة في اضافة العميل",
     "close" => "اغلاق",
     "add immediate client" => "اضافة عميل سريع",
+    'value_cannot_exceed_100' => 'القيمة لا يمكن أن تتجاوز 100.',
+
 ];

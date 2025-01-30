@@ -41,17 +41,21 @@ class RoleController extends Controller
         return view('client.roles.create', compact('permission'));
     }
 
-    public function store(RoleRequest  $request)
+    public function store(RoleRequest $request)
     {
         $company_id = Auth::user()->company_id;
-        $company = Company::FindOrFail($company_id);
-
+        $company = Company::findOrFail($company_id);
+    
         $role = Role::create([
             'name' => $request->input('name'),
             'guard_name' => 'client-web',
             'company_id' => $company_id
         ]);
-        $role->syncPermissions($request->input('permission'));
+    
+        $permissions = $request->input('permission', []);
+        $validPermissions = Permission::where('guard_name', 'client-web')->whereIn('name', $permissions)->pluck('name');
+        $role->syncPermissions($validPermissions);
+    
         return redirect()->route('client.roles.index')
             ->with('success', 'تم اضافة الصلاحية بنجاح');
     }
