@@ -75,13 +75,11 @@ class SaleBillController extends Controller
         $company = Company::findOrFail($company_id);
 
         // Fetching sale bills in chunks
-        $sale_bills = collect();
-        SaleBill::latest()
-            ->where('company_id', $company_id)
-            ->where('status', 'done')
-            ->chunk(100, function ($bills) use ($sale_bills) {
-                $sale_bills->push($bills);
-            });
+        $sale_bills = SaleBill::withTrashed()
+        ->latest()
+        ->where('company_id', $company_id)
+        ->where('status', 'done')
+        ->get();
         $sale_bills = $sale_bills->flatten();
         if (in_array('مدير النظام', Auth::user()->role_name)) {
             $outer_clients = OuterClient::where('company_id', $company_id)->get();
@@ -96,7 +94,7 @@ class SaleBillController extends Controller
         $products = $company->products;
 
         // Count the collections
-        $sale_bills_count = SaleBill::where('company_id', $company_id)
+        $sale_bills_count = SaleBill::withTrashed()->where('company_id', $company_id)
             ->where('status', 'done')
             ->count();
         $outer_clients_count = $outer_clients->count();

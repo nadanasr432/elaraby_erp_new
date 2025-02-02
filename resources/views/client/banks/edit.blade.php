@@ -32,8 +32,7 @@
                     <br>
 
                     <form class="parsley-style-1" id="selectForm2" name="selectForm2"
-                        action="{{ route('client.banks.update', $bank->id) }}" enctype="multipart/form-data"
-                        method="post">
+                        action="{{ route('client.banks.update', $bank->id) }}" enctype="multipart/form-data" method="post">
                         @csrf
                         @method('PATCH')
                         <input type="hidden" name="company_id" value="{{ $company_id }}">
@@ -54,9 +53,13 @@
                             </div>
 
                             <div class="col-md-4">
-                                <label> سبب التعديل <span class="text-danger">*</span></label>
-                                <input dir="rtl" required class="form-control" name="reason" type="text">
+                                <label>سبب التعديل <span class="text-danger">*</span></label>
+                                <input dir="rtl" required class="form-control" name="reason" type="text"
+                                    id="reasonInput">
+                                <span id="reasonError" class="text-danger" style="display: none;">يجب إدخال سبب
+                                    التعديل</span>
                             </div>
+
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                             <button class="btn btn-info pd-x-20" type="submit">تحديث</button>
@@ -66,4 +69,19 @@
             </div>
         </div>
     </div>
+    <script>
+        document.getElementById('reasonInput').addEventListener('input', function() {
+            let inputField = this;
+            let errorMessage = document.getElementById('reasonError');
+
+            // Trim input and check if it's empty or contains only spaces
+            if (inputField.value.trim() === "") {
+                inputField.setCustomValidity("يرجى إدخال سبب التعديل");
+                errorMessage.style.display = "block";
+            } else {
+                inputField.setCustomValidity("");
+                errorMessage.style.display = "none";
+            }
+        });
+    </script>
 @endsection

@@ -74,7 +74,7 @@ class SaleBillController1 extends Controller
     }
 
     # index page #
-    public function index(Request $request)
+     public function index(Request $request)
     {
         $company_id = Auth::user()->company_id;
         $company = Company::findOrFail($company_id);
@@ -84,7 +84,8 @@ class SaleBillController1 extends Controller
         $to = $request->input('to');
 
         // Fetching sale bills filtered by the date range
-        $sale_bills = SaleBill1::latest()
+        $sale_bills = SaleBill1::withTrashed()
+            ->latest()
             ->where('company_id', $company_id)
             ->where('status', 'done')
             ->when($from && $to, function ($query) use ($from, $to) {
@@ -107,7 +108,7 @@ class SaleBillController1 extends Controller
         $products = $company->products;
 
         // Count filtered collections
-        $sale_bills_count = SaleBill1::where('company_id', $company_id)
+        $sale_bills_count = SaleBill1::withTrashed()->where('company_id', $company_id)
             ->where('status', 'done')
             ->when($from && $to, function ($query) use ($from, $to) {
                 $query->whereBetween('date', [$from, $to]); // Replace 'date' with your actual date column
