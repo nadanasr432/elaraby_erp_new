@@ -713,7 +713,7 @@ class getid3_quicktime extends getid3_handler
 					$atom_structure['flags_raw']              = getid3_lib::BigEndian2Int(substr($atom_data,  1, 3)); // hardcoded: 0x0000
 					$atom_structure['component_type']         =                           substr($atom_data,  4, 4);
 					$atom_structure['component_subtype']      =                           substr($atom_data,  8, 4);
-					$atom_structure['component_manufacturer'] =                           substr($atom_data, 12, 4);
+					$atom_structure['component_manufacture'] =                           substr($atom_data, 12, 4);
 					$atom_structure['component_flags_raw']    = getid3_lib::BigEndian2Int(substr($atom_data, 16, 4));
 					$atom_structure['component_flags_mask']   = getid3_lib::BigEndian2Int(substr($atom_data, 20, 4));
 					$atom_structure['component_min_version']  = getid3_lib::BigEndian2Int(substr($atom_data, 24, 4));
@@ -1181,12 +1181,12 @@ $this->warning('incomplete/incorrect handling of "stsd" with Parrot metadata in 
 					$atom_structure['flags_raw']              = getid3_lib::BigEndian2Int(substr($atom_data,  1, 3)); // hardcoded: 0x0000
 					$atom_structure['component_type']         =                           substr($atom_data,  4, 4);
 					$atom_structure['component_subtype']      =                           substr($atom_data,  8, 4);
-					$atom_structure['component_manufacturer'] =                           substr($atom_data, 12, 4);
+					$atom_structure['component_manufacture'] =                           substr($atom_data, 12, 4);
 					$atom_structure['component_flags_raw']    = getid3_lib::BigEndian2Int(substr($atom_data, 16, 4));
 					$atom_structure['component_flags_mask']   = getid3_lib::BigEndian2Int(substr($atom_data, 20, 4));
 					$atom_structure['component_name']         = $this->MaybePascal2String(substr($atom_data, 24));
 
-					if (($atom_structure['component_subtype'] == 'STpn') && ($atom_structure['component_manufacturer'] == 'zzzz')) {
+					if (($atom_structure['component_subtype'] == 'STpn') && ($atom_structure['component_manufacture'] == 'zzzz')) {
 						$info['video']['dataformat'] = 'quicktimevr';
 					}
 					break;

@@ -276,7 +276,7 @@
                             <!-- Add this div for the checkbox -->
                             <div class="form-check form-switch col-lg-6 mt-2" id="checkboxContainer"
                                 style="display: none;">
-                                <input class="form-check-input" type="checkbox" id="mySwitch" name="manufacturer"
+                                <input class="form-check-input" type="checkbox" id="mySwitch" name="manufacture"
                                     value="0">
                                 <label class="form-check-label ml-4" for="mySwitch"
                                     style="font-size: 18px !important">manufacture</label>

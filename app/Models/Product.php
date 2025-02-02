@@ -36,7 +36,7 @@ class Product extends Model
         'sub_category_id',
         'color',
         'viewed',
-        'manufacturer'
+        'manufacture'
     ];
     public function company()
     {
