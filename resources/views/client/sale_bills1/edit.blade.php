@@ -1110,7 +1110,7 @@
                         } else {
                             // Handle the case where data.status is false
                             let errorMessage = data.message ||
-                            "حدث خطأ أثناء التحديث"; // Fallback error message
+                                "حدث خطأ أثناء التحديث"; // Fallback error message
                             let errorDetails = '';
 
                             // If there are field-specific errors, build the detailed error message
@@ -1125,7 +1125,7 @@
                                 icon: 'error',
                                 title: 'خطأ',
                                 html: errorMessage + '<br>' +
-                                errorDetails, // Combine general and detailed errors
+                                    errorDetails, // Combine general and detailed errors
                                 confirmButtonText: 'موافق'
                             });
                         }
@@ -1505,6 +1505,31 @@
             }
         });
 
+        function validateDiscount() {
+            $('input[name^="products["][name$="[discount]"]').each(function() {
+                var discountInput = $(this);
+                var rowIndex = discountInput.attr('name').match(/\[(\d+)\]/)[1]; // Extract row index
+                var discountType = $('input[name="products[' + rowIndex + '][discount_type]"]:checked')
+                    .val();
+                var discountValue = parseFloat(discountInput.val());
+
+                if (discountType === 'percent' && discountValue > 100) {
+                    alert('Discount cannot be more than 100% for percentage discount.');
+                    discountInput.val(100); // Reset to maximum allowed value
+                }
+            });
+        }
+
+        function validateDiscountTotal() {
+            var discountType = $('#discount_type').val(); // Get selected discount type
+            var discountValue = parseFloat($('#discount_value').val()); // Get discount value
+
+            // Check if discount type is percentage-based
+            if ((discountType === 'percent' || discountType === 'poundAfterTaxPercent') && discountValue > 100) {
+                alert('الخصم لا يمكن أن يكون أكثر من 100% لنوع الخصم المحدد.');
+                $('#discount_value').val(100); // Reset discount value to 100
+            }
+        }
         $(document).ready(function() {
             var rowIndex = 0;
             var roductPrice = 0;
@@ -1937,10 +1962,14 @@
             });
 
             $('#products_table').on('input', '.price, .quantity, .discount, .tax_amount', function() {
+                validateDiscount();
                 var row = $(this).closest('tr');
                 handleTaxCalculation();
             });
-
+            $('#discount_value').on('input', function() {
+                validateDiscount();
+                validateDiscountTotal();
+            });
             $('#products_table').on('change', '.tax_type', function() {
                 var row = $(this).closest('tr');
                 var taxAmountField = row.find(`input[name="products[${row.data('index')}][tax_amount]"]`);
@@ -1954,6 +1983,7 @@
             });
 
             $('#products_table').on('change', '.discount_type', function() {
+                validateDiscount();
                 var row = $(this).closest('tr');
                 calculateRowTotal(row);
             });
@@ -1966,6 +1996,7 @@
             });
 
             $('#discount_type, #discount_value').on('change', function() {
+                validateDiscountTotal();
                 calculateGrandTotal();
             });
 
@@ -1994,6 +2025,33 @@
             }
 
             handleTaxCalculation(); // Initial call to set the correct tax logic
+        });
+        $(document).ready(function() {
+            // Function to validate discount based on discount type
+            function validateDiscount() {
+                $('input[name^="products["][name$="[discount]"]').each(function() {
+                    var discountInput = $(this);
+                    var rowIndex = discountInput.attr('name').match(/\[(\d+)\]/)[1]; // Extract row index
+                    var discountType = $('input[name="products[' + rowIndex + '][discount_type]"]:checked')
+                        .val();
+                    var discountValue = parseFloat(discountInput.val());
+
+                    if (discountType === 'percent' && discountValue > 100) {
+                        alert('Discount cannot be more than 100% for percentage discount.');
+                        discountInput.val(100); // Reset to maximum allowed value
+                    }
+                });
+            }
+
+            // Attach the validation function to the discount input change event
+            $('input[name^="products["][name$="[discount]"]').on('input', function() {
+                validateDiscount();
+            });
+
+            // Attach the validation function to the discount type change event
+            $('input[name^="products["][name$="[discount_type]"]').on('change', function() {
+                validateDiscount();
+            });
         });
     </script>
 @endsection

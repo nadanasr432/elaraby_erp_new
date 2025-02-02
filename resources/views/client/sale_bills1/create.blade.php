@@ -1550,6 +1550,38 @@
             }
         });
 
+        function validateDiscount() {
+            $('input[name^="products["][name$="[discount]"]').each(function() {
+                var discountInput = $(this);
+                var rowIndex = discountInput.attr('name').match(/\[(\d+)\]/)[1]; // Extract row index
+                var discountType = $('input[name="products[' + rowIndex + '][discount_type]"]:checked')
+                    .val();
+                var discountValue = parseFloat(discountInput.val());
+
+                if (discountType === 'percent' && discountValue > 100) {
+                    alert('Discount cannot be more than 100% for percentage discount.');
+                    discountInput.val(100); // Reset to maximum allowed value
+                }
+            });
+        }
+
+        function validateDiscountTotal() {
+            var discountType = $('#discount_type').val(); // Get selected discount type
+            var discountValue = parseFloat($('#discount_value').val()); // Get discount value
+
+            // Check if discount type is percentage-based
+            if ((discountType === 'percent' || discountType === 'poundAfterTaxPercent') && discountValue > 100) {
+                alert('الخصم لا يمكن أن يكون أكثر من 100% لنوع الخصم المحدد.');
+                $('#discount_value').val(100); // Reset discount value to 100
+            }
+        }
+
+        // Attach validation to discount value input change
+        $('#discount_value').on('input', function() {
+            validateDiscount();
+            validateDiscountTotal();
+        });
+
         $(document).ready(function() {
             var rowIndex = 0;
             var roductPrice = 0;
@@ -1980,6 +2012,7 @@
 
             $('#products_table').on('input', '.price, .quantity, .discount, .tax_amount', function() {
                 var row = $(this).closest('tr');
+                validateDiscount();
                 handleTaxCalculation();
             });
 
@@ -2008,6 +2041,8 @@
             });
 
             $('#discount_type, #discount_value').on('change', function() {
+                validateDiscount();
+                validateDiscountTotal();
                 calculateGrandTotal();
             });
 

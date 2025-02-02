@@ -87,7 +87,6 @@ class ReportController extends Controller
                 $posBills = PosOpen::where('company_id', $company_id)
                     ->where('outer_client_id', $outer_client_k->id)
                     ->whereBetween('created_at', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
-
             }
         }
         $outer_clients = $company->outerClients;
@@ -131,14 +130,13 @@ class ReportController extends Controller
                     array_push($posBills, $posBill);
                 }
                 $posBills = array_unique($posBills);
-
             }
         } else {
             if ($product_id == "all") {
                 $saleBills = SaleBill::where('company_id', $company_id)
-                    ->whereBetween('created_at', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
+                    ->whereBetween('date', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
                 $posBills = PosOpen::where('company_id', $company_id)
-                    ->whereBetween('created_at', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
+                    ->whereBetween('date', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
             } else {
                 $saleBillElements = SaleBillElement::where('company_id', $company_id)
                     ->where('product_id', $product_id)
@@ -161,12 +159,13 @@ class ReportController extends Controller
                     array_push($posBills, $posBill);
                 }
                 $posBills = array_unique($posBills);
-
             }
         }
         $products = $company->products;
-        return view('client.reports.report2',
-            compact('from_date', 'to_date', 'products', 'company', 'company_id', 'saleBills', 'posBills', 'currency', 'product_id'));
+        return view(
+            'client.reports.report2',
+            compact('from_date', 'to_date', 'products', 'company', 'company_id', 'saleBills', 'posBills', 'currency', 'product_id')
+        );
     }
 
     public function get_report3()
@@ -196,12 +195,12 @@ class ReportController extends Controller
         } else {
             if ($supplier_id == "all") {
                 $buyBills = BuyBill::where('company_id', $company_id)
-                    ->whereBetween('created_at', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
+                    ->whereBetween('date', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
             } else {
                 $supplier_k = Supplier::FindOrFail($supplier_id);
                 $buyBills = BuyBill::where('company_id', $company_id)
                     ->where('supplier_id', $supplier_k->id)
-                    ->whereBetween('created_at', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
+                    ->whereBetween('date', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
             }
         }
 
@@ -226,6 +225,7 @@ class ReportController extends Controller
         $product_id = $request->product_id;
         $from_date = $request->from_date;
         $to_date = $request->to_date;
+
         if (empty($from_date) || empty($to_date)) {
             if ($product_id == "all") {
                 $buyBills = $company->buy_bills;
@@ -241,11 +241,11 @@ class ReportController extends Controller
         } else {
             if ($product_id == "all") {
                 $buyBills = BuyBill::where('company_id', $company_id)
-                    ->whereBetween('created_at', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
+                    ->whereBetween('date', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
             } else {
                 $buyBillElements = buyBillElement::where('company_id', $company_id)
                     ->where('product_id', $product_id)
-                    ->whereBetween('created_at', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])
+                    ->whereBetween('date', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])
                     ->get();
                 $buyBills = array();
                 foreach ($buyBillElements as $element) {
@@ -255,9 +255,16 @@ class ReportController extends Controller
                 $buyBills = array_unique($buyBills);
             }
         }
-        $products = $company->products;
-        return view('client.reports.report4',
-            compact('from_date', 'to_date', 'products', 'company', 'company_id', 'buyBills', 'currency', 'product_id'));
+
+        // Filter products to exclude those with category names "خدمية" or "مجمعة"
+        $products = $company->products()->whereDoesntHave('category', function ($query) {
+            $query->whereIn('category_type', ['خدمية', 'مجمع']);
+        })->get();
+
+        return view(
+            'client.reports.report4',
+            compact('from_date', 'to_date', 'products', 'company', 'company_id', 'buyBills', 'currency', 'product_id')
+        );
     }
 
     public function get_report5()
@@ -288,8 +295,10 @@ class ReportController extends Controller
             $total_balances = "";
         }
         $outer_clients = $company->outerClients;
-        return view('client.reports.report5',
-            compact('outerClients', 'company', 'total_balances', 'company_id', 'outer_clients', 'currency', 'outer_client_id'));
+        return view(
+            'client.reports.report5',
+            compact('outerClients', 'company', 'total_balances', 'company_id', 'outer_clients', 'currency', 'outer_client_id')
+        );
     }
 
     public function get_report6()
@@ -320,8 +329,10 @@ class ReportController extends Controller
             $total_balances = "";
         }
         $suppliers = $company->suppliers;
-        return view('client.reports.report6',
-            compact('Suppliers', 'company', 'total_balances', 'company_id', 'suppliers', 'currency', 'supplier_id'));
+        return view(
+            'client.reports.report6',
+            compact('Suppliers', 'company', 'total_balances', 'company_id', 'suppliers', 'currency', 'supplier_id')
+        );
     }
 
     public function get_report7()
@@ -361,8 +372,10 @@ class ReportController extends Controller
             $capital_amounts = $capital_amounts + $capital->amount;
         }
         $safes = $company->safes;
-        return view('client.reports.report7',
-            compact('safes', 'capital_amounts', 'company', 'capitals', 'company_id', 'from_date', 'to_date', 'currency', 'safe_id'));
+        return view(
+            'client.reports.report7',
+            compact('safes', 'capital_amounts', 'company', 'capitals', 'company_id', 'from_date', 'to_date', 'currency', 'safe_id')
+        );
     }
 
     public function get_report8()
@@ -387,7 +400,7 @@ class ReportController extends Controller
                 $buyBills = $company->buy_bills;
             } else {
                 $buyBills = BuyBill::where('company_id', $company_id)
-                    ->whereBetween('created_at', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
+                    ->whereBetween('date', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
             }
         } else {
 
@@ -411,8 +424,10 @@ class ReportController extends Controller
             }
         }
         $products = $company->products;
-        return view('client.reports.report8',
-            compact('products', 'company', 'buyBills', 'company_id', 'from_date', 'to_date', 'currency', 'product_id'));
+        return view(
+            'client.reports.report8',
+            compact('products', 'company', 'buyBills', 'company_id', 'from_date', 'to_date', 'currency', 'product_id')
+        );
     }
 
     public function get_report9()
@@ -437,7 +452,7 @@ class ReportController extends Controller
                 $buyBills = $company->buy_bills;
             } else {
                 $buyBills = BuyBill::where('company_id', $company_id)
-                    ->whereBetween('created_at', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
+                    ->whereBetween('date', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
             }
         } else {
 
@@ -461,8 +476,10 @@ class ReportController extends Controller
             }
         }
         $products = $company->products;
-        return view('client.reports.report9',
-            compact('products', 'company', 'buyBills', 'company_id', 'from_date', 'to_date', 'currency', 'product_id'));
+        return view(
+            'client.reports.report9',
+            compact('products', 'company', 'buyBills', 'company_id', 'from_date', 'to_date', 'currency', 'product_id')
+        );
     }
 
 
@@ -489,7 +506,7 @@ class ReportController extends Controller
                 $posBills = $company->pos_bills;
             } else {
                 $saleBills = SaleBill::where('company_id', $company_id)
-                    ->whereBetween('created_at', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
+                    ->whereBetween('date', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
                 $posBills = PosOpen::where('company_id', $company_id)
                     ->whereBetween('created_at', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
             }
@@ -531,8 +548,10 @@ class ReportController extends Controller
             }
         }
         $products = $company->products;
-        return view('client.reports.report10',
-            compact('products', 'company', 'saleBills','posBills', 'company_id', 'from_date', 'to_date', 'currency', 'product_id'));
+        return view(
+            'client.reports.report10',
+            compact('products', 'company', 'saleBills', 'posBills', 'company_id', 'from_date', 'to_date', 'currency', 'product_id')
+        );
     }
 
     public function get_report11()
@@ -572,8 +591,10 @@ class ReportController extends Controller
             }
         }
         $outer_clients = $company->outerClients;
-        return view('client.reports.report11',
-            compact('outer_clients', 'company', 'cashs', 'company_id', 'from_date', 'to_date', 'currency', 'outer_client_id'));
+        return view(
+            'client.reports.report11',
+            compact('outer_clients', 'company', 'cashs', 'company_id', 'from_date', 'to_date', 'currency', 'outer_client_id')
+        );
     }
 
 
@@ -602,7 +623,7 @@ class ReportController extends Controller
             } else {
                 $buy_cashs = BuyCash::where('company_id', $company_id)
                     ->where('amount', '>', 0)
-                    ->whereBetween('created_at', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
+                    ->whereBetween('date', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
             }
         } else {
             if (empty($from_date) || empty($to_date)) {
@@ -610,12 +631,14 @@ class ReportController extends Controller
             } else {
                 $buy_cashs = BuyCash::where('supplier_id', $supplier_id)
                     ->where('amount', '>', 0)
-                    ->whereBetween('created_at', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
+                    ->whereBetween('date', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
             }
         }
         $suppliers = $company->suppliers;
-        return view('client.reports.report12',
-            compact('suppliers', 'company', 'buy_cashs', 'company_id', 'from_date', 'to_date', 'currency', 'supplier_id'));
+        return view(
+            'client.reports.report12',
+            compact('suppliers', 'company', 'buy_cashs', 'company_id', 'from_date', 'to_date', 'currency', 'supplier_id')
+        );
     }
 
     public function get_report13()
@@ -638,12 +661,14 @@ class ReportController extends Controller
             $pos_bills = $company->pos_bills;
         } else {
             $sale_bills = SaleBill::where('company_id', $company_id)
-                ->whereBetween('created_at', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
+                ->whereBetween('date', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
             $pos_bills = PosOpen::where('company_id', $company_id)
-                ->whereBetween('created_at', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
+                ->whereBetween('date', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
         }
-        return view('client.reports.report13',
-            compact('company', 'sale_bills','pos_bills', 'company_id', 'from_date', 'to_date', 'currency'));
+        return view(
+            'client.reports.report13',
+            compact('company', 'sale_bills', 'pos_bills', 'company_id', 'from_date', 'to_date', 'currency')
+        );
     }
 
     public function get_report14()
@@ -679,8 +704,10 @@ class ReportController extends Controller
             }
         }
         $fixed_expenses = $company->fixed_expenses;
-        return view('client.reports.report14',
-            compact('company', 'expenses', 'fixed_expenses', 'company_id', 'from_date', 'fixed_expense', 'to_date', 'currency'));
+        return view(
+            'client.reports.report14',
+            compact('company', 'expenses', 'fixed_expenses', 'company_id', 'from_date', 'fixed_expense', 'to_date', 'currency')
+        );
     }
 
     public function get_report15()
@@ -739,10 +766,26 @@ class ReportController extends Controller
                 ->get();
         }
         $banks = $company->banks;
-        return view('client.reports.report15',
-            compact('company', 'banks', 'bank_k', 'bank_modifications',
-                'bank_processes', 'bank_transfers', 'bank_cash', 'bank_buy_cash',
-                'company_id', 'from_date', 'safe_bank_transfers', 'bank_safe_transfers', 'bank_id', 'to_date', 'currency'));
+        return view(
+            'client.reports.report15',
+            compact(
+                'company',
+                'banks',
+                'bank_k',
+                'bank_modifications',
+                'bank_processes',
+                'bank_transfers',
+                'bank_cash',
+                'bank_buy_cash',
+                'company_id',
+                'from_date',
+                'safe_bank_transfers',
+                'bank_safe_transfers',
+                'bank_id',
+                'to_date',
+                'currency'
+            )
+        );
     }
 
     public function get_report16()
@@ -853,10 +896,29 @@ class ReportController extends Controller
             $total_purchase_prices = array_sum($purchase_prices);
         }
         $result = "result";
-        return view('client.reports.report16',
-            compact('from_date', 'to_date', 'company', 'company_id', 'safes_balances', 'banks_balances',
-                'total_purchase_prices', 'result', 'outerClients', 'suppliers', 'sale_bills', 'cashs', 'buy_cashs',
-                'capitals', 'expenses', 'buy_bills', 'currency','pos_bills'));
+        return view(
+            'client.reports.report16',
+            compact(
+                'from_date',
+                'to_date',
+                'company',
+                'company_id',
+                'safes_balances',
+                'banks_balances',
+                'total_purchase_prices',
+                'result',
+                'outerClients',
+                'suppliers',
+                'sale_bills',
+                'cashs',
+                'buy_cashs',
+                'capitals',
+                'expenses',
+                'buy_bills',
+                'currency',
+                'pos_bills'
+            )
+        );
     }
 
     public function get_report17()
@@ -896,8 +958,10 @@ class ReportController extends Controller
         foreach ($safes as $safe) {
             $safes_balances = $safes_balances + $safe->balance;
         }
-        return view('client.reports.report17',
-            compact('company', 'company_id', 'safes_balances', 'type', 'from_date', 'cashs', 'buy_cashs', 'expenses', 'capitals', 'to_date', 'currency'));
+        return view(
+            'client.reports.report17',
+            compact('company', 'company_id', 'safes_balances', 'type', 'from_date', 'cashs', 'buy_cashs', 'expenses', 'capitals', 'to_date', 'currency')
+        );
     }
 
     public function get_report18()
@@ -940,8 +1004,10 @@ class ReportController extends Controller
                 }
                 array_multisort(array_column($final_sales, 'count'), SORT_DESC, SORT_NATURAL | SORT_FLAG_CASE, $final_sales);
 
-                return view('client.reports.report18',
-                    compact('from_date', 'to_date', 'company', 'count', 'submit', 'count_arr', 'products_arr', 'final_sales', 'company_id', 'currency'));
+                return view(
+                    'client.reports.report18',
+                    compact('from_date', 'to_date', 'company', 'count', 'submit', 'count_arr', 'products_arr', 'final_sales', 'company_id', 'currency')
+                );
             } elseif (isset($submit) && !empty($submit) && $submit == "best_profits") {
                 $products = $company->products;
                 $products_arr = array();
@@ -970,8 +1036,10 @@ class ReportController extends Controller
                     array_push($final_profits, $new_array);
                 }
                 array_multisort(array_column($final_profits, 'profit'), SORT_DESC, SORT_NATURAL | SORT_FLAG_CASE, $final_profits);
-                return view('client.reports.report18',
-                    compact('from_date', 'to_date', 'company', 'count', 'submit', 'profit_arr', 'final_profits', 'products_arr', 'company_id', 'currency'));
+                return view(
+                    'client.reports.report18',
+                    compact('from_date', 'to_date', 'company', 'count', 'submit', 'profit_arr', 'final_profits', 'products_arr', 'company_id', 'currency')
+                );
             }
         } else {
             if (isset($submit) && !empty($submit) && $submit == "best_sales") {
@@ -996,8 +1064,10 @@ class ReportController extends Controller
                 }
                 array_multisort(array_column($final_sales, 'count'), SORT_DESC, SORT_NATURAL | SORT_FLAG_CASE, $final_sales);
 
-                return view('client.reports.report18',
-                    compact('from_date', 'to_date', 'company', 'count', 'submit', 'count_arr', 'products_arr', 'final_sales', 'company_id', 'currency'));
+                return view(
+                    'client.reports.report18',
+                    compact('from_date', 'to_date', 'company', 'count', 'submit', 'count_arr', 'products_arr', 'final_sales', 'company_id', 'currency')
+                );
             } elseif (isset($submit) && !empty($submit) && $submit == "best_profits") {
                 $products = $company->products;
                 $products_arr = array();
@@ -1027,8 +1097,10 @@ class ReportController extends Controller
                     array_push($final_profits, $new_array);
                 }
                 array_multisort(array_column($final_profits, 'profit'), SORT_DESC, SORT_NATURAL | SORT_FLAG_CASE, $final_profits);
-                return view('client.reports.report18',
-                    compact('from_date', 'to_date', 'company', 'count', 'submit', 'profit_arr', 'final_profits', 'products_arr', 'company_id', 'currency'));
+                return view(
+                    'client.reports.report18',
+                    compact('from_date', 'to_date', 'company', 'count', 'submit', 'profit_arr', 'final_profits', 'products_arr', 'company_id', 'currency')
+                );
             }
         }
     }
@@ -1075,18 +1147,27 @@ class ReportController extends Controller
             $sale_elements = SaleBillElement::where('product_id', $product_k->id)
                 ->whereBetween('created_at', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])
                 ->get();
-                                // dd($sale_elements );
+            // dd($sale_elements );
 
             $total_sale_elements = 0;
             foreach ($sale_elements as $sale_element) {
                 $total_sale_elements = $total_sale_elements + $sale_element->quantity;
             }
             $total_sold = $total_sale_elements;
-
         }
 
-        return view('client.reports.report19', compact('from_date', 'to_date', 'stores', 'product_id', 'products', 'total_sold',
-            'total_buy_elements', 'product_k', 'company_id', 'company'));
+        return view('client.reports.report19', compact(
+            'from_date',
+            'to_date',
+            'stores',
+            'product_id',
+            'products',
+            'total_sold',
+            'total_buy_elements',
+            'product_k',
+            'company_id',
+            'company'
+        ));
     }
 
     public function get_report20()
@@ -1144,9 +1225,26 @@ class ReportController extends Controller
                 ->whereBetween('created_at', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])
                 ->get();
         }
-        return view('client.reports.report20',
-            compact('from_date', 'to_date', 'safes', 'safes_transfers', 'safe_id', 'safe_k', 'company_id', 'company', 'bank_safe_transfers', 'safe_bank_transfers'
-                , 'capitals', 'cashs', 'employees_cashs', 'buy_cashs', 'expenses'));
+        return view(
+            'client.reports.report20',
+            compact(
+                'from_date',
+                'to_date',
+                'safes',
+                'safes_transfers',
+                'safe_id',
+                'safe_k',
+                'company_id',
+                'company',
+                'bank_safe_transfers',
+                'safe_bank_transfers',
+                'capitals',
+                'cashs',
+                'employees_cashs',
+                'buy_cashs',
+                'expenses'
+            )
+        );
     }
 
     public function get_report21()
@@ -1218,7 +1316,6 @@ class ReportController extends Controller
                     ->whereBetween('created_at', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])
                     ->get();
             }
-
         }
 
         if (!$stores->isEmpty()) {
@@ -1232,10 +1329,26 @@ class ReportController extends Controller
             }
         }
 
-        return view('client.reports.report21',
-            compact('from_date', 'to_date', 'branch_id', 'branch_k', 'company_id', 'company',
-                'bank_safe_transfers', 'safe_bank_transfers', 'branches', 'products_k'
-                , 'capitals', 'cashs', 'employees_cashs', 'buy_cashs', 'expenses'));
+        return view(
+            'client.reports.report21',
+            compact(
+                'from_date',
+                'to_date',
+                'branch_id',
+                'branch_k',
+                'company_id',
+                'company',
+                'bank_safe_transfers',
+                'safe_bank_transfers',
+                'branches',
+                'products_k',
+                'capitals',
+                'cashs',
+                'employees_cashs',
+                'buy_cashs',
+                'expenses'
+            )
+        );
     }
 
     public function get_report22()
@@ -1265,7 +1378,9 @@ class ReportController extends Controller
             $buy_bills = BuyBill::where('company_id', $company_id)
                 ->whereBetween('created_at', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
         }
-        return view('client.reports.report22',
-            compact('from_date', 'currency', 'to_date', 'company_id', 'company', 'sale_bills', 'pos_bills', 'buy_bills'));
+        return view(
+            'client.reports.report22',
+            compact('from_date', 'currency', 'to_date', 'company_id', 'company', 'sale_bills', 'pos_bills', 'buy_bills')
+        );
     }
 }
