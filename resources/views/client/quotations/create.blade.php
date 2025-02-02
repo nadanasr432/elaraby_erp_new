@@ -142,7 +142,7 @@
                         <option value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
                     @endforeach
                 </select> --}}
-                    <a target="_blank" href="{{ route('client.products.create') }} }}" role="button"
+                    <a target="_blank" href="{{ route('client.products.create') }}" role="button"
                         class="btn btn-primary">
                         <i class="fa fa-plus" aria-hidden="true"> </i> {{ __('sales_bills.add-product') }}
                     </a>
@@ -602,7 +602,7 @@
                     return false; // Stop submission
                 }
                     if (
-                
+
                     discountValue > grandTotal+discountValue
                 ) {
                     Swal.fire({
@@ -712,7 +712,7 @@
                     return false; // Stop submission
                 }
                    if (
-                
+
                     discountValue > grandTotal+discountValue
                 ) {
                     Swal.fire({
