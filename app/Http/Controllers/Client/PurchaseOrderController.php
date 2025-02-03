@@ -25,6 +25,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PurchaseOrderElement;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Requests\StorePurchaseOrderRequest;
 
 class PurchaseOrderController extends Controller
 {
@@ -331,14 +332,14 @@ class PurchaseOrderController extends Controller
         ]);
     }
 
-    public function save(Request $request)
+    public function save(StorePurchaseOrderRequest $request)
     {
         $data = $request->all();
         $store = Store::find($data['store_id']);
         $supplier = Supplier::find($data['supplier_id']);
         // dd( $supplier);
 
-        if (!$store->accountingTree) {
+        if (!$store?->accountingTree) {
             $accountingTree = new \App\Models\accounting_tree();
             $accountingTree->account_name =  ' حساب مخزون ' . $store->store_name;
             $accountingTree->account_name_en =  $store->store_name . 'Account';
@@ -356,7 +357,7 @@ class PurchaseOrderController extends Controller
             $accountingTree->type = 'sub';
             $supplier->accountingTree()->save($accountingTree);
         }
-        $storeAccountId = $store->accountingTree->id;
+        $storeAccountId = $store?->accountingTree?->id;
         $supplierAccountId = $supplier->accountingTree->id;
         // add prev_balance to account
         $data['company_id'] = Auth::user()->company_id;

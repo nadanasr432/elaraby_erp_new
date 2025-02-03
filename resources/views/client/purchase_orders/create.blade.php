@@ -92,7 +92,7 @@
         <div class="col-lg-3 pull-right no-print">
             <label for=""> {{ __('sales_bills.select-store') }} </label>
             <select name="store_id" id="store_id" class="selectpicker" data-style="btn-warning" data-live-search="true"
-                title="{{ __('sales_bills.select-store') }}">
+                title="{{ __('sales_bills.select-store') }}" required>
                 @foreach ($stores as $store)
                     {{-- @if ($stores->count() == 1)
                         <option selected value="{{ $store->id }}">{{ $store->store_name }}</option>
@@ -258,6 +258,42 @@
     <input type="hidden" id="total" placeholder="اجمالى قبل الخصم" name="total" />
     <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
     <script>
+        $(document).ready(function() {
+            // Function to validate discount value based on discount type
+            function validateDiscount() {
+                var discountType = $('#discount_type').val(); // Get selected discount type
+                var discountValue = parseFloat($('#discount_value').val()); // Get discount value
+
+                // Check if discount value is a valid number
+                if (isNaN(discountValue)) {
+                    alert('الرجاء إدخال قيمة خصم صحيحة.');
+                    $('#discount_value').val(0); // Reset discount value to 0
+                    return;
+                }
+
+                // Check if discount type is percentage-based
+                if ((discountType === 'percent') && discountValue > 100) {
+                    alert('الخصم لا يمكن أن يكون أكثر من 100% لنوع الخصم المحدد.');
+                    $('#discount_value').val(100); // Reset discount value to 100
+                }
+            }
+
+            // Attach validation to discount value input change
+            $(document).on('input', '#discount_value', function() {
+                validateDiscount();
+            });
+
+            // Attach validation to discount type change
+            $(document).on('change', '#discount_type', function() {
+                validateDiscount();
+            });
+
+            // Enable fields dynamically (if needed)
+            $(document).on('click', '#enableFieldsButton', function() {
+                $('#discount_type').prop('disabled', false);
+                $('#discount_value').prop('disabled', false);
+            });
+        });
         $('#supplier_id').on('change', function() {
             let supplier_id = $(this).val();
             if (supplier_id != "" || supplier_id != "0") {
@@ -288,8 +324,10 @@
         $('#product_id').on('change', function() {
             let product_id = $(this).val();
             let supplier_id = $('#supplier_id').val();
-            if (supplier_id == "") {
-                alert("لابد ان تختار المورد أولا");
+            let store_id = $('#store_id').val();
+
+            if (supplier_id == "" || store_id == "") {
+                alert("لابد ان تختار المورد والمخزن أولا");
             } else {
                 $.post("{{ url('/client/purchase_orders/get') }}", {
                     product_id: product_id,
@@ -336,7 +374,7 @@
             let extra_type = $('#extra_type').val();
             let extra_value = $('#extra_value').val();
             let first_balance = parseFloat($('#quantity').attr('max'));
-            if (supplier_id == "") {
+            if (supplier_id == "" || store_id == "") {
                 alert("لابد ان تختار المورد أولا");
             } else {
                 if (product_id == "" || product_id <= "0") {
