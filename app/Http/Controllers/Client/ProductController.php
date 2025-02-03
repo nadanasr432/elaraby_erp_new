@@ -144,9 +144,11 @@ class ProductController extends Controller
         $categories = Category::where('company_id', $company_id)->get();
         $sub_categories = SubCategory::where('company_id', $company_id)->get();
         $units = $company->units;
-        $products = Product::where('company_id', $company_id)->whereHas('category', function ($query) {
-            $query->where('category_type', 'مخزونية');
-        })->get();
+        $products = Product::where('company_id', $company_id)
+            ->where('first_balance', '!=', 0)
+            ->whereHas('category', function ($query) {
+                $query->where('category_type', 'مخزونية');
+            })->get();
         $check = Product::where('company_id', $company_id)->get();
         if ($check->isEmpty()) {
             $code_universal = "100000001";
