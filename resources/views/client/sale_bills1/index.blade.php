@@ -99,7 +99,7 @@
                                             </path>
                                         </svg>
                                     </span>
-                                    {{ __('sidebar.Add a new sales invoice') }}
+                                    {{ __('sidebar.add-new-sales-invoice') }}
                                 </a>
 
                                 <a onclick="history.back()"

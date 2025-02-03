@@ -180,7 +180,7 @@ return [
     "new" => "جديد",
     "addNewQuotation" => "اضافة عرض سعر",
     "back" => "العودة",
-    "Add a new sales invoice" => "اضافة فاتورة بيع جديدة",
+    "Add a new sales invoice" => "اضافة فاتورة مبيعات",
     "invoice number" => "رقم الفاتورة",
     "customer name" => "اسم العميل",
     "Invoice date" => "تاريخ الفاتورة",
@@ -199,7 +199,7 @@ return [
 
     ///////////////////////////
     ///
-    "Add a new sales invoice" => "اضافة فاتورة بيع جديدة",
+    "Add a new sales invoice" => "اضافة فاتورة مبيعات",
     "invoice number" => "رقم الفاتورة",
     "customer name" => "اسم العميل",
     "Invoice date" => "تاريخ الفاتورة",

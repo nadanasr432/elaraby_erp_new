@@ -63,7 +63,7 @@
                 @if (isset($open_sale_bill) && !empty($open_sale_bill))
                     {{ __('sales_bills.modify-customer-sales-invoice') }}
                 @else
-                    {{ __('sidebar.add-new-sales-invoice') }}
+                    {{ __('sidebar.Add a new sales invoice') }}
                 @endif
 
                 <span class="badge badge-warning text-dark  font-weight-bold">
