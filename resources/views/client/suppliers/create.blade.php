@@ -68,7 +68,7 @@
                                     name="balance" /> {{ __('main.for') }}
                                 <input style="margin-right:5px;margin-left:5px;" type="radio" value="on" name="balance" />
                                 {{ __('main.on') }}
-                                <input type="number" step="1" required value="0" name="prev_balance" class="form-control"
+                                <input type="number" step="any" required value="0" name="prev_balance" class="form-control"
                                     dir="ltr" />
                             </div>
                             <div class="form-group pull-right col-lg-6" dir="ltr">

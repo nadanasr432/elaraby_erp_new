@@ -79,7 +79,7 @@
                                 {{ __('main.for') }}
                                 <input style="margin-right:5px;margin-left:5px;" checked type="radio" value="on"
                                     name="balance" /> {{ __('main.on') }}
-                                <input required type="number" value="0" name="prev_balance" class="form-control" step="1"
+                                <input required type="number" value="0" name="prev_balance" class="form-control"  step="any"
                                     dir="ltr" />
                             </div>
                             <div class="form-group pull-right col-lg-6" dir="ltr">
