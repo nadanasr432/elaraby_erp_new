@@ -33,7 +33,7 @@
                         <a class="btn btn-primary btn-sm pull-left" href="{{ route('client.outer_clients.index') }}">
                             {{ __('main.back') }}</a>
                         <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success">
-                            اضافة عميل جديد </h5>
+                           @lang('main.Update Client Information')</h5>
                     </div>
                     <div class="clearfix"></div>
                     <br>

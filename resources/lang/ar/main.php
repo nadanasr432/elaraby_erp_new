@@ -346,5 +346,6 @@ return [
     "close" => "اغلاق",
     "add immediate client" => "اضافة عميل سريع",
     'value_cannot_exceed_100' => 'القيمة لا يمكن أن تتجاوز 100.',
+    "Update Client Information"=>"تحديث بيانات العميل"
 
 ];

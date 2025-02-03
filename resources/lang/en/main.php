@@ -347,5 +347,6 @@ return [
     "close" => "close",
     "add immediate client" => "add immediate client",
     'value_cannot_exceed_100' => 'The value cannot exceed 100.',
+    "Update Client Information"=>"Update Client Information"
 
 ];
