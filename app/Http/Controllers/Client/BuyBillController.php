@@ -46,7 +46,10 @@ class BuyBillController extends Controller
 
         # set formData to pass to view.
         $categories = $company->categories;
-        $all_products = $company->products;
+        $all_products = Product::where('company_id', $company_id)
+        ->whereHas('category', function ($query) {
+        $query->where('category_type', '!=', 'خدمية');
+        })->get();
         $stores = $company->stores;
         $units = $company->units;
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
