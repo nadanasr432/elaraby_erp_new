@@ -66,8 +66,7 @@
 
                             <div class="col-md-4">
                                 <label> المبلغ المدفوع <span class="text-danger">*</span></label>
-                                <input required class="form-control" value="{{ $buy_cash->amount }}" name="amount"
-                                    type="text" dir="ltr">
+                                <input required class="form-control" name="amount" type="number" value="{{ $buy_cash->amount }}" dir="ltr" min="0.001" step="any">
                             </div>
                         </div>
                         <div class="row mb-3">
