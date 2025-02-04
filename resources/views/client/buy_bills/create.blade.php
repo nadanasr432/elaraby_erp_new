@@ -853,6 +853,7 @@
         //---------on adding new product to buy_invoice-------//
         $('#add').on('click', function () {
             let supplier_id = $('#supplier_id').val();
+            let store_id = $('#store_id').val();
             let buy_bill_number = $('#buy_bill_number').val();
             let product_id = $('#product_id').val();
             let product_price = $('#product_price').val();
@@ -885,6 +886,7 @@
                 } else {
                     $.post("{{ url('/client/buy-bills/post') }}", {
                         supplier_id: supplier_id,
+                        store_id: store_id,
                         buy_bill_number: buy_bill_number,
                         product_id: product_id,
                         product_price: product_price,

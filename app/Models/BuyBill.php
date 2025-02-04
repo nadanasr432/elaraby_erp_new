@@ -8,7 +8,7 @@ class BuyBill extends Model
 {
     protected $table = "buy_bills";
     protected $fillable = [
-        'company_id','company_counter','client_id','supplier_id','buy_bill_number','date','time','notes'
+        'company_id','company_counter','client_id', 'store_id','supplier_id','buy_bill_number','date','time','notes'
         ,'final_total','status','paid','rest','value_added_tax'
     ];
     public function elements(){
@@ -22,6 +22,9 @@ class BuyBill extends Model
     }
     public function supplier(){
         return $this->belongsTo('\App\Models\Supplier','supplier_id','id');
+    }
+    public function store(){
+        return $this->belongsTo('\App\Models\store','store_id','id');
     }
     public function client(){
         return $this->belongsTo('\App\Models\Client','client_id','id');

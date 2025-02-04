@@ -471,14 +471,8 @@
                                     <!--    @endif-->
                                     <!--    {{ $currency }}-->
                                     <!--@endif --}}-->
-                                    @if ($realtotal > 0)
-                                        @if ($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
-                                            ({{ $discount2->value }})
-                                            {{ $currency }}
-                                        @elseif($discount2)
-                                            ({{ $discount2->value }}%)
-                                        @endif
-                                    @endif
+                                      ({{ $sale_bill->total_discount }})
+                                        {{ $currency }}
                                 </td>
                                 <td style="text-align: right;padding-right: 14px;">(Discount) الخصم</td>
                             </tr>

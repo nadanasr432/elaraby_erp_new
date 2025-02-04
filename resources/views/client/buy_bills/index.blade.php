@@ -13,7 +13,6 @@
         height: 30px !important;
         padding: 5px !important;
     }
-
 </style>
 @section('content')
     @if (session('success'))
@@ -102,6 +101,26 @@
             </div>
         </form>
     </div>
+    <div class="col-lg-3 pull-right no-print">
+        <form action="{{ route('client.buy_bills.filter.storeId') }}" method="POST">
+            @csrf
+            <div class="form-group">
+                <label style="display:block;" for="store_id">{{ __('sales_bills.store-name') }}</label>
+                <select required class="selectpicker" data-live-search="true" title="{{ __('main.write-or-choose') }}"
+                    data-style="btn-warning" name="store_id" id="store_id">
+                    @foreach ($stores as $store)
+                        <option title="{{ $store->store_name }}" @if (isset($store_k) && $store->id == $store_k->id) selected @endif
+                            value="{{ $store->id }}">{{ $store->store_name }}
+                        </option>
+                    @endforeach
+                </select>
+                <button type="submit" class="btn btn-md btn-warning"
+                    style="display: inline !important; width: 20% !important; float: left !important;"
+                    id="by_product_name"><i class="fa fa-search"></i></button>
+            </div>
+        </form>
+    </div>
+
     <div class="clearfix"></div>
     <div class="row" style="margin-top: 30px !important;">
         <div class="col-lg-12 text-center">
@@ -337,6 +356,8 @@
                         <th>رقم الفاتورة</th>
                         <th>تاريخ الفاتورة</th>
                         <th> وقت الفاتورة</th>
+                        <th>اسم المورد</th>
+                        <th>اسم المخزن</th>
                         <th>الاجمالى النهائى</th>
                         <th>عدد العناصر</th>
                         <th>عرض</th>
@@ -350,6 +371,9 @@
                                 <td>{{ $buy_bill->buy_bill_number }}</td>
                                 <td>{{ $buy_bill->date }}</td>
                                 <td>{{ $buy_bill->time }}</td>
+                                <td>{{ $buy_bill->supplier->supplier_name }}</td>
+                                <td>{{ $buy_bill->store->store_name }}</td>
+
                                 <td>
                                     <?php $sum = 0; ?>
                                     @foreach ($buy_bill->elements as $element)
@@ -386,7 +410,132 @@
                                         $buy_bill_extra_value = ($buy_bill_extra_value / 100) * $sum;
                                     }
                                     $after_discount = $sum + $buy_bill_extra_value;
-                                    
+
+                                    if ($buy_bill_discount_type == 'percent') {
+                                        $buy_bill_discount_value = ($buy_bill_discount_value / 100) * $sum;
+                                    }
+                                    $after_discount = $sum - $buy_bill_discount_value;
+                                    $after_discount = $sum - $buy_bill_discount_value + $buy_bill_extra_value;
+                                    $tax_value_added = $company->tax_value_added;
+                                    $percentage = ($tax_value_added / 100) * $after_discount;
+                                    $after_total = $after_discount + $percentage;
+                                    echo floatval($after_total) . ' ' . $currency;
+                                    ?>
+                                    <?php $total = $total + $after_total; ?>
+                                </td>
+                                <td>{{ $buy_bill->elements->count() }}</td>
+                                <td>
+                                    <form class="d-inline" action="{{ route('client.buy_bills.filter.key') }}"
+                                        method="POST">
+                                        @csrf
+                                        @method('POST')
+                                        <input type="hidden" name="buy_bill_id" value="{{ $buy_bill->id }}">
+                                        <button type="submit" class="btn btn-sm btn-success">
+                                            <i class="fa fa-eye"></i> عرض
+                                        </button>
+                                    </form>
+                                    <button bill_id="{{ $buy_bill->id }}"
+                                        buy_bill_number="{{ $buy_bill->buy_bill_number }}" data-toggle="modal"
+                                        href="#modaldemo9" title="delete" type="button"
+                                        class="modal-effect btn btn-sm btn-danger delete_bill d-inline">
+                                        <i class="fa fa-trash"></i>
+                                        حذف
+                                    </button>
+
+                                    <a href="{{ route('client.buy_bills.edit', $buy_bill->id) }}" role="button"
+                                        class="btn btn-sm btn-success d-inline">
+                                        <i class="fa fa-trash"></i>
+                                        تعديل
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <div class="mt-3">
+                    <span class="alert alert-secondary alert-sm mr-5">
+                        عدد الفواتير المتاحة لهذا المورد
+                        ( {{ $i }} )
+                    </span>
+
+                    <span class="alert alert-secondary alert-sm">
+                        اجمالى اسعار كل الفواتير لهذا المورد
+                        ( {{ floatval($total) }} ) {{ $currency }}
+                    </span>
+                </div>
+            @else
+                <div class="alert alert-sm alert-danger text-center mt-3">
+                    <i class="fa fa-close"></i>
+                    لا توجد اى فواتير لهذا المورد
+                </div>
+            @endif
+        @endif
+        @if (isset($store_buy_bills))
+            @if (!$store_buy_bills->isEmpty())
+                <div class="alert alert-sm alert-success text-center mt-1 mb-2">
+                    الفواتير المتاحة لـ
+                    {{ $store_k->store_name }}
+                </div>
+                <table class='table table-condensed table-striped table-bordered'>
+                    <thead class="text-center">
+                        <th>#</th>
+                        <th>رقم الفاتورة</th>
+                        <th>تاريخ الفاتورة</th>
+                        <th> وقت الفاتورة</th>
+                        <th>اسم المورد</th>
+                        <th>اسم المخزن</th>
+                        <th>الاجمالى النهائى</th>
+                        <th>عدد العناصر</th>
+                        <th>عرض</th>
+                    </thead>
+                    <tbody>
+                        <?php $i = 0;
+                        $total = 0; ?>
+                        @foreach ($store_buy_bills as $buy_bill)
+                            <tr>
+                                <td>{{ ++$i }}</td>
+                                <td>{{ $buy_bill->buy_bill_number }}</td>
+                                <td>{{ $buy_bill->date }}</td>
+                                <td>{{ $buy_bill->time }}</td>
+                                <td>{{ $buy_bill->supplier->supplier_name }}</td>
+                                <td>{{ $buy_bill->store->store_name }}</td>
+                                <td>
+                                    <?php $sum = 0; ?>
+                                    @foreach ($buy_bill->elements as $element)
+                                        <?php $sum = $sum + $element->quantity_price; ?>
+                                    @endforeach
+                                    <?php
+                                    $extras = $buy_bill->extras;
+                                    foreach ($extras as $key) {
+                                        if ($key->action == 'discount') {
+                                            if ($key->action_type == 'pound') {
+                                                $buy_bill_discount_value = $key->value;
+                                                $buy_bill_discount_type = 'pound';
+                                            } else {
+                                                $buy_bill_discount_value = $key->value;
+                                                $buy_bill_discount_type = 'percent';
+                                            }
+                                        } else {
+                                            if ($key->action_type == 'pound') {
+                                                $buy_bill_extra_value = $key->value;
+                                                $buy_bill_extra_type = 'pound';
+                                            } else {
+                                                $buy_bill_extra_value = $key->value;
+                                                $buy_bill_extra_type = 'percent';
+                                            }
+                                        }
+                                    }
+                                    if ($extras->isEmpty()) {
+                                        $buy_bill_discount_value = 0;
+                                        $buy_bill_extra_value = 0;
+                                        $buy_bill_discount_type = 'pound';
+                                        $buy_bill_extra_type = 'pound';
+                                    }
+                                    if ($buy_bill_extra_type == 'percent') {
+                                        $buy_bill_extra_value = ($buy_bill_extra_value / 100) * $sum;
+                                    }
+                                    $after_discount = $sum + $buy_bill_extra_value;
+
                                     if ($buy_bill_discount_type == 'percent') {
                                         $buy_bill_discount_value = ($buy_bill_discount_value / 100) * $sum;
                                     }
@@ -471,7 +620,7 @@
                             <tr>
                                 <td>{{ ++$i }}</td>
                                 <td>{{ $buy_bill->buy_bill_number }}</td>
-                                <td>{{ $buy_bill->supplier->supplier_name }}</td>
+                                <td>{{ $buy_bill->store->store_name }}</td>
                                 <td>{{ $buy_bill->date }}</td>
                                 <td>{{ $buy_bill->time }}</td>
                                 <td>
@@ -510,7 +659,7 @@
                                         $buy_bill_extra_value = ($buy_bill_extra_value / 100) * $sum;
                                     }
                                     $after_discount = $sum + $buy_bill_extra_value;
-                                    
+
                                     if ($buy_bill_discount_type == 'percent') {
                                         $buy_bill_discount_value = ($buy_bill_discount_value / 100) * $sum;
                                     }
@@ -632,7 +781,7 @@
                                         $buy_bill_extra_value = ($buy_bill_extra_value / 100) * $sum;
                                     }
                                     $after_discount = $sum + $buy_bill_extra_value;
-                                    
+
                                     if ($buy_bill_discount_type == 'percent') {
                                         $buy_bill_discount_value = ($buy_bill_discount_value / 100) * $sum;
                                     }

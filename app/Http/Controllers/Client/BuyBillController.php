@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Models\Bank;
 use App\Models\Cash;
 use App\Models\Safe;
+use App\Models\Store;
 use App\Models\BuyBill;
 use App\Models\BuyCash;
 use App\Models\Company;
@@ -12,8 +13,8 @@ use App\Models\Product;
 use App\Models\BankCash;
 use App\Models\Supplier;
 use App\Models\BankBuyCash;
-use App\Mail\sendingBuyBill;
 
+use App\Mail\sendingBuyBill;
 use App\Models\BuyBillExtra;
 use Illuminate\Http\Request;
 use App\Models\BuyBillReturn;
@@ -33,8 +34,9 @@ class BuyBillController extends Controller
         $buy_bills = BuyBill::where('company_id', $company_id)->where('status', 'done')->get();
 
         $suppliers = $company->suppliers;
+        $stores = $company->stores;
         $products = $company->products;
-        return view('client.buy_bills.index', compact('company', 'products', 'company_id', 'suppliers', 'buy_bills'));
+        return view('client.buy_bills.index', compact('company', 'products', 'company_id', 'suppliers', 'buy_bills', 'stores'));
     }
 
     public function create()
@@ -47,9 +49,9 @@ class BuyBillController extends Controller
         # set formData to pass to view.
         $categories = $company->categories;
         $all_products = Product::where('company_id', $company_id)
-        ->whereHas('category', function ($query) {
-        $query->where('category_type', '!=', 'خدمية');
-        })->get();
+            ->whereHas('category', function ($query) {
+                $query->where('category_type', '!=', 'خدمية');
+            })->get();
         $stores = $company->stores;
         $units = $company->units;
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
@@ -82,17 +84,44 @@ class BuyBillController extends Controller
                 $open_buy_bill = $step;
                 $buy_bill_cash = BuyCash::where('bill_id', $step->buy_bill_number)->get();
                 $buy_bill_bank_cash = BankBuyCash::where('bill_id', $step->buy_bill_number)->get();
-                return view('client.buy_bills.create', compact('company', 'buy_bill_cash',
-                    'units', 'buy_bill_bank_cash', 'open_buy_bill', 'pre_cash', 'stores',
-                    'safes', 'banks', 'suppliers', 'categories', 'extra_settings', 'company_id',
-                    'all_products', 'pre_bill', 'countBills', 'countCashs'));
+                return view('client.buy_bills.create', compact(
+                    'company',
+                    'buy_bill_cash',
+                    'units',
+                    'buy_bill_bank_cash',
+                    'open_buy_bill',
+                    'pre_cash',
+                    'stores',
+                    'safes',
+                    'banks',
+                    'suppliers',
+                    'categories',
+                    'extra_settings',
+                    'company_id',
+                    'all_products',
+                    'pre_bill',
+                    'countBills',
+                    'countCashs'
+                ));
             } else {
                 $open_buy_bill = "";
-                return view('client.buy_bills.create', compact('company',
-                    'open_buy_bill', 'units', 'pre_cash', 'stores', 'safes',
-                    'banks', 'suppliers', 'categories', 'extra_settings', 'company_id',
-                    'all_products', 'pre_bill', 'countBills', 'countCashs'));
-
+                return view('client.buy_bills.create', compact(
+                    'company',
+                    'open_buy_bill',
+                    'units',
+                    'pre_cash',
+                    'stores',
+                    'safes',
+                    'banks',
+                    'suppliers',
+                    'categories',
+                    'extra_settings',
+                    'company_id',
+                    'all_products',
+                    'pre_bill',
+                    'countBills',
+                    'countCashs'
+                ));
             }
         } else {
             if ($bills_count > $company_bills_count) {
@@ -106,15 +135,46 @@ class BuyBillController extends Controller
                         ->get();
                     $buy_bill_bank_cash = BankBuyCash::where('bill_id', $step->buy_bill_number)
                         ->get();
-                    return view('client.buy_bills.create',
-                        compact('company', 'buy_bill_cash', 'units', 'buy_bill_bank_cash', 'open_buy_bill', 'pre_cash', 'stores', 'safes', 'banks', 'suppliers', 'categories', 'extra_settings'
-                            , 'company_id', 'all_products', 'pre_bill'));
+                    return view(
+                        'client.buy_bills.create',
+                        compact(
+                            'company',
+                            'buy_bill_cash',
+                            'units',
+                            'buy_bill_bank_cash',
+                            'open_buy_bill',
+                            'pre_cash',
+                            'stores',
+                            'safes',
+                            'banks',
+                            'suppliers',
+                            'categories',
+                            'extra_settings',
+                            'company_id',
+                            'all_products',
+                            'pre_bill'
+                        )
+                    );
                 } else {
                     $open_buy_bill = "";
-                    return view('client.buy_bills.create',
-                        compact('company', 'open_buy_bill', 'units', 'pre_cash', 'stores', 'safes', 'banks', 'suppliers', 'categories', 'extra_settings'
-                            , 'company_id', 'all_products', 'pre_bill'));
-
+                    return view(
+                        'client.buy_bills.create',
+                        compact(
+                            'company',
+                            'open_buy_bill',
+                            'units',
+                            'pre_cash',
+                            'stores',
+                            'safes',
+                            'banks',
+                            'suppliers',
+                            'categories',
+                            'extra_settings',
+                            'company_id',
+                            'all_products',
+                            'pre_bill'
+                        )
+                    );
                 }
             } else {
                 return redirect()->route('client.home')->with('error', 'باقتك الحالية لا تسمح بالمزيد من فواتير الشراء');
@@ -205,7 +265,6 @@ class BuyBillController extends Controller
     {
         # get formData.
         $data = $request->all();
-
         # get companyData.
         $data['company_id'] = Auth::user()->company_id;
         $company = Company::FindOrFail($data['company_id']);
@@ -339,7 +398,6 @@ class BuyBillController extends Controller
                 </div>
                 <div class='clearfix'></div>
             </div>";
-
         }
 
         # echo scripts.
@@ -483,15 +541,14 @@ class BuyBillController extends Controller
             $tax_option = $buy_bill->value_added_tax;
             if (isset($after_discount) && $after_discount != 0) {
                 # calc final_total with inserted tax if inclusive or exclusive.
-                if ($tax_option == 0) {#exclusive
+                if ($tax_option == 0) { #exclusive
                     $percentage = ($tax_value_added / 100) * $after_discount;
                     $after_total = $after_discount + $percentage;
                 } else # so its inclusive
                     $after_total = $after_discount;
-
             } else {
                 # calc final_total with inserted tax if inclusive or exclusive.
-                if ($tax_option == 0) {#exclusive
+                if ($tax_option == 0) { #exclusive
                     $percentage = ($tax_value_added / 100) * $total;
                     $after_total = $total + $percentage;
                 } else # so its inclusive
@@ -567,7 +624,6 @@ class BuyBillController extends Controller
                 } else {
                     $after_extra = $total + $extra_value;
                 }
-
             } else if ($extra_type == "percent") {
                 $value = $extra_value / 100 * $total;
                 if (isset($previous_discount_value) && $previous_discount_value != 0) {
@@ -581,14 +637,14 @@ class BuyBillController extends Controller
             $tax_option = $buy_bill->value_added_tax;
             if (isset($after_extra) && $after_extra != 0) {
                 # calc final_total with inserted tax if inclusive or exclusive.
-                if ($tax_option == 0) {#exclusive
+                if ($tax_option == 0) { #exclusive
                     $percentage = ($tax_value_added / 100) * $after_extra;
                     $after_total = $after_extra + $percentage;
                 } else # so its inclusive
                     $after_total = $after_extra;
             } else {
                 # calc final_total with inserted tax if inclusive or exclusive.
-                if ($tax_option == 0) {#exclusive
+                if ($tax_option == 0) { #exclusive
                     $percentage = ($tax_value_added / 100) * $total;
                     $after_total = $total + $percentage;
                 } else # so its inclusive
@@ -675,14 +731,14 @@ class BuyBillController extends Controller
         $tax_option = $buy_bill->value_added_tax;
         if (isset($after_discount) && $after_discount != 0) {
             # calc final_total with inserted tax if inclusive or exclusive.
-            if ($tax_option == 0) {#exclusive
+            if ($tax_option == 0) { #exclusive
                 $percentage = ($tax_value_added / 100) * $after_discount;
                 $after_total_all = $after_discount + $percentage;
             } else # so its inclusive
                 $after_total_all = $after_discount;
         } else {
             # calc final_total with inserted tax if inclusive or exclusive.
-            if ($tax_option == 0) {#exclusive
+            if ($tax_option == 0) { #exclusive
                 $percentage = ($tax_value_added / 100) * $total;
                 $after_total_all = $total + $percentage;
             } else # so its inclusive
@@ -750,7 +806,6 @@ class BuyBillController extends Controller
                 $previous_discount_value = $previous_discount_value / 100 * $total;
             }
             $after_discount = $total - $previous_discount_value;
-
         }
         if (!empty($previous_extra) && !empty($previous_discount)) {
             $after_discount = $total - $previous_discount_value + $previous_extra_value;
@@ -761,14 +816,14 @@ class BuyBillController extends Controller
         $tax_option = $buy_bill->value_added_tax;
         if (isset($after_discount) && $after_discount != 0) {
             # calc final_total with inserted tax if inclusive or exclusive.
-            if ($tax_option == 0) {#exclusive
+            if ($tax_option == 0) { #exclusive
                 $percentage = ($tax_value_added / 100) * $after_discount;
                 $after_total_all = $after_discount + $percentage;
             } else # so its inclusive
                 $after_total_all = $after_discount;
         } else {
             # calc final_total with inserted tax if inclusive or exclusive.
-            if ($tax_option == 0) {#exclusive
+            if ($tax_option == 0) { #exclusive
                 $percentage = ($tax_value_added / 100) * $total;
                 $after_total_all = $total + $percentage;
             } else # so its inclusive
@@ -1058,6 +1113,7 @@ class BuyBillController extends Controller
         $products = $company->products;
         $buy_bills = BuyBill::where('company_id', $company_id)->where('status', 'done')->get();
         $suppliers = $company->suppliers;
+        $stores = $company->stores;
 
         $product_id = $request->product_name;
         $product_k = Product::FindOrFail($product_id);
@@ -1073,8 +1129,9 @@ class BuyBillController extends Controller
         }
         $my_array = array_unique($arr);
         $product_buy_bills = BuyBill::whereIn('id', $my_array)->get();
-        return view('client.buy_bills.index', compact('currency', 'product_k', 'products', 'product_buy_bills', 'buy_bills', 'suppliers', 'company'));
+        return view('client.buy_bills.index', compact('currency', 'product_k', 'products', 'product_buy_bills', 'buy_bills', 'suppliers', 'company', 'stores'));
     }
+
 
     public function filter_all(Request $request)
     {
@@ -1097,7 +1154,7 @@ class BuyBillController extends Controller
         $products = $company->products;
         $buy_bills = BuyBill::where('company_id', $company_id)->where('status', 'done')->get();
         $suppliers = $company->suppliers;
-
+        $stores = $company->stores;
         $supplier_id = $request->supplier_id;
         $supplier_k = Supplier::FindOrFail($supplier_id);
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
@@ -1105,7 +1162,37 @@ class BuyBillController extends Controller
 
         $supplier_buy_bills = BuyBill::where('supplier_id', $supplier_k->id)->get();
 
-        return view('client.buy_bills.index', compact('currency', 'products', 'supplier_k', 'supplier_buy_bills', 'buy_bills', 'suppliers', 'company'));
+        return view('client.buy_bills.index', compact('currency', 'products', 'supplier_k', 'supplier_buy_bills', 'buy_bills', 'suppliers', 'company', 'stores'));
+    }
+    public function filter_store(Request $request)
+    {
+        // Ensure store_id is passed
+        if (!$request->has('store_id')) {
+            return redirect()->back()->withErrors(__('messages.store_id_required'));
+        }
+        $company_id = Auth::user()->company_id;
+        $company = Company::findOrFail($company_id);
+        $store_id = $request->store_id;
+        $store_k = Store::where('id', $store_id)->where('company_id', $company_id)->firstOrFail();
+        $suppliers = $company->suppliers;
+        $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
+        $currency = optional($extra_settings)->currency;
+
+        $products = $company->products;
+        $buy_bills = BuyBill::where('company_id', $company_id)->where('status', 'done')->get();
+        $stores = $company->stores;
+        $store_buy_bills = BuyBill::where('store_id', $store_id)->get();
+        // dd($store_buy_bills);
+        return view('client.buy_bills.index', compact(
+            'currency',
+            'products',
+            'store_k',
+            'store_buy_bills',
+            'buy_bills',
+            'stores',
+            'company',
+            'suppliers'
+        ));
     }
 
     public function filter_key(Request $request)
@@ -1116,6 +1203,7 @@ class BuyBillController extends Controller
         $products = $company->products;
         $buy_bills = BuyBill::where('company_id', $company_id)->where('status', 'done')->get();
         $suppliers = $company->suppliers;
+        $stores = $company->stores;
 
         $buy_bill_id = $request->buy_bill_id;
 
@@ -1127,6 +1215,7 @@ class BuyBillController extends Controller
             ->where('company_id', $company_id)
             ->where('client_id', $buy_bill_k->client_id)
             ->where('supplier_id', $buy_bill_k->supplier_id)
+            ->where('store_id', $buy_bill_k->store_id)
             ->first();
 
         $elements = $buy_bill_k->elements;
@@ -1184,7 +1273,6 @@ class BuyBillController extends Controller
                 $previous_discount_value = $previous_discount_value / 100 * $total;
             }
             $after_discount = $total - $previous_discount_value;
-
         }
         if (!empty($previous_extra) && !empty($previous_discount)) {
             $after_discount = $total - $previous_discount_value + $previous_extra_value;
@@ -1200,9 +1288,27 @@ class BuyBillController extends Controller
             $after_total_all = $total + $percentage;
         }
 
-        return view('client.buy_bills.index',
-            compact('currency', 'after_discount', 'after_total_all', 'buy_bill_k', 'buy_bills', 'suppliers'
-                , 'elements', 'extras', 'products', 'cash', 'company', 'buy_bill_discount_value', 'buy_bill_discount_type', 'buy_bill_extra_value', 'buy_bill_extra_type'));
+        return view(
+            'client.buy_bills.index',
+            compact(
+                'currency',
+                'after_discount',
+                'after_total_all',
+                'buy_bill_k',
+                'buy_bills',
+                'suppliers',
+                'stores',
+                'elements',
+                'extras',
+                'products',
+                'cash',
+                'company',
+                'buy_bill_discount_value',
+                'buy_bill_discount_type',
+                'buy_bill_extra_value',
+                'buy_bill_extra_type'
+            )
+        );
     }
 
     public function get_product_price(Request $request)
@@ -1388,8 +1494,4 @@ class BuyBillController extends Controller
             'unit_id' => $element->unit_id,
         ]);
     }
-
-
 }
-
-

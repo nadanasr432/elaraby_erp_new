@@ -8,7 +8,7 @@ class PurchaseOrder extends Model
 {
     protected $table = "purchase_orders";
     protected $fillable = [
-        'company_id','client_id','supplier_id','purchase_order_number','start_date','expiration_date'
+        'company_id','store_id','client_id','supplier_id','purchase_order_number','start_date','expiration_date'
     ];
     public function elements(){
         return $this->hasMany('\App\Models\PurchaseOrderElement','purchase_order_id','id');
@@ -21,6 +21,9 @@ class PurchaseOrder extends Model
     }
     public function supplier(){
         return $this->belongsTo('\App\Models\Supplier','supplier_id','id');
+    }
+    public function store(){
+        return $this->belongsTo('\App\Models\store','store_id','id');
     }
     public function client(){
         return $this->belongsTo('\App\Models\Client','client_id','id');

@@ -22,8 +22,9 @@
             vertical-align: middle !important;
 
         }
+
         .btn {
-            font-size:1.2rem !important;
+            font-size: 1.2rem !important;
         }
 
         .text-container {
@@ -668,15 +669,8 @@
                         <td>الخصم Deduction</td>
                         <td>{{ $discountNote ? $discountNote . ' || ' : '' }}
                             {{-- @if ($discount->action_type == 'poundAfterTax') --}}
-                            @if ($realtotal > 0)
-                                @if ($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
-                                    {{ $discount2->value }}
-                                @elseif($discount2)
-                                    {{ $discount2->value }}%
-                                @else
-                                    0.00
-                                @endif
-                            @endif
+                            ({{ $sale_bill->total_discount }})
+                            {{ $currency }}
                         </td>
                     </tr>
                     <tr style="font-weight: bold;">

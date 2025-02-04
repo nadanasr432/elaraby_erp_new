@@ -22,9 +22,11 @@
             font-family: 'Cairo';
             src: url({{ asset('fonts/Cairo.ttf') }});
         }
+
         .btn {
-            font-size:1.2rem !important;
+            font-size: 1.2rem !important;
         }
+
         .borderLeftH {
             border-left: 1px solid rgba(229, 229, 229, 0.94) !important;
         }
@@ -175,8 +177,8 @@
             </button>
             <div class="col-md-3">
                 <div class="card shadow-sm border-light rounded p-3 mb-3">
-                    <button type="button" class="btn  btn-primary rounded-pill shadow-sm w-100"
-                        data-bs-toggle="modal" data-bs-target="#colorModal"
+                    <button type="button" class="btn  btn-primary rounded-pill shadow-sm w-100" data-bs-toggle="modal"
+                        data-bs-target="#colorModal"
                         style="border-color: {{ old('page_color', $currentColor ?? '#222751') }}; background-color: {{ old('page_color', $currentColor ?? '#222751') }};">
                         @lang('main.Choose Print Color')
                     </button>
@@ -519,9 +521,13 @@
                                         <td class="borderLeftH">{{ $element->tax_value }}</td>
                                         <td>{{ $element->discount_value }}{{ $element->discount_type == 'percent' ? ' %' : '' }}
                                         </td>
-                                        <td class="borderLeftH d-flex justify-content-center"><div class="text-center" style="text-align: start !important;">{!! $element->product->description !!}</div></td>
+                                        <td class="borderLeftH d-flex justify-content-center">
+                                            <div class="text-center" style="text-align: start !important;">
+                                                {!! $element->product->description !!}</div>
+                                        </td>
                                         <td class="borderLeftH">{{ $element->product->product_model }}</td>
-                                        <td class="borderLeftH">{{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
+                                        <td class="borderLeftH">
+                                            {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
                                         </td>
                                     </tr>
                                 @endforeach
@@ -589,12 +595,17 @@
 
                                     <tr
                                         style="font-size: 16px !important; height: 34px !important; text-align: center; background: #f8f9fb">
-                                        <td class="borderLeftH">{{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
+                                        <td class="borderLeftH">
+                                            {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
                                         </td>
                                         <td class="borderLeftH">{{ $element->product->product_model }}</td>
-                                        <td class="borderLeftH d-flex justify-content-center"><div class="text-center" style="text-align: start !important;">{!! $element->product->description !!}</div></td>
+                                        <td class="borderLeftH d-flex justify-content-center">
+                                            <div class="text-center" style="text-align: start !important;">
+                                                {!! $element->product->description !!}</div>
+                                        </td>
                                         <td class="borderLeftH">{{ $element->tax_value }}</td>
-                                        <td class="borderLeftH">{{ $element->discount_value }}{{ $element->discount_type == 'percent' ? ' %' : '' }}
+                                        <td class="borderLeftH">
+                                            {{ $element->discount_value }}{{ $element->discount_type == 'percent' ? ' %' : '' }}
                                         </td>
                                         <td class="borderLeftH">
                                             {{ $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
@@ -618,10 +629,10 @@
             <?php
             if ($sale_bill->company_id == 20) {
                 echo "<p style='text-align: justify; direction: rtl; font-size: 12px; padding: 11px; background: #f3f3f3; margin: 2px 10px; border-radius: 6px; border: 1px solid #2d2d2d10;'>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </p>";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </p>";
             }
             ?>
             @if (app()->getLocale() == 'en')
@@ -653,14 +664,9 @@
                                         <!--{{ $discountNote ? $discountNote . ' || ' : '' }}-->
                                         <!--{{-- ({{ round(($discountValue / $realtotal) * 100, 1) }}%) --}}-->
                                         <!--{{ $discountValue }}-->
-                                        @if ($realtotal > 0)
-                                            @if ($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
-                                                ({{ $discount2->value }})
-                                                {{ $currency }}
-                                            @elseif($discount2)
-                                                ({{ $discount2->value }}%)
-                                            @endif
-                                        @endif
+                                        ({{ $sale_bill->total_discount }})
+                                        {{ $currency }}
+
 
                                     </td>
                                 </tr>
@@ -812,14 +818,9 @@
                                         <!--{{ $discountNote ? $discountNote . ' || ' : '' }}-->
                                         <!--{{-- ({{ round(($discountValue / $realtotal) * 100, 1) }}%) --}}-->
                                         <!--{{ $discountValue }}-->
-                                        @if ($realtotal > 0)
-                                            @if ($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
-                                                ({{ $discount2->value }})
-                                                {{ $currency }}
-                                            @elseif($discount2)
-                                                ({{ $discount2->value }}%)
-                                            @endif
-                                        @endif
+                                        ({{ $sale_bill->total_discount }})
+                                        {{ $currency }}
+
 
                                     </td>
                                     <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Discount')</td>

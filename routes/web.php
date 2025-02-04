@@ -664,6 +664,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
                 ->name('convert.to.salebill');
 
             Route::get('purchase_orders/view', [PurchaseOrderController::class, 'filter_key'])->name('client.purchase_orders.view');
+            Route::post('clients-buy-bills-filter-store', [PurchaseOrderController::class, 'filter_store'])->name('client.buy_bills.filter.storeId');
 
             // purchase_orders Routes
             Route::resource('purchase_orders', PurchaseOrderController::class)->names([
@@ -812,6 +813,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::post('clients-buy-bills-filter-supplier', [BuyBillController::class, 'filter_supplier'])->name('client.buy_bills.filter.supplier');
             Route::post('clients-buy-bills-filter-code', [BuyBillController::class, 'filter_code'])->name('client.buy_bills.filter.code');
             Route::post('clients-buy-bills-filter-product', [BuyBillController::class, 'filter_product'])->name('client.buy_bills.filter.product');
+            Route::post('clients-buy-bills-filter-store', [BuyBillController::class, 'filter_store'])->name('client.buy_bills.filter.storeId');
             Route::post('clients-buy-bills-filter-all', [BuyBillController::class, 'filter_all'])->name('client.buy_bills.filter.all');
 
             Route::post('/buy-bills/get-return', [BuyBillController::class, 'get_return']);

@@ -37,7 +37,8 @@ class PurchaseOrderController extends Controller
         $purchase_orders = $company->purchase_orders;
         $suppliers = $company->suppliers;
         $products = $company->products;
-        return view('client.purchase_orders.index', compact('company', 'products', 'company_id', 'suppliers', 'purchase_orders'));
+        $stores = $company->stores;
+        return view('client.purchase_orders.index', compact('company', 'products', 'company_id', 'suppliers', 'purchase_orders', 'stores'));
     }
 
     public function filter_code(Request $request)
@@ -47,7 +48,7 @@ class PurchaseOrderController extends Controller
         $products = $company->products;
         $purchase_orders = $company->purchase_orders;
         $suppliers = $company->suppliers;
-
+        $stores = $company->stores;
         $product_id = $request->code_universal;
         $product_k = Product::FindOrFail($product_id);
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
@@ -62,7 +63,7 @@ class PurchaseOrderController extends Controller
         }
         $my_array = array_unique($arr);
         $product_purchase_orders = PurchaseOrder::whereIn('id', $my_array)->get();
-        return view('client.purchase_orders.index', compact('currency', 'product_k', 'products', 'product_purchase_orders', 'purchase_orders', 'suppliers', 'company'));
+        return view('client.purchase_orders.index', compact('currency', 'product_k', 'products', 'product_purchase_orders', 'purchase_orders', 'suppliers', 'company', 'stores'));
     }
 
     public function filter_product(Request $request)
@@ -72,7 +73,7 @@ class PurchaseOrderController extends Controller
         $products = $company->products;
         $purchase_orders = $company->purchase_orders;
         $suppliers = $company->suppliers;
-
+        $stores = $company->stores;
         $product_id = $request->product_name;
         $product_k = Product::FindOrFail($product_id);
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
@@ -87,7 +88,7 @@ class PurchaseOrderController extends Controller
         }
         $my_array = array_unique($arr);
         $product_purchase_orders = PurchaseOrder::whereIn('id', $my_array)->get();
-        return view('client.purchase_orders.index', compact('currency', 'product_k', 'products', 'product_purchase_orders', 'purchase_orders', 'suppliers', 'company'));
+        return view('client.purchase_orders.index', compact('currency', 'product_k', 'products', 'product_purchase_orders', 'purchase_orders', 'suppliers', 'company', 'stores'));
     }
 
     public function filter_supplier(Request $request)
@@ -98,16 +99,53 @@ class PurchaseOrderController extends Controller
         $products = $company->products;
         $purchase_orders = $company->purchase_orders;
         $suppliers = $company->suppliers;
-
+        $stores = $company->stores;
         $supplier_id = $request->supplier_id;
         $supplier_k = Supplier::FindOrFail($supplier_id);
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
         $currency = $extra_settings->currency;
-
         $supplier_purchase_orders = PurchaseOrder::where('supplier_id', $supplier_k->id)->get();
 
-        return view('client.purchase_orders.index', compact('currency', 'products', 'supplier_k', 'supplier_purchase_orders', 'purchase_orders', 'suppliers', 'company'));
+        return view('client.purchase_orders.index', compact('currency', 'products', 'supplier_k', 'supplier_purchase_orders', 'purchase_orders', 'suppliers', 'company', 'stores'));
     }
+    public function filter_store(Request $request)
+    {
+        // Ensure store_id is passed
+        if (!$request->has('store_id')) {
+            return redirect()->back()->withErrors(__('messages.store_id_required'));
+        }
+
+        $company_id = Auth::user()->company_id;
+        $company = Company::findOrFail($company_id);
+
+        // Get store by store_id
+        $store_id = $request->store_id;
+        $store_k = Store::findOrFail($store_id); // Fix incorrect model usage
+
+        $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
+        $currency = optional($extra_settings)->currency;
+
+        $products = $company->products;
+        $purchase_orders = $company->purchase_orders;
+        $suppliers = $company->suppliers;
+        $stores = $company->stores;
+
+        // Fetch purchase orders for the selected store
+        $store_purchase_orders = PurchaseOrder::where('store_id', $store_k->id)->get();
+
+        return view('client.purchase_orders.index', compact(
+            'currency',
+            'products',
+            'store_k',
+            'store_purchase_orders',
+            'purchase_orders',
+            'suppliers',
+            'company',
+            'stores'
+        ));
+    }
+
+    //
     public function filter_all(Request $request)
     {
         $company_id = Auth::user()->company_id;
@@ -118,7 +156,8 @@ class PurchaseOrderController extends Controller
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
         $currency = $extra_settings->currency;
         $all_purchase_orders = $company->purchase_orders;
-        return view('client.purchase_orders.index', compact('currency', 'products', 'all_purchase_orders', 'purchase_orders', 'suppliers', 'company'));
+        $stores = $company->stores;
+        return view('client.purchase_orders.index', compact('currency', 'products', 'all_purchase_orders', 'purchase_orders', 'suppliers', 'company', 'stores'));
     }
 
     public function filter_key(Request $request)
@@ -404,7 +443,7 @@ class PurchaseOrderController extends Controller
                 'notation' => 'قيد فاتورة مشتريات رقم ' . $purchase_order->sale_bill_number,
                 'status' => 1,
                 'user_id' => auth::user()->id,
-                'company_id'=>$company->id,
+                'company_id' => $company->id,
                 'options' => 1
             ]);
             // dd( $accountId);
@@ -414,7 +453,7 @@ class PurchaseOrderController extends Controller
                 'voucher_id' => $voucher->id,
                 'amount' =>  $check->quantity_price,
                 'notation' => "مدين من فاتورةمشتريات",
-                'company_id'=>$company->id,
+                'company_id' => $company->id,
                 'type' =>  1,
             ]);
             Transaction::create([
@@ -422,7 +461,7 @@ class PurchaseOrderController extends Controller
                 'voucher_id' => $voucher->id,
                 'amount' =>  $check->quantity_price,
                 'notation' => "دائن من فاتورةمشتريات",
-                'company_id'=>$company->id,
+                'company_id' => $company->id,
                 'type' =>  0,
             ]);
             // }

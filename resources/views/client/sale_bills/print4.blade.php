@@ -22,7 +22,7 @@
             font-family: 'Cairo';
             src: url({{ asset('fonts/Cairo.ttf') }});
         }
-        
+
         .borderLeftH {
             border-left: 1px solid rgba(229, 229, 229, 0.94) !important;
         }
@@ -651,14 +651,9 @@
                                         <!--{{ $discountNote ? $discountNote . ' || ' : '' }}-->
                                         <!--{{-- ({{ round(($discountValue / $realtotal) * 100, 1) }}%) --}}-->
                                         <!--{{ $discountValue }}-->
-                                        @if ($realtotal > 0)
-                                            @if ($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
-                                                ({{ $discount2->value }})
+                                                                                   ({{ $sale_bill->total_discount }})
                                                 {{ $currency }}
-                                            @elseif($discount2)
-                                                ({{ $discount2->value }}%)
-                                            @endif
-                                        @endif
+
 
                                     </td>
                                 </tr>
@@ -810,14 +805,9 @@
                                         <!--{{ $discountNote ? $discountNote . ' || ' : '' }}-->
                                         <!--{{-- ({{ round(($discountValue / $realtotal) * 100, 1) }}%) --}}-->
                                         <!--{{ $discountValue }}-->
-                                        @if ($realtotal > 0)
-                                            @if ($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
-                                                ({{ $discount2->value }})
+                                                                                   ({{ $sale_bill->total_discount }})
                                                 {{ $currency }}
-                                            @elseif($discount2)
-                                                ({{ $discount2->value }}%)
-                                            @endif
-                                        @endif
+
 
                                     </td>
                                     <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Discount')</td>
