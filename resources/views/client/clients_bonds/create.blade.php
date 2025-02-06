@@ -83,7 +83,7 @@
 
                             <div class="col-md-3" style="    margin-top: 20px;">
                                 <label> {{ __('bonds.amount') }} <span class="text-danger">*</span></label>
-                                <input required class="form-control" dir="ltr" id="amount" name="amount" type="number" step="any">
+                                <input required class="form-control" dir="ltr" id="amount" name="amount" type="number" step="any" min="0.001">
                             </div>
 
 
