@@ -133,4 +133,5 @@ return [
     'transaction_category' => 'Transaction Category',
     'tax_number' => 'Tax Number',
     'purchases_tax_invoice' => 'Purchases Tax Invoice',
+    "Supplier data"=>"Supplier data"
 ];

@@ -283,7 +283,7 @@ $tax_value_added = $company->tax_value_added;
                             <td width="50%" class="text-{{ app()->getLocale() == 'ar' ? 'right' : 'left' }}">
                                 {{ __('sales_bills.invoice from') }}</td>
                             <td width="50%" class="text-{{ app()->getLocale() == 'ar' ? 'right' : 'left' }}">
-                                {{ __('sales_bills.Customer data') }}</td>
+                                {{ __('sales_bills.Supplier data') }}</td>
                         </tr>
 
                     </table>
@@ -321,7 +321,7 @@ $tax_value_added = $company->tax_value_added;
                     <table style="width: 100%;">
                         <tr class="d-flex bordernone">
                             <td width="40%" class="text-{{ app()->getLocale() == 'ar' ? 'right' : 'left' }}">
-                                {{ __('sales_bills.client-name') }}</td>
+                                {{ __('suppliers.supplier-name') }}</td>
                             <td width="60%" class="text-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}">
                                 {{ $buy_bill->supplier->supplier_name }}</td>
                         </tr>
@@ -513,33 +513,35 @@ $tax_value_added = $company->tax_value_added;
                         </tr>
 
                         @foreach ($extras as $key)
-                            <tr
-                                style="border-bottom: 1px solid #2d2d2d30; font-weight: bold; font-size: 16px !important; height: 37px !important; text-align: center; background: #f8f9fb; direction: {{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }};">
-                                <td
-                                    style="text-align: {{ app()->getLocale() == 'ar' ? 'right' : 'left' }}; padding-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}: 14px;">
-                                    {{ $key->action == 'discount' ? __('sales_bills.discount') : __('sales_bills.shipping_fees') }}
-                                </td>
-                                <td>
-                                    {{ $key->value }} {{ $key->action_type == 'pound' ? $currency : '%' }}
-                                </td>
-                            </tr>
+                            @if ($key->value != 0)
+                                <tr
+                                    style="border-bottom: 1px solid #2d2d2d30; font-weight: bold; font-size: 16px !important; height: 37px !important; text-align: center; background: #f8f9fb; direction: {{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }};">
+                                    <td
+                                        style="text-align: {{ app()->getLocale() == 'ar' ? 'right' : 'left' }}; padding-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}: 14px;">
+                                        {{ $key->action == 'discount' ? __('sales_bills.discount') : __('sales_bills.shipping_fees') }}
+                                    </td>
+                                    <td>
+                                        {{ $key->value }} {{ $key->action_type == 'pound' ? $currency : '%' }}
+                                    </td>
+                                </tr>
+                            @endif
                         @endforeach
 
 
-                        <tr
+                        {{-- <tr
                             style="border-bottom: 1px solid #2d2d2d30; font-weight: bold; font-size: 16px !important; height: 37px !important; text-align: center; background: #f8f9fb; direction: {{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }};">
                             <td
                                 style="text-align: {{ app()->getLocale() == 'ar' ? 'right' : 'left' }}; padding-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}: 14px;">
                                 {{ __('sales_bills.vat_tax') }}
                             </td>
                             <td>( {{ $tax_value_added }}% )</td>
-                        </tr>
+                        </tr> --}}
 
                         <tr
                             style="border-bottom: 1px solid #2d2d2d30; font-weight: bold; font-size: 16px !important; height: 37px !important; text-align: center; background: #f8f9fb; direction: {{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }};">
                             <td
                                 style="text-align: {{ app()->getLocale() == 'ar' ? 'right' : 'left' }}; padding-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}: 14px;">
-                                {{ __('sales_bills.vat_value') }}
+                                {{ __('sales_bills.vat_value') }} ( {{ $tax_value_added }}% )
                             </td>
                             <td> {{ $tax_value }} {{ $currency }}</td>
                         </tr>
