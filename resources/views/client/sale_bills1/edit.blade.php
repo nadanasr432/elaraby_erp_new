@@ -59,8 +59,27 @@
                 </div>
             </div>
         </div>
-        <!----Store--->
         <div class="row">
+            <!----CLIENT--->
+            <div class="col-md-6 pull-right no-print">
+                <label>
+                    {{ __('sales_bills.client-name') }}
+                    <span class="text-danger font-weight-bold">*</span>
+                </label>
+                <div class="d-flex align-items-center justify-content-between">
+                    <select name="outer_client_id" id="outer_client_id" data-style="btn-new_color"
+                        title="{{ __('sales_bills.client-name') }}" class="selectpicker w-100 me-2" data-live-search="true">
+                        @foreach ($outer_clients as $outer_client)
+                            <option {{ $saleBill->outer_client_id == $outer_client->id ? 'selected' : '' }}
+                                value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
+                        @endforeach
+                    </select>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClientModal">
+                        <i class="fa fa-plus" aria-hidden="true"> </i> {{ __('main.add immediate client') }}
+                    </button>
+                </div>
+            </div>
+            <!----Store--->
             <div class="col-md-6 pull-right no-print">
                 <label>
                     {{ __('sales_bills.select-store') }}
@@ -80,26 +99,6 @@
                         <i class="fa fa-plus" aria-hidden="true"> </i>
                         {{ __('sales_bills.add-store') }}
                     </a>
-                </div>
-            </div>
-            <!----CLIENT--->
-            <div class="col-md-6 pull-right no-print">
-                <label>
-                    {{ __('sales_bills.client-name') }}
-                    <span class="text-danger font-weight-bold">*</span>
-                </label>
-                <div class="d-flex align-items-center justify-content-between">
-                    <select name="outer_client_id" id="outer_client_id" data-style="btn-new_color"
-                        title="{{ __('sales_bills.client-name') }}" class="selectpicker w-100 me-2"
-                        data-live-search="true">
-                        @foreach ($outer_clients as $outer_client)
-                            <option {{ $saleBill->outer_client_id == $outer_client->id ? 'selected' : '' }}
-                                value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
-                        @endforeach
-                    </select>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClientModal">
-                        <i class="fa fa-plus" aria-hidden="true"> </i> {{ __('main.add immediate client') }}
-                    </button>
                 </div>
             </div>
         </div>
@@ -132,10 +131,9 @@
                         <option value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
                     @endforeach
                 </select> --}}
-                    <a target="_blank" href="{{ route('client.products.create') }}" role="button"
-                        class="btn btn-primary">
-                        <i class="fa fa-plus" aria-hidden="true"> </i> {{ __('sales_bills.add-product') }}
-                    </a>
+                    <button type="button" class="btn btn-primary instantProduct">
+                        <i class="fa fa-plus"></i> {{ __('main.add immediate product') }}
+                    </button>
                 </div>
             </div>
             <div class="col-md-6 pull-right no-print">
@@ -684,6 +682,109 @@
 
     <script>
         var somethingChanged = false;
+        var rowIndex = 0;
+
+        function addProductRow({
+            productId,
+            productName,
+            sectorPrice,
+            wholesalePrice,
+            remaining,
+            unitId,
+            isImmediate = false
+        }) {
+            var valueAddedTax = $('#value_added_tax').val(); // Get the selected tax setting
+
+            var rowHtml = `
+    <tr data-product-id="${productId}" data-index="${rowIndex}">
+        <td>${isImmediate ? `<input type="text" name="products[${rowIndex}][product_name]" class="form-control" placeholder="${translations.enter_product_name}" required>` : productName}</td>
+        <td class="text-left">
+            <div class="d-flex flex-column">
+                <label class="form-check-inline">
+                    <input type="radio" name="products[${rowIndex}][price_type]" value="sector" class="price_type form-check-input" checked>
+                    ${translations.sector}
+                </label>
+                <label class="form-check-inline">
+                    <input type="radio" name="products[${rowIndex}][price_type]" value="wholesale" class="price_type form-check-input">
+                    ${translations.wholesale}
+                </label>
+            </div>
+        </td>
+        <td>
+            <div class="input-group">
+                        <input type="number" hidden name="products[${rowIndex}][product_id]" class="form-control product_id w-100" value="${productId}" >
+
+                <input type="number" min="1" name="products[${rowIndex}][product_price]" class="form-control price w-100" value="${sectorPrice}" step="any">
+            </div>
+        </td>
+        <td>
+            <div class="input-group">
+                <input type="number" name="products[${rowIndex}][quantity]" class="form-control quantity w-100" value="1" min="1" max="${remaining}" step="any">
+            </div>
+        </td>
+        <td>
+            <div class="input-group">
+                <select name="products[${rowIndex}][unit_id]" class="form-control w-100 unit">
+                    <option disabled>${translations.choose_unit}</option>
+                    @foreach ($units as $unit)
+                                     <option value="{{ $unit->id }}" ${unitId === {{ $unit->id }} ? 'selected' : ''}>{{ $unit->unit_name }}</option>
+                             @endforeach
+                </select>
+            </div>
+        </td>
+        <td>
+            <div class="d-flex flex-column">
+                <label class="form-check-inline">
+                    <input type="radio" name="products[${rowIndex}][discount_type]" value="pound" class="discount_type form-check-input">
+                    ${translations.pound}
+                </label>
+                <label class="form-check-inline">
+                    <input type="radio" name="products[${rowIndex}][discount_type]" value="percent" class="discount_type form-check-input" checked>
+                    ${translations.percent}
+                </label>
+                <input type="number" name="products[${rowIndex}][discount]" class="form-control discount w-100 mt-1" value="0" min="0" step="any">
+            </div>
+        </td>
+        <td>
+            <div class="input-group">
+                <select name="products[${rowIndex}][tax]" class="form-control tax_type w-100 mb-1">
+                    <option value="0" ${valueAddedTax == 0 ? 'selected' : ''}>${translations.not_including_tax}</option>
+                    <option value="1" ${valueAddedTax == 1 ? 'selected' : ''}>${translations.exempt_tax}</option>
+                    <option value="2" ${valueAddedTax == 2 ? 'selected' : ''}>${translations.including_tax}</option>
+                </select>
+                <input type="number" readonly name="products[${rowIndex}][tax_amount]" class="form-control tax_amount w-100 mt-1" value="0" min="0" step="any">
+
+            </div>
+        </td>
+        <td>
+            <input type="number" name="products[${rowIndex}][total]" class="form-control total w-100" value="0" readonly step="any">
+        </td>
+        <td>
+            <button type="button" class="btn btn-danger btn-sm remove-product">${translations.remove}</button>
+        </td>
+    </tr>
+  `;
+
+            $('#products_table tbody').append(rowHtml);
+            rowIndex++;
+        }
+
+        function handleAddProductRow(event) {
+            event.preventDefault();
+            rowIndex = $('#products_table tbody tr').length;
+            console.log(rowIndex);
+
+            // Call the addProductRow function with the required parameters
+            addProductRow({
+                productId: `new-${rowIndex}`,
+                productName: '',
+                sectorPrice: 0,
+                wholesalePrice: 0,
+                remaining: 99999,
+                unitId: 191,
+                isImmediate: true
+            });
+        }
         $(document).ready(function() {
             $('.summernotes').summernote({
                 height: 100,
@@ -1921,7 +2022,22 @@
                 calculateGrandTotal();
             });
 
+            // Handle "Add Product" button
+            $('.instantProduct').on('click', function(e) {
+                rowIndex = $('#products_table tbody tr').length;
+                console.log('Row index:', rowIndex);
 
+                // Call the addProductRow function with the required parameters
+                addProductRow({
+                    productId: `new-${rowIndex}`,
+                    productName: '',
+                    sectorPrice: 0,
+                    wholesalePrice: 0,
+                    remaining: 99999,
+                    unitId: 191,
+                    isImmediate: true
+                });
+            });
 
             $('#products_table').on('input', '.quantity', function() {
                 var row = $(this).closest('tr');

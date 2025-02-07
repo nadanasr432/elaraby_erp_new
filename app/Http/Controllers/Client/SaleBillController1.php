@@ -74,7 +74,7 @@ class SaleBillController1 extends Controller
     }
 
     # index page #
-     public function index(Request $request)
+    public function index(Request $request)
     {
         $company_id = Auth::user()->company_id;
         $company = Company::findOrFail($company_id);
@@ -3457,6 +3457,6 @@ class SaleBillController1 extends Controller
     }
     public function exportExcel(Request $request)
     {
-        return Excel::download(new SaleBillsExport($request->from,$request->to), 'sale_bills.xlsx');
+        return Excel::download(new SaleBillsExport($request->from, $request->to), 'sale_bills.xlsx');
     }
 }

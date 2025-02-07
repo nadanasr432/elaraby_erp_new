@@ -372,14 +372,12 @@
                 <!-- Save and Print 1 Button -->
                 <button type="button" role="button" class="btn save_btn1 btn-md btn-info text-white m-1"
                     isMoswada="0" invoiceType="2" style="height: 40px">
-                    حفظ و طباعة
+                    اضافة عرض سعر غير شامل الضريبة
                 </button>
                 <button type="button" role="button" class="btn save_btn2 btn-md btn-success text-white m-1"
                     isMoswada="0" invoiceType="2" style="height: 40px">
-                    حفظ و طباعة
-                    2
+                    اضافة عرض سعر شامل الضريبة
                 </button>
-
 
             </div>
         </div>

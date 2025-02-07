@@ -5,14 +5,14 @@
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="icon" href="{{ asset('images/favicon.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png">
     <!--
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title> {{ $system->name }} </title>
-    <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('images/logo.png') }}" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     @include('site.layouts.common.css_links')
     <style>
@@ -188,7 +188,7 @@
 
                     <br>
                 </div>
-               
+
 
                 <!--pages list -home -contact ... -->
                 <ul style="@if (LaravelLocalization::getCurrentLocale() == 'en') direction: ltr; @endif" class="menu">
@@ -300,9 +300,9 @@
                         <br>
                         {{ __('main.footer3') }}
                     </p>
-                     
+
                     <ul class="social-icons @if (LaravelLocalization::getCurrentLocale() == 'en') justify-content-end @endif">
-                      
+
                         <li>
                             <a class="pt-2" target="_blank"
                                 href="https://api.whatsapp.com/send/?phone={{ $informations->whatsapp_number }}&text={{ $informations->whatsapp_message }}&app_absent=0">
@@ -516,9 +516,9 @@
                     {{ $system->name }}
             </div>
         </div>
-       
+
     </footer>
-     
+
     @include('site.layouts.common.js_links')
 </body>
 

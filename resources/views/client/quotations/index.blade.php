@@ -118,7 +118,7 @@
                                     <th style="width: 15% !important;border-radius: 11px 0 0 0;">@lang('sales_bills.control')</th>
                                 </thead>
                                 <tbody>
-                                    <?php $i = count($all_quotations)-1;
+                                    <?php $i = count($all_quotations) - 1;
                                     $total = 0; ?>
                                     @foreach ($all_quotations as $quotation)
                                         <tr class="@if ($i % 2 == 0) even @else odd @endif">
@@ -127,26 +127,27 @@
                                             <td>{{ $quotation->start_date }}</td>
                                             <td>{{ $quotation->expiration_date }}</td>
                                             <td>
-                                                <?php 
-                                                $sum = 0; 
+                                                <?php
+                                                $sum = 0;
                                                 ?>
                                                 @foreach ($quotation->elements as $element)
-                                                    <?php 
+                                                    <?php
                                                     // Ensure that quantity_price is treated as a float
-                                                    $sum += floatval($element->quantity_price); 
+                                                    $sum += floatval($element->quantity_price);
                                                     ?>
                                                 @endforeach
+
                                                 <?php
                                                 $extras = $quotation->extras;
                                                 $quotation_discount_value = 0;
                                                 $quotation_discount_type = '';
                                                 $quotation_extra_value = 0;
                                                 $quotation_extra_type = '';
-                                            
+
                                                 foreach ($extras as $key) {
                                                     // Ensure the value is a number
                                                     $value = floatval($key->value);
-                                            
+
                                                     if ($key->action == 'discount') {
                                                         if ($key->action_type == 'pound') {
                                                             $quotation_discount_value = $value;
@@ -165,29 +166,32 @@
                                                         }
                                                     }
                                                 }
-                                            
+
                                                 if ($extras->isEmpty()) {
                                                     $quotation_discount_value = 0;
                                                     $quotation_extra_value = 0;
                                                     $quotation_discount_type = 'pound';
                                                     $quotation_extra_type = 'pound';
                                                 }
-                                            
+
+                                                // Calculate the extra value if it's a percentage
                                                 if ($quotation_extra_type == 'percent') {
                                                     $quotation_extra_value = ($quotation_extra_value / 100) * $sum;
                                                 }
-                                            
-                                                $after_discount = $sum + $quotation_extra_value;
-                                            
+
+                                                // Calculate the discount value if it's a percentage
                                                 if ($quotation_discount_type == 'percent') {
                                                     $quotation_discount_value = ($quotation_discount_value / 100) * $sum;
                                                 }
-                                            
+
+                                                // Calculate the total after applying extras and discounts
                                                 $after_discount = $sum - $quotation_discount_value + $quotation_extra_value;
+
+                                                // Calculate the tax value added
                                                 $tax_value_added = $company->tax_value_added;
                                                 $percentage = ($tax_value_added / 100) * $after_discount;
                                                 $after_total = $after_discount + $percentage;
-                                            
+
                                                 echo floatval($after_total) . ' ' . $currency;
                                                 ?>
                                                 <?php $total += floatval($after_total); ?>
@@ -229,7 +233,7 @@
                                                                     d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z">
                                                                 </path>
                                                             </svg>
-                                                                طباعة بدون اضافة ضريبة
+                                                            طباعة بدون اضافة ضريبة
                                                         </a>
 
                                                         <!--EDIT--->
