@@ -143,6 +143,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             // Route for printing POS receipts
             Route::get('/pos-print/{pos_id?}', [PosController::class, 'print'])
                 ->name('pos.open.print');
+            Route::post('buy-bills/update-color', [BuyBillController::class, 'updateColor'])->name('buy-bills.update-color');
+
         });
     // *********  Admin Routes ******** //
 

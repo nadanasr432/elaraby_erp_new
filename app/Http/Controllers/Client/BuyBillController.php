@@ -181,6 +181,15 @@ class BuyBillController extends Controller
             }
         }
     }
+    public function updateColor(Request $request)
+    {
+        $companyId = Auth::user()->company_id;
+        $color = $request->input('page_color', '#222751');
+
+        \App\Services\SettingsService::setSetting($companyId, 'color', $color, 'print1');
+
+        return back()->with('success', __('Color updated successfully!'));
+    }
 
     public function store_cash_suppliers(CashPaymentRequest $request)
     {
