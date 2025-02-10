@@ -76,10 +76,10 @@ class SaleBillController extends Controller
 
         // Fetching sale bills in chunks
         $sale_bills = SaleBill::withTrashed()
-        ->latest()
-        ->where('company_id', $company_id)
-        ->where('status', 'done')
-        ->get();
+            ->latest()
+            ->where('company_id', $company_id)
+            ->where('status', 'done')
+            ->get();
         $sale_bills = $sale_bills->flatten();
         if (in_array('مدير النظام', Auth::user()->role_name)) {
             $outer_clients = OuterClient::where('company_id', $company_id)->get();
@@ -265,7 +265,7 @@ class SaleBillController extends Controller
             // dd( $outer_client);
             if (!empty($sale_bill->outer_client_id)) {
                 $balance_before = $outer_client->prev_balance;
-                $balance_after = $balance_before - $amount;
+                $balance_after = $amount;
                 $data['balance_before'] = $balance_before;
                 $data['balance_after'] = $balance_after;
             } else {
@@ -727,7 +727,7 @@ class SaleBillController extends Controller
             if (!empty($sale_bill->outer_client_id)) {
                 $outer_client = OuterClient::FindOrFail($sale_bill->outer_client_id);
                 $balance_before = $outer_client->prev_balance;
-                $balance_after = $balance_before + $rest;
+                $balance_after =  $rest;
                 // $outer_client->update([
                 //     'prev_balance' => $balance_after
                 // ]);
@@ -2016,6 +2016,7 @@ class SaleBillController extends Controller
 
     public function post_return(Request $request)
     {
+        // dd($request);
         $company_id = Auth::user()->company_id;
         $company = Company::FindOrFail($company_id);
         $data = $request->all();

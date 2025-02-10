@@ -426,7 +426,7 @@ class SaleBillController1 extends Controller
             // dd( $outer_client);
             if (!empty($sale_bill->outer_client_id)) {
                 $balance_before = $outer_client->prev_balance;
-                $balance_after = $balance_before - $amount;
+                $balance_after = $amount;
                 $data['balance_before'] = $balance_before;
                 $data['balance_after'] = $balance_after;
             } else {
@@ -808,7 +808,7 @@ class SaleBillController1 extends Controller
             $outer_client = OuterClient::findOrFail($outerClient->id);
             if (!empty($saleBill->outer_client_id)) {
                 $balance_before = $outer_client->prev_balance;
-                $balance_after = $balance_before - $amount;
+                $balance_after = $amount;
                 $data['balance_before'] = $balance_before;
                 $data['balance_after'] = $balance_after;
             } else {
@@ -858,6 +858,7 @@ class SaleBillController1 extends Controller
                 " دائن من دفع فاتورة مبيعات" . $saleBill->sale_bill_number,
                 0
             );
+            
             if ($payment_method == "cash") {
                 if ($saleBill->paid <= $saleBill->final_total) {
                     $cash = Cash::create([

@@ -291,16 +291,13 @@
                                     $element->id . "' class='btn btn-sm btn-info edit_element'>
                                     <i class='fa fa-edit'></i>
                                 </button>
-                                <button type='button' sale_bill_number='" . $element->SaleBill->sale_bill_number . "' element_id='" .
-                                    $element->id . "' class='btn btn-sm btn-danger remove_element'>
-                                    <i class='fa fa-trash'></i>
-                                </button>
+
 
                                 <form action='".route('client.sale_bills.return')."' style='display:none;' method='POST'>
                                     <input type='hidden' value='". $element->SaleBill->id ."' name='sale_bill_id' style='display:none;'>
                                     <input type='hidden' value='". $element->id ."' name='element_id' style='display:none;'>
                                     <input type='hidden' name='_token' value='".csrf_token()."' style='display:none;'>
-                                    <button type='submit' class='btn btn-sm btn-warning remove_element' style='display:none;'>
+                                    <button type='submit' class='btn btn-sm btn-warning return_element' style='display:none;'>
                                         <i class='fa fa-refresh'></i> ارتجاع
                                     </button>
                                 </form>
@@ -308,7 +305,7 @@
                                     <input type='hidden' value='". $element->SaleBill->id ."' name='sale_bill_id'>
                                     <input type='hidden' value='". $element->id ."' name='element_id'>
                                     <input type='hidden' name='_token' value='".csrf_token()."'>
-                                    <button type='submit' class='btn btn-sm btn-warning remove_element'>
+                                    <button type='submit' class='btn btn-sm btn-warning return_element'>
                                         <i class='fa fa-refresh'></i> ارتجاع
                                     </button>
                                 </form>

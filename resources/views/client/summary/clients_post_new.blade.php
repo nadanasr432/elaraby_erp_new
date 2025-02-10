@@ -426,11 +426,7 @@ $currency = $extra_settings->currency;
                                     $total = 0;
                                     $previous_balance = 0; // نبدأ برصيد سابق 0
                                     $final_balance = 0; // متغير لتخزين الرصيد النهائي
-                                    $allSaleBills = App\Models\SaleBill::where('company_id', $outer_client_k->company_id)
-                                        ->where('status', 'done')
-                                        ->orderBy('id')
-                                        ->pluck('id')
-                                        ->toArray();
+                                    $allSaleBills = App\Models\SaleBill::where('company_id', $outer_client_k->company_id)->where('status', 'done')->orderBy('id')->pluck('id')->toArray();
                                     $globalIndexMap = array_flip($allSaleBills); // ID => Position
                                     ?>
                                     @foreach ($saleBills as $index => $sale_bill)
@@ -445,7 +441,7 @@ $currency = $extra_settings->currency;
                                                     فاتورة مبيعات نقدي
                                                 @endif
                                             </td>
-                                            <td>{{ $sale_bill->final_total - $sale_bill->paid }}</td>
+                                            <td>{{ $sale_bill->rest }}</td>
                                             <td>{{ $sale_bill->paid }}</td>
                                             <td>
                                                 <?php
@@ -478,7 +474,7 @@ $currency = $extra_settings->currency;
                                                 $tax_amount = ($tax_value_added / 100) * $after_discount;
 
                                                 // المبلغ الإجمالي بعد الضريبة
-                                                $debit = $sale_bill->final_total - $sale_bill->paid;
+                                                $debit = $sale_bill->rest;
 
                                                 // حساب المدين والدائن
                                                 $credit = floatval($sale_bill->paid);
@@ -924,22 +920,37 @@ $currency = $extra_settings->currency;
                                     $currency = isset($currency) ? $currency : ''; // Default to empty string if currency isn't set
 
                                     // Calculate totals
-                                    $totalDepit = $final_balance + $difference + $totalBorrowedAmount;
-                                    $totalCridit = $totalAmountCash + $totalAmount + $totalDifference;
-
+                                    $totalDepit = $difference + $totalBorrowedAmount + $final_balance;
+                                    $totalCridit = $totalAmountCash + $totalAmount;
+                                    // dd($final_balance, $difference, $totalBorrowedAmount);
                                     $totalIndebtedness = $totalIndebtedness = round($totalDepit - $totalCridit + $outer_client_k->prev_balance, 3);
-
+                                    // dd($totalDifference);
+                                    $forClient = 0;
                                     // Output the total indebtedness with currency
 
                                     if ($totalIndebtedness < 0) {
                                         echo '(' . floatval(abs($totalIndebtedness)) . ') ' . $currency;
+                                    } elseif ($totalIndebtedness >= 0 && $totalDifference) {
+                                        $forClient = $totalIndebtedness - $totalDifference;
+                                        echo floatval(0) . ' ' . $currency;
                                     } else {
-                                        echo floatval($totalIndebtedness) . ' ' . $currency;
+                                        echo floatval($totalIndebtedness - abs($totalDifference)) . ' ' . $currency;
                                     }
                                     ?>
 
                                 </span>
                             </div>
+                            @if ($forClient)
+                                <div class="col-lg-12 text-center mt-3 mb-3">
+                                    <span class="alert alert-info text-center ">
+                                        رصيد للعميل
+                                        <?php
+                                        echo abs(floatval($forClient)) . ' ' . $currency;
+                                        ?>
+
+                                    </span>
+                                </div>
+                            @endif
                         @endif
 
                 </td>
