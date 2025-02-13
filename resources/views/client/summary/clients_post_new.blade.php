@@ -312,94 +312,7 @@ $currency = $extra_settings->currency;
                         </div>
                     @endif
                     <div class="clearfix"></div>
-                    @if (isset($quotations) && !$quotations->isEmpty())
-                        <p class="alert alert-sm alert-info mt-3 text-center d-none">
-                            عروض أسعار العميل
-                        </p>
-                        <div class="table-respo ">
-                            <table
-                                style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                                <thead style="font-size: 15px !important;">
-                                    <tr
-                                        style="font-size: 13px !important; background: #222751; color: white; height: 44px !important; text-align: center;">
-                                        <th>#</th>
-                                        <th>رقم عرض السعر</th>
-                                        <th>تاريخ بداية العرض</th>
-                                        <th>تاريخ نهاية العرض</th>
-                                        <th>الاجمالى النهائى</th>
-                                        <th>عدد العناصر</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php $i = 0;
-                                    $total = 0; ?>
-                                    @foreach ($quotations as $quotation)
-                                        <tr>
-                                            <td>{{ ++$i }}</td>
-                                            <td>{{ $quotation->quotation_number }}</td>
-                                            <td>{{ $quotation->start_date }}</td>
-                                            <td>{{ $quotation->expiration_date }}</td>
-                                            <td>
-                                                <?php $sum = 0; ?>
-                                                @foreach ($quotation->elements as $element)
-                                                    <?php $sum = $sum + $element->quantity_price; ?>
-                                                @endforeach
-                                                <?php
-                                                $quotation_discount_value = 0;
-                                                $quotation_extra_value = 0;
-                                                $quotation_discount_type = 'pound';
-                                                $quotation_extra_type = 'pound';
 
-                                                $extras = $quotation->extras;
-                                                foreach ($extras as $key) {
-                                                    if ($key->action == 'discount') {
-                                                        if ($key->action_type == 'pound') {
-                                                            $quotation_discount_value = $key->value;
-                                                            $quotation_discount_type = 'pound';
-                                                        } else {
-                                                            $quotation_discount_value = $key->value;
-                                                            $quotation_discount_type = 'percent';
-                                                        }
-                                                    } else {
-                                                        if ($key->action_type == 'pound') {
-                                                            $quotation_extra_value = $key->value;
-                                                            $quotation_extra_type = 'pound';
-                                                        } else {
-                                                            $quotation_extra_value = $key->value;
-                                                            $quotation_extra_type = 'percent';
-                                                        }
-                                                    }
-                                                }
-                                                if ($extras->isEmpty()) {
-                                                    $quotation_discount_value = 0;
-                                                    $quotation_extra_value = 0;
-                                                    $quotation_discount_type = 'pound';
-                                                    $quotation_extra_type = 'pound';
-                                                }
-                                                if ($quotation_extra_type == 'percent') {
-                                                    $quotation_extra_value = ($quotation_extra_value / 100) * $sum;
-                                                }
-                                                $after_discount = $sum + $quotation_extra_value;
-
-                                                if ($quotation_discount_type == 'percent') {
-                                                    $quotation_discount_value = ($quotation_discount_value / 100) * $sum;
-                                                }
-                                                $after_discount = $sum - $quotation_discount_value;
-                                                $after_discount = $sum - $quotation_discount_value + $quotation_extra_value;
-                                                $tax_value_added = $company->tax_value_added;
-                                                $percentage = ($tax_value_added / 100) * $after_discount;
-                                                $after_total = $after_discount + $percentage;
-                                                echo floatval($after_total) . ' ' . $currency;
-                                                ?>
-                                                <?php $total = $total + $after_total; ?>
-                                            </td>
-                                            <td>{{ $quotation->elements->count() }}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @endif
                     <div class="clearfix"></div>
                     @if (isset($saleBills) && !$saleBills->isEmpty())
                         <p class="alert alert-sm alert-info mt-3 text-center">
@@ -920,21 +833,19 @@ $currency = $extra_settings->currency;
                                     $currency = isset($currency) ? $currency : ''; // Default to empty string if currency isn't set
 
                                     // Calculate totals
-                                    $totalDepit = $difference + $totalBorrowedAmount + $final_balance;
-                                    $totalCridit = $totalAmountCash + $totalAmount;
-                                    // dd($final_balance, $difference, $totalBorrowedAmount);
-                                    $totalIndebtedness = $totalIndebtedness = round($totalDepit - $totalCridit + $outer_client_k->prev_balance, 3);
-                                    // dd($totalDifference);
+                                    $totalDepit = $totalBorrowedAmount + abs($final_balance) + $difference;
+                                    $totalCridit = $totalAmountCash + $totalAmount + abs($totalDifference);
+                                    $totalIndebtedness = round($totalDepit - $totalCridit + $outer_client_k->prev_balance, 3);
+                                    // dd($final_balance, $difference, $totalDifference);
+                                    // dd($totalCridit);
                                     $forClient = 0;
                                     // Output the total indebtedness with currency
 
-                                    if ($totalIndebtedness < 0) {
-                                        echo '(' . floatval(abs($totalIndebtedness)) . ') ' . $currency;
-                                    } elseif ($totalIndebtedness >= 0 && $totalDifference) {
-                                        $forClient = $totalIndebtedness - $totalDifference;
-                                        echo floatval(0) . ' ' . $currency;
+                                    if ($totalIndebtedness >= 0) {
+                                        echo  floatval(abs($totalIndebtedness)). $currency;
                                     } else {
-                                        echo floatval($totalIndebtedness - abs($totalDifference)) . ' ' . $currency;
+                                        $forClient = abs($totalIndebtedness);
+                                        echo floatval(0) . ' ' . $currency;
                                     }
                                     ?>
 

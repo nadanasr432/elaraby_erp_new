@@ -84,7 +84,9 @@ class SummaryController extends Controller
                 // No date filters
                 $gifts = $outer_client_k->gifts;
                 $quotations = $outer_client_k->quotations;
-                $bonds = Bondclient::where('client', $outer_client_k->client_name)->get();
+                $bonds = Bondclient::where('client', $outer_client_k->client_name)
+                ->where('company_id', $outer_client_k->company_id)
+                ->get();
 
                 $saleBills = $outer_client_k->saleBills->where('status', 'done');
                 $cashs = Cash::where('outer_client_id', $outer_client_id)->where('amount', '>', 0)->get();
@@ -98,14 +100,15 @@ class SummaryController extends Controller
                 $quotations = Quotation::where('outer_client_id', $outer_client_id)
                     ->whereDate('created_at', '>=', $from_date)->whereDate('created_at', '<=', $to_date)->get();
                 $bonds = Bondclient::where('client', $outer_client_k->client_name)
+                    ->where('company_id', $outer_client_k->company_id)
                     ->whereDate('created_at', '>=', $from_date)
                     ->whereDate('created_at', '<=', $to_date)
                     ->get();
 
                 $saleBills = SaleBill::where('status', 'done')->where('outer_client_id', $outer_client_id)
-                     ->whereDate('date', '>=', $from_date->startOfDay())
-                     ->whereDate('date', '<=', $to_date->endOfDay())->get();
-                    //  dd($saleBills);
+                    ->whereDate('date', '>=', $from_date->startOfDay())
+                    ->whereDate('date', '<=', $to_date->endOfDay())->get();
+                //  dd($saleBills);
                 $cashs = Cash::where('outer_client_id', $outer_client_id)
                     ->where('amount', '>', 0)
                     ->whereDate('created_at', '>=', $from_date)
@@ -137,6 +140,7 @@ class SummaryController extends Controller
             $returns = SaleBillReturn::where('outer_client_id', $outer_client_id)
                 ->whereDate('created_at', $today)->get();
             $bonds = Bondclient::where('client', $outer_client_k->client_name)
+                ->where('company_id', $outer_client_k->company_id)
                 ->whereDate('created_at', $today)->get();
         }
 
@@ -184,7 +188,9 @@ class SummaryController extends Controller
                 // No date filters
                 $gifts = $outer_client_k->gifts;
                 $quotations = $outer_client_k->quotations;
-                $bonds = Bondclient::where('client', $outer_client_k->client_name)->get();
+                $bonds = Bondclient::where('client', $outer_client_k->client_name)
+                    ->where('company_id', $outer_client_k->company_id)
+                    ->get();
 
                 $saleBills = $outer_client_k->saleBills->where('status', 'done');
                 $cashs = Cash::where('outer_client_id', $outer_client_id)->where('amount', '>', 0)->get();
@@ -198,6 +204,7 @@ class SummaryController extends Controller
                 $quotations = Quotation::where('outer_client_id', $outer_client_id)
                     ->whereDate('created_at', '>=', $from_date)->whereDate('created_at', '<=', $to_date)->get();
                 $bonds = Bondclient::where('client', $outer_client_k->client_name)
+                    ->where('company_id', $outer_client_k->company_id)
                     ->whereDate('created_at', '>=', $from_date)
                     ->whereDate('created_at', '<=', $to_date)
                     ->get();
@@ -235,6 +242,7 @@ class SummaryController extends Controller
             $returns = SaleBillReturn::where('outer_client_id', $outer_client_id)
                 ->whereDate('created_at', $today)->get();
             $bonds = Bondclient::where('client', $outer_client_k->client_name)
+                ->where('company_id', $outer_client_k->company_id)
                 ->whereDate('created_at', $today)->get();
         }
         $sale_bills_done = SaleBill::where('company_id', $outer_client_k->company_id)
@@ -264,7 +272,7 @@ class SummaryController extends Controller
             'bonds'
         ));
     }
- public function post_clients_summary_new3(ClientsSummaryRequest $request)
+    public function post_clients_summary_new3(ClientsSummaryRequest $request)
     {
         // Initialize variables
         $outer_client_id = $request->outer_client_id;
@@ -293,7 +301,8 @@ class SummaryController extends Controller
                 // No date filters
                 $gifts = $outer_client_k->gifts;
                 $quotations = $outer_client_k->quotations;
-                $bonds = Bondclient::where('client', $outer_client_k->client_name)->get();
+                $bonds = Bondclient::where('client', $outer_client_k->client_name)
+                    ->where('company_id', $outer_client_k->company_id)->get();
 
                 $saleBills = $outer_client_k->saleBills->where('status', 'done');
                 $cashs = Cash::where('outer_client_id', $outer_client_id)->where('amount', '>', 0)->get();
@@ -307,6 +316,7 @@ class SummaryController extends Controller
                 $quotations = Quotation::where('outer_client_id', $outer_client_id)
                     ->whereDate('created_at', '>=', $from_date)->whereDate('created_at', '<=', $to_date)->get();
                 $bonds = Bondclient::where('client', $outer_client_k->client_name)
+                    ->where('company_id', $outer_client_k->company_id)
                     ->whereDate('created_at', '>=', $from_date)
                     ->whereDate('created_at', '<=', $to_date)
                     ->get();
@@ -344,6 +354,7 @@ class SummaryController extends Controller
             $returns = SaleBillReturn::where('outer_client_id', $outer_client_id)
                 ->whereDate('created_at', $today)->get();
             $bonds = Bondclient::where('client', $outer_client_k->client_name)
+                ->where('company_id', $outer_client_k->company_id)
                 ->whereDate('created_at', $today)->get();
         }
         $sale_bills_done = SaleBill::where('company_id', $outer_client_k->company_id)
