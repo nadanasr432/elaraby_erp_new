@@ -828,7 +828,6 @@ $currency = $extra_settings->currency;
                             <div class="col-lg-12 text-center mt-3 mb-3">
                                 <span class="alert alert-info text-center ">
                                     مديونية العميل الحالية
-                                    <!--{{ floatval($outer_client_k->prev_balance) }} {{ $currency }}-->
                                     <?php
                                     // Ensure each variable is defined, defaulting to 0 if not set
                                     $final_balance = isset($final_balance) ? $final_balance : 0;
@@ -842,14 +841,12 @@ $currency = $extra_settings->currency;
                                     // Calculate totals
                                     $totalDepit = $totalBorrowedAmount + abs($final_balance) + $difference;
                                     $totalCridit = $totalAmountCash + $totalAmount + abs($totalDifference);
-                                    $totalIndebtedness = round($totalDepit - $totalCridit + $outer_client_k->prev_balance, 3);
-                                    // dd($final_balance, $difference, $totalDifference);
-                                    // dd($totalCridit);
+                                    $totalIndebtedness = round($totalDepit - $totalCridit, 3);
                                     $forClient = 0;
                                     // Output the total indebtedness with currency
 
                                     if ($totalIndebtedness >= 0) {
-                                        echo  floatval(abs($totalIndebtedness)). $currency;
+                                        echo floatval(abs($totalIndebtedness)) . $currency;
                                     } else {
                                         $forClient = abs($totalIndebtedness);
                                         echo floatval(0) . ' ' . $currency;
