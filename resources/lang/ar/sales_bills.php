@@ -135,5 +135,6 @@ return [
     'transaction_category' => 'فئة التعامل',
     'tax_number' => 'الرقم الضريبي',
     'purchases_tax_invoice' => 'فاتورة ضريبية مشتريات',
-    "Supplier data"=>"بيانات المورد"
+    "Supplier data" => "بيانات المورد",
+    "elements number" => "عدد عناصر الفاتورة",
 ];

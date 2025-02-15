@@ -192,5 +192,6 @@ return [
     "start_date"=> "Start date",
     "products-deleted"=> "Deleted Products",
     "Total billing taxes"=>"Total billing taxes",
+    "Goods Receipt Order"=>"Goods Receipt Order",
 
 ];

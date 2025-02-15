@@ -858,7 +858,7 @@ class SaleBillController1 extends Controller
                 " دائن من دفع فاتورة مبيعات" . $saleBill->sale_bill_number,
                 0
             );
-            
+
             if ($payment_method == "cash") {
                 if ($saleBill->paid <= $saleBill->final_total) {
                     $cash = Cash::create([
@@ -2863,6 +2863,11 @@ class SaleBillController1 extends Controller
                 } elseif ($invoiceType == 8) {
                     return view(
                         'client.sale_bills1.print8',
+                        compact('discount2', 'discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
+                    );
+                } elseif ($invoiceType == 9) {
+                    return view(
+                        'client.sale_bills1.recieve',
                         compact('discount2', 'discount', 'isMoswada', 'discountNote', 'printColor', 'sale_bill', 'elements', 'company', 'currency', 'pageData', 'sumWithTax', 'sumWithOutTax', 'totalTax', 'realtotal', 'discountValue', 'discountValueForEveryElement', 'position')
                     );
                 } else {
