@@ -124,7 +124,7 @@
     <div class="invoice-container border mt-4">
         <div class="text-center" id="buttons">
             <button class="btn btn-sm btn-success" onclick="window.print()">@lang('sales_bills.Print the invoice')</button>
-            <a class="btn btn-sm btn-danger" href="{{ route('client.sale_bills.create') }}">@lang('sales_bills.back') </a>
+            <a class="btn btn-sm btn-danger" href="{{ route('client.sale_bills.create1') }}">@lang('sales_bills.back') </a>
             <button class="show_hide_header btn btn-sm btn-warning no-print" dir="ltr">
                 <i class="fa fa-eye-slash"></i>
                 @lang('sales_bills.Show or hide the header')
@@ -326,7 +326,7 @@
                                     $ProdTax = 0 . ' ';
                                 }
                                 #--PRODUCT TAX--#
-                        
+
                                 #--PRODUCT TOTAL--#
                                 if ($company->tax_value_added && $company->tax_value_added != 0) {
                                     $ProdTotal = ($sale_bill->value_added_tax ? $element->quantity_price : round($element->quantity_price + ($element->quantity_price * 15) / 100, 2)) . ' ';
@@ -334,7 +334,7 @@
                                     $ProdTotal = $element->quantity_price . ' ';
                                 }
                                 #--PRODUCT TOTAL--#
-                        
+
                                 echo '
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             <tr style="font-size:18px !important; height: 34px !important; text-align: center;background: #f8f9fb">
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 <td>' .

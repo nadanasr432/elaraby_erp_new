@@ -2686,7 +2686,7 @@ class SaleBillController1 extends Controller
 
     public function redirect()
     {
-        return redirect()->route('client.sale_bills.create')->with('success', 'تم انشاء فاتورة مبيعات بنجاح');
+        return redirect()->route('client.sale_bills.create1')->with('success', 'تم انشاء فاتورة مبيعات بنجاح');
     }
 
     public function get_products(Request $request)

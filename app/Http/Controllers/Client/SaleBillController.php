@@ -884,7 +884,7 @@ class SaleBillController extends Controller
             $sale_bill->delete(); // This will now soft delete the record
         }
 
-        return redirect()->route('client.sale_bills.create')
+        return redirect()->route('client.sale_bills.create1')
             ->with('success', 'تم حذف الفاتورة بنجاح');
     }
 
@@ -2202,7 +2202,7 @@ class SaleBillController extends Controller
 
     public function redirect()
     {
-        return redirect()->route('client.sale_bills.create')->with('success', 'تم انشاء فاتورة مبيعات بنجاح');
+        return redirect()->route('client.sale_bills.create1')->with('success', 'تم انشاء فاتورة مبيعات بنجاح');
     }
 
     public function get_products(Request $request)
@@ -2570,7 +2570,7 @@ class SaleBillController extends Controller
                 ]);
             }
         }
-        return redirect()->route('client.sale_bills.create');
+        return redirect()->route('client.sale_bills.create1');
     }
 
     public function updateStatusOnEdit(Request $request)

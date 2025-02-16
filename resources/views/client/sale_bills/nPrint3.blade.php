@@ -97,7 +97,7 @@
     <div class="invoice-container border mt-4">
         <div class="text-center" id="buttons">
             <button class="btn btn-sm btn-success" onclick="window.print()">@lang('sales_bills.Print the invoice') </button>
-            <a class="btn btn-sm btn-danger" href="{{ route('client.sale_bills.create') }}"> @lang('sales_bills.back') </a>
+            <a class="btn btn-sm btn-danger" href="{{ route('client.sale_bills.create1') }}"> @lang('sales_bills.back') </a>
             <button class="btn btn-sm btn-success" dir="ltr" onclick="sendToWhatsApp()">
                 <i class="fa fa-whatsapp"></i>
                 @lang('sales_bills.Send to whatsapp')

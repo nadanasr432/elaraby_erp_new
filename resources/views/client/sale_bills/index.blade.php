@@ -81,7 +81,7 @@
                         </h3>
                         <div class="row mr-1 justify-content-end">
                             <a class="btn btn-primary pull-left p-1 mainBtnNewDes d-flex align-items-center"
-                                href="{{ route('client.sale_bills.create') }}">
+                                href="{{ route('client.sale_bills.create1') }}">
                                 <span
                                     style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
                                     <svg style="width: 10px;height: 15px;fill: #f5f1f1;margin-top: 1px;"
