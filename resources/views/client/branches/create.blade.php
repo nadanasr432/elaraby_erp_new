@@ -1,6 +1,16 @@
 @extends('client.layouts.app-main')
 <style>
 
+.custom-title::before {
+    content: "";  
+    display: inline-block;
+    width: 32px;
+    height: 2px;
+    background-color: #ec6880;
+    align-self: flex-end;
+    bottom: 4px;
+
+}
 </style>
 @section('content')
     @if (count($errors) > 0)
@@ -21,12 +31,13 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <div class="col-12">
-                        <a class="btn btn-primary btn-sm pull-left" href="{{ route('client.branches.index') }}">
+                    <div class="col-12 d-flex align-items-center justify-content-between">
+                        <h2 class=" alert alert-sm font-weight-bold m-0 p-0 d-flex custom-title align-items-end " style="white-space: nowrap">
+                            {{ __('sidebar.add-new-branche') }} 
+                        </h2>
+                        <a class="btn text-white px-3 py-1 " style="background-color: #ec6880" href="{{ route('client.branches.index') }}">
                             {{ __('main.back') }}
                         </a>
-                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success">
-                            {{ __('sidebar.add-new-branche') }} </h5>
                     </div>
                     <div class="clearfix"></div>
                     <br>
@@ -35,7 +46,7 @@
                         action="{{ route('client.branches.store', 'test') }}" enctype="multipart/form-data" method="post">
                         {{ csrf_field() }}
                         <input type="hidden" name="company_id" value="{{ $company_id }}">
-                        <h5 class="col-lg-12 d-block mb-2">{{ __('main.main-information') }}</h5>
+                        <h5 class="col-lg-12 d-block">{{ __('main.main-information') }}</h5>
                         <hr>
                         <div class="row mb-3">
                             <div class="col-md-3">
@@ -60,8 +71,8 @@
                             </div>
 
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                            <button class="btn btn-info pd-x-20" type="submit">{{ __('main.add') }}</button>
+                        <div class="col-xs-12 col-sm-12 col-md-12 d-flex justify-content-start">
+                            <button style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);" class="btn btn-info pd-x-20 px-5 py-1" type="submit">{{ __('main.add') }}</button>
                         </div>
                     </form>
                 </div>

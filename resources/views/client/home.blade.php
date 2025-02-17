@@ -814,7 +814,7 @@
 
         <!----------------------------Center Row----------------------------->
         <div class="row match-height p-1 mt-1">
-            <div class="col-md-8 px-0">
+            <div class="col-md-12 px-0">
                 <div class="card" style="height: 460px;border: 1px solid #2d2d2d30;">
                     <div class="card-header p-1" style="background: #222751;">
                         <h4 class="card-title text-left" style="font-weight: 600;color:white;">
@@ -828,7 +828,7 @@
 
                 </div>
             </div>
-            <div class="col-md-4 pr-0 pl-sm-1 pl-0">
+            {{-- <div class="col-md-4 pr-0 pl-sm-1 pl-0">
                 <div class="card styled-card" style="border: 1px solid #2d2d2d30;">
                     <div class="card-header p-1" style="background: #222751;">
                         <h4 class="card-title" style="font-weight: 600;color:white;">
@@ -884,7 +884,7 @@
                         <br>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
         <!------------------------------------------------------------------->
 

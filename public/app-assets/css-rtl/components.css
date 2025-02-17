@@ -5626,7 +5626,7 @@ div.dataTables_wrapper {
 }
 
 div.dataTables_wrapper div.dataTables_filter label {
-    margin-top: 1rem;
+    text-align: start ;
 }
 
 div.dataTables_wrapper div.dataTables_paginate ul.pagination {
@@ -5850,4 +5850,10 @@ tr.shown td.details-control {
 
 .pagination.pagination-flat.pagination-sm li.active a {
     padding: 0.5rem 0.7rem;
+}
+.form-control[name="example-table_length"] {
+    width: 400% !important;
+}
+.form-control{
+    border: 1px solid #EEF0F4 !important;
 }

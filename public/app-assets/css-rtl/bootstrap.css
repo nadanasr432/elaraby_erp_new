@@ -4930,7 +4930,7 @@ tbody.collapse.show {
   pointer-events : none;
   cursor : auto;
   background-color : #FFFFFF;
-  border-color : #626E82;
+  border-color : #dcdcdcd1;
 }
 
 .pagination-lg .page-link {
