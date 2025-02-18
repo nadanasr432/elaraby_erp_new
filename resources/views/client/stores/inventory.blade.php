@@ -1,15 +1,6 @@
 @extends('client.layouts.app-main')
 <style>
-    .custom-title::before {
-    content: "";  
-    display: inline-block;
-    width: 32px;
-    height: 2px;
-    background-color: #ec6880;
-    align-self: flex-end;
-    bottom: 4px;
-
-}
+    
 </style>
 @section('content')
     @if (session('success'))
@@ -59,7 +50,7 @@
                         @method('POST')
                         <div class="col-lg-3 pull-right no-print">
                             <label for="" class="d-block">{{ __('stores.choose-store') }}</label>
-                            <select required name="store_id" id="store_id" class="selectpicker" data-style="btn-info"
+                            <select required name="store_id" id="store_id" class="form-control"
                                 data-live-search="true" title="{{ __('stores.store-name') }}">
                                 <option @if (isset($store_id) && $store_id == 'all') selected @endif value="all">كل المخازن
                                 </option>
@@ -84,7 +75,7 @@
                                 {{ __('main.reports-fields') }}
                             </label>
                             <select class="form-control selectpicker show-tick" data-live-search="true"
-                                data-style="btn-success" data-title="{{ __('main.choose-fields') }}" multiple required
+                                data-style="btn-third" data-title="{{ __('main.choose-fields') }}" multiple required
                                 name="options[]" id="">
                                 <option @if (isset($options) && in_array('product_name', $options)) selected @endif value="product_name">
                                     {{ __('main.product-name') }}
@@ -109,7 +100,7 @@
                         <div class="clearfix"></div>
 
                         <div class="col-lg-12 pull-right">
-                            <button class="btn btn-md btn-danger" style="font-size: 15px; height: 40px; margin-top: 25px;"
+                            <button class="btn btn-md text-white px-4" style="font-size: 15px; height: 40px; margin-top: 25px; background-color: #222751"
                                 type="submit">
                                 <i class="fa fa-check"></i>
                                 {{ __('main.show-report') }}

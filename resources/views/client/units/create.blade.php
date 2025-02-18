@@ -1,15 +1,6 @@
 @extends('client.layouts.app-main')
 <style>
-.custom-title::before {
-    content: "";  
-    display: inline-block;
-    width: 32px;
-    height: 2px;
-    background-color: #ec6880;
-    align-self: flex-end;
-    bottom: 4px;
 
-}
 </style>
 @section('content')
     @if (count($errors) > 0)

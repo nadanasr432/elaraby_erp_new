@@ -9038,3 +9038,19 @@ a.text-dark:hover, a.text-dark:focus {
 .invisible {
   visibility : hidden !important;
 }
+.custom-title::before {
+  content: "";  
+  display: inline-block;
+  width: 32px;
+  height: 2px;
+  background-color: #ec6880;
+  align-self: flex-end;
+  bottom: 4px;
+
+}
+.field{
+  background-color: red !important;
+}
+.btn-third{
+  background-color: #dadada2e !important;
+}

@@ -32,11 +32,11 @@
             <div class="card">
                 <!------HEADER----->
                 <div class="card-header border-bottom border-secondary p-1">
-                    <div class="d-flex justify-content-between align-items-baseline">
-                        <h3 class="pull-right font-weight-bold ml-1">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="pull-right font-weight-bold ml-1 custom-title">
                             تعديل باينات المنتج
                         </h3>
-                        <a class="btn btn-danger btn-sm pull-left p-1" onclick="history.back()">
+                        <a class="btn  btn-sm p-1 text-white px-3 py-1" style="background-color: #ec6880" onclick="history.back()">
                             عودة للخلف
                         </a>
                     </div>
@@ -303,7 +303,7 @@
 
 
 
-                        <button class="btn btn-md btn-success w-100 font-weight-bold" type="submit">تحديث</button>
+                        <button class="btn btn-md  w-100 font-weight-bold text-white px-4" style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);" type="submit">تحديث</button>
                     </form>
                 </div>
             </div>

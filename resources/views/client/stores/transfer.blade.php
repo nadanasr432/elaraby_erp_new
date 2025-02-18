@@ -17,13 +17,14 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <div class="col-12">
-                        <a class="btn btn-primary btn-sm pull-left" href="{{ route('client.stores.index') }}">
-                            {{ __('main.back') }}
-                        </a>
-                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success">
+                    <div class="col-12 d-flex align-items-center justify-content-between">
+                        <h5  class=" alert alert-sm custom-title">
                             {{ __('sidebar.convert-between-storages') }}
                         </h5>
+                        <a class="btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.stores.index') }}">
+                            {{ __('main.back') }}
+                        </a>
+                       
                     </div>
                     <div class="clearfix"></div>
                     <br>
@@ -42,7 +43,7 @@
                                         class="text-danger">*</span></label>
                                 <select required class="form-control selectpicker show-tick"
                                     data-title="{{ __('stores.choose-store') }}" data-live-search="true"
-                                    data-style="btn-danger" name="from_store" id="from_store">
+                                    data-style="btn-third" name="from_store" id="from_store">
                                     @foreach ($stores as $store)
                                         <option value="{{ $store->id }}">{{ $store->store_name }}</option>
                                     @endforeach
@@ -53,7 +54,7 @@
                                         class="text-danger">*</span></label>
                                 <select required class="form-control selectpicker show-tick"
                                     data-title="{{ __('stores.choose-store') }}" data-live-search="true"
-                                    data-style="btn-info" name="to_store" id="to_store">
+                                    data-style="btn-third" name="to_store" id="to_store">
                                     @foreach ($stores as $store)
                                         <option value="{{ $store->id }}">{{ $store->store_name }}</option>
                                     @endforeach
@@ -64,7 +65,7 @@
                                         class="text-danger">*</span></label>
                                 <select required class="form-control selectpicker show-tick"
                                     data-title="{{ __('stores.choose-product') }}" data-live-search="true"
-                                    data-style="btn-success" name="product_id" id="product_id">
+                                    data-style="btn-third" name="product_id" id="product_id">
                                     {{-- @foreach ($products as $product) --}}
                                     {{-- <option value="{{$product->id}}">{{$product->product_name}}</option> --}}
                                     {{-- @endforeach --}}
@@ -91,8 +92,8 @@
                                 <input type="text" dir="rtl" class="form-control" id="notes" name="notes" />
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                            <button class="btn btn-warning pd-x-20" type="submit">
+                        <div class="col-xs-12 col-sm-12 col-md-12 text-start">
+                            <button  class="btn btn-warning pd-x-20  text-white px-4" style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);" type="submit" type="submit">
                                 {{ __('main.convert') }}
                             </button>
                         </div>

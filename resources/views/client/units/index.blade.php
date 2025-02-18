@@ -15,11 +15,10 @@
         <div class="card">
             <div class="card-header pb-0">
                 <div class="d-flex justify-content-between">
-                    <div class="col-lg-12 margin-tb">
-                        <a class="btn pull-left btn-primary btn-sm" href="{{ route('client.units.create') }}"><i
+                    <div class="col-lg-12 d-flex align-items-center justify-content-between">
+                        <h5 class=" alert alert-sm custom-title">{{ __('sidebar.list-products-units') }}</h5>
+                        <a class="btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.units.create') }}"><i
                                 class="fa fa-plus"></i> {{ __('sidebar.add-new-unit') }} </a>
-                        <h5 class="pull-right alert alert-sm alert-success">{{ __('sidebar.list-products-units') }}
-                        </h5>
                     </div>
                     <br>
                 </div>
@@ -44,9 +43,12 @@
                                     <td>{{ ++$i }}</td>
                                     <td>{{ $unit->unit_name }}</td>
                                     <td>
-                                        <a href="{{ route('client.units.edit', $unit->id) }}" class="btn btn-sm btn-info"
-                                            data-toggle="tooltip" title="{{ __('main.update') }}" data-placement="top"><i
-                                                class="fa fa-edit"></i></a>
+                                        <a href="{{ route('client.units.edit', $unit->id) }}"
+                                            data-toggle="tooltip" title="{{ __('main.update') }}" data-placement="top">
+                                                <svg width="19" height="16" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M18.21 4.87258C18.6 4.48258 18.6 3.83258 18.21 3.46258L15.87 1.12258C15.5 0.732578 14.85 0.732578 14.46 1.12258L12.62 2.95258L16.37 6.70258M0.5 15.0826V18.8326H4.25L15.31 7.76258L11.56 4.01258L0.5 15.0826Z" fill="#4AA16A"/>
+                                                </svg>
+                                            </a>
 
                                         <!--<a class="modal-effect btn btn-sm btn-danger delete_unit"-->
                                         <!--    unit_id="{{ $unit->id }}" unit_name="{{ $unit->unit_name }}"-->

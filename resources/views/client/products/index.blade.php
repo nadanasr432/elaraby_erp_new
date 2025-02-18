@@ -35,32 +35,34 @@
             <div class="card">
                 <!------HEADER----->
                 <div class="card-header border-bottom border-secondary p-1">
-                    <div class="d-flex justify-content-between align-items-baseline">
-                        <h3 class="pull-right font-weight-bold ml-1">
-                            {{__('products.manage_products')}}
-                            <span class="badge badge-success circle">{{floatval( $products->count()  )}}</span>
-                        </h3>
-                        <div class="row">
-                            <a class="mr-1 btn btn-success btn-sm-new"
+                    <div class="row  d-flex justify-content-between align-items-center">
+                        <div class="col-12 col-md-12 col-lg-3 col-sm-12">
+                            <h3 class="pull-right font-weight-bold ml-1 custom-title">
+                                {{__('products.manage_products')}}
+                                <span class="badge circle" style="background-color: #ec6880">{{floatval( $products->count()  )}}</span>
+                            </h3>
+                        </div>
+                        <div class="col-12 col-md-12 col-lg-9 col-sm-12 d-flex flex-wrap justify-content-end">
+                            <a class="mr-1 btn btn-success btn-sm-new mb-1"
                                href="{{ route('client.products.create') }}">
                                 <i class="fa fa-plus"></i>
                                 {{__('products.addnewproduct')}}
                             </a>
-                            <a class="mr-1 btn btn-success btn-sm-new"
+                            <a class="mr-1 btn btn-sm-new text-white mb-1"style="background-color: #ec6880"
                                href="{{ route('client.products.createservice') }}">
                                 <i class="fa fa-plus"></i>
                                 {{__('products.addnewproductseveces')}}
                             </a>
-                            <a class="btn btn-info btn-sm-new mr-1" href="{{ route('products.export') }}">
+                            <a class="btn btn-sm-new mr-1 mb-1" style="background-color: #d2d2d2d6; color: black;" href="{{ route('products.export') }}">
                                 {{__('products.exportproducts')}}
                             </a>
-                            <button class="btn btn-primary btn-sm-new mr-1 open_box"
+                            <button class="btn btn-sm-new mr-1 open_box text-white mb-1"style="background-color: #ec6880"
                                     href="{{ route('products.export') }}">
                                 {{__('products.importproducts')}}
 
                             </button>
                             <a href="{{route('client.products.print')}}" target="_blank" role="button"
-                               class="mr-1 btn-warning btn btn-sm-new " dir="rtl">
+                               class="mr-1 btn-warning btn btn-sm-new  mb-1" dir="rtl">
                                 <i class="fa fa-print"></i>
                                 {{__('products.printproducts')}}
                             </a>
