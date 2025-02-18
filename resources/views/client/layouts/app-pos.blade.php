@@ -85,6 +85,40 @@
         }
     </style>
     <style>
+           .scroll-btn {
+            position: fixed;
+            right: 10px;
+            width: 38px;
+            height: 38px;
+            background: transparent;
+            border: 2px solid #0A246A;
+            color: #0A246A;
+            border-radius: 25%;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 2px 2px 5px #0A246A;
+            transition: 0.3s;
+        }
+
+        /* Hover effect */
+        .scroll-btn:hover {
+            background: #0A246A;
+            color: white;
+        }
+
+        /* Positioning */
+        #scrollToBottomBtn {
+            top: 61px;
+        }
+        #scrollToTopBtn {
+            bottom: 10px;
+            display: none;
+        }
         .section {
             background: #f5f5f5;
             min-height: 500px !important;
@@ -375,7 +409,44 @@
             </div>
         </nav>
         @yield('content')
+        <button id="scrollToBottomBtn" class="scroll-btn"><i class="fa fa-angle-down"></i></button>
+        <button id="scrollToTopBtn" class="scroll-btn"><i class="fa fa-angle-up"></i></button>
+
     </div>
+      <script>
+      const scrollToBottomBtn = document.getElementById("scrollToBottomBtn");
+        const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+        // Scroll to Bottom
+        scrollToBottomBtn.addEventListener("click", function () {
+            window.scrollTo({
+                top: document.body.scrollHeight, 
+                behavior: "smooth"
+            });
+        });
+
+        // Scroll to Top
+        scrollToTopBtn.addEventListener("click", function () {
+            window.scrollTo({
+                top: 0, 
+                behavior: "smooth"
+            });
+        });
+
+        // Show/Hide Buttons on Scroll
+        window.addEventListener("scroll", function () {
+            const scrollPosition = window.scrollY;
+            const pageHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+            if (scrollPosition >= pageHeight - 10) {
+                scrollToBottomBtn.style.display = "none";
+                scrollToTopBtn.style.display = "flex";
+            } else if (scrollPosition === 0) {
+                scrollToTopBtn.style.display = "none";
+                scrollToBottomBtn.style.display = "flex";
+            }
+        });
+    </script>
     @include('client.layouts.common.js_links')
     <script>
         document.getElementById('nav-bills-tab').addEventListener('click', function(event) {

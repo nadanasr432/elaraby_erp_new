@@ -227,7 +227,7 @@
     }
 </style>
 @section('content')
-    <div class="row">
+    <div class="row mt-2">
 
         <div class="col-md-7 py-1 px-1 pl-1">
             <div class="inner-sectoin bg-white rounded px-1" style="border: 1px solid #2d2d2d1f;height: 100%;">
@@ -1628,33 +1628,46 @@
         // ======================================================//
 
         // ========get subcategories according to category=======//
-        $('.getSubCatsWithProducts').on('click', function() {
+        function loadSubCategoriesAndProducts() {
             $('.sub_categories').hide();
             $('.sub_categories').empty();
             $('.products').empty();
             $(".loadingH").show();
             $('.category').removeClass('newdark');
-            $(this).addClass('newdark');
-            //get all subcategories & products request//
+
             $.post("{{ url('/client/pos/get-subcategories-and-products') }}", {
                 "_token": "{{ csrf_token() }}"
             }, function(allData) {
                 allData = JSON.parse(allData);
                 (allData[1].data).forEach(function(product) {
                     let productElement =
-                        '<div class="card cproduct m-nos product" product_id="' +
-                        product.id +
-                        '" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important; border: 1px solid rgba(229, 229, 229, 0.4) !important; min-height: 172px !important; max-height: 172px !important; width: 12rem !important;margin-bottom: 5px !important;"> <div class="imgBox" style="height: 75px !important; width: 100% !important;"> <img style="height: 100% !important; width: 100% !important; object-fit: contain !important;" src="../../../' +
-                        (product.product_pic ? product.product_pic :
-                            'images/logo.png') +
-                        '" class="card-img-top"> </div> <div class="card-body cbod" style="padding: 6px !important;"> <h5 class="card-title ctitle" style="font-size: 12px !important;min-height: 33px !important;color: #0A246A !important; font-weight: 600 !important;">' +
-                        product.product_name +
-                        '</h5> <p class="card-text ctxt" style="margin-bottom: 3px !important;">' +
-                        product.code_universal +
-                        '</p> <div class="row col-12 justify-content-between m-0 pl-0"> <span class="text-warning font-weight-bold"> '
-                        +product.sector_price +
-                        ' </span> <span class="row p-0 d-inline"> <span class="plusIcon">+</span> <span class="m-nos font-weight-bold">1</span> <span class="minusIcon">-</span> </span> </div> </div> </div>';
-                    $(".products").append(productElement);
+                    '<div class="card cproduct m-nos product" product_id="' + product.id +
+                    '" product_name="' + product.product_name + '" product_price="' + product.sector_price + 
+                    '" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important; border: 1px solid rgba(229, 229, 229, 0.4) !important; min-height: 172px !important; max-height: 172px !important; width: 12rem !important;margin-bottom: 5px !important;">' +
+                    '<div class="imgBox" style="height: 75px !important; width: 100% !important;">' +
+                    '<img style="height: 100% !important; width: 100% !important; object-fit: contain !important;" src="../../../' +
+                    (product.product_pic ? product.product_pic : 'images/logo.png') +
+                    '" class="card-img-top"> </div>' +
+                    '<div class="card-body cbod" style="padding: 6px !important;">' +
+                    '<h5 class="card-title ctitle" style="font-size: 12px !important;min-height: 33px !important;color: #0A246A !important; font-weight: 600 !important;">' +
+                    product.product_name +
+                    '</h5>' +
+                    '<p class="card-text ctxt" style="margin-bottom: 3px !important;">' +
+                    product.code_universal +
+                    '</p>' +
+                    '<div class="row col-12 justify-content-between m-0 pl-0">' +
+                    '<span class="text-warning font-weight-bold">' + product.sector_price + '</span>' +
+                    '<span class="row p-0 d-inline">' +
+                    '<span class="plusIcon">+</span>' +
+                    '<span class="m-nos font-weight-bold">1</span>' +
+                    '<span class="minusIcon">-</span>' +
+                    '</span>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+
+                $(".products").append(productElement);
+
                 });
                 (allData[0]).forEach(function(subcat) {
                     let subCatElement = '<span sub_category_id="' + subcat.id +
@@ -1665,12 +1678,20 @@
                 $(".loadingH").hide();
                 $(".sub_categories").fadeIn(500);
                 $(".products").fadeIn(500);
-
             });
+        }
 
-
+        // Call function on page load
+        $(document).ready(function() {
+            loadSubCategoriesAndProducts();
         });
-        // ======================================================//
+
+        // Bind click event
+        $('.getSubCatsWithProducts').on('click', function() {
+            $('.category').removeClass('newdark');
+            $(this).addClass('newdark');
+            loadSubCategoriesAndProducts();
+        });
 
         // ========get products according to sub_category=======//
         $(document).on('click', '.sub_category', function() {
@@ -1736,75 +1757,91 @@
         //############################PAYING BUTTONS ACTIONS #######################//
 
         //=================زر حفظ وطباعة بدون دفع===========
-        $('#save_pos').on('click', function() {
-            if (!chkInvHasProductsAndClient()) return false;
+       $('#save_pos').on('click', function () {
+    if (!chkInvHasProductsAndClient()) return false;
 
-            //---bill details---//
-            let billDetails = {
-                outer_client_id: $('#outer_client_id').val(),
-                tableNum: $('#tableNum').val(),
-                status: 'done',
-                value_added_tax: '0',
-                notes: $('#notes').val(),
-                total_amount: Number($("#total").text()),
-                tax_amount: Number($("#taxValueAmount").text()),
-                tax_value: Number($("#posTaxValue").text()),
-            };
+    //---bill details---//
+    let billDetails = {
+        outer_client_id: $('#outer_client_id').val(),
+        tableNum: $('#tableNum').val(),
+        status: 'done',
+        value_added_tax: '0',
+        notes: $('#notes').val(),
+        total_amount: Number($("#total").text()),
+        tax_amount: Number($("#taxValueAmount").text()),
+        tax_value: Number($("#posTaxValue").text()),
+    };
 
-            //---products details---//
-            let productsArr = [];
-            let totalSum = 0;
-            $(".edit_price").each(function(index) {
-                let product_id = $($(".edit_price")[index]).parent().parent().attr('id');
-                var productPrice = $($(".edit_price")[index]).val();
-                var productQty = $($(".edit_quantity")[index]).val();
-                var productDiscount = $($(".edit_discount")[index]).val();
-                totalSum = productPrice * productQty - productDiscount;
+    //---products details---//
+    let productsArr = [];
+    let totalSum = 0;
+    let hasInvalidProduct = false;
 
-                productsArr.push({
-                    product_id: product_id,
-                    product_price: productPrice,
-                    quantity: productQty,
-                    discount: productDiscount,
-                    quantity_price: totalSum,
-                });
-            });
+    $(".edit_price").each(function (index) {
+        let product_id = $($(".edit_price")[index]).parent().parent().attr('id');
+        let productPrice = Number($($(".edit_price")[index]).val());
+        let productQty = Number($($(".edit_quantity")[index]).val());
+        let productDiscount = Number($($(".edit_discount")[index]).val());
+        totalSum = productPrice * productQty - productDiscount;
 
-            $.post("{{ route('pos.open.done') }}", {
-                "_token": "{{ csrf_token() }}",
-                billDetails: billDetails,
-                productsArr: productsArr
-            }, function(data) {
-                if (data.success == 1) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'تم حفظ الفاتورة بنجاح',
-                        timeout: 1300,
-                        showConfirmButton: true,
-                        confirmButtonText: 'اغلاق',
-                        confirmButtonColor: '#69d26f',
-                    });
+        // Check if the product price is zero
+        if (productPrice === 0) {
+            hasInvalidProduct = true;
+            return false; // Break out of the loop
+        }
 
-                    setTimeout(() => {
-                        window.location.href = '/pos-print/' + data.pos_id;
-                    }, 50);
-                }
-            }).fail(function(jqXHR) {
-                // Extracting the error message from the response
-                let errorMessage = jqXHR.responseJSON ? jqXHR.responseJSON.message :
-                    "An error occurred";
-
-                // Display the error message using Swal
-                Swal.fire({
-                    icon: 'error',
-                    title: 'خطأ',
-                    text: errorMessage,
-                    confirmButtonText: 'إغلاق',
-                    confirmButtonColor: '#d33',
-                });
-            });
+        productsArr.push({
+            product_id: product_id,
+            product_price: productPrice,
+            quantity: productQty,
+            discount: productDiscount,
+            quantity_price: totalSum,
         });
+    });
 
+    // If any product has a price of 0, show an alert and stop the process
+    if (hasInvalidProduct) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'تنبيه',
+            text: 'لا يمكن حفظ الفاتورة لأن بعض المنتجات تحتوي على سعر 0!',
+            confirmButtonText: 'إغلاق',
+            confirmButtonColor: '#d33',
+        });
+        return false;
+    }
+
+    $.post("{{ route('pos.open.done') }}", {
+        "_token": "{{ csrf_token() }}",
+        billDetails: billDetails,
+        productsArr: productsArr
+    }, function (data) {
+        if (data.success == 1) {
+            Swal.fire({
+                icon: 'success',
+                title: 'تم حفظ الفاتورة بنجاح',
+                timeout: 1300,
+                showConfirmButton: true,
+                confirmButtonText: 'اغلاق',
+                confirmButtonColor: '#69d26f',
+            });
+
+            setTimeout(() => {
+                window.location.href = '/pos-print/' + data.pos_id;
+            }, 50);
+        }
+    }).fail(function (jqXHR) {
+        let errorMessage = jqXHR.responseJSON ? jqXHR.responseJSON.message : "An error occurred";
+
+        Swal.fire({
+            icon: 'error',
+            title: 'خطأ',
+            text: errorMessage,
+            confirmButtonText: 'إغلاق',
+            confirmButtonColor: '#d33',
+        });
+    });
+});
         //==================================================
 
         //================دفع شبكة سريع================
@@ -2171,7 +2208,7 @@
                 let totalPrice = (edit_quantity * edit_price) - edit_discount;
                 $("#totalPrice-" + element_id).text(totalPrice.toFixed(3));
             } else {
-                alert('اكتب رقم صحيح اكبر من 0');
+                
                 return false;
             }
             refreshBillDetails();
@@ -2189,7 +2226,7 @@
                 let totalPrice = (edit_quantity * edit_price) - edit_discount;
                 $("#totalPrice-" + element_id).text(totalPrice.toFixed(3));
             } else {
-                alert('اكتب رقم صحيح اكبر من 0');
+                
                 return false;
             }
             refreshBillDetails();
@@ -2207,7 +2244,7 @@
                 let totalPrice = (edit_quantity * edit_price) - edit_discount;
                 $("#totalPrice-" + element_id).text(totalPrice.toFixed(3));
             } else {
-                alert('اكتب رقم صحيح اكبر من 0');
+                
                 return false;
             }
             refreshBillDetails();

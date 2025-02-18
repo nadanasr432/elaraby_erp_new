@@ -70,46 +70,78 @@
             margin-top: 10px !important;
         }
     </style>
-    <style type="text/css" media="print">
-        .chgTxtSize {
+    <style type="text/css" media="print">@media print {
+    body {
+        font-family: 'Cairo', sans-serif;
+        direction: rtl;
+        text-align: right;
+        font-size: 14px;
+        color: #333;
+        margin: 10px;
+        padding: 10px;
+    }
+
+    .pos_details {
+        max-width: 80mm;
+        margin: auto;
+        background: #fff;
+        padding: 15px;
+        border: 1px solid #ddd;
+        box-shadow: 0px 0px 5px #ddd;
+    }
+
+    .logo {
+        display: block;
+        margin: 0 auto 10px;
+    }
+
+    .invoice-title {
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .details {
+        font-size: 13px;
+        line-height: 1.7;
+        padding: 5px;
+        background: #f8f9fa;
+        border-radius: 5px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    table th, table td {
+        border: 1px solid #aaa;
+        padding: 5px;
+        text-align: center;
+    }
+
+    .highlight {
+        background: #eee;
+        font-weight: bold;
+    }
+
+    .total-amount {
+        font-size: 16px;
+        font-weight: bold;
+        color: #d9534f;
+    }
+
+    .qr-code {
+        text-align: center;
+        margin-top: 15px;
+    }
+     .no-print {
             display: none;
         }
+}
 
-        table {
-            text-align: right;
-            width: 100% !important;
-            margin-top: 10px !important;
-        }
-
-        table thead tr,
-        table tbody tr {
-            border-bottom: 1px solid #aaa;
-        }
-
-        * {
-            color: #000 !important;
-        }
-
-        body,
-        html {
-            color: #000;
-            font-family: 'Cairo' !important;
-            font-weight: bold;
-            page-break-before: avoid;
-            page-break-after: avoid;
-            page-break-inside: avoid;
-        }
-
-        .pos_details {
-            width: 100% !important;
-            page-break-before: avoid;
-            page-break-after: avoid;
-            page-break-inside: avoid;
-        }
-
-        .no-print {
-            display: none;
-        }
     </style>
 </head>
 
@@ -405,4 +437,4 @@
 </body>
 
 </html>
-s
+
