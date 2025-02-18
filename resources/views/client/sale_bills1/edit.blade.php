@@ -9,7 +9,7 @@
     <div class="alert alert-success alert-dismissable text-center box_success d-none no-print">
         <button class="close" data-dismiss="alert" aria-label="Close">×</button>
         <span class="msg_success"></span>
-    </div>F
+    </div>
 
     <div class="alert alert-dark alert-dismissable text-center box_error d-none no-print">
         <button class="close" data-dismiss="alert" aria-label="Close">×</button>
