@@ -1,5 +1,15 @@
 @extends('client.layouts.app-main')
 <style>
+    .custom-title::before {
+    content: "";  
+    display: inline-block;
+    width: 32px;
+    height: 2px;
+    background-color: #ec6880;
+    align-self: flex-end;
+    bottom: 4px;
+
+}
 </style>
 @section('content')
     @if (session('success'))
@@ -20,8 +30,9 @@
             <div class="card">
                 <div class="card-header pb-0 no-print">
                     <div class="d-flex justify-content-between">
-                        <div class="col-lg-12 margin-tb">
-                            <h5 class="pull-right alert alert-sm alert-success">{{ __('stores.inventory-all-stores') }}
+                        <div class="col-lg-12 d-flex align-items-center">
+                            <h5 style="white-space: nowrap" class=" alert font-weight-bold m-0 p-0 d-flex
+                         custom-title align-items-end">{{ __('stores.inventory-all-stores') }}
                             </h5>
                         </div>
                     </div>
