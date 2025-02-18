@@ -21,11 +21,12 @@ class OuterClientRequest extends FormRequest
      */
     public function rules(): array
     {
+        // dd($this);
         return [
             'client_name' => 'required',
             'client_category' => 'required',
-            'prev_balance' => 'required',
-            'commercial_register'=>'nullable'
+            // 'prev_balance' => 'required',
+            'commercial_register' => 'nullable'
         ];
     }
 }
