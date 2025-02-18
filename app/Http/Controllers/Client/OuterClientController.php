@@ -209,7 +209,7 @@ class OuterClientController extends Controller
         $validated = $request->validate([
             'client_name' => 'required',
             'client_category' => 'required',
-            'prev_balance' => 'required',
+            // 'prev_balance' => 'required',
             'commercial_register' => 'nullable'
         ]);
 

@@ -98,7 +98,7 @@
                                     @if ($outer_client->prev_balance > 0) checked @endif type="radio" value="on"
                                     name="balance" /> عليه
 
-                                <input required value="{{ abs((float)$outer_client->prev_balance) }}" type="number"
+                                <input required value="{{ abs((float)$outer_client->prev_balance) ??  0  }}" type="number"
                                   name="prev_balance" disabled class="form-control" dir="ltr" />
 
                             </div>
