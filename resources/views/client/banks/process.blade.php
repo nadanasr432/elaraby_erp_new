@@ -1,8 +1,8 @@
 @extends('client.layouts.app-main')
 <style>
-    .bootstrap-select {
-        width: 80% !important;
-    }
+      .bootstrap-select {
+        width: 100% !important;
+    }   
 
 </style>
 @section('content')

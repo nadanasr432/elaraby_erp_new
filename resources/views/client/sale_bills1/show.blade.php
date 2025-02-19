@@ -11,9 +11,7 @@
         color: #444;
     }
 
-    .bootstrap-select {
-        width: 80% !important;
-    }
+     
 
     .bill_details {
         margin-top: 30px !important;

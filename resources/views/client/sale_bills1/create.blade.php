@@ -31,11 +31,10 @@
     <form id="myForm" target="_blank" action="#" method="POST">
         @csrf
         @method('POST')
-        <h6 class="alert alert-info alert-sm text-center no-print  font-weight-bold" dir="rtl"
-            style="background-color: #d8daf5 !important; border:#d8daf5">
-            <center>
+        <div class="bg-white p-2">
+        <h6 class="alert alert-info alert-sm text-start no-print custom-title font-weight-bold "
+            style="background-color: #ffffff !important; border:#d8daf5">
                 {{ __('sidebar.add-new-sales-invoice') }}
-            </center>
         </h6>
 
         <div class="row">
@@ -68,13 +67,13 @@
                     <span class="text-danger font-weight-bold">*</span>
                 </label>
                 <div class="d-flex align-items-center justify-content-between">
-                    <select name="outer_client_id" id="outer_client_id" data-style="btn-new_color"
-                        title="{{ __('sales_bills.client-name') }}" class="selectpicker w-100 me-2" data-live-search="true">
+                    <select name="outer_client_id" id="outer_client_id"
+                        title="{{ __('sales_bills.client-name') }}" class="selectpicker w-100 form-control " data-live-search="true">
                         @foreach ($outer_clients as $outer_client)
                             <option value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
                         @endforeach
                     </select>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClientModal">
+                    <button target="_blank" type="button" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#addClientModal">
                         <i class="fa fa-plus" aria-hidden="true"> </i> {{ __('main.add immediate client') }}
                     </button>
                 </div>
@@ -86,7 +85,7 @@
                     <span class="text-danger font-weight-bold">*</span>
                 </label>
                 <div class="d-flex justify-content-between">
-                    <select name="store_id" id="store_id" class="selectpicker me-2" data-style="btn-new_color"
+                    <select name="store_id" id="store_id" class="selectpicker me-2 form-control" 
                         data-live-search="true" title="{{ __('sales_bills.select-store') }}">
                         <?php $i = 0; ?>
                         @foreach ($stores as $store)
@@ -102,7 +101,7 @@
                             <?php $i++; ?>
                         @endforeach
                     </select>
-                    <a target="_blank" href="{{ route('client.stores.create') }}" role="button" class="btn btn-primary ">
+                    <a target="_blank" href="{{ route('client.stores.create') }}" role="button" class="btn btn-warning d-flex align-items-center ">
                         <i class="fa fa-plus" aria-hidden="true"> </i>
                         {{ __('sales_bills.add-store') }}
                     </a>
@@ -118,7 +117,7 @@
                     <span class="text-danger font-weight-bold">*</span>
                 </label>
                 <div class="d-flex align-items-center justify-content-between">
-                    <select name="product_id" id="product_id" class="selectpicker w-50" data-style="btn-new_color"
+                    <select name="product_id" id="product_id" class="selectpicker w-50 form-control" 
                         data-live-search="true" title="{{ __('sales_bills.choose product') }}">
                         <option value="new" style="color: red;">{{ __('sales_bills.Add immediate product') }}</option>
 
@@ -139,7 +138,7 @@
                         <option value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
                     @endforeach
                 </select> --}}
-                    <button type="button" class="btn btn-primary instantProduct">
+                    <button type="button" class="btn btn-warning instantProduct">
                         <i class="fa fa-plus"></i> {{ __('main.add immediate product') }}
                     </button>
                 </div>
@@ -151,8 +150,8 @@
                 </label>
 
                 <div class="d-flex align-items-center justify-content-between">
-                    <select required name="value_added_tax" id="value_added_tax" class="selectpicker w-100"
-                        data-style="btn-new_color" data-live-search="true">
+                    <select required name="value_added_tax" id="value_added_tax" class="selectpicker w-100 form-control"
+                         data-live-search="true">
                         <option value="0" selected>
                             {{ __('sales_bills.not-including-tax') }}</option>
                         <option value="2">
@@ -177,26 +176,26 @@
                     <thead>
                         <tr>
                             <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                style="background-color: #222751; color: #333; text-align: center; padding: 10px; font-weight: bold;">
                                 {{ __('sales_bills.product') }}</th>
                             <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                style="background-color: #222751; color: #333; text-align: center; padding: 10px; font-weight: bold;">
                                 {{ __('sales_bills.price_type') }}</th>
                             <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                style="background-color: #222751; color: #333; text-align: center; padding: 10px; font-weight: bold;">
                                 {{ __('sales_bills.price') }}</th>
                             <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                style="background-color: #222751; color: #333; text-align: center; padding: 10px; font-weight: bold;">
                                 {{ __('sales_bills.quantity') }}</th>
                             <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                style="background-color: #222751; color: #333; text-align: center; padding: 10px; font-weight: bold;">
                                 {{ __('sales_bills.unit') }}</th>
                             <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 5px; font-weight: bold;">
+                                style="background-color: #222751; color: #333; text-align: center; padding: 5px; font-weight: bold;">
                                 {{ __('sales_bills.discount') }}
                                 <div class="tax_discount"
                                     style="display: inline-block; margin-left: 10px; vertical-align: middle;">
-                                    <select id="discount_application" class="form-control"
+                                    <select id="discount_application" class="form-control text-white"
                                         style="font-size: 12px; height: 30px;" name="products_discount_type">
                                         <option value="before_tax">{{ __('sales_bills.discount_before_tax') }}</option>
                                         <option value="after_tax">{{ __('sales_bills.discount_after_tax') }}</option>
@@ -204,13 +203,13 @@
                                 </div>
                             </th>
                             <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                style="background-color: #222751; color: #333; text-align: center; padding: 10px; font-weight: bold;">
                                 {{ __('sales_bills.tax') }}</th>
                             <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                style="background-color: #222751; color: #333; text-align: center; padding: 10px; font-weight: bold;">
                                 {{ __('sales_bills.total') }}</th>
                             <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                style="background-color: #222751; color: #333; text-align: center; padding: 10px; font-weight: bold;">
                                 {{ __('sales_bills.actions') }}</th>
                         </tr>
                     </thead>
@@ -239,8 +238,9 @@
             <div class="col-md-6 pull-right">
                 <div class="form-group" dir="rtl">
                     <label for="discount">{{ __('sales_bills.discount-on-the-total-bill') }}</label> <br>
-                    <select name="discount_type" id="discount_type" class="form-control"
-                        style="width: 60%;display: inline;float: right; margin-left:5px;">
+                    <div class="d-flex">
+                        <select name="discount_type" id="discount_type" class="form-control w-75"
+                        >
                         <option value="">اختر نوع الخصم</option>
                         <option value="pound">خصم قبل الضريبة (مسطح)</option>
                         <option value="percent">خصم قبل الضريبة (%)</option>
@@ -251,10 +251,11 @@
                         </option>
                     </select>
                     <input type="number" value="0" name="discount_value" min="0"
-                        style="width: 20%;display: inline;float: right;" id="discount_value" class="form-control "
+                         id="discount_value" class="form-control w-25"
                         step = "any" />
+                    </div>
                     <input type="text" name="discount_note" id="discount_note" placeholder="ملاحظات الخصم. . ."
-                        class="form-control mt-5" style="width: 80%;">
+                        class="form-control mt-1 w-100" >
                     {{-- <span id="dicountForBill"></span> --}}
                 </div>
 
@@ -263,16 +264,18 @@
             <div class="col-md-6 pull-right">
                 <div class="form-group" dir="rtl">
                     <label for="extra">{{ __('main.shipping-expenses') }}</label> <br>
+                    <div class="d-flex">
 
-                    <select name="extra_type" id="extra_type" class="form-control"
-                        style="width:60%;display: inline;float: right;margin-left: 5px">
+                    <select name="extra_type" id="extra_type" class="form-control w-75"
+                        >
                         <option value="">اختر نوع الشحن</option>
                         <option value="pound">{{ $extra_settings->currency }}</option>
                         <option value="percent">%</option>
                     </select>
                     <input value="0" type="number" name="extra_value" min='0'
-                        style="width: 20%;display: inline;float: right;" id="extra_value" class="form-control"
+                        id="extra_value" class="form-control w-25"
                         step = "any" />
+                    </div>
                 </div>
             </div>
         </div><!--  End Row -->
@@ -307,80 +310,80 @@
             </div>
         </div>
 
-        <div class="col-lg-12 no-print text-center pt-3">
-            <div class="d-flex justify-content-start align-items-center flex-nowrap"
+        <div class="col-lg-12 no-print text-center pt-2 px-0">
+            <div class="d-flex justify-content-start align-items-center flex-nowrap  bg-white p-2"
                 style="overflow-x: auto; white-space: nowrap;">
                 <!-- Record Button -->
                 <button type="button" data-toggle="modal" style="height: 40px" data-target="#myModal2"
-                    class="btn btn-md btn-dark pay_btn m-1">
+                    class="btn btn-md btn-warning pay_btn m-1">
                     <i class="fa fa-money"></i> {{ __('main.record') }}
                 </button>
-                <button type="button" id="add" class="btn btn-info btn-md m-1" style="height: 40px">
+                <button type="button" id="add" class="btn btn-md m-1 text-white" style="height: 40px; background-color: #ec6880;">
                     <i class="fa fa-plus"></i> {{ __('sales_bills.save and show') }}
                 </button>
 
                 <!-- Save and Print 1 Button -->
-                <button type="button" role="button" class="btn save_btn1 btn-md btn-info text-white m-1"
-                    isMoswada="0" invoiceType="2" style="height: 40px">
+                <button type="button" role="button" class="btn save_btn1 btn-md text-dark m-1"
+                    isMoswada="0" invoiceType="2" style="height: 40px; background-color: #dadada2e;">
                     حفظ و طباعة 1
                 </button>
 
                 <!-- Save and Print 2 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md m-1"
-                    style="height: 40px; border: 1px solid #085d4a !important; background: #085d4a !important; color: white;"
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-warning m-1"
+                    style="height: 40px;  color: white;"
                     printColor="1" isMoswada="0" invoiceType="2">
                     حفظ و طباعة 2
                 </a>
 
                 <!-- Save and Print 3 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-primary m-1"
-                    style="height: 40px; border: 1px solid #5e8b0b !important; background: #5e8b0b !important; color: white;"
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md m-1"
+                    style="height: 40px; background-color: #ec6880; color: white;"
                     printColor="2" isMoswada="0" invoiceType="4">
                     حفظ و طباعة 3
                 </a>
 
                 <!-- Save and Print 4 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-primary pull-right m-1"
-                    style="height: 40px; border: 1px solid #0bb3b3 !important; background: #0bb3b3 !important; color: white;"
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md pull-right m-1 text-dark"
+                    style="height: 40px; background-color: #dadada2e;"
                     printColor="3" isMoswada="0" invoiceType="5">
                     حفظ و طباعة 4
                 </a>
 
                 <!-- Save and Print 5 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-primary pull-right m-1"
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-warning pull-right m-1"
                     style="height: 40px;" printColor="2" isMoswada="0" invoiceType="2">
                     حفظ و طباعة 5
                 </a>
 
                 <!-- Save and Print 6 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-primary pull-right m-1"
-                    style="height: 40px; border: 1px solid #0b228b !important; background: #0b228b !important; color: white;"
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md pull-right m-1"
+                    style="height: 40px; background-color: #ec6880; color: white;"
                     printColor="2" isMoswada="0" invoiceType="6">
                     حفظ و طباعة 6
                 </a>
 
                 <!-- Save and Print 7 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-primary pull-right m-1"
-                    style="height: 40px; border: 1px solid #9b4aad !important; background: #9b4aad !important; color: white;"
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md text-dark pull-right m-1"
+                    style="height: 40px; background-color: #dadada2e;"
                     printColor="2" isMoswada="0" invoiceType="7">
                     حفظ و طباعة 7
                 </a>
 
                 <!-- Save and Print 8 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-primary pull-right m-1"
-                    style="height: 40px; border: 1px solid #3d121264 !important; background: #3d121264 !important; color: white;"
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-warning pull-right m-1"
+                    style="height: 40px; color: white;"
                     printColor="2" isMoswada="0" invoiceType="8">
                     حفظ و طباعة 8
                 </a>
 
                 <!-- Draft Invoice Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-warning m-1" style="height: 40px;"
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md m-1 text-white" style="height: 40px; background-color: #ec6880;"
                     printColor="2" isMoswada="1" invoiceType="2">
                     فاتورة مسودة
                 </a>
 
                 <!-- Non-Tax Invoice Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-success m-1" style="height: 40px;"
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md text-dark m-1" style="height: 40px; background-color: #dadada2e;"
                     printColor="2" isMoswada="0" invoiceType="3">
                     فاتورة غير ضريبية
                 </a>
@@ -548,6 +551,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </form>
     <div class="modal fade" id="addClientModal" tabindex="-1" aria-labelledby="addClientModalLabel"
         aria-hidden="true">

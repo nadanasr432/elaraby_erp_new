@@ -885,7 +885,7 @@ select.form-control {
 }
 
 .btn-warning ~ .dropdown-menu .dropdown-item.active {
-    background-color: #FF9149;
+    background-color: #222751;
 }
 
 .dropdown-menu.arrow {

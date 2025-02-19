@@ -7,10 +7,13 @@
     a, a:hover {
         text-decoration: none;
         color: #444;
+        background-color: transparent;
+    border: 0;
+    padding: 0;
     }
 
     .bootstrap-select {
-        width: 80% !important;
+        width: 100% !important;
     }
 
     .bill_details {
