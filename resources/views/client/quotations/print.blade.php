@@ -289,7 +289,7 @@
                                 <!--</td>-->
                                 <td class="borderLeftH" dir="rtl">
                                     {{ $product->quantity }}
-                                     {{ $product->product?->unit?->unit_name ?? '-' }} --}}
+                                     {{ $product->product?->unit?->unit_name ?? '-' }} 
                                 </td>
                                 <td class="borderLeftH" dir="rtl">
                                     {{ $product->product_price }} 
