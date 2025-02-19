@@ -88,7 +88,7 @@
 }
 .bootstrap-select.form-control {
   margin-bottom: 0;
-  padding: 0;
+  /* padding: 0; */
   border: none;
 }
 :not(.input-group) > .bootstrap-select.form-control:not([class*="col-"]) {
@@ -180,7 +180,8 @@
   padding-right: inherit;
 }
 .bootstrap-select .dropdown-toggle .filter-option-inner-inner {
-  overflow: hidden;color: #fff;
+  overflow: hidden;
+  color: #000;
 }
 .bootstrap-select .dropdown-toggle .caret {
   position: absolute;
@@ -196,7 +197,7 @@
   width: 100%;
 }
 .bootstrap-select .dropdown-menu {
-  min-width: 250px;
+  /* min-width: 120%; */
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
           box-sizing: border-box;

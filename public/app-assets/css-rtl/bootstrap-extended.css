@@ -217,23 +217,27 @@ pre code {
 .table-borderless td, .table-borderless th {
     border: none;
 }
-
+.table thead {
+    background-color: #222751 !important;
+}
 .table thead th {
+    color: white !important;
     vertical-align: bottom;
-    border-bottom: 2px solid #E3EBF3;
-    border-top: 1px solid #E3EBF3;
+    border-bottom: 1px solid #EEF0F4;
+    border-top: 1px solid #EEF0F4;
+    font-weight: normal !important;
 }
 
 .table-bordered th, .table-bordered td {
-    border: 1px solid #E3EBF3;
+    border: 1px solid #EEF0F4;
 }
 
 .table th, .table td {
-    border-bottom: 1px solid #E3EBF3;
+    border-bottom: 1px solid #EEF0F4;
 }
 
 .table-bordered {
-    border: 1px solid #E3EBF3;
+    border: 1px solid #EEF0F4;
 }
 
 .table-inverse {
@@ -243,7 +247,7 @@ pre code {
 
 .table.table-column th, .table.table-column td {
     border: none;
-    border-right: 1px solid #E3EBF3;
+    border-right: 1px solid #EEF0F4;
 }
 
 .table.table-column th:first-child, .table.table-column td:first-child {
@@ -251,7 +255,7 @@ pre code {
 }
 
 .table th, .table td {
-    padding: 0.75rem 2rem;
+    padding: 0.45rem 2rem;
 }
 
 .table.table-xl th, .table.table-xl td {
@@ -278,7 +282,7 @@ pre code {
 * Table sizing
 */
 .table-borderless thead th {
-    border-top: 1px solid #E3EBF3;
+    border-top: 1px solid #EEF0F4;
 }
 
 .table-borderless > tbody > tr > td, .table-borderless > tbody > tr > th {
@@ -318,8 +322,9 @@ form .form-group {
 }
 
 form .form-control {
-    border: 1px solid #CACFE7;
+    border: 1px solid #cacfe75e;
     color: #3B4781;
+    background-color: #dadada2e;
 }
 
 form .form-control::-webkit-input-placeholder {
@@ -687,7 +692,7 @@ select.form-control {
     margin: -0.1rem 0 0;
     -webkit-box-shadow: 0 5px 75px 2px rgba(64, 70, 74, 0.2);
     box-shadow: 0 5px 75px 2px rgba(64, 70, 74, 0.2);
-    min-width: 11rem;
+    min-width: 8rem;
 }
 
 .dropdown .dropdown-menu .dropdown-header {
@@ -738,7 +743,7 @@ select.form-control {
     margin: -0.1rem 0 0;
     -webkit-box-shadow: 0 5px 75px 2px rgba(64, 70, 74, 0.2) !important;
     box-shadow: 0 5px 75px 2px rgba(64, 70, 74, 0.2) !important;
-    min-width: 11rem;
+    min-width: 8rem;
 }
 
 .dropdown .dropdown-menu .dropdown-header {

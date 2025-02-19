@@ -32,46 +32,47 @@
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
                         <div class="col-lg-12 margin-tb">
-                            <a class="btn pull-left btn-primary btn-sm" target="_blank"
-                                href="{{ route('client.pos.sales_products_today') }}">
-                                <i class="fa fa-plus"></i>
-                                تقرير المنتجات المباعة اليوم
-                            </a>
-
-                            <a class="btn pull-left btn-info btn-sm mr-1" id="mainPrintBtn" style="display: none"
-                                href="{{ route('pos.sales.report.print') }}">
-                                <i class="fa fa-print"></i>
-                                {{ __('pos.print-invoice') }}
-                            </a>
-
-                            <a class="btn pull-left btn-info btn-sm mr-1" id="todayPrintBtn"
-                                href="{{ route('pos.sales.report.print-today') }}">
-                                <i class="fa fa-print"></i>
-                                {{ __('pos.print-invoice') }}
-                            </a>
-                            <a class="btn pull-left btn-info btn-sm mr-1" id="todayPrintBtn"
-                                href="{{ route('pos.sales.report.button.print-today') }}">
-                                <i class="fa fa-print"></i>
-                                {{ __('pos.print-button') }}
-                            </a>
-
-                            <button id="getPosReportsToday" class="btn pull-left btn-dark btn-sm mr-1">
-                                عرض كل التقارير
-                            </button>
-
-                            <button id="getPosReports" style="display: none;" class="btn pull-left btn-dark btn-sm mr-1">
-                                عرض تقرير اليوم
-                            </button>
-
-                            <button id="getPosReportsWithDates" class="btn pull-left btn-warning btn-sm mr-1">
-                                عرض بالتاريخ
-                            </button>
-
-                            <h5 class="pull-right alert alert-sm alert-success">
-                                {{ __('sidebar.point-of-sale-reports') }}
-                            </h5>
-
+                            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                <h5 class="alert custom-title m-0 fw-bold">
+                                    {{ __('sidebar.point-of-sale-reports') }}
+                                </h5>
+                                <div class="d-flex flex-wrap">
+                                    <a class="btn text-white ml-1 mb-1 py-1"style=" background-color: #222751" target="_blank"
+                                       href="{{ route('client.pos.sales_products_today') }}">
+                                        <i class="fa fa-plus"></i> تقرير المنتجات المباعة اليوم
+                                    </a>
+                        
+                                    <a class="btn  ml-1 mb-1 py-1" id="mainPrintBtn" style="display: none;"
+                                       href="{{ route('pos.sales.report.print') }}">
+                                        <i class="fa fa-print"></i> {{ __('pos.print-invoice') }}
+                                    </a>
+                        
+                                    <a class="btn ml-1 mb-1 py-1 text-white" id="todayPrintBtn"style="background-color: #ec6880;"
+                                       href="{{ route('pos.sales.report.print-today') }}">
+                                        <i class="fa fa-print"></i> {{ __('pos.print-invoice') }}
+                                    </a>
+                        
+                                    <a class="btn  ml-1 mb-1 py-1"style="background-color:#cfcfcf82;" id="todayPrintBtn"
+                                       href="{{ route('pos.sales.report.button.print-today') }}">
+                                        <i class="fa fa-print"></i> {{ __('pos.print-button') }}
+                                    </a>
+                        
+                                    <button id="getPosReportsToday" class="btn ml-1 mb-1  py-1 text-white"style="background-color: #ec6880">
+                                        عرض كل التقارير
+                                    </button>
+                        
+                                    <button id="getPosReports" style="display: none;" class="btn btn-dark btn-sm ml-1 mb-1  py-1">
+                                        عرض تقرير اليوم
+                                    </button>
+                        
+                                    <button id="getPosReportsWithDates" class="btn ml-1 mb-1 text-white  py-1" style=" background-color: #222751">
+                                        عرض بالتاريخ
+                                    </button>
+                                </div>
+                            </div>
                         </div>
+                        
+                        
                         <br>
                     </div>
                 </div>
@@ -249,36 +250,36 @@
 
                         </table>
                     </div>
-                    <div class='row mb-3 mt-3 text-center'>
-                        <div class='badge badge-dark mb-1 p-1'
-                            style="margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;">
+                    <div class='row mb-3 mt-3 d-flex flex-wrap justify-content-between'>
+                        <div class='badge mb-1 p-1'
+                            style="margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;color: #000;">
                             مبيعات الكاش :
                             <span>{{ round($totalCash, 2) }}</span>
                         </div>
 
-                        <div class='badge badge-warning mb-1 p-1'
-                            style="margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;">
+                        <div class='badge mb-1 p-1'
+                            style="margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold; color: #000;">
                             مبيعات الشبكة :
                             <span>{{ round($totalBank, 2) }}</span>
                         </div>
 
                         <!--اجمالى الضريبة للفواتير-->
-                        <div class='badge badge-danger mb-1 p-1'
-                            style='margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;'>
+                        <div class='badge  mb-1 p-1'
+                            style='margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold; color: black'>
                             {{ __('pos.total-tax-for-all-invoices') }} :
                             <span>{{ round($sum3, 2) }}</span>
                         </div>
 
                         <!--المبلغ الاجمالي المدفوع--->
-                        <div class='badge badge-primary mb-1 p-1'
-                            style='margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;'>
+                        <div class='badge  mb-1 p-1'
+                            style='margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold; color: #000'>
                             {{ __('main.paid-amount') }} :
                             <span>{{ round($sum2, 2) }}</span>
                         </div>
 
                         <!--اجمالى الفواتير شامل الضريبة-->
-                        <div class='badge badge-success mb-1 p-1'
-                            style='margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;'>
+                        <div class='badge  mb-1 p-1'
+                            style='margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold; color: #000'>
                             {{ __('pos.total-invoices-including-tax') }} :
                             <span>{{ round($sum1, 2) }}</span>
                         </div>

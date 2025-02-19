@@ -65,7 +65,7 @@
         </h6>
         <div class="col-lg-3 pull-right no-print">
             <label for="" class="d-block">{{ __('suppliers.supplier-name') }}</label>
-            <select name="supplier_id" id="supplier_id" class="selectpicker" data-style="btn-success"
+            <select name="supplier_id" id="supplier_id" class="selectpicker" data-style="btn-third"
                 data-live-search="true" title="{{ __('suppliers.supplier-name') }}">
                 @foreach ($suppliers as $supplier)
                     <option value="{{ $supplier->id }}">{{ $supplier->supplier_name }}</option>
@@ -91,7 +91,7 @@
         </div>
         <div class="col-lg-3 pull-right no-print">
             <label for=""> {{ __('sales_bills.select-store') }} </label>
-            <select name="store_id" id="store_id" class="selectpicker" data-style="btn-warning" data-live-search="true"
+            <select name="store_id" id="store_id" class="selectpicker" data-style="btn-third" data-live-search="true"
                 title="{{ __('sales_bills.select-store') }}" required>
                 @foreach ($stores as $store)
                     {{-- @if ($stores->count() == 1)
@@ -119,7 +119,7 @@
         <div class="options no-print">
             <div class="col-lg-3 pull-right">
                 <label for=""> {{ __('sales_bills.product-code') }} </label>
-                <select name="product_id" id="product_id" class="selectpicker form-control" data-style="btn-danger"
+                <select name="product_id" id="product_id" class="selectpicker form-control" data-style="btn-third"
                     data-live-search="true" title="كود المنتج او الاسم">
                     @foreach ($all_products as $product)
                         <option value="{{ $product->id }}">{{ $product->product_name }}</option>
@@ -154,7 +154,7 @@
 
             <div class="clearfix"></div>
             <div class="col-lg-12 text-center">
-                <button type="button" id="add" class="btn btn-info btn-md mt-3">
+                <button type="button" id="add" class="btn btn-info btn-md mt-3 d-flex align-items-center justify-content-start"style="background-color: #222751 !important;">
                     <i class="fa fa-plus"></i>
                     {{ __('sidebar.add-new-purchase-orders') }}
                 </button>

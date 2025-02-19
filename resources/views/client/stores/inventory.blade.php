@@ -1,5 +1,6 @@
 @extends('client.layouts.app-main')
 <style>
+    
 </style>
 @section('content')
     @if (session('success'))
@@ -20,8 +21,9 @@
             <div class="card">
                 <div class="card-header pb-0 no-print">
                     <div class="d-flex justify-content-between">
-                        <div class="col-lg-12 margin-tb">
-                            <h5 class="pull-right alert alert-sm alert-success">{{ __('stores.inventory-all-stores') }}
+                        <div class="col-lg-12 d-flex align-items-center">
+                            <h5 style="white-space: nowrap" class=" alert font-weight-bold m-0 p-0 d-flex
+                         custom-title align-items-end">{{ __('stores.inventory-all-stores') }}
                             </h5>
                         </div>
                     </div>
@@ -48,7 +50,7 @@
                         @method('POST')
                         <div class="col-lg-3 pull-right no-print">
                             <label for="" class="d-block">{{ __('stores.choose-store') }}</label>
-                            <select required name="store_id" id="store_id" class="selectpicker" data-style="btn-info"
+                            <select required name="store_id" id="store_id" class="form-control"
                                 data-live-search="true" title="{{ __('stores.store-name') }}">
                                 <option @if (isset($store_id) && $store_id == 'all') selected @endif value="all">كل المخازن
                                 </option>
@@ -73,7 +75,7 @@
                                 {{ __('main.reports-fields') }}
                             </label>
                             <select class="form-control selectpicker show-tick" data-live-search="true"
-                                data-style="btn-success" data-title="{{ __('main.choose-fields') }}" multiple required
+                                data-style="btn-third" data-title="{{ __('main.choose-fields') }}" multiple required
                                 name="options[]" id="">
                                 <option @if (isset($options) && in_array('product_name', $options)) selected @endif value="product_name">
                                     {{ __('main.product-name') }}
@@ -98,7 +100,7 @@
                         <div class="clearfix"></div>
 
                         <div class="col-lg-12 pull-right">
-                            <button class="btn btn-md btn-danger" style="font-size: 15px; height: 40px; margin-top: 25px;"
+                            <button class="btn btn-md text-white px-4" style="font-size: 15px; height: 40px; margin-top: 25px; background-color: #222751"
                                 type="submit">
                                 <i class="fa fa-check"></i>
                                 {{ __('main.show-report') }}
