@@ -289,16 +289,19 @@
                                 </td>
                                 <td class="borderLeftH" dir="rtl">
                                     {{ $product->quantity }}
-                                    {{ $product->product->unit ? $product->product->unit->unit_name : '-' }}
+                                    {{ optional(optional($product->product)->unit)->unit_name ?? '-' }}
+                                    {{-- {{ isset($product->product->unit) ? $product->product->unit->unit_name : '-' }} --}}
+                                    {{-- {{ $product->product?->unit?->unit_name ?? '-' }} --}}
+
                                 </td>
                                 <td class="borderLeftH" dir="rtl">
                                     {{ $product->product_price }} 
                                 </td>
                                 <td class="borderLeftH" style="direction: rtl; unicode-bidi: embed;">
-                                   <div class="text-center" style="text-align: start !important;">{!! $product->product->description !!}</div>
+                                   <div class="text-center" style="text-align: start !important;">{!! $product->product?->description !!}</div>
                                 </td>
 
-                                <td class="borderLeftH">{{ $product->product->product_name }}</td>
+                                <td class="borderLeftH">{{ $product->product?->product_name }}</td>
                                 <td class="borderLeftH">{{ $counter }}</td>
                             </tr>
                             @php $counter++; @endphp
