@@ -49,7 +49,7 @@
         }
 
         .no-print {
-            position: fixed;
+            /* position: fixed; */
             bottom: 0;
             color: #fff !important;
             left: 30px;
@@ -151,6 +151,13 @@
             page-break-after: avoid;
             page-break-inside: avoid;"
     class="text-right">
+     <div class="d-flex justify-content-end  p-3">
+    <button onclick="setFontSize();window.print();" class="ml-3 no-print BTN1 btn btn-md btn-success">اضغط للطباعة</button>
+    <a href="{{ route('client.pos.create') }}" class="no-print BTN2 btn btn-md btn-danger"
+        style="left:170px!important;">
+        العودة الى نقطة البيع
+    </a>
+    </div>
     <div class="pos_details">
         <div class="text-right">
             <img class="logo" style="width: 100px;height: 70px;margin-top: 1px;"
@@ -407,11 +414,7 @@
             </div>
         </div>
     </div>
-    <button onclick="setFontSize();window.print();" class="no-print BTN1 btn btn-md btn-success">اضغط للطباعة</button>
-    <a href="{{ route('client.pos.create') }}" class="no-print BTN2 btn btn-md btn-danger"
-        style="left:170px!important;">
-        العودة الى نقطة البيع
-    </a>
+   
     @if ($posSettings->enableProdInvoice)
         <a target="_blank" href="{{ route('pos.prod_pos', $pos->id) }}" class="no-print btn btn-md btn-info"
             style="left:370px!important;">
