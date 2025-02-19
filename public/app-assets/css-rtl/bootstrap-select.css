@@ -88,7 +88,7 @@
 }
 .bootstrap-select.form-control {
   margin-bottom: 0;
-  padding: 0;
+  /* padding: 0; */
   border: none;
 }
 :not(.input-group) > .bootstrap-select.form-control:not([class*="col-"]) {

@@ -74,10 +74,10 @@
             <div class="card">
                 <!------HEADER----->
                 <div class="card-header border-bottom border-secondary p-1">
-                    <div class="d-flex justify-content-between align-items-baseline">
-                        <h3 class="pull-right font-weight-bold">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class=" font-weight-bold custom-title">
                             {{ __('sidebar.sales-invoices') }}
-                            <span class="badge badge-success">{{ count($sale_bills) }}</span>
+                            <span class="badge " style="background-color: #ec6880">{{ count($sale_bills) }}</span>
                         </h3>
                         <div class="row mr-1 justify-content-end">
                             <a class="btn btn-primary pull-left p-1 mainBtnNewDes d-flex align-items-center"
@@ -94,8 +94,8 @@
                                 {{ __('sidebar.Add a new sales invoice') }}
                             </a>
                             <a onclick="history.back()"
-                                class="btn btn-danger pull-left text-white d-flex align-items-center ml-1"
-                                style="height: 37px; font-size: 11px !important;">
+                                class="btn pull-left text-white d-flex align-items-center ml-1"
+                                style="height: 37px; font-size: 11px !important; background-color: #ec6880;">
                                 <span
                                     style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
                                     <svg style="width: 10px;height: 15px;fill: #f5f1f1;margin-top: 1px;"
@@ -180,7 +180,7 @@
                                                         </button>
                                                         <div class="dropdown-menu p-0" aria-labelledby="dropdownMenuButton"
                                                             x-placement="bottom-start"
-                                                            style="position: absolute; transform: translate3d(0px, 29px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                            >
                                                             <!--SHOW--->
                                                             <a href="{{ route('client.sale_bills.print', $sale_bill->token) }}"
                                                                 class="dropdown-item" target="_blank"
@@ -239,7 +239,7 @@
                     </div>
                     <hr>
                     <div class="mt-1 mb-1">
-                        <span class="badge badge-success p-1 font-weight-bold">
+                        <span class="badge  p-1 font-weight-bold"style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
                             {{ __('sidebar.Total billing prices') }}
                             ( {{ floatval($total) }} ) {{ $company->extra_settings->currency }}
                         </span>

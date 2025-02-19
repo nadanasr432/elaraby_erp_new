@@ -82,7 +82,7 @@
             <!------supplier_name------>
             <div class="col-lg-4 pull-right no-print">
                 <label for="" class="d-block">{{ __('suppliers.supplier-name') }}</label>
-                <select required name="supplier_id" id="supplier_id" class="selectpicker" data-style="btn-success"
+                <select required name="supplier_id" id="supplier_id" class="selectpicker" data-style="btn-third"
                         data-live-search="true" title="{{ __('suppliers.supplier-name') }}">
                     @foreach ($suppliers as $supplier)
                         <option
@@ -102,7 +102,7 @@
             <!------invoice_store------>
             <div class="col-lg-4 pull-right">
                 <label for=""> {{ __('sales_bills.choose-store') }} </label><br>
-                <select name="store_id" id="store_id" class="selectpicker" data-style="btn-primary"
+                <select name="store_id" id="store_id" class="selectpicker" data-style="btn-third"
                         data-live-search="true"
                         title="{{ __('sales_bills.choose-store') }}">
                     <?php $i = 0; ?>
@@ -120,7 +120,7 @@
                     @endforeach
                 </select>
                 <a target="_blank" href="{{ route('client.stores.create') }}" role="button"
-                   style="width: 15%;display: inline;" class="btn btn-sm btn-primary open_popup">
+                   style="width: 15%;display: inline;background-color: #222751" class="btn btn-sm text-white open_popup">
                     <i class="fa fa-plus"></i>
                 </a>
             </div>
@@ -129,7 +129,7 @@
             <div class="col-lg-4 pull-right">
                 <label> {{ __('sales_bills.choose-tax') }} </label><br>
                 <select name="value_added_tax" id="value_added_tax" class="selectpicker"
-                        data-style="btn-warning" title="{{ __('sales_bills.choose-store') }}">
+                        data-style="btn-third" title="{{ __('sales_bills.choose-store') }}">
                     <option value="0" selected>غير شامل الضريبة</option>
                     <option value="1">شامل الضريبة</option>
                 </select>
@@ -217,7 +217,7 @@
             <!------products------>
             <div class="col-lg-4 pull-right">
                 <label for=""> {{ __('main.product') }} </label><br>
-                <select name="product_id" id="product_id" class="selectpicker" data-style="btn-success"
+                <select name="product_id" id="product_id" class="selectpicker" data-style="btn-third"
                         data-live-search="true" title="كود المنتج او الاسم">
                     @foreach ($all_products as $product)
                         <option value="{{ $product->id }}"
@@ -264,8 +264,8 @@
         <br><br>
         <br><br>
         <br><br>
-        <div class="col-lg-12 text-center">
-            <button type="button" id="add" class="btn btn-primary btn-md mt-3">
+        <div class="col-lg-12 text-start">
+            <button type="button" id="add" class="btn btn-md mt-3 text-white"style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
                 <i class="fa fa-plus"></i>
                 {{ __('sidebar.add-new-purchase-invoice') }}
             </button>
@@ -495,8 +495,8 @@
                             <input type="text" value="0" name="discount_value"
                                    style="width: 50%;display: inline;float: right;" disabled id="discount_value"
                                    class="form-control "/>
-                            <button type="button" disabled class="btn btn-md btn-info pull-right text-center"
-                                    style="display: inline !important;width: 20% !important; height: 40px;margin-right: 20px; "
+                            <button type="button" disabled class="btn btn-md pull-right text-center text-white"
+                                    style="display: inline !important;width: 20% !important; height: 40px;margin-right: 20px;background-color: #222751 !important; "
                                     id="exec_discount">{{ __('main.apply') }}
                             </button>
                         @endif
@@ -531,7 +531,7 @@
                                    style="width: 50%;display: inline;float: right;" id="extra_value"
                                    class="form-control"/>
                             <button disabled type="button" class="btn btn-md btn-info pull-right text-center"
-                                    style="display: inline !important;width: 20% !important; height: 40px;margin-right: 20px; "
+                                    style="display: inline !important;width: 20% !important; height: 40px;margin-right: 20px;background-color: #222751 !important; "
                                     id="exec_extra">
                                 {{ __('main.apply') }}
                             </button>
@@ -558,7 +558,7 @@
                 <input type="hidden" value="{{ $pre_bill }}" name="buy_bill_number"/>
             @endif
             <button href="" type="submit" @if (!isset($open_buy_bill) || empty($open_buy_bill)) disabled @endif
-            class="btn btn-md close_btn btn-danger pull-right ml-3"><i class="fa fa-check"></i>
+            class="btn btn-md close_btn btn-danger pull-right ml-3 "><i class="fa fa-check"></i>
                 {{ __('main.cancel') }}
             </button>
         </form>

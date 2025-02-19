@@ -15,7 +15,7 @@
         <div class="card">
             <div class="card-header pb-0">
                 <div class="d-flex justify-content-between">
-                    <div class="col-lg-12 d-flex align-items-center justify-content-between">
+                    <div class="col-lg-12 d-flex flex-wrap align-items-center justify-content-between">
                         <h5 class=" alert alert-sm custom-title">{{ __('sidebar.list-products-units') }}</h5>
                         <a class="btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.units.create') }}"><i
                                 class="fa fa-plus"></i> {{ __('sidebar.add-new-unit') }} </a>
@@ -42,7 +42,7 @@
                                 <tr>
                                     <td>{{ ++$i }}</td>
                                     <td>{{ $unit->unit_name }}</td>
-                                    <td>
+                                    <td class="d-flex border-0">
                                         <a href="{{ route('client.units.edit', $unit->id) }}"
                                             data-toggle="tooltip" title="{{ __('main.update') }}" data-placement="top">
                                                 <svg width="19" height="16" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -23,9 +23,8 @@
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-header pb-0">
-                    <div class="d-flex justify-content-between">
-                        <div class="col-lg-12 d-flex align-items-center justify-content-between">
-                            <h5  style="white-space: nowrap" class="alert font-weight-bold m-0 p-0 d-flex
+                        <div class="col-lg-12 d-flex flex-wrap align-items-center justify-content-between">
+                            <h5  style="white-space: nowrap" class="alert font-weight-bold m-0 d-flex
                          custom-title align-items-end">{{ __('categories.show-all-categories') }}
                             </h5>
                             <a class="btn text-white px-2 py-1"style="background-color: #ec6880" href="{{ route('client.categories.create') }}"><i
@@ -33,7 +32,6 @@
                             
                         </div>
                         <br>
-                    </div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -56,7 +54,7 @@
                                         <td>{{ ++$i }}</td>
                                         <td>{{ $category->category_name }}</td>
                                         <td>{{ $category->category_type }}</td>
-                                        <td>
+                                        <td class="d-flex border-0">
                                             @if ($i > 2)
                                                 <a href="{{ route('client.categories.edit', $category->id) }}"
                                                     data-toggle="tooltip"

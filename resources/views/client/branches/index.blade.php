@@ -15,7 +15,7 @@
             <div class="card">
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
-                        <div class="col-lg-12 margin-tb d-flex justify-content-between align-items-center">
+                        <div class="col-lg-12 margin-tb d-flex flex-wrap justify-content-between align-items-center">
                             
                             <h5 class="m-0 alert alert-sm custom-title">
                                 {{ __('branches.show-all-branches') }}
@@ -53,7 +53,7 @@
                                         <td>{{ $branch->branch_phone }}</td>
                                         <td>{{ $branch->branch_address }}</td>
                                         <td>{{ $branch->commercial_registration_number }}</td>
-                                        <td>
+                                        <td class="d-flex border-0">
                                             <a href="{{ route('client.branches.edit', $branch->id) }}"
                                                  data-toggle="tooltip"
                                                 title="{{ __('main.edit') }}" data-placement="top">

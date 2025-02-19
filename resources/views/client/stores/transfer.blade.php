@@ -17,7 +17,7 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <div class="col-12 d-flex align-items-center justify-content-between">
+                    <div class="col-12 d-flex flex-wrap align-items-center justify-content-between">
                         <h5  class=" alert alert-sm custom-title">
                             {{ __('sidebar.convert-between-storages') }}
                         </h5>
@@ -93,7 +93,7 @@
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-start">
-                            <button  class="btn btn-warning pd-x-20  text-white px-4" style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);" type="submit" type="submit">
+                            <button  class="btn btn-warning pd-x-20  text-white px-4 py-1" style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);" type="submit" type="submit">
                                 {{ __('main.convert') }}
                             </button>
                         </div>

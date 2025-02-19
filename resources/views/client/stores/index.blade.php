@@ -24,8 +24,8 @@
             <div class="card">
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
-                        <div class="col-lg-12 d-flex align-items-center justify-content-between">
-                            <h5 style="white-space: nowrap" class="alert font-weight-bold m-0 p-0 d-flex
+                        <div class="col-lg-12 d-flex flex-wrap align-items-center justify-content-between">
+                            <h5 style="white-space: nowrap" class="alert font-weight-bold m-0  d-flex
                          custom-title align-items-end">
                          {{ __('stores.show-all-stores') }}
                         </h5>
@@ -56,7 +56,7 @@
                                         <td>{{ ++$i }}</td>
                                         <td>{{ $store->store_name }}</td>
                                         <td>{{ $store->branch ? $store->branch->branch_name : '-' }}</td>
-                                        <td>
+                                        <td class="d-flex border-0">
                                             <a href="{{ route('client.stores.edit', $store->id) }}"
                                                 class=" " data-toggle="tooltip"
                                                 title="{{ __('main.edit') }}" data-placement="top"><svg width="19" height="16" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">

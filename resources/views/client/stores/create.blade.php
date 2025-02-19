@@ -30,9 +30,8 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <div class="col-12  d-flex align-items-center justify-content-between">
-                        <h5 style="white-space: nowrap" class="alert alert-sm font-weight-bold m-0 p-0 d-flex
-                         custom-title align-items-end">
+                    <div class="col-12  d-flex flex-wrap align-items-center justify-content-between">
+                        <h5 style="white-space: nowrap" class="alert alert-sm font-weight-bold m-0 d-flex custom-title align-items-end">
                             {{ __('sidebar.add-new-storage') }}
                         </h5>
                         <a class="btn text-white px-3 py-1"style="background-color: #ec6880" href="{{ route('client.stores.index') }}">
@@ -56,17 +55,18 @@
 
                             <div class="col-md-6">
                                 <label> {{ __('stores.inside-a-branch') }} <span class="text-danger">*</span></label>
-                                <select required name="branch_id" class="form-control"
-                                    style="width: 90%;display: inline;">
+                               <div class="d-flex w-100">
+                                    <select required name="branch_id" class="form-control">
                                     <option value="">Choose a branch</option>
                                     @foreach ($branches as $branch)
                                         <option value="{{ $branch->id }}">{{ $branch->branch_name }}</option>
                                     @endforeach
-                                </select>
-                                <a target="_blank" href="{{ route('client.branches.create') }}" role="button"
-                                    style="width: 15%;display: inline;" class="btn btn-sm btn-warning open_popup">
-                                    <i class="fa fa-plus"></i>
-                                </a>
+                                    </select>
+                                    <a target="_blank" href="{{ route('client.branches.create') }}" role="button"
+                                        class="btn btn-sm btn-warning open_popup d-flex align-items-center">
+                                        <i class="fa fa-plus"></i>
+                                    </a>
+                               </div>
                             </div>
 
                         </div>

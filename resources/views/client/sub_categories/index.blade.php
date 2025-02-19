@@ -24,8 +24,8 @@
             <div class="card">
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
-                        <div class="col-lg-12 d-flex align-items-center justify-content-between">
-                            <h5 style="white-space: nowrap" class="alert font-weight-bold m-0 p-0 d-flex
+                        <div class="col-lg-12 d-flex flex-wrap align-items-center justify-content-between">
+                            <h5 style="white-space: nowrap" class="alert font-weight-bold m-0 d-flex
                             custom-title align-items-end">{{ __('sidebar.display-sub-categories') }}
                             </h5>
                             <a class="btn text-white px-2 py-1"style="background-color: #ec6880"
@@ -57,7 +57,7 @@
                                         <td>{{ ++$i }}</td>
                                         <td dir="ltr">{{ $category->sub_category_name }}</td>
                                         <td dir="ltr">{{ $category->category->category_name }}</td>
-                                        <td>
+                                        <td class="d-flex border-0">
                                             
 
                                             <a class="modal-effect  delete_category"

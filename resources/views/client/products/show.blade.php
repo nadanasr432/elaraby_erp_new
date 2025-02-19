@@ -19,7 +19,7 @@
                     <h3 class="pull-right font-weight-bold ml-1 custom-title">
                         عرض باينات المنتج
                     </h3>
-                    <a class="btn btn-danger btn-sm pull-left p-1 text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.products.index') }}">
+                    <a class="btn  btn-sm p-1 text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.products.index') }}">
                         عودة للخلف
                     </a>
                 </div>

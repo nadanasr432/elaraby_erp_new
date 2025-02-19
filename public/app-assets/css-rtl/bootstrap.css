@@ -2696,6 +2696,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
 }
 
 .btn {
+  background-color: transparent;
   display : inline-block;
   font-weight : 400;
   text-align : center;
@@ -2706,7 +2707,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
       -ms-user-select : none;
           user-select : none;
   border : 1px solid transparent;
-  padding : 0.75rem 1rem;
+  padding : 0.45rem 1rem;
   font-size : 1rem;
   line-height : 1.25;
   border-radius : 0.25rem;
@@ -9052,5 +9053,5 @@ a.text-dark:hover, a.text-dark:focus {
   background-color: red !important;
 }
 .btn-third{
-  background-color: #dadada2e !important;
+  background-color: #dadada00 !important;
 }

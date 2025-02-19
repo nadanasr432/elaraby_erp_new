@@ -22,7 +22,7 @@
         </div>
     @endif
 
-    <h4 class="alert alert-sm alert-dark text-center no-print"> {{ __('sidebar.previous-purchases-invoices') }} </h4>
+    <h4 class="alert alert-sm alert-dark text-center no-print custom-title fw-bold"> {{ __('sidebar.previous-purchases-invoices') }} </h4>
     <div class="col-lg-3 pull-right  no-print">
         <form action="{{ route('client.buy_bills.filter.key') }}" method="POST">
             @csrf
@@ -30,13 +30,13 @@
             <div class="form-group">
                 <label style="display:block;" for="bill_id">{{ __('sales_bills.invoice-number') }}</label>
                 <select required class="selectpicker" data-live-search="true" title="{{ __('main.write-or-choose') }}"
-                    data-style="btn-danger" name="buy_bill_id" id="buy_bill_id">
+                    data-style="btn-third" name="buy_bill_id" id="buy_bill_id">
                     @foreach ($buy_bills as $buy_bill)
                         <option title="{{ $buy_bill->buy_bill_number }}" @if (isset($buy_bill_k) && $buy_bill->id == $buy_bill_k->id) selected @endif
                             value="{{ $buy_bill->id }}">{{ $buy_bill->buy_bill_number }}</option>
                     @endforeach
                 </select>
-                <button type="submit" class="btn btn-md btn-danger"
+                <button type="submit" class="btn btn-md btn-warning"
                     style="display: inline !important;width: 20% !important; float: left !important;" id="by_buy_bill_id"><i
                         class="fa fa-search"></i></button>
             </div>
@@ -50,13 +50,13 @@
             <div class="form-group">
                 <label style="display:block;" for="supplier_id">{{ __('suppliers.supplier-name') }}</label>
                 <select required class="selectpicker" data-live-search="true" title="{{ __('main.write-or-choose') }}"
-                    data-style="btn-info" name="supplier_id" id="supplier_id">
+                    data-style="btn-third" name="supplier_id" id="supplier_id">
                     @foreach ($suppliers as $supplier)
                         <option title="{{ $supplier->supplier_name }}" @if (isset($supplier_k) && $supplier->id == $supplier_k->id) selected @endif
                             value="{{ $supplier->id }}">{{ $supplier->supplier_name }}</option>
                     @endforeach
                 </select>
-                <button type="submit" class="btn btn-md btn-info"
+                <button type="submit" class="btn btn-md btn-warning"
                     style="display: inline !important;width: 20% !important; float: left !important;" id="by_supplier_id"><i
                         class="fa fa-search"></i></button>
             </div>
@@ -69,13 +69,13 @@
             <div class="form-group">
                 <label style="display:block;" for="code_universal">{{ __('sales_bills.product-code') }}</label>
                 <select required class="selectpicker" data-live-search="true" title="{{ __('main.write-or-choose') }}"
-                    data-style="btn-success" name="code_universal" id="code_universal">
+                    data-style="btn-third" name="code_universal" id="code_universal">
                     @foreach ($products as $product)
                         <option title="{{ $product->code_universal }}" @if (isset($product_k) && $product->id == $product_k->id) selected @endif
                             value="{{ $product->id }}">{{ $product->code_universal }}</option>
                     @endforeach
                 </select>
-                <button type="submit" class="btn btn-md btn-success"
+                <button type="submit" class="btn btn-md btn-warning"
                     style="display: inline !important;width: 20% !important; float: left !important;"
                     id="by_code_universal"><i class="fa fa-search"></i></button>
             </div>
@@ -89,7 +89,7 @@
             <div class="form-group">
                 <label style="display:block;" for="product_name">{{ __('sales_bills.product-name') }}</label>
                 <select required class="selectpicker" data-live-search="true" title="{{ __('main.write-or-choose') }}"
-                    data-style="btn-warning" name="product_name" id="product_name">
+                    data-style="btn-third" name="product_name" id="product_name">
                     @foreach ($products as $product)
                         <option title="{{ $product->product_name }}" @if (isset($product_k) && $product->id == $product_k->id) selected @endif
                             value="{{ $product->id }}">{{ $product->product_name }}</option>
@@ -107,7 +107,7 @@
             <div class="form-group">
                 <label style="display:block;" for="store_id">{{ __('sales_bills.store-name') }}</label>
                 <select required class="selectpicker" data-live-search="true" title="{{ __('main.write-or-choose') }}"
-                    data-style="btn-warning" name="store_id" id="store_id">
+                    data-style="btn-third" name="store_id" id="store_id">
                     @foreach ($stores as $store)
                         <option title="{{ $store->store_name }}" @if (isset($store_k) && $store->id == $store_k->id) selected @endif
                             value="{{ $store->id }}">{{ $store->store_name }}
@@ -127,7 +127,7 @@
             <form action="{{ route('client.buy_bills.filter.all') }}" method="POST">
                 @csrf
                 @method('POST')
-                <button type="submit" class="btn btn-md btn-dark">
+                <button type="submit" class="btn btn-md btn-dark"style="background-color: #222751 !important;">
                     <i class="fa fa-list"></i>
                     {{ __('sidebar.purchases-invoices') }}
                 </button>
