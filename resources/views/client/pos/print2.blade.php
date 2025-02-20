@@ -46,7 +46,7 @@
 
         table {
             text-align: right;
-            width: 65% !important;
+            width: 55% !important;
             margin-top: 10px !important;
         }
     </style>
