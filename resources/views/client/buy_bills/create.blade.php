@@ -50,7 +50,7 @@
             </ul>
         </div>
     @endif
-    <form target="_blank" action="#" method="POST">
+    <form class="bg-white" target="_blank" action="#" method="POST">
         @csrf
         @method('POST')
         @if (isset($open_buy_bill) && !empty($open_buy_bill))
@@ -58,8 +58,8 @@
         @else
             <input type="hidden" value="{{ $pre_bill }}" id="buy_bill_number"/>
         @endif
-        <h6 class="alert alert-info alert-sm text-center no-print mb-3" dir="rtl">
-            <center>
+        <h6 class="alert text-end no-print mb-3 custom-title" dir="rtl">
+            
                 @if (isset($open_buy_bill) && !empty($open_buy_bill))
                     تعديل فاتورة مشتريات موردين
                 @else
@@ -74,61 +74,74 @@
                         {{ $countBills }} )
                     @endif
                 </span>
-            </center>
+            
         </h6>
 
         <!------------------------------------------row1-------------------------------------->
         <div class="row firstrow p-0">
             <!------supplier_name------>
-            <div class="col-lg-4 pull-right no-print">
-                <label for="" class="d-block">{{ __('suppliers.supplier-name') }}</label>
-                <select required name="supplier_id" id="supplier_id" class="selectpicker" data-style="btn-third"
-                        data-live-search="true" title="{{ __('suppliers.supplier-name') }}">
-                    @foreach ($suppliers as $supplier)
-                        <option
-                            @if (isset($open_buy_bill) && !empty($open_buy_bill) && $supplier->id == $open_buy_bill->supplier_id) selected
-                            value="{{ $open_buy_bill->supplier_id }}"
-                            @else
-                            value="{{ $supplier->id }}" @endif>
-                            {{ $supplier->supplier_name }}</option>
-                    @endforeach
-                </select>
-                <a target="_blank" href="{{ route('client.suppliers.create') }}" role="button"
-                   style="width: 15%;display: inline;" class="btn btn-sm btn-success open_popup">
-                    <i class="fa fa-plus"></i>
-                </a>
+            <div class="col-lg-4 ms-auto no-print">
+                <label for="supplier_id" class="d-block mb-1">{{ __('suppliers.supplier-name') }}</label>
+                
+                <div class="d-flex align-items-center justify-content-between gap-1" >
+                    <!-- Supplier Dropdown -->
+                    <select required name="supplier_id" id="supplier_id" class="selectpicker form-control w-100 flex-grow-1"
+                            data-style="btn-third" data-live-search="true" 
+                            title="{{ __('suppliers.supplier-name') }}">
+                        @foreach ($suppliers as $supplier)
+                            <option 
+                                @if (isset($open_buy_bill) && !empty($open_buy_bill) && $supplier->id == $open_buy_bill->supplier_id) 
+                                    selected value="{{ $open_buy_bill->supplier_id }}"
+                                @else 
+                                    value="{{ $supplier->id }}" 
+                                @endif>
+                                {{ $supplier->supplier_name }}
+                            </option>
+                        @endforeach
+                    </select>
+            
+                    <!-- Add Supplier Button -->
+                    <a target="_blank" href="{{ route('client.suppliers.create') }}" 
+                       role="button" class="btn open_popup h-100 text-white" 
+                       style="display: inline;background-color: #222751">
+                        <i class="fa fa-plus"></i>
+                    </a>
+                </div>
             </div>
+            
 
             <!------invoice_store------>
-            <div class="col-lg-4 pull-right">
-                <label for=""> {{ __('sales_bills.choose-store') }} </label><br>
-                <select name="store_id" id="store_id" class="selectpicker" data-style="btn-third"
-                        data-live-search="true"
-                        title="{{ __('sales_bills.choose-store') }}">
-                    <?php $i = 0; ?>
-                    @foreach ($stores as $store)
-                        @if ($stores->count() == 1)
-                            <option selected value="{{ $store->id }}">{{ $store->store_name }}</option>
-                        @else
-                            @if ($i == 0)
-                                <option selected value="{{ $store->id }}">{{ $store->store_name }}</option>
-                            @else
-                                <option value="{{ $store->id }}">{{ $store->store_name }}</option>
-                            @endif
-                        @endif
-                        <?php $i++; ?>
-                    @endforeach
-                </select>
-                <a target="_blank" href="{{ route('client.stores.create') }}" role="button"
-                   style="width: 15%;display: inline;background-color: #222751" class="btn btn-sm text-white open_popup">
-                    <i class="fa fa-plus"></i>
-                </a>
+            <div class="col-lg-4">
+                <label for="store_id" class="d-block"> {{ __('sales_bills.choose-store') }} </label>
+                
+                <div class="d-flex align-items-center gap-2 justify-content-between">
+                    <!-- Store Dropdown -->
+                    <div  class="w-100">
+                        <select name="store_id" id="store_id" class="selectpicker form-control flex-grow-1"
+                            data-style="btn-third" data-live-search="true"
+                            title="{{ __('sales_bills.choose-store') }}">
+                        @foreach ($stores as $store)
+                            <option value="{{ $store->id }}" {{ $loop->first ? 'selected' : '' }}>
+                                {{ $store->store_name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    </div>
+            
+                    <!-- Add Store Button -->
+                    <a target="_blank" href="{{ route('client.stores.create') }}" 
+                       role="button" class="btn open_popup  text-white "
+                       style=" background-color: #222751;width: 15%; ">
+                        <i class="fa fa-plus"></i>
+                    </a>
+                </div>
             </div>
+            
 
             <!------invoice_tax------>
             <div class="col-lg-4 pull-right">
                 <label> {{ __('sales_bills.choose-tax') }} </label><br>
-                <select name="value_added_tax" id="value_added_tax" class="selectpicker"
+                <select name="value_added_tax" id="value_added_tax" class="selectpicker form-control"
                         data-style="btn-third" title="{{ __('sales_bills.choose-store') }}">
                     <option value="0" selected>غير شامل الضريبة</option>
                     <option value="1">شامل الضريبة</option>
@@ -215,21 +228,26 @@
         <div class="options no-print mt-2">
 
             <!------products------>
-            <div class="col-lg-4 pull-right">
-                <label for=""> {{ __('main.product') }} </label><br>
-                <select name="product_id" id="product_id" class="selectpicker" data-style="btn-third"
-                        data-live-search="true" title="كود المنتج او الاسم">
-                    @foreach ($all_products as $product)
-                        <option value="{{ $product->id }}"
-                                data-tokens="{{ $product->code_universal }}">
-                            {{ $product->product_name }}</option>
-                    @endforeach
-                </select>
-                <a target="_blank" href="{{ route('client.products.create') }}" role="button"
-                   style="width: 15%;display: inline;" class="btn btn-sm btn-warning open_popup">
-                    <i class="fa fa-plus"></i>
-                </a>
+            <div class="col-lg-4 d-grid gap-2 pull-right">
+                <label for="product_id"> {{ __('main.product') }} </label>
+                
+                <div class="d-flex align-items-center justify-content-between">
+                    <select name="product_id" id="product_id" class="selectpicker form-control" data-style="btn-third"
+                            data-live-search="true" title="كود المنتج او الاسم">
+                        @foreach ($all_products as $product)
+                            <option value="{{ $product->id }}" data-tokens="{{ $product->code_universal }}">
+                                {{ $product->product_name }}
+                            </option>
+                        @endforeach
+                    </select>
+            
+                    <a target="_blank" href="{{ route('client.products.create') }}" role="button"
+                        class="btn btn-sm btn-warning open_popup">
+                        <i class="fa fa-plus"></i>
+                    </a>
+                </div>
             </div>
+            
 
             <!------price------>
             <div class="col-lg-2 pull-right">

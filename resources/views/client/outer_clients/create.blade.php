@@ -28,11 +28,12 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <div class="col-12">
-                        <a class="btn btn-primary btn-sm pull-left" href="{{ route('client.outer_clients.index') }}">
-                            {{ __('main.back') }}</a>
-                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success">
+                    <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
+                        <h5  class="pull-right alert alert-sm custom-title">
                             {{ __('sidebar.add-new-client') }} </h5>
+                        <a class="btn btn-sm pull-left text-white px-3 py-1" style="background-color: #ec6880;" href="{{ route('client.outer_clients.index') }}">
+                            {{ __('main.back') }}</a>
+                        
                     </div>
                     <div class="clearfix"></div>
                     <br>
@@ -63,8 +64,8 @@
                                 <label style="display: block" for="note"> {{ __('clients.client-notes') }} </label>
                                 <input type="text" name="notes[]" class="form-control"
                                     style="width:90%; display: inline; float: right;" dir="rtl">
-                                <button type="button" id="add_note" class="btn btn-md btn-info"
-                                    style="width:7%;height: 35px;display: inline; float: left;padding: 5px;">
+                                <button type="button" id="add_note" class="btn btn-md btn-warning d-flex align-items-center justify-content-center"
+                                    style="width:7%;height: 35px;display: inline; float: left;padding: 0px;">
                                     <i class="fa fa-plus" style="font-size: 17px; font-weight: bold;"></i>
                                 </button>
                                 <div class="clearfix"></div>
@@ -86,8 +87,8 @@
                                 <label style="display: block" for="phone">{{ __('clients.phone-with-code') }}</label>
                                 <input type="text" name="phones[]" class="form-control"
                                     style="width:80%; display: inline; float: right;" dir="ltr">
-                                <button type="button" id="add_phone" class="btn btn-md btn-success"
-                                    style="width:15%;height: 30px;display: inline; float: left;padding: 5px;">
+                                <button type="button" id="add_phone" class="btn btn-md btn-warning d-flex align-items-center justify-content-center"
+                                    style="width:15%;height: 30px;display: inline; float: left;padding: ;">
                                     <i class="fa fa-plus" style="font-size: 17px; font-weight: bold;"></i>
                                 </button>
                                 <div class="clearfix"></div>
@@ -99,10 +100,11 @@
                                 <label style="display: block" for="address"> {{ __('clients.client-address') }} </label>
                                 <input type="text" name="addresses[]" class="form-control"
                                     style="width:90%; display: inline; float: right;" dir="rtl">
-                                <button type="button" id="add_address" class="btn btn-md btn-warning"
-                                    style="width:7%;height: 35px;display: inline; float: left;padding: 5px;">
+                                    <button type="button" id="add_address" class="btn btn-md btn-warning d-flex align-items-center justify-content-center"
+                                    style="width: 7%; height: 35px; padding: 0;">
                                     <i class="fa fa-plus" style="font-size: 17px; font-weight: bold;"></i>
                                 </button>
+                                
                                 <div class="clearfix"></div>
                                 <div class="dom3"></div>
                             </div>
@@ -156,7 +158,7 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                            <button class="btn btn-info pd-x-20" type="submit">{{ __('main.add') }}</button>
+                            <button class="btn btn-warning pd-x-20" type="submit">{{ __('main.add') }}</button>
                         </div>
                     </form>
                 </div>

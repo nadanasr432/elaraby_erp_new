@@ -51,38 +51,38 @@
         </div>
     @endif
 
-    <form target="_blank" action="#" method="POST">
+    <form class="bg-white" target="_blank" action="#" method="POST">
         @csrf
         @method('POST')
         <input type="hidden" value="{{ $pre_purchase_order }}" id="purchase_order_number" />
-        <h6 class="alert alert-dark alert-sm text-center no-print" dir="rtl">
-            <center>{{ __('sidebar.add-new-purchase-orders') }}
+        <h6 class="alert text-end no-print custom-title fw-bold" dir="rtl">
+            {{ __('sidebar.add-new-purchase-orders') }}
                 <span>
                     ( {{ __('main.process-number') }} :
                     {{ $pre_purchase_order }}
                     )</span>
-            </center>
+            
         </h6>
         <div class="col-lg-3 pull-right no-print">
             <label for="" class="d-block">{{ __('suppliers.supplier-name') }}</label>
-            <select name="supplier_id" id="supplier_id" class="selectpicker" data-style="btn-third"
+            <select name="supplier_id" id="supplier_id" class="selectpicker form-control" data-style="btn-third"
                 data-live-search="true" title="{{ __('suppliers.supplier-name') }}">
                 @foreach ($suppliers as $supplier)
                     <option value="{{ $supplier->id }}">{{ $supplier->supplier_name }}</option>
                 @endforeach
             </select>
-            <a target="_blank" href="{{ route('client.suppliers.create') }}" role="button"
+            <button target="_blank" href="{{ route('client.suppliers.create') }}" role="button"
                 style="width: 15%;display: inline;" class="btn btn-sm btn-warning open_popup">
                 <i class="fa fa-plus"></i>
-            </a>
+            </button>
         </div>
-        <div class="col-lg-3 col-md-3 col-sm-3 pull-right no-print">
+        <div class="col-lg-3  pull-right no-print">
             <div class="form-group" dir="rtl">
                 <label for="date">تاريخ بدأ امر الشراء</label>
                 <input type="date" name="start_date" value="<?php echo date('Y-m-d'); ?>" id="start_date" class="form-control" />
             </div>
         </div>
-        <div class="col-lg-3 col-md-3 col-sm-3 pull-right no-print">
+        <div class="col-lg-3  pull-right no-print">
             <div class="form-group" dir="rtl">
                 <label for="date">تاريخ انتهاء امر الشراء</label>
                 <input type="date" name="expiration" value="<?php echo date('Y-m-d'); ?>" id="expiration_date"
@@ -91,7 +91,7 @@
         </div>
         <div class="col-lg-3 pull-right no-print">
             <label for=""> {{ __('sales_bills.select-store') }} </label>
-            <select name="store_id" id="store_id" class="selectpicker" data-style="btn-third" data-live-search="true"
+            <select name="store_id" id="store_id" class="selectpicker form-control" data-style="btn-third" data-live-search="true"
                 title="{{ __('sales_bills.select-store') }}" required>
                 @foreach ($stores as $store)
                     {{-- @if ($stores->count() == 1)

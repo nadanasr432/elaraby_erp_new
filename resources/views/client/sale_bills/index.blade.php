@@ -74,13 +74,13 @@
             <div class="card">
                 <!------HEADER----->
                 <div class="card-header border-bottom border-secondary p-1">
-                    <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center">
                         <h3 class=" font-weight-bold custom-title">
                             {{ __('sidebar.sales-invoices') }}
                             <span class="badge " style="background-color: #ec6880">{{ count($sale_bills) }}</span>
                         </h3>
-                        <div class="row mr-1 justify-content-end">
-                            <a class="btn btn-primary pull-left p-1 mainBtnNewDes d-flex align-items-center"
+                        <div class="row mx-1 justify-content-end">
+                            <a class="btn btn-primary pull-left p-1 mainBtnNewDes d-flex align-items-center mb-1"
                                 href="{{ route('client.sale_bills.create1') }}">
                                 <span
                                     style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
@@ -179,7 +179,7 @@
                                                             </svg>
                                                         </button>
                                                         <div class="dropdown-menu p-0" aria-labelledby="dropdownMenuButton"
-                                                            x-placement="bottom-start"
+                                                            x-placement="bottom-start" style="right: -80px"
                                                             >
                                                             <!--SHOW--->
                                                             <a href="{{ route('client.sale_bills.print', $sale_bill->token) }}"

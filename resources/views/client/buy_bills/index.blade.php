@@ -1,5 +1,8 @@
 @extends('client.layouts.app-main')
 <style>
+    .content-body{
+        background-color: white;
+    }
     .bootstrap-select {
         width: 75% !important;
         height: 40px !important;
@@ -22,14 +25,14 @@
         </div>
     @endif
 
-    <h4 class="alert alert-sm alert-dark text-center no-print custom-title fw-bold"> {{ __('sidebar.previous-purchases-invoices') }} </h4>
+    <h4  class="alert  text-end no-print custom-title fw-bold"> {{ __('sidebar.previous-purchases-invoices') }} </h4>
     <div class="col-lg-3 pull-right  no-print">
         <form action="{{ route('client.buy_bills.filter.key') }}" method="POST">
             @csrf
             @method('POST')
             <div class="form-group">
                 <label style="display:block;" for="bill_id">{{ __('sales_bills.invoice-number') }}</label>
-                <select required class="selectpicker" data-live-search="true" title="{{ __('main.write-or-choose') }}"
+                <select required class="selectpicker form-control" data-live-search="true" title="{{ __('main.write-or-choose') }}"
                     data-style="btn-third" name="buy_bill_id" id="buy_bill_id">
                     @foreach ($buy_bills as $buy_bill)
                         <option title="{{ $buy_bill->buy_bill_number }}" @if (isset($buy_bill_k) && $buy_bill->id == $buy_bill_k->id) selected @endif
@@ -49,7 +52,7 @@
             @method('POST')
             <div class="form-group">
                 <label style="display:block;" for="supplier_id">{{ __('suppliers.supplier-name') }}</label>
-                <select required class="selectpicker" data-live-search="true" title="{{ __('main.write-or-choose') }}"
+                <select required class="selectpicker form-control" data-live-search="true" title="{{ __('main.write-or-choose') }}"
                     data-style="btn-third" name="supplier_id" id="supplier_id">
                     @foreach ($suppliers as $supplier)
                         <option title="{{ $supplier->supplier_name }}" @if (isset($supplier_k) && $supplier->id == $supplier_k->id) selected @endif
@@ -68,7 +71,7 @@
             @method('POST')
             <div class="form-group">
                 <label style="display:block;" for="code_universal">{{ __('sales_bills.product-code') }}</label>
-                <select required class="selectpicker" data-live-search="true" title="{{ __('main.write-or-choose') }}"
+                <select required class="selectpicker form-control" data-live-search="true" title="{{ __('main.write-or-choose') }}"
                     data-style="btn-third" name="code_universal" id="code_universal">
                     @foreach ($products as $product)
                         <option title="{{ $product->code_universal }}" @if (isset($product_k) && $product->id == $product_k->id) selected @endif
@@ -88,7 +91,7 @@
             @method('POST')
             <div class="form-group">
                 <label style="display:block;" for="product_name">{{ __('sales_bills.product-name') }}</label>
-                <select required class="selectpicker" data-live-search="true" title="{{ __('main.write-or-choose') }}"
+                <select required class="selectpicker form-control" data-live-search="true" title="{{ __('main.write-or-choose') }}"
                     data-style="btn-third" name="product_name" id="product_name">
                     @foreach ($products as $product)
                         <option title="{{ $product->product_name }}" @if (isset($product_k) && $product->id == $product_k->id) selected @endif
@@ -106,7 +109,7 @@
             @csrf
             <div class="form-group">
                 <label style="display:block;" for="store_id">{{ __('sales_bills.store-name') }}</label>
-                <select required class="selectpicker" data-live-search="true" title="{{ __('main.write-or-choose') }}"
+                <select required class="selectpicker form-control" data-live-search="true" title="{{ __('main.write-or-choose') }}"
                     data-style="btn-third" name="store_id" id="store_id">
                     @foreach ($stores as $store)
                         <option title="{{ $store->store_name }}" @if (isset($store_k) && $store->id == $store_k->id) selected @endif
