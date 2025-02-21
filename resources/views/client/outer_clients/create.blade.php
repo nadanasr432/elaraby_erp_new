@@ -64,7 +64,7 @@
                                 <div class="d-flex">
 
                                 <input type="text" name="notes[]" class="form-control"
-                                    style="width:90%; display: inline; float: right;">
+                                    style="width:100%; display: inline; float: right;">
                                 <button type="button" id="add_note" class="btn btn-md btn-warning d-flex align-items-center justify-content-center py-1"
                                     >
                                     <i class="fa fa-plus" style="font-size: 17px; font-weight: bold;"></i>

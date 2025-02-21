@@ -15,11 +15,12 @@
             <div class="card">
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
-                        <div class="col-lg-12 margin-tb">
-                            <a class="btn pull-left btn-primary btn-sm" href="{{ route('client.coupons.create') }}"><i
-                                    class="fa fa-plus"></i> {{ __('sidebar.add-new-coupon') }} </a>
-                            <h5 class="pull-right alert alert-sm alert-success">
+                        <div class="col-lg-12 margin-tb d-flex flex-wrap justify-content-between align-items-center">
+                            <h5 class=" alert custom-title">
                                 {{ __('sidebar.discount-coupon-list') }}</h5>
+                            <a class="btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.coupons.create') }}"><i
+                                    class="fa fa-plus"></i> {{ __('sidebar.add-new-coupon') }} </a>
+                            
                         </div>
                         <br>
                     </div>
