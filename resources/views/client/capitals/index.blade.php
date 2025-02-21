@@ -15,11 +15,11 @@
             <div class="card">
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
-                        <div class="col-lg-12 margin-tb">
-                            <a class="btn pull-left btn-primary btn-sm"
+                        <div class="col-lg-12 margin-tb d-flex flex-wrap justify-content-between align-items-center">
+                            <h5 class="custom-title alert ">عرض كل عمليات اضافة راس المال </h5>
+                            <a class="btn text-white px-3 py-1" style="background-color: #ec6880"
                                href="{{ route('client.capitals.create') }}"><i
                                     class="fa fa-plus"></i> اضافة راس مال جديد </a>
-                            <h5 class="pull-right alert alert-sm alert-success">عرض كل عمليات اضافة راس المال </h5>
                         </div>
                         <br>
                     </div>
