@@ -42,7 +42,7 @@
                                 <tr>
                                     <td>{{ ++$i }}</td>
                                     <td>{{ $unit->unit_name }}</td>
-                                    <td class="d-flex border-0">
+                                    <td class="d-flex border-0 justify-content-center">
                                         <a href="{{ route('client.units.edit', $unit->id) }}"
                                             data-toggle="tooltip" title="{{ __('main.update') }}" data-placement="top">
                                                 <svg width="19" height="16" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">

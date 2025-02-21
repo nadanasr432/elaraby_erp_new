@@ -74,7 +74,7 @@
                             <label for="" class="d-block">
                                 {{ __('main.reports-fields') }}
                             </label>
-                            <select class="form-control selectpicker show-tick" data-live-search="true"
+                            <select class="form-control selectpicker show-tick py-1" data-live-search="true"
                                 data-style="btn-third" data-title="{{ __('main.choose-fields') }}" multiple required
                                 name="options[]" id="">
                                 <option @if (isset($options) && in_array('product_name', $options)) selected @endif value="product_name">

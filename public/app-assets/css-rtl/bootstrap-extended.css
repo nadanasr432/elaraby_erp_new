@@ -256,6 +256,7 @@ pre code {
 
 .table th, .table td {
     padding: 0.45rem 2rem;
+    white-space: nowrap;
 }
 
 .table.table-xl th, .table.table-xl td {

@@ -19,6 +19,11 @@
         margin-top: 30px !important;
         min-height: 150px !important;
     }
+    .dropdown-toggle::after {
+
+position: absolute !important;
+
+}
 </style>
 @section('content')
     @if (session('success'))
@@ -65,16 +70,18 @@
         </h6>
         <div class="col-lg-3 pull-right no-print">
             <label for="" class="d-block">{{ __('suppliers.supplier-name') }}</label>
-            <select name="supplier_id" id="supplier_id" class="selectpicker form-control" data-style="btn-third"
+            <div class="d-flex align-items-center gap-2 justify-content-between">
+                <select name="supplier_id" id="supplier_id" class="selectpicker form-control" data-style="btn-third"
                 data-live-search="true" title="{{ __('suppliers.supplier-name') }}">
                 @foreach ($suppliers as $supplier)
                     <option value="{{ $supplier->id }}">{{ $supplier->supplier_name }}</option>
                 @endforeach
             </select>
             <button target="_blank" href="{{ route('client.suppliers.create') }}" role="button"
-                style="width: 15%;display: inline;" class="btn btn-sm btn-warning open_popup">
+                 class="btn btn-sm btn-warning open_popup py-1">
                 <i class="fa fa-plus"></i>
             </button>
+            </div>
         </div>
         <div class="col-lg-3  pull-right no-print">
             <div class="form-group" dir="rtl">
@@ -91,7 +98,8 @@
         </div>
         <div class="col-lg-3 pull-right no-print">
             <label for=""> {{ __('sales_bills.select-store') }} </label>
-            <select name="store_id" id="store_id" class="selectpicker form-control" data-style="btn-third" data-live-search="true"
+            <div class="d-flex align-items-center gap-2 justify-content-between">
+                <select name="store_id" id="store_id" class="selectpicker form-control" data-style="btn-third" data-live-search="true"
                 title="{{ __('sales_bills.select-store') }}" required>
                 @foreach ($stores as $store)
                     {{-- @if ($stores->count() == 1)
@@ -105,9 +113,10 @@
                 @endforeach
             </select>
             <a target="_blank" href="{{ route('client.stores.create') }}" role="button"
-                style="width: 15%;display: inline;" class="btn btn-sm btn-warning open_popup">
+                 class="btn btn-sm btn-warning open_popup py-1">
                 <i class="fa fa-plus"></i>
             </a>
+            </div>
         </div>
         <div class="clearfix no-print"></div>
         <div class="col-lg-12 no-print">
@@ -119,17 +128,19 @@
         <div class="options no-print">
             <div class="col-lg-3 pull-right">
                 <label for=""> {{ __('sales_bills.product-code') }} </label>
-                <select name="product_id" id="product_id" class="selectpicker form-control" data-style="btn-third"
+                <div class="d-flex align-items-center gap-2 justify-content-between">
+                    <select name="product_id" id="product_id" class="selectpicker form-control" data-style="btn-third"
                     data-live-search="true" title="كود المنتج او الاسم">
                     @foreach ($all_products as $product)
                         <option value="{{ $product->id }}">{{ $product->product_name }}</option>
                     @endforeach
                 </select>
                 <a target="_blank" href="{{ route('client.products.create') }}" role="button"
-                    style="width: 15%;display: inline;" class="btn btn-sm btn-warning open_popup">
+                    class="btn btn-sm btn-warning open_popup py-1">
                     <i class="fa fa-plus"></i>
                 </a>
                 <div class="available text-center" style="color: #000; font-size: 14px; margin-top: 10px;"></div>
+                </div>
 
             </div>
             <div class="col-lg-3 pull-right">
@@ -154,7 +165,7 @@
 
             <div class="clearfix"></div>
             <div class="col-lg-12 text-center">
-                <button type="button" id="add" class="btn btn-info btn-md mt-3 d-flex align-items-center justify-content-start"style="background-color: #222751 !important;">
+                <button type="button" id="add" class="btn btn-info btn-md mt-3 d-flex align-items-center justify-content-start py-1"style="background-color: #222751 !important;">
                     <i class="fa fa-plus"></i>
                     {{ __('sidebar.add-new-purchase-orders') }}
                 </button>
@@ -180,7 +191,7 @@
             </div>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 bill_details">
-            <h6 class="alert alert-sm alert-danger text-center">
+            <h6 class="alert text-end custom-title fw-bold">
                 <i class="fa fa-info-circle"></i>
                 بيانات عناصر امر الشراء رقم
                 {{ $pre_purchase_order }}
@@ -192,20 +203,20 @@
 
         <div class="clearfix no-print"></div>
         <hr class="no-print">
-        <div class="row no-print" style="margin: 20px auto;">
+        <div class="row no-print py-1" >
             <div class="col-lg-12">
                 <div class="col-lg-6 col-md-6 col-xs-6 pull-right">
                     <div class="form-group" dir="rtl">
                         <label for="discount">خصم على اجمالى امر الشراء</label> <br>
-                        <select name="discount_type" id="discount_type" class="form-control" disabled
+                        <select name="discount_type" id="discount_type" class="form-control" 
                             style="width: 20%;display: inline;float: right; margin-left:5px;">
                             <option value="pound">{{ $extra_settings->currency }}</option>
                             <option value="percent">%</option>
                         </select>
                         <input type="text" value="0" name="discount_value"
-                            style="width: 50%;display: inline;float: right;" disabled id="discount_value"
+                            style="width: 50%;display: inline;float: right;"  id="discount_value"
                             class="form-control " />
-                        <button type="button" disabled class="btn btn-md btn-success pull-right text-center"
+                        <button type="button"  class="btn btn-md btn-warning pull-right text-center"
                             style="display: inline !important;width: 20% !important; height: 40px;margin-right: 20px; "
                             id="exec_discount">تطبيق
                         </button>
@@ -214,14 +225,14 @@
                 <div class="col-lg-6 col-md-6 col-xs-6 pull-right">
                     <div class="form-group" dir="rtl">
                         <label for="extra">مصاريف الشحن</label> <br>
-                        <select disabled name="extra_type" id="extra_type" class="form-control"
+                        <select  name="extra_type" id="extra_type" class="form-control"
                             style="width: 20%;display: inline;float: right;margin-left: 5px">
                             <option value="pound">{{ $extra_settings->currency }}</option>
                             <option value="percent">%</option>
                         </select>
-                        <input value="0" disabled type="text" name="extra_value"
+                        <input value="0"  type="text" name="extra_value"
                             style="width: 50%;display: inline;float: right;" id="extra_value" class="form-control" />
-                        <button disabled type="button" class="btn btn-md btn-success pull-right text-center"
+                        <button  type="button" class="btn btn-md btn-warning pull-right text-center"
                             style="display: inline !important;width: 20% !important; height: 40px;margin-right: 20px; "
                             id="exec_extra">
                             تطبيق
@@ -232,25 +243,25 @@
             </div> <!--  End Col-lg-12 -->
         </div><!--  End Row -->
     </form>
-    <div class="col-lg-12 no-print" style="padding-top: 25px;height: 40px !important;">
-        <button type="button" onclick="window.print()" disabled name="print"
-            class="btn btn-md btn-info print_btn pull-right"><i class="fa fa-print"></i> طباعة امر الشراء
+    <div class="col-lg-12 d-flex flex-wrap no-print bg-white py-3" >
+        <button type="button" onclick="window.print()"  name="print"
+            class="btn btn-warning print_btn pull-right py-1 mb-1 mx-1 px-3"><i class="fa fa-print"></i> طباعة امر الشراء
         </button>
-        <a href="{{ route('client.purchase_orders.send', $pre_purchase_order) }}" role="button"
-            class="btn disabled send_btn btn-md btn-warning pull-right ml-3"><i class="fa fa-check"></i>
+        <a style="background-color: #ec6880" href="{{ route('client.purchase_orders.send', $pre_purchase_order) }}" role="button"
+            class="btn send_btn btn-md text-white pull-right mx-1 py-1 px-3 mb-1 mx-1"><i class="fa fa-check"></i>
             ارسال امر الشراء الى بريد المورد
         </a>
-        <form class="d-inline" action="{{ route('client.purchase_orders.destroy', 'test') }}" method="post">
+        <form class="d-inline m-0" action="{{ route('client.purchase_orders.destroy', 'test') }}" method="post">
             {{ method_field('delete') }}
             {{ csrf_field() }}
             <input type="hidden" name="purchase_order_number" value="{{ $pre_purchase_order }}">
-            <button disabled type="submit" class="btn btn-md close_btn btn-danger pull-right ml-3">
+            <button  style="background-color: #dadada2e" type="submit" class="btn close_btn  pull-right mx-1 py-1 px-3 mb-1 mx-1">
                 <i class="fa fa-close"></i>
                 الغاء وخروج
             </button>
         </form>
         <a href="{{ route('client.purchase_orders.redirect') }}" role="button"
-            class="btn disabled save_btn btn-md btn-success pull-right ml-3"><i class="fa fa-check"></input>
+            class="btn save_btn btn-md btn-warning text-white pull-right  py-1 px-3 mb-1 mx-1"><i class="fa fa-check"></input>
                 حفظ وخروج
         </a>
     </div>

@@ -19,7 +19,11 @@
         margin-top: 30px !important;
         min-height: 150px !important;
     }
+    .dropdown-toggle::after {
 
+position: absolute !important;
+
+}
 </style>
 @section('content')
     @if (session('success'))
@@ -50,7 +54,7 @@
             </ul>
         </div>
     @endif
-    <form class="bg-white" target="_blank" action="#" method="POST">
+    <form class="bg-white p-2" target="_blank" action="#" method="POST">
         @csrf
         @method('POST')
         @if (isset($open_buy_bill) && !empty($open_buy_bill))
@@ -102,7 +106,7 @@
             
                     <!-- Add Supplier Button -->
                     <a target="_blank" href="{{ route('client.suppliers.create') }}" 
-                       role="button" class="btn open_popup h-100 text-white" 
+                       role="button" class="btn open_popup h-100 text-white py-1" 
                        style="display: inline;background-color: #222751">
                         <i class="fa fa-plus"></i>
                     </a>
@@ -130,8 +134,8 @@
             
                     <!-- Add Store Button -->
                     <a target="_blank" href="{{ route('client.stores.create') }}" 
-                       role="button" class="btn open_popup  text-white "
-                       style=" background-color: #222751;width: 15%; ">
+                       role="button" class="btn open_popup  text-white py-1"
+                       style=" background-color: #222751;">
                         <i class="fa fa-plus"></i>
                     </a>
                 </div>
@@ -225,10 +229,10 @@
         <hr class="no-print">
 
         <!------------------------------------------row3-------------------------------------->
-        <div class="options no-print mt-2">
+        <div class="row options no-print mt-2">
 
             <!------products------>
-            <div class="col-lg-4 d-grid gap-2 pull-right">
+            <div class="col-lg-4 d-grid gap-2">
                 <label for="product_id"> {{ __('main.product') }} </label>
                 
                 <div class="d-flex align-items-center justify-content-between">
@@ -242,7 +246,7 @@
                     </select>
             
                     <a target="_blank" href="{{ route('client.products.create') }}" role="button"
-                        class="btn btn-sm btn-warning open_popup">
+                        class="btn btn-sm btn-warning open_popup py-1">
                         <i class="fa fa-plus"></i>
                     </a>
                 </div>
@@ -250,13 +254,13 @@
             
 
             <!------price------>
-            <div class="col-lg-2 pull-right">
+            <div class="col-lg-4 ">
                 <label for="">{{ __('sales_bills.product-price') }}</label>
                 <input type="text" name="product_price" value="0" id="product_price" class="form-control"/>
             </div>
 
             <!------quantity and unit------>
-            <div class="col-lg-4 pull-right">
+            <div class="col-lg-4 ">
                 <label class="d-block" for=""> {{ __('main.quantity') }} </label>
                 <input style="width: 50%;" type="text" name="quantity" id="quantity"
                        class="form-control d-inline float-left"/>
@@ -269,7 +273,7 @@
             </div>
 
             <!------total price------>
-            <div class="col-lg-2 pull-right">
+            <div class="col-lg-4 ">
                 <label for=""> {{ __('main.total') }} </label>
                 <input type="text" name="quantity_price" id="quantity_price" class="form-control"/>
             </div>
@@ -279,11 +283,9 @@
 
 
         <!------------------------------------------row4 buttons-------------------------------------->
-        <br><br>
-        <br><br>
-        <br><br>
+
         <div class="col-lg-12 text-start">
-            <button type="button" id="add" class="btn btn-md mt-3 text-white"style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
+            <button type="button" id="add" class="btn btn-md mt-3 text-white py-1"style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
                 <i class="fa fa-plus"></i>
                 {{ __('sidebar.add-new-purchase-invoice') }}
             </button>
@@ -311,9 +313,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 bill_details">
-            <h6 class="alert alert-sm alert-warning text-center">
-                <i class="fa fa-info-circle"></i>
+        <div class="col-lg-12 col-md-12 col-sm-12 bill_details bg-white p-2">
+            <h6 class="alert alert-sm text-start custom-title">
                 بيانات عناصر فاتورة المشتريات رقم
 
                 @if (isset($open_buy_bill) && !empty($open_buy_bill))
@@ -400,7 +401,7 @@
             }
             ?>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 after_totals">
+        <div class="col-lg-12 col-md-12 col-sm-12 after_totals  bg-white p-2">
             <?php
             if (isset($open_buy_bill) && !empty($open_buy_bill)) {
                 $tax_value_added = $company->tax_value_added;
@@ -459,12 +460,14 @@
 
         <div class="clearfix no-print"></div>
         <hr class="no-print">
-        <div class="row no-print" style="margin: 20px auto;">
-            <div class="col-lg-12">
-                <div class="col-lg-6 col-md-6 col-xs-6 pull-right">
+        <div class="p-2 bg-white no-print" >
+            <div class=" row ">
+
+                <div class="col-lg-12 col-md-12 col-12 ">
                     <div class="form-group" dir="rtl">
                         <label for="discount">{{ __('sales_bills.discount-on-the-total-bill') }}</label> <br>
-                        <?php
+                        <div class="d-flex">
+                            <?php
                         if (isset($open_buy_bill) && !empty($open_buy_bill)) {
                             foreach ($extras as $key) {
                                 if ($key->action == 'discount') {
@@ -488,8 +491,7 @@
                         }
                         ?>
                         @if (isset($open_buy_bill) && !empty($open_buy_bill))
-                            <select name="discount_type" id="discount_type" class="form-control"
-                                    style="width: 20%;display: inline;float: right; margin-left:5px;">
+                            <select name="discount_type" id="discount_type" class="form-control mx-1">
                                 <option @if (isset($buy_bill_discount_type) && $buy_bill_discount_type == 'pound') selected @endif value="pound">
                                     {{ $extra_settings->currency }}
                                 </option>
@@ -498,76 +500,78 @@
                                 </option>
                             </select>
                             <input type="text" value="{{ isset($buy_bill_discount_value) ? $buy_bill_discount_value : 0 }}" name="discount_value"
-                                   style="width: 50%;display: inline;float: right;" id="discount_value"
-                                   class="form-control "/>
-                            <button type="button" class="btn btn-md btn-info pull-right text-center"
-                                    style="display: inline !important;width: 20% !important; height: 40px;margin-right: 20px; "
+                                 id="discount_value"
+                                class="form-control mx-1"/>
+                            <button type="button" class="btn btn-warning text-center px-3"
+                                    
                                     id="exec_discount">{{ __('main.apply') }}
                             </button>
                         @else
-                            <select name="discount_type" id="discount_type" class="form-control" disabled
-                                    style="width: 20%;display: inline;float: right; margin-left:5px;">
+                            <select name="discount_type" id="discount_type" class="form-control mx-1" disabled>
                                 <option value="pound">{{ $extra_settings->currency }}</option>
                                 <option value="percent">%</option>
                             </select>
                             <input type="text" value="0" name="discount_value"
-                                   style="width: 50%;display: inline;float: right;" disabled id="discount_value"
-                                   class="form-control "/>
-                            <button type="button" disabled class="btn btn-md pull-right text-center text-white"
-                                    style="display: inline !important;width: 20% !important; height: 40px;margin-right: 20px;background-color: #222751 !important; "
+                                   disabled id="discount_value"
+                                   class="form-control mx-1"/>
+                            <button type="button"  class="btn btn-warning text-center text-white px-3"
                                     id="exec_discount">{{ __('main.apply') }}
                             </button>
                         @endif
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-6 col-xs-6 pull-right">
+
+                </div>
+                <div class="col-lg-12 col-md-12 col-12">
                     <div class="form-group" dir="rtl">
                         <label for="extra">{{ __('main.shipping-expenses') }}</label> <br>
+                        <div class="d-flex">
+
                         @if (isset($open_buy_bill) && !empty($open_buy_bill))
-                            <select name="extra_type" id="extra_type" class="form-control"
-                                    style="width: 20%;display: inline;float: right;margin-left: 5px">
+                            <select name="extra_type" id="extra_type" class="form-control mx-1"
+                                    >
                                 <option @if (isset($buy_bill_extra_type) && $buy_bill_extra_type == 'pound') selected @endif value="pound">
                                     {{ $extra_settings->currency }}</option>
                                 <option @if (isset($buy_bill_extra_type) && $buy_bill_extra_type == 'percent') selected @endif value="percent">%
                                 </option>
                             </select>
                             <input value="{{ isset($buy_bill_extra_value) ? $buy_bill_extra_value : 0 }}" type="text" name="extra_value"
-                                   style="width: 50%;display: inline;float: right;" id="extra_value"
-                                   class="form-control"/>
-                            <button type="button" class="btn btn-md btn-info pull-right text-center"
-                                    style="display: inline !important;width: 20% !important; height: 40px;margin-right: 20px; "
+                                   style="  " id="extra_value"
+                                   class="form-control mx-1"/>
+                            <button type="button" class="btn btn-warning text-center px-3"
                                     id="exec_extra">
                                 {{ __('main.apply') }}
                             </button>
                         @else
-                            <select disabled name="extra_type" id="extra_type" class="form-control"
-                                    style="width: 20%;display: inline;float: right;margin-left: 5px">
+                            <select disabled name="extra_type" id="extra_type" class="form-control mx-1"
+                                   >
                                 <option value="pound">{{ $extra_settings->currency }}</option>
                                 <option value="percent">%</option>
                             </select>
                             <input disabled value="0" type="text" name="extra_value"
-                                   style="width: 50%;display: inline;float: right;" id="extra_value"
-                                   class="form-control"/>
-                            <button disabled type="button" class="btn btn-md btn-info pull-right text-center"
-                                    style="display: inline !important;width: 20% !important; height: 40px;margin-right: 20px;background-color: #222751 !important; "
+                                    id="extra_value"
+                                   class="form-control mx-1"/>
+                            <button type="button" class="btn btn-warning text-center px-3"
                                     id="exec_extra">
                                 {{ __('main.apply') }}
                             </button>
                         @endif
+                        </div>
                     </div>
                 </div>
-                <div class="clearfix"></div>
-            </div> <!--  End Col-lg-12 -->
+            </div>
+               
+                {{-- <div class="clearfix"></div> --}}
         </div><!--  End Row -->
     </form>
-    <div class="col-lg-12 no-print" style="padding-top: 25px;height: 40px !important;">
-        <button type="button" @if (!isset($open_buy_bill) || empty($open_buy_bill)) disabled @endif data-toggle="modal"
-                data-target="#myModal2" class="btn btn-md btn-dark pay_btn pull-right">
+    <div class="col-lg-12 no-print bg-white p-2 h-auto">
+        <button type="button" @if (!isset($open_buy_bill) || empty($open_buy_bill))  @endif data-toggle="modal"
+                data-target="#myModal2" class="btn btn-md btn-warning px-3 py-1 my-1 text-white pay_btn mx-1">
             <i class="fa fa-money"></i>
             {{ __('pos.record-payment') }}
         </button>
 
-        <form class="d-inline" method="POST" action="{{ route('client.buy_bills.cancel') }}">
+        <form class="d-inline " method="POST" action="{{ route('client.buy_bills.cancel') }}">
             @csrf
             @method('POST')
             @if (isset($open_buy_bill) && !empty($open_buy_bill))
@@ -575,13 +579,13 @@
             @else
                 <input type="hidden" value="{{ $pre_bill }}" name="buy_bill_number"/>
             @endif
-            <button href="" type="submit" @if (!isset($open_buy_bill) || empty($open_buy_bill)) disabled @endif
-            class="btn btn-md close_btn btn-danger pull-right ml-3 "><i class="fa fa-check"></i>
+            <button style="background-color: #ec6880" href="" type="submit" @if (!isset($open_buy_bill) || empty($open_buy_bill))  @endif
+            class="btn btn-md text-white px-3 py-1 close_btn mx-1"><i class="fa fa-check"></i>
                 {{ __('main.cancel') }}
             </button>
         </form>
         <a href="javascript:;" role="button"
-           class="btn @if (!isset($open_buy_bill) || empty($open_buy_bill)) disabled @endif save_btn btn-md btn-success pull-right ml-3"><i
+           class="btn @if (!isset($open_buy_bill) || empty($open_buy_bill))  @endif save_btn btn-md btn-warning px-3 py-1 my-1 mx-1"><i
                 class="fa fa-check"></i>
             {{ __('main.save') }}
         </a>

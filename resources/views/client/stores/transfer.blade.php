@@ -41,18 +41,18 @@
                             <div class="col-md-3">
                                 <label class="d-block"> {{ __('stores.from-store') }} <span
                                         class="text-danger">*</span></label>
-                                <select required class="form-control selectpicker show-tick"
+                                <select required class="form-control selectpicker show-tick py-1"
                                     data-title="{{ __('stores.choose-store') }}" data-live-search="true"
                                     data-style="btn-third" name="from_store" id="from_store">
                                     @foreach ($stores as $store)
-                                        <option value="{{ $store->id }}">{{ $store->store_name }}</option>
+                                        <option  value="{{ $store->id }}">{{ $store->store_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-md-3">
                                 <label class="d-block"> {{ __('stores.to-store') }} <span
                                         class="text-danger">*</span></label>
-                                <select required class="form-control selectpicker show-tick"
+                                <select required class="form-control selectpicker show-tick py-1"
                                     data-title="{{ __('stores.choose-store') }}" data-live-search="true"
                                     data-style="btn-third" name="to_store" id="to_store">
                                     @foreach ($stores as $store)
@@ -63,7 +63,7 @@
                             <div class="col-md-3">
                                 <label class="d-block"> {{ __('sidebar.products') }} <span
                                         class="text-danger">*</span></label>
-                                <select required class="form-control selectpicker show-tick"
+                                <select required class="form-control selectpicker show-tick py-1"
                                     data-title="{{ __('stores.choose-product') }}" data-live-search="true"
                                     data-style="btn-third" name="product_id" id="product_id">
                                     {{-- @foreach ($products as $product) --}}
