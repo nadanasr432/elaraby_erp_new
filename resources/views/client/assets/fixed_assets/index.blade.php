@@ -15,11 +15,12 @@
             <div class="card">
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
-                        <div class="col-lg-12 margin-tb">
-                            <a class="btn pull-left btn-primary btn-sm" href="{{ route('fixed.assets.create') }}"><i
-                                    class="fa fa-plus"></i> اضافة اصل ثابت </a>
-                            <h5 class="pull-right alert alert-sm alert-success">عرض كل الاصول الثابتة
+                        <div class="col-lg-12 margin-tb d-flex flex-wrap justify-content-between align-items-center">
+                            <h5 class=" alert  custom-title">عرض كل الاصول الثابتة
                             </h5>
+                            <a class="btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('fixed.assets.create') }}"><i
+                                    class="fa fa-plus"></i> اضافة اصل ثابت </a>
+                            
                         </div>
                         <br>
                     </div>

@@ -28,7 +28,7 @@
             <div class="card mg-b-20">
                 <div class="card-body">
                     <div class="col-12">
-                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-danger">
+                        <h5  class=" alert custom-titlele">
                             تقرير المنتجات الاكثر مبيعا
                         </h5>
                     </div>
@@ -37,30 +37,31 @@
                     <form action="{{route('client.report18.post')}}" method="POST">
                         @csrf
                         @method('POST')
-                        <div class="col-lg-3 pull-right">
-                            <label for="" class="d-block">عدد المنتجات</label>
-                            <input type="text" @if(isset($count) && !empty($count)) value="{{$count}}"
-                                   @endif class="form-control" name="count" required/>
+                        <div class="row">
+                            <div class="col-lg-4 mb-3">
+                                <label for="" class="d-block">عدد المنتجات</label>
+                                <input type="text" @if(isset($count) && !empty($count)) value="{{$count}}"
+                                       @endif class="form-control" name="count" required/>
+                            </div>
+                            <div class="col-lg-4 mb-3 no-print">
+                                <label for="" class="d-block">من تاريخ</label>
+                                <input type="date" @if(isset($from_date) && !empty($from_date)) value="{{$from_date}}"
+                                       @endif class="form-control" name="from_date"/>
+                            </div>
+                            <div class="col-lg-4 mb-3 no-print">
+                                <label for="" class="d-block">الى تاريخ</label>
+                                <input type="date" @if(isset($to_date) && !empty($to_date)) value="{{$to_date}}"
+                                       @endif  class="form-control" name="to_date"/>
+                            </div>
                         </div>
-                        <div class="col-lg-3 pull-right no-print">
-                            <label for="" class="d-block">من تاريخ</label>
-                            <input type="date" @if(isset($from_date) && !empty($from_date)) value="{{$from_date}}"
-                                   @endif class="form-control" name="from_date"/>
-                        </div>
-                        <div class="col-lg-3 pull-right no-print">
-                            <label for="" class="d-block">الى تاريخ</label>
-                            <input type="date" @if(isset($to_date) && !empty($to_date)) value="{{$to_date}}"
-                                   @endif  class="form-control" name="to_date"/>
-                        </div>
-                        <div class="col-lg-3 pull-right">
-                            <button name="submit" value="best_sales" class="btn btn-md btn-danger"
-                                    style="font-size: 15px; height: 40px; margin-top: 25px;" type="submit">
+                        <div class="">
+                            <button name="submit" value="best_sales" class="btn  btn-warning px-3 py-1"
+                                     type="submit">
                                 <i class="fa fa-check"></i>
                                 الاكثر مبيعا
                             </button>
-                            <button name="submit" value="best_profits" class="btn btn-md btn-dark"
-                                    style="font-size: 15px; height: 40px; margin-top: 25px; margin-right: 20px;"
-                                    type="submit">
+                            <button name="submit" value="best_profits" class="btn text-white px-3 py-1" style="background-color: #ec6880"
+                                     type="submit">
                                 <i class="fa fa-check"></i>
                                 الاكثر ربحا
                             </button>

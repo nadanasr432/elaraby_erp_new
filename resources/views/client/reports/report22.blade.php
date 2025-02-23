@@ -21,7 +21,7 @@
                 <div class="card-header pb-0 no-print">
                     <div class="d-flex justify-content-between">
                         <div class="col-lg-12 margin-tb">
-                            <h5 class="pull-right alert alert-sm alert-success"> تقرير الاقرار الضريبى الشامل </h5>
+                            <h5 class=" alert custom-title"> تقرير الاقرار الضريبى الشامل </h5>
                         </div>
                     </div>
                 </div>
@@ -44,19 +44,21 @@
                     <form action="{{route('client.report22.post')}}" class="no-print" method="POST">
                         @csrf
                         @method('POST')
-                        <div class="col-lg-3 pull-right no-print">
-                            <label for="" class="d-block">من تاريخ</label>
-                            <input type="date" @if(isset($from_date) && !empty($from_date)) value="{{$from_date}}"
-                                   @endif class="form-control" name="from_date"/>
+                        <div class="row mb-3">
+                            <div class="col-lg-6 mb-3 no-print">
+                                <label for="" class="d-block">من تاريخ</label>
+                                <input type="date" @if(isset($from_date) && !empty($from_date)) value="{{$from_date}}"
+                                       @endif class="form-control" name="from_date"/>
+                            </div>
+                            <div class="col-lg-6 mb-3 no-print">
+                                <label for="" class="d-block">الى تاريخ</label>
+                                <input type="date" @if(isset($to_date) && !empty($to_date)) value="{{$to_date}}"
+                                       @endif  class="form-control" name="to_date"/>
+                            </div>
                         </div>
-                        <div class="col-lg-3 pull-right no-print">
-                            <label for="" class="d-block">الى تاريخ</label>
-                            <input type="date" @if(isset($to_date) && !empty($to_date)) value="{{$to_date}}"
-                                   @endif  class="form-control" name="to_date"/>
-                        </div>
-                        <div class="col-lg-6 text-center  pull-right">
-                            <button class="btn btn-md btn-danger"
-                                    style="font-size: 15px; height: 40px; margin-top: 25px;" type="submit">
+                        <div class="">
+                            <button class="btn btn-md btn-warning py-1 px-3"
+                                     type="submit">
                                 <i class="fa fa-check"></i>
                                 عرض التقرير
                             </button>
@@ -345,7 +347,7 @@
 
                     <div class="clearfix"></div>
                     <div class="row mt-1 no-print">
-                        <button type="button" onclick="window.print()" class="btn btn-md btn-info pull-right">
+                        <button type="button" onclick="window.print()" class="btn btn-warning py-1 px-3 mx-1">
                             <i class="fa fa-print"></i>
                             طباعة التقرير
                         </button>

@@ -22,7 +22,7 @@
         <div class="card mg-b-20">
             <div class="card-body">
                 <div class="col-12 no-print">
-                    <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-dark">
+                    <h5  class=" alert custom-title">
                         كشف حساب الموظف
                     </h5>
                 </div>
@@ -35,7 +35,7 @@
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <label class="d-block"> اختر الموظف <span class="text-danger">*</span></label>
-                            <select required name="employee_id" id="employee_id" class="selectpicker"
+                            <select required name="employee_id" id="employee_id" class="form-control"
                                 data-style="btn-success" data-live-search="true" title="اكتب او اختار اسم الموظف">
                                 <option @if(isset($employee_id) && $employee_id == "all") selected @endif value="all">كل
                                     الموظفين
@@ -59,12 +59,12 @@
                                 class="form-control" name="to_date" />
                         </div>
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                        <button class="btn btn-info pd-x-20" name="submit" value="all" type="submit">
+                    <div class="col-xs-12 col-sm-12 col-md-12 ">
+                        <button class="btn btn-warning py-1 px-3" name="submit" value="all" type="submit">
                             <i class="fa fa-check"></i>
                             عرض كشف الحساب
                         </button>
-                        <button onclick="window.print()" type="button" class="btn btn-md btn-success">
+                        <button onclick="window.print()" type="button" class="btn text-white px-3 py-1" style="background-color: #ec6880">
                             <i class="fa fa-print"></i>
                             طباعة تقرير كشف الحساب
                         </button>

@@ -28,7 +28,7 @@
             <div class="card mg-b-20">
                 <div class="card-body">
                     <div class="col-12">
-                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-danger">
+                        <h5 class="alert custom-title">
                             تقرير راس المال
                         </h5>
                     </div>
@@ -37,39 +37,41 @@
                     <form action="{{route('client.report7.post')}}" method="POST">
                         @csrf
                         @method('POST')
-                        <div class="col-lg-3 pull-right no-print">
-                            <label for="" class="d-block">اسم الخزنة</label>
-                            <select required name="safe_id" id="safe_id" class="selectpicker"
-                                    data-style="btn-info" data-live-search="true" title="اكتب او اختار اسم الخزنة">
-                                <option
-                                    @if(isset($safe_id) && $safe_id == "all")
-                                    selected
-                                    @endif
-                                    value="all">كل الخزن
-                                </option>
-                                @foreach($safes as $safe)
+                        <div class="row mb-3">
+                            <div class="col-lg-4 mb-3 no-print">
+                                <label for="" class="d-block">اسم الخزنة</label>
+                                <select required name="safe_id" id="safe_id" class="form-control"
+                                         data-live-search="true" title="اكتب او اختار اسم الخزنة">
                                     <option
-                                        @if(isset($safe_id) && $safe->id == $safe_id)
+                                        @if(isset($safe_id) && $safe_id == "all")
                                         selected
                                         @endif
-                                        value="{{$safe->id}}">{{$safe->safe_name}}</option>
-                                @endforeach
-                            </select>
-
+                                        value="all">كل الخزن
+                                    </option>
+                                    @foreach($safes as $safe)
+                                        <option
+                                            @if(isset($safe_id) && $safe->id == $safe_id)
+                                            selected
+                                            @endif
+                                            value="{{$safe->id}}">{{$safe->safe_name}}</option>
+                                    @endforeach
+                                </select>
+    
+                            </div>
+                            <div class="col-lg-4 mb-3 no-print">
+                                <label for="" class="d-block">من تاريخ</label>
+                                <input type="date" @if(isset($from_date) && !empty($from_date)) value="{{$from_date}}"
+                                       @endif class="form-control" name="from_date"/>
+                            </div>
+                            <div class="col-lg-4 mb-3 no-print">
+                                <label for="" class="d-block">الى تاريخ</label>
+                                <input type="date" @if(isset($to_date) && !empty($to_date)) value="{{$to_date}}"
+                                       @endif  class="form-control" name="to_date"/>
+                            </div>
                         </div>
-                        <div class="col-lg-3 pull-right no-print">
-                            <label for="" class="d-block">من تاريخ</label>
-                            <input type="date" @if(isset($from_date) && !empty($from_date)) value="{{$from_date}}"
-                                   @endif class="form-control" name="from_date"/>
-                        </div>
-                        <div class="col-lg-3 pull-right no-print">
-                            <label for="" class="d-block">الى تاريخ</label>
-                            <input type="date" @if(isset($to_date) && !empty($to_date)) value="{{$to_date}}"
-                                   @endif  class="form-control" name="to_date"/>
-                        </div>
-                        <div class="col-lg-3 pull-right">
-                            <button class="btn btn-md btn-danger"
-                                    style="font-size: 15px; height: 40px; margin-top: 25px;" type="submit">
+                        <div class="">
+                            <button class="btn btn-md btn-warning py-1 px-3"
+                                    type="submit">
                                 <i class="fa fa-check"></i>
                                 عرض التقرير
                             </button>

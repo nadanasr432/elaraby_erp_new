@@ -1,10 +1,6 @@
 @extends('client.layouts.app-main')
 <style>
-    .bootstrap-select,
-    select.form-control {
-        width: 80% !important;
-        /*display: inline !important;*/
-    }
+
 
     label {
         display: block !important;
@@ -70,8 +66,8 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <div class="col-12">
-                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-danger">
+                    <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
+                        <h5 class=" alert custom-title">
                             {{ __('sidebar.send-mail-to-supplier') }}
                         </h5>
                     </div>
@@ -82,53 +78,52 @@
                         enctype="multipart/form-data">
                         @csrf
                         @method('POST')
-                        <div class="col-lg-6 no-print pull-right">
-                            <div class="form-group" dir="rtl">
-                                <label for="supplier_name"> {{ __('suppliers.supplier-name') }} </label>
-                                <select data-actions-box="true" multiple required
-                                    class="selectpicker form-control show-tick selectpicker" data-live-search="true"
-                                    title="اكتب او اختر الاسم" data-style="btn-warning" name="supplier_id[]"
-                                    id="supplier_name">
-                                    @foreach ($suppliers as $supplier)
-                                        <option title="{{ $supplier->supplier_name }}" value="{{ $supplier->id }}">
-                                            {{ $supplier->supplier_name }}</option>
-                                    @endforeach
-                                </select>
-                                <a target="_blank" href="{{ route('client.suppliers.create') }}" role="button"
-                                    style="width: 15%;display: inline;" class="btn btn-sm btn-warning open_popup">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                            </div>
-                            <div class="form-group" dir="rtl">
-                                <label for="body"> {{ __('marketing.message') }} </label>
-                                <textarea required name="body" class="form-control"
-                                    style="width:100%;height:160px; resize:none;"></textarea>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 no-print  pull-right">
-                            <div class="form-group" dir="rtl">
-                                <label for="subject"> {{ __('marketing.subject') }} </label>
-                                <input required type="text" name="subject" style="padding:20px; height:60px;"
-                                    class="form-control">
-                            </div>
-                            <div class="form-group" dir="rtl">
-                                <label for="file"> {{ __('marketing.attach-files') }} </label>
-                                <input type="file" class="form-control" name="files[]" multiple />
-                            </div>
-                            <div class="form-group" dir="rtl">
-                                <label for="images" style="display:block ! important;">
-                                    {{ __('marketing.choose-product-images') }} </label>
-                                <a style="display:block !important;display:inline !important ; float:right !important; width:90%; height:auto !important; min-height: 70px; border:1px solid #dedede;
-                                                                            padding:10px !important; text-align:center; font-size: 14px; font-weight:bold;"
-                                    href="#mymoda21" data-toggle="modal" class="dismiss"><i
-                                        class="fa fa-plus"></i><br />
-                                    {{ __('marketing.click-to-select-products') }}</a>
-                                <div class="clearfix"></div>
-                                <div id="showChecked" class=" text-center text-danger"></div>
-                            </div>
+                        <div class="row mb-2">
+                                <div class="form-group col-md-6 mb-2" dir="rtl">
+                                    <label for="supplier_name"> {{ __('suppliers.supplier-name') }} </label>
+                                    <div class="d-flex">
+                                        <select data-actions-box="true" multiple required
+                                        class="selectpicker form-control show-tick selectpicker py-1" data-live-search="true"
+                                        title="اكتب او اختر الاسم" data-style="btn-third" name="supplier_id[]"
+                                        id="supplier_name">
+                                        @foreach ($suppliers as $supplier)
+                                            <option title="{{ $supplier->supplier_name }}" value="{{ $supplier->id }}">
+                                                {{ $supplier->supplier_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <a target="_blank" href="{{ route('client.suppliers.create') }}" role="button"
+                                         class="btn  btn-warning open_popup d-flex align-items-center">
+                                        <i class="fa fa-plus"></i>
+                                    </a>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group col-md-6 mb-2" dir="rtl">
+                                    <label for="subject"> {{ __('marketing.subject') }} </label>
+                                    <input required type="text" name="subject"
+                                        class="form-control">
+                                </div>
+                                <div class="form-group col-md-6 mb-2" dir="rtl">
+                                    <label for="file"> {{ __('marketing.attach-files') }} </label>
+                                    <input type="file" class="form-control" name="files[]" multiple />
+                                </div>
+                                <div class="form-group col-md-6 mb-2" dir="rtl">
+                                    <label for="images" style="display:block ! important;">
+                                        {{ __('marketing.choose-product-images') }} </label>
+                                    <a 
+                                        href="#mymoda21" data-toggle="modal" class="dismiss py-1 form-control d-flex align-content-center"><i
+                                            class="fa fa-plus"></i>
+                                        {{ __('marketing.click-to-select-products') }}</a>
+                                    <div class="clearfix"></div>
+                                    <div id="showChecked" class=" text-center text-danger"></div>
+                                </div>
+                                <div class="form-group col-md-4 mb-2" dir="rtl">
+                                    <label for="body"> {{ __('marketing.message') }} </label>
+                                    <textarea required name="body" class="form-control"></textarea>
+                                </div>
                         </div>
                         <div class="clearfix"></div>
-                        <button type="submit" name="submit" class="no-print btn btn-danger btn-md pull-right"><i
+                        <button type="submit" name="submit" class="no-print btn btn-warning px-3 py-1"><i
                                 class="fa fa-envelope"></i> {{ __('marketing.send-message') }}
                         </button>
                         <div id="daily_details"></div>
@@ -153,10 +148,10 @@
                     <div class="row">
                         <div class="col-lg-12 images">
                             @if (!$products->isEmpty())
-                                <table dir='rtl' class='table table-bordered table-hover table-condensed table-striped'
+                                <table dir='rtl'
                                     style='text-align:center !important;'>
-                                    <thead class='text-center'>
-                                        <th class='text-center' style='width: 20%;'>
+                                    <thead class='text-center '>
+                                        <th class='text-center'>
                                             <input type='checkbox' name='check_all' class='check_all' /> تحديد الكل
                                         </th>
                                         <th class='text-center'>اسم المنتج</th>
@@ -178,8 +173,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button id="btnDismiss" data-dismiss="modal" class="btn btn-md btn-danger"><i
+                <div class="modal-footer justify-content-center">
+                    <button id="btnDismiss" data-dismiss="modal" class="btn px-3 py-1 btn-warning"><i
                             class="fa fa-check"></i> تم وارفاق الصور
                     </button>
                 </div>

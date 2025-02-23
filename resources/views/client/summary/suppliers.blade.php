@@ -28,7 +28,7 @@
             <div class="card mg-b-20">
                 <div class="card-body">
                     <div class="col-12 no-print">
-                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-warning">
+                        <h5  class=" alert custom-title">
                             كشف حساب المورد
                         </h5>
                     </div>
@@ -40,8 +40,8 @@
                         <div class="row mb-3">
                             <div class="col-md-4">
                                 <label class="d-block"> اختر المورد <span class="text-danger">*</span></label>
-                                <select required name="supplier_id" id="supplier_id" class="selectpicker"
-                                    data-style="btn-info" data-live-search="true" title="اكتب او اختار اسم المورد">
+                                <select required name="supplier_id" id="supplier_id" class="form-control"
+                                    data-live-search="true" title="اكتب او اختار اسم المورد">
                                     @foreach ($suppliers as $supplier)
                                         <option @if (isset($supplier_k) && $supplier_k->id == $supplier->id) selected @endif
                                             value="{{ $supplier->id }}">{{ $supplier->supplier_name }}</option>
@@ -59,12 +59,12 @@
                                     class="form-control" name="to_date" />
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                            <button class="btn btn-danger pd-x-20" name="submit" value="all" type="submit">
+                        <div class="col-xs-12 col-sm-12 col-md-12 ">
+                            <button class="btn btn-warning py-1 px-3" name="submit" value="all" type="submit">
                                 <i class="fa fa-check"></i>
                                 عرض كشف الحساب
                             </button>
-                            <button class="btn btn-dark pd-x-20" name="submit" value="today" type="submit">
+                            <button class="btn text-white px-3 py-1" style="background-color: #ec6880" name="submit" value="today" type="submit">
                                 <i class="fa fa-check"></i>
                                 كشف حساب اليوم
                             </button>

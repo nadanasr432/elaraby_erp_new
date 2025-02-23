@@ -28,7 +28,7 @@
             <div class="card mg-b-20">
                 <div class="card-body">
                     <div class="col-12">
-                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-danger">
+                        <h5  class=" alert  custom-title">
                             تقرير مديونية العملاء
                         </h5>
                     </div>
@@ -37,28 +37,30 @@
                     <form action="{{route('client.report5.post')}}" method="POST">
                         @csrf
                         @method('POST')
-                        <div class="col-lg-4 pull-right no-print">
-                            <label for="" class="d-block">اسم العميل</label>
-                            <select required name="outer_client_id" id="outer_client_id" class="selectpicker"
-                                    data-style="btn-info" data-live-search="true" title="اكتب او اختار اسم العميل">
-                                <option
-                                    @if(isset($outer_client_id) && $outer_client_id == "all")
-                                    selected
-                                    @endif
-                                    value="all">كل العملاء
-                                </option>
-                                @foreach($outer_clients as $outer_client)
+                        <div class="row mb-3">
+                            <div class="col-lg-6  no-print">
+                                <label for="" class="d-block">اسم العميل</label>
+                                <select required name="outer_client_id" id="outer_client_id" class="form-control"
+                                         data-live-search="true" title="اكتب او اختار اسم العميل">
                                     <option
-                                        @if(isset($outer_client_id) && $outer_client->id == $outer_client_id)
+                                        @if(isset($outer_client_id) && $outer_client_id == "all")
                                         selected
                                         @endif
-                                        value="{{$outer_client->id}}">{{$outer_client->client_name}}</option>
-                                @endforeach
-                            </select>
+                                        value="all">كل العملاء
+                                    </option>
+                                    @foreach($outer_clients as $outer_client)
+                                        <option
+                                            @if(isset($outer_client_id) && $outer_client->id == $outer_client_id)
+                                            selected
+                                            @endif
+                                            value="{{$outer_client->id}}">{{$outer_client->client_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-                        <div class="col-lg-4 pull-right">
-                            <button class="btn btn-md btn-danger"
-                                    style="font-size: 15px; height: 40px; margin-top: 25px;" type="submit">
+                        <div class="">
+                            <button class="btn  btn-warning py-1 px-3"
+                                    type="submit">
                                 <i class="fa fa-check"></i>
                                 عرض التقرير
                             </button>

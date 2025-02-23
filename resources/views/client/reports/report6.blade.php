@@ -28,7 +28,7 @@
             <div class="card mg-b-20">
                 <div class="card-body">
                     <div class="col-12">
-                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-danger">
+                        <h5 class=" alert  custom-title">
                             تقرير مديونية الموردين
                         </h5>
                     </div>
@@ -37,28 +37,30 @@
                     <form action="{{route('client.report6.post')}}" method="POST">
                         @csrf
                         @method('POST')
-                        <div class="col-lg-4 pull-right no-print">
-                            <label for="" class="d-block">اسم المورد</label>
-                            <select required name="supplier_id" id="supplier_id" class="selectpicker"
-                                    data-style="btn-info" data-live-search="true" title="اكتب او اختار اسم المورد">
-                                <option
-                                    @if(isset($supplier_id) && $supplier_id == "all")
-                                    selected
-                                    @endif
-                                    value="all">كل الموردين
-                                </option>
-                                @foreach($suppliers as $supplier)
+                        <div class="row mb-3">
+                            <div class="col-lg-6  no-print">
+                                <label for="" class="d-block">اسم المورد</label>
+                                <select required name="supplier_id" id="supplier_id" class="form-control"
+                                         data-live-search="true" title="اكتب او اختار اسم المورد">
                                     <option
-                                        @if(isset($supplier_id) && $supplier->id == $supplier_id)
+                                        @if(isset($supplier_id) && $supplier_id == "all")
                                         selected
                                         @endif
-                                        value="{{$supplier->id}}">{{$supplier->supplier_name}}</option>
-                                @endforeach
-                            </select>
+                                        value="all">كل الموردين
+                                    </option>
+                                    @foreach($suppliers as $supplier)
+                                        <option
+                                            @if(isset($supplier_id) && $supplier->id == $supplier_id)
+                                            selected
+                                            @endif
+                                            value="{{$supplier->id}}">{{$supplier->supplier_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-                        <div class="col-lg-4 pull-right">
-                            <button class="btn btn-md btn-danger"
-                                    style="font-size: 15px; height: 40px; margin-top: 25px;" type="submit">
+                        <div class="">
+                            <button class="btn btn-md btn-warning px-3 py-1"
+                                     type="submit">
                                 <i class="fa fa-check"></i>
                                 عرض التقرير
                             </button>

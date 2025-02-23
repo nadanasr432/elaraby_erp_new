@@ -39,9 +39,9 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <div class="col-12 row justify-content-between pr-0">
-                        <h2 style="font-size: 20px !important; margin-bottom: 19px !important;">تقرير الارباح</h2>
-                        <button class="btn btn-danger p-1 rounded border" onclick="history.back()">الرجوع</button>
+                    <div class="col-12 row d-flex flex-wrap align-items-center justify-content-between pr-0">
+                        <h2 class="alert custom-title">تقرير الارباح</h2>
+                        <button class="btn text-white px-3 py-1" style="background-color: #ec6880" onclick="history.back()">الرجوع</button>
                     </div>
                     <div class="clearfix"></div>
                     <hr>
@@ -49,24 +49,26 @@
                     <form action="{{route('client.report13.post')}}" method="POST" class="mt-2">
                         @csrf
                         @method('POST')
-                        <div class="col-lg-5 pull-right no-print">
-                            <label>من تاريخ</label>
-                            <input
-                                type="date" class="form-control" name="from_date"
-                                @if(isset($from_date) && !empty($from_date)) value="{{$from_date}}" @endif
-                            />
+                        <div class="row mb-3">
+                            <div class="col-lg-6 mb-3 no-print">
+                                <label>من تاريخ</label>
+                                <input
+                                    type="date" class="form-control" name="from_date"
+                                    @if(isset($from_date) && !empty($from_date)) value="{{$from_date}}" @endif
+                                />
+                            </div>
+                            <div class="col-lg-6 mb-3 no-print">
+                                <label>الى تاريخ</label>
+                                <input
+                                    type="date" class="form-control" name="to_date"
+                                    @if(isset($to_date) && !empty($to_date)) value="{{$to_date}}"@endif
+                                />
+                            </div>
                         </div>
-                        <div class="col-lg-5 pull-right no-print">
-                            <label>الى تاريخ</label>
-                            <input
-                                type="date" class="form-control" name="to_date"
-                                @if(isset($to_date) && !empty($to_date)) value="{{$to_date}}"@endif
-                            />
-                        </div>
-                        <div class="col-lg-2 pull-right p-0">
+                        <div class="">
                             <label class="invisible">sdf</label>
                             <br>
-                            <button class="btn btn-md btn-success" type="submit">
+                            <button class="btn py-1 px-3 btn-warning" type="submit">
                                 <i class="fa fa-check"></i>
                                 عرض التقرير
                             </button>
