@@ -8,125 +8,130 @@
             {{ session('success') }}
         </div>
     @endif
-    <div class="row">
-        <div class="col-12">
-            <p class="alert alert-danger alert-sm text-center">
-                اعدادات نقطة البيع
-            </p>
+    <div class="bg-white p-2 m-1">
+        <div class="row">
+            <div class="col-12">
+                <p class="alert custom-title">
+                    اعدادات نقطة البيع
+                </p>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card mg-b-20">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-condensed table-striped table-bordered text-center table-hover"
-                               id="example-table">
-                            <thead>
-                            <tr>
-                                <th class="text-center">#</th>
-                                <th class="text-center">اسم الفرع</th>
-                                <th class="text-center"> محتوى شاشة نقطة البيع</th>
-                                <th class="text-center">تعديل</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @php
-                                $i=0;
-                            @endphp
-                            @foreach ($pos_settings as $pos_setting)
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mg-b-20">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-condensed table-striped table-bordered text-center table-hover"
+                                   id="example-table">
+                                <thead>
                                 <tr>
-                                    <td>{{ ++$i }}</td>
-                                    <td>{{ $pos_setting->branch ? $pos_setting->branch->branch_name : '' }}</td>
-                                    <td>
-                                        @if($pos_setting->status == "open")
-                                            <i class="fa fa-check"></i>
-                                            اقفال اليومية
-                                            <br/>
-                                        @endif
-                                        @if($pos_setting->discount == "1")
-                                            <i class="fa fa-check"></i>
-                                            الخصم
-                                            <br/>
-                                        @endif
-
-                                        @if($pos_setting->tax == "1")
-                                            <i class="fa fa-check"></i>
-                                            ضريبة الطلب
-                                            <br/>
-                                        @endif
-                                        @if($pos_setting->suspension == "1")
-                                            <i class="fa fa-check"></i>
-                                            تعليق الفاتورة
-                                            <br/>
-                                        @endif
-                                        @if($pos_setting->payment == "1")
-                                            <i class="fa fa-check"></i>
-                                            تسجيل الدفع
-                                            <br/>
-                                        @endif
-                                        @if($pos_setting->print_save == "1")
-                                            <i class="fa fa-check"></i>
-                                            حفظ وطباعة الفاتورة
-                                            <br/>
-                                        @endif
-                                        @if($pos_setting->cancel == "1")
-                                            <i class="fa fa-check"></i>
-                                            الغاء الفاتورة
-                                            <br/>
-                                        @endif
-                                        @if($pos_setting->suspension_tab == "1")
-                                            <i class="fa fa-check"></i>
-                                            الفاتورة المعلقة سابقا
-                                            <br/>
-                                        @endif
-                                        @if($pos_setting->edit_delete_tab == "1")
-                                            <i class="fa fa-check"></i>
-                                            تعديل وحذف الفواتير
-                                            <br/>
-                                        @endif
-                                        @if($pos_setting->add_outer_client == "1")
-                                            <i class="fa fa-check"></i>
-                                            اضافة عميل جديد
-                                            <br/>
-                                        @endif
-
-
-                                        @if($pos_setting->add_product == "1")
-                                            <i class="fa fa-check"></i>
-                                            اضافة منتج جديد
-                                            <br/>
-                                        @endif
-                                        @if($pos_setting->fast_finish == "1")
-                                            <i class="fa fa-check"></i>
-                                            زر دفع خزنة رئيسية وحفظ الفاتورة
-                                            <br/>
-                                        @endif
-                                        @if($pos_setting->product_image == "1")
-                                            <i class="fa fa-check"></i>
-                                            صورة المنتج
-                                            <br/>
-                                        @endif
-                                        @if($pos_setting->enableTableNum == "1")
-                                            <i class="fa fa-check"></i>
-                                            اظهار رقم الطاولة
-                                            <br/>
-                                        @endif
-                                        @if($pos_setting->enableProdInvoice == "1")
-                                            <i class="fa fa-check"></i>
-                                            اظهار فاتورة الاعداد
-                                            <br/>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('pos.settings.edit', $pos_setting->id) }}"
-                                           class="btn btn-sm btn-info" data-toggle="tooltip"
-                                           title="تعديل" data-placement="top"><i class="fa fa-edit"></i></a>
-                                    </td>
+                                    <th class="text-center">#</th>
+                                    <th class="text-center">اسم الفرع</th>
+                                    <th class="text-center"> محتوى شاشة نقطة البيع</th>
+                                    <th class="text-center">تعديل</th>
                                 </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                @php
+                                    $i=0;
+                                @endphp
+                                @foreach ($pos_settings as $pos_setting)
+                                    <tr>
+                                        <td>{{ ++$i }}</td>
+                                        <td>{{ $pos_setting->branch ? $pos_setting->branch->branch_name : '' }}</td>
+                                        <td>
+                                            @if($pos_setting->status == "open")
+                                                <i class="fa fa-check"></i>
+                                                اقفال اليومية
+                                                <br/>
+                                            @endif
+                                            @if($pos_setting->discount == "1")
+                                                <i class="fa fa-check"></i>
+                                                الخصم
+                                                <br/>
+                                            @endif
+    
+                                            @if($pos_setting->tax == "1")
+                                                <i class="fa fa-check"></i>
+                                                ضريبة الطلب
+                                                <br/>
+                                            @endif
+                                            @if($pos_setting->suspension == "1")
+                                                <i class="fa fa-check"></i>
+                                                تعليق الفاتورة
+                                                <br/>
+                                            @endif
+                                            @if($pos_setting->payment == "1")
+                                                <i class="fa fa-check"></i>
+                                                تسجيل الدفع
+                                                <br/>
+                                            @endif
+                                            @if($pos_setting->print_save == "1")
+                                                <i class="fa fa-check"></i>
+                                                حفظ وطباعة الفاتورة
+                                                <br/>
+                                            @endif
+                                            @if($pos_setting->cancel == "1")
+                                                <i class="fa fa-check"></i>
+                                                الغاء الفاتورة
+                                                <br/>
+                                            @endif
+                                            @if($pos_setting->suspension_tab == "1")
+                                                <i class="fa fa-check"></i>
+                                                الفاتورة المعلقة سابقا
+                                                <br/>
+                                            @endif
+                                            @if($pos_setting->edit_delete_tab == "1")
+                                                <i class="fa fa-check"></i>
+                                                تعديل وحذف الفواتير
+                                                <br/>
+                                            @endif
+                                            @if($pos_setting->add_outer_client == "1")
+                                                <i class="fa fa-check"></i>
+                                                اضافة عميل جديد
+                                                <br/>
+                                            @endif
+    
+    
+                                            @if($pos_setting->add_product == "1")
+                                                <i class="fa fa-check"></i>
+                                                اضافة منتج جديد
+                                                <br/>
+                                            @endif
+                                            @if($pos_setting->fast_finish == "1")
+                                                <i class="fa fa-check"></i>
+                                                زر دفع خزنة رئيسية وحفظ الفاتورة
+                                                <br/>
+                                            @endif
+                                            @if($pos_setting->product_image == "1")
+                                                <i class="fa fa-check"></i>
+                                                صورة المنتج
+                                                <br/>
+                                            @endif
+                                            @if($pos_setting->enableTableNum == "1")
+                                                <i class="fa fa-check"></i>
+                                                اظهار رقم الطاولة
+                                                <br/>
+                                            @endif
+                                            @if($pos_setting->enableProdInvoice == "1")
+                                                <i class="fa fa-check"></i>
+                                                اظهار فاتورة الاعداد
+                                                <br/>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('pos.settings.edit', $pos_setting->id) }}"
+                                               class="btn " data-toggle="tooltip"
+                                               title="تعديل" data-placement="top"><svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M18.21 4.87258C18.6 4.48258 18.6 3.83258 18.21 3.46258L15.87 1.12258C15.5 0.732578 14.85 0.732578 14.46 1.12258L12.62 2.95258L16.37 6.70258M0.5 15.0826V18.8326H4.25L15.31 7.76258L11.56 4.01258L0.5 15.0826Z" fill="#4AA16A"/>
+                                                </svg>
+                                                </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -20,7 +20,7 @@
             <div class="card mg-b-20">
                 <div class="card-body">
                     <div class="col-12">
-                        <h5 style="min-width: 300px;" class="pull-left alert alert-sm alert-success">
+                        <h5  class="alert custom-title">
                             {{ __('sidebar.add-new-permission') }}
                         </h5>
                     </div>
