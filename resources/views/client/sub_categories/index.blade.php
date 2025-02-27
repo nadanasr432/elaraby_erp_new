@@ -57,7 +57,7 @@
                                         <td>{{ ++$i }}</td>
                                         <td dir="ltr">{{ $category->sub_category_name }}</td>
                                         <td dir="ltr">{{ $category->category->category_name }}</td>
-                                        <td class="d-flex border-0">
+                                        <td class="d-flex border-0 justify-content-center">
                                             
 
                                             <a class="modal-effect  delete_category"
@@ -69,7 +69,7 @@
                                                 </svg>
                                             </a>
                                             <a href="{{ route('client.subcategories.edit', $category->id) }}"
-                                                class=" " data-toggle="tooltip" title="تعديل"
+                                                class=" d-flex align-items-center" data-toggle="tooltip" title="تعديل"
                                                 data-placement="top">
                                                 <svg width="19" height="16" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M18.21 4.87258C18.6 4.48258 18.6 3.83258 18.21 3.46258L15.87 1.12258C15.5 0.732578 14.85 0.732578 14.46 1.12258L12.62 2.95258L16.37 6.70258M0.5 15.0826V18.8326H4.25L15.31 7.76258L11.56 4.01258L0.5 15.0826Z" fill="#4AA16A"/>

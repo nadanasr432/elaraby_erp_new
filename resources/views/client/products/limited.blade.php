@@ -60,7 +60,7 @@
                                     <td>{{number_format( $product->sector_price , 0 , '.' , ',' ) ?? '' }}</td>
                                     <td>{{number_format( $product->purchasing_price , 0 , '.' , ',' ) ?? '' }}</td>
                                     <td>{{number_format( $product->first_balance , 0 , '.' , ',' ) ?? '' }}</td>
-                                    <td class="d-flex border-0" style="width: 20% !important;">
+                                    <td class="d-flex border-0 justify-content-center align-items-center">
                                         <a href="{{ route('client.products.show', $product->id) }}"
                                            class="" data-toggle="tooltip"
                                            title="عرض" data-placement="top">

@@ -1,6 +1,11 @@
 @extends('client.layouts.app-main')
 <style>
-
+.bootstrap-select .dropdown-toggle .filter-option {
+    text-align: right !important;
+    display: flex
+;
+    align-items: center;
+}
 </style>
 @section('content')
     @if (count($errors) > 0)
@@ -36,7 +41,7 @@
                         <div class="col-lg-3 pull-right">
                             <div class="form-group">
                                 <label class="d-block" for=""> اسم المنتج </label>
-                                <select name="product_id" class="form-control show-tick selectpicker"
+                                <select name="product_id" class="form-control show-tick selectpicker py-1"
                                     data-style="btn-third" data-live-search="true" title="اختر منتج" required>
                                     @foreach ($products as $product)
                                         <option value="{{ $product->id }}">{{ $product->product_name }}</option>

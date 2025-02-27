@@ -1,10 +1,5 @@
 @extends('client.layouts.app-main')
 <style>
-    .bootstrap-select,
-    select.form-control {
-        width: 80% !important;
-        display: inline !important;
-    }
 
 </style>
 @section('content')
@@ -26,11 +21,12 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <div class="col-12">
-                        <a class="btn btn-primary btn-sm pull-left" href="{{ route('client.capitals.index') }}">
-                            {{ __('main.back') }}</a>
-                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success"> اضافة راس مال
+                    <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
+                        <h5 class=" alert custom-title"> اضافة راس مال
                             جديد </h5>
+                        <a class="btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.capitals.index') }}">
+                            {{ __('main.back') }}</a>
+                        
                     </div>
                     <div class="clearfix"></div>
                     <br>
@@ -49,24 +45,26 @@
 
                             <div class="col-md-4">
                                 <label class="d-block"> الخزنة <span class="text-danger">*</span></label>
-                                <select required name="safe_id" class="form-control">
-                                    <option value="">اختر الخزينة</option>
-                                    @foreach ($safes as $safe)
-                                        <option value="{{ $safe->id }}">{{ $safe->safe_name }}</option>
-                                    @endforeach
-                                </select>
-                                <a target="_blank" href="{{ route('client.safes.create') }}" role="button"
-                                    style="width: 15%;display: inline;" class="btn btn-sm btn-warning open_popup">
-                                    <i class="fa fa-plus"></i>
-                                </a>
+                                <div class="d-flex">
+                                    <select required name="safe_id" class="form-control">
+                                        <option value="">اختر الخزينة</option>
+                                        @foreach ($safes as $safe)
+                                            <option value="{{ $safe->id }}">{{ $safe->safe_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <a target="_blank" href="{{ route('client.safes.create') }}" role="button"
+                                         class="btn btn-warning open_popup d-flex align-items-center">
+                                        <i class="fa fa-plus"></i>
+                                    </a>
+                                </div>
                             </div>
                             <div class="col-md-4">
                                 <label> ملاحظات <span class="text-danger">*</span></label>
                                 <input class="form-control" name="notes" type="text" dir="rtl" />
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                            <button class="btn btn-info pd-x-20" type="submit">اضافة</button>
+                        <div class="col-xs-12 col-sm-12 col-md-12 text-end">
+                            <button class="btn btn-warning px-3 py-1" type="submit">اضافة</button>
                         </div>
                     </form>
                 </div>

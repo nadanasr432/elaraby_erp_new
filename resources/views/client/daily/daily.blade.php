@@ -21,35 +21,35 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <h2 style="font-size: 30px!important;">
+                    <h2 class=" custom-title">
                         تقرير دفتر اليومية
                     </h2>
                     <div class="clearfix"></div>
 
                     <div class="row">
-                        <div class="col-lg-12 no-print"
-                            style="border: 1px solid #dedede; padding: 20px;margin-bottom: 20px;">
+                        <div class="col-lg-12 no-print">
                             <form action="{{ route('client.daily.post') }}" method="POST">
                                 @csrf
                                 @method('POST')
-                                <div class="pull-right col-lg-4 no-print">
-                                    <div class="form-group" dir="rtl">
-                                        <label style="display:block;" for="category">{{ __('main.from-date') }}</label>
-                                        <input type="date" required name="from_date" class="form-control"
-                                            value="<?= isset($from_date) ? $from_date : date('Y-m-d') ?>">
+                                <div class="row">
+                                    <div class=" col-lg-6 no-print mb-2">
+                                        <div class="form-group" dir="rtl">
+                                            <label style="display:block;" for="category">{{ __('main.from-date') }}</label>
+                                            <input type="date" required name="from_date" class="form-control"
+                                                value="<?= isset($from_date) ? $from_date : date('Y-m-d') ?>">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6  no-print mb-2">
+                                        <div class="form-group" dir="rtl">
+                                            <label style="display:block;" for="category">{{ __('main.to-date') }}</label>
+                                            <input type="date" required name="to_date" class="form-control"
+                                                value="<?= isset($to_date) ? $to_date : date('Y-m-d', strtotime('+1 day')) ?>">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-4 pull-right no-print">
-                                    <div class="form-group" dir="rtl">
-                                        <label style="display:block;" for="category">{{ __('main.to-date') }}</label>
-                                        <input type="date" required name="to_date" class="form-control"
-                                            value="<?= isset($to_date) ? $to_date : date('Y-m-d', strtotime('+1 day')) ?>">
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 no-print pull-right">
-                                    <button type="submit" class="btn btn-md btn-danger"
-                                        style="display: inline !important;width: 20% !important; float: right !important;
-                                                                                        font-size: 20px; height: 40px; margin-top: 25px;" id="by_emp_name"><i
+                                <div class=" text-start">
+                                    <button type="submit" class="btn py-1 px-3 btn-warning"
+                                       id="by_emp_name"><i
                                             class="fa fa-search"></i></button>
                                 </div>
                             </form>
@@ -1244,7 +1244,7 @@
                         @endif
                     </div>
                     <div class="clearfix"></div>
-                    <button onclick="window.print();" class="no-print btn btn-success btn-md pull-right"><i
+                    <button onclick="window.print();" class="no-print btn btn-warning  py-1 px-3"><i
                             class="fa fa-print"></i> طباعة
                     </button>
                     <?php $today = date('Y-m-d'); ?>

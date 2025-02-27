@@ -5,7 +5,7 @@
     }
 
     .bootstrap-select {
-        width: 80% !important;
+        width: 100% !important;
     }
 
     .form-control {
@@ -112,23 +112,21 @@
 
 
                     <div class="card-header border-bottom border-secondary pb-1 pt-0 px-0">
-                        <div class="d-flex justify-content-between align-items-baseline">
-                            <h3 class="pull-right font-weight-bold">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center">
+                            <h3 class=" font-weight-bold custom-title">
                                 {{ __('main.main-information') }}
                             </h3>
-                            <div class="row mr-1">
-                                <a onclick="history.back()"
-                                   class="btn btn-danger pull-left text-white d-flex align-items-center ml-1"
-                                   style="height: 37px; font-size: 11px !important;">
-                                        <span
-                                            style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
-                                            <svg style="width: 10px;height: 15px;fill: #f5f1f1;margin-top: 1px;"
-                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome  - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path
-                                                    d="M177.5 414c-8.8 3.8-19 2-26-4.6l-144-136C2.7 268.9 0 262.6 0 256s2.7-12.9 7.5-17.4l144-136c7-6.6 17.2-8.4 26-4.6s14.5 12.5 14.5 22l0 72 288 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32l-288 0 0 72c0 9.6-5.7 18.2-14.5 22z"></path></svg>
-                                        </span>
-                                    العودة
-                                </a>
-                            </div>
+                            <a onclick="history.back()"
+                                class="btn text-white ml-1 py-1 px-3"
+                                style=" background-color: #ec6880;">
+                                    <span
+                                        style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
+                                        <svg style="width: 10px;height: 15px;fill: #f5f1f1;margin-top: 1px;"
+                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome  - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path
+                                                d="M177.5 414c-8.8 3.8-19 2-26-4.6l-144-136C2.7 268.9 0 262.6 0 256s2.7-12.9 7.5-17.4l144-136c7-6.6 17.2-8.4 26-4.6s14.5 12.5 14.5 22l0 72 288 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32l-288 0 0 72c0 9.6-5.7 18.2-14.5 22z"></path></svg>
+                                    </span>
+                                العودة
+                            </a>
                         </div>
                     </div>
                     <form class="parsley-style-1" id="selectForm2" name="selectForm2"
@@ -156,38 +154,37 @@
                                     فرعي </label>
                             </div>
                         </div>
-                        <hr>
+                        <div class="row mb-1 mt-2">
 
-                        <div class="row mb-0 pull-right">
 
-                            <div class="form-group  col-lg-4  pull-right" dir="rtl">
+                            <div class="form-group  col-lg-6 " dir="rtl">
                                 <label for="store_id">رقم الحساب</label>
                                 <input type="hidden" name="account_id" id="account_id" value="">
                                 <input type="number" name="account_number" id="account_number" placeholder="رقم الحساب"
                                        class="form-control"
                                        @if($id !=Null) value="{{$id+1}}" @else value="1" @endif">
                             </div>
-                            <div class="form-group  col-lg-4  pull-right" dir="rtl">
+                            <div class="form-group  col-lg-6" dir="rtl">
                                 <label style="display: block;">اسم الحساب </label>
                                 <input type="text" class="form-control text-left" placeholder="اسم الحساب" value=""
                                        dir="ltr" name="account_name"
                                        id="account_name" required/>
                             </div>
-                            <div class="form-group  col-lg-4  pull-right" dir="rtl">
+                            <div class="form-group  col-lg-6" dir="rtl">
                                 <label style="display: block;">الاسم بالانجليزي </label>
                                 <input type="text" class="form-control text-left" placeholder="الاسم بالانجليزي"
                                        value="" dir="ltr" name="account_name_en"
                                        id="account_name_en" required/>
                             </div>
 
-                            <div class="col-lg-6 pull-right">
+                            <div class="col-lg-6">
                                 <label class="d-block" for="unit_id"> المستوى</label>
                                 <input type="text" class="form-control" placeholder="المستوى" value="" id="level"
                                        disabled>
                                 <input type="hidden" name="level" class="form-control" value="" id="level1">
                             </div>
 
-                            <div class="form-group col-lg-6  pull-right" dir="rtl">
+                            <div class="form-group col-lg-6 " dir="rtl">
                                 <label for="model"> حساب رئيسي</label>
                                 <select name="parent_id" class="form-control" id="parent_id">
                                     <option value=""> حساب رئيسي</option>
@@ -199,7 +196,7 @@
                                     @endif
                                 </select>
                             </div>
-                            <div class="form-group col-lg-6  pull-right" dir="rtl">
+                            <div class="form-group col-lg-6 " dir="rtl">
                                 <label for="model"> نوع الحساب </label>
                                 <select name="account_type" class="form-control" id="account_type">
                                     <option> إختار نوع الحساب</option>
@@ -210,7 +207,7 @@
                                 </select>
                                 <input type="hidden" name="account_type1" id="account_type1">
                             </div>
-                            <div class="form-group col-lg-6  pull-right" dir="rtl">
+                            <div class="form-group col-lg-6 " dir="rtl">
                                 <label for="model"> نوع الميزانية </label>
                                 <select name="type_budget" class="form-control" id="type_budget">
                                     <option disabled> إختار نوع الميزانية</option>
@@ -222,35 +219,35 @@
                                     <option value="بضاعة آخر المدة">بضاعة آخر المدة</option>
                                 </select>
                             </div>
-                            <div class="form-group col-lg-3  pull-right" dir="rtl">
+                            <div class="form-group col-lg-6" dir="rtl">
                                 <label for="model"> مبلغ سنة ماضية </label>
                                 <input type="text" name="last_year_amount" placeholder=" مبلغ سنة ماضية"
                                        id="last_year_amount" class="form-control"
                                        disabled>
                             </div>
-                            <div class="form-group col-lg-3  pull-right" dir="rtl">
+                            <div class="form-group col-lg-6" dir="rtl">
                                 <label for="model"> رصيد مدين </label>
                                 <input type="text" name="debit_balance" value="" placeholder=" رصيد مدين "
                                        id="debit_balance" class="form-control"
                                        disabled>
                             </div>
-                            <div class="form-group col-lg-3  pull-right" dir="rtl">
+                            <div class="form-group col-lg-6" dir="rtl">
                                 <label for="model"> رصيد دائن </label>
                                 <input type="text" name="credit" id="credit" placeholder="رصيد دائن" value=""
                                        class="form-control" disabled>
                             </div>
-                            <div class="form-group col-lg-3  pull-right" dir="rtl">
+                            <div class="form-group col-lg-6" dir="rtl">
                                 <label for="model"> الرصيد </label>
                                 <input type="text" name="balance" id="balance" placeholder="الرصيد" value=""
                                        class="form-control" disabled>
                             </div>
 
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 text-left">
-                            <a class="btn btn-md btn-info pd-x-20 d-none" id="new">إضافة جديد</a>
-                            <button class="btn btn-md btn-warning pd-x-20 d-none" type="submit" id="edit">تعديل</button>
-                            <button class="btn btn-md btn-success pd-x-20" type="submit" id="save">حفظ</button>
-                            <a class="btn btn-md btn-danger pd-x-20 d-none" id="delete">حذف</a>
+                        <div class="col-xs-12 col-sm-12 col-md-12 ">
+                            <button class="btn btn-md btn-warning pd-x-20 d-none py-1 px-3 text-white" id="new">إضافة جديد</button>
+                            <button class="btn btn-md text-dark pd-x-20 d-none py-1 px-3" style="background-color: #ECEFF1" type="submit" id="edit">تعديل</button>
+                            <button class="btn btn-md btn-warning pd-x-20 py-1 px-3" type="submit" id="save">حفظ</button>
+                            <a class="btn btn-md btn-danger pd-x-20 d-none py-1 px-3 text-white" id="delete">حذف</a>
                         </div>
                     </form>
                 </div>

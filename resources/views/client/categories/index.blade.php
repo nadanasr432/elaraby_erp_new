@@ -54,7 +54,7 @@
                                         <td>{{ ++$i }}</td>
                                         <td>{{ $category->category_name }}</td>
                                         <td>{{ $category->category_type }}</td>
-                                        <td class="d-flex border-0">
+                                        <td class="d-flex border-0 justify-content-center">
                                             @if ($i > 2)
                                                 <a href="{{ route('client.categories.edit', $category->id) }}"
                                                     data-toggle="tooltip"

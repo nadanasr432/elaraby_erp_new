@@ -24,11 +24,11 @@
             <div class="card">
                 <!------HEADER----->
                 <div class="card-header border-bottom border-secondary p-1">
-                    <div class="d-flex justify-content-between align-items-baseline">
-                        <h3 class="pull-right font-weight-bold">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center">
+                        <h3 class=" custom-title font-weight-bold">
                             اضافة قيود اليومية
                         </h3>
-                        <a class="btn btn-danger btn-sm pull-left p-1" href="{{ route('client.voucher.get') }}">
+                        <a class="btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.voucher.get') }}">
                             {{ __('main.back') }}
                         </a>
                     </div>
@@ -73,7 +73,7 @@
                                         </tr>
                                     </thead>
                                     <tbody class="tbodyvouchers">
-                                        <tr>
+                                        <tr >
                                             <td>
                                                 <select required name="account[]" class="form-control">
                                                     <option value="">اختر الحساب</option>
@@ -96,8 +96,8 @@
                                             <td>
                                                 <input type="text" class="form-control" name="notation[]">
                                             </td>
-                                            <td>
-                                                <input type="button" class="mt-1 btn btn-danger btn-sm deleteRow"
+                                            <td class="">
+                                                <input type="button" class=" deleteRow bg-transparent border-0 d-flex align-items-center justify-content-center" style="color: red"
                                                     value="X" />
                                             </td>
                                         </tr>
@@ -129,7 +129,7 @@
                                                 <input type="hidden" id="amount" class="form-control" name="amount">
                                             </td>
                                             <td>
-                                                <input type="button" class="mt-1 btn btn-danger btn-sm deleteRow"
+                                                <input type="button" class=" deleteRow bg-transparent border-0 d-flex align-items-center justify-content-center" style="color: red"
                                                     value="X" />
                                             </td>
                                         </tr>
@@ -151,11 +151,11 @@
                                     </tfoot>
                                 </table>
 
-                                <button type="button" class="btn btn-primary addNewRowHandler">
+                                <button type="button" class="btn btn-success py-1 px-3 addNewRowHandler">
                                     <i class="fa fa-plus"></i>
                                     {{ __('main.add new row') }}
                                 </button>
-                                <button class="btn btn-success font-weight-bold"
+                                <button class="btn btn-success py-1 px-3 font-weight-bold"
                                     type="submit">{{ __('main.add') }}</button>
                             </div>
                         </div>

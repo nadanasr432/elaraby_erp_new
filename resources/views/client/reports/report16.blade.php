@@ -28,7 +28,7 @@
             <div class="card mg-b-20">
                 <div class="card-body">
                     <div class="col-12">
-                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-danger">
+                        <h5 class="alert custom-title">
                             تقرير العمل الشامل
                         </h5>
                     </div>
@@ -37,19 +37,21 @@
                     <form action="{{route('client.report16.post')}}" method="POST">
                         @csrf
                         @method('POST')
-                        <div class="col-lg-4 pull-right no-print">
-                            <label for="" class="d-block">من تاريخ</label>
-                            <input type="date" @if(isset($from_date) && !empty($from_date)) value="{{$from_date}}"
-                                   @endif class="form-control" name="from_date"/>
+                        <div class="row mb-3">
+                            <div class="col-lg-6  ">
+                                <label for="" class="d-block">من تاريخ</label>
+                                <input type="date" @if(isset($from_date) && !empty($from_date)) value="{{$from_date}}"
+                                       @endif class="form-control" name="from_date"/>
+                            </div>
+                            <div class="col-lg-6 ">
+                                <label for="" class="d-block">الى تاريخ</label>
+                                <input type="date" @if(isset($to_date) && !empty($to_date)) value="{{$to_date}}"
+                                       @endif  class="form-control" name="to_date"/>
+                            </div>
                         </div>
-                        <div class="col-lg-4 pull-right no-print">
-                            <label for="" class="d-block">الى تاريخ</label>
-                            <input type="date" @if(isset($to_date) && !empty($to_date)) value="{{$to_date}}"
-                                   @endif  class="form-control" name="to_date"/>
-                        </div>
-                        <div class="col-lg-4 pull-right">
-                            <button class="btn btn-md btn-danger"
-                                    style="font-size: 15px; height: 40px; margin-top: 25px;" type="submit">
+                        <div class="">
+                            <button class="btn btn-md btn-warning py-1 px-3"
+                                    type="submit">
                                 <i class="fa fa-check"></i>
                                 عرض التقرير
                             </button>

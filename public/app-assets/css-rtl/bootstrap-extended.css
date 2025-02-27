@@ -256,6 +256,7 @@ pre code {
 
 .table th, .table td {
     padding: 0.45rem 2rem;
+    white-space: nowrap;
 }
 
 .table.table-xl th, .table.table-xl td {
@@ -885,7 +886,7 @@ select.form-control {
 }
 
 .btn-warning ~ .dropdown-menu .dropdown-item.active {
-    background-color: #FF9149;
+    background-color: #222751;
 }
 
 .dropdown-menu.arrow {

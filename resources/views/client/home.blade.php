@@ -10,8 +10,8 @@
         position: fixed;
         z-index: 99999999999999999999;
         display: block;
-        left: 23px;
-        bottom: 40px;
+        left: 3%;
+        bottom: 7%;
         background-color: #28d094;
     }
 
@@ -25,8 +25,8 @@
         position: fixed;
         z-index: 99999999999999999999;
         display: block;
-        left: 340px;
-        bottom: 70px;
+        right: 3%;
+        bottom: 9%;
 
     }
 
@@ -540,7 +540,7 @@
                 @endif
             </h3>
             <div class="row pr-2 mt-sm-0 mt-2 pl-sm-0 pl-2">
-                <a class="btn btn-danger border-0" style="background: #222751 !important;border-radius: 7px;"
+                <a class="btn btn-danger border-0 my-1" style="background: #222751 !important;border-radius: 7px;"
                     href="{{ route('client.sale_bills.create1') }}">
                     <img src="{{ asset('assets/svgs/plus.svg') }}"
                         style="border: 1px dashed; border-radius: 50%; margin-left: 6px;">
@@ -548,23 +548,26 @@
                     {{ __('main.add-sale-bill') }}
                 </a>
 
-                <a class="btn bg-none border-0 ml-1"
+                <a class="btn bg-none border-0 ml-1  my-1"
                     style="    background: white !important;color: gray;border: 1px solid gray !important;border-radius: 7px;"
                     href="{{ route('client.sale_bills.index') }}">
                     <img src="{{ asset('assets/svgs/paper.svg') }}">
                     {{ __('main.mnge-bills') }}
                 </a>
-                <a class="btn border-0 ml-1" href="{{ route('client.sale_bills.create1') }}"
+                <a class="btn border-0 ml-1  my-1" href="{{ route('client.sale_bills.create1') }}"
                     style="background: white !important; color: gray; border: 1px solid gray !important; border-radius: 7px; display: flex; align-items: center;">
 
                     {{-- <img src="{{ asset('assets/svgs/plus.svg') }}"
         style="border: 1px dashed; border-radius: 50%; margin-left: 6px;"> --}}
 
                     <b> {{ __('main.use the new sale bill') }} </b>
-                    <span class="badge badge-success ml-1"
-                        style="font-size: 10px; border-radius: 50%; padding: 2px 5px;">{{ __('sidebar.new') }}</span> <!-- Add this line -->
+                    {{-- <span class="badge badge-success ml-1"
+                        style="font-size: 10px; border-radius: 50%; padding: 2px 5px;">{{ __('sidebar.new') }}</span> <!-- Add this line --> --}}
                 </a>
-
+                <a class="btn border-0 ml-1  my-1" href=""
+                style="background: white !important; color: gray; border: 1px solid gray !important; border-radius: 7px; display: flex; align-items: center;">
+                {{ __('Price Offers') }} 
+                </a>
             </div>
         </div>
     </div>
@@ -816,7 +819,7 @@
         <div class="row match-height p-1 mt-1">
             <div class="col-md-12 px-0">
                 <div class="card" style="height: 460px;border: 1px solid #2d2d2d30;">
-                    <div class="card-header p-1" style="background: #222751;">
+                    <div class="card-header p-1 mt-4" style="background: #222751;">
                         <h4 class="card-title text-left" style="font-weight: 600;color:white;">
 
                             {{ __('main.income-expenses-jan') }}
@@ -891,7 +894,7 @@
         <!--------------------------8 boxes---------------------------------->
         <div class="row text-center mb-2" style="margin-top: -26px !important;">
             <div class="col-lg-12">
-                <div class="card-header p-1" style="background: #f4f5fa;">
+                <div class="card-header p-1 mt-4" style="background: #f4f5fa;">
                     <h3 class="card-title text-left" style="font-weight: 600;">{{ __('main.latest-transactions') }}</h3>
                 </div>
                 <div class="card" style="height: fit-content !important;border: 1px solid #2d2d2d30;">
@@ -953,7 +956,7 @@
         <!----------------------------LAST INVOICES-------------------------->
         <div class="row match-height" style="margin-top: -20px !important;">
             <div class="col-md-12 ">
-                <div class="card-header p-1" style="background: #f4f5fa;">
+                <div class="card-header p-1 mt-4" style="background: #f4f5fa;">
                     <h3 class="card-title text-left" style="font-weight: 600;">{{ __('main.latest-bills') }}</h3>
                     <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                 </div>
@@ -1024,17 +1027,19 @@
     </div>
     <!------------>
 
-    <a href="{{ route('client.pos.create') }}" class="mobilePOSBtn" style="display: none;">
-        <svg width="30" viewBox="0 0 26 25" fill="white" xmlns="http://www.w3.org/2000/svg">
-            <g id="material-symbols-light:point-of-sale-sharp">
-                <path id="Vector"
-                    d="M6.95964 8.45086V3.91187H18.8971V8.45086H6.95964ZM8.0013 7.45087H17.8555V4.91187H8.0013V7.45087ZM4.35547 20.3729V17.7569H21.5013V20.3729H4.35547ZM4.35547 16.9879L7.62005 9.44987H18.2367L21.5023 16.9879H4.35547ZM9.12214 15.3729H10.9659V14.6029H9.12214V15.3729ZM9.12214 13.6029H10.9659V12.8339H9.12214V13.6029ZM9.12214 11.8339H10.9659V11.0649H9.12214V11.8339ZM12.0076 15.3729H13.8503V14.6029H12.0065L12.0076 15.3729ZM12.0076 13.6029H13.8503V12.8339H12.0065L12.0076 13.6029ZM12.0076 11.8339H13.8503V11.0649H12.0065L12.0076 11.8339ZM14.8919 15.3729H16.7346V14.6029H14.8909L14.8919 15.3729ZM14.8919 13.6029H16.7346V12.8339H14.8909L14.8919 13.6029ZM14.8919 11.8339H16.7346V11.0649H14.8909L14.8919 11.8339Z">
-                </path>
-            </g>
-        </svg>
-        <span>POS</span>
+    <a href="{{ route('client.pos.create') }}" class="mobilePOSBtn " style="display: none;">
+        <div class="px-2 py-1">
+            <svg width="30" viewBox="0 0 26 25" fill="white" xmlns="http://www.w3.org/2000/svg">
+                <g id="material-symbols-light:point-of-sale-sharp">
+                    <path id="Vector"
+                        d="M6.95964 8.45086V3.91187H18.8971V8.45086H6.95964ZM8.0013 7.45087H17.8555V4.91187H8.0013V7.45087ZM4.35547 20.3729V17.7569H21.5013V20.3729H4.35547ZM4.35547 16.9879L7.62005 9.44987H18.2367L21.5023 16.9879H4.35547ZM9.12214 15.3729H10.9659V14.6029H9.12214V15.3729ZM9.12214 13.6029H10.9659V12.8339H9.12214V13.6029ZM9.12214 11.8339H10.9659V11.0649H9.12214V11.8339ZM12.0076 15.3729H13.8503V14.6029H12.0065L12.0076 15.3729ZM12.0076 13.6029H13.8503V12.8339H12.0065L12.0076 13.6029ZM12.0076 11.8339H13.8503V11.0649H12.0065L12.0076 11.8339ZM14.8919 15.3729H16.7346V14.6029H14.8909L14.8919 15.3729ZM14.8919 13.6029H16.7346V12.8339H14.8909L14.8919 13.6029ZM14.8919 11.8339H16.7346V11.0649H14.8909L14.8919 11.8339Z">
+                    </path>
+                </g>
+            </svg>
+            <span>POS</span>
+        </div>
     </a>
-    <a class="mobilePOSBtn2" style="display: none;" class="nav-link nav-link-label" href="#"
+    <a class="mobilePOSBtn2 nav-link nav-link-label p-1" style="display: none;" href="#"
         data-toggle="dropdown" aria-expanded="false">
         <svg style="width: 15px;height: 15px;fill: #449f2d;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
             <path

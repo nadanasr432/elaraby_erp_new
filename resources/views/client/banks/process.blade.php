@@ -1,8 +1,8 @@
 @extends('client.layouts.app-main')
 <style>
-    .bootstrap-select {
-        width: 80% !important;
-    }
+      .bootstrap-select {
+        width: 100% !important;
+    }   
 
 </style>
 @section('content')
@@ -32,12 +32,13 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <div class="col-12">
-                        <a class="btn btn-primary btn-sm pull-left" href="{{ route('client.banks.index') }}">
-                            {{ __('main.back') }}</a>
-                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success">
+                    <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
+                        <h5 class="custom-title alert ">
                             {{ __('sidebar.cash-withdraw-and-deposit') }}
                         </h5>
+                        <a class="btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.banks.index') }}">
+                            {{ __('main.back') }}</a>
+                        
                     </div>
                     <div class="clearfix"></div>
                     <br>
@@ -51,7 +52,7 @@
                         <hr>
                         <div class="row mb-3">
 
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <label> {{ __('banks.process-type') }} <span class="text-danger">*</span></label>
                                 <select required name="process_type" class="form-control">
                                     <option value="">{{ __('banks.process-type') }}</option>
@@ -60,33 +61,35 @@
                                 </select>
                             </div>
 
-                            <div class="col-md-3">
-                                <label> {{ __('banks.bank-name') }} <span class="text-danger">*</span></label>
-                                <select required class="form-control selectpicker show-tick" data-style="btn-danger"
+                            <div class="col-md-6">
+                                <label> {{ __('banks.bank-name') }} <span>*</span></label>
+                                <div class="d-flex">
+                                    <select required class="form-control selectpicker show-tick py-1" data-style="btn-third"
                                     data-live-search="true" title="{{ __('banks.bank-name') }}" name="bank_id">
                                     @foreach ($banks as $bank)
                                         <option value="{{ $bank->id }}">{{ $bank->bank_name }}</option>
                                     @endforeach
                                 </select>
                                 <a target="_blank" href="{{ route('client.banks.create') }}" role="button"
-                                    style="width: 15%;display: inline;" class="btn btn-sm btn-warning open_popup">
+                                    class="btn  btn-warning open_popup py-1">
                                     <i class="fa fa-plus"></i>
                                 </a>
+                                </div>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <label> {{ __('main.amount') }} <span class="text-danger">*</span></label>
                                 <input dir="ltr" required class="form-control" name="amount" type="text">
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <label> {{ __('banks.process-reason') }} <span class="text-danger">*</span></label>
                                 <input dir="rtl" required class="form-control" name="reason" type="text">
                             </div>
 
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                            <button class="btn btn-info pd-x-20" type="submit">{{ __('banks.record-process') }}</button>
+                        <div class="col-xs-12 col-sm-12 col-md-12 text-end">
+                            <button class="btn btn-warning px-3 py-1" type="submit">{{ __('banks.record-process') }}</button>
                         </div>
                     </form>
                     <div class="clearfix"></div>

@@ -80,15 +80,15 @@
                 <!------HEADER----->
                 <div class="card-header border-bottom border-secondary p-1">
 
-                    <div class="d-flex justify-content-between align-items-baseline">
-                        <h3 class="pull-right font-weight-bold">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center">
+                        <h3 class=" font-weight-bold custom-title">
                             {{ __('sidebar.sales-invoices') }}
                             <span class="badge badge-success">{{ count($sale_bills) }}</span>
                         </h3>
 
-                        <div class="row mr-1 justify-content-end">
+                        <div class="row mx-1 justify-content-end">
                             <div>
-                                <a class="btn btn-primary pull-left p-1 mainBtnNewDes d-flex align-items-center"
+                                <a class="btn btn-primary pull-left p-1 mainBtnNewDes d-flex align-items-center mb-1"
                                     href="{{ route('client.sale_bills.create1') }}">
                                     <span
                                         style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
@@ -103,7 +103,7 @@
                                 </a>
 
                                 <a onclick="history.back()"
-                                    class="btn btn-danger pull-left text-white d-flex align-items-center ml-1"
+                                    class="btn btn-danger pull-left text-white d-flex align-items-center mx-1"
                                     style="height: 37px; font-size: 11px !important;">
                                     <span
                                         style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
@@ -125,42 +125,45 @@
 
                 <div class="card-body p-1">
                     <div id="example-table_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer p-0">
-                        <div class="d-flex justify-content-between align-items-top">
-                            <div class="col-sm-4">
-                                <form method="GET" action="{{ route('client.sale_bills.index1') }}" id="dateFilterForm"
-                                    class="d-flex align-items-end  gap-3">
-                                    <div class="d-flex flex-column align-items-start">
-                                        <label for="fromDate" class="form-label mb-1">{{ __('main.from') }}</label>
-                                        <input type="date" name="from" class="form-control" placeholder="From Date"
-                                            value="{{ request('from') }}" id="fromDate">
+                        <div class=" ">
+                            <div class="col-sm-12">
+                                <form class="row g-2">
+                                    <!-- Date Fields (Grouped Together) -->
+                                    <div class="col-12  d-flex flex-column flex-md-row gap-2">
+                                        <!-- "From Date" Field -->
+                                        <div class="flex-fill col-md-6">
+                                            <label for="fromDate" class="form-label mb-1">{{ __('main.from') }}</label>
+                                            <input type="date" name="from" class="form-control" value="{{ request('from') }}" id="fromDate">
+                                        </div>
+                            
+                                        <!-- "To Date" Field -->
+                                        <div class="flex-fill col-md-6">
+                                            <label for="toDate" class="form-label mb-1">{{ __('main.to') }}</label>
+                                            <input type="date" name="to" class="form-control" value="{{ request('to') }}" id="toDate">
+                                        </div>
                                     </div>
-                                    <div class="d-flex flex-column align-items-start ml-2 mr-2">
-                                        <label for="toDate" class="form-label mb-1">{{ __('main.to') }}</label>
-                                        <input type="date" name="to" class="form-control" placeholder="To Date"
-                                            value="{{ request('to') }}" id="toDate">
-                                    </div>
-                                    <div class="d-flex flex-column align-items-end ml-2 mr-2">
-                                        <button type="submit"
-                                            class="btn btn-primary pull-left  mainBtnNewDes  d-flex align-items-center">
+                            
+                                    <!-- Buttons (In a Separate Row) -->
+                                    <div class=" col-12 d-flex flex-column flex-md-row gap-2 mt-2">
+                                        <!-- Save Button -->
+                                        <button type="submit" class="btn btn-warning w-md-auto mb-1 mx-1 px-4  ">
                                             {{ __('main.save') }}
                                         </button>
-                                    </div>
-                                </form>
-                                <div class="dt-buttons btn-group d-flex  align-items-end ">
-                                    <button class="btn btn-primary pull-left p-1 mainBtnNewDes buttons-excel buttons-html5"
-                                        tabindex="0" aria-controls="example1" type="button">
+                            
+                                        <!-- Export Button -->
                                         <a href="{{ route('sale_bills.export.excel', [
                                             'from' => request('from', 'default_from_value'),
                                             'to' => request('to', 'default_to_value'),
-                                        ]) }}"
-                                            style="color: inherit; text-decoration: none;">تصدير كشيت إكسيل</a>
-
-                                    </button>
-                                    {{-- <button class="btn btn-secondary buttons-print" type="button" onclick="window.print()">
-                                        <span>طباعة</span>
-                                    </button> --}}
-                                </div>
+                                        ]) }}" class=" btn btn-warning px-2 mx-1 w-md-auto d-flex justify-content-center align-items-center">
+                                            تصدير كشيت إكسيل
+                                        </a>
+                                    </div>
+                                </form>
                             </div>
+                            
+                            
+                            
+                            
                             <div id="example1_wrapper" class="col-lg-4 dataTables_wrapper dt-bootstrap4 no-footer ">
 
                                 <div id="example1_processing" class="dataTables_processing card" style="display: none;">
@@ -310,15 +313,15 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="d-flex justify-content-between mt-1 mb-1">
+                    <div class="d-flex flex-wrap justify-content-between mt-1 mb-1">
                         <div>
-                            <span class="badge badge-success p-1 font-weight-bold">
+                            <span class="badge text-dark p-1 font-weight-bold">
                                 {{ __('sidebar.Total billing prices') }}
                                 ( {{ floatval($total) }} ) {{ $company->extra_settings->currency }}
                             </span>
                         </div>
                         <div>
-                            <span class="badge badge-success p-1 font-weight-bold">
+                            <span class="badge text-dark p-1 font-weight-bold">
                                 {{ __('sidebar.Total billing taxes') }}
                                 ( {{ floatval($totalTax) }} ) {{ $company->extra_settings->currency }}
                             </span>

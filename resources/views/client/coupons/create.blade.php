@@ -24,11 +24,12 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <div class="col-12">
-                        <a class="btn btn-primary btn-sm pull-left" href="{{ route('client.coupons.index') }}">
-                            {{ __('main.back') }}</a>
-                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success">
+                    <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
+                        <h5 class=" alert custom-title">
                             {{ __('sidebar.add-new-coupon') }}</h5>
+                        <a class="btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.coupons.index') }}">
+                            {{ __('main.back') }}</a>
+                        
                     </div>
                     <div class="clearfix"></div>
                     <br>
@@ -40,14 +41,14 @@
                         <h5 class="col-lg-12 d-block mb-2">{{ __('main.main-information') }}</h5>
                         <hr>
                         <div class="row mb-3">
-                            <div class="col-lg-3">
+                            <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="" class="d-block">{{ __('coupons.card-number') }}
                                         <span class="text-danger">*</span>
                                     </label>
                                     <div class="input-group" dir="ltr">
-                                        <button type="button" class="input-group-addon btn btn-sm btn-info shuffle_codes"
-                                            style="font-size: 18px;font-weight: bold;">
+                                        <button type="button" class="input-group-addon btn  btn-warning shuffle_codes"
+                                            >
                                             <i class="fa fa-cogs"></i>
                                         </button>
                                         <input required type="text" class="form-control input-spec" id="coupon_code"
@@ -55,21 +56,21 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="" class="d-block">{{ __('coupons.discount') }}</label>
                                     <input required type="number" class="form-control" name="coupon_value" dir="ltr" />
                                 </div>
                             </div>
 
-                            <div class="col-lg-3">
+                            <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="" class="d-block"> {{ __('coupons.expire-date') }} </label>
                                     <input required type="date" class="form-control" name="coupon_expired"
                                         value="{{ date('Y-m-d', strtotime('+1 year')) }}" />
                                 </div>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="" class="d-block"> {{ __('coupons.section') }} </label>
                                     <select required class="form-control" name="dept" id="depts">
@@ -81,7 +82,7 @@
                                 </div>
                             </div>
                             <div class="clearfix"></div>
-                            <div class="col-lg-4 outer_clients" style="display: none;">
+                            <div class="col-lg-6 outer_clients" style="display: none;">
                                 <div class="form-group">
                                     <label for="" class="d-block"> اسم العميل </label>
                                     <select name="outer_client_id" class="selectpicker" data-style="btn-danger"
@@ -93,7 +94,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-lg-4 categories" style="display: none;">
+                            <div class="col-lg-6 categories" style="display: none;">
                                 <div class="form-group">
                                     <label for="" class="d-block"> اسم الفئة </label>
                                     <select name="category_id" class="selectpicker" data-style="btn-info"
@@ -105,7 +106,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-lg-4 products" style="display: none;">
+                            <div class="col-lg-6 products" style="display: none;">
                                 <div class="form-group">
                                     <label for="" class="d-block"> اسم المنتج </label>
                                     <select name="product_id" class="selectpicker" data-style="btn-warning"
@@ -118,8 +119,8 @@
                             </div>
                             <div class="clearfix"></div>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                            <button class="btn btn-info pd-x-20" type="submit">{{ __('main.add') }}</button>
+                        <div class="col-xs-12 col-sm-12 col-md-12 text-end">
+                            <button class="btn btn-warning px-3 py-1" type="submit">{{ __('main.add') }}</button>
                         </div>
                     </form>
                 </div>
