@@ -21,7 +21,7 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <div class="col-12 d-flex align-items-center justify-content-between">
+                    <div class="col-12 d-flex-wrap align-items-center justify-content-between">
                         <h2 class=" alert alert-sm font-weight-bold m-0 p-0 d-flex custom-title align-items-end " style="white-space: nowrap">
                             {{ __('sidebar.add-new-branche') }} 
                         </h2>
