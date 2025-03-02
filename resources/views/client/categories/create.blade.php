@@ -30,7 +30,7 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <div class="col-12 d-flex align-items-center justify-content-between">
+                    <div class="col-12 d-flex flex-wrap align-items-center justify-content-between">
                         <h5 style="min-width: 300px;" class=" alert alert alert-sm font-weight-bold m-0 p-0 d-flex custom-title align-items-end " style="white-space: nowrap">
                             {{ __('sidebar.add-new-main-category') }} </h5>
                         <a class="btn btnn text-white px-3 py-1 " style="background-color: #ec6880" href="{{ route('client.categories.index') }}">

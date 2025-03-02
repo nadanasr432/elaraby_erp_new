@@ -683,7 +683,7 @@ footer.footer-dark {
 .main-menu.menu-dark .navigation > li .active > a {
     color: #F6F6F6;
     font-weight: 700;
-    background: #5771af;
+    background: #5771af54;
 }
 
 .main-menu.menu-dark .navigation > li .active .hover > a {

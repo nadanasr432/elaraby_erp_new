@@ -21,7 +21,7 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <div class="col-12 d-flex align-items-center justify-content-between">
+                    <div class="col-12 d-flex flex-wrap align-items-center justify-content-between">
                         <h5 class=" alert alert-sm custom-title">
                             {{ __('subcategories.edit-subcategory') }}
                         </h5>
