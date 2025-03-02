@@ -88,11 +88,11 @@
            .scroll-btn {
             position: fixed;
             right: 10px;
-            width: 38px;
-            height: 38px;
-            background: transparent;
-            border: 2px solid #0A246A;
-            color: #0A246A;
+            width: 76px;
+            height: 60px;
+            background: #ca120c;
+            border: 2px solid #ca120c;
+            color: #ffff;
             border-radius: 25%;
             font-size: 20px;
             font-weight: bold;
@@ -101,14 +101,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 2px 2px 5px #0A246A;
+            /* box-shadow: 2px 2px 5px #ca120c; */
             transition: 0.3s;
         }
 
         /* Hover effect */
         .scroll-btn:hover {
-            background: #0A246A;
-            color: white;
+            background: #ffff;
+            color: #ca120c;
         }
 
         /* Positioning */

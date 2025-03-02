@@ -5,36 +5,16 @@
     <title>
         <?php echo ' فاتورة مبيعات ضريبية رقم ' . $pos->id; ?>
     </title>
-    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="{{ asset('/app-assets/css-rtl/bootstrap.min.css') }}" rel="stylesheet" />
     <style type="text/css" media="screen">
-        @media screen and (max-width: 650px) {
-            .BTN1 {
-                transform: scale(2.9) !important;
-                bottom: 110px !important;
-                left: 125px !important;
-                z-index: 9999 !important;
-            }
-
-            .BTN2 {
-                transform: scale(3) !important;
-                bottom: 110px !important;
-                right: 191px !important;
-                z-index: 9999 !important;
-                width: fit-content !important;
-
-            }
-        }
-
         @font-face {
             font-family: 'Cairo';
             src: url("{{ asset('fonts/Cairo.ttf') }}");
         }
-
         * {
             color: #000 !important;
         }
-
         body,
         html {
             color: #000;
@@ -66,82 +46,84 @@
 
         table {
             text-align: right;
-            width: 20% !important;
+            width: 55% !important;
             margin-top: 10px !important;
         }
     </style>
-    <style type="text/css" media="print">@media print {
-    body {
-        font-family: 'Cairo', sans-serif;
-        direction: rtl;
-        text-align: right;
-        font-size: 14px;
-        color: #333;
-        margin: 10px;
-        padding: 10px;
-    }
+    <style type="text/css" media="print">
+        @media print {
+            body {
+                font-family: 'Cairo', sans-serif;
+                direction: rtl;
+                text-align: right;
+                font-size: 14px;
+                color: #333;
+                margin: 10px;
+                padding: 10px;
+            }
 
-    .pos_details {
-        max-width: 80mm;
-        margin: auto;
-        background: #fff;
-        padding: 15px;
-        border: 1px solid #ddd;
-        box-shadow: 0px 0px 5px #ddd;
-    }
+            .pos_details {
+                max-width: 80mm;
+                margin: auto;
+                background: #fff;
+                padding: 15px;
+                border: 1px solid #ddd;
+                box-shadow: 0px 0px 5px #ddd;
+            }
 
-    .logo {
-        display: block;
-        margin: 0 auto 10px;
-    }
+            .logo {
+                display: block;
+                margin: 0 auto 10px;
+            }
 
-    .invoice-title {
-        font-size: 18px;
-        font-weight: bold;
-        text-align: center;
-        margin-bottom: 10px;
-    }
+            .invoice-title {
+                font-size: 18px;
+                font-weight: bold;
+                text-align: center;
+                margin-bottom: 10px;
+            }
 
-    .details {
-        font-size: 13px;
-        line-height: 1.7;
-        padding: 5px;
-        background: #f8f9fa;
-        border-radius: 5px;
-    }
+            .details {
+                font-size: 13px;
+                line-height: 1.7;
+                padding: 5px;
+                background: #f8f9fa;
+                border-radius: 5px;
+            }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-    }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 10px;
+            }
 
-    table th, table td {
-        border: 1px solid #aaa;
-        padding: 5px;
-        text-align: center;
-    }
+            table th,
+            table td {
+                border: 1px solid #aaa;
+                padding: 5px;
+                text-align: center;
+            }
 
-    .highlight {
-        background: #eee;
-        font-weight: bold;
-    }
+            .highlight {
+                background: #eee;
+                font-weight: bold;
+            }
 
-    .total-amount {
-        font-size: 16px;
-        font-weight: bold;
-        color: #d9534f;
-    }
+            .total-amount {
+                font-size: 16px;
+                font-weight: bold;
+                color: #d9534f;
+            }
 
-    .qr-code {
-        text-align: center;
-        margin-top: 15px;
-    }
-     .no-print {
-            display: none;
+            .qr-code {
+                text-align: center;
+                margin-top: 15px;
+            }
+
+            .no-print {
+                display: none;
+            }
         }
-}
-
     </style>
 </head>
 
@@ -151,14 +133,15 @@
             page-break-after: avoid;
             page-break-inside: avoid;"
     class="text-right">
-     <div class="d-flex justify-content-end  p-3">
-    <button onclick="setFontSize();window.print();" class="ml-3 no-print BTN1 btn btn-md btn-success">اضغط للطباعة</button>
-    <a href="{{ route('client.pos.create') }}" class="no-print BTN2 btn btn-md btn-danger"
-        style="left:170px!important;">
-        العودة الى نقطة البيع
-    </a>
+    <div class="d-flex justify-content-end  p-3">
+        <button onclick="setFontSize();window.print();" class="ml-3 no-print BTN1 btn btn-md btn-success">اضغط
+            للطباعة</button>
+        <a href="{{ route('client.pos.create') }}" class="no-print BTN2 btn btn-md btn-danger"
+            style="left:170px!important;">
+            العودة الى نقطة البيع
+        </a>
     </div>
-    <div class="pos_details">
+    <div class="pos_details p-2">
         <div class="text-right">
             <img class="logo" style="width: 100px;height: 70px;margin-top: 1px;"
                 src="{{ asset($pos->company->company_logo) }}" alt="">
@@ -394,7 +377,7 @@
                 //     // TODO :: Support others tags
                 // ])->render();
                 $invoiceDate = date('Y-m-d\TH:i:s\Z', strtotime($pos->created_at . ' ' . $pos->created_at));
-
+                
                 $displayQRCodeAsBase64 = GenerateQrCode::fromArray([
                     new Seller($pos->company->company_name), // seller name
                     new TaxNumber($pos->company->tax_number), // seller tax number
@@ -414,7 +397,7 @@
             </div>
         </div>
     </div>
-   
+
     @if ($posSettings->enableProdInvoice)
         <a target="_blank" href="{{ route('pos.prod_pos', $pos->id) }}" class="no-print btn btn-md btn-info"
             style="left:370px!important;">
@@ -440,4 +423,3 @@
 </body>
 
 </html>
-

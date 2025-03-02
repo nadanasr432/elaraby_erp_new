@@ -238,7 +238,7 @@
     }
 </style>
 @section('content')
-    <div class="row mt-2">
+    <div class="row mt-5 mb-5">
 
         <div class="col-md-7 py-1 px-1 pl-1">
             <div class="inner-sectoin bg-white rounded px-1" style="border: 1px solid #2d2d2d1f;height: 100%;">
