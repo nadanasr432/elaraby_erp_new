@@ -610,6 +610,7 @@ footer.footer-dark {
 
 .main-menu.menu-dark .navigation > li a:hover {
     background: #ffffff42 !important;
+    color: #fff;
 }
 
 .main-menu.menu-dark .navigation > li > a {
@@ -648,7 +649,7 @@ footer.footer-dark {
 .main-menu.menu-dark .navigation > li.hover > a,
 .main-menu.menu-dark .navigation > li:hover > a,
 .main-menu.menu-dark .navigation > li.active > a {
-    color: #020b2a;
+    color: #ffffff;
     font-weight: bold;
 }
 
