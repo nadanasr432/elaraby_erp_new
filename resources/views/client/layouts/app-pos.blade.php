@@ -88,12 +88,12 @@
            .scroll-btn {
             position: fixed;
             right: 10px;
-            width: 76px;
-            height: 60px;
-            background: #ca120c;
-            border: 2px solid #ca120c;
+            width: 40px;
+            height: 40px;
+            background: #ec6880;
+            border: 2px solid #ec6880;
             color: #ffff;
-            border-radius: 25%;
+            border-radius: 30%;
             font-size: 20px;
             font-weight: bold;
             cursor: pointer;
