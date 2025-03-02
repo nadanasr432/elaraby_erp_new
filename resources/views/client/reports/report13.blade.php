@@ -68,7 +68,7 @@
                         <div class="">
                             <label class="invisible">sdf</label>
                             <br>
-                            <button class="btn py-1 px-3 btn-warning" type="submit">
+                            <button class="btn btnn py-1 px-3 btn-warning" type="submit">
                                 <i class="fa fa-check"></i>
                                 عرض التقرير
                             </button>

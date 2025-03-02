@@ -97,10 +97,10 @@
                                                 data-placement="top"><i class="fa fa-eye"></i></a>
                                             @can('قائمة المنتجات المتوفرة (تحكم كامل)')
                                                 <a href="{{ route('client.products.edit', $product->id) }}"
-                                                    class="btn btn-sm btn-info" data-toggle="tooltip" title="تعديل"
+                                                    class="btn btnn btn-sm btn-info" data-toggle="tooltip" title="تعديل"
                                                     data-placement="top"><i class="fa fa-edit"></i></a>
 
-                                                <a class="modal-effect btn btn-sm btn-danger delete_product"
+                                                <a class="modal-effect btn btnn btn-sm btn-danger delete_product"
                                                     product_id="{{ $product->id }}"
                                                     product_name="{{ $product->product_name }}" data-toggle="modal"
                                                     href="#modaldemo9" title="delete"><i class="fa fa-trash"></i></a>
@@ -132,8 +132,8 @@
                             <input class="form-control" name="productname" id="productname" type="text" readonly>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
-                            <button type="submit" class="btn btn-danger">حذف</button>
+                            <button type="button" class="btn btnn btn-secondary" data-dismiss="modal">الغاء</button>
+                            <button type="submit" class="btn btnn btn-danger">حذف</button>
                         </div>
                     </form>
                 </div>

@@ -71,7 +71,7 @@
                             <span class="badge" style="background-color:#ec6880;">{{ count($all_quotations) }}</span>
                         </h3>
                         <div class="row px-2">
-                            <a class="btn btn-primary pull-left p-1 mainBtnNewDes d-flex align-items-center"
+                            <a class="btn btnn btn-primary pull-left p-1 mainBtnNewDes d-flex align-items-center"
                                 href="{{ route('client.quotations.create') }}">
                                 <span
                                     style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
@@ -85,7 +85,7 @@
                                 {{ __('sidebar.addNewQuotation') }}
                             </a>
                             <a onclick="history.back()"
-                                class="btn  text-white d-flex align-items-center ml-1" style="background-color: #ec6880"
+                                class="btn btnn  text-white d-flex align-items-center ml-1" style="background-color: #ec6880"
                                 style="height: 37px; font-size: 11px !important;">
                                 <span
                                     style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">

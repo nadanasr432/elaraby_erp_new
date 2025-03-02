@@ -27,7 +27,7 @@
                     <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
                         <h5 class=" alert custom-title">
                             {{ __('sidebar.add-new-coupon') }}</h5>
-                        <a class="btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.coupons.index') }}">
+                        <a class="btn btnn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.coupons.index') }}">
                             {{ __('main.back') }}</a>
                         
                     </div>
@@ -120,7 +120,7 @@
                             <div class="clearfix"></div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-end">
-                            <button class="btn btn-warning px-3 py-1" type="submit">{{ __('main.add') }}</button>
+                            <button class="btn btnn btn-warning px-3 py-1" type="submit">{{ __('main.add') }}</button>
                         </div>
                     </form>
                 </div>

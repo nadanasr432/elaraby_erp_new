@@ -24,7 +24,7 @@
                         <h5 class=" alert custom-title">
                             {{ __('sidebar.add-new-user') }}
                         </h5>
-                        <a class="btn text-white px-3 py-1" style="background-color:#ec6880"
+                        <a class="btn btnn text-white px-3 py-1" style="background-color:#ec6880"
                             href="{{ route('client.clients.index') }}">{{ __('main.back') }}</a>
                        
                     </div>
@@ -82,7 +82,7 @@
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-end">
-                            <button class="btn btn-warning py-1 px-3" type="submit">{{ __('main.save') }}</button>
+                            <button class="btn btnn btn-warning py-1 px-3" type="submit">{{ __('main.save') }}</button>
                         </div>
                     </form>
                     @if (session('error'))

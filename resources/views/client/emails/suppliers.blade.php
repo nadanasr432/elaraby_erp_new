@@ -123,7 +123,7 @@
                                 </div>
                         </div>
                         <div class="clearfix"></div>
-                        <button type="submit" name="submit" class="no-print btn btn-warning px-3 py-1"><i
+                        <button type="submit" name="submit" class="no-print btn btnn btn-warning px-3 py-1"><i
                                 class="fa fa-envelope"></i> {{ __('marketing.send-message') }}
                         </button>
                         <div id="daily_details"></div>

@@ -77,7 +77,7 @@
                                     <h4 class="alert alert-sm alert-danger" style="padding: 10px 10px; margin:0 auto 10px;"><i
                                             class="fa fa-download"></i> تحميل النسخة الاحتياطية من قاعدة
                                         البيانات </h4>
-                                    <a class="btn btn-danger btn-sm" href="{{ route('client.get.backup') }}"><i
+                                    <a class="btn btnn btn-danger btn-sm" href="{{ route('client.get.backup') }}"><i
                                             class="fa fa-download"></i> اضغط هنا لتحميلها </a> <br>
                                     <div class="text-danger">تحذير : يجب جيدا الاحتفاظ بهذه النسخة وعدم العبث
                                         بها
@@ -99,7 +99,7 @@
                                         @method('POST')
                                         <input class="form-control" required type="file" name="sql_file"
                                             style="margin: 10px auto; width: 80%;  " />
-                                        <button type="submit" class="btn btn-success btn-sm" name="submit"><i
+                                        <button type="submit" class="btn btnn btn-success btn-sm" name="submit"><i
                                                 class="fa fa-upload"></i> اضغط هنا لرفعها
                                         </button>
                                         <br>

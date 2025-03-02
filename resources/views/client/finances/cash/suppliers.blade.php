@@ -33,7 +33,7 @@
                         <h5 class=" alert custom-title">
                             دفع نقدية الى مورد
                         </h5>
-                        <a class="btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.cash.suppliers') }}">
+                        <a class="btn btnn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.cash.suppliers') }}">
                             دفعات نقدية الى الموردين
                         </a>
                         
@@ -105,7 +105,7 @@
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-centender">
-                            <button class="btn btn-warning px-3 py-1" type="submit">اضافة</button>
+                            <button class="btn btnn btn-warning px-3 py-1" type="submit">اضافة</button>
                         </div>
                     </form>
                 </div>

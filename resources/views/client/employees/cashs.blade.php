@@ -18,7 +18,7 @@
                         <div class="col-lg-12 margin-tb d-flex flex-wrap align-items-center justify-content-between">
                             <h5 class="alert custom-title">{{ __('sidebar.employees-payments') }}
                             </h5>
-                            <a class="btn text-white px-3 py-1" style="background-color:#ec6880" href="{{ route('employees.get.cash') }}"><i
+                            <a class="btn btnn text-white px-3 py-1" style="background-color:#ec6880" href="{{ route('employees.get.cash') }}"><i
                                     class="fa fa-plus"></i> {{ __('sidebar.add-cash-to-employee') }} </a>
                             
                         </div>
@@ -52,7 +52,7 @@
                                         <td>{{ $employee_cash->amount }}</td>
                                         <td>{{ $employee_cash->safe->safe_name }}</td>
                                         <td>{{ $employee_cash->notes }}</td>
-                                        <td>
+                                        <td class="d-flex justify-content-center">
                                             <a href="{{ route('employees.cash.edit', $employee_cash->id) }}"
                                                 class="btn btn-sm btn-info" data-toggle="tooltip" title="تعديل"
                                                 data-placement="top"><i class="fa fa-edit"></i></a>
@@ -87,8 +87,8 @@
                             <input class="form-control" name="employeename" id="employeename" type="text" readonly>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
-                            <button type="submit" class="btn btn-danger">حذف</button>
+                            <button type="button" class="btn btnn btn-secondary" data-dismiss="modal">الغاء</button>
+                            <button type="submit" class="btn btnn btn-danger">حذف</button>
                         </div>
                     </form>
                 </div>

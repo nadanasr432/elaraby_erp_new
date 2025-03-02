@@ -17,7 +17,7 @@
                     <div class="d-flex justify-content-between">
                         <div class="col-lg-12 margin-tb d-flex flex-wrap justify-content-between align-items-center">
                             <h5 class="custom-title alert ">عرض كل عمليات اضافة راس المال </h5>
-                            <a class="btn text-white px-3 py-1" style="background-color: #ec6880"
+                            <a class="btn btnn text-white px-3 py-1" style="background-color: #ec6880"
                                href="{{ route('client.capitals.create') }}"><i
                                     class="fa fa-plus"></i> اضافة راس مال جديد </a>
                         </div>
@@ -90,8 +90,8 @@
                             <input class="form-control" name="capitalname" id="capitalname" type="text" readonly>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
-                            <button type="submit" class="btn btn-danger">حذف</button>
+                            <button type="button" class="btn btnn btn-secondary" data-dismiss="modal">الغاء</button>
+                            <button type="submit" class="btn btnn btn-danger">حذف</button>
                         </div>
                     </form>
                 </div>

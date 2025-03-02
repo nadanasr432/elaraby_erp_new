@@ -25,7 +25,7 @@
             <div class="card mg-b-20">
                 <div class="card-body">
                     <div class="col-12">
-                        <a class="btn btn-primary btn-sm pull-left" href="{{ route('fixed.assets.index') }}">
+                        <a class="btn btnn btn-primary btn-sm pull-left" href="{{ route('fixed.assets.index') }}">
                             {{ __('main.back') }}
                         </a>
                         <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success">
@@ -86,7 +86,7 @@
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                            <button class="btn btn-info pd-x-20" type="submit">{{ __('main.add') }}</button>
+                            <button class="btn btnn btn-info pd-x-20" type="submit">{{ __('main.add') }}</button>
                         </div>
                     </form>
                 </div>

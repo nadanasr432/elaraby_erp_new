@@ -559,7 +559,7 @@
             </div>
             <div class="clearfix"></div>
             <div class="col-lg-12 mt-3 ">
-                <button type="submit" class="btn btn-warning py-1 px-3">
+                <button type="submit" class="btn btnn btn-warning py-1 px-3">
                     <i class="fa fa-save"></i>
                     حفظ مسميات الحقول
                 </button>

@@ -20,7 +20,7 @@
                             <h5 class="m-0 alert alert-sm custom-title">
                                 {{ __('branches.show-all-branches') }}
                             </h5>
-                            <a class="btn text-white px-3 py-1" style="background-color: #ec6880;" href="{{ route('client.branches.create') }}">
+                            <a class="btn btnn text-white px-3 py-1" style="background-color: #ec6880;" href="{{ route('client.branches.create') }}">
                                 <i
                                 class="fa fa-plus"></i> {{ __('sidebar.add-new-branche') }} 
                             </a>
@@ -53,7 +53,7 @@
                                         <td>{{ $branch->branch_phone }}</td>
                                         <td>{{ $branch->branch_address }}</td>
                                         <td>{{ $branch->commercial_registration_number }}</td>
-                                        <td class="d-flex border-0">
+                                        <td class="d-flex justify-content-center align-items-center border-0">
                                             <a href="{{ route('client.branches.edit', $branch->id) }}"
                                                  data-toggle="tooltip"
                                                 title="{{ __('main.edit') }}" data-placement="top">
@@ -99,7 +99,7 @@
                             <input class="form-control" name="branchname" id="branchname" type="text" readonly>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary"
+                            <button type="button" class="btn btn-secondary btnn"
                                 data-dismiss="modal">{{ __('main.cancel') }}</button>
                             <button type="submit" class="btn btn-danger">{{ __('main.delete') }}</button>
                         </div>

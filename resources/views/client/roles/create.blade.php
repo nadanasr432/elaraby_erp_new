@@ -221,8 +221,8 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                                <button type="button" id="check_all" class="btn btn-danger"> تحديد الكل</button>
-                                <button type="submit" class="btn btn-info">تأكيد</button>
+                                <button type="button" id="check_all" class="btn btnn btn-danger"> تحديد الكل</button>
+                                <button type="submit" class="btn btnn btn-info">تأكيد</button>
                             </div>
                         </div>
                     </form>

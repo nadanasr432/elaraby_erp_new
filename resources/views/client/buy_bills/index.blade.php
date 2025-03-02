@@ -151,7 +151,7 @@
             <form action="{{ route('client.buy_bills.filter.all') }}" method="POST">
                 @csrf
                 @method('POST')
-                <button type="submit" class="btn btn-md btn-warning">
+                <button type="submit" class="btn btnn btn-md btn-warning">
                     <i class="fa fa-list"></i>
                     {{ __('sidebar.purchases-invoices') }}
                 </button>

@@ -23,7 +23,7 @@
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
                         <div class="col-lg-12 margin-tb">
-                            <a class="btn pull-left btn-primary btn-sm" href="{{ route('client.suppliers.create') }}"><i
+                            <a class="btn  pull-left btn-primary btn-sm" href="{{ route('client.suppliers.create') }}"><i
                                     class="fa fa-plus"></i> {{ __('sidebar.add-new-supplier') }} </a>
                             <h5 class="pull-right alert alert-sm alert-success">{{ __('sidebar.list-of-supplier') }} </h5>
                         </div>

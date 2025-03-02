@@ -80,7 +80,7 @@
                             <span class="badge " style="background-color: #ec6880">{{ count($sale_bills) }}</span>
                         </h3>
                         <div class="row mx-1 justify-content-end">
-                            <a class="btn btn-primary pull-left p-1 mainBtnNewDes d-flex align-items-center mb-1"
+                            <a class="btn btnn btn-primary pull-left p-1 mainBtnNewDes d-flex align-items-center mb-1"
                                 href="{{ route('client.sale_bills.create1') }}">
                                 <span
                                     style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
@@ -94,7 +94,7 @@
                                 {{ __('sidebar.Add a new sales invoice') }}
                             </a>
                             <a onclick="history.back()"
-                                class="btn pull-left text-white d-flex align-items-center ml-1"
+                                class="btn btnn pull-left text-white d-flex align-items-center ml-1"
                                 style="height: 37px; font-size: 11px !important; background-color: #ec6880;">
                                 <span
                                     style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">

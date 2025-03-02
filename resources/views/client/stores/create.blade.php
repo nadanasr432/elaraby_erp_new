@@ -34,7 +34,7 @@
                         <h5 style="white-space: nowrap" class="alert alert-sm font-weight-bold m-0 d-flex custom-title align-items-end">
                             {{ __('sidebar.add-new-storage') }}
                         </h5>
-                        <a class="btn text-white px-3 py-1"style="background-color: #ec6880" href="{{ route('client.stores.index') }}">
+                        <a class="btn btnn text-white px-3 py-1"style="background-color: #ec6880" href="{{ route('client.stores.index') }}">
                             {{ __('main.back') }} </a>
                         
                     </div>
@@ -63,7 +63,7 @@
                                     @endforeach
                                     </select>
                                     <a target="_blank" href="{{ route('client.branches.create') }}" role="button"
-                                        class="btn btn-sm btn-warning open_popup d-flex align-items-center">
+                                        class=" btn-sm btn-warning open_popup d-flex align-items-center px-1">
                                         <i class="fa fa-plus"></i>
                                     </a>
                                </div>
@@ -71,7 +71,7 @@
 
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-center d-flex justify-content-start">
-                            <button style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);" class="btn btn-info pd-x-20 px-5 py-1" type="submit">{{ __('main.add') }}</button>
+                            <button style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);" class="btn btnn btn-info pd-x-20 px-5 py-1" type="submit">{{ __('main.add') }}</button>
                         </div>
                     </form>
                 </div>

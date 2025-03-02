@@ -25,7 +25,7 @@
                         <h5  class=" alert alert-sm custom-title">
                             {{ __('branches.edit-branche') }}
                         </h5>
-                        <a class="btn  text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.branches.index') }}">
+                        <a class="btn btnn  text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.branches.index') }}">
                             {{ __('main.back') }}
                         </a>
                         
@@ -70,7 +70,7 @@
 
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-start">
-                            <button class="btn pd-x-20 text-white px-4" style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);" type="submit">{{ __('main.update') }}</button>
+                            <button class="btn pd-x-20 text-white px-4 btnn" style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);" type="submit">{{ __('main.update') }}</button>
                         </div>
                     </form>
                 </div>

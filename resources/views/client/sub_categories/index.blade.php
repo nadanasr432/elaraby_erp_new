@@ -28,7 +28,7 @@
                             <h5 style="white-space: nowrap" class="alert font-weight-bold m-0 d-flex
                             custom-title align-items-end">{{ __('sidebar.display-sub-categories') }}
                             </h5>
-                            <a class="btn text-white px-2 py-1"style="background-color: #ec6880"
+                            <a class="btn btnn text-white px-2 py-1"style="background-color: #ec6880"
                                 href="{{ route('client.subcategories.create') }}"><i class="fa fa-plus"></i>
                                 {{ __('sidebar.add-new-sub-category') }} </a>
                             
@@ -57,7 +57,7 @@
                                         <td>{{ ++$i }}</td>
                                         <td dir="ltr">{{ $category->sub_category_name }}</td>
                                         <td dir="ltr">{{ $category->category->category_name }}</td>
-                                        <td class="d-flex border-0 justify-content-center">
+                                        <td class="d-flex align-items-center border-0 justify-content-center">
                                             
 
                                             <a class="modal-effect  delete_category"

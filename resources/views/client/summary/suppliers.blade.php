@@ -60,11 +60,11 @@
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 ">
-                            <button class="btn btn-warning py-1 px-3" name="submit" value="all" type="submit">
+                            <button class="btn btnn btn-warning py-1 px-3" name="submit" value="all" type="submit">
                                 <i class="fa fa-check"></i>
                                 عرض كشف الحساب
                             </button>
-                            <button class="btn text-white px-3 py-1" style="background-color: #ec6880" name="submit" value="today" type="submit">
+                            <button class="btn btnn text-white px-3 py-1" style="background-color: #ec6880" name="submit" value="today" type="submit">
                                 <i class="fa fa-check"></i>
                                 كشف حساب اليوم
                             </button>

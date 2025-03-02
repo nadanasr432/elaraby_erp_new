@@ -34,7 +34,7 @@
                 <div class="card-body">
                     <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
                         <h1></h1>
-                        <a class="btn text-white  px-3 py-1 " style="background-color: #ec6880" href="{{ route('client.products.index') }}">
+                        <a class="btn btnn text-white  px-3 py-1 " style="background-color: #ec6880" href="{{ route('client.products.index') }}">
                             {{ __('main.back') }}</a>
                     </div>
                     <div class="clearfix"></div>
@@ -134,11 +134,11 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-left">
-                            <a class="btn btn-md btn-info pd-x-20 d-none" id="new">إضافة جديد</a>
-                            <button class="btn btn-md btn-warning pd-x-20 d-none" type="submit"
+                            <a class="btn btnn btn-md btn-info pd-x-20 d-none" id="new">إضافة جديد</a>
+                            <button class="btn btnn btn-md btn-warning pd-x-20 d-none" type="submit"
                                 id="edit">تعديل</button>
-                            <button class="btn btn-md btn-warning px-3 py-1" type="submit" id="save">حفظ</button>
-                            <a class="btn btn-md btn-danger pd-x-20 d-none" id="delete">حذف</a>
+                            <button class="btn btnn  btn-md btn-warning px-3 py-1" type="submit" id="save">حفظ</button>
+                            <a class="btn btnn btn-md btn-danger pd-x-20 d-none" id="delete">حذف</a>
                         </div>
 
                         <div class="clearfix"></div>

@@ -21,7 +21,7 @@
                 <div class="card-body">
                     <div class="col-lg-12 margin-tb">
                         <div class="pull-left">
-                            <a class="btn btn-primary btn-sm"
+                            <a class="btn btnn btn-primary btn-sm"
                                 href="{{ route('client.clients.index') }}">{{ __('main.back') }}</a>
                         </div>
                         <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success">
@@ -98,7 +98,7 @@
 
                         </div>
                         <div class="col-lg-12 text-center mt-3 mb-3">
-                            <button class="btn btn-info btn-md pd-x-20" type="submit"> تحديث</button>
+                            <button class="btn btnn btn-info btn-md pd-x-20" type="submit"> تحديث</button>
                         </div>
                     </form>
                 </div>

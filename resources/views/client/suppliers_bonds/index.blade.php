@@ -21,7 +21,7 @@
                             <h5 class=" alert custom-title">
                                 {{ __('bonds.list_all_bonds_suppliers') }}
                             </h5>
-                            <a class="btn text-white px-3 py-1 " style="background-color: #ec6880" href="{{ route('supplier.bonds.create') }}"><i
+                            <a class="btn btnn text-white px-3 py-1 " style="background-color: #ec6880" href="{{ route('supplier.bonds.create') }}"><i
                                     class="fa fa-plus"></i>{{ __('bonds.add_new_supplier_bonds') }}</a>
                             
                         </div>
@@ -67,7 +67,7 @@
                                         <td>{{ $branch->type }}</td>
                                         <td>{{ $branch->amount }}</td>
                                         <td>{{ $branch->date }}</td>
-                                        <td style="padding: 0; padding-top: 17px; ">
+                                        <td class="d-flex justify-content-center align-items-center" style="padding: 0; padding-top: 17px; ">
                                             <div class="all"
                                                 style="align-items: center; display: flex;justify-content:space-around;    margin-bottom: 11px;">
 

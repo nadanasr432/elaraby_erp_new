@@ -231,7 +231,7 @@
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                            <button type="submit" class="btn btn-info">تحديث</button>
+                            <button type="submit" class="btn btnn btn-info">تحديث</button>
                         </div>
                         <!-- /col -->
                     </div>

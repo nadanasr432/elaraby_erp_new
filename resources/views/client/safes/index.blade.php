@@ -17,7 +17,7 @@
                     <div class="d-flex justify-content-between">
                         <div class="col-lg-12 d-flex flex-wrap justify-content-between align-items-center">
                             <h5 class=" alert custom-title">{{ __('sidebar.list-of-stores') }}</h5>
-                            <a class="btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.safes.create') }}"><i
+                            <a class="btn btnn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.safes.create') }}"><i
                                     class="fa fa-plus"></i> {{ __('sidebar.add-new-store') }} </a>
                         </div>
                         <br>
@@ -54,7 +54,7 @@
                                                 فرعية
                                             @endif
                                         </td>
-                                        <td>
+                                        <td class="d-flex justify-content-center">
                                             <a class="modal-effect btn  delete_safe"
                                                 safe_id="{{ $safe->id }}" safe_name="{{ $safe->safe_name }}"
                                                 data-toggle="modal" href="#modaldemo9" title="delete"><svg width="25" height="22" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">

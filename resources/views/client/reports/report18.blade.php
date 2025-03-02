@@ -55,12 +55,12 @@
                             </div>
                         </div>
                         <div class="">
-                            <button name="submit" value="best_sales" class="btn  btn-warning px-3 py-1"
+                            <button name="submit" value="best_sales" class="btn btnn  btn-warning px-3 py-1"
                                      type="submit">
                                 <i class="fa fa-check"></i>
                                 الاكثر مبيعا
                             </button>
-                            <button name="submit" value="best_profits" class="btn text-white px-3 py-1" style="background-color: #ec6880"
+                            <button name="submit" value="best_profits" class="btn btnn text-white px-3 py-1" style="background-color: #ec6880"
                                      type="submit">
                                 <i class="fa fa-check"></i>
                                 الاكثر ربحا

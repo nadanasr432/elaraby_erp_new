@@ -228,6 +228,9 @@
     .payment .filter-option-inner-inner{
         color: #fff !important
     }
+    .searchproducts .filter-option{
+        background-color: #F4F5FA !important
+    }
     .filter-option{
         display: flex;
     align-items: center;
@@ -773,7 +776,7 @@
                             </option>
                         @endforeach
                     </select>
-                    <select id="product_id" class="selectpicker form-control w-100 mt-nos p-0 " 
+                    <select id="product_id" class="selectpicker searchproducts form-control w-100 mt-nos p-0 " 
                         data-live-search="true"
                         title="{{ __('pos.search-for-products-by-code-name-or-using-a-barcode-device') }}"
                         >

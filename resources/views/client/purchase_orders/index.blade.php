@@ -46,7 +46,7 @@ position: absolute !important;
                             {{ $purchase_order->purchase_order_number }}</option>
                     @endforeach
                 </select>
-                <button type="submit" class="btn btn-md btn-warning"
+                <button type="submit" class="btn btnn btn-md btn-warning"
                     
                     id="by_purchase_order_id"><i class="fa fa-search"></i></button>
                 </div>
@@ -68,7 +68,7 @@ position: absolute !important;
                             value="{{ $supplier->id }}">{{ $supplier->supplier_name }}</option>
                     @endforeach
                 </select>
-                <button type="submit" class="btn btn-md btn-warning"
+                <button type="submit" class="btn btnn btn-md btn-warning"
                     id="by_supplier_id"><i
                         class="fa fa-search"></i></button>
                 </div>
@@ -89,7 +89,7 @@ position: absolute !important;
                             value="{{ $product->id }}">{{ $product->code_universal }}</option>
                     @endforeach
                 </select>
-                <button type="submit" class="btn btn-md btn-warning"
+                <button type="submit" class="btn btnn btn-md btn-warning"
                     
                     id="by_code_universal"><i class="fa fa-search"></i></button>
                 </div>
@@ -112,7 +112,7 @@ position: absolute !important;
                             value="{{ $product->id }}">{{ $product->product_name }}</option>
                     @endforeach
                 </select>
-                <button type="submit" class="btn btn-md btn-warning"
+                <button type="submit" class="btn btnn btn-md btn-warning"
                     
                     id="by_product_name"><i class="fa fa-search"></i></button>
                 </div>
@@ -145,7 +145,7 @@ position: absolute !important;
             <form action="{{ route('client.purchase_orders.filter.all') }}" method="POST">
                 @csrf
                 @method('POST')
-                <button type="submit" class="btn btn-md btn-warning">
+                <button type="submit" class="btn btnn btn-md btn-warning">
                     <i class="fa fa-list"></i>
                     عرض كل اوامر الشراء
                 </button>

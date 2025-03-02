@@ -31,7 +31,7 @@
                         <h5 class=" alert custom-title">
                             {{ __('sidebar.static-expenses') }}
                         </h5>
-                        <a class="btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.expenses.index') }}">
+                        <a class="btn btnn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.expenses.index') }}">
                             {{ __('main.back') }}</a>
                         
                     </div>
@@ -54,7 +54,7 @@
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-end">
-                            <button class="btn btn-warning px-3 py-1" type="submit">{{ __('main.add') }}</button>
+                            <button class="btn btnn btn-warning px-3 py-1" type="submit">{{ __('main.add') }}</button>
                         </div>
                     </form>
                     <div class="clearfix"></div>
@@ -123,8 +123,8 @@
                         <input class="form-control" name="fixed_expensename" id="fixed_expensename" type="text" readonly>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
-                        <button type="submit" class="btn btn-danger">حذف وتراجع</button>
+                        <button type="button" class="btn btnn btn-secondary" data-dismiss="modal">الغاء</button>
+                        <button type="submit" class="btn btnn btn-danger">حذف وتراجع</button>
                     </div>
                 </form>
             </div>

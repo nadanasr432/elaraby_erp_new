@@ -24,7 +24,7 @@
                     <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
                         <h5 class=" alert custom-title"> اضافة راس مال
                             جديد </h5>
-                        <a class="btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.capitals.index') }}">
+                        <a class="btn btnn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.capitals.index') }}">
                             {{ __('main.back') }}</a>
                         
                     </div>
@@ -64,7 +64,7 @@
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-end">
-                            <button class="btn btn-warning px-3 py-1" type="submit">اضافة</button>
+                            <button class="btn btnn btn-warning px-3 py-1" type="submit">اضافة</button>
                         </div>
                     </form>
                 </div>

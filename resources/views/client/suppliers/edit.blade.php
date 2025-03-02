@@ -25,7 +25,7 @@
             <div class="card mg-b-20">
                 <div class="card-body">
                     <div class="col-12">
-                        <a class="btn btn-primary btn-sm pull-left" href="{{ route('client.suppliers.index') }}">
+                        <a class="btn btnn btn-primary btn-sm pull-left" href="{{ route('client.suppliers.index') }}">
                             {{ __('main.back') }}</a>
                         <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success">
                             اضافة مورد جديد </h5>

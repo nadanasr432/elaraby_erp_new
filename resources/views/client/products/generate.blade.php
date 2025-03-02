@@ -30,7 +30,7 @@
                         <h5 class=" alert alert-sm custom-title">
                             طباعة باركود المنتجات
                         </h5>
-                        <a class="btn  btn-sm text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.products.index') }}">
+                        <a class="btn btnn  btn-sm text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.products.index') }}">
                             {{ __('main.back') }}</a>
                     </div>
                     <div class="clearfix"></div>
@@ -69,7 +69,7 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="col-lg-12 text-start">
-                            <button type="submit" class="btn btn-md text-white px-4 py-1" style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
+                            <button type="submit" class="btn btnn btn-md text-white px-4 py-1" style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
                                 <i class="fa fa-print"></i>
                                 طباعة
                             </button>

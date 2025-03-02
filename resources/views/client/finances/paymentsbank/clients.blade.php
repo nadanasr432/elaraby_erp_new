@@ -18,7 +18,7 @@
                         <div class="col-lg-12 margin-tb d-flex flex-wrap justify-content-between align-items-center">
                             <h5 class="custom-title alert ">دفعات بنكية سابقة من العملاء</h5>
 
-                            <a class="btn text-white px-3 py-1" style="background-color: #ec6880"
+                            <a class="btn btnn text-white px-3 py-1" style="background-color: #ec6880"
                                href="{{ route('client.add.cashbank.clients') }}"><i
                                     class="fa fa-plus"></i> دفع بنكى من عميل </a>
                         </div>
@@ -71,7 +71,7 @@
                                     <td>{{ $cash->bank_check_number ?? ''}}</td>
                                     <td>{{ $cash->notes ?? ''}}</td>
                                     <td>{{ $cash->client->name ?? ''}}</td>
-                                    <td>
+                                    <td class="d-flex justify-content-center">
                                         <a href="{{ route('client.edit.cashbank.clients', $cash->id) }}"
                                            class="btn btn-sm btn-info" data-toggle="tooltip"
                                            title="تعديل" data-placement="top"><i class="fa fa-edit"></i></a>

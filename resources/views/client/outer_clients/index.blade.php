@@ -23,7 +23,7 @@
                     <div class="d-flex justify-content-between">
                         <div class="col-lg-12 margin-tb  d-flex flex-wrap justify-content-between">
                             <h5 class=" alert custom-title ">{{ __('sidebar.list-of-client') }} </h5>
-                            <a class="btn text-white px-3 py-1" style="background-color: #ec6880"
+                            <a class="btn btnn text-white px-3 py-1" style="background-color: #ec6880"
                                href="{{ route('client.outer_clients.create') }}"><i class="fa fa-plus"></i>
                                 {{ __('sidebar.add-new-client') }} 
                             </a>
@@ -87,7 +87,7 @@
                                             0
                                         @endif
                                     </td>
-                                    <td style="width: 20% !important;">
+                                    <td class="d-flex  justify-content-center">
                                         @if($outer_client->client_name != "Cash")
                                             <a href="{{ route('client.outer_clients.show', $outer_client->id) }}"
                                                class=" " data-toggle="tooltip" title="عرض"
@@ -135,7 +135,7 @@
                 </p>
         
                 <a href="{{ route('client.outer_clients.print') }}" target="_blank" role="button"
-                   class="btn-warning btn btn-md px-3 py-1" dir="rtl">
+                   class="btn-warning btn btnn btn-md px-3 py-1" dir="rtl">
                     <i class="fa fa-print"></i>
                     {{ __('clients.print-clients') }}
                 </a>
@@ -182,10 +182,10 @@
                         <input accept=".xlsx" required type="file" name="file" class="form-control col-lg-6">
                         <br>
                         <div class="col-lg-12 p-0 d-flex flex-wrap">
-                            <button class="btn btn-success mb-1 py-1 px-3 mx-1">{{ __('main.click-to-import') }}</button>
+                            <button class="btn btnn btn-success mb-1 py-1 px-3 mx-1">{{ __('main.click-to-import') }}</button>
 
                             {{-- <label class="d-block" for="">{{ __('main.export-data') }}</label> --}}
-                            <a class="btn text-white mb-1 mx-1 py-1 px-3" style="background-color: #ec6880"
+                            <a class="btn btnn text-white mb-1 mx-1 py-1 px-3" style="background-color: #ec6880"
                                href="{{ route('outer_clients.export') }}">{{ __('main.click-to-export') }}</a>
                         </div>
                     </div>

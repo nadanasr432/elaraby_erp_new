@@ -32,7 +32,7 @@
                     <div class="col-12 d-flex flex-wrap justify-content-between">
                         <h5  class=" alert alert-sm custom-title">
                             @lang('main.Update Client Information')</h5>
-                        <a class="btn text-white py-1 px-3" style="background-color: #ec6880" href="{{ route('client.outer_clients.index') }}">
+                        <a class="btn btnn text-white py-1 px-3" style="background-color: #ec6880" href="{{ route('client.outer_clients.index') }}">
                             {{ __('main.back') }}</a>
                         
                     </div>
@@ -230,7 +230,7 @@
 
                         <div class="clearfix"></div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                            <button class="btn btn-info pd-x-20" type="submit">تحديث</button>
+                            <button class="btn btnn btn-info pd-x-20" type="submit">تحديث</button>
                         </div>
                     </form>
                 </div>

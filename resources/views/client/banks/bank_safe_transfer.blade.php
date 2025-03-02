@@ -92,7 +92,7 @@
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-end">
-                            <button class="btn btn-warning px-3 py-1" type="submit">{{ __('banks.record-process') }}</button>
+                            <button class="btn btnn btn-warning px-3 py-1" type="submit">{{ __('banks.record-process') }}</button>
                         </div>
                     </form>
                     <div class="clearfix"></div>
