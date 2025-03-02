@@ -169,11 +169,11 @@
                         <label class="d-block mt-2" for="">{{ __('main.import-data') }}</label>
                         <input accept=".xlsx" required type="file" name="file" class="form-control">
                         <br>
-                        <button class="btn btn-success">{{ __('main.click-to-import') }}</button>
+                        <button class="btn btnn btn-success">{{ __('main.click-to-import') }}</button>
                     </div>
                     <div class="col-lg-6  ">
                         <label class="d-block" for="">{{ __('main.export-data') }}</label>
-                        <a class="btn btn-warning"
+                        <a class="btn btnn btn-warning"
                             href="{{ route('suppliers.export') }}">{{ __('main.click-to-export') }}</a>
                     </div>
                 </div>
