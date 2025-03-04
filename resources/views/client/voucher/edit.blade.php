@@ -32,7 +32,7 @@
                                 اضافة قيود اليومية
                             @endisset
                         </h3>
-                        <a class="btn btnn text-white py-1 px-3" style="background-color: #ec6880" href="{{ route('client.voucher.get') }}">
+                        <a class="btn btnn text-white py-1 px-3" style="background-color: #36c7d6" href="{{ route('client.voucher.get') }}">
                             {{ __('main.back') }}
                         </a>
                     </div>

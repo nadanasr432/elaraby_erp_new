@@ -247,7 +247,7 @@ position: absolute !important;
         <button type="button" onclick="window.print()"  name="print"
             class="btn btnn btn-warning print_btn pull-right py-1 mb-1 mx-1 px-3"><i class="fa fa-print"></i> طباعة امر الشراء
         </button>
-        <a style="background-color: #ec6880" href="{{ route('client.purchase_orders.send', $pre_purchase_order) }}" role="button"
+        <a style="background-color: #36c7d6" href="{{ route('client.purchase_orders.send', $pre_purchase_order) }}" role="button"
             class="btn btnn send_btn btn-md text-white pull-right mx-1 py-1 px-3 mb-1 mx-1"><i class="fa fa-check"></i>
             ارسال امر الشراء الى بريد المورد
         </a>

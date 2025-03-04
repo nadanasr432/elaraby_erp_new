@@ -36,7 +36,7 @@
                         <h5 class="custom-title alert ">
                             {{ __('sidebar.cash-withdraw-and-deposit') }}
                         </h5>
-                        <a class="btn btnn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.banks.index') }}">
+                        <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.banks.index') }}">
                             {{ __('main.back') }}</a>
                         
                     </div>

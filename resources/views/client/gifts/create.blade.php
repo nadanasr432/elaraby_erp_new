@@ -30,7 +30,7 @@
                         <h5 s class=" alert custom-title">
                             {{ __('sidebar.add-new-gift') }}
                         </h5>
-                        <a class="btn btnn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.gifts.index') }}">
+                        <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.gifts.index') }}">
                             {{ __('main.back') }}</a>
                       
                     </div>

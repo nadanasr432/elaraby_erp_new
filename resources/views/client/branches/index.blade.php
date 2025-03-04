@@ -20,7 +20,7 @@
                             <h5 class="m-0 alert alert-sm custom-title">
                                 {{ __('branches.show-all-branches') }}
                             </h5>
-                            <a class="btn btnn text-white px-3 py-1" style="background-color: #ec6880;" href="{{ route('client.branches.create') }}">
+                            <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6;" href="{{ route('client.branches.create') }}">
                                 <i
                                 class="fa fa-plus"></i> {{ __('sidebar.add-new-branche') }} 
                             </a>

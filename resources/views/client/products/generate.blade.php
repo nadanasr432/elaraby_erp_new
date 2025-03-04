@@ -30,7 +30,7 @@
                         <h5 class=" alert alert-sm custom-title">
                             طباعة باركود المنتجات
                         </h5>
-                        <a class="btn btnn  btn-sm text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.products.index') }}">
+                        <a class="btn btnn  btn-sm text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.products.index') }}">
                             {{ __('main.back') }}</a>
                     </div>
                     <div class="clearfix"></div>

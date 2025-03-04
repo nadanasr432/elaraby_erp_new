@@ -27,7 +27,7 @@
                     <div class="col-12 d-flex flex-wrap justify-content-between ">
                         <h5 class=" alert custom-title">
                             {{ __('sidebar.add-new-supplier') }} </h5>
-                        <a class="btn btnn px-3 py-1 text-white" style="background-color: #ec6880" href="{{ route('client.suppliers.index') }}">
+                        <a class="btn btnn px-3 py-1 text-white" style="background-color: #36c7d6" href="{{ route('client.suppliers.index') }}">
                             {{ __('main.back') }}
                         </a>
                         
@@ -106,7 +106,7 @@
                             </div>
                         </div>
                         <div class="clearfix"></div>
-                        <a style="color: #ec6880" href="javascript:;" class="btn open_extras mb-2" >
+                        <a style="color: #36c7d6" href="javascript:;" class="btn open_extras mb-2" >
                             <i class="fa fa-plus"></i>
                             {{ __('suppliers.additional-options') }}
                         </a>

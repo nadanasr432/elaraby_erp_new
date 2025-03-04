@@ -64,7 +64,7 @@
                             <i class="fa fa-check"></i>
                             عرض كشف الحساب
                         </button>
-                        <button onclick="window.print()" type="button" class="btn btnn text-white px-3 py-1" style="background-color: #ec6880">
+                        <button onclick="window.print()" type="button" class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6">
                             <i class="fa fa-print"></i>
                             طباعة تقرير كشف الحساب
                         </button>

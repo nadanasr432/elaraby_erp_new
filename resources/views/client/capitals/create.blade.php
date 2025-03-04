@@ -24,7 +24,7 @@
                     <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
                         <h5 class=" alert custom-title"> اضافة راس مال
                             جديد </h5>
-                        <a class="btn btnn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.capitals.index') }}">
+                        <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.capitals.index') }}">
                             {{ __('main.back') }}</a>
                         
                     </div>

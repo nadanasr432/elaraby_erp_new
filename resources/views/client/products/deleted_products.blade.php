@@ -38,7 +38,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <h3 class="pull-right font-weight-bold ml-1 custom-title">
                             {{__('sidebar.products-deleted')}}
-                            <span class="badge circle" style="background-color: #ec6880">{{floatval( $products->count()  )}}</span>
+                            <span class="badge circle" style="background-color: #36c7d6">{{floatval( $products->count()  )}}</span>
                         </h3>
                         {{-- <div class="row">
                             <a class="mr-1 btn btn-success btn-sm-new"

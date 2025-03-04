@@ -986,7 +986,7 @@
                                    
                                     @if ($pos_settings->fast_finish == '1')
                                         <div class="col-lg-4 col-6 px-1 mt-2">
-                                            <button type="button" id="finishBank" class="btn w-100 btn-md font-weight-bold py-1"  style="border:1px solid white; color: white; background-color:#ec6880 ; ">
+                                            <button type="button" id="finishBank" class="btn w-100 btn-md font-weight-bold py-1"  style="border:1px solid white; color: white; background-color:#36c7d6 ; ">
                                                 <i class="fa fa-check-circle-o" style="color: white"></i>
                                                 دفع شبكة سريع
                                             </button>
@@ -1001,7 +1001,7 @@
                        
                                     @if ($pos_settings->print_save == '1')
                                         <div class="col-lg-4 col-6 px-1 mt-2">
-                                            <button type="button" class="btn  w-100 btn-md font-weight-bold py-1"  style="border:1px solid white; color: white;background-color: #ec6880 " id="save_pos">
+                                            <button type="button" class="btn  w-100 btn-md font-weight-bold py-1"  style="border:1px solid white; color: white;background-color: #36c7d6 " id="save_pos">
                                                 <i class="fa fa-save" style="color: white"></i>
                                                 {{ __('pos.save-and-print') }}
                                             </button>

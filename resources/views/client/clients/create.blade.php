@@ -24,7 +24,7 @@
                         <h5 class=" alert custom-title">
                             {{ __('sidebar.add-new-user') }}
                         </h5>
-                        <a class="btn btnn text-white px-3 py-1" style="background-color:#ec6880"
+                        <a class="btn btnn text-white px-3 py-1" style="background-color:#36c7d6"
                             href="{{ route('client.clients.index') }}">{{ __('main.back') }}</a>
                        
                     </div>

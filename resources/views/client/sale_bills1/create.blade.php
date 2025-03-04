@@ -318,7 +318,7 @@
                     class="btn btn-md btn-warning py-1  pay_btn m-1">
                     <i class="fa fa-money"></i> {{ __('main.record') }}
                 </button>
-                <button type="button" id="add" class="btn btn-md m-1 text-white py-1" style=" background-color: #ec6880;">
+                <button type="button" id="add" class="btn btn-md m-1 text-white py-1" style=" background-color: #36c7d6;">
                     <i class="fa fa-plus"></i> {{ __('sales_bills.save and show') }}
                 </button>
 
@@ -337,7 +337,7 @@
 
                 <!-- Save and Print 3 Button -->
                 <a href="javascript:;" role="button" class="btn py-1 save_btn2 m-1"
-                    style=" background-color: #ec6880; color: white;"
+                    style=" background-color: #36c7d6; color: white;"
                     printColor="2" isMoswada="0" invoiceType="4">
                     حفظ و طباعة 3
                 </a>
@@ -357,7 +357,7 @@
 
                 <!-- Save and Print 6 Button -->
                 <a href="javascript:;" role="button" class="btn save_btn2 btn-md py-1 m-1"
-                    style=" background-color: #ec6880; color: white;"
+                    style=" background-color: #36c7d6; color: white;"
                     printColor="2" isMoswada="0" invoiceType="6">
                     حفظ و طباعة 6
                 </a>
@@ -377,7 +377,7 @@
                 </a>
 
                 <!-- Draft Invoice Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 py-1 m-1 text-white" style=" background-color: #ec6880;"
+                <a href="javascript:;" role="button" class="btn save_btn2 py-1 m-1 text-white" style=" background-color: #36c7d6;"
                     printColor="2" isMoswada="1" invoiceType="2">
                     فاتورة مسودة
                 </a>

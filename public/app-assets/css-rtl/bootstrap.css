@@ -8957,7 +8957,7 @@ a.text-secondary:hover, a.text-secondary:focus {
 }
 
 .text-success {
-  color : #ec6880 !important;
+  color : #36c7d6 !important;
 }
 
 a.text-success:hover, a.text-success:focus {
@@ -9028,7 +9028,7 @@ a.text-dark:hover, a.text-dark:focus {
   display: inline-block;
   width: 32px;
   height: 2px;
-  background-color: #ec6880;
+  background-color: #36c7d6;
   align-self: flex-end;
   bottom: 4px;
 

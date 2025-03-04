@@ -36,7 +36,7 @@
                         <h3 class="pull-right font-weight-bold ml-1 custom-title">
                             تعديل باينات المنتج
                         </h3>
-                        <a class="btn  btn-sm p-1 text-white px-3 py-1" style="background-color: #ec6880" onclick="history.back()">
+                        <a class="btn  btn-sm p-1 text-white px-3 py-1" style="background-color: #36c7d6" onclick="history.back()">
                             عودة للخلف
                         </a>
                     </div>

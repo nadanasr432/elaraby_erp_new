@@ -25,7 +25,7 @@
                         <h5  style="white-space: nowrap" class="alert alert-sm font-weight-bold m-0 p-0 d-flex
                         custom-title align-items-end">
                             {{ __('sidebar.add-new-unit') }} </h5>
-                        <a class="btn btnn text-white px-3 py-1"style="background-color: #ec6880" href="{{ route('client.units.index') }}">
+                        <a class="btn btnn text-white px-3 py-1"style="background-color: #36c7d6" href="{{ route('client.units.index') }}">
                             {{ __('main.back') }}</a>
                         
                     </div>

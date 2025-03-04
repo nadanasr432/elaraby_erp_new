@@ -32,7 +32,7 @@
                         <h5  class=" alert custom-title">
                             استلام نقدية من عميل
                         </h5>
-                        <a class="btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.cash.clients') }}">
+                        <a class="btn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.cash.clients') }}">
                             دفعات نقدية من العملاء
                         </a>
                         

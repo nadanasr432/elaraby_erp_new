@@ -51,7 +51,7 @@
                                 <button type="submit" class=" btn text-white px-4 py-1 mb-1" style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
                                     <i class="fas fa-filter"></i> Filter
                                 </button>
-                                 <button type="button" class=" btn text-white px-4 py-1 mb-1" style="background-color: #ec6880" onclick="resetForm()">
+                                 <button type="button" class=" btn text-white px-4 py-1 mb-1" style="background-color: #36c7d6" onclick="resetForm()">
                                 <i class="fas fa-undo"></i> Reset
                             </button>
                             </div>

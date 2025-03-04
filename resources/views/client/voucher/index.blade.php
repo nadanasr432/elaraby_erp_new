@@ -28,7 +28,7 @@
                         <h3 class="custom-title font-weight-bold">
                             @lang('main.view_voucher_entry')
                         </h3>
-                        <a class="btn btnn text-white py-1 px-3 "style="background-color: #ec6880" href="{{ route('client.voucher.create') }}">
+                        <a class="btn btnn text-white py-1 px-3 "style="background-color: #36c7d6" href="{{ route('client.voucher.create') }}">
                             <i class="fa fa-plus"></i>
                             @lang('main.add_voucher_entry')
                         </a>

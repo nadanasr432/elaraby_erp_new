@@ -28,7 +28,7 @@
                         <h5  class=" alert custom-title">
                             {{ __('bonds.edit_supplier_bond') }}  {{ $supplierBond->client}}
                         </h5>
-                        <a class="btn text-white py-1 px-3" style="background-color: #ec6880" href="{{ route('supplier.bonds.index') }}">
+                        <a class="btn text-white py-1 px-3" style="background-color: #36c7d6" href="{{ route('supplier.bonds.index') }}">
                             {{ __('main.back') }}
                         </a>
                         

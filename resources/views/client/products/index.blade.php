@@ -39,7 +39,7 @@
                         <div class="col-12 col-md-12 col-lg-3 col-sm-12">
                             <h3 class="pull-right font-weight-bold ml-1 custom-title">
                                 {{__('products.manage_products')}}
-                                <span class="badge circle" style="background-color: #ec6880">{{floatval( $products->count()  )}}</span>
+                                <span class="badge circle" style="background-color: #36c7d6">{{floatval( $products->count()  )}}</span>
                             </h3>
                         </div>
                         <div class="col-12 col-md-12 col-lg-9 col-sm-12 d-flex flex-wrap justify-content-end align-items-center">
@@ -48,7 +48,7 @@
                                 <i class="fa fa-plus"></i>
                                 {{__('products.addnewproduct')}}
                             </a>
-                            <a class="mr-1 btn btnn btn-sm-new text-white mb-1"style="background-color: #ec6880"
+                            <a class="mr-1 btn btnn btn-sm-new text-white mb-1"style="background-color: #36c7d6"
                                href="{{ route('client.products.createservice') }}">
                                 <i class="fa fa-plus"></i>
                                 {{__('products.addnewproductseveces')}}
@@ -56,7 +56,7 @@
                             <a class="btn btnn btn-sm-new mr-1 mb-1" style="background-color: #d2d2d2d6; color: black;" href="{{ route('products.export') }}">
                                 {{__('products.exportproducts')}}
                             </a>
-                            <button class="btn btnn btn-sm-new mr-1 open_box text-white mb-1"style="background-color: #ec6880"
+                            <button class="btn btnn btn-sm-new mr-1 open_box text-white mb-1"style="background-color: #36c7d6"
                                     href="{{ route('products.export') }}">
                                 {{__('products.importproducts')}}
 

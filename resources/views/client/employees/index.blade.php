@@ -18,7 +18,7 @@
                         <div class="col-lg-12 margin-tb d-flex flex-wrap align-items-center justify-content-between">
                             <h5 class="alert custom-title">
                                 {{ __('sidebar.list-of-current-employees') }} </h5>
-                            <a class="btn btnn text-white px-3 py-1" style="background-color:#ec6880" href="{{ route('client.employees.create') }}"><i
+                            <a class="btn btnn text-white px-3 py-1" style="background-color:#36c7d6" href="{{ route('client.employees.create') }}"><i
                                     class="fa fa-plus"></i> {{ __('sidebar.add-new-employee') }} </a>
                             
                         </div>

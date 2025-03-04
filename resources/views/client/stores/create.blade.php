@@ -5,7 +5,7 @@
     display: inline-block;
     width: 32px;
     height: 2px;
-    background-color: #ec6880;
+    background-color: #36c7d6;
     align-self: flex-end;
     bottom: 4px;
 
@@ -34,7 +34,7 @@
                         <h5 style="white-space: nowrap" class="alert alert-sm font-weight-bold m-0 d-flex custom-title align-items-end">
                             {{ __('sidebar.add-new-storage') }}
                         </h5>
-                        <a class="btn btnn text-white px-3 py-1"style="background-color: #ec6880" href="{{ route('client.stores.index') }}">
+                        <a class="btn btnn text-white px-3 py-1"style="background-color: #36c7d6" href="{{ route('client.stores.index') }}">
                             {{ __('main.back') }} </a>
                         
                     </div>

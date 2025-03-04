@@ -32,7 +32,7 @@
                     <div class="col-12 d-flex flex-wrap justify-content-between">
                         <h5  class=" alert alert-sm custom-title">
                             @lang('main.Update Client Information')</h5>
-                        <a class="btn btnn text-white py-1 px-3" style="background-color: #ec6880" href="{{ route('client.outer_clients.index') }}">
+                        <a class="btn btnn text-white py-1 px-3" style="background-color: #36c7d6" href="{{ route('client.outer_clients.index') }}">
                             {{ __('main.back') }}</a>
                         
                     </div>

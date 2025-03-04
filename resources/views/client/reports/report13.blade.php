@@ -41,7 +41,7 @@
                 <div class="card-body">
                     <div class="col-12 row d-flex flex-wrap align-items-center justify-content-between pr-0">
                         <h2 class="alert custom-title">تقرير الارباح</h2>
-                        <button class="btn text-white px-3 py-1" style="background-color: #ec6880" onclick="history.back()">الرجوع</button>
+                        <button class="btn text-white px-3 py-1" style="background-color: #36c7d6" onclick="history.back()">الرجوع</button>
                     </div>
                     <div class="clearfix"></div>
                     <hr>

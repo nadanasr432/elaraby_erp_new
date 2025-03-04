@@ -17,7 +17,7 @@
                 <div class="d-flex justify-content-between">
                     <div class="col-lg-12 d-flex flex-wrap align-items-center justify-content-between">
                         <h5 class=" alert alert-sm custom-title">{{ __('sidebar.list-products-units') }}</h5>
-                        <a class="btn btnn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.units.create') }}"><i
+                        <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.units.create') }}"><i
                                 class="fa fa-plus"></i> {{ __('sidebar.add-new-unit') }} </a>
                     </div>
                     <br>

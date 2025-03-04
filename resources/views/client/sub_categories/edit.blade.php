@@ -25,7 +25,7 @@
                         <h5 class=" alert alert-sm custom-title">
                             {{ __('subcategories.edit-subcategory') }}
                         </h5>
-                        <a class="btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.subcategories.index') }}">
+                        <a class="btn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.subcategories.index') }}">
                             {{ __('main.back') }}</a>
                         
                     </div>

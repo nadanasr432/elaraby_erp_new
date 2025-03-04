@@ -24,7 +24,7 @@
                         <div class="col-lg-12 d-flex flex-wrap justify-content-between">
                             <h5 class=" custom-title">{{ __('sidebar.list-of-supplier') }} </h5>
 
-                            <a class="btn btnn px-3 py-1 text-white" style="background-color: #ec6880"  href="{{ route('client.suppliers.create') }}"><i
+                            <a class="btn btnn px-3 py-1 text-white" style="background-color: #36c7d6"  href="{{ route('client.suppliers.create') }}"><i
                                     class="fa fa-plus"></i> {{ __('sidebar.add-new-supplier') }} </a>
                         </div>
                 </div>
@@ -123,7 +123,7 @@
                 </p>
          
                 <a href="{{ route('client.suppliers.print') }}" target="_blank" role="button"
-                     dir="rtl" class="btn btnn px-3 py-1 text-white" style="background-color: #ec6880" >
+                     dir="rtl" class="btn btnn px-3 py-1 text-white" style="background-color: #36c7d6" >
                     <i class="fa fa-print"></i>
                     {{ __('suppliers.print-suppliers') }}
                 </a>

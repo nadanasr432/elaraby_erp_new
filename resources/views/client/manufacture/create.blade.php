@@ -29,7 +29,7 @@
                         <h3 class=" font-weight-bold custom-title">
                             {{ __('manufactures.addnewmanufacture') }}
                         </h3>
-                        <a class="btn btnn text-white py-1 px-3" style="background-color: #ec6880" href="http://arabygithub.test/ar/client/journal/get">
+                        <a class="btn btnn text-white py-1 px-3" style="background-color: #36c7d6" href="http://arabygithub.test/ar/client/journal/get">
                             {{ __('products.back') }}
                         </a>
                     </div>

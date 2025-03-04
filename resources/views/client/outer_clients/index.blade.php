@@ -23,7 +23,7 @@
                     <div class="d-flex justify-content-between">
                         <div class="col-lg-12 margin-tb  d-flex flex-wrap justify-content-between">
                             <h5 class=" alert custom-title ">{{ __('sidebar.list-of-client') }} </h5>
-                            <a class="btn btnn text-white px-3 py-1" style="background-color: #ec6880"
+                            <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6"
                                href="{{ route('client.outer_clients.create') }}"><i class="fa fa-plus"></i>
                                 {{ __('sidebar.add-new-client') }} 
                             </a>
@@ -185,7 +185,7 @@
                             <button class="btn btnn btn-success mb-1 py-1 px-3 mx-1">{{ __('main.click-to-import') }}</button>
 
                             {{-- <label class="d-block" for="">{{ __('main.export-data') }}</label> --}}
-                            <a class="btn btnn text-white mb-1 mx-1 py-1 px-3" style="background-color: #ec6880"
+                            <a class="btn btnn text-white mb-1 mx-1 py-1 px-3" style="background-color: #36c7d6"
                                href="{{ route('outer_clients.export') }}">{{ __('main.click-to-export') }}</a>
                         </div>
                     </div>

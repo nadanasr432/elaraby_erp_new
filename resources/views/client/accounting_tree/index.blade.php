@@ -118,7 +118,7 @@
                             </h3>
                             <a onclick="history.back()"
                                 class="btn btnn text-white ml-1 py-1 px-3"
-                                style=" background-color: #ec6880;">
+                                style=" background-color: #36c7d6;">
                                     <span
                                         style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
                                         <svg style="width: 10px;height: 15px;fill: #f5f1f1;margin-top: 1px;"

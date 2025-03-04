@@ -32,7 +32,7 @@
                         <h5  class=" alert custom-title">
                             دفع بنكى من عميل
                         </h5>
-                        <a class="btn btnn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.cashbank.clients') }}">
+                        <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.cashbank.clients') }}">
                             دفعات بنكية من العملاء
                         </a>
                         

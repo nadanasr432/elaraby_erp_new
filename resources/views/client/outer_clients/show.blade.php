@@ -18,7 +18,7 @@
                         <div class="col-lg-12 margin-tb d-flex flex-wrap align-items-center justify-content-between">
                             <h5 class="alert custom-title"> عرض بيانات العميل </h5>
 
-                            <a class="btn text-white px-3 py-1" style="background-color: #ec6880;" href="{{ route('client.outer_clients.index') }}">
+                            <a class="btn text-white px-3 py-1" style="background-color: #36c7d6;" href="{{ route('client.outer_clients.index') }}">
                                 {{ __('main.back') }} </a>
                         </div>
                         <br>

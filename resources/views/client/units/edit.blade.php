@@ -25,7 +25,7 @@
                         <h5 class="alert alert-sm custom-title">
                             {{ __('units.update-units') }}
                         </h5>
-                        <a class="btn btnn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.units.index') }}">
+                        <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.units.index') }}">
                             {{ __('main.back') }}</a>
                     </div>
                     <div class="clearfix"></div>

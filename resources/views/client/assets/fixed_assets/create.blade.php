@@ -28,7 +28,7 @@
                         <h5 sclass=" alert custom-title">
                             اضف اصل ثابت
                         </h5>
-                        <a class="btn btnn text-white px-3 py-1" style="background-color: #ec6880;" href="{{ route('fixed.assets.index') }}">
+                        <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6;" href="{{ route('fixed.assets.index') }}">
                             {{ __('main.back') }}
                         </a>
                         

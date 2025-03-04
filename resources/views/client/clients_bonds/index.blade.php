@@ -21,7 +21,7 @@
                             <h5 class=" alert custom-title">
                                 {{ __('bonds.list_all_bonds_clients') }}
                             </h5>
-                            <a class="btn btnn px-3 py-1 text-white" style="background-color: #ec6880" href="{{ route('client.bonds.create') }}">
+                            <a class="btn btnn px-3 py-1 text-white" style="background-color: #36c7d6" href="{{ route('client.bonds.create') }}">
                                 <i class="fa fa-plus"></i>{{ __('bonds.add_new_client_bonds') }} 
                             </a>
                         </div>

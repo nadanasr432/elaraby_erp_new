@@ -60,7 +60,7 @@
                                 <i class="fa fa-check"></i>
                                 الاكثر مبيعا
                             </button>
-                            <button name="submit" value="best_profits" class="btn btnn text-white px-3 py-1" style="background-color: #ec6880"
+                            <button name="submit" value="best_profits" class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6"
                                      type="submit">
                                 <i class="fa fa-check"></i>
                                 الاكثر ربحا

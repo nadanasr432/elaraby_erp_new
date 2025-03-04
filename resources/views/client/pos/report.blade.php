@@ -47,7 +47,7 @@
                                         <i class="fa fa-print"></i> {{ __('pos.print-invoice') }}
                                     </a>
                         
-                                    <a class="btn btnn ml-1 mb-1 py-1 text-white" id="todayPrintBtn"style="background-color: #ec6880;"
+                                    <a class="btn btnn ml-1 mb-1 py-1 text-white" id="todayPrintBtn"style="background-color: #36c7d6;"
                                        href="{{ route('pos.sales.report.print-today') }}">
                                         <i class="fa fa-print"></i> {{ __('pos.print-invoice') }}
                                     </a>
@@ -57,7 +57,7 @@
                                         <i class="fa fa-print"></i> {{ __('pos.print-button') }}
                                     </a>
                         
-                                    <button id="getPosReportsToday" class="btn btnn ml-1 mb-1  py-1 text-white"style="background-color: #ec6880">
+                                    <button id="getPosReportsToday" class="btn btnn ml-1 mb-1  py-1 text-white"style="background-color: #36c7d6">
                                         عرض كل التقارير
                                     </button>
                         

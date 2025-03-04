@@ -64,7 +64,7 @@
                                 <i class="fa fa-check"></i>
                                 عرض كشف الحساب
                             </button>
-                            <button class="btn btnn text-white px-3 py-1" style="background-color: #ec6880" name="submit" value="today" type="submit">
+                            <button class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" name="submit" value="today" type="submit">
                                 <i class="fa fa-check"></i>
                                 كشف حساب اليوم
                             </button>

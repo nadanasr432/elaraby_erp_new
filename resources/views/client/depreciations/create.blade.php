@@ -28,7 +28,7 @@
                         <h5  class=" alert custom-title">
                             اضف اهلاك جديد
                         </h5>
-                        <a class="btn btnn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.depreciations.index') }}">
+                        <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.depreciations.index') }}">
                             {{ __('main.back') }}
                         </a>
                         

@@ -579,7 +579,7 @@ position: absolute !important;
             @else
                 <input type="hidden" value="{{ $pre_bill }}" name="buy_bill_number"/>
             @endif
-            <button style="background-color: #ec6880" href="" type="submit" @if (!isset($open_buy_bill) || empty($open_buy_bill))  @endif
+            <button style="background-color: #36c7d6" href="" type="submit" @if (!isset($open_buy_bill) || empty($open_buy_bill))  @endif
             class="btn btnn btn-md text-white px-3 py-1 close_btn mx-1"><i class="fa fa-check"></i>
                 {{ __('main.cancel') }}
             </button>

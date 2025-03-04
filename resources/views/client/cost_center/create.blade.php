@@ -34,7 +34,7 @@
                 <div class="card-body">
                     <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
                         <h1></h1>
-                        <a class="btn btnn text-white  px-3 py-1 " style="background-color: #ec6880" href="{{ route('client.products.index') }}">
+                        <a class="btn btnn text-white  px-3 py-1 " style="background-color: #36c7d6" href="{{ route('client.products.index') }}">
                             {{ __('main.back') }}</a>
                     </div>
                     <div class="clearfix"></div>

@@ -32,7 +32,7 @@
                         <h5  class=" alert custom-title">
                             دفع نقدى الى مورد
                         </h5>
-                        <a class="btn text-white px-3 py-1" style="background-color: #ec6880;" href="{{ route('client.cash.suppliers') }}">
+                        <a class="btn text-white px-3 py-1" style="background-color: #36c7d6;" href="{{ route('client.cash.suppliers') }}">
                             دفعات نقدية الى الموردين
                         </a>
                        

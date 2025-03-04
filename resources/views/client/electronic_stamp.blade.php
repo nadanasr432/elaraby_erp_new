@@ -28,7 +28,7 @@
                         <h5 class=" alert custom-title">
                             {{ __('sidebar.add-new-electronic-stamp') }}
                         </h5>
-                        <a class="btn btnn text-white px-3 py-1" style="background-color: #ec6880"
+                        <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6"
                             onclick="window.location.href='home'">{{ __('main.back') }}</a>
                         
                     </div>

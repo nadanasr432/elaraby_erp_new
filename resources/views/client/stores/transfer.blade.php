@@ -21,7 +21,7 @@
                         <h5  class=" alert alert-sm custom-title">
                             {{ __('sidebar.convert-between-storages') }}
                         </h5>
-                        <a class="btn btnn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.stores.index') }}">
+                        <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.stores.index') }}">
                             {{ __('main.back') }}
                         </a>
                        

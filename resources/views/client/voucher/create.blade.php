@@ -28,7 +28,7 @@
                         <h3 class=" custom-title font-weight-bold">
                             اضافة قيود اليومية
                         </h3>
-                        <a class="btn btnn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.voucher.get') }}">
+                        <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.voucher.get') }}">
                             {{ __('main.back') }}
                         </a>
                     </div>

@@ -17,7 +17,7 @@
                     <div class="d-flex justify-content-between">
                         <div class="col-lg-12 margin-tb d-flex flex-wrap justify-content-between align-items-center">
                             <h5 class="custom-title alert ">دفعات النقدية السابقة الى الموردين </h5>
-                            <a class="btn btnn text-white px-3 py-1" style="background-color: #ec6880"
+                            <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6"
                                href="{{ route('client.add.cash.suppliers') }}"><i
                                     class="fa fa-plus"></i> دفع نقدى الى مورد </a>
                         </div>

@@ -90,8 +90,8 @@
             right: 10px;
             width: 40px;
             height: 40px;
-            background: #ec6880;
-            border: 2px solid #ec6880;
+            background: #36c7d6;
+            border: 2px solid #36c7d6;
             color: #ffff;
             border-radius: 30%;
             font-size: 20px;

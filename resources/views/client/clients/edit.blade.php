@@ -24,7 +24,7 @@
                             <h5  class=" alert custom-title">
                                 تعديل بيانات المستخدم
                             </h5>
-                            <a class="btn btnn text-white py-1 px-3" style="background-color: #ec6880"
+                            <a class="btn btnn text-white py-1 px-3" style="background-color: #36c7d6"
                                 href="{{ route('client.clients.index') }}">{{ __('main.back') }}</a>
                         </div>
                         

@@ -29,7 +29,7 @@
                         <h3 class="custom-title font-weight-bold ml-1">
                             {{ __('products.addnewproduct') }}
                         </h3>
-                        <a class="btn px-3 py-1" style="background-color: #ec6880;;" href="{{ route('client.products.index') }}">
+                        <a class="btn px-3 py-1" style="background-color: #36c7d6;;" href="{{ route('client.products.index') }}">
                             {{ __('products.back') }}
                         </a>
                     </div>

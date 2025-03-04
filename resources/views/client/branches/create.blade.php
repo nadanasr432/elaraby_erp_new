@@ -26,7 +26,7 @@
                         <h2 class=" alert alert-sm font-weight-bold m-0 p-0 d-flex custom-title align-items-end " style="white-space: nowrap">
                             {{ __('sidebar.add-new-branche') }} 
                         </h2>
-                        <a class="btn text-white px-3 py-1 btnn" style="background-color: #ec6880" href="{{ route('client.branches.index') }}">
+                        <a class="btn text-white px-3 py-1 btnn" style="background-color: #36c7d6" href="{{ route('client.branches.index') }}">
                             {{ __('main.back') }}
                         </a>
                     </div>
