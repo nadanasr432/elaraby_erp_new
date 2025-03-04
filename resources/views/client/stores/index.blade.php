@@ -56,7 +56,7 @@
                                         <td>{{ ++$i }}</td>
                                         <td>{{ $store->store_name }}</td>
                                         <td>{{ $store->branch ? $store->branch->branch_name : '-' }}</td>
-                                        <td class="d-flex border-0">
+                                        <td class="d-flex justify-content-center align-items-center border-0">
                                             <a href="{{ route('client.stores.edit', $store->id) }}"
                                                 class=" " data-toggle="tooltip"
                                                 title="{{ __('main.edit') }}" data-placement="top"><svg width="19" height="16" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">

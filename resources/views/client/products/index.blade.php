@@ -42,7 +42,7 @@
                                 <span class="badge circle" style="background-color: #ec6880">{{floatval( $products->count()  )}}</span>
                             </h3>
                         </div>
-                        <div class="col-12 col-md-12 col-lg-9 col-sm-12 d-flex flex-wrap justify-content-end">
+                        <div class="col-12 col-md-12 col-lg-9 col-sm-12 d-flex flex-wrap justify-content-end align-items-center">
                             <a class="mr-1 btn btnn btn-success btn-sm-new mb-1"
                                href="{{ route('client.products.create') }}">
                                 <i class="fa fa-plus"></i>

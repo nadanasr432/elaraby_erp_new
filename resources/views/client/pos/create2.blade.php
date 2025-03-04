@@ -967,8 +967,8 @@
                                         </a>
                                     </div> --}}
                                     <div class="col-lg-4 col-6 px-1 mt-2">
-                                        <button class="deletePosInv btn  btn-flat w-100 font-weight-bold py-1" style="border:1px solid #ec6880; color: #ec6880; ">
-                                            <i class="fa fa-trash-o" style="color: #ec6880"></i> {{ __('pos.cancel-invoice') }}
+                                        <button class="deletePosInv btn  btn-flat w-100 font-weight-bold py-1" style="border:1px solid red; color: white; background-color: red; ">
+                                            <i class="fa fa-trash-o" style="color: white"></i> {{ __('pos.cancel-invoice') }}
                                         </button>
                                     </div>
                                 @endif
@@ -986,8 +986,8 @@
                                    
                                     @if ($pos_settings->fast_finish == '1')
                                         <div class="col-lg-4 col-6 px-1 mt-2">
-                                            <button type="button" id="finishBank" class="btn w-100 btn-md font-weight-bold py-1"  style="border:1px solid #ec6880; color: #ec6880; ">
-                                                <i class="fa fa-check-circle-o" style="color: #ec6880"></i>
+                                            <button type="button" id="finishBank" class="btn w-100 btn-md font-weight-bold py-1"  style="border:1px solid white; color: white; background-color:#ec6880 ; ">
+                                                <i class="fa fa-check-circle-o" style="color: white"></i>
                                                 دفع شبكة سريع
                                             </button>
                                         </div>
@@ -1001,8 +1001,8 @@
                        
                                     @if ($pos_settings->print_save == '1')
                                         <div class="col-lg-4 col-6 px-1 mt-2">
-                                            <button type="button" class="btn  w-100 btn-md font-weight-bold py-1"  style="border:1px solid #ec6880; color: #ec6880; " id="save_pos">
-                                                <i class="fa fa-save" style="color: #ec6880"></i>
+                                            <button type="button" class="btn  w-100 btn-md font-weight-bold py-1"  style="border:1px solid white; color: white;background-color: #ec6880 " id="save_pos">
+                                                <i class="fa fa-save" style="color: white"></i>
                                                 {{ __('pos.save-and-print') }}
                                             </button>
                                         </div>

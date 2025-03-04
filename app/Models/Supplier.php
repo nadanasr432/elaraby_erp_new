@@ -12,7 +12,7 @@ class Supplier extends Model
         'prev_balance','shop_name','supplier_email','supplier_national','tax_number'
     ];
     public function notes(){
-        return $this->hasMany('\App\Models\SupplierNote','supplier_id','id');
+        return $this->hasMany(SupplierNote::class, 'supplier_id', 'id');
     }
     public function phones(){
         return $this->hasMany('\App\Models\SupplierPhone','supplier_id','id');

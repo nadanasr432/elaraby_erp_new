@@ -112,8 +112,8 @@
                         </a>
                         <div class="clearfix"></div>
                         <div class="extras" style="display: none">
-                            <div class="col-lg-12">
-                                <div class="form-group  col-lg-4  pull-right" dir="rtl">
+                            <div class="row">
+                                <div class="form-group  col-lg-4  pull-right">
                                     <label for="supplier_category">{{ __('suppliers.dealing-type') }}</label>
                                     <select name="supplier_category" class="form-control" required>
                                         <option value="">{{ __('suppliers.choose-type') }}</option>
@@ -121,16 +121,16 @@
                                         <option value="قطاعى">قطاعى</option>
                                     </select>
                                 </div>
-                                <div class="form-group col-lg-4  pull-right" dir="rtl">
+                                <div class="form-group col-lg-4 ">
                                     <label for="supplier_email">{{ __('main.email-address') }}</label>
                                     <input type="email" name="supplier_email" dir="ltr" class="form-control">
                                 </div>
                                 <div class="clearfix"></div>
-                                <div class="form-group  pull-right col-lg-4" dir="rtl">
+                                <div class="form-group  col-lg-4">
                                     <label for="shop_name">{{ __('suppliers.supplier-company-name') }}</label>
                                     <input type="text" name="shop_name" class="form-control" dir="rtl">
                                 </div>
-                                <div class="form-group  pull-right col-lg-4" dir="rtl">
+                                <div class="form-group   col-lg-4">
                                     <label for="supplier_national">{{ __('suppliers.supplier-nationality') }}</label>
                                     <select name="supplier_national" class="form-control">
                                         <option value="">{{ __('main.choose-country') }}</option>
@@ -141,7 +141,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group  pull-right col-lg-4" dir="rtl">
+                                <div class="form-group   col-lg-4">
                                     <label for="tax_number">{{ __('main.tax-number') }}</label>
                                     <input type="text" name="tax_number" class="form-control" dir="ltr" />
                                 </div>

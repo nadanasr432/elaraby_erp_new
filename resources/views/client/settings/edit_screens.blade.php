@@ -8,16 +8,14 @@
             {{ session('success') }}
         </div>
     @endif
-    <div class="row">
-        <div class="col-12">
-            <p class="alert alert-info alert-sm text-center">
-                {{ __('sidebar.screens-settings') }}
-            </p>
-        </div>
-    </div>
+    
     <div class="row">
         <div class="col-md-12">
+            
             <div class="card mg-b-20">
+                <p class="alert custom-title">
+                    {{ __('sidebar.screens-settings') }}
+                </p>
                 <div class="card-body">
                     <form action="{{ route('screens.settings.update') }}" method="POST">
                         @csrf
@@ -38,8 +36,8 @@
                         <div class="col-lg-4 pull-right">
                             <div class="form-group">
                                 <label for="">{{ __('main.screens') }}</label>
-                                <select name="screens[]" required class="form-control selectpicker show-tick"
-                                    data-style="btn-danger" multiple data-live-search="true" data-title="اختر الشاشات">
+                                <select name="screens[]" required class="form-control selectpicker show-tick py-1"
+                                    multiple data-live-search="true" data-title="اختر الشاشات">
                                     <option @if ($screen->products == '1') selected @endif value="products">شاشة المنتجات
                                     </option>
                                     <option @if ($screen->debt == '1') selected @endif value="debt">شاشة الديون
@@ -64,8 +62,8 @@
                             </div>
                         </div>
                         <div class="clearfix"></div>
-                        <div class="col-lg-12 text-center">
-                            <button class="btn btn-md btn-success" style="font-size: 15px; margin-top: 25px;" type="submit">
+                        <div class="col-lg-12 text-start">
+                            <button class="btn  btn-warning px-3 py-1"  type="submit">
                                 <i class="fa fa-check"></i>
                                 {{ __('main.save') }}
                             </button>

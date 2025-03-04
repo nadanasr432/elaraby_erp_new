@@ -24,15 +24,15 @@
             <div class="card">
                 <!------HEADER----->
                 <div class="card-header border-bottom border-secondary p-1">
-                    <div class="d-flex justify-content-between align-items-baseline">
-                        <h3 class="pull-right font-weight-bold">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center">
+                        <h3 class="custom-title font-weight-bold">
                             @isset($voucher)
                                 تعديل قيود اليومية
                             @else
                                 اضافة قيود اليومية
                             @endisset
                         </h3>
-                        <a class="btn btn-danger btn-sm pull-left p-1" href="{{ route('client.voucher.get') }}">
+                        <a class="btn btnn text-white py-1 px-3" style="background-color: #ec6880" href="{{ route('client.voucher.get') }}">
                             {{ __('main.back') }}
                         </a>
                     </div>
@@ -136,11 +136,11 @@
                                     </tfoot>
                                 </table>
 
-                                <button type="button" class="btn btn-primary addNewRowHandler">
+                                <button type="button" class="btn btnn btn-primary addNewRowHandler">
                                     <i class="fa fa-plus"></i>
                                     {{ __('main.add new row') }}
                                 </button>
-                                <button class="btn btn-success font-weight-bold"
+                                <button class="btn btnn btn-success font-weight-bold"
                                     type="submit">{{ isset($voucher) ? __('main.update') : __('main.add') }}</button>
                             </div>
                         </div>

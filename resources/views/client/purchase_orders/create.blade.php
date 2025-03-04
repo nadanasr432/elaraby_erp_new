@@ -255,7 +255,7 @@ position: absolute !important;
             {{ method_field('delete') }}
             {{ csrf_field() }}
             <input type="hidden" name="purchase_order_number" value="{{ $pre_purchase_order }}">
-            <button  style="background-color: #dadada2e !important; color:black" type="submit" class="btn btnn close_btn  pull-right mx-1 py-1 px-3 mb-1 mx-1">
+            <button  style="background-color: #0a09092e !important; color:black" type="submit" class="btn btnn close_btn  pull-right mx-1 py-1 px-3 mb-1 mx-1">
                 <i class="fa fa-close"></i>
                 الغاء وخروج
             </button>

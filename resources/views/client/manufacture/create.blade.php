@@ -144,7 +144,7 @@
                             <textarea name="note" class="form-control"></textarea>
 
                         </div>
-                        <button class="btn btnn btn-md btn-success w-100 font-weight-bold"style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+                        <button class="btn btnn  btn-warning py-1 px-5 font-weight-bold"
                             type="submit">{{ __('products.add') }}</button>
                     </form>
                 </div>

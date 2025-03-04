@@ -314,76 +314,76 @@
             <div class="d-flex justify-content-start align-items-center flex-nowrap  bg-white p-2"
                 style="overflow-x: auto; white-space: nowrap;">
                 <!-- Record Button -->
-                <button type="button" data-toggle="modal" style="height: 40px" data-target="#myModal2"
-                    class="btn btn-md btn-warning pay_btn m-1">
+                <button type="button" data-toggle="modal"  data-target="#myModal2"
+                    class="btn btn-md btn-warning py-1  pay_btn m-1">
                     <i class="fa fa-money"></i> {{ __('main.record') }}
                 </button>
-                <button type="button" id="add" class="btn btn-md m-1 text-white" style="height: 40px; background-color: #ec6880;">
+                <button type="button" id="add" class="btn btn-md m-1 text-white py-1" style=" background-color: #ec6880;">
                     <i class="fa fa-plus"></i> {{ __('sales_bills.save and show') }}
                 </button>
 
                 <!-- Save and Print 1 Button -->
-                <button type="button" role="button" class="btn save_btn1 btn-md text-dark m-1"
-                    isMoswada="0" invoiceType="2" style="height: 40px; background-color: #dadada2e;">
+                <button type="button" role="button" class="btn save_btn1 py-1 text-dark m-1"
+                    isMoswada="0" invoiceType="2" style=" background-color: #0a09092e;">
                     حفظ و طباعة 1
                 </button>
 
                 <!-- Save and Print 2 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-warning m-1"
-                    style="height: 40px;  color: white;"
+                <a href="javascript:;" role="button" class="btn py-1 save_btn2 btn-warning m-1"
+                    style="  color: white;"
                     printColor="1" isMoswada="0" invoiceType="2">
                     حفظ و طباعة 2
                 </a>
 
                 <!-- Save and Print 3 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md m-1"
-                    style="height: 40px; background-color: #ec6880; color: white;"
+                <a href="javascript:;" role="button" class="btn py-1 save_btn2 m-1"
+                    style=" background-color: #ec6880; color: white;"
                     printColor="2" isMoswada="0" invoiceType="4">
                     حفظ و طباعة 3
                 </a>
 
                 <!-- Save and Print 4 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md pull-right m-1 text-dark"
-                    style="height: 40px; background-color: #dadada2e;"
+                <a href="javascript:;" role="button" class="btn save_btn2  m-1 py-1"
+                    style="height: 40px;background-color: #0a09092e;"
                     printColor="3" isMoswada="0" invoiceType="5">
                     حفظ و طباعة 4
                 </a>
 
                 <!-- Save and Print 5 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-warning pull-right m-1"
-                    style="height: 40px;" printColor="2" isMoswada="0" invoiceType="2">
+                <a href="javascript:;" role="button" class="btn save_btn2  btn-warning py-1 m-1"
+                     printColor="2" isMoswada="0" invoiceType="2">
                     حفظ و طباعة 5
                 </a>
 
                 <!-- Save and Print 6 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md pull-right m-1"
-                    style="height: 40px; background-color: #ec6880; color: white;"
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md py-1 m-1"
+                    style=" background-color: #ec6880; color: white;"
                     printColor="2" isMoswada="0" invoiceType="6">
                     حفظ و طباعة 6
                 </a>
 
                 <!-- Save and Print 7 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md text-dark pull-right m-1"
-                    style="height: 40px; background-color: #dadada2e;"
+                <a href="javascript:;" role="button" class="btn save_btn2 py-1 text-dark pull-right m-1"
+                    style=" background-color: #0a09092e;"
                     printColor="2" isMoswada="0" invoiceType="7">
                     حفظ و طباعة 7
                 </a>
 
                 <!-- Save and Print 8 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-warning pull-right m-1"
-                    style="height: 40px; color: white;"
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-warning py-1 m-1"
+                    style=" color: white;"
                     printColor="2" isMoswada="0" invoiceType="8">
                     حفظ و طباعة 8
                 </a>
 
                 <!-- Draft Invoice Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md m-1 text-white" style="height: 40px; background-color: #ec6880;"
+                <a href="javascript:;" role="button" class="btn save_btn2 py-1 m-1 text-white" style=" background-color: #ec6880;"
                     printColor="2" isMoswada="1" invoiceType="2">
                     فاتورة مسودة
                 </a>
 
                 <!-- Non-Tax Invoice Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md text-dark m-1" style="height: 40px; background-color: #dadada2e;"
+                <a href="javascript:;" role="button" class="btn save_btn2 py-1 text-dark m-1" style=" background-color: #0a09092e;"
                     printColor="2" isMoswada="0" invoiceType="3">
                     فاتورة غير ضريبية
                 </a>

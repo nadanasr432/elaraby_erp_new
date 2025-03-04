@@ -104,13 +104,17 @@
                     <div class="col-lg-6 pull-right p-2">
                         <p class="alert alert-secondary alert-sm" dir="rtl">
                             ملاحظات المورد :
-                            @if (!$supplier->notes->isEmpty())
+                            @if (!empty($supplier) && !empty($supplier->notes) && $supplier->notes->count() > 0)
                                 @foreach ($supplier->notes as $note)
                                     <span class="badge badge-danger">{{ $note->supplier_note }}</span>
                                 @endforeach
+                            @else
+                                <span class="text-muted">لا توجد ملاحظات</span>
                             @endif
                         </p>
                     </div>
+                    
+                    
                 </div>
             </div>
         </div>

@@ -75,10 +75,11 @@
                             <div class="col-lg-4 col-md-12">
                                 <div class="form-group" dir="ltr">
                                     <label for="note">ملاحظات العميل</label>
+                                    <button type="button" id="add_note" class="btn btn-sm btn-success">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
                                     <div class="d-flex gap-2">
-                                        <button type="button" id="add_note" class="btn btn-sm btn-success">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
+                                        
                                     </div>
                                     <div class="notes-container mt-2">
                                         @if ($outer_client->notes->isEmpty())
@@ -87,24 +88,23 @@
                                             </div>
                                         @endif
                                         @foreach ($outer_client->notes as $note)
-                                            <div class="d-flex gap-2 align-items-center mt-2">
+                                            <div class="d-flex gap-2  mt-2">
                                                 <input type="text" class="form-control note" name="notes[]" dir="ltr" 
                                                        value="{{ $note->client_note }}">
-                                                <button type="button" class="btn btn-danger btn-sm delete_note">
+                                                <button type="button" class="btn btn-danger btn-sm delete_phone">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
                                             </div>
+                                           
                                         @endforeach
                                     </div>
                         
                                     <div class="dom2"></div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="row g-3 align-items-center">
+
                             <!-- Client Debt -->
-                            <div class="col-lg-4 col-md-6">
+                            <div class="col-lg-4 col-md-12">
                                 <div class="form-group" dir="rtl">
                                     <label for="prev_balance">مديونية العميل</label>
                                     <div class="d-flex align-items-center gap-2">
@@ -119,7 +119,7 @@
                             </div>
                         
                             <!-- Client Phone Numbers -->
-                            <div class="col-lg-4 col-md-6">
+                            <div class="col-lg-4 col-md-12">
                                 <div class="form-group" dir="ltr">
                                     <label for="phone">رقم الهاتف بمفتاح الدولة</label>
                                     <button type="button" id="add_phone" class="btn btn-sm btn-success ms-2">
@@ -184,8 +184,8 @@
                         </a>
                         <div class="clearfix"></div>
                         <div class="extras" style="display: none">
-                            <div class="col-lg-12">
-                                <div class="form-group  col-lg-4  pull-right" dir="rtl">
+                            <div class="row">
+                                <div class="form-group  col-lg-4  ">
                                     <label for="client_category">فئة التعامل</label>
                                     <select name="client_category" class="form-control" required>
                                         <option value="">اختر الفئة</option>
@@ -195,19 +195,18 @@
                                         </option>
                                     </select>
                                 </div>
-                                <div class="form-group col-lg-4  pull-right" dir="rtl">
+                                <div class="form-group col-lg-4  " >
                                     <label for="client_email">البريد الالكترونى</label>
                                     <input type="email" name="client_email" dir="ltr"
                                         value="{{ $outer_client->client_email }}" class="form-control">
                                 </div>
-                                <div class="clearfix"></div>
 
-                                <div class="form-group  pull-right col-lg-4" dir="rtl">
+                                <div class="form-group col-lg-4" >
                                     <label for="shop_name">اسم محل / شركة العميل</label>
                                     <input type="text" name="shop_name" value="{{ $outer_client->shop_name }}"
-                                        class="form-control" dir="rtl">
+                                        class="form-control" >
                                 </div>
-                                <div class="form-group  pull-right col-lg-4" dir="rtl">
+                                <div class="form-group col-lg-4" >
                                     <label for="client_national">جنسية العميل</label>
                                     <select name="client_national" class="form-control">
                                         <option value="">اختر دولة</option>
@@ -218,7 +217,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group  pull-right col-lg-4" dir="rtl">
+                                <div class="form-group col-lg-4" >
                                     <label for="tax_number">الرقم الضريبى</label>
                                     <input type="text" name="tax_number" value="{{ $outer_client->tax_number }}"
                                         class="form-control" dir="ltr" />
@@ -229,8 +228,8 @@
                         </div>
 
                         <div class="clearfix"></div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                            <button class="btn btnn btn-info pd-x-20" type="submit">تحديث</button>
+                        <div class="col-xs-12 col-sm-12 col-md-12 text-start">
+                            <button class="btn btnn btn-warning py-1 px-3 pd-x-20" type="submit">تحديث</button>
                         </div>
                     </form>
                 </div>
