@@ -310,7 +310,7 @@
 
                                 <td class="borderLeftH" dir="rtl">
                                     {{ floatval($product->quantity_price) }} <img
-                                        src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+                                        src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                                 </td>
                                 <td class="borderLeftH" dir="rtl">
                                     {{ $product->quantity }}
@@ -318,7 +318,7 @@
                                 </td>
                                 <td class="borderLeftH" dir="rtl">
                                     {{ $product->product_price }} <img src="{{ asset('images/Sr_coin.svg') }}"
-                                        width="5%">
+                                        width="15px">
                                 </td>
                                 <td class="borderLeftH">{{ $product->product->product_name }}</td>
                                 <td class="borderLeftH">{{ $counter }}</td>
@@ -354,10 +354,10 @@
                                     @if ($key->action == 'discount')
                                         @if ($key->action_type == 'pound')
                                             {{ $key->value }} <img src="{{ asset('images/Sr_coin.svg') }}"
-                                                width="5%">
+                                                width="15px">
                                         @else
                                             {{ ($totalSum * $key->value) / 100 }} <img
-                                                src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+                                                src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                                             {{-- Calculate percentage discount --}}
                                         @endif
                                     @endif
@@ -376,10 +376,10 @@
                                     @if ($key->action != 'discount')
                                         @if ($key->action_type == 'pound')
                                             {{ $key->value }} <img src="{{ asset('images/Sr_coin.svg') }}"
-                                                width="5%">
+                                                width="15px">
                                         @else
                                             {{ ($totalSum * $key->value) / 100 }} <img
-                                                src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+                                                src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                                             {{-- Calculate percentage shipping charge --}}
                                         @endif
                                     @endif
@@ -393,7 +393,7 @@
                         <tr class="even"
                             style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 14px !important; height: 40px !important; text-align: center;">
                             <td dir="rtl">
-                                {{ $percentage }} <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+                                {{ $percentage }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                             </td>
                             <td style="text-align: right;padding-right: 14px;">
                                 @lang('sales_bills.Total tax')
@@ -403,7 +403,7 @@
                         <tr
                             style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 40px !important; text-align: center;">
                             <td dir="rtl">
-                                {{ $totalSum }} <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+                                {{ $totalSum }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                             </td>
                             <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
                         </tr>
@@ -412,7 +412,7 @@
                             style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 40px !important; text-align: center;background: #222751;color:white;">
                             <td dir="rtl">
                                 {{ floatval($after_total_all) }} <img src="{{ asset('images/Sr_coin.svg') }}"
-                                    width="5%">
+                                    width="15px">
                             </td>
                             <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total including tax') </td>
                         </tr>

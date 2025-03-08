@@ -64,8 +64,7 @@
                             </div>
                         </div>
                         <div class="">
-                            <button class="btn btnn  btn-warning py-1 px-3"
-                                     type="submit">
+                            <button class="btn btnn  btn-warning py-1 px-3" type="submit">
                                 <i class="fa fa-check"></i>
                                 عرض التقرير
                             </button>
@@ -193,7 +192,7 @@
                             <span class="col-lg-4 col-sm-12 alert alert-secondary alert-sm mr-4">
                                 اجمالى ارصدة الخزن
                                 {{ floatval($safes_balances) }} <img src="{{ asset('images/Sr_coin.svg') }}"
-                                    width="5%">
+                                    width="15px">
                             </span>
                         </div>
                         <div class="clearfix"></div>

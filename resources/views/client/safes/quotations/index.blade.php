@@ -258,7 +258,7 @@
                                 <span class="badge badge-success p-1 font-weight-bold">
                                     اجمالى اسعار كل العروض
                                     ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}"
-                                        width="5%">
+                                        width="15px">
                                 </span>
                             </div>
                         @else

@@ -114,19 +114,19 @@
     <div class="alert alert-dark alert-sm text-center">
         <div class="pull-right col-lg-6">
             الاجمالى قبل الخصم والضريبة
-            {{ round($total, 2) }} <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+            {{ round($total, 2) }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
         </div>
         <div class="pull-left col-lg-6">
             اجمالى الفاتورة بعد الخصم والضريبة
-            {{ round($after_total, 2) }} <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+            {{ round($after_total, 2) }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
         </div>
         <div class="pull-left col-lg-6">
             مجموع الخصم
-            {{ round($saleBill->total_discount, 2) }} <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+            {{ round($saleBill->total_discount, 2) }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
         </div>
         <div class="pull-left col-lg-6">
             مجموع الضرائب
-            {{ round($saleBill->total_tax, 2) }} <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+            {{ round($saleBill->total_tax, 2) }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
         </div>
         <div class="clearfix"></div>
     </div>
