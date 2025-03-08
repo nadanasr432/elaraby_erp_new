@@ -11,7 +11,7 @@
         color: #444;
     }
 
-     
+
 
     .bill_details {
         margin-top: 30px !important;
@@ -114,19 +114,19 @@
     <div class="alert alert-dark alert-sm text-center">
         <div class="pull-right col-lg-6">
             الاجمالى قبل الخصم والضريبة
-            {{ round($total, 2) }} {{ $currency }}
+            {{ round($total, 2) }} <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
         </div>
         <div class="pull-left col-lg-6">
             اجمالى الفاتورة بعد الخصم والضريبة
-            {{ round($after_total, 2) }} {{ $currency }}
+            {{ round($after_total, 2) }} <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
         </div>
         <div class="pull-left col-lg-6">
             مجموع الخصم
-            {{ round($saleBill->total_discount, 2) }} {{ $currency }}
+            {{ round($saleBill->total_discount, 2) }} <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
         </div>
         <div class="pull-left col-lg-6">
             مجموع الضرائب
-            {{ round($saleBill->total_tax, 2) }} {{ $currency }}
+            {{ round($saleBill->total_tax, 2) }} <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
         </div>
         <div class="clearfix"></div>
     </div>
@@ -244,8 +244,8 @@
                             <label> المبلغ المدفوع <span class="text-danger">*</span></label>
                             <input required class="form-control" name="amount" id="amount" type="text"
                                 value="{{ $saleBill->final_total - $saleBill->paid }}" dir="ltr">
-                            <input required class="form-control" name="outer_client_id" hidden id="outer_client_id" type="text"
-                                value="{{ $saleBill->outer_client_id }}" dir="ltr">
+                            <input required class="form-control" name="outer_client_id" hidden id="outer_client_id"
+                                type="text" value="{{ $saleBill->outer_client_id }}" dir="ltr">
                         </div>
                         <div class="col-md-4">
                             <label> طريقة الدفع <span class="text-danger">*</span></label>

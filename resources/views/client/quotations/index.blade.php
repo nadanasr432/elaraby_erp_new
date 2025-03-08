@@ -143,11 +143,11 @@
                                                 $quotation_discount_type = '';
                                                 $quotation_extra_value = 0;
                                                 $quotation_extra_type = '';
-
+                                                
                                                 foreach ($extras as $key) {
                                                     // Ensure the value is a number
                                                     $value = floatval($key->value);
-
+                                                
                                                     if ($key->action == 'discount') {
                                                         if ($key->action_type == 'pound') {
                                                             $quotation_discount_value = $value;
@@ -166,32 +166,32 @@
                                                         }
                                                     }
                                                 }
-
+                                                
                                                 if ($extras->isEmpty()) {
                                                     $quotation_discount_value = 0;
                                                     $quotation_extra_value = 0;
                                                     $quotation_discount_type = 'pound';
                                                     $quotation_extra_type = 'pound';
                                                 }
-
+                                                
                                                 // Calculate the extra value if it's a percentage
                                                 if ($quotation_extra_type == 'percent') {
                                                     $quotation_extra_value = ($quotation_extra_value / 100) * $sum;
                                                 }
-
+                                                
                                                 // Calculate the discount value if it's a percentage
                                                 if ($quotation_discount_type == 'percent') {
                                                     $quotation_discount_value = ($quotation_discount_value / 100) * $sum;
                                                 }
-
+                                                
                                                 // Calculate the total after applying extras and discounts
                                                 $after_discount = $sum - $quotation_discount_value + $quotation_extra_value;
-
+                                                
                                                 // Calculate the tax value added
                                                 $tax_value_added = $company->tax_value_added;
                                                 $percentage = ($tax_value_added / 100) * $after_discount;
                                                 $after_total = $after_discount + $percentage;
-
+                                                
                                                 echo floatval($after_total) . ' ' . $currency;
                                                 ?>
                                                 <?php $total += floatval($after_total); ?>
@@ -210,8 +210,7 @@
                                                         </svg>
                                                     </button>
                                                     <div class="dropdown-menu p-0" aria-labelledby="dropdownMenuButton"
-                                                        x-placement="bottom-start"
-                                                        style="top: 0px; right: -120px; ">
+                                                        x-placement="bottom-start" style="top: 0px; right: -120px; ">
                                                         <!--SHOW--->
                                                         <a href="{{ route('client.quotations.view', $quotation->quotation_number) }}"
                                                             class="dropdown-item" target="_blank"
@@ -259,7 +258,7 @@
                                                                     d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152V424c0 48.6 39.4 88 88 88H360c48.6 0 88-39.4 88-88V312c0-13.3-10.7-24-24-24s-24 10.7-24 24V424c0 22.1-17.9 40-40 40H88c-22.1 0-40-17.9-40-40V152c0-22.1 17.9-40 40-40H200c13.3 0 24-10.7 24-24s-10.7-24-24-24H88z">
                                                                 </path>
                                                             </svg>
-                                                           تحويل لفاتورة مبيعات
+                                                            تحويل لفاتورة مبيعات
                                                         </a>
 
                                                         <!--DELETE--->
@@ -287,10 +286,12 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            <div class="mt-3 mb-2" >
-                                <span class="badge  p-1 font-weight-bold"style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
+                            <div class="mt-3 mb-2">
+                                <span
+                                    class="badge  p-1 font-weight-bold"style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
                                     @lang('sales_bills.Total prices of all offers')
-                                    ( {{ floatval($total) }} ) {{ $currency }}
+                                    ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}"
+                                        width="5%">
                                 </span>
                             </div>
                         @else

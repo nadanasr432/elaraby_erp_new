@@ -281,11 +281,11 @@
                             <tr class="even"
                                 style="font-size: 16px !important; height: 40px !important; text-align: center;">
                                 <td class="borderLeftH">{{ $prodTax + $product->quantity_price }}
-                                    </td>
-                                <td class="borderLeftH">{{ $prodTax }} 
+                                </td>
+                                <td class="borderLeftH">{{ $prodTax }}
                                 </td>
                                 <td class="borderLeftH" dir="rtl">
-                                    {{ $product->product_price }} 
+                                    {{ $product->product_price }}
                                 </td>
                                 <td class="borderLeftH" dir="rtl">
                                     {{ $product->quantity }}
@@ -295,10 +295,11 @@
 
                                 </td>
                                 <td class="borderLeftH" dir="rtl">
-                                    {{ $product->product_price }} 
+                                    {{ $product->product_price }}
                                 </td>
                                 <td class="borderLeftH" style="direction: rtl; unicode-bidi: embed;">
-                                   <div class="text-center" style="text-align: start !important;">{!! $product->product?->description !!}</div>
+                                    <div class="text-center" style="text-align: start !important;">
+                                        {!! $product->product?->description !!}</div>
                                 </td>
 
                                 <td class="borderLeftH">{{ $product->product?->product_name }}</td>
@@ -320,7 +321,7 @@
                         <tr class="even"
                             style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 14px !important; height: 40px !important; text-align: center;">
                             <td dir="rtl">
-                                {{ $discount_value }} {{ $company->extra_settings->currency }}
+                                {{ $discount_value }} <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                             </td>
                             <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Discount')</td>
                         </tr>
@@ -328,7 +329,8 @@
                         <tr
                             style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 40px !important; text-align: center;">
                             <td dir="rtl">
-                                {{ $totalQuotaitonPrice }} {{ $company->extra_settings->currency }}
+                                {{ $totalQuotaitonPrice }} <img src="{{ asset('images/Sr_coin.svg') }}"
+                                    width="5%">
                             </td>
                             <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
                         </tr>
@@ -337,7 +339,7 @@
                         <tr class="even"
                             style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 14px !important; height: 40px !important; text-align: center;">
                             <td dir="rtl">
-                                {{ $taxValue }} {{ $company->extra_settings->currency }}
+                                {{ $taxValue }} <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                             </td>
                             <td style="text-align: right;padding-right: 14px;">
                                 @lang('sales_bills.Total tax')
@@ -348,7 +350,8 @@
                         <tr
                             style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 40px !important; text-align: center;background: #222751;color:white;">
                             <td dir="rtl">
-                                {{ $totalQuotaitonPrice + $taxValue }} {{ $company->extra_settings->currency }}
+                                {{ $totalQuotaitonPrice + $taxValue }} <img src="{{ asset('images/Sr_coin.svg') }}"
+                                    width="5%">
                             </td>
                             <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total including tax') </td>
                         </tr>
