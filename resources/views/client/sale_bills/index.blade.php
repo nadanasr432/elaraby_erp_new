@@ -93,8 +93,7 @@
                                 </span>
                                 {{ __('sidebar.Add a new sales invoice') }}
                             </a>
-                            <a onclick="history.back()"
-                                class="btn pull-left text-white d-flex align-items-center ml-1"
+                            <a onclick="history.back()" class="btn pull-left text-white d-flex align-items-center ml-1"
                                 style="height: 37px; font-size: 11px !important; background-color: #ec6880;">
                                 <span
                                     style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
@@ -156,7 +155,8 @@
                                                 <td>{{ $sale_bill->store?->store_name ?? ' ' }}</td>
                                                 <td>
                                                     @php $total += $sale_bill->final_total; @endphp
-                                                    {{ $sale_bill->final_total }} {{ $company->extra_settings->currency }}
+                                                    {{ $sale_bill->final_total }} <img
+                                                        src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                                                 </td>
                                                 <td>{{ $sale_bill->elements->count() }}</td>
                                                 <td>
@@ -179,8 +179,7 @@
                                                             </svg>
                                                         </button>
                                                         <div class="dropdown-menu p-0" aria-labelledby="dropdownMenuButton"
-                                                            x-placement="bottom-start" style="right: -80px"
-                                                            >
+                                                            x-placement="bottom-start" style="right: -80px">
                                                             <!--SHOW--->
                                                             <a href="{{ route('client.sale_bills.print', $sale_bill->token) }}"
                                                                 class="dropdown-item" target="_blank"
@@ -221,7 +220,7 @@
 
                                                             <script>
                                                                 function confirmDelete() {
-                                                                       return confirm("@lang('main.delete_confirm')");
+                                                                    return confirm("@lang('main.delete_confirm')");
                                                                 }
                                                             </script>
 
@@ -239,9 +238,10 @@
                     </div>
                     <hr>
                     <div class="mt-1 mb-1">
-                        <span class="badge  p-1 font-weight-bold"style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
+                        <span
+                            class="badge  p-1 font-weight-bold"style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
                             {{ __('sidebar.Total billing prices') }}
-                            ( {{ floatval($total) }} ) {{ $company->extra_settings->currency }}
+                            ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                         </span>
                     </div>
 

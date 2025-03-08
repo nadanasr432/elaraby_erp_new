@@ -590,16 +590,18 @@ class PurchaseOrderController extends Controller
             $total = array_sum($sum);
             $percentage = ($tax_value_added / 100) * $total;
             $after_total = $total + $percentage;
+            $image = "<img src='" . asset('images/Sr_coin.svg') . "' width='3%' style='vertical-align: middle;'>";
+
             echo "
             <div class='clearfix'></div>
             <div class='alert alert-dark alert-sm text-center'>
                 <div class='pull-right col-lg-6 '>
                      اجمالى امر الشراء
-                    " . $total . " " . $currency . "
+                    " . $total . " " . $image . "
                 </div>
                 <div class='pull-left col-lg-6 '>
                     اجمالى امر الشراء بعد القيمة المضافة
-                    " . $after_total . " " . $currency . "
+                    " . $after_total . " " . $image . "
                 </div>
                 <div class='clearfix'></div>
             </div>";
@@ -681,6 +683,8 @@ class PurchaseOrderController extends Controller
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
         $currency = $extra_settings->currency;
         $tax_value_added = $company->tax_value_added;
+        $image = "<img src='" . asset('images/Sr_coin.svg') . "' width='3%' style='vertical-align: middle;'>";
+
         $sum = array();
         if (!$elements->isEmpty()) {
             foreach ($elements as $element) {
@@ -724,7 +728,7 @@ class PurchaseOrderController extends Controller
             <div class='clearfix'></div>
             <div class='alert alert-secondary alert-sm text-center'>
                    اجمالى امر الشراء النهائى بعد الضريبة والشحن والخصم :
-                    " . $after_total . " " . $currency . "
+                    " . $after_total . " " . $image . "
             </div>";
             $purchase_order_extra = PurchaseOrderExtra::where('purchase_order_id', $purchase_order->id)
                 ->where('action', 'discount')->first();
@@ -758,6 +762,8 @@ class PurchaseOrderController extends Controller
         $currency = $extra_settings->currency;
         $tax_value_added = $company->tax_value_added;
         $sum = array();
+        $image = "<img src='" . asset('images/Sr_coin.svg') . "' width='3%' style='vertical-align: middle;'>";
+
         if (!$elements->isEmpty()) {
             foreach ($elements as $element) {
                 array_push($sum, $element->quantity_price);
@@ -800,7 +806,7 @@ class PurchaseOrderController extends Controller
             <div class='clearfix'></div>
             <div class='alert alert-secondary alert-sm text-center'>
                    اجمالى امر الشراء النهائى بعد الضريبة والشحن والخصم :
-                    " . $after_total . " " . $currency . "
+                    " . $after_total . " " . $image . "
             </div>";
             $purchase_order_extra = PurchaseOrderExtra::where('purchase_order_id', $purchase_order->id)
                 ->where('action', 'extra')->first();

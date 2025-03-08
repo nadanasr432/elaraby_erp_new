@@ -133,37 +133,40 @@
                                         <!-- "From Date" Field -->
                                         <div class="flex-fill col-md-6">
                                             <label for="fromDate" class="form-label mb-1">{{ __('main.from') }}</label>
-                                            <input type="date" name="from" class="form-control" value="{{ request('from') }}" id="fromDate">
+                                            <input type="date" name="from" class="form-control"
+                                                value="{{ request('from') }}" id="fromDate">
                                         </div>
-                            
+
                                         <!-- "To Date" Field -->
                                         <div class="flex-fill col-md-6">
                                             <label for="toDate" class="form-label mb-1">{{ __('main.to') }}</label>
-                                            <input type="date" name="to" class="form-control" value="{{ request('to') }}" id="toDate">
+                                            <input type="date" name="to" class="form-control"
+                                                value="{{ request('to') }}" id="toDate">
                                         </div>
                                     </div>
-                            
+
                                     <!-- Buttons (In a Separate Row) -->
                                     <div class=" col-12 d-flex flex-column flex-md-row gap-2 mt-2">
                                         <!-- Save Button -->
                                         <button type="submit" class="btn btn-warning w-md-auto mb-1 mx-1 px-4  ">
                                             {{ __('main.save') }}
                                         </button>
-                            
+
                                         <!-- Export Button -->
                                         <a href="{{ route('sale_bills.export.excel', [
                                             'from' => request('from', 'default_from_value'),
                                             'to' => request('to', 'default_to_value'),
-                                        ]) }}" class=" btn btn-warning px-2 mx-1 w-md-auto d-flex justify-content-center align-items-center">
+                                        ]) }}"
+                                            class=" btn btn-warning px-2 mx-1 w-md-auto d-flex justify-content-center align-items-center">
                                             تصدير كشيت إكسيل
                                         </a>
                                     </div>
                                 </form>
                             </div>
-                            
-                            
-                            
-                            
+
+
+
+
                             <div id="example1_wrapper" class="col-lg-4 dataTables_wrapper dt-bootstrap4 no-footer ">
 
                                 <div id="example1_processing" class="dataTables_processing card" style="display: none;">
@@ -217,7 +220,8 @@
                                                         $total += $sale_bill->final_total;
                                                         $totalTax += $sale_bill->total_tax;
                                                     @endphp
-                                                    {{ $sale_bill->final_total }} {{ $company->extra_settings->currency }}
+                                                    {{ $sale_bill->final_total }} <img
+                                                        src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                                                 </td>
                                                 <td>{{ $sale_bill->elements->count() }}</td>
                                                 <td>
@@ -240,8 +244,7 @@
                                                             </svg>
                                                         </button>
                                                         <div class="dropdown-menu p-0" aria-labelledby="dropdownMenuButton"
-                                                            x-placement="bottom-start"
-                                                           >
+                                                            x-placement="bottom-start">
 
                                                             <!--SHOW--->
                                                             <a href="{{ route('sale-bill-show1', $sale_bill->id) }}"
@@ -271,8 +274,8 @@
                                                                 {{ __('sidebar.edit or return') }}
                                                             </a>
                                                             <a href="{{ route('client.sale_bills.print', [$sale_bill->token, 9, 3, 0]) }}"
-                                                                class="dropdown-item"
-                                                                printColor="2" isMoswada="0" invoiceType='9'
+                                                                class="dropdown-item" printColor="2" isMoswada="0"
+                                                                invoiceType='9'
                                                                 style="font-size: 12px  !important; padding: 9px 11px;border-bottom: 1px solid #2d2d2d2d">
                                                                 <svg style="width: 15px; fill: #1956ad;display: inline;margin-left: 5px;"
                                                                     xmlns="http://www.w3.org/2000/svg"
@@ -317,13 +320,14 @@
                         <div>
                             <span class="badge text-dark p-1 font-weight-bold">
                                 {{ __('sidebar.Total billing prices') }}
-                                ( {{ floatval($total) }} ) {{ $company->extra_settings->currency }}
+                                ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                             </span>
                         </div>
                         <div>
                             <span class="badge text-dark p-1 font-weight-bold">
                                 {{ __('sidebar.Total billing taxes') }}
-                                ( {{ floatval($totalTax) }} ) {{ $company->extra_settings->currency }}
+                                ( {{ floatval($totalTax) }} ) <img src="{{ asset('images/Sr_coin.svg') }}"
+                                    width="5%">
                             </span>
                         </div>
                     </div>

@@ -1,9 +1,10 @@
 @extends('client.layouts.app-main')
 <style>
-    .content-body{
+    .content-body {
         background-color: white;
         padding: 5px;
     }
+
     .bootstrap-select {
         width: 75% !important;
         height: 40px !important;
@@ -17,11 +18,12 @@
         height: 30px !important;
         padding: 5px !important;
     }
+
     .dropdown-toggle::after {
 
-    position: absolute !important;
-    
-}
+        position: absolute !important;
+
+    }
 </style>
 @section('content')
     @if (session('success'))
@@ -31,48 +33,54 @@
         </div>
     @endif
 
-    <h4  class="alert  text-end no-print custom-title fw-bold"> {{ __('sidebar.previous-purchases-invoices') }} </h4>
+    <h4 class="alert  text-end no-print custom-title fw-bold"> {{ __('sidebar.previous-purchases-invoices') }} </h4>
     <div class=" row ">
         <div class="col-lg-6  no-print">
             <form action="{{ route('client.buy_bills.filter.key') }}" method="POST">
                 @csrf
                 @method('POST')
                 <div class="form-group">
-                    <label class="px-1" style="display:block;" for="bill_id">{{ __('sales_bills.invoice-number') }}</label>
+                    <label class="px-1" style="display:block;"
+                        for="bill_id">{{ __('sales_bills.invoice-number') }}</label>
                     <div class="d-flex">
-                        <select required class="selectpicker form-control mx-1" data-live-search="true" title="{{ __('main.write-or-choose') }}"
-                        data-style="btn-third" name="buy_bill_id" id="buy_bill_id">
-                        @foreach ($buy_bills as $buy_bill)
-                            <option title="{{ $buy_bill->buy_bill_number }}" @if (isset($buy_bill_k) && $buy_bill->id == $buy_bill_k->id) selected @endif
-                                value="{{ $buy_bill->id }}">{{ $buy_bill->buy_bill_number }}</option>
-                        @endforeach
-                    </select>
-                    <button type="submit" class="btn btn-md btn-warning text-center px-2"
-                        style="display: inline !important; float: left !important;" id="by_buy_bill_id"><i
-                            class="fa fa-search"></i>
-                    </button>
+                        <select required class="selectpicker form-control mx-1" data-live-search="true"
+                            title="{{ __('main.write-or-choose') }}" data-style="btn-third" name="buy_bill_id"
+                            id="buy_bill_id">
+                            @foreach ($buy_bills as $buy_bill)
+                                <option title="{{ $buy_bill->buy_bill_number }}"
+                                    @if (isset($buy_bill_k) && $buy_bill->id == $buy_bill_k->id) selected @endif value="{{ $buy_bill->id }}">
+                                    {{ $buy_bill->buy_bill_number }}</option>
+                            @endforeach
+                        </select>
+                        <button type="submit" class="btn btn-md btn-warning text-center px-2"
+                            style="display: inline !important; float: left !important;" id="by_buy_bill_id"><i
+                                class="fa fa-search"></i>
+                        </button>
                     </div>
                 </div>
             </form>
         </div>
-    
+
         <div class="col-lg-6 no-print">
             <form action="{{ route('client.buy_bills.filter.supplier') }}" method="POST">
                 @csrf
                 @method('POST')
                 <div class="form-group">
-                    <label class="px-1" style="display:block;" for="supplier_id">{{ __('suppliers.supplier-name') }}</label>
+                    <label class="px-1" style="display:block;"
+                        for="supplier_id">{{ __('suppliers.supplier-name') }}</label>
                     <div class="d-flex">
-                        <select required class="selectpicker form-control mx-1" data-live-search="true" title="{{ __('main.write-or-choose') }}"
-                        data-style="btn-third" name="supplier_id" id="supplier_id">
-                        @foreach ($suppliers as $supplier)
-                            <option title="{{ $supplier->supplier_name }}" @if (isset($supplier_k) && $supplier->id == $supplier_k->id) selected @endif
-                                value="{{ $supplier->id }}">{{ $supplier->supplier_name }}</option>
-                        @endforeach
+                        <select required class="selectpicker form-control mx-1" data-live-search="true"
+                            title="{{ __('main.write-or-choose') }}" data-style="btn-third" name="supplier_id"
+                            id="supplier_id">
+                            @foreach ($suppliers as $supplier)
+                                <option title="{{ $supplier->supplier_name }}"
+                                    @if (isset($supplier_k) && $supplier->id == $supplier_k->id) selected @endif value="{{ $supplier->id }}">
+                                    {{ $supplier->supplier_name }}</option>
+                            @endforeach
                         </select>
                         <button type="submit" class="btn btn-md btn-warning text-center px-2"
                             style="display: inline !important; float: left !important;" id="by_supplier_id"><i
-                            class="fa fa-search"></i>
+                                class="fa fa-search"></i>
                         </button>
                     </div>
                 </div>
@@ -83,41 +91,47 @@
                 @csrf
                 @method('POST')
                 <div class="form-group">
-                    <label class="px-1" style="display:block;" for="code_universal">{{ __('sales_bills.product-code') }}</label>
+                    <label class="px-1" style="display:block;"
+                        for="code_universal">{{ __('sales_bills.product-code') }}</label>
                     <div class="d-flex">
-                        <select required class="selectpicker form-control mx-1" data-live-search="true" title="{{ __('main.write-or-choose') }}"
-                        data-style="btn-third" name="code_universal" id="code_universal">
-                        @foreach ($products as $product)
-                            <option title="{{ $product->code_universal }}" @if (isset($product_k) && $product->id == $product_k->id) selected @endif
-                                value="{{ $product->id }}">{{ $product->code_universal }}</option>
-                        @endforeach
-                    </select>
-                    <button type="submit" class="btn btn-md btn-warning text-center px-2"
-                        style="display: inline !important; float: left !important;"
-                        id="by_code_universal"><i class="fa fa-search"></i>
-                    </button>
+                        <select required class="selectpicker form-control mx-1" data-live-search="true"
+                            title="{{ __('main.write-or-choose') }}" data-style="btn-third" name="code_universal"
+                            id="code_universal">
+                            @foreach ($products as $product)
+                                <option title="{{ $product->code_universal }}"
+                                    @if (isset($product_k) && $product->id == $product_k->id) selected @endif value="{{ $product->id }}">
+                                    {{ $product->code_universal }}</option>
+                            @endforeach
+                        </select>
+                        <button type="submit" class="btn btn-md btn-warning text-center px-2"
+                            style="display: inline !important; float: left !important;" id="by_code_universal"><i
+                                class="fa fa-search"></i>
+                        </button>
                     </div>
                 </div>
             </form>
         </div>
-    
+
         <div class="col-lg-6  no-print">
             <form action="{{ route('client.buy_bills.filter.product') }}" method="POST">
                 @csrf
                 @method('POST')
                 <div class="form-group">
-                    <label class="px-1" style="display:block;" for="product_name">{{ __('sales_bills.product-name') }}</label>
+                    <label class="px-1" style="display:block;"
+                        for="product_name">{{ __('sales_bills.product-name') }}</label>
                     <div class="d-flex">
-                        <select required class="selectpicker form-control mx-1" data-live-search="true" title="{{ __('main.write-or-choose') }}"
-                        data-style="btn-third" name="product_name" id="product_name">
-                        @foreach ($products as $product)
-                            <option title="{{ $product->product_name }}" @if (isset($product_k) && $product->id == $product_k->id) selected @endif
-                                value="{{ $product->id }}">{{ $product->product_name }}</option>
-                        @endforeach
-                    </select>
-                    <button type="submit" class="btn btn-md btn-warning text-center px-2"
-                        style="display: inline !important; float: left !important;"
-                        id="by_product_name"><i class="fa fa-search"></i></button>
+                        <select required class="selectpicker form-control mx-1" data-live-search="true"
+                            title="{{ __('main.write-or-choose') }}" data-style="btn-third" name="product_name"
+                            id="product_name">
+                            @foreach ($products as $product)
+                                <option title="{{ $product->product_name }}"
+                                    @if (isset($product_k) && $product->id == $product_k->id) selected @endif value="{{ $product->id }}">
+                                    {{ $product->product_name }}</option>
+                            @endforeach
+                        </select>
+                        <button type="submit" class="btn btn-md btn-warning text-center px-2"
+                            style="display: inline !important; float: left !important;" id="by_product_name"><i
+                                class="fa fa-search"></i></button>
                     </div>
                 </div>
             </form>
@@ -128,17 +142,18 @@
                 <div class="form-group">
                     <label class="px-1" style="display:block;" for="store_id">{{ __('sales_bills.store-name') }}</label>
                     <div class="d-flex">
-                        <select required class="selectpicker form-control mx-1" data-live-search="true" title="{{ __('main.write-or-choose') }}"
-                        data-style="btn-third" name="store_id" id="store_id">
-                        @foreach ($stores as $store)
-                            <option title="{{ $store->store_name }}" @if (isset($store_k) && $store->id == $store_k->id) selected @endif
-                                value="{{ $store->id }}">{{ $store->store_name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <button type="submit" class="btn btn-warning text-center px-2"
-                        style="display: inline !important; float: left !important;"
-                        id="by_product_name"><i class="fa fa-search"></i></button>
+                        <select required class="selectpicker form-control mx-1" data-live-search="true"
+                            title="{{ __('main.write-or-choose') }}" data-style="btn-third" name="store_id"
+                            id="store_id">
+                            @foreach ($stores as $store)
+                                <option title="{{ $store->store_name }}" @if (isset($store_k) && $store->id == $store_k->id) selected @endif
+                                    value="{{ $store->id }}">{{ $store->store_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <button type="submit" class="btn btn-warning text-center px-2"
+                            style="display: inline !important; float: left !important;" id="by_product_name"><i
+                                class="fa fa-search"></i></button>
                     </div>
                 </div>
             </form>
@@ -434,7 +449,7 @@
                                         $buy_bill_extra_value = ($buy_bill_extra_value / 100) * $sum;
                                     }
                                     $after_discount = $sum + $buy_bill_extra_value;
-
+                                    
                                     if ($buy_bill_discount_type == 'percent') {
                                         $buy_bill_discount_value = ($buy_bill_discount_value / 100) * $sum;
                                     }
@@ -484,7 +499,7 @@
 
                     <span class="alert alert-secondary alert-sm">
                         اجمالى اسعار كل الفواتير لهذا المورد
-                        ( {{ floatval($total) }} ) {{ $currency }}
+                        ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                     </span>
                 </div>
             @else
@@ -559,7 +574,7 @@
                                         $buy_bill_extra_value = ($buy_bill_extra_value / 100) * $sum;
                                     }
                                     $after_discount = $sum + $buy_bill_extra_value;
-
+                                    
                                     if ($buy_bill_discount_type == 'percent') {
                                         $buy_bill_discount_value = ($buy_bill_discount_value / 100) * $sum;
                                     }
@@ -609,7 +624,7 @@
 
                     <span class="alert alert-secondary alert-sm">
                         اجمالى اسعار كل الفواتير لهذا المورد
-                        ( {{ floatval($total) }} ) {{ $currency }}
+                        ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                     </span>
                 </div>
             @else
@@ -683,7 +698,7 @@
                                         $buy_bill_extra_value = ($buy_bill_extra_value / 100) * $sum;
                                     }
                                     $after_discount = $sum + $buy_bill_extra_value;
-
+                                    
                                     if ($buy_bill_discount_type == 'percent') {
                                         $buy_bill_discount_value = ($buy_bill_discount_value / 100) * $sum;
                                     }
@@ -733,7 +748,7 @@
 
                     <span class="alert alert-secondary alert-sm">
                         اجمالى اسعار كل الفواتير لهذا المنتج
-                        ( {{ floatval($total) }} ) {{ $currency }}
+                        ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                     </span>
                 </div>
             @else
@@ -805,7 +820,7 @@
                                         $buy_bill_extra_value = ($buy_bill_extra_value / 100) * $sum;
                                     }
                                     $after_discount = $sum + $buy_bill_extra_value;
-
+                                    
                                     if ($buy_bill_discount_type == 'percent') {
                                         $buy_bill_discount_value = ($buy_bill_discount_value / 100) * $sum;
                                     }
@@ -855,7 +870,7 @@
 
                     <span class="alert alert-secondary alert-sm">
                         اجمالى اسعار كل الفواتير
-                        ( {{ floatval($total) }} ) {{ $currency }}
+                        ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                     </span>
                 </div>
             @else

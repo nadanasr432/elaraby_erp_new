@@ -670,7 +670,7 @@
                         <td>{{ $discountNote ? $discountNote . ' || ' : '' }}
                             {{-- @if ($discount->action_type == 'poundAfterTax') --}}
                             ({{ $sale_bill->total_discount }})
-                            {{ $currency }}
+                            <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                         </td>
                     </tr>
                     <tr style="font-weight: bold;">

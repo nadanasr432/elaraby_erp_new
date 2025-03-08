@@ -626,10 +626,10 @@
             <?php
             if ($sale_bill->company_id == 20) {
                 echo "<p style='text-align: justify; direction: rtl; font-size: 12px; padding: 11px; background: #f3f3f3; margin: 2px 10px; border-radius: 6px; border: 1px solid #2d2d2d10;'>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </p>";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </p>";
             }
             ?>
             @if (app()->getLocale() == 'en')
@@ -652,10 +652,10 @@
                                         {{-- @if ($realtotal > 0)
                                             @if ($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
                                                 ({{ $discount2->value }}) --}}
-                                            ({{ $sale_bill->total_discount }})
+                                        ({{ $sale_bill->total_discount }})
 
-                                                {{ $currency }}
-                                            {{-- @elseif($discount2)
+                                        <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+                                        {{-- @elseif($discount2)
                                                 ({{ $discount2->value }}%)
                                             @endif
                                         @endif --}}
@@ -664,7 +664,7 @@
                                                 ({{ ($discountValue / $realtotal) * 100 }}%)
                                                 {{ $discountValue }}
                                             @endif
-                                            {{ $currency }}
+                                            <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                                         @endif --}}
 
                                     </td>
@@ -679,12 +679,12 @@
                                         @if ($realtotal > 0)
                                             ({{ $realtotal }})
 
-                                            {{ $currency }}
+                                            <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                                         @endif
                                     @else --}}
                                     {{-- @if ($realtotal > 0) --}}
                                     {{ number_format($sale_bill->final_total - $sale_bill->total_tax, 2) }}
-                                    {{ $currency }}
+                                    <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                                     {{-- @endif --}}
 
                                     {{-- @endif --}}
@@ -708,9 +708,10 @@
                                     ({{ $company->tax_value_added ?? '0' }}%)
                                 </td>
                                 {{-- @if ($company->tax_value_added && $company->tax_value_added != 0) --}}
-                                <td dir="rtl">{{ $sale_bill->total_tax }} {{ $currency }} </td>
+                                <td dir="rtl">{{ $sale_bill->total_tax }} <img
+                                        src="{{ asset('images/Sr_coin.svg') }}" width="5%"> </td>
                                 {{-- @else
-                                    <td dir="rtl">0 {{ $currency }} </td>
+                                    <td dir="rtl">0 <img src="{{ asset('images/Sr_coin.svg') }}" width="5%"> </td>
                                 @endif --}}
                             </tr>
 
@@ -725,18 +726,18 @@
                                 {{-- @if ($discount->action_type == 'poundAfterTax') --}}
                                 <td dir="rtl">
                                     {{ $sale_bill->final_total }}
-                                    {{ $currency }}
+                                    <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                                 </td>
                                 {{-- @else
                                         <td dir="rtl">
                                             {{ $sumWithTax }}
-                                            {{ $currency }}
+                                            <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                                         </td>
                                     @endif --}}
                                 {{-- @else
                                     <td dir="rtl">
                                         {{ $sale_bill->final_total - $sale_bill->total_tax }}
-                                        {{ $currency }}
+                                        <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                                     </td>
                                 @endif --}}
                             </tr>
@@ -746,7 +747,8 @@
                                 <td style="text-align: left;padding-right: 14px;">
                                     @lang('sales_bills.The amount paid')
                                 </td>
-                                <td dir="rtl">{{ $sale_bill->paid }} {{ $currency }}</td>
+                                <td dir="rtl">{{ $sale_bill->paid }} <img
+                                        src="{{ asset('images/Sr_coin.svg') }}" width="5%"></td>
 
                             </tr>
                             <tr
@@ -755,7 +757,8 @@
                                     @lang('sales_bills.Residual')
                                 </td>
                                 <td dir="rtl">
-                                    {{ $sale_bill->final_total - $sale_bill->paid }} {{ $currency }}
+                                    {{ $sale_bill->final_total - $sale_bill->paid }} <img
+                                        src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                                 </td>
 
                             </tr>
@@ -826,7 +829,7 @@
                                         @if ($realtotal > 0)
                                             {{-- @if ($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound')) --}}
                                             ({{ $sale_bill->total_discount }})
-                                            {{ $currency }}
+                                            <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                                             {{-- @elseif($discount2)
                                                 ({{ $discount2->value }}%)
                                             @endif --}}
@@ -836,7 +839,7 @@
                                                 ({{ ($discountValue / $realtotal) * 100 }}%)
                                                 {{ $discountValue }}
                                             @endif
-                                            {{ $currency }}
+                                            <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                                         @endif --}}
                                     </td>
                                     <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Discount')</td>
@@ -850,11 +853,11 @@
                                     {{-- @if ($realtotal > 0) --}}
                                     ({{ number_format($sale_bill->final_total - $sale_bill->total_tax, 2, '.', '') }})
 
-                                    {{ $currency }}
+                                    <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                                     {{-- @endif --}}
                                     {{-- @else
                                         @if ($realtotal > 0)
-                                            {{ $sale_bill->final_total - $sale_bill->total_tax }} {{ $currency }}
+                                            {{ $sale_bill->final_total - $sale_bill->total_tax }} <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                                         @endif
 
                                     @endif --}}
@@ -875,9 +878,10 @@
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                 {{-- @if ($company->tax_value_added && $company->tax_value_added != 0) --}}
-                                <td dir="rtl">{{ $sale_bill->total_tax }} {{ $currency }} </td>
+                                <td dir="rtl">{{ $sale_bill->total_tax }} <img
+                                        src="{{ asset('images/Sr_coin.svg') }}" width="5%"> </td>
                                 {{-- @else
-                                    <td dir="rtl">0 {{ $currency }} </td>
+                                    <td dir="rtl">0 <img src="{{ asset('images/Sr_coin.svg') }}" width="5%"> </td>
                                 @endif --}}
                                 <td style="text-align: right;padding-right: 14px;">
                                     @lang('sales_bills.Total tax')
@@ -893,25 +897,26 @@
                                     {{-- Apply discount after tax --}}
                                     {{ $sale_bill->final_total }}
 
-                                    {{ $currency }}
+                                    <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                                 </td>
                                 {{-- @else
                                         <td dir="rtl">
                                             {{ $sumWithTax }}
-                                            {{ $currency }}
+                                            <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                                         </td>
                                     @endif --}}
                                 {{-- @else
                                     <td dir="rtl">
                                         {{ $sale_bill->final_total - $sale_bill->total_tax }}
-                                        {{ $currency }}
+                                        <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                                     </td>
                                 @endif --}}
                                 <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.total')</td>
                             </tr>
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: #f8f9fb">
-                                <td dir="rtl">{{ $sale_bill->paid }} {{ $currency }}</td>
+                                <td dir="rtl">{{ $sale_bill->paid }} <img
+                                        src="{{ asset('images/Sr_coin.svg') }}" width="5%"></td>
                                 <td style="text-align: right;padding-right: 14px;">
                                     @lang('sales_bills.The amount paid')
                                 </td>
@@ -919,7 +924,8 @@
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                 <td dir="rtl">
-                                    {{ $sale_bill->final_total - $sale_bill->paid }} {{ $currency }}
+                                    {{ $sale_bill->final_total - $sale_bill->paid }} <img
+                                        src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                                 </td>
                                 <td style="text-align: right;padding-right: 14px;">
                                     @lang('sales_bills.Residual')

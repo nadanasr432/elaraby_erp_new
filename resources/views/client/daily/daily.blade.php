@@ -48,8 +48,7 @@
                                     </div>
                                 </div>
                                 <div class=" text-start">
-                                    <button type="submit" class="btn py-1 px-3 btn-warning"
-                                       id="by_emp_name"><i
+                                    <button type="submit" class="btn py-1 px-3 btn-warning" id="by_emp_name"><i
                                             class="fa fa-search"></i></button>
                                 </div>
                             </form>
@@ -129,12 +128,14 @@
                                                     $percentage = ($tax_value_added / 100) * $after_discount;
                                                     $after_total = $after_discount + $percentage;
                                                     ?>
-                                                    {{ $percentage }} {{ $currency }}
+                                                    {{ $percentage }} <img src="{{ asset('images/Sr_coin.svg') }}"
+                                                        width="5%">
                                                     <?php $taxes = $taxes + $percentage; ?>
                                                 </td>
                                                 <td>فاتورة مبيعات ضريبية</td>
                                                 <td>{{ $sale_bill->company_counter }}</td>
-                                                <td>{{ $sale_bill->final_total }} {{ $currency }}</td>
+                                                <td>{{ $sale_bill->final_total }} <img
+                                                        src="{{ asset('images/Sr_coin.svg') }}" width="5%"></td>
                                                 <td>{{ $sale_bill->created_at }}</td>
                                             </tr>
                                         @endforeach
@@ -187,12 +188,14 @@
                                                     $percentage = ($tax_value_added / 100) * $after_discount;
                                                     $after_total = $after_discount + $percentage;
                                                     ?>
-                                                    {{ $percentage }} {{ $currency }}
+                                                    {{ $percentage }} <img src="{{ asset('images/Sr_coin.svg') }}"
+                                                        width="5%">
                                                     <?php $taxes = $taxes + $percentage; ?>
                                                 </td>
                                                 <td>فاتورة مشتريات ضريبية</td>
                                                 <td>{{ $buy_bill->buy_bill_number }}</td>
-                                                <td>{{ $sale_bill->final_total }} {{ $currency }}</td>
+                                                <td>{{ $sale_bill->final_total }} <img
+                                                        src="{{ asset('images/Sr_coin.svg') }}" width="5%"></td>
                                                 <td>{{ $buy_bill->created_at }}</td>
                                             </tr>
                                         @endforeach
@@ -242,7 +245,8 @@
                                                 </td>
                                                 <td>فاتورة كاشير نقطة بيع</td>
                                                 <td>{{ $pos->id }}</td>
-                                                <td>{{ $sum }} {{ $currency }}</td>
+                                                <td>{{ $sum }} <img src="{{ asset('images/Sr_coin.svg') }}"
+                                                        width="5%"></td>
                                                 <td>{{ $pos->created_at }}</td>
                                             </tr>
                                         @endforeach
@@ -251,9 +255,10 @@
                             </div>
                             <div class="row">
                                 <div class="col-lg-12 text-center">
-                                    <p style="font-size: 17px!important;" class="alert alert-danger alert-md" dir="rtl">
+                                    <p style="font-size: 17px!important;" class="alert alert-danger alert-md"
+                                        dir="rtl">
                                         {{ __('main.taxes-amount') }} :
-                                        {{ $taxes }} {{ $currency }}
+                                        {{ $taxes }} <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                                     </p>
                                 </div>
                             </div>
@@ -384,7 +389,8 @@
                                                     ?>
                                                     <?php $total = $total + $after_total; ?>
                                                 </td>
-                                                <td>{{ $percentage }} {{ $currency }}</td>
+                                                <td>{{ $percentage }} <img src="{{ asset('images/Sr_coin.svg') }}"
+                                                        width="5%"></td>
                                                 <td>{{ $quotation->elements->count() }}</td>
                                                 <th>{{ $quotation->notes }}</th>
                                                 <td class="no-print">
@@ -623,7 +629,8 @@
                                                     ?>
                                                     <?php $total = $total + $after_total; ?>
                                                 </td>
-                                                <td>{{ $percentage }} {{ $currency }}</td>
+                                                <td>{{ $percentage }} <img src="{{ asset('images/Sr_coin.svg') }}"
+                                                        width="5%"></td>
                                                 <td style="min-width: 200px!important;">
                                                     <?php
                                                     $bill_id = $sale_bill->sale_bill_number;
@@ -648,7 +655,7 @@
                                                         $paid = $check->amount;
                                                         $rest = $sale_bill->final_total - $paid;
                                                         echo '<br/>';
-                                                        echo 'مستحق ' .$sale_bill->final_total;
+                                                        echo 'مستحق ' . $sale_bill->final_total;
                                                         echo '<br/>';
                                                         echo 'مدفوع ' . $paid;
                                                         echo '<br/>';
@@ -950,7 +957,8 @@
                                                     ?>
                                                     <?php $total = $total + $after_total; ?>
                                                 </td>
-                                                <td>{{ $percentage }} {{ $currency }}</td>
+                                                <td>{{ $percentage }} <img src="{{ asset('images/Sr_coin.svg') }}"
+                                                        width="5%"></td>
                                                 <td style="min-width: 200px!important;">
                                                     <?php
                                                     $bill_id = $buy_bill->buy_bill_number;
