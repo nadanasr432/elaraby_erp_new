@@ -86,8 +86,8 @@
   width: 220px;
 }
 .bootstrap-select .dropdown-toggle:focus {
-  outline: thin dotted #333333 !important;
-  outline: 5px auto -webkit-focus-ring-color !important;
+  /* outline: thin dotted #333333 !important; */
+  /* outline: 5px auto -webkit-focus-ring-color !important; */
   outline-offset: -2px;
 }
 .bootstrap-select.form-control {

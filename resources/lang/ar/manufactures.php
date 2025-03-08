@@ -17,7 +17,7 @@ return [
     'view' => 'عرض',
     'confirm' => 'تنفيذ التصنيع',
     'cancel' => 'الغاء التصنيع',
-    'choose_product' => 'اختر منتج',
+    'choose_product' => 'قائمه المنتجات',
     'Product Name' => 'اسم المنتج',
     'Price' => 'سعر منتج',
     'Quantity' => 'الكمية',
