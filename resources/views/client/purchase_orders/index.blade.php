@@ -129,11 +129,13 @@
                 <div class="d-flex justify-items-center">
                     <select required class="selectpicker form-control" data-live-search="true"
                         title="{{ __('main.write-or-choose') }}" data-style="btn-third" name="store_id" id="store_id">
+                         @if(isset($stores) && $stores->count())
                         @foreach ($stores as $store)
                             <option title="{{ $store->store_name }}" @if (isset($store_k) && $store->id == $store_k->id) selected @endif
                                 value="{{ $store->id }}">{{ $store->store_name }}
                             </option>
                         @endforeach
+                        @endif
                     </select>
                     <button type="submit" class="btn btn-md btn-warning" id="by_product_name"><i
                             class="fa fa-search"></i></button>
