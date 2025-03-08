@@ -5,7 +5,7 @@
     display: inline-block;
     width: 32px;
     height: 2px;
-    background-color: #ec6880;
+    background-color: #36c7d6;
     align-self: flex-end;
     bottom: 4px;
 
@@ -27,7 +27,7 @@
                             <h5  style="white-space: nowrap" class="alert font-weight-bold m-0 d-flex
                          custom-title align-items-end">{{ __('categories.show-all-categories') }}
                             </h5>
-                            <a class="btn text-white px-2 py-1"style="background-color: #ec6880" href="{{ route('client.categories.create') }}"><i
+                            <a class="btn btnn text-white px-2 py-1"style="background-color: #36c7d6" href="{{ route('client.categories.create') }}"><i
                                     class="fa fa-plus"></i> {{ __('sidebar.add-new-main-category') }} </a>
                             
                         </div>
@@ -54,7 +54,7 @@
                                         <td>{{ ++$i }}</td>
                                         <td>{{ $category->category_name }}</td>
                                         <td>{{ $category->category_type }}</td>
-                                        <td class="d-flex border-0 justify-content-center">
+                                        <td class="d-flex align-items-center border-0 justify-content-center">
                                             @if ($i > 2)
                                                 <a href="{{ route('client.categories.edit', $category->id) }}"
                                                     data-toggle="tooltip"

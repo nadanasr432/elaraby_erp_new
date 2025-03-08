@@ -117,8 +117,8 @@
                                 {{ __('main.main-information') }}
                             </h3>
                             <a onclick="history.back()"
-                                class="btn text-white ml-1 py-1 px-3"
-                                style=" background-color: #ec6880;">
+                                class="btn btnn text-white ml-1 py-1 px-3"
+                                style=" background-color: #36c7d6;">
                                     <span
                                         style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
                                         <svg style="width: 10px;height: 15px;fill: #f5f1f1;margin-top: 1px;"
@@ -244,10 +244,10 @@
 
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 ">
-                            <button class="btn btn-md btn-warning pd-x-20 d-none py-1 px-3 text-white" id="new">إضافة جديد</button>
-                            <button class="btn btn-md text-dark pd-x-20 d-none py-1 px-3" style="background-color: #ECEFF1" type="submit" id="edit">تعديل</button>
-                            <button class="btn btn-md btn-warning pd-x-20 py-1 px-3" type="submit" id="save">حفظ</button>
-                            <a class="btn btn-md btn-danger pd-x-20 d-none py-1 px-3 text-white" id="delete">حذف</a>
+                            <button class="btn btn-md btnn btn-warning pd-x-20 d-none py-1 px-3 text-white" id="new">إضافة جديد</button>
+                            <button class="btn btn-md btnn text-dark pd-x-20 d-none py-1 px-3" style="background-color: #ECEFF1" type="submit" id="edit">تعديل</button>
+                            <button class="btn btnn btn-md btn-warning pd-x-20 py-1 px-3" type="submit" id="save">حفظ</button>
+                            <a class="btn btn-md btn-danger btnn pd-x-20 d-none py-1 px-3 text-white" id="delete">حذف</a>
                         </div>
                     </form>
                 </div>

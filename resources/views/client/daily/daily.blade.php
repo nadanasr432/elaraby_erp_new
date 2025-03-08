@@ -1252,7 +1252,7 @@
                         @endif
                     </div>
                     <div class="clearfix"></div>
-                    <button onclick="window.print();" class="no-print btn btn-warning  py-1 px-3"><i
+                    <button onclick="window.print();" class="no-print btn btnn btn-warning  py-1 px-3"><i
                             class="fa fa-print"></i> طباعة
                     </button>
                     <?php $today = date('Y-m-d'); ?>

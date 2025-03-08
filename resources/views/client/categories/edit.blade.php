@@ -25,7 +25,7 @@
                         <h5 class="alert custom-title">
                             {{ __('categories.edit-category') }}
                         </h5>
-                        <a class="btn btn-sm text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.categories.index') }}">
+                        <a class="btn btn-sm text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.categories.index') }}">
                             {{ __('main.back') }}
                         </a>
                         

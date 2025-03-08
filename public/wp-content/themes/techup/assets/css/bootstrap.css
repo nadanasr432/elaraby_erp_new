@@ -2317,36 +2317,10 @@ fieldset:disabled a.btn {
 }
 .btn-warning {
     color: #212529;
-    background-color: #ffc107;
-    border-color: #ffc107;
+    background-color: #002752;
+    border-color: #002752;
 }
-.btn-warning:hover {
-    color: #212529;
-    background-color: #e0a800;
-    border-color: #d39e00;
-}
-.btn-warning.focus,
-.btn-warning:focus {
-    box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.5);
-}
-.btn-warning.disabled,
-.btn-warning:disabled {
-    color: #212529;
-    background-color: #ffc107;
-    border-color: #ffc107;
-}
-.btn-warning:not(:disabled):not(.disabled).active,
-.btn-warning:not(:disabled):not(.disabled):active,
-.show > .btn-warning.dropdown-toggle {
-    color: #212529;
-    background-color: #d39e00;
-    border-color: #c69500;
-}
-.btn-warning:not(:disabled):not(.disabled).active:focus,
-.btn-warning:not(:disabled):not(.disabled):active:focus,
-.show > .btn-warning.dropdown-toggle:focus {
-    box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.5);
-}
+
 .btn-danger {
     color: #fff;
     background-color: #dc3545;
@@ -8218,3 +8192,28 @@ a.text-dark:hover {
         border-color: #dee2e6;
     }
 }
+/* From Uiverse.io by suda-code */ 
+.btn {
+    padding: 12.5px 30px;
+    border: 0;
+    border-radius: 100px;
+    background-color: #2ba8fb;
+    color: #ffffff;
+    font-weight: Bold;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+  }
+  
+  .btn:hover {
+    background-color: #6fc5ff;
+    box-shadow: 0 0 20px #6fc5ff50;
+    transform: scale(1.1);
+  }
+  
+  .btn:active {
+    background-color: #3d94cf;
+    transition: all 0.25s;
+    -webkit-transition: all 0.25s;
+    box-shadow: none;
+    transform: scale(0.98);
+  }

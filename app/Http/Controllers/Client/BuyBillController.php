@@ -29,22 +29,123 @@ class BuyBillController extends Controller
 {
     public function index()
     {
+        // Get the authenticated user's company ID
         $company_id = Auth::user()->company_id;
-        $company = Company::FindOrFail($company_id);
+    
+        // If the user does not have a company_id, redirect to an error page
+        if (!$company_id) {
+            return redirect()->route('error.page')->with('error', 'Company ID not found!');
+        }
+    
+        // Retrieve the company details safely
+        $company = Company::find($company_id);
+    
+        // If the company does not exist, redirect to an error page
+        if (!$company) {
+            return redirect()->route('error.page')->with('error', 'Company not found!');
+        }
+    
+        // Retrieve related data and ensure collections are not null
         $buy_bills = BuyBill::where('company_id', $company_id)->where('status', 'done')->get();
-
-        $suppliers = $company->suppliers;
-        $stores = $company->stores;
-        $products = $company->products;
+        $suppliers = $company->suppliers ?? collect();  // Ensuring it's always a collection
+        $stores = $company->stores ?? collect();
+        $products = $company->products ?? collect();
+    
+        // Pass all required data to the view
         return view('client.buy_bills.index', compact('company', 'products', 'company_id', 'suppliers', 'buy_bills', 'stores'));
     }
+    
+    
 
     public function create()
     {
+        // Get authenticated user's company ID
+        $company_id = Auth::user()->company_id;
+    
+        // Ensure the user has a valid company_id
+        if (!$company_id) {
+            return redirect()->route('error.page')->with('error', 'Company ID not found!');
+        }
+    
+        // Retrieve the company safely
+        $company = Company::find($company_id);
+        if (!$company) {
+            return redirect()->route('error.page')->with('error', 'Company not found!');
+        }
+    
+        $client_id = Auth::user()->id;
+    
+        // Retrieve company-related data safely
+        $categories = $company->categories ?? collect();
+        $all_products = Product::where('company_id', $company_id)
+            ->whereHas('category', function ($query) {
+                $query->where('category_type', '!=', 'خدمية');
+            })->get();
+        $stores = $company->stores ?? collect(); // Ensure $stores is never null
+        $units = $company->units ?? collect();
+        $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
+        $suppliers = Supplier::where('company_id', $company_id)->get();
+        
+        // Generate unique bill numbers
+        $pre_bill = $company_id . time(); 
+        $countBills = BuyBill::where('company_id', $company_id)->count() + 1;
+        $pre_cash = $company_id . time(); 
+        $countCashs = BuyBill::where('company_id', $company_id)->count();
+    
+        // Retrieve financial data
+        $safes = $company->safes ?? collect();
+        $banks = $company->banks ?? collect();
+        $user = Auth::user();
+        $type_name = $user->company->subscription->type->type_name;
+    
+        // Determine bill limits
+        $bills_count = ($type_name == "تجربة") ? "غير محدود" : $user->company->subscription->type->package->bills_count;
+        $company_bills_count = $company->buy_bills->count();
+    
+        // Check if there is an open bill
+        $step = BuyBill::where('company_id', $company_id)
+            ->where('client_id', $client_id)
+            ->where('status', 'open')
+            ->first();
+    
+        if ($bills_count == "غير محدود" || $bills_count > $company_bills_count) {
+            if ($step) {
+                $open_buy_bill = $step;
+                $buy_bill_cash = BuyCash::where('bill_id', $step->buy_bill_number)->get();
+                $buy_bill_bank_cash = BankBuyCash::where('bill_id', $step->buy_bill_number)->get();
+                return view('client.buy_bills.create', compact(
+                    'company', 'buy_bill_cash', 'units', 'buy_bill_bank_cash', 'open_buy_bill',
+                    'pre_cash', 'stores', 'safes', 'banks', 'suppliers', 'categories',
+                    'extra_settings', 'company_id', 'all_products', 'pre_bill', 'countBills', 'countCashs'
+                ));
+            } else {
+                $open_buy_bill = "";
+                return view('client.buy_bills.create', compact(
+                    'company', 'open_buy_bill', 'units', 'pre_cash', 'stores', 'safes',
+                    'banks', 'suppliers', 'categories', 'extra_settings', 'company_id',
+                    'all_products', 'pre_bill', 'countBills', 'countCashs'
+                ));
+            }
+        } else {
+            return redirect()->route('client.home')->with('error', 'باقتك الحالية لا تسمح بالمزيد من فواتير الشراء');
+        }
+    
+        {
         # get companyData.
         $company_id = Auth::user()->company_id;
-        $company = Company::FindOrFail($company_id);
-        $client_id = Auth::user()->id;
+        $company_id = Auth::user()->company_id;
+
+        // Ensure the user has a valid company_id
+        if (!$company_id) {
+            return redirect()->route('error.page')->with('error', 'Company ID not found!');
+        }
+    
+        // Retrieve the company safely
+        $company = Company::where('id', $company_id)->first();
+    
+        if (!$company) {
+            return redirect()->route('error.page')->with('error', 'Company not found!');
+        }        $client_id = Auth::user()->id;
 
         # set formData to pass to view.
         $categories = $company->categories;
@@ -180,6 +281,7 @@ class BuyBillController extends Controller
                 return redirect()->route('client.home')->with('error', 'باقتك الحالية لا تسمح بالمزيد من فواتير الشراء');
             }
         }
+    }
     }
     public function updateColor(Request $request)
     {

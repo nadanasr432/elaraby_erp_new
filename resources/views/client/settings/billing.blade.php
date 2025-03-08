@@ -118,7 +118,7 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <button class="btn btn-md btn-warning py-1 px-3"><i class="fa fa-check"></i> حفظ
+                            <button class="btn btnn btn-md btn-warning py-1 px-3 mx-2"><i class="fa fa-check"></i> حفظ
                             </button>
                         </div>
                     </div>
@@ -154,7 +154,7 @@
                     </div>
                     <div class="col-lg-12 col-xs-12 ">
                         <div class="form-group">
-                            <button class="btn btn-md btn-warning py-1 px-3"><i class="fa fa-check"></i> حفظ
+                            <button class="btn btnn btn-md btn-warning py-1 px-3"><i class="fa fa-check"></i> حفظ
                             </button>
                         </div>
                     </div>
@@ -231,7 +231,7 @@
                     </div>
                     <div class="col-lg-12 col-xs-12">
                         <div class="form-group">
-                            <button class="btn btn-md btn-warning py-1 px-3"><i class="fa fa-check"></i> حفظ
+                            <button class="btn btnn btn-md btn-warning py-1 px-3"><i class="fa fa-check"></i> حفظ
                             </button>
                         </div>
                     </div>

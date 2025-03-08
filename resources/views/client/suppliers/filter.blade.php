@@ -26,7 +26,7 @@
                     <div class="d-flex justify-content-between">
                         <div class="col-lg-12 d-flex flex-wrap justify-content-between">
                             <h5 class="alert custom-title"> {{ __('sidebar.suppliers-filter') }} </h5>
-                            <a class="btn px-3 text-white py-1 "style="background-color: #ec6880" href="{{ route('client.suppliers.index') }}">
+                            <a class="btn btnn px-3 text-white py-1 "style="background-color: #36c7d6" href="{{ route('client.suppliers.index') }}">
                                 {{ __('main.back') }} </a>
                         </div>
                         <br>
@@ -67,7 +67,7 @@
                                         ?>
                                     @endif
                                 </select>
-                                <button type="submit" class="button_search btn btn-warning"
+                                <button type="submit" class="button_search btn-warning px-1"
                                     >
                                     <i class="fa fa-search"></i>
                                 </button>
@@ -89,7 +89,7 @@
                                     <option value="جملة">جملة</option>
                                     <option value="قطاعى">قطاعى</option>
                                 </select>
-                                <button type="submit" class="button_search btn btn-md btn-warning">
+                                <button type="submit" class="button_search btn-md btn-warning px-1">
                                     <i class="fa fa-search"></i></button>
                                 </div>
                             </div>

@@ -21,11 +21,11 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <div class="col-12 d-flex align-items-center justify-content-between">
+                    <div class="col-12 d-flex flex-wrap align-items-center justify-content-between">
                         <h5 class=" alert alert-sm custom-title">
                             {{ __('subcategories.edit-subcategory') }}
                         </h5>
-                        <a class="btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.subcategories.index') }}">
+                        <a class="btn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.subcategories.index') }}">
                             {{ __('main.back') }}</a>
                         
                     </div>

@@ -31,31 +31,39 @@ class SupplierController extends Controller
     }
 
     public function create()
-    {
-        $company_id = Auth::user()->company_id;
-        $company = Company::FindOrFail($company_id);
-        $timezones = TimeZone::all();
-        $user = Auth::user();
-        $type_name = $user->company->subscription->type->type_name;
-        if ($type_name == "تجربة"){
-            $suppliers_count = "غير محدود";
-        }
-        else{
-            $suppliers_count = $user->company->subscription->type->package->suppliers_count;
-        }
-        $company_suppliers_count = $company->suppliers->count();
-        if ($suppliers_count == "غير محدود") {
-            return view('client.suppliers.create',compact('company_id', 'timezones', 'company'));
-        }
-        else{
-            if($suppliers_count > $company_suppliers_count){
-                return view('client.suppliers.create',compact('company_id', 'timezones', 'company'));
-            }
-            else{
-                return redirect()->route('client.home')->with('error','باقتك الحالية لا تسمح بالمزيد من الموردين');
-            }
-        }
+{
+    $company_id = Auth::user()->company_id;
+
+    // Ensure company_id exists
+    if (!$company_id) {
+        return redirect()->route('error.page')->with('error', 'Company ID not found!');
     }
+
+    // Fetch company with suppliers & handle if not found
+    $company = Company::with('suppliers')->find($company_id);
+    if (!$company) {
+        return redirect()->route('error.page')->with('error', 'Company not found!');
+    }
+
+    $timezones = TimeZone::all();
+    $user = Auth::user();
+    $type_name = optional($user->company->subscription->type)->type_name ?? '';
+
+    // Determine suppliers limit
+    $suppliers_count = ($type_name == "تجربة") ? PHP_INT_MAX : 
+        optional($user->company->subscription->type->package)->suppliers_count ?? 0;
+
+    // Count existing suppliers
+    $company_suppliers_count = $company->suppliers->count();
+
+    // Allow supplier creation only if within limit
+    if ($suppliers_count > $company_suppliers_count) {
+        return view('client.suppliers.create', compact('company_id', 'timezones', 'company'));
+    } else {
+        return redirect()->route('client.home')->with('error', 'باقتك الحالية لا تسمح بالمزيد من الموردين');
+    }
+}
+
 
     public function store(SupplierRequest  $request)
     {

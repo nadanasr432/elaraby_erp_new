@@ -36,7 +36,7 @@
                         <h5 class="custom-title alert ">
                             {{ __('sidebar.cash-withdraw-and-deposit') }}
                         </h5>
-                        <a class="btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.banks.index') }}">
+                        <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.banks.index') }}">
                             {{ __('main.back') }}</a>
                         
                     </div>
@@ -89,7 +89,7 @@
 
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-end">
-                            <button class="btn btn-warning px-3 py-1" type="submit">{{ __('banks.record-process') }}</button>
+                            <button class="btn btnn btn-warning px-3 py-1" type="submit">{{ __('banks.record-process') }}</button>
                         </div>
                     </form>
                     <div class="clearfix"></div>

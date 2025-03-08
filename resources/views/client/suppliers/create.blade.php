@@ -27,7 +27,7 @@
                     <div class="col-12 d-flex flex-wrap justify-content-between ">
                         <h5 class=" alert custom-title">
                             {{ __('sidebar.add-new-supplier') }} </h5>
-                        <a class="btn px-3 py-1 text-white" style="background-color: #ec6880" href="{{ route('client.suppliers.index') }}">
+                        <a class="btn btnn px-3 py-1 text-white" style="background-color: #36c7d6" href="{{ route('client.suppliers.index') }}">
                             {{ __('main.back') }}
                         </a>
                         
@@ -106,14 +106,14 @@
                             </div>
                         </div>
                         <div class="clearfix"></div>
-                        <a style="color: #ec6880" href="javascript:;" class="btn open_extras mb-2" >
+                        <a style="color: #36c7d6" href="javascript:;" class="btn open_extras mb-2" >
                             <i class="fa fa-plus"></i>
                             {{ __('suppliers.additional-options') }}
                         </a>
                         <div class="clearfix"></div>
                         <div class="extras" style="display: none">
-                            <div class="col-lg-12">
-                                <div class="form-group  col-lg-4  pull-right" dir="rtl">
+                            <div class="row">
+                                <div class="form-group  col-lg-4  pull-right">
                                     <label for="supplier_category">{{ __('suppliers.dealing-type') }}</label>
                                     <select name="supplier_category" class="form-control" required>
                                         <option value="">{{ __('suppliers.choose-type') }}</option>
@@ -121,16 +121,16 @@
                                         <option value="قطاعى">قطاعى</option>
                                     </select>
                                 </div>
-                                <div class="form-group col-lg-4  pull-right" dir="rtl">
+                                <div class="form-group col-lg-4 ">
                                     <label for="supplier_email">{{ __('main.email-address') }}</label>
                                     <input type="email" name="supplier_email" dir="ltr" class="form-control">
                                 </div>
                                 <div class="clearfix"></div>
-                                <div class="form-group  pull-right col-lg-4" dir="rtl">
+                                <div class="form-group  col-lg-4">
                                     <label for="shop_name">{{ __('suppliers.supplier-company-name') }}</label>
                                     <input type="text" name="shop_name" class="form-control" dir="rtl">
                                 </div>
-                                <div class="form-group  pull-right col-lg-4" dir="rtl">
+                                <div class="form-group   col-lg-4">
                                     <label for="supplier_national">{{ __('suppliers.supplier-nationality') }}</label>
                                     <select name="supplier_national" class="form-control">
                                         <option value="">{{ __('main.choose-country') }}</option>
@@ -141,7 +141,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group  pull-right col-lg-4" dir="rtl">
+                                <div class="form-group   col-lg-4">
                                     <label for="tax_number">{{ __('main.tax-number') }}</label>
                                     <input type="text" name="tax_number" class="form-control" dir="ltr" />
                                 </div>
@@ -150,7 +150,7 @@
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-end ">
-                            <button class="btn btn-warning px-5 py-1" type="submit">{{ __('main.add') }}</button>
+                            <button class="btn btnn btn-warning px-5 py-1" type="submit">{{ __('main.add') }}</button>
                         </div>
                     </form>
                 </div>

@@ -19,7 +19,7 @@
                     <h3 class="pull-right font-weight-bold ml-1 custom-title">
                         عرض باينات المنتج
                     </h3>
-                    <a class="btn  btn-sm p-1 text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.products.index') }}">
+                    <a class="btn  btn-sm p-1 text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.products.index') }}">
                         عودة للخلف
                     </a>
                 </div>
@@ -29,18 +29,18 @@
             <div class="card-body p-2">
 
                 <div class="row p-0">
-                    <div class="form-group col-lg-6">
+                    <div class="form-group col-lg-4">
                         <label for="start_date">{{ __('products.Start Date') }}</label>
                         <input type="date" class="form-control" id="start_date" name="start_date"
                             value="{{ old('start_date', $product->start_date ?? '') }}" disabled>
                     </div>
-                    <div class="form-group col-lg-6">
+                    <div class="form-group col-lg-4">
                         <label for="end_date">{{ __('products.End Date') }}</label>
                         <input type="date" class="form-control" id="end_date" name="end_date"
                             value="{{ old('end_date', $product->end_date ?? '') }}" disabled>
                     </div>
                     <!----store---->
-                    <div class="form-group col-lg-3 pr-0" dir="rtl">
+                    <div class="form-group col-lg-4 pr-0" dir="rtl">
                         <label for="store_id">
                             اسم المخزن
                             <span class="text-danger font-weight-bold">*</span>
@@ -50,7 +50,7 @@
                     <!---------------------->
 
                     <!----category---->
-                    <div class="form-group col-lg-3 pr-0" dir="rtl">
+                    <div class="form-group col-lg-4 pr-0" dir="rtl">
                         <label for="store_id">
                             الفئة الرئيسية
                             <span class="text-danger font-weight-bold">*</span>
@@ -61,7 +61,7 @@
                     <!---------------------->
 
                     <!----subcategory---->
-                    <div class="form-group col-lg-3 pr-0" dir="rtl">
+                    <div class="form-group col-lg-4 pr-0" dir="rtl">
                         <label for="store_id">
                             {{ __('products.subcat') }}
                             <span class="text-danger font-weight-bold">*</span>
@@ -72,7 +72,7 @@
                     <!---------------------->
 
                     <!----product_model---->
-                    <div class="form-group col-lg-3 pr-0" dir="rtl">
+                    <div class="form-group col-lg-4 pr-0" dir="rtl">
                         <label> موديل المنتج</label>
                         <input disabled type="text" name="product_model" value="{{$product->product_model}}"
                             placeholder="موديل المنتج" class="form-control" id='model'>
@@ -80,7 +80,7 @@
                     <!---------------------->
 
                     <!----product_name---->
-                    <div class="form-group col-lg-3 pr-0" dir="rtl">
+                    <div class="form-group col-lg-4 pr-0" dir="rtl">
                         <label>
                             اسم المنتج
                             <span class="text-danger font-weight-bold">*</span>
@@ -91,7 +91,7 @@
                     <!---------------------->
 
                     <!----unit_id---->
-                    <div class="form-group col-lg-3 pr-0" dir="rtl">
+                    <div class="form-group col-lg-4 pr-0" dir="rtl">
                         <label>
                             وحدة المنتج
                             <span class="text-danger font-weight-bold">*</span>
@@ -102,7 +102,7 @@
                     <!---------------------->
 
                     <!----code_universal---->
-                    <div class="form-group col-lg-3 pr-0" dir="rtl">
+                    <div class="form-group col-lg-4 pr-0" dir="rtl">
                         <label>
                             رقم الباركود
                             <span class="text-danger font-weight-bold">*</span>
@@ -113,7 +113,7 @@
                     <!---------------------->
 
                     <!----first_balance---->
-                    <div class="form-group col-lg-3 pr-0" dir="rtl">
+                    <div class="form-group col-lg-4 pr-0" dir="rtl">
                         <label>
                             رصيد المخازن
                             <span class="text-danger font-weight-bold">*</span>
@@ -124,7 +124,7 @@
                     <!---------------------->
 
                     <!----purchasing_price--->
-                    <div class="form-group col-lg-3 pr-0" dir="rtl">
+                    <div class="form-group col-lg-4 pr-0" dir="rtl">
                         <label>
                             سعر التكلفة
                             <span class="text-danger font-weight-bold">*</span>
@@ -135,7 +135,7 @@
                     <!---------------------->
 
                     <!----wholesale_price--->
-                    <div class="form-group col-lg-3 pr-0" dir="rtl">
+                    <div class="form-group col-lg-4 pr-0" dir="rtl">
                         <label>
                             سعر الجملة
                             <span class="text-danger font-weight-bold">*</span>
@@ -146,7 +146,7 @@
                     <!-------------------->
 
                     <!----sector_price--->
-                    <div class="form-group col-lg-3 pr-0" dir="rtl">
+                    <div class="form-group col-lg-4 pr-0" dir="rtl">
                         <label>
                             سعر القطاعى
                             <span class="text-danger font-weight-bold">*</span>
@@ -157,7 +157,7 @@
                     <!-------------------->
 
                     <!----min_balance--->
-                    <div class="form-group pull-right col-lg-3" dir="rtl">
+                    <div class="form-group col-lg-4" dir="rtl">
                         <label>رصيد حد أدنى المخازن</label>
                         <input disabled type="number" name="min_balance" id="min_balance" class="form-control"
                             value="{{$product->min_balance}}" />
@@ -165,7 +165,7 @@
                     <!-------------------->
 
                     <!-------color------->
-                    <div class="form-group  col-lg-6 d-none" dir="rtl">
+                    <div class="form-group  col-lg-4 d-none" dir="rtl">
                         <label>اختر لون</label>
                         <input disabled style="width: 100%!important;" type="color" placeholder="اختر اللون"
                             name="color" id="color" />
@@ -173,16 +173,16 @@
                     <!---------------------->
 
                     <!----description---->
-                    <div class="form-group col-lg-6" dir="rtl">
+                    <div class="form-group col-lg-4" dir="rtl">
                         <label>وصف المنتج</label>
                         <textarea disabled name="description" id="description" class="form-control"
-                            placeholder="وصف المنتج. . . ." style="height: 60% !important;"
+                            placeholder="وصف المنتج. . . ." 
                             rows="2">{{$product->description}}</textarea>
                     </div>
                     <!-------------------->
 
                     @if($product->product_pic)
-                        <div class="form-group col-lg-6 pull-right" dir="rtl">
+                        <div class="form-group col-lg-4 pull-right" dir="rtl">
                             <label>صورة المنتج</label>
                             <img id="pic" src="{{ asset($product->product_pic) }}" style="width: 100px; height:100px;" />
                         </div>

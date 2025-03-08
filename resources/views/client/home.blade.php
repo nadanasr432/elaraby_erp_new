@@ -329,6 +329,7 @@
         background: #ff496121 !important;
     }
 
+
     .styled-card {}
 </style>
 @section('content')
@@ -540,7 +541,7 @@
                 @endif
             </h3>
             <div class="row pr-2 mt-sm-0 mt-2 pl-sm-0 pl-2">
-                <a class="btn btn-danger border-0 my-1" style="background: #222751 !important;border-radius: 7px;"
+                <a class="btn btn-danger d-flex align-items-center border-0 my-1" style="background: #222751 !important;border-radius: 7px;"
                     href="{{ route('client.sale_bills.create1') }}">
                     <img src="{{ asset('assets/svgs/plus.svg') }}"
                         style="border: 1px dashed; border-radius: 50%; margin-left: 6px;">
@@ -548,13 +549,13 @@
                     {{ __('main.add-sale-bill') }}
                 </a>
 
-                <a class="btn bg-none border-0 ml-1  my-1"
+                <a class="btn d-flex align-items-center bg-none border-0 ml-1  my-1"
                     style="    background: white !important;color: gray;border: 1px solid gray !important;border-radius: 7px;"
                     href="{{ route('client.sale_bills.index') }}">
                     <img src="{{ asset('assets/svgs/paper.svg') }}">
                     {{ __('main.mnge-bills') }}
                 </a>
-                <a class="btn border-0 ml-1  my-1" href="{{ route('client.sale_bills.create1') }}"
+                <a class="btn d-flex align-items-center border-0 ml-1  my-1" href="{{ route('client.sale_bills.create1') }}"
                     style="background: white !important; color: gray; border: 1px solid gray !important; border-radius: 7px; display: flex; align-items: center;">
 
                     {{-- <img src="{{ asset('assets/svgs/plus.svg') }}"
@@ -564,7 +565,7 @@
                     {{-- <span class="badge badge-success ml-1"
                         style="font-size: 10px; border-radius: 50%; padding: 2px 5px;">{{ __('sidebar.new') }}</span> <!-- Add this line --> --}}
                 </a>
-                <a class="btn border-0 ml-1  my-1" href=""
+                <a class="btn d-flex align-items-center border-0 ml-1  my-1" href="{{ route('client.quotations.create') }}"
                 style="background: white !important; color: gray; border: 1px solid gray !important; border-radius: 7px; display: flex; align-items: center;">
                 {{ __('Price Offers') }} 
                 </a>
@@ -695,13 +696,13 @@
                 </div>
 
                 <div class="col-md-2 col-6 homeBoxs">
-                    <div class="tile_stats_count d-flex">
+                    <div class="tile_stats_count d-flex align-items-center">
                         <div class="col-3 verticalCenter">
                             <span style="background: #f3f0ff; padding: 9px; border-radius: 50%;">
                                 <img src="{{ asset('assets/svgs/bank.svg') }}" alt="">
                             </span>
                         </div>
-                        <div class="col-9 count text-center pr-0">
+                        <div class="col-9 count d-flex flex-column align-items-center justify-content-start pr-0">
                             @if (in_array('مدير النظام', Auth::user()->role_name))
                                 <span
                                     style="color: #030229;font-size: 20px;font-weight: 600;margin-bottom: 8px !important; display: block;">{{ round($banks_balances, 2) }}</span>
@@ -720,7 +721,7 @@
 
             @if (empty($package) || $package->products == '1')
                 <div class="col-md-2 col-6 homeBoxs">
-                    <div class="tile_stats_count d-flex">
+                    <div class="tile_stats_count d-flex align-items-center">
                         <div class="col-3 verticalCenter">
                             <span style="background: #f3f0ff; padding: 9px; border-radius: 50%;">
                                 <img src="{{ asset('assets/svgs/coins.svg') }}" alt="">
@@ -746,7 +747,7 @@
 
             @if (empty($package) || $package->debt == '1')
                 <div class="col-md-2 col-6 homeBoxs">
-                    <div class="tile_stats_count d-flex">
+                    <div class="tile_stats_count d-flex align-items-center">
                         <div class="col-3 verticalCenter">
                             <span style="background: #f3f0ff; padding: 9px; border-radius: 50%;">
                                 <img src="{{ asset('assets/svgs/fluent_people.svg') }}" alt="">
@@ -768,7 +769,7 @@
                 </div>
 
                 <div class="col-md-2 col-6 homeBoxs">
-                    <div class="tile_stats_count d-flex">
+                    <div class="tile_stats_count d-flex align-items-center">
                         <div class="col-3 verticalCenter">
                             <span style="background: #f3f0ff; padding: 9px; border-radius: 50%;">
                                 <img src="{{ asset('assets/svgs/55.svg') }}" alt="">
@@ -790,7 +791,7 @@
                 </div>
 
                 <div class="col-md-2 col-6 homeBoxs">
-                    <div class="tile_stats_count d-flex">
+                    <div class="tile_stats_count d-flex align-items-center">
                         <div class="col-3 verticalCenter">
                             <span style="background: #f3f0ff; padding: 9px; border-radius: 50%;">
                                 <img src="{{ asset('assets/svgs/66.svg') }}" alt="">
@@ -816,7 +817,7 @@
         <!------------------------------------------------------------------->
 
         <!----------------------------Center Row----------------------------->
-        <div class="row match-height p-1 mt-1">
+        <div class="row match-height p-1">
             <div class="col-md-12 px-0">
                 <div class="card" style="height: 460px;border: 1px solid #2d2d2d30;">
                     <div class="card-header p-1 mt-4" style="background: #222751;">
@@ -894,7 +895,7 @@
         <!--------------------------8 boxes---------------------------------->
         <div class="row text-center mb-2" style="margin-top: -26px !important;">
             <div class="col-lg-12">
-                <div class="card-header p-1 mt-4" style="background: #f4f5fa;">
+                <div class="card-header p-1 mt-2" style="background: #f4f5fa;">
                     <h3 class="card-title text-left" style="font-weight: 600;">{{ __('main.latest-transactions') }}</h3>
                 </div>
                 <div class="card" style="height: fit-content !important;border: 1px solid #2d2d2d30;">
@@ -956,7 +957,7 @@
         <!----------------------------LAST INVOICES-------------------------->
         <div class="row match-height" style="margin-top: -20px !important;">
             <div class="col-md-12 ">
-                <div class="card-header p-1 mt-4" style="background: #f4f5fa;">
+                <div class="card-header p-1 mt-2" style="background: #f4f5fa;">
                     <h3 class="card-title text-left" style="font-weight: 600;">{{ __('main.latest-bills') }}</h3>
                     <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
                 </div>

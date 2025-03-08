@@ -116,9 +116,9 @@
                             <input class="form-control" name="rolename" id="rolename" type="text" readonly>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء
+                            <button type="button" class="btn btnn btn-secondary" data-dismiss="modal">الغاء
                             </button>
-                            <button type="submit" class="btn btn-danger">تأكيد</button>
+                            <button type="submit" class="btn btnn btn-danger">تأكيد</button>
                         </div>
                     </form>
                 </div>

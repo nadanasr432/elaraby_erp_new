@@ -18,7 +18,7 @@
                         <div class="col-lg-12 margin-tb d-flex flex-wrap justify-content-between align-items-center">
                             <h5 class=" alert custom-title">{{ __('sidebar.display-clients-gifts') }}
                             </h5>
-                            <a class="btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.gifts.create') }}"><i
+                            <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.gifts.create') }}"><i
                                     class="fa fa-plus"></i> {{ __('sidebar.add-new-gift') }} </a>
                            
                         </div>
@@ -60,7 +60,7 @@
                                         <td>{{ $gift->created_at }}</td>
                                         <td>{{ $gift->details }}</td>
                                         <td>{{ $gift->notes }}</td>
-                                        <td>
+                                        <td class="d-flex justify-content-center">
                                             <a href="{{ route('client.gifts.edit', $gift->id) }}"
                                                 class="btn btn-sm btn-info" data-toggle="tooltip" title="تعديل"
                                                 data-placement="top"><i class="fa fa-edit"></i></a>

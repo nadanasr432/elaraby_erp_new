@@ -88,12 +88,12 @@
            .scroll-btn {
             position: fixed;
             right: 10px;
-            width: 76px;
-            height: 60px;
-            background: #ca120c;
-            border: 2px solid #ca120c;
+            width: 40px;
+            height: 40px;
+            background: #36c7d6;
+            border: 2px solid #36c7d6;
             color: #ffff;
-            border-radius: 25%;
+            border-radius: 30%;
             font-size: 20px;
             font-weight: bold;
             cursor: pointer;
@@ -277,7 +277,7 @@
     <span class="loader"></span>
     <div class="app-content content">
         <nav class="navbar navbar-expand-lg navbar-light bg-light" style="height: 59px;background: #0A246A !important;">
-            <a class="navbar-brand" href="{{ route('client.home') }}">
+            <a class="navbar-brand px-2" href="{{ route('client.home') }}">
                 <img src="{{ asset('images/logo.png') }}" class="img-fluid"
                     style="width: 39px; display: block; margin: auto;">
             </a>
@@ -285,7 +285,7 @@
                 aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <div class="collapse navbar-collapse d-flex align-items-center justify-content-center" id="navbarNavDropdown">
                 <ul class="navbar-nav" style="height: 52px;align-items: flex-start;" role="tablist">
                     <li class="nav-item active">
                         <a class="d-flex navbar-brand text-white text-center mt-1 pb-2 mb-2"

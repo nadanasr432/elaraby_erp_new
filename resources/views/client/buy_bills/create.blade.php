@@ -285,7 +285,7 @@ position: absolute !important;
         <!------------------------------------------row4 buttons-------------------------------------->
 
         <div class="col-lg-12 text-start">
-            <button type="button" id="add" class="btn btn-md mt-3 text-white py-1"style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
+            <button type="button" id="add" class="btn btnn btn-md mt-3 text-white py-1"style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
                 <i class="fa fa-plus"></i>
                 {{ __('sidebar.add-new-purchase-invoice') }}
             </button>
@@ -514,7 +514,7 @@ position: absolute !important;
                             <input type="text" value="0" name="discount_value"
                                    disabled id="discount_value"
                                    class="form-control mx-1"/>
-                            <button type="button"  class="btn btn-warning text-center text-white px-3"
+                            <button type="button"  class="btn btnn btn-warning text-center text-white px-3"
                                     id="exec_discount">{{ __('main.apply') }}
                             </button>
                         @endif
@@ -551,7 +551,7 @@ position: absolute !important;
                             <input disabled value="0" type="text" name="extra_value"
                                     id="extra_value"
                                    class="form-control mx-1"/>
-                            <button type="button" class="btn btn-warning text-center px-3"
+                            <button type="button" class="btn btnn btn-warning text-center px-3"
                                     id="exec_extra">
                                 {{ __('main.apply') }}
                             </button>
@@ -566,7 +566,7 @@ position: absolute !important;
     </form>
     <div class="col-lg-12 no-print bg-white p-2 h-auto">
         <button type="button" @if (!isset($open_buy_bill) || empty($open_buy_bill))  @endif data-toggle="modal"
-                data-target="#myModal2" class="btn btn-md btn-warning px-3 py-1 my-1 text-white pay_btn mx-1">
+                data-target="#myModal2" class="btn btnn btn-md btn-warning px-3 py-1 my-1 text-white pay_btn mx-1">
             <i class="fa fa-money"></i>
             {{ __('pos.record-payment') }}
         </button>
@@ -579,13 +579,13 @@ position: absolute !important;
             @else
                 <input type="hidden" value="{{ $pre_bill }}" name="buy_bill_number"/>
             @endif
-            <button style="background-color: #ec6880" href="" type="submit" @if (!isset($open_buy_bill) || empty($open_buy_bill))  @endif
-            class="btn btn-md text-white px-3 py-1 close_btn mx-1"><i class="fa fa-check"></i>
+            <button style="background-color: #36c7d6" href="" type="submit" @if (!isset($open_buy_bill) || empty($open_buy_bill))  @endif
+            class="btn btnn btn-md text-white px-3 py-1 close_btn mx-1"><i class="fa fa-check"></i>
                 {{ __('main.cancel') }}
             </button>
         </form>
         <a href="javascript:;" role="button"
-           class="btn @if (!isset($open_buy_bill) || empty($open_buy_bill))  @endif save_btn btn-md btn-warning px-3 py-1 my-1 mx-1"><i
+           class="btn @if (!isset($open_buy_bill) || empty($open_buy_bill))  @endif save_btn btn-md btnn btn-warning px-3 py-1 my-1 mx-1"><i
                 class="fa fa-check"></i>
             {{ __('main.save') }}
         </a>

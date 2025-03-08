@@ -19,7 +19,7 @@
                         <div class="col-lg-12 margin-tb d-flex flex-wrap justify-content-between align-items-center">
                             <h5 class=" custom-title">عرض مراكز التكلفة  </h5>
 
-                            <a class="btn text-white px-3 py-1" style="background-color: #ec6880"
+                            <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6"
                                href="{{ route('client.cost_center.create') }}"><i
                                     class="fa fa-plus"></i> اضافة مركز جديد </a>
 

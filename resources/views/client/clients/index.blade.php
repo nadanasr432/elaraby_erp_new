@@ -14,7 +14,7 @@
                     <div class="col-lg-12 margin-tb d-flex flex-wrap align-items-center justify-content-between">
                         <h5  class=" alert custom-title">
                             {{ __('sidebar.list-of-users') }}</h5>
-                        <a class="btn text-white px-3 py-1" style="background-color:#ec6880"" href="{{ route('client.clients.create') }}">
+                        <a class="btn btnn text-white px-3 py-1" style="background-color:#36c7d6"" href="{{ route('client.clients.create') }}">
                             <i class="fa fa-plus"></i> {{ __('sidebar.add-new-user') }} </a>
                        
                     </div>
@@ -72,7 +72,7 @@
                                         </td>
                                         <td>
                                             <a href="{{ route('client.clients.edit', $client->id) }}"
-                                                class="btn " data-toggle="tooltip" title="تعديل"
+                                                class=" " data-toggle="tooltip" title="تعديل"
                                                 data-placement="top"><svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M18.21 4.87258C18.6 4.48258 18.6 3.83258 18.21 3.46258L15.87 1.12258C15.5 0.732578 14.85 0.732578 14.46 1.12258L12.62 2.95258L16.37 6.70258M0.5 15.0826V18.8326H4.25L15.31 7.76258L11.56 4.01258L0.5 15.0826Z" fill="#4AA16A"/>
                                                     </svg>

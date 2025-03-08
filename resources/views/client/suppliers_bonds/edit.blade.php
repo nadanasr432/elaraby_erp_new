@@ -24,12 +24,14 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <div class="col-12">
-                        <a class="btn btn-primary btn-sm pull-left" href="{{ route('supplier.bonds.index') }}">
+                    <div class="col-12 d-flex flex-wrap justify-content-between">
+                        <h5  class=" alert custom-title">
+                            {{ __('bonds.edit_supplier_bond') }}  {{ $supplierBond->client}}
+                        </h5>
+                        <a class="btn text-white py-1 px-3" style="background-color: #36c7d6" href="{{ route('supplier.bonds.index') }}">
                             {{ __('main.back') }}
                         </a>
-                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success">
-                            {{ __('bonds.edit_supplier_bond') }} - {{ $supplierBond->client}}
+                        
                     </div>
                     
                     <div class="clearfix"></div>
@@ -51,9 +53,9 @@
                         <h5 class="col-lg-12 d-block mb-2">{{ __('main.main-information') }}</h5>
                         <hr>
                         <div class="row mb-3">
-                            <div class="col-md-3">
+                            <div class="  col-md-4 mb-1">
                                 <label> {{ __('bonds.supplier_name') }} <span class="text-danger">*</span></label>
-                                <select dir="rtl" id="client" required class="form-control selectpicker" data-style="btn-danger"
+                                <select dir="rtl" id="client" required class="form-control selectpicker" 
                                     data-live-search="true" name="client">
                                     <option value="none" disabled selected>{{ __('bonds.choose_supplier') }}  </option>
                                     @foreach($suppliers as $supplier)
@@ -62,7 +64,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-3">
+                            <div class="  col-md-4 mb-1">
                                 <label> {{ __('bonds.account') }} <span class="text-danger">*</span></label>
                                   <select dir="rtl" id="account" required class="form-control" name="account">
                                     <option @if( $supplier->account == "كاش") selected @endif value="كاش">كاش</option>
@@ -70,7 +72,7 @@
                                     <option @if( $supplier->account == "تحويل بنكي")selected @endif value="تحويل بنكي">تحويل بنكي</option>
                                 </select>
                             </div>
-                            <div class="col-md-3">
+                            <div class="  col-md-4 mb-1">
                                 <label> {{ __('bonds.type') }} <span class="text-danger">*</span></label>
                                 <select dir="rtl" required class="form-control" id="type" name="type">
                                     <option @if( $supplierBond->type == 'قبض') selected @endif>قبض</option>
@@ -78,25 +80,25 @@
                                 </select>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="  col-md-4 mb-1">
                                 <label> {{ __('bonds.date') }} <span class="text-danger">*</span></label>
                                 <input dir="rtl" required class="form-control" id="date" name="date" type="date" value="{{$supplierBond->date}}">
                             </div>
 
-                            <div class="col-md-3" style="    margin-top: 20px;">
+                            <div class="  col-md-4 mb-1">
                                 <label> {{ __('bonds.amount') }} <span class="text-danger">*</span></label>
                                 <input required class="form-control" dir="ltr" id="amount"  min="0.001"  name="amount" type="number" value="{{$supplierBond->amount}}">
                             </div>
                             
-                            <div class="col-md-3" style="    margin-top: 20px;">
+                            <div class="  col-md-4 mb-1" >
                                 <label> {{ __('bonds.notes') }} <span class="text-danger"></span></label>
                                 <textarea rows="5" class="form-control" id="notes" name="notes" style="height: 100px; padding: 9px; text-align: right;">
                                     {{$supplierBond->notes}}
                                 </textarea>
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                            <button class="btn btn-info pd-x-20" type="submit">{{ __('main.edit') }}</button>
+                        <div class="col-xs-12 col-sm-12 col-md-12 text-start">
+                            <button class="btn btn-warning px-3 py-1 pd-x-20" type="submit">{{ __('main.edit') }}</button>
                         </div>
                     </form>
                 </div>

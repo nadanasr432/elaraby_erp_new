@@ -37,7 +37,7 @@
                 <div class="card-header border-bottom border-secondary p-1">
                     <div class="d-flex justify-content-end w-100 mb-1">
                         <div>
-                            <a class="mr-1 btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.manufactures.create') }}">
+                            <a class="mr-1 btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.manufactures.create') }}">
                                 <i class="fa fa-plus"></i>
                                 {{ __('manufactures.addnewmanufacture') }}
                             </a>

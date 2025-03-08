@@ -332,7 +332,7 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="row mt-3 no-print">
-                            <button type="button" onclick="window.print()" class="btn btn-md btn-info pull-right">
+                            <button type="button" onclick="window.print()" class="btn btnn btn-md btn-info pull-right">
                                 <i class="fa fa-print"></i>
                                 طباعة التقرير
                             </button>

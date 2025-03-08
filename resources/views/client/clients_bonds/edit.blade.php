@@ -28,7 +28,7 @@
                         <h5 class="pull-right alert custom-title">
                             {{ __('bonds.edit_client_bond') }} - {{ $clientBond->client}}
                         </h5>
-                        <a class="btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.bonds.index') }}">
+                        <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.bonds.index') }}">
                             {{ __('main.back') }}
                         </a>
                         
@@ -97,7 +97,7 @@
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-end">
-                            <button class="btn btn-warning px-3 py-1 " type="submit">{{ __('main.edit') }}</button>
+                            <button class="btn btnn btn-warning px-3 py-1 " type="submit">{{ __('main.edit') }}</button>
                         </div>
                     </form>
                 </div>

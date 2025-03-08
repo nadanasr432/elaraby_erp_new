@@ -1,4 +1,27 @@
 @extends('client.layouts.app-main1')
+<style>
+    .btn-danger .filter-option-inner-inner{
+        color: #fff !important
+    }
+    .btn-danger .dropdown-toggle::after{
+        color: #fff !important
+    }
+    .dropdown-toggle::after {
+        position: absolute !important;
+
+    }
+    .productList .filter-option-inner-inner{
+        color: #fff !important
+    }
+    .productList{
+
+        background-color: #36c7d6 !important;
+
+    }
+    .productList .dropdown-toggle::after{
+        color: #fff !important
+    }
+</style>
 @section('content')
     @if (session('success'))
         <div class="alert alert-success alert-dismissable fade show text-center">
@@ -66,14 +89,14 @@
                     {{ __('sales_bills.client-name') }}
                     <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex justify-content-between">
                     <select name="outer_client_id" id="outer_client_id"
-                        title="{{ __('sales_bills.client-name') }}" class="selectpicker w-100 form-control " data-live-search="true">
+                        title="{{ __('sales_bills.client-name') }}" class="selectpicker w-100 form-control btn-danger " data-live-search="true">
                         @foreach ($outer_clients as $outer_client)
                             <option value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
                         @endforeach
                     </select>
-                    <button target="_blank" type="button" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#addClientModal">
+                    <button target="_blank" type="button" class="btn btn-warning py-1" data-bs-toggle="modal" data-bs-target="#addClientModal">
                         <i class="fa fa-plus" aria-hidden="true"> </i> {{ __('main.add immediate client') }}
                     </button>
                 </div>
@@ -101,7 +124,7 @@
                             <?php $i++; ?>
                         @endforeach
                     </select>
-                    <a target="_blank" href="{{ route('client.stores.create') }}" role="button" class="btn btn-warning d-flex align-items-center ">
+                    <a target="_blank" href="{{ route('client.stores.create') }}" role="button" class="py-1 btn btn-warning d-flex align-items-center ">
                         <i class="fa fa-plus" aria-hidden="true"> </i>
                         {{ __('sales_bills.add-store') }}
                     </a>
@@ -116,8 +139,8 @@
                     {{ __('sales_bills.product-code') }}
                     <span class="text-danger font-weight-bold">*</span>
                 </label>
-                <div class="d-flex align-items-center justify-content-between">
-                    <select name="product_id" id="product_id" class="selectpicker w-50 form-control" 
+                <div class="d-flex justify-content-between">
+                    <select name="product_id" id="product_id" class="selectpicker w-50 form-control productList"  
                         data-live-search="true" title="{{ __('sales_bills.choose product') }}">
                         <option value="new" style="color: red;">{{ __('sales_bills.Add immediate product') }}</option>
 
@@ -138,19 +161,20 @@
                         <option value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
                     @endforeach
                 </select> --}}
-                    <button type="button" class="btn btn-warning instantProduct">
+                    <button type="button" class="btn btn-warning instantProduct py-1">
                         <i class="fa fa-plus"></i> {{ __('main.add immediate product') }}
                     </button>
                 </div>
             </div>
             <div class="col-md-6 pull-right no-print">
-                <label for="value_added_tax">{{ __('sales_bills.prices-for-tax') }}
+                <label for="value_added_tax">
+                    {{ __('sales_bills.prices-for-tax') }}
                     <span class="text-danger font-weight-bold">*</span>
 
                 </label>
 
                 <div class="d-flex align-items-center justify-content-between">
-                    <select required name="value_added_tax" id="value_added_tax" class="selectpicker w-100 form-control"
+                    <select required name="value_added_tax" id="value_added_tax" class="selectpicker w-100 form-control pb-2"
                          data-live-search="true">
                         <option value="0" selected>
                             {{ __('sales_bills.not-including-tax') }}</option>
@@ -314,76 +338,76 @@
             <div class="d-flex justify-content-start align-items-center flex-nowrap  bg-white p-2"
                 style="overflow-x: auto; white-space: nowrap;">
                 <!-- Record Button -->
-                <button type="button" data-toggle="modal" style="height: 40px" data-target="#myModal2"
-                    class="btn btn-md btn-warning pay_btn m-1">
+                <button type="button" data-toggle="modal"  data-target="#myModal2"
+                    class="btn btn-md btn-warning py-1  pay_btn m-1">
                     <i class="fa fa-money"></i> {{ __('main.record') }}
                 </button>
-                <button type="button" id="add" class="btn btn-md m-1 text-white" style="height: 40px; background-color: #ec6880;">
+                <button type="button" id="add" class="btn btn-md m-1 text-white py-1" style=" background-color: #36c7d6;">
                     <i class="fa fa-plus"></i> {{ __('sales_bills.save and show') }}
                 </button>
 
                 <!-- Save and Print 1 Button -->
-                <button type="button" role="button" class="btn save_btn1 btn-md text-dark m-1"
-                    isMoswada="0" invoiceType="2" style="height: 40px; background-color: #dadada2e;">
+                <button type="button" role="button" class="btn save_btn1 py-1 text-dark m-1"
+                    isMoswada="0" invoiceType="2" style=" background-color: #0a09092e;">
                     حفظ و طباعة 1
                 </button>
 
                 <!-- Save and Print 2 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-warning m-1"
-                    style="height: 40px;  color: white;"
+                <a href="javascript:;" role="button" class="btn py-1 save_btn2 btn-warning m-1"
+                    style="  color: white;"
                     printColor="1" isMoswada="0" invoiceType="2">
                     حفظ و طباعة 2
                 </a>
 
                 <!-- Save and Print 3 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md m-1"
-                    style="height: 40px; background-color: #ec6880; color: white;"
+                <a href="javascript:;" role="button" class="btn py-1 save_btn2 m-1"
+                    style=" background-color: #36c7d6; color: white;"
                     printColor="2" isMoswada="0" invoiceType="4">
                     حفظ و طباعة 3
                 </a>
 
                 <!-- Save and Print 4 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md pull-right m-1 text-dark"
-                    style="height: 40px; background-color: #dadada2e;"
+                <a href="javascript:;" role="button" class="btn save_btn2  m-1 py-1"
+                    style="height: 40px;background-color: #0a09092e;"
                     printColor="3" isMoswada="0" invoiceType="5">
                     حفظ و طباعة 4
                 </a>
 
                 <!-- Save and Print 5 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-warning pull-right m-1"
-                    style="height: 40px;" printColor="2" isMoswada="0" invoiceType="2">
+                <a href="javascript:;" role="button" class="btn save_btn2  btn-warning py-1 m-1"
+                     printColor="2" isMoswada="0" invoiceType="2">
                     حفظ و طباعة 5
                 </a>
 
                 <!-- Save and Print 6 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md pull-right m-1"
-                    style="height: 40px; background-color: #ec6880; color: white;"
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md py-1 m-1"
+                    style=" background-color: #36c7d6; color: white;"
                     printColor="2" isMoswada="0" invoiceType="6">
                     حفظ و طباعة 6
                 </a>
 
                 <!-- Save and Print 7 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md text-dark pull-right m-1"
-                    style="height: 40px; background-color: #dadada2e;"
+                <a href="javascript:;" role="button" class="btn save_btn2 py-1 text-dark pull-right m-1"
+                    style=" background-color: #0a09092e;"
                     printColor="2" isMoswada="0" invoiceType="7">
                     حفظ و طباعة 7
                 </a>
 
                 <!-- Save and Print 8 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-warning pull-right m-1"
-                    style="height: 40px; color: white;"
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-warning py-1 m-1"
+                    style=" color: white;"
                     printColor="2" isMoswada="0" invoiceType="8">
                     حفظ و طباعة 8
                 </a>
 
                 <!-- Draft Invoice Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md m-1 text-white" style="height: 40px; background-color: #ec6880;"
+                <a href="javascript:;" role="button" class="btn save_btn2 py-1 m-1 text-white" style=" background-color: #36c7d6;"
                     printColor="2" isMoswada="1" invoiceType="2">
                     فاتورة مسودة
                 </a>
 
                 <!-- Non-Tax Invoice Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md text-dark m-1" style="height: 40px; background-color: #dadada2e;"
+                <a href="javascript:;" role="button" class="btn save_btn2 py-1 text-dark m-1" style=" background-color: #0a09092e;"
                     printColor="2" isMoswada="0" invoiceType="3">
                     فاتورة غير ضريبية
                 </a>

@@ -77,10 +77,10 @@
                     <div class="d-flex flex-wrap justify-content-between align-items-center">
                         <h3 class=" font-weight-bold custom-title">
                             {{ __('sidebar.sales-invoices') }}
-                            <span class="badge " style="background-color: #ec6880">{{ count($sale_bills) }}</span>
+                            <span class="badge " style="background-color: #36c7d6">{{ count($sale_bills) }}</span>
                         </h3>
                         <div class="row mx-1 justify-content-end">
-                            <a class="btn btn-primary pull-left p-1 mainBtnNewDes d-flex align-items-center mb-1"
+                            <a class="btn btnn btn-primary pull-left p-1 mainBtnNewDes d-flex align-items-center mb-1"
                                 href="{{ route('client.sale_bills.create1') }}">
                                 <span
                                     style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
@@ -93,8 +93,9 @@
                                 </span>
                                 {{ __('sidebar.Add a new sales invoice') }}
                             </a>
-                            <a onclick="history.back()" class="btn pull-left text-white d-flex align-items-center ml-1"
-                                style="height: 37px; font-size: 11px !important; background-color: #ec6880;">
+                            <a onclick="history.back()"
+                                class="btn btnn pull-left text-white d-flex align-items-center ml-1"
+                                style="height: 37px; font-size: 11px !important; background-color: #36c7d6;">
                                 <span
                                     style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
                                     <svg style="width: 10px;height: 15px;fill: #f5f1f1;margin-top: 1px;"

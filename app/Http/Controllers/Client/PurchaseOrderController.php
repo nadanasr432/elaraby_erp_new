@@ -830,13 +830,22 @@ class PurchaseOrderController extends Controller
     public function destroy(Request $request)
     {
         $purchase_order_number = $request->purchase_order_number;
+    
         $purchase_order = PurchaseOrder::where('purchase_order_number', $purchase_order_number)->first();
+    
+        if (!$purchase_order) {
+            return redirect()->route('client.purchase_orders.create')
+                ->with('error', 'لم يتم العثور على أمر الشراء');
+        }
+    
         $purchase_order->elements()->delete();
         $purchase_order->extras()->delete();
         $purchase_order->delete();
+    
         return redirect()->route('client.purchase_orders.create')
             ->with('success', 'تم حذف امر الشراء بنجاح');
     }
+    
 
     public function redirect()
     {

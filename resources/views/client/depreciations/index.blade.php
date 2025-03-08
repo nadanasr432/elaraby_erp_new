@@ -18,7 +18,7 @@
                         <div class="col-lg-12 margin-tb d-flex flex-wrap justify-content-between align-items-center">
                             <h5 class="alert  custom-title">عرض كل عمليات الاهلاك
                             </h5>
-                            <a class="btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.depreciations.create') }}"><i
+                            <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.depreciations.create') }}"><i
                                     class="fa fa-plus"></i> اضافة اهلاك جديد </a>
                             
                         </div>

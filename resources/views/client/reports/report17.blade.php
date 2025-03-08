@@ -64,7 +64,8 @@
                             </div>
                         </div>
                         <div class="">
-                            <button class="btn  btn-warning py-1 px-3" type="submit">
+                            <button class="btn btnn  btn-warning py-1 px-3"
+                                     type="submit">
                                 <i class="fa fa-check"></i>
                                 عرض التقرير
                             </button>

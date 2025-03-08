@@ -18,7 +18,7 @@
                         <div class="col-lg-12 margin-tb d-flex flex-wrap justify-content-between align-items-center">
                             <h5 class=" alert custom-title">دفعات السلفيات السابقة الى العملاء</h5>
 
-                            <a class="btn text-white px-3 py-1" style="background-color: #ec6880"
+                            <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6"
                                href="{{ route('client.give.cash.clients') }}"><i
                                     class="fa fa-plus"></i> اعطاء سلفة الى عميل </a>
                         </div>
@@ -68,7 +68,7 @@
                                     <td>{{ $cash->safe->safe_name }}</td>
                                     <td>{{$cash->notes}}</td>
                                     <td>{{ $cash->client->name }}</td>
-                                    <td>
+                                    <td class="d-flex justify-content-center">
                                         <a href="{{ route('client.edit.borrow.clients', $cash->id) }}"
                                            class="btn btn-sm btn-info" data-toggle="tooltip"
                                            title="تعديل" data-placement="top"><i class="fa fa-edit"></i></a>

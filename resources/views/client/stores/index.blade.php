@@ -5,7 +5,7 @@
     display: inline-block;
     width: 32px;
     height: 2px;
-    background-color: #ec6880;
+    background-color: #36c7d6;
     align-self: flex-end;
     bottom: 4px;
 
@@ -29,7 +29,7 @@
                          custom-title align-items-end">
                          {{ __('stores.show-all-stores') }}
                         </h5>
-                        <a class="btn text-white px-2 py-1"style="background-color: #ec6880" href="{{ route('client.stores.create') }}"><i
+                        <a class="btn btnn text-white px-2 py-1"style="background-color: #36c7d6" href="{{ route('client.stores.create') }}"><i
                                     class="fa fa-plus"></i> {{ __('sidebar.add-new-storage') }} </a>
                         </div>
                         <br>
@@ -56,7 +56,7 @@
                                         <td>{{ ++$i }}</td>
                                         <td>{{ $store->store_name }}</td>
                                         <td>{{ $store->branch ? $store->branch->branch_name : '-' }}</td>
-                                        <td class="d-flex border-0">
+                                        <td class="d-flex justify-content-center align-items-center border-0">
                                             <a href="{{ route('client.stores.edit', $store->id) }}"
                                                 class=" " data-toggle="tooltip"
                                                 title="{{ __('main.edit') }}" data-placement="top"><svg width="19" height="16" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">

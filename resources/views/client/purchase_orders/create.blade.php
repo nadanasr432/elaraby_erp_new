@@ -165,7 +165,7 @@ position: absolute !important;
 
             <div class="clearfix"></div>
             <div class="col-lg-12 text-center">
-                <button type="button" id="add" class="btn btn-info btn-md mt-3 d-flex align-items-center justify-content-start py-1"style="background-color: #222751 !important;">
+                <button type="button" id="add" class="btn btnn btn-info btn-md mt-3 d-flex align-items-center justify-content-start py-1"style="background-color: #222751 !important;">
                     <i class="fa fa-plus"></i>
                     {{ __('sidebar.add-new-purchase-orders') }}
                 </button>
@@ -216,7 +216,7 @@ position: absolute !important;
                         <input type="text" value="0" name="discount_value"
                             style="width: 50%;display: inline;float: right;"  id="discount_value"
                             class="form-control " />
-                        <button type="button"  class="btn btn-md btn-warning pull-right text-center"
+                        <button type="button"  class="btn btnn btn-md btn-warning pull-right text-center"
                             style="display: inline !important;width: 20% !important; height: 40px;margin-right: 20px; "
                             id="exec_discount">تطبيق
                         </button>
@@ -232,7 +232,7 @@ position: absolute !important;
                         </select>
                         <input value="0"  type="text" name="extra_value"
                             style="width: 50%;display: inline;float: right;" id="extra_value" class="form-control" />
-                        <button  type="button" class="btn btn-md btn-warning pull-right text-center"
+                        <button  type="button" class="btn btnn btn-md btn-warning pull-right text-center"
                             style="display: inline !important;width: 20% !important; height: 40px;margin-right: 20px; "
                             id="exec_extra">
                             تطبيق
@@ -245,23 +245,23 @@ position: absolute !important;
     </form>
     <div class="col-lg-12 d-flex flex-wrap no-print bg-white py-3" >
         <button type="button" onclick="window.print()"  name="print"
-            class="btn btn-warning print_btn pull-right py-1 mb-1 mx-1 px-3"><i class="fa fa-print"></i> طباعة امر الشراء
+            class="btn btnn btn-warning print_btn pull-right py-1 mb-1 mx-1 px-3"><i class="fa fa-print"></i> طباعة امر الشراء
         </button>
-        <a style="background-color: #ec6880" href="{{ route('client.purchase_orders.send', $pre_purchase_order) }}" role="button"
-            class="btn send_btn btn-md text-white pull-right mx-1 py-1 px-3 mb-1 mx-1"><i class="fa fa-check"></i>
+        <a style="background-color: #36c7d6" href="{{ route('client.purchase_orders.send', $pre_purchase_order) }}" role="button"
+            class="btn btnn send_btn btn-md text-white pull-right mx-1 py-1 px-3 mb-1 mx-1"><i class="fa fa-check"></i>
             ارسال امر الشراء الى بريد المورد
         </a>
         <form class="d-inline m-0" action="{{ route('client.purchase_orders.destroy', 'test') }}" method="post">
             {{ method_field('delete') }}
             {{ csrf_field() }}
             <input type="hidden" name="purchase_order_number" value="{{ $pre_purchase_order }}">
-            <button  style="background-color: #dadada2e" type="submit" class="btn close_btn  pull-right mx-1 py-1 px-3 mb-1 mx-1">
+            <button  style="background-color: #0a09092e !important; color:black" type="submit" class="btn btnn close_btn  pull-right mx-1 py-1 px-3 mb-1 mx-1">
                 <i class="fa fa-close"></i>
                 الغاء وخروج
             </button>
         </form>
         <a href="{{ route('client.purchase_orders.redirect') }}" role="button"
-            class="btn save_btn btn-md btn-warning text-white pull-right  py-1 px-3 mb-1 mx-1"><i class="fa fa-check"></input>
+            class="btn btnn save_btn btn-md btn-warning text-white pull-right  py-1 px-3 mb-1 mx-1"><i class="fa fa-check"></input>
                 حفظ وخروج
         </a>
     </div>

@@ -100,7 +100,7 @@
                         <div class="clearfix"></div>
 
                         <div class="col-lg-12 pull-right">
-                            <button class="btn btn-md text-white px-4" style="font-size: 15px; height: 40px; margin-top: 25px; background-color: #222751"
+                            <button class="btn btnn btn-md text-white px-4" style="font-size: 15px; height: 40px; margin-top: 25px; background-color: #222751"
                                 type="submit">
                                 <i class="fa fa-check"></i>
                                 {{ __('main.show-report') }}
@@ -111,7 +111,7 @@
                                     <i class="fa fa-print"></i>
                                     {{ __('main.print-report') }}
                                 </a>
-                                <button class="btn btn-md ml-3 btn-warning" type="submit"
+                                <button class="btn btnn btn-md ml-3 btn-warning" type="submit"
                                     formaction="{{ route('inventory.export') }}"
                                     style="font-size: 15px; height: 40px; margin-top: 25px;" role="button">
                                     <i class="fa fa-file-excel"></i>

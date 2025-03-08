@@ -1,5 +1,6 @@
 @extends('client.layouts.app-main')
 <style>
+/* From Uiverse.io by suda-code */ 
 
 </style>
 @section('content')
@@ -21,11 +22,11 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <div class="col-12 d-flex align-items-center justify-content-between">
+                    <div class="col-12 d-flex flex-wrap align-items-center justify-content-between">
                         <h2 class=" alert alert-sm font-weight-bold m-0 p-0 d-flex custom-title align-items-end " style="white-space: nowrap">
                             {{ __('sidebar.add-new-branche') }} 
                         </h2>
-                        <a class="btn text-white px-3 py-1 " style="background-color: #ec6880" href="{{ route('client.branches.index') }}">
+                        <a class="btn text-white px-3 py-1 btnn" style="background-color: #36c7d6" href="{{ route('client.branches.index') }}">
                             {{ __('main.back') }}
                         </a>
                     </div>
@@ -63,7 +64,7 @@
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 d-flex justify-content-start">
                             <button style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);"
-                             class="btn btn-info pd-x-20 px-5 py-1" type="submit">{{ __('main.add') }}</button>
+                             class="btn btn-info pd-x-20 btnn px-5 py-1" type="submit">{{ __('main.add') }}</button>
                         </div>
                     </form>
                 </div>

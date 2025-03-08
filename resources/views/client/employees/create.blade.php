@@ -24,7 +24,7 @@
                     <div class="col-12 d-flex flex-wrap align-items-center justify-content-between">
                         <h5  class=" alert custom-title">
                             {{ __('sidebar.add-new-employee') }} </h5>
-                        <a class="btn text-white px-3 py-1" style="background-color:#ec6880" href="{{ route('client.employees.index') }}">
+                        <a class="btn btnn text-white px-3 py-1" style="background-color:#36c7d6" href="{{ route('client.employees.index') }}">
                             {{ __('main.back') }}</a>
                        
                     </div>
@@ -131,7 +131,7 @@
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-end">
-                            <button class="btn btn-warning py-1 px-3" type="submit">اضافة</button>
+                            <button class="btn btnn btn-warning py-1 px-3" type="submit">اضافة</button>
                         </div>
                     </form>
                 </div>

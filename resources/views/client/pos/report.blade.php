@@ -37,35 +37,35 @@
                                     {{ __('sidebar.point-of-sale-reports') }}
                                 </h5>
                                 <div class="d-flex flex-wrap">
-                                    <a class="btn text-white ml-1 mb-1 py-1"style=" background-color: #222751" target="_blank"
+                                    <a class="btn btnn text-white ml-1 mb-1 py-1"style=" background-color: #222751" target="_blank"
                                        href="{{ route('client.pos.sales_products_today') }}">
                                         <i class="fa fa-plus"></i> تقرير المنتجات المباعة اليوم
                                     </a>
                         
-                                    <a class="btn  ml-1 mb-1 py-1" id="mainPrintBtn" style="display: none;"
+                                    <a class="btn btnn  ml-1 mb-1 py-1" id="mainPrintBtn" style="display: none;"
                                        href="{{ route('pos.sales.report.print') }}">
                                         <i class="fa fa-print"></i> {{ __('pos.print-invoice') }}
                                     </a>
                         
-                                    <a class="btn ml-1 mb-1 py-1 text-white" id="todayPrintBtn"style="background-color: #ec6880;"
+                                    <a class="btn btnn ml-1 mb-1 py-1 text-white" id="todayPrintBtn"style="background-color: #36c7d6;"
                                        href="{{ route('pos.sales.report.print-today') }}">
                                         <i class="fa fa-print"></i> {{ __('pos.print-invoice') }}
                                     </a>
                         
-                                    <a class="btn  ml-1 mb-1 py-1"style="background-color:#cfcfcf82;" id="todayPrintBtn"
+                                    <a class="btn btnn  ml-1 mb-1 py-1"style="background-color:#cfcfcf82;" id="todayPrintBtn"
                                        href="{{ route('pos.sales.report.button.print-today') }}">
                                         <i class="fa fa-print"></i> {{ __('pos.print-button') }}
                                     </a>
                         
-                                    <button id="getPosReportsToday" class="btn ml-1 mb-1  py-1 text-white"style="background-color: #ec6880">
+                                    <button id="getPosReportsToday" class="btn btnn ml-1 mb-1  py-1 text-white"style="background-color: #36c7d6">
                                         عرض كل التقارير
                                     </button>
                         
-                                    <button id="getPosReports" style="display: none;" class="btn btn-dark btn-sm ml-1 mb-1  py-1">
+                                    <button id="getPosReports" style="display: none;" class="btn btnn btn btnn-dark btn btnn-sm ml-1 mb-1  py-1">
                                         عرض تقرير اليوم
                                     </button>
                         
-                                    <button id="getPosReportsWithDates" class="btn ml-1 mb-1 text-white  py-1" style=" background-color: #222751">
+                                    <button id="getPosReportsWithDates" class="btn btnn ml-1 mb-1 text-white  py-1" style=" background-color: #222751">
                                         عرض بالتاريخ
                                     </button>
                                 </div>
@@ -90,7 +90,7 @@
                         <input type="date" id="dateTo" class="form-control" placeholder="التاريخ الي">
                     </div>
                     <div class="col-1 form-groub">
-                        <button id="btnSearchPosReports" class="btn btn-success btn-sm">
+                        <button id="btnSearchPosReports" class="btn btnn btn btnn-success btn btnn-sm">
                             <svg style="width: 20px;fill:white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                 <path
                                     d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z" />

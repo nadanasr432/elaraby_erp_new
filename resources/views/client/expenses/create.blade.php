@@ -24,7 +24,7 @@
                     <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
                         <h5 class=" alert custom-title">
                             {{ __('sidebar.add-new-expenses') }} </h5>
-                        <a class="btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.expenses.index') }}">
+                        <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.expenses.index') }}">
                             {{ __('main.back') }}</a>
                         
                     </div>
@@ -107,7 +107,7 @@
                                     @endforeach
                                 </select>
                                 <a target="_blank" href="{{ route('client.safes.create') }}" role="button"
-                                    style="width: 15%;display: inline;" class="btn btn-sm btn-warning open_popup d-flex align-items-center">
+                                    style="width: 15%;display: inline;" class=" btn-sm btn-warning open_popup d-flex align-items-center px-1">
                                     <i class="fa fa-plus"></i>
                                 </a>
                             </div>
@@ -140,7 +140,7 @@
 
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-end p-0">
-                            <button class="btn btn-warning px-3 py-1" type="submit">اضافة</button>
+                            <button class="btn btnn btn-warning px-3 py-1" type="submit">اضافة</button>
                         </div>
                     </form>
                 </div>

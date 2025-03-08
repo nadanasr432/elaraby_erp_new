@@ -44,7 +44,7 @@
                         <h5 class=" alert custom-title">
                             {{ __('sidebar.employees-payments') }}
                         </h5>
-                        <a class="btn text-white px-3 py-1" style="background-color:#ec6880" href="{{ route('client.employees.index') }}">
+                        <a class="btn btnn text-white px-3 py-1" style="background-color:#36c7d6" href="{{ route('client.employees.index') }}">
                             {{ __('main.back') }}</a>
                        
                     </div>
@@ -69,7 +69,7 @@
                                     @endforeach
                                 </select>
                                 <a target="_blank" href="{{ route('client.employees.create') }}" role="button"
-                                     class="btn btn-sm btn-warning open_popup d-flex align-items-center">
+                                     class=" btn-sm btn-warning open_popup d-flex align-items-center px-1">
                                     <i class="fa fa-plus"></i>
                                 </a>
                                 </div>
@@ -93,7 +93,7 @@
                                     @endforeach
                                     </select>
                                     <a target="_blank" href="{{ route('client.safes.create') }}" role="button"
-                                     class="btn btn-sm btn-warning open_popup d-flex align-items-center">
+                                     class=" btn-sm btn-warning open_popup d-flex align-items-center px-1">
                                     <i class="fa fa-plus"></i>
                                 </a>
                                 </div>
@@ -104,7 +104,7 @@
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-end">
-                            <button class="btn btn-warning py-1 px-3" type="submit">{{ __('main.add') }}</button>
+                            <button class="btn btnn btn-warning py-1 px-3" type="submit">{{ __('main.add') }}</button>
                         </div>
                     </form>
                 </div>

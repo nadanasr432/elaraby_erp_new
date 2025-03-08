@@ -28,7 +28,7 @@
                         <h3 class=" custom-title font-weight-bold">
                             اضافة قيود اليومية
                         </h3>
-                        <a class="btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.voucher.get') }}">
+                        <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.voucher.get') }}">
                             {{ __('main.back') }}
                         </a>
                     </div>
@@ -151,11 +151,11 @@
                                     </tfoot>
                                 </table>
 
-                                <button type="button" class="btn btn-success py-1 px-3 addNewRowHandler">
+                                <button type="button" class="btn btnn btn-success py-1 px-3 addNewRowHandler">
                                     <i class="fa fa-plus"></i>
                                     {{ __('main.add new row') }}
                                 </button>
-                                <button class="btn btn-success py-1 px-3 font-weight-bold"
+                                <button class="btn btnn btn-success py-1 px-3 font-weight-bold"
                                     type="submit">{{ __('main.add') }}</button>
                             </div>
                         </div>

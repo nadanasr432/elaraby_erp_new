@@ -17,12 +17,13 @@
             <div class="card">
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
-                        <div class="col-lg-12 margin-tb">
-                            <a class="btn pull-left btn-primary btn-sm" href="{{ route('supplier.bonds.create') }}"><i
-                                    class="fa fa-plus"></i>{{ __('bonds.add_new_supplier_bonds') }}</a>
-                            <h5 class="pull-right alert alert-sm alert-success">
+                        <div class="col-lg-12 margin-tb d-flex flex-wrap align-items-center justify-content-between">
+                            <h5 class=" alert custom-title">
                                 {{ __('bonds.list_all_bonds_suppliers') }}
                             </h5>
+                            <a class="btn btnn text-white px-3 py-1 " style="background-color: #36c7d6" href="{{ route('supplier.bonds.create') }}"><i
+                                    class="fa fa-plus"></i>{{ __('bonds.add_new_supplier_bonds') }}</a>
+                            
                         </div>
                         <br>
                     </div>
@@ -66,34 +67,32 @@
                                         <td>{{ $branch->type }}</td>
                                         <td>{{ $branch->amount }}</td>
                                         <td>{{ $branch->date }}</td>
-                                        <td style="padding: 0; padding-top: 17px; ">
+                                        <td class="d-flex justify-content-center align-items-center" style="padding: 0; padding-top: 17px; ">
                                             <div class="all"
                                                 style="align-items: center; display: flex;justify-content:space-around;    margin-bottom: 11px;">
 
                                                 <!--edit-->
                                                 <a href="{{ route('edit_supplier_bond', $branch->id) }}"
-                                                    class="btn btn-sm btn-info" data-toggle="tooltip"
-                                                    title="{{ __('main.edit') }}" data-placement="top"><i
-                                                        class="fa fa-edit"></i></a>
+                                                    class="" data-toggle="tooltip"
+                                                    title="{{ __('main.edit') }}" data-placement="top">
+                                                    <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M18.21 4.87258C18.6 4.48258 18.6 3.83258 18.21 3.46258L15.87 1.12258C15.5 0.732578 14.85 0.732578 14.46 1.12258L12.62 2.95258L16.37 6.70258M0.5 15.0826V18.8326H4.25L15.31 7.76258L11.56 4.01258L0.5 15.0826Z" fill="#4AA16A"/>
+                                                        </svg>
+                                                    </a>
 
                                                 <!--delete-->
-                                                <a class="modal-effect btn btn-sm btn-danger delete_bonds_supplier"
+                                                <a class="modal-effectr delete_bonds_supplier"
                                                     bond_supplier_id="{{ $branch->id }}"
                                                     bond_supplier_name="{{ $branch->supplier }}" data-toggle="modal"
-                                                    href="#modaldemo9" title="delete"><i class="fa fa-trash"></i></a>
+                                                    href="#modaldemo9" title="delete">
+                                                    <svg width="17" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M14.912 4.33301L14.111 17.95C14.0812 18.4594 13.8577 18.9381 13.4865 19.2881C13.1153 19.6382 12.6243 19.8331 12.114 19.833H4.886C4.37575 19.8331 3.88475 19.6382 3.5135 19.2881C3.14226 18.9381 2.91885 18.4594 2.889 17.95L2.09 4.33301H0V3.33301C0 3.2004 0.0526785 3.07322 0.146447 2.97945C0.240215 2.88569 0.367392 2.83301 0.5 2.83301H16.5C16.6326 2.83301 16.7598 2.88569 16.8536 2.97945C16.9473 3.07322 17 3.2004 17 3.33301V4.33301H14.912ZM6.5 0.333008H10.5C10.6326 0.333008 10.7598 0.385686 10.8536 0.479455C10.9473 0.573223 11 0.7004 11 0.833008V1.83301H6V0.833008C6 0.7004 6.05268 0.573223 6.14645 0.479455C6.24021 0.385686 6.36739 0.333008 6.5 0.333008ZM5.5 6.83301L6 15.833H7.5L7.1 6.83301H5.5ZM10 6.83301L9.5 15.833H11L11.5 6.83301H10Z" fill="#F55549"/>
+                                                        </svg>
+                                                        </a>
 
 
                                                 <!--print-->
-                                                <svg title="print"
-                                                    onclick="window.location.href='/ar/client/showSupplierBondPrint/{{ $branch->id }}'"
-                                                    style="cursor:pointer;background-color: #18be77 !important; border: 2px solid #1ec481 !important; padding: 5px; border-radius: 3px;"
-                                                    xmlns="http://www.w3.org/2000/svg" width="27" height="27"
-                                                    fill="white" class="bi bi-printer-fill" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z" />
-                                                    <path
-                                                        d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" />
-                                                </svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg"width="17" height="20" viewBox="0 0 512 512"><path d="M128 0C92.7 0 64 28.7 64 64l0 96 64 0 0-96 226.7 0L384 93.3l0 66.7 64 0 0-66.7c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0L128 0zM384 352l0 32 0 64-256 0 0-64 0-16 0-16 256 0zm64 32l32 0c17.7 0 32-14.3 32-32l0-96c0-35.3-28.7-64-64-64L64 192c-35.3 0-64 28.7-64 64l0 96c0 17.7 14.3 32 32 32l32 0 0 64c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-64zM432 248a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
                                             </div>
                                         </td>
                                     </tr>

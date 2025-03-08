@@ -30,7 +30,7 @@
                         <h3 class="custom-title font-weight-bold">
                             {{__('sales_bills.termsAndConditionsSaleBills')}}
                         </h3>
-                        <a class="btn py-1 px-4 text-white"style="background-color: #ec6880 !important;" href="http://arabygithub.test/ar/client/journal/get">
+                        <a class="btn py-1 px-4 text-white"style="background-color: #36c7d6 !important;" href="http://arabygithub.test/ar/client/journal/get">
                             {{__('sales_bills.back')}}
                         </a>
                     </div>

@@ -17,7 +17,7 @@
                     <div class="d-flex justify-content-between">
                         <div class="col-lg-12 d-flex flex-wrap justify-content-between align-items-center">
                             <h5 class=" alert custom-title">{{ __('sidebar.list-of-banks') }}</h5>
-                            <a class="btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.banks.create') }}"><i
+                            <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.banks.create') }}"><i
                                     class="fa fa-plus"></i> {{ __('sidebar.add-new-bank') }} </a>
                         </div>
                         <br>

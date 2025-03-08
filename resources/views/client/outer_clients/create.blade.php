@@ -31,7 +31,7 @@
                     <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
                         <h5  class="    alert alert-sm custom-title">
                             {{ __('sidebar.add-new-client') }} </h5>
-                        <a class="btn btn-sm pull-left text-white px-3 py-1" style="background-color: #ec6880;" href="{{ route('client.outer_clients.index') }}">
+                        <a class="btn btnn btn-sm pull-left text-white px-3 py-1" style="background-color: #36c7d6;" href="{{ route('client.outer_clients.index') }}">
                             {{ __('main.back') }}</a>
                         
                     </div>
@@ -65,7 +65,7 @@
 
                                 <input type="text" name="notes[]" class="form-control"
                                     style="width:100%; display: inline; float: right;">
-                                <button type="button" id="add_note" class="btn btn-md btn-warning d-flex align-items-center justify-content-center py-1"
+                                <button type="button" id="add_note" class="btn-md btn-warning d-flex align-items-center justify-content-center py-1 px-1"
                                     >
                                     <i class="fa fa-plus" style="font-size: 17px; font-weight: bold;"></i>
                                 </button>
@@ -87,7 +87,7 @@
                                 <div class="d-flex">
                                     <input type="text" name="phones[]" class="form-control"
                                     dir="ltr">
-                                <button type="button" id="add_phone" class="btn btn-md btn-warning d-flex align-items-center justify-content-center py-1"
+                                <button type="button" id="add_phone" class="btn-md btn-warning d-flex align-items-center justify-content-center py-1 px-1"
                                     >
                                     <i class="fa fa-plus" style="font-size: 17px; font-weight: bold;"></i>
                                 </button>
@@ -101,7 +101,7 @@
 
                                 <input type="text" name="addresses[]" class="form-control"
                                    >
-                                    <button type="button" id="add_address" class="btn btn-md btn-warning d-flex align-items-center justify-content-center py-1"
+                                    <button type="button" id="add_address" class="btn-md btn-warning d-flex align-items-center justify-content-center py-1 px-1"
                                     >
                                     <i class="fa fa-plus" style="font-size: 17px; font-weight: bold;"></i>
                                 </button>
@@ -157,7 +157,7 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-end">
-                            <button class="btn btn-warning px-3 py-1" type="submit">{{ __('main.add') }}</button>
+                            <button class="btn btnn btn-warning px-3 py-1" type="submit">{{ __('main.add') }}</button>
                         </div>
                     </form>
                 </div>

@@ -16,7 +16,7 @@
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
                         {{-- <div class="col-lg-12 margin-tb">
-                            <a class="btn text-white px-3 py-1" style="background-color: #ec6880"
+                            <a class="btn text-white px-3 py-1" style="background-color: #36c7d6"
                                href="{{ route('client.products.create') }}"><i
                                     class="fa fa-plus"></i> اضافة منتج جديد </a>
                             <h5 class="pull-right alert custom-title">عرض المنتجات التى نفذت </h5>

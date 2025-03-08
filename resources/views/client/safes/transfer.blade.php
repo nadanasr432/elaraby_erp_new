@@ -21,7 +21,7 @@
                         <h5 class=" alert custom-title">
                             {{ __('sidebar.transfer-between-stores') }}
                         </h5>
-                        <a class="btn text-white px-3 py-1" style="background-color: #ec6880" href="{{ route('client.safes.index') }}">
+                        <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.safes.index') }}">
                             {{ __('main.back') }}</a>
                        
                     </div>
@@ -73,7 +73,7 @@
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-end">
-                            <button class="btn btn-warning py-1 px-3" type="submit">
+                            <button class="btn btnn btn-warning py-1 px-3" type="submit">
                                 {{ __('main.transfer') }}
                             </button>
                         </div>

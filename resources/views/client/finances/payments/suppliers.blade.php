@@ -17,7 +17,7 @@
                     <div class="d-flex justify-content-between">
                         <div class="col-lg-12 margin-tb d-flex flex-wrap justify-content-between align-items-center">
                             <h5 class="custom-title alert ">دفعات النقدية السابقة الى الموردين </h5>
-                            <a class="btn text-white px-3 py-1" style="background-color: #ec6880"
+                            <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6"
                                href="{{ route('client.add.cash.suppliers') }}"><i
                                     class="fa fa-plus"></i> دفع نقدى الى مورد </a>
                         </div>
@@ -67,7 +67,7 @@
                                     <td>{{ $cash->safe->safe_name }}</td>
                                     <td>{{ $cash->notes }}</td>
                                     <td>{{ $cash->client->name }}</td>
-                                    <td>
+                                    <td class="d-flex justify-content-center">
                                         <a href="{{ route('client.edit.cash.suppliers', $cash->id) }}"
                                            class="" data-toggle="tooltip"
                                            title="تعديل" data-placement="top"><svg width="19" height="16" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -142,18 +142,21 @@
                 <div class="form-group">
                     <label class="px-1" style="display:block;" for="store_id">{{ __('sales_bills.store-name') }}</label>
                     <div class="d-flex">
-                        <select required class="selectpicker form-control mx-1" data-live-search="true"
-                            title="{{ __('main.write-or-choose') }}" data-style="btn-third" name="store_id"
-                            id="store_id">
-                            @foreach ($stores as $store)
-                                <option title="{{ $store->store_name }}" @if (isset($store_k) && $store->id == $store_k->id) selected @endif
-                                    value="{{ $store->id }}">{{ $store->store_name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <button type="submit" class="btn btn-warning text-center px-2"
-                            style="display: inline !important; float: left !important;" id="by_product_name"><i
-                                class="fa fa-search"></i></button>
+                        <select required class="selectpicker form-control mx-1" data-live-search="true" title="{{ __('main.write-or-choose') }}"
+                        data-style="btn-third" name="store_id" id="store_id">
+                        @if(isset($stores) && $stores->count())
+                        @foreach ($stores as $store)
+                            <option title="{{ $store->store_name }}" value="{{ $store->id }}">
+                                {{ $store->store_name }}
+                            </option>
+                        @endforeach
+                    @else
+                        <option disabled>No stores available</option>
+                    @endif
+                    </select>
+                    <button type="submit" class="btn btn-warning text-center px-2"
+                        style="display: inline !important; float: left !important;"
+                        id="by_product_name"><i class="fa fa-search"></i></button>
                     </div>
                 </div>
             </form>
@@ -166,7 +169,7 @@
             <form action="{{ route('client.buy_bills.filter.all') }}" method="POST">
                 @csrf
                 @method('POST')
-                <button type="submit" class="btn btn-md btn-warning">
+                <button type="submit" class="btn btnn btn-md btn-warning">
                     <i class="fa fa-list"></i>
                     {{ __('sidebar.purchases-invoices') }}
                 </button>
@@ -511,10 +514,10 @@
         @endif
         @if (isset($store_buy_bills))
             @if (!$store_buy_bills->isEmpty())
-                <div class="alert alert-sm alert-success text-center mt-1 mb-2">
+                {{-- <div class="alert alert-sm alert-success text-center mt-1 mb-2">
                     الفواتير المتاحة لـ
                     {{ $store_k->store_name }}
-                </div>
+                </div> --}}
                 <table class='table table-condensed table-striped table-bordered'>
                     <thead class="text-center">
                         <th>#</th>
@@ -760,7 +763,7 @@
         @endif
         @if (isset($all_buy_bills))
             @if (!$all_buy_bills->isEmpty())
-                <div class="alert alert-sm alert-success text-center mt-1 mb-2">
+                <div class="alert custom-title">
                     كل فواتير المشتريات
                 </div>
                 <table class='table table-condensed table-striped table-bordered'>
@@ -834,28 +837,34 @@
                                     <?php $total = $total + $after_total; ?>
                                 </td>
                                 <td>{{ $buy_bill->elements->count() }}</td>
-                                <td style="width: 30%!important;padding: 5px !important;">
+                                <td class="d-flex justify-content-center">
                                     <form class="d-inline" action="{{ route('client.buy_bills.filter.key') }}"
                                         method="POST">
                                         @csrf
                                         @method('POST')
                                         <input type="hidden" name="buy_bill_id" value="{{ $buy_bill->id }}">
-                                        <button type="submit" class="btn btn-sm btn-success">
-                                            <i class="fa fa-eye"></i> عرض
-                                        </button>
+                                        <a type="submit" class="">
+                                            <svg xmlns="http://www.w3.org/2000/svg"width="17" height="20" viewBox="0 0 576 512"><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"/></svg>
+                                        </a>
                                     </form>
-                                    <button bill_id="{{ $buy_bill->id }}"
+                                    <a bill_id="{{ $buy_bill->id }}"
                                         buy_bill_number="{{ $buy_bill->buy_bill_number }}" data-toggle="modal"
                                         href="#modaldemo9" title="delete" type="button"
-                                        class="modal-effect btn btn-sm btn-danger delete_bill d-inline">
-                                        <i class="fa fa-trash"></i>
-                                        حذف
-                                    </button>
+                                        class="">
+                                        <svg width="17" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M14.912 4.33203L14.111 17.949C14.0812 18.4584 13.8577 18.9371 13.4865 19.2872C13.1153 19.6372 12.6243 19.8321 12.114 19.832H4.886C4.37575 19.8321 3.88475 19.6372 3.5135 19.2872C3.14226 18.9371 2.91885 18.4584 2.889 17.949L2.09 4.33203H0V3.33203C0 3.19942 0.0526785 3.07225 0.146447 2.97848C0.240215 2.88471 0.367392 2.83203 0.5 2.83203H16.5C16.6326 2.83203 16.7598 2.88471 16.8536 2.97848C16.9473 3.07225 17 3.19942 17 3.33203V4.33203H14.912ZM6.5 0.332031H10.5C10.6326 0.332031 10.7598 0.38471 10.8536 0.478478C10.9473 0.572246 11 0.699423 11 0.832031V1.83203H6V0.832031C6 0.699423 6.05268 0.572246 6.14645 0.478478C6.24021 0.38471 6.36739 0.332031 6.5 0.332031ZM5.5 6.83203L6 15.832H7.5L7.1 6.83203H5.5ZM10 6.83203L9.5 15.832H11L11.5 6.83203H10Z" fill="#F55549"/>
+                                            </svg>
+                                            
+                                        
+                                    </a>
 
                                     <a href="{{ route('client.buy_bills.edit', $buy_bill->id) }}" role="button"
-                                        class="btn btn-sm btn-success d-inline">
-                                        <i class="fa fa-trash"></i>
-                                        تعديل
+                                        class="">
+                                        <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M18.21 4.87258C18.6 4.48258 18.6 3.83258 18.21 3.46258L15.87 1.12258C15.5 0.732578 14.85 0.732578 14.46 1.12258L12.62 2.95258L16.37 6.70258M0.5 15.0826V18.8326H4.25L15.31 7.76258L11.56 4.01258L0.5 15.0826Z" fill="#4AA16A"/>
+                                            </svg>
+                                            
+                                        
                                     </a>
                                 </td>
                             </tr>

@@ -68,10 +68,10 @@
                     <div class="d-flex flex-wrap justify-content-between align-items-center">
                         <h3 class="custom-title font-weight-bold">
                             {{ __('sidebar.previous-quotes') }}
-                            <span class="badge" style="background-color:#ec6880;">{{ count($all_quotations) }}</span>
+                            <span class="badge" style="background-color:#36c7d6;">{{ count($all_quotations) }}</span>
                         </h3>
                         <div class="row px-2">
-                            <a class="btn btn-primary pull-left p-1 mainBtnNewDes d-flex align-items-center"
+                            <a class="btn btnn btn-primary pull-left p-1 mainBtnNewDes d-flex align-items-center"
                                 href="{{ route('client.quotations.create') }}">
                                 <span
                                     style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
@@ -84,8 +84,9 @@
                                 </span>
                                 {{ __('sidebar.addNewQuotation') }}
                             </a>
-                            <a onclick="history.back()" class="btn  text-white d-flex align-items-center ml-1"
-                                style="background-color: #ec6880" style="height: 37px; font-size: 11px !important;">
+                            <a onclick="history.back()"
+                                class="btn btnn  text-white d-flex align-items-center ml-1" style="background-color: #36c7d6"
+                                style="height: 37px; font-size: 11px !important;">
                                 <span
                                     style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
                                     <svg style="width: 10px;height: 15px;fill: #f5f1f1;margin-top: 1px;"
