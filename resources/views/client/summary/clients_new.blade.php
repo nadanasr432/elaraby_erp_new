@@ -40,13 +40,13 @@
                         <div class="row mb-3">
                             <div class="col-md-4">
                                 <label class="d-block"> اختر العميل <span class="text-danger">*</span></label>
-                                <select required name="outer_client_id" id="outer_client_id" class="form-control"
-                                     data-live-search="true" title="اكتب او اختار اسم العميل">
-                                    @foreach ($outer_clients as $outer_client)
-                                        <option @if (isset($outer_client_k) && $outer_client_k->id == $outer_client->id) selected @endif
-                                            value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
-                                    @endforeach
-                                </select>
+                                <select required name="outer_client_id" id="outer_client_id" class="selectpicker py-1 form-control"
+                                data-live-search="true" title="اكتب او اختار اسم العميل">
+                                   @foreach ($outer_clients as $outer_client)
+                                       <option @if (isset($outer_client_k) && $outer_client_k->id == $outer_client->id) selected @endif
+                                           value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
+                                   @endforeach
+                               </select>
                             </div>
                             <div class="col-md-4">
                                 <label class="d-block"> من تاريخ <span class="text-danger">*</span></label>

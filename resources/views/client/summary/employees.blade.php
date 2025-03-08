@@ -35,8 +35,8 @@
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <label class="d-block"> اختر الموظف <span class="text-danger">*</span></label>
-                            <select required name="employee_id" id="employee_id" class="form-control"
-                                data-style="btn-success" data-live-search="true" title="اكتب او اختار اسم الموظف">
+                            <select required name="employee_id" id="employee_id" class="selectpicker form-control"
+                                data-live-search="true" title="اكتب او اختار اسم الموظف">
                                 <option @if(isset($employee_id) && $employee_id == "all") selected @endif value="all">كل
                                     الموظفين
                                 </option>

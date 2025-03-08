@@ -7,6 +7,12 @@
     .bootstrap-select {
         width: 100% !important;
     }
+    .bootstrap-select .dropdown-toggle .filter-option {
+    text-align: right !important;
+    display: flex
+;
+    align-items: center;
+}
 </style>
 @section('content')
     @if (count($errors) > 0)
@@ -40,7 +46,7 @@
                         <div class="row mb-3">
                             <div class="col-lg-6  no-print">
                                 <label for="" class="d-block">اسم العميل</label>
-                                <select required name="outer_client_id" id="outer_client_id" class="form-control"
+                                <select required name="outer_client_id" id="outer_client_id" class="form-control selectpicker p-0"
                                          data-live-search="true" title="اكتب او اختار اسم العميل">
                                     <option
                                         @if(isset($outer_client_id) && $outer_client_id == "all")

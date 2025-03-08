@@ -7,6 +7,12 @@
     .bootstrap-select {
         width: 100% !important;
     }
+    .bootstrap-select .dropdown-toggle .filter-option {
+    text-align: right !important;
+    display: flex
+;
+    align-items: center;
+}
 </style>
 @section('content')
     @if (count($errors) > 0)
@@ -41,7 +47,7 @@
                         <div class="row mb-3">
                             <div class="col-lg-4 mb-3 no-print">
                                 <label for="" class="d-block">اختر نوع العمليات</label>
-                                <select required name="type" id="type" class="form-control">
+                                <select required name="type" id="type" class="form-control selectpicker">
                                     <option
                                         @if(isset($type) && $type == "all")
                                         selected

@@ -1,6 +1,11 @@
 @extends('client.layouts.app-main')
 <style>
-
+.bootstrap-select .dropdown-toggle .filter-option {
+    text-align: right !important;
+    display: flex
+;
+    align-items: center;
+}
 </style>
 @section('content')
     @if (count($errors) > 0)
@@ -40,7 +45,7 @@
                         <div class="row mb-3">
                             <div class="col-md-4">
                                 <label class="d-block"> اختر المورد <span class="text-danger">*</span></label>
-                                <select required name="supplier_id" id="supplier_id" class="form-control"
+                                <select required name="supplier_id" id="supplier_id" class="selectpicker form-control "
                                     data-live-search="true" title="اكتب او اختار اسم المورد">
                                     @foreach ($suppliers as $supplier)
                                         <option @if (isset($supplier_k) && $supplier_k->id == $supplier->id) selected @endif

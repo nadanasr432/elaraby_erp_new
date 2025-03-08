@@ -7,6 +7,12 @@
     .bootstrap-select {
         width: 100% !important;
     }
+    .bootstrap-select .dropdown-toggle .filter-option {
+    text-align: right !important;
+    display: flex
+;
+    align-items: center;
+}
 </style>
 @section('content')
     @if (count($errors) > 0)
@@ -54,7 +60,7 @@
                         <div class="row">
                             <div class="col-lg-4 mb-2 no-print">
                                 <label for="" class="d-block">اسم المنتج</label>
-                                <select required name="product_id" id="product_id" class="form-control "
+                                <select required name="product_id" id="product_id" class="selectpicker form-control p-0"
                                          data-live-search="true" title="اكتب او اختار اسم المنتج">
                                     <option
                                         @if(isset($product_id) && $product_id == "all")

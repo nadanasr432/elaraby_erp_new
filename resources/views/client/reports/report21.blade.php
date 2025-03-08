@@ -1,6 +1,11 @@
 @extends('client.layouts.app-main')
 <style>
-
+.bootstrap-select .dropdown-toggle .filter-option {
+    text-align: right !important;
+    display: flex
+;
+    align-items: center;
+}
 </style>
 @section('content')
     @if (session('success'))
@@ -48,7 +53,7 @@
                         <div class="row">
                             <div class="col-lg-4 mb-3 no-print">
                                 <label for="" class="d-block">اسم الفرع </label>
-                                <select required name="branch_id" id="branch_id" class="form-control"
+                                <select required name="branch_id" id="branch_id" class="selectpicker  form-control"
                                          data-live-search="true" title="اكتب او اختار اسم الفرع">
                                     @foreach($branches as $branch)
                                         <option

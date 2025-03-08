@@ -48,7 +48,7 @@
                         <div class="row">
                             <div class="col-lg-4 mb-3 no-print">
                                 <label for="" class="d-block">اسم المنتج </label>
-                                <select required name="product_id" id="product_id" class="form-control"
+                                <select required name="product_id" id="product_id" class="selectpicker form-control"
                                          data-live-search="true" title="اكتب او اختار اسم المنتج">
                                     @foreach($products as $product)
                                         <option

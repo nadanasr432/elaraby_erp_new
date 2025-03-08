@@ -52,7 +52,7 @@
                                         <i class="fa fa-print"></i> {{ __('pos.print-invoice') }}
                                     </a>
                         
-                                    <a class="btn btnn  ml-1 mb-1 py-1"style="background-color:#cfcfcf82;" id="todayPrintBtn"
+                                    <a class="btn btnn  ml-1 mb-1 text-dark py-1"style="background-color:#cfcfcf82;" id="todayPrintBtn"
                                        href="{{ route('pos.sales.report.button.print-today') }}">
                                         <i class="fa fa-print"></i> {{ __('pos.print-button') }}
                                     </a>
