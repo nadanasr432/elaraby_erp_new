@@ -41,16 +41,15 @@
                 <label style="display:block;" for="bill_id">بحث برقم امر الشراء</label>
                 <div class="d-flex justify-items-center">
                     <select required class="selectpicker form-control" data-live-search="true" title="اكتب او اختر الرقم"
-                    data-style="btn-third" name="purchase_order_id" id="purchase_order_id">
-                    @foreach ($purchase_orders as $purchase_order)
-                        <option class="d-flex align-items-center" title="{{ $purchase_order->purchase_order_number }}"
-                            @if (isset($purchase_order_k) && $purchase_order->id == $purchase_order_k->id) selected @endif value="{{ $purchase_order->id }}">
-                            {{ $purchase_order->purchase_order_number }}</option>
-                    @endforeach
-                </select>
-                <button type="submit" class="btn btnn btn-md btn-warning"
-                    
-                    id="by_purchase_order_id"><i class="fa fa-search"></i></button>
+                        data-style="btn-third" name="purchase_order_id" id="purchase_order_id">
+                        @foreach ($purchase_orders as $purchase_order)
+                            <option class="d-flex align-items-center" title="{{ $purchase_order->purchase_order_number }}"
+                                @if (isset($purchase_order_k) && $purchase_order->id == $purchase_order_k->id) selected @endif value="{{ $purchase_order->id }}">
+                                {{ $purchase_order->purchase_order_number }}</option>
+                        @endforeach
+                    </select>
+                    <button type="submit" class="btn btnn btn-md btn-warning" id="by_purchase_order_id"><i
+                            class="fa fa-search"></i></button>
                 </div>
             </div>
         </form>
@@ -64,15 +63,14 @@
                 <label style="display:block;" for="supplier_id">بحث باسم المورد</label>
                 <div class="d-flex justify-items-center">
                     <select required class="selectpicker form-control" data-live-search="true" title="اكتب او اختر الاسم"
-                    data-style="btn-third" name="supplier_id" id="supplier_id">
-                    @foreach ($suppliers as $supplier)
-                        <option title="{{ $supplier->supplier_name }}" @if (isset($supplier_k) && $supplier->id == $supplier_k->id) selected @endif
-                            value="{{ $supplier->id }}">{{ $supplier->supplier_name }}</option>
-                    @endforeach
-                </select>
-                <button type="submit" class="btn btnn btn-md btn-warning"
-                    id="by_supplier_id"><i
-                        class="fa fa-search"></i></button>
+                        data-style="btn-third" name="supplier_id" id="supplier_id">
+                        @foreach ($suppliers as $supplier)
+                            <option title="{{ $supplier->supplier_name }}" @if (isset($supplier_k) && $supplier->id == $supplier_k->id) selected @endif
+                                value="{{ $supplier->id }}">{{ $supplier->supplier_name }}</option>
+                        @endforeach
+                    </select>
+                    <button type="submit" class="btn btnn btn-md btn-warning" id="by_supplier_id"><i
+                            class="fa fa-search"></i></button>
                 </div>
             </div>
         </form>
@@ -85,15 +83,15 @@
                 <label style="display:block;" for="code_universal">بحث بكود المنتج</label>
                 <div class="d-flex justify-items-center">
                     <select required class="selectpicker form-control" data-live-search="true" title="اكتب او اختر الكود"
-                    data-style="btn-third" name="code_universal" id="code_universal">
-                    @foreach ($products as $product)
-                        <option title="{{ $product->code_universal }}" @if (isset($product_k) && $product->id == $product_k->id) selected @endif
-                            value="{{ $product->id }}">{{ $product->code_universal }}</option>
-                    @endforeach
-                </select>
-                <button type="submit" class="btn btnn btn-md btn-warning"
-                    
-                    id="by_code_universal"><i class="fa fa-search"></i></button>
+                        data-style="btn-third" name="code_universal" id="code_universal">
+                        @foreach ($products as $product)
+                            <option title="{{ $product->code_universal }}"
+                                @if (isset($product_k) && $product->id == $product_k->id) selected @endif value="{{ $product->id }}">
+                                {{ $product->code_universal }}</option>
+                        @endforeach
+                    </select>
+                    <button type="submit" class="btn btnn btn-md btn-warning" id="by_code_universal"><i
+                            class="fa fa-search"></i></button>
                 </div>
             </div>
         </form>
@@ -108,15 +106,14 @@
                 <div class="d-flex justify-items-center">
 
                     <select required class="selectpicker form-control" data-live-search="true" title="اكتب او اختر الاسم"
-                    data-style="btn-third" name="product_name" id="product_name">
-                    @foreach ($products as $product)
-                        <option title="{{ $product->product_name }}" @if (isset($product_k) && $product->id == $product_k->id) selected @endif
-                            value="{{ $product->id }}">{{ $product->product_name }}</option>
-                    @endforeach
-                </select>
-                <button type="submit" class="btn btnn btn-md btn-warning"
-                    
-                    id="by_product_name"><i class="fa fa-search"></i></button>
+                        data-style="btn-third" name="product_name" id="product_name">
+                        @foreach ($products as $product)
+                            <option title="{{ $product->product_name }}" @if (isset($product_k) && $product->id == $product_k->id) selected @endif
+                                value="{{ $product->id }}">{{ $product->product_name }}</option>
+                        @endforeach
+                    </select>
+                    <button type="submit" class="btn btnn btn-md btn-warning" id="by_product_name"><i
+                            class="fa fa-search"></i></button>
                 </div>
             </div>
         </form>
@@ -129,12 +126,12 @@
                 <div class="d-flex justify-items-center">
                     <select required class="selectpicker form-control" data-live-search="true"
                         title="{{ __('main.write-or-choose') }}" data-style="btn-third" name="store_id" id="store_id">
-                         @if(isset($stores) && $stores->count())
-                        @foreach ($stores as $store)
-                            <option title="{{ $store->store_name }}" @if (isset($store_k) && $store->id == $store_k->id) selected @endif
-                                value="{{ $store->id }}">{{ $store->store_name }}
-                            </option>
-                        @endforeach
+                        @if (isset($stores) && $stores->count())
+                            @foreach ($stores as $store)
+                                <option title="{{ $store->store_name }}" @if (isset($store_k) && $store->id == $store_k->id) selected @endif
+                                    value="{{ $store->id }}">{{ $store->store_name }}
+                                </option>
+                            @endforeach
                         @endif
                     </select>
                     <button type="submit" class="btn btn-md btn-warning" id="by_product_name"><i
@@ -282,7 +279,7 @@
                 تحويل لفاتورة مشتريات
             </a>
             <?php echo '
-                                                        <a href="'; ?>{{ route('client.purchase_orders.send', $purchase_order_k->purchase_order_number) }}
+                                                                    <a href="'; ?>{{ route('client.purchase_orders.send', $purchase_order_k->purchase_order_number) }}
             <?php echo '" role="button"
                        class="btn send_btn btn-md btn-warning pull-right ml-3"><i
                             class="fa fa-check"></i>
@@ -421,7 +418,7 @@
 
                     <span class="alert alert-secondary alert-sm">
                         اجمالى اسعار كل اوامر الشراء لهذا المورد
-                        ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+                        ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                     </span>
                 </div>
             @else
@@ -549,7 +546,7 @@
 
                     <span class="alert alert-secondary alert-sm">
                         اجمالى اسعار كل اوامر الشراء لهذا المورد
-                        ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+                        ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                     </span>
                 </div>
             @else
@@ -679,7 +676,7 @@
 
                     <span class="alert alert-secondary alert-sm">
                         اجمالى اسعار كل اوامر الشراء لهذا المنتج
-                        ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+                        ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                     </span>
                 </div>
             @else
@@ -808,7 +805,7 @@
 
                     <span class="alert alert-secondary alert-sm">
                         اجمالى اسعار كل اوامر الشراء
-                        ({{ floatval($total) }}) <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+                        ({{ floatval($total) }}) <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                     </span>
                 </div>
             @else

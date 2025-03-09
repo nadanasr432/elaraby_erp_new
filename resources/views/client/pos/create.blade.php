@@ -906,7 +906,7 @@
                         <select name="discount_type" id="discount_type" class="form-control"
                             style="width: 40%;display: inline;float: right; margin-left:5px;">
                             <option @if (isset($pos_open) && !empty($pos_open_discount) && $pos_open_discount->discount_type == 'pound') selected @endif value="pound"><img
-                                    src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+                                    src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                             </option>
                             <option @if (isset($pos_open) && !empty($pos_open_discount) && $pos_open_discount->discount_type == 'percent') selected @endif value="percent"> %
                             </option>

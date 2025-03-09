@@ -551,7 +551,7 @@
 
                 <a class="btn d-flex align-items-center bg-none border-0 ml-1  my-1"
                     style="    background: white !important;color: gray;border: 1px solid gray !important;border-radius: 7px;"
-                    href="{{ route('client.sale_bills.index') }}">
+                    href="{{ route('client.sale_bills.index1') }}">
                     <img src="{{ asset('assets/svgs/paper.svg') }}">
                     {{ __('main.mnge-bills') }}
                 </a>

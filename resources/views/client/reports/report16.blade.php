@@ -50,8 +50,7 @@
                             </div>
                         </div>
                         <div class="">
-                            <button class="btn btnn btn-md btn-warning py-1 px-3"
-                                    type="submit">
+                            <button class="btn btnn btn-md btn-warning py-1 px-3" type="submit">
                                 <i class="fa fa-check"></i>
                                 عرض التقرير
                             </button>
@@ -242,7 +241,7 @@
                                             </td>
                                             <td>
                                                 {{ round($profit, 2) }}
-                                                <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+                                                <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                                             </td>
                                         </tr>
                                     @endforeach
@@ -421,7 +420,7 @@
                             <span class="col-lg-4 col-sm-12 alert alert-secondary alert-sm mr-4">
                                 اجمالى ارصدة الخزن
                                 {{ round($safes_balances, 2) }}
-                                <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+                                <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                             </span>
                         </div>
                         <div class="clearfix"></div>
@@ -430,21 +429,21 @@
                             <span class="col-lg-3 col-sm-12 alert alert-secondary alert-sm mr-4">
                                 اجمالى تكلفة المخازن
                                 {{ round($total_purchase_prices, 2) }}
-                                <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+                                <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
 
                             </span>
 
                             <span class="col-lg-3 col-sm-12 alert alert-secondary alert-sm mr-4">
                                 اجمالى حسابات البنوك
                                 {{ round($banks_balances, 2) }}
-                                <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+                                <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
 
                             </span>
 
                             <span class="col-lg-3 col-sm-12 alert alert-secondary alert-sm mr-4">
                                 اجمالى الربح
                                 {{ round($total_profits, 2) }}
-                                <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+                                <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
 
                             </span>
 

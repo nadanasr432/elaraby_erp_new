@@ -93,8 +93,7 @@
                                 </span>
                                 {{ __('sidebar.Add a new sales invoice') }}
                             </a>
-                            <a onclick="history.back()"
-                                class="btn btnn pull-left text-white d-flex align-items-center ml-1"
+                            <a onclick="history.back()" class="btn btnn pull-left text-white d-flex align-items-center ml-1"
                                 style="height: 37px; font-size: 11px !important; background-color: #36c7d6;">
                                 <span
                                     style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
@@ -157,7 +156,7 @@
                                                 <td>
                                                     @php $total += $sale_bill->final_total; @endphp
                                                     {{ $sale_bill->final_total }} <img
-                                                        src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+                                                        src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                                                 </td>
                                                 <td>{{ $sale_bill->elements->count() }}</td>
                                                 <td>
@@ -242,7 +241,7 @@
                         <span
                             class="badge  p-1 font-weight-bold"style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
                             {{ __('sidebar.Total billing prices') }}
-                            ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+                            ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                         </span>
                     </div>
 
