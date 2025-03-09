@@ -146,9 +146,13 @@
             <img class="logo" style="width: 100px;height: 70px;margin-top: 1px;"
                 src="{{ asset($pos->company->company_logo) }}" alt="">
         </div>
+        <div class="text-center">
         <span>فاتورة ضريبية مبسطة</span><br>
+        </div>
+        <div class="no-print">
         <input type="number" value="13" min="10" max="15"
             class="chgTxtSize text-center font-weight-bold rounded mr-4 mt-2"><br>
+            </div>
         <hr style="margin: 9px 0 -7px 0;">
         <div class="text-right mt-3">
             <div class="text-right">

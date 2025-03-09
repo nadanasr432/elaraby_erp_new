@@ -310,6 +310,7 @@
 
                                 <td class="borderLeftH" dir="rtl">
                                     {{ floatval($product->quantity_price) }} <img
+                                        src="{{ asset('images/Sr_coin.svg') }}" width="15px"><img
                                         src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                                 </td>
                                 <td class="borderLeftH" dir="rtl">

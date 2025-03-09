@@ -669,8 +669,8 @@
                         <td>الخصم Deduction</td>
                         <td>{{ $discountNote ? $discountNote . ' || ' : '' }}
                             {{-- @if ($discount->action_type == 'poundAfterTax') --}}
-                            ({{ $sale_bill->total_discount }})
-                            <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                             <img src="{{ asset('images/Sr_coin.svg') }}" width="10px"> ({{ $sale_bill->total_discount }})
+                           
                         </td>
                     </tr>
                     <tr style="font-weight: bold;">

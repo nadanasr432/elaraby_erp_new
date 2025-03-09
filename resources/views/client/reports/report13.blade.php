@@ -39,9 +39,9 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <div class="col-12 row d-flex flex-wrap align-items-center justify-content-between pr-0">
-                        <h2 class="alert custom-title">تقرير الارباح</h2>
-                        <button class="btn text-white px-3 py-1" style="background-color: #36c7d6" onclick="history.back()">الرجوع</button>
+                    <div class="col-12 row justify-content-between pr-0">
+                        <h2 style="font-size: 20px !important; margin-bottom: 19px !important;">تقرير الارباح</h2>
+                        <button class="btn btn-danger p-1 rounded border" onclick="history.back()">الرجوع</button>
                     </div>
                     <div class="clearfix"></div>
                     <hr>
@@ -49,26 +49,24 @@
                     <form action="{{route('client.report13.post')}}" method="POST" class="mt-2">
                         @csrf
                         @method('POST')
-                        <div class="row mb-3">
-                            <div class="col-lg-6 mb-3 no-print">
-                                <label>من تاريخ</label>
-                                <input
-                                    type="date" class="form-control" name="from_date"
-                                    @if(isset($from_date) && !empty($from_date)) value="{{$from_date}}" @endif
-                                />
-                            </div>
-                            <div class="col-lg-6 mb-3 no-print">
-                                <label>الى تاريخ</label>
-                                <input
-                                    type="date" class="form-control" name="to_date"
-                                    @if(isset($to_date) && !empty($to_date)) value="{{$to_date}}"@endif
-                                />
-                            </div>
+                        <div class="col-lg-5 pull-right no-print">
+                            <label>من تاريخ</label>
+                            <input
+                                type="date" class="form-control" name="from_date"
+                                @if(isset($from_date) && !empty($from_date)) value="{{$from_date}}" @endif
+                            />
                         </div>
-                        <div class="">
+                        <div class="col-lg-5 pull-right no-print">
+                            <label>الى تاريخ</label>
+                            <input
+                                type="date" class="form-control" name="to_date"
+                                @if(isset($to_date) && !empty($to_date)) value="{{$to_date}}"@endif
+                            />
+                        </div>
+                        <div class="col-lg-2 pull-right p-0">
                             <label class="invisible">sdf</label>
                             <br>
-                            <button class="btn btnn py-1 px-3 btn-warning" type="submit">
+                            <button class="btn btn-md btn-success" type="submit">
                                 <i class="fa fa-check"></i>
                                 عرض التقرير
                             </button>
@@ -80,11 +78,17 @@
                     <br>
                     <hr>
 
-                    <?php
-                    $i = 0; $total = 0; $total_profits = 0;
-                    ?>
-                    <div class="clearfix"></div>
-
+                 @php
+                        $i = 0;
+                        $total = 0;
+                        $total_profits = 0;
+                    
+                        // Fetch all necessary products at once
+                        $productPrices = \App\Models\Product::whereIn('id', $pos_bills->pluck('elements.*.product_id')->flatten())
+                            ->where('company_id', $pos_bills->pluck('company_id')->unique())
+                            ->pluck('purchasing_price', 'id');
+                    @endphp
+                    
                     @if(isset($pos_bills) && !$pos_bills->isEmpty())
                         <p class="alert alert-info font-weight-bold text-white mt-1 text-center">
                             ارباح فواتير نقطة البيع
@@ -103,95 +107,54 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @php
-                                    $sum2 = 0 ; $sum3 =0;
-                                    $total_profits = 0;
-                                @endphp
-
-                                @foreach ($pos_bills as $key => $pos)
+                                @foreach ($pos_bills as $pos)
+                                    @php
+                                        $i++;
+                                        $sum = 0;
+                                        $realPrice = 0;
+                    
+                                        foreach ($pos->elements as $pos_element) {
+                                            $sum += $pos_element->quantity_price;
+                                            $realPrice += ($productPrices[$pos_element->product_id] ?? 0) * $pos_element->quantity;
+                                        }
+                    
+                                        // Apply Discount
+                                        if ($pos->discount) {
+                                            $discount = $pos->discount->discount_value;
+                                            $sum -= ($pos->discount->discount_type === "pound") ? $discount : ($discount / 100) * $sum;
+                                        }
+                    
+                                        // Apply Tax
+                                        if ($pos->tax) {
+                                            $sum += ($pos->tax->tax_value / 100) * $sum;
+                                        }
+                    
+                                        // Value Added Tax Adjustment
+                                        if ($pos->value_added_tax == 1) {
+                                            $sum = ($sum * (100 / 115)) * 1.15;
+                                        }
+                    
+                                        $sum = round($sum, 2);
+                                        $total += $sum;
+                                        $profit = $sum - $realPrice;
+                                        $total_profits += $profit;
+                                    @endphp
+                    
                                     <tr>
-                                        <td>{{++$i}}</td>
+                                        <td>{{ $i }}</td>
                                         <td>{{ $pos->id }}</td>
-                                        <td>
-                                            @if(isset($pos->outerClient->client_name))
-                                                {{$pos->outerClient->client_name}}
-                                            @else
-                                                زبون
-                                            @endif
-                                        </td>
-                                        <td>{{ $pos->created_at}}</td>
-                                        <td>
-                                            @if(isset($pos))
-                                                <?php
-                                                $pos_elements = $pos->elements;
-                                                $pos_discount = $pos->discount;
-                                                $pos_tax = $pos->tax;
-                                                $percent = 0;
-
-                                                $realPrice = 0;
-                                                $sum = 0;
-                                                foreach ($pos_elements as $pos_element) {
-                                                    $sum = $sum + $pos_element->quantity_price;
-                                                    $realProduct = \App\Models\Product::where('company_id', $pos->company_id)
-                                                        ->where('id', $pos_element->product_id)
-                                                        ->firstOrFail();
-                                                    $realPrice += ($realProduct->purchasing_price * $pos_element->quantity) ?? 0;
-                                                }
-                                                if (isset($pos) && isset($pos_tax) && empty($pos_discount)) {
-                                                    $tax_value = $pos_tax->tax_value;
-                                                    $percent = $tax_value / 100 * $sum;
-                                                    $sum = $sum + $percent;
-                                                } elseif (isset($pos) && isset($pos_discount) && empty($pos_tax)) {
-                                                    $discount_value = $pos_discount->discount_value;
-                                                    $discount_type = $pos_discount->discount_type;
-                                                    if ($discount_type == "pound") {
-                                                        $sum = $sum - $discount_value;
-                                                    } else {
-                                                        $discount_value = ($discount_value / 100) * $sum;
-                                                        $sum = $sum - $discount_value;
-                                                    }
-                                                } elseif (isset($pos) && !empty($pos_discount) && !empty($pos_tax)) {
-                                                    $tax_value = $pos_tax->tax_value;
-                                                    $discount_value = $pos_discount->discount_value;
-                                                    $discount_type = $pos_discount->discount_type;
-                                                    if ($discount_type == "pound") {
-                                                        $sum = $sum - $discount_value;
-                                                    } else {
-                                                        $discount_value = ($discount_value / 100) * $sum;
-                                                        $sum = $sum - $discount_value;
-                                                    }
-                                                    $percent = $tax_value / 100 * $sum;
-                                                    $sum = $sum + $percent;
-                                                }
-                                                $tax_option = $pos->value_added_tax;
-                                                if ($tax_option == 1) {
-                                                    $sum = $sum * (100 / 115);
-                                                    $sum_with_option = $sum;
-                                                    $percent = (15 / 100) * $sum_with_option;
-                                                    $sum = $percent + $sum_with_option;
-                                                }
-                                                echo round($sum, 2);
-                                                $total = $total + $sum;
-                                                ?>
-                                            @else
-                                                0
-                                            @endif
-                                        </td>
-                                        <td>
-                                            {{ $realPrice }}
-                                        </td>
-                                        <td>
-                                            @php
-                                                echo $finalTotal = ($sum - $realPrice);
-                                                $total_profits += $finalTotal;
-                                            @endphp
-                                        </td>
+                                        <td>{{ $pos->outerClient->client_name ?? 'زبون' }}</td>
+                                        <td>{{ $pos->created_at }}</td>
+                                        <td>{{ $sum }}</td>
+                                        <td>{{ $realPrice }}</td>
+                                        <td>{{ $profit }}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
                             </table>
                         </div>
                     @endif
+
 
 
                     <div class="clearfix"></div>
