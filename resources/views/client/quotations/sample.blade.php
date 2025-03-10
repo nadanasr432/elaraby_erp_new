@@ -321,7 +321,7 @@
                         <tr class="even"
                             style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 14px !important; height: 40px !important; text-align: center;">
                             <td dir="rtl">
-                                {{ $discount_value }} <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+                                {{ $discount_value }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                             </td>
                             <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Discount')</td>
                         </tr>
@@ -330,7 +330,7 @@
                             style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 40px !important; text-align: center;">
                             <td dir="rtl">
                                 {{ $totalQuotaitonPrice }} <img src="{{ asset('images/Sr_coin.svg') }}"
-                                    width="5%">
+                                    width="15px">
                             </td>
                             <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
                         </tr>
@@ -339,7 +339,7 @@
                         <tr class="even"
                             style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 14px !important; height: 40px !important; text-align: center;">
                             <td dir="rtl">
-                                {{ $taxValue }} <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+                                {{ $taxValue }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                             </td>
                             <td style="text-align: right;padding-right: 14px;">
                                 @lang('sales_bills.Total tax')
@@ -351,7 +351,7 @@
                             style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 40px !important; text-align: center;background: #222751;color:white;">
                             <td dir="rtl">
                                 {{ $totalQuotaitonPrice + $taxValue }} <img src="{{ asset('images/Sr_coin.svg') }}"
-                                    width="5%">
+                                    width="15px">
                             </td>
                             <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total including tax') </td>
                         </tr>

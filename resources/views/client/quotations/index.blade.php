@@ -84,9 +84,8 @@
                                 </span>
                                 {{ __('sidebar.addNewQuotation') }}
                             </a>
-                            <a onclick="history.back()"
-                                class="btn btnn  text-white d-flex align-items-center ml-1" style="background-color: #36c7d6"
-                                style="height: 37px; font-size: 11px !important;">
+                            <a onclick="history.back()" class="btn btnn  text-white d-flex align-items-center ml-1"
+                                style="background-color: #36c7d6" style="height: 37px; font-size: 11px !important;">
                                 <span
                                     style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
                                     <svg style="width: 10px;height: 15px;fill: #f5f1f1;margin-top: 1px;"
@@ -291,7 +290,7 @@
                                     class="badge  p-1 font-weight-bold"style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
                                     @lang('sales_bills.Total prices of all offers')
                                     ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}"
-                                        width="5%">
+                                        width="15px">
                                 </span>
                             </div>
                         @else

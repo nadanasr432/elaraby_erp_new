@@ -221,7 +221,7 @@
                                                         $totalTax += $sale_bill->total_tax;
                                                     @endphp
                                                     {{ $sale_bill->final_total }} <img
-                                                        src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+                                                        src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                                                 </td>
                                                 <td>{{ $sale_bill->elements->count() }}</td>
                                                 <td>
@@ -320,14 +320,14 @@
                         <div>
                             <span class="badge text-dark p-1 font-weight-bold">
                                 {{ __('sidebar.Total billing prices') }}
-                                ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
+                                ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                             </span>
                         </div>
                         <div>
                             <span class="badge text-dark p-1 font-weight-bold">
                                 {{ __('sidebar.Total billing taxes') }}
                                 ( {{ floatval($totalTax) }} ) <img src="{{ asset('images/Sr_coin.svg') }}"
-                                    width="5%">
+                                    width="15px">
                             </span>
                         </div>
                     </div>
