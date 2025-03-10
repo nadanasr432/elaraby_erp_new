@@ -40,7 +40,7 @@
                             value="{{ old('end_date', $product->end_date ?? '') }}" disabled>
                     </div>
                     <!----store---->
-                    <div class="form-group col-lg-4 pr-0" dir="rtl">
+                    <div class="form-group col-lg-4" dir="rtl">
                         <label for="store_id">
                             اسم المخزن
                             <span class="text-danger font-weight-bold">*</span>
@@ -50,7 +50,7 @@
                     <!---------------------->
 
                     <!----category---->
-                    <div class="form-group col-lg-4 pr-0" dir="rtl">
+                    <div class="form-group col-lg-4" dir="rtl">
                         <label for="store_id">
                             الفئة الرئيسية
                             <span class="text-danger font-weight-bold">*</span>
@@ -61,7 +61,7 @@
                     <!---------------------->
 
                     <!----subcategory---->
-                    <div class="form-group col-lg-4 pr-0" dir="rtl">
+                    <div class="form-group col-lg-4" dir="rtl">
                         <label for="store_id">
                             {{ __('products.subcat') }}
                             <span class="text-danger font-weight-bold">*</span>
@@ -72,7 +72,7 @@
                     <!---------------------->
 
                     <!----product_model---->
-                    <div class="form-group col-lg-4 pr-0" dir="rtl">
+                    <div class="form-group col-lg-4" dir="rtl">
                         <label> موديل المنتج</label>
                         <input disabled type="text" name="product_model" value="{{$product->product_model}}"
                             placeholder="موديل المنتج" class="form-control" id='model'>
@@ -80,7 +80,7 @@
                     <!---------------------->
 
                     <!----product_name---->
-                    <div class="form-group col-lg-4 pr-0" dir="rtl">
+                    <div class="form-group col-lg-4" dir="rtl">
                         <label>
                             اسم المنتج
                             <span class="text-danger font-weight-bold">*</span>
@@ -91,7 +91,7 @@
                     <!---------------------->
 
                     <!----unit_id---->
-                    <div class="form-group col-lg-4 pr-0" dir="rtl">
+                    <div class="form-group col-lg-4" dir="rtl">
                         <label>
                             وحدة المنتج
                             <span class="text-danger font-weight-bold">*</span>
@@ -102,7 +102,7 @@
                     <!---------------------->
 
                     <!----code_universal---->
-                    <div class="form-group col-lg-4 pr-0" dir="rtl">
+                    <div class="form-group col-lg-4" dir="rtl">
                         <label>
                             رقم الباركود
                             <span class="text-danger font-weight-bold">*</span>
@@ -113,7 +113,7 @@
                     <!---------------------->
 
                     <!----first_balance---->
-                    <div class="form-group col-lg-4 pr-0" dir="rtl">
+                    <div class="form-group col-lg-4" dir="rtl">
                         <label>
                             رصيد المخازن
                             <span class="text-danger font-weight-bold">*</span>
@@ -124,7 +124,7 @@
                     <!---------------------->
 
                     <!----purchasing_price--->
-                    <div class="form-group col-lg-4 pr-0" dir="rtl">
+                    <div class="form-group col-lg-4" dir="rtl">
                         <label>
                             سعر التكلفة
                             <span class="text-danger font-weight-bold">*</span>
@@ -135,7 +135,7 @@
                     <!---------------------->
 
                     <!----wholesale_price--->
-                    <div class="form-group col-lg-4 pr-0" dir="rtl">
+                    <div class="form-group col-lg-4" dir="rtl">
                         <label>
                             سعر الجملة
                             <span class="text-danger font-weight-bold">*</span>
@@ -146,7 +146,7 @@
                     <!-------------------->
 
                     <!----sector_price--->
-                    <div class="form-group col-lg-4 pr-0" dir="rtl">
+                    <div class="form-group col-lg-4" dir="rtl">
                         <label>
                             سعر القطاعى
                             <span class="text-danger font-weight-bold">*</span>

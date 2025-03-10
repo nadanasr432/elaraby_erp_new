@@ -49,7 +49,7 @@
                         <div class="row p-0">
 
                             <!----store---->
-                            <div class="form-group col-lg-4 pr-0" dir="rtl">
+                            <div class="form-group col-lg-4" dir="rtl">
                                 <label for="store_id">
 
                                     {{ __('products.store_name') }}
@@ -73,7 +73,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group col-lg-4 pr-0" dir="rtl">
+                            <div class="form-group col-lg-4" dir="rtl">
                                 <label for="status">
 
                                     {{ __('manufactures.status') }}

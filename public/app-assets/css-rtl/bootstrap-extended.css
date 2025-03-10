@@ -220,6 +220,9 @@ pre code {
 .table thead {
     background-color: #222751 !important;
 }
+body.dark-mode .table thead {
+    background-color: #212631 !important;
+}
 .table thead th {
     color: white !important;
     vertical-align: bottom;
@@ -317,7 +320,9 @@ form {
 form label {
     color: #2B335E;
 }
-
+body.dark-mode form label {
+    color: #ffff;
+}
 form .form-group {
     margin-bottom: 1.5rem;
 }

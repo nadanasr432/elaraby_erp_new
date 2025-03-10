@@ -57,7 +57,7 @@
                             </div>
 
                             <!----store---->
-                            <div class="form-group col-lg-4 pr-0" dir="rtl">
+                            <div class="form-group col-lg-4" dir="rtl">
                                 <label for="store_id">
 
                                     {{ __('products.store_name') }}
@@ -84,7 +84,7 @@
                             <!---------------------->
 
                             <!----category_id---->
-                            <div class="form-group col-lg-4 pr-0" dir="rtl">
+                            <div class="form-group col-lg-4" dir="rtl">
                                 <label for="store_id">
                                     {{ __('products.main_cat') }}
                                     <span class="text-danger font-weight-bold">*</span>
@@ -105,7 +105,7 @@
 
 
                             <!----sub_category---->
-                            <div class="form-group col-lg-4 pr-0" dir="rtl">
+                            <div class="form-group col-lg-4" dir="rtl">
                                 <label for="store_id">
                                     {{ __('products.subcat') }}
 
@@ -122,7 +122,7 @@
                             <!-------------------->
 
                             <!----product_model---->
-                            <div class="form-group col-lg-4 pr-0" dir="rtl">
+                            <div class="form-group col-lg-4" dir="rtl">
                                 <label>{{ __('products.pmodel') }}</label>
                                 <input type="text" name="product_model" placeholder="{{ __('products.pmodel') }}"
                                     class="form-control" id='model'>
@@ -130,7 +130,7 @@
                             <!---------------------->
 
                             <!----product_name---->
-                            <div class="form-group col-lg-4 pr-0" dir="rtl">
+                            <div class="form-group col-lg-4" dir="rtl">
                                 <label>
                                     {{ __('products.pname') }}
                                     <span class="text-danger font-weight-bold">*</span>
@@ -138,7 +138,7 @@
                                 <input type="text" name="product_name" id="order_name"
                                     placeholder="{{ __('products.pname') }}" class="form-control" required>
                             </div>
-                            <div class="form-group col-lg-4 pr-0" dir="rtl">
+                            <div class="form-group col-lg-4" dir="rtl">
                                 <label>
                                     {{ __('products.pname_en') }}
                                 </label>
@@ -148,7 +148,7 @@
                             <!---------------------->
 
                             <!----unit_id---->
-                            <div class="form-group col-lg-4 pr-0">
+                            <div class="form-group col-lg-4">
                                 <label>
                                     {{ __('products.punit') }}
                                     <!--<span class="text-danger font-weight-bold">*</span>-->
@@ -163,7 +163,7 @@
                             <!---------------------->
 
                             <!----code_universal---->
-                            <div class="form-group col-lg-4 pr-0" dir="rtl">
+                            <div class="form-group col-lg-4" dir="rtl">
                                 <label>
                                     {{ __('products.barcodenum') }}
                                     <span class="text-danger font-weight-bold">*</span>
@@ -175,7 +175,7 @@
                             <!---------------------->
 
                             <!----first_balance---->
-                            <div class="form-group col-lg-4 pr-0" dir="rtl">
+                            <div class="form-group col-lg-4" dir="rtl">
                                 <label>
                                     {{ __('products.storeqty') }}
                                     <span class="text-danger font-weight-bold">*</span>
@@ -187,7 +187,7 @@
                             <!---------------------->
 
                             <!----purchasing_price--->
-                            <div class="form-group col-lg-4 pr-0" dir="rtl">
+                            <div class="form-group col-lg-4" dir="rtl">
                                 <label>
                                     {{ __('products.costprice') }}
                                     <!--<span class="text-danger font-weight-bold">*</span>-->
@@ -198,7 +198,7 @@
                             <!---------------------->
 
                             <!----wholesale_price--->
-                            <div class="form-group col-lg-4 pr-0" dir="rtl">
+                            <div class="form-group col-lg-4" dir="rtl">
                                 <label>
                                     {{ __('products.wholeprice') }}
                                     <!--<span class="text-danger font-weight-bold">*</span>-->
@@ -210,7 +210,7 @@
                             <!-------------------->
 
                             <!----sector_price--->
-                            <div class="form-group col-lg-4 pr-0" dir="rtl">
+                            <div class="form-group col-lg-4" dir="rtl">
                                 <label>
                                     {{ __('products.sectorprice') }}
                                     <!--<span class="text-danger font-weight-bold">*</span>-->

@@ -2010,7 +2010,9 @@ pre code {
 .table-striped tbody tr:nth-of-type(odd) {
   background-color : rgba(245, 247, 250, 0.5);
 }
-
+body.dark-mode .table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgb(245 247 250 / 18%);
+}
 .table-hover tbody tr:hover {
   background-color : rgba(245, 247, 250, 0.5);
 }
@@ -4538,7 +4540,7 @@ tbody.collapse.show {
   color : #FFFFFF;
 }
 
-.card {
+body.light-mode .card{
   position : relative;
   display : -webkit-box;
   display : -webkit-flex;
@@ -4559,6 +4561,43 @@ tbody.collapse.show {
           background-clip : border-box;
   border : 1px solid rgba(0, 0, 0, 0.06);
   border-radius : 0.35rem;
+}
+body.dark-mode h3, body.dark-mode span{
+  color: #fff !important;
+}
+
+body.dark-mode .card {
+  background-color: #212631;
+  color: #ffffff;
+  position : relative;
+  display : -webkit-box;
+  display : -webkit-flex;
+  display :    -moz-box;
+  display : -ms-flexbox;
+  display :         flex;
+  -webkit-box-orient : vertical;
+  -webkit-box-direction : normal;
+  -webkit-flex-direction : column;
+     -moz-box-orient : vertical;
+     -moz-box-direction : normal;
+      -ms-flex-direction : column;
+          flex-direction : column;
+  min-width : 0;
+  word-wrap : break-word;
+  -webkit-background-clip : border-box;
+          background-clip : border-box;
+  border : 1px solid rgba(0, 0, 0, 0.06);
+  border-radius : 0.35rem;
+}
+body.dark-mode .border-secondary {
+  background-color: #212631;
+  color: #ffffff;
+}
+body.light-mode .addsalebill{
+  background-color: #222751 !important;
+}
+body.dark-mode .addsalebill{
+  background-color: #2a303d !important;
 }
 .card > hr {
   margin-left : 0;
@@ -4607,6 +4646,11 @@ tbody.collapse.show {
   padding : 1.5rem 1.5rem;
   margin-bottom : 0;
   background-color : #FFFFFF;
+  border-bottom : 1px solid rgba(0, 0, 0, 0.06);
+}
+body.dark-mode .card-header {
+
+  background-color : #212631;
   border-bottom : 1px solid rgba(0, 0, 0, 0.06);
 }
 .card-header:first-child {
