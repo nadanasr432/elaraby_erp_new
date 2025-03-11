@@ -163,11 +163,11 @@
             color: #3e4045 !important;
         }
         body.dark-mode .alert,
-            body.dark-mode .alert-sm,
-            body.dark-mode .alert-info,
-            body.dark-mode .alert-primary {
-                color: #fff !important;
-            }
+        body.dark-mode .alert-sm,
+        body.dark-mode .alert-info,
+        body.dark-mode .alert-primary {
+            color: #fff !important;
+        }
         .main-news {
             padding: 3px !important;
             background: #222751 !important;

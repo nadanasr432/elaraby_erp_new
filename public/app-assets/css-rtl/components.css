@@ -24,7 +24,9 @@ html body.fixed-navbar {
 html body a {
     color: #222751;
 }
-
+body.dark-mode a {
+    color: #fff !important;
+}
 html body a:hover {
     color: #222751dd;
 }
@@ -5876,6 +5878,7 @@ body.dark-mode .form-control{
 body.dark-mode h5, body.dark-mode h2{
     color: #fff;
 }
-body.dark-mode select.form-control:not([size]):not([multiple]), input.form-control{
+body.dark-mode select.form-control:not([size]):not([multiple]),body.dark-mode input.form-control{
     background-color: #2a303d;
+    color: #fff
 }

@@ -57,6 +57,7 @@
   thead {
     display : table-header-group;
   }
+  
   tr, img {
     page-break-inside : avoid;
   }
@@ -394,7 +395,9 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   line-height : 1.2;
   color : #464855;
 }
-
+body.dark-mode h5, body.dark-mode span, body.dark-mode h3, body.dark-mode h4 {
+  color: #fff !important;
+}
 h1, .h1 {
   font-size : 2rem;
 }
@@ -4562,9 +4565,10 @@ body.light-mode .card{
   border : 1px solid rgba(0, 0, 0, 0.06);
   border-radius : 0.35rem;
 }
-body.dark-mode h3, body.dark-mode span{
-  color: #fff !important;
+.dropdown-menu body.dark-mode h3{
+  color: #000 !important;
 }
+
 
 body.dark-mode .card {
   background-color: #212631;
@@ -4953,7 +4957,18 @@ body.dark-mode .card-header {
   background-color : #222751;
   border-color : #222751;
 }
+body.dark-mode .page-item.active .page-link {
 
+  background-color : #181b23f5;
+}
+body.dark-mode .bg-white{
+  background-color : #212631 !important;
+
+}
+body.dark-mode .content-body{
+  background-color : #212631 !important;
+
+}
 .page-item.disabled .page-link {
   color : #6B6F82;
   pointer-events : none;
@@ -4961,7 +4976,11 @@ body.dark-mode .card-header {
   background-color : #FFFFFF;
   border-color : #dcdcdcd1;
 }
-
+body.dark-mode .page-item.disabled .page-link {
+  background-color : rgb(245 247 250 / 18%);
+  border-color : #dcdcdc40;
+  color: #fff;
+}
 .pagination-lg .page-link {
   padding : 0.75rem 1.5rem;
   font-size : 1.25rem;
@@ -9099,4 +9118,13 @@ a.text-dark:hover, a.text-dark:focus {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #222751 !important; 
+}
+body.dark-mode div.box {
+  background: #83838329 !important;
+}
+body.dark-mode li.custom{
+  background-color: #6e6e6ec4;
+}
+body.dark-mode li.custom a{
+  color: #fff !important;
 }

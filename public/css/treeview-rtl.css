@@ -26,6 +26,9 @@
     color:#56546d;
     position:relative
 }
+body.dark-mode .tree li{
+    color: #fff !important;
+}
 .tree ul li {
 	padding:0 1em;
 }

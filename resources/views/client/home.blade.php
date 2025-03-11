@@ -354,7 +354,9 @@
         background: #ff496121 !important;
     }
 
-
+    body.dark-mode .text-truncate a{
+        color: #fff !important
+    }
     .styled-card {}
 </style>
 @section('content')
@@ -945,20 +947,20 @@
                                         @foreach ($cashs as $key => $cash)
                                             <tr>
                                                 <td
-                                                    style="color: #47427C !important; font-size: 18px; font-family: Cairo; font-weight: 600;">
+                                                    style="color: #47427C; font-size: 18px; font-family: Cairo; font-weight: 600;">
                                                     {{ $cash->bill_id }}</td>
                                                 <td
-                                                    style="color: #637381 !important; font-size: 18px; font-family: Cairo; font-weight: 600;">
+                                                    style="color: #637381 ; font-size: 18px; font-family: Cairo; font-weight: 600;">
                                                     {{ $cash->date }}</td>
                                                 <td
-                                                    style="color: #637381 !important; font-size: 18px; font-family: Cairo; font-weight: 600;">
+                                                    style="color: #637381 ; font-size: 18px; font-family: Cairo; font-weight: 600;">
                                                     {{ $cash->outerClient ? $cash->outerClient->client_name : 'نقدا' }}
                                                 </td>
                                                 <td
-                                                    style="color: #637381 !important; font-size: 18px; font-family: Cairo; font-weight: 600;">
+                                                    style="color: #637381 ; font-size: 18px; font-family: Cairo; font-weight: 600;">
                                                     {{ round($cash->amount, 2) }}</td>
                                                 <td
-                                                    style="color: #637381 !important; font-size: 18px; font-family: Cairo; font-weight: 600;">
+                                                    style="color: #637381 ; font-size: 18px; font-family: Cairo; font-weight: 600;">
                                                     {{ $cash->safe->safe_name }}</td>
                                             </tr>
                                         @endforeach
@@ -1006,7 +1008,7 @@
                                             <tr>
                                                 <td class="text-truncate">
                                                     <a target="_blank"
-                                                        style="color: #47427C !important; font-size: 18px; font-family: Cairo; font-weight: 600;"
+                                                        style="color: #47427C ; font-size: 18px; font-family: Cairo; font-weight: 600;"
                                                         href="{{ route('client.sale_bills.print', $invoice->token) }}">{{ $invoice->sale_bill_number }}</a>
                                                 </td>
 

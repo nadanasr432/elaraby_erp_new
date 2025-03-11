@@ -130,7 +130,7 @@
             </div>
 
             <div class="clearfix"></div>
-            <div style="background-color: #fff">
+            <div class="bg-white">
             <form class="d-inline" action="{{ route('suppliers.import') }}" method="POST"
                 enctype="multipart/form-data" >
                 @csrf

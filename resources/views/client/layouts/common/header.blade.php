@@ -166,6 +166,10 @@
     body.dark-mode .navbar-header{
         background-color: #212631 !important 
     }
+    body.dark-mode .date{
+        color: #fff !important
+
+    }
 </style>
 <nav
     class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-dark navbar-shadow no-print">
@@ -487,7 +491,7 @@
                     <li class="dropdown dropdown-user nav-item">
                         <p style="color:black;font-size: 13px !important;margin-top: 10px;margin-left: 15px">
                             <img src="{{ asset('assets/svgs/weather.svg') }}" width="25" />
-                            <span style="color: #222751; font-size: 20px; font-family: Cairo; font-weight: 400;">
+                            <span class="date" style="color: #222751; font-size: 20px; font-family: Cairo; font-weight: 400;">
                                 {{ date('H:i:s', strtotime(date('H:i:s')) + 60 * 60) }}
                             </span>
                         </p>
