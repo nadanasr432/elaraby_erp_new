@@ -281,6 +281,10 @@ body.dark-mode .table th, .table td {
 body.dark-mode .table thead tr{
     background-color: #181b23f5 !important;
 }
+body.dark-mode .dropdown-menu.dropdown-menu-right.show {
+    background-color: #2a303d !important;
+
+}
 .table.table-xl th, .table.table-xl td {
     padding: 1.25rem 2rem;
 }
@@ -1276,7 +1280,9 @@ select.form-control {
 .navbar-light.navbar-horizontal {
     background: #FFFFFF;
 }
-
+body.dark-mode .navbar-light{
+    background: #212631 !important;
+}
 .navbar-light .navbar-nav li {
     line-height: 1;
 }
@@ -2057,6 +2063,7 @@ select.form-control {
 }
 body.dark-mode .badge {
     color: #FFFFFF !important;
+    background-color: #141723bd !important;
 }
 .badge[class*='badge-'] [class*='icon-'] {
     line-height: 1;

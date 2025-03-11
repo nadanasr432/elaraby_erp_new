@@ -898,7 +898,7 @@
                             <td class="text-right"
                                 style="padding:5px 10px 5px 10px; font-size: 14px;border-top: 1px solid #666; border-bottom: 1px solid #333; font-weight:bold; color:#000000;"
                                 colspan="2">
-                                <span id="total" style="color: #000000 !important;">
+                                <span id="total" style="color: #000000 ;">
                                     @if (isset($pos_open))
                                         <?php
                                         $sum = 0;

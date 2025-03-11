@@ -9128,3 +9128,20 @@ body.dark-mode li.custom{
 body.dark-mode li.custom a{
   color: #fff !important;
 }
+body.dark-mode .products{
+  background-color: #212631 !important;
+}
+body.dark-mode #totalTable{
+  background-color: #212631 !important;
+  color: #fff !important;
+
+}
+body.dark-mode #totalTable td, body.dark-mode #totalTable span{
+  color: #fff !important;
+
+}
+body.dark-mode .btn-warning{
+  background-color: #2a303d !important;
+  border-color:  #4e5563 !important;
+
+}

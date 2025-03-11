@@ -422,3 +422,6 @@ body.dark-mode .bootstrap-select.show-tick .dropdown-menu li a span.text {
   box-shadow: none;
   transform: scale(0.98);
 }
+body.dark-mode .searchproducts .filter-option {
+  background-color: #141723bd !important;
+}
