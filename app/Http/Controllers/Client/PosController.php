@@ -264,15 +264,12 @@ class PosController extends Controller
 
             // Query products
             $products = Product::where('company_id', $company_id)
-                ->where(function ($query) use ($storeIds) {
-                    $query->whereIn('store_id', $storeIds)
-                        ->orWhereNull('store_id');
-                })
-                ->where(function ($query) {
-                    $query->where('first_balance', '>', 0)
-                        ->orWhereNull('first_balance');
-                })
-                ->get();
+            ->whereIn('store_id', $storeIds)
+            ->where(function ($query) {
+                $query->where('first_balance', '>', 0)
+                    ->orWhereNull('first_balance');
+            })
+            ->get();
         } else {
             $safes = $company->safes;
             $products = Product::where('company_id', $company_id)

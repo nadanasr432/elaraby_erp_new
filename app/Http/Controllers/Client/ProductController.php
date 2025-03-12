@@ -451,4 +451,10 @@ class ProductController extends Controller
 
         return response()->json($products);
     }
+     public function getStoreProducts(Request $request)
+    {
+        $products = Product::where('store_id', $request->store_id)->get();
+        
+        return response()->json($products);
+    }
 }
