@@ -1142,6 +1142,7 @@
 @endsection
 <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{ asset('app-assets/js/theme-switcher.js') }}"></script>
 
 <script>
     $(document).ready(function() {

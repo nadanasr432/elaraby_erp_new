@@ -220,6 +220,9 @@ pre code {
 .table thead {
     background-color: #222751 !important;
 }
+body.dark-mode .table thead {
+    background-color: #212631 !important;
+}
 .table thead th {
     color: white !important;
     vertical-align: bottom;
@@ -227,19 +230,30 @@ pre code {
     border-top: 1px solid #EEF0F4;
     font-weight: normal !important;
 }
-
+body.dark-mode .table thead th {
+background-color: #181b23f5;
+    border-bottom: 1px solid #eef0f466;
+    border-top: 1px solid #eef0f466;
+}
 .table-bordered th, .table-bordered td {
     border: 1px solid #EEF0F4;
 }
-
+body.dark-mode .table-bordered th, .table-bordered td {
+    border: 1px solid #eef0f466;
+}
 .table th, .table td {
     border-bottom: 1px solid #EEF0F4;
 }
+body.dark-mode .table th, .table td {
+    border-bottom: 1px solid #eef0f466;
 
+}
 .table-bordered {
     border: 1px solid #EEF0F4;
 }
-
+body.dark-mode .table-bordered {
+    border: 1px solid #eef0f466;
+}
 .table-inverse {
     color: #ECEEEF;
     background-color: #00A5A8;
@@ -258,7 +272,19 @@ pre code {
     padding: 0.45rem 2rem;
     white-space: nowrap;
 }
+body.light-mode .table td {
+    color: #000 !important;
+}
+body.dark-mode .table th, .table td {
+    color: #fff !important;
+}
+body.dark-mode .table thead tr{
+    background-color: #181b23f5 !important;
+}
+body.dark-mode .dropdown-menu.dropdown-menu-right.show {
+    background-color: #2a303d !important;
 
+}
 .table.table-xl th, .table.table-xl td {
     padding: 1.25rem 2rem;
 }
@@ -317,7 +343,9 @@ form {
 form label {
     color: #2B335E;
 }
-
+body.dark-mode form label {
+    color: #ffff;
+}
 form .form-group {
     margin-bottom: 1.5rem;
 }
@@ -327,7 +355,9 @@ form .form-control {
     color: #3B4781;
     background-color: #dadada2e;
 }
-
+body.dark-mode form .form-control {
+    color: #fff !important;
+}
 form .form-control::-webkit-input-placeholder {
     color: #AEB5DA;
 }
@@ -1250,7 +1280,9 @@ select.form-control {
 .navbar-light.navbar-horizontal {
     background: #FFFFFF;
 }
-
+body.dark-mode .navbar-light{
+    background: #212631 !important;
+}
 .navbar-light .navbar-nav li {
     line-height: 1;
 }
@@ -2029,7 +2061,10 @@ select.form-control {
     color: #FFFFFF;
     font-weight: 400;
 }
-
+body.dark-mode .badge {
+    color: #FFFFFF !important;
+    background-color: #141723bd !important;
+}
 .badge[class*='badge-'] [class*='icon-'] {
     line-height: 1;
 }

@@ -93,7 +93,7 @@
         color: white;
         background: #0A246A;
     }
-
+   
     .minusIcon {
         width: 19px;
         display: inline-block;
@@ -236,6 +236,9 @@
     align-items: center;
     justify-content: end;
     }
+    body.dark-mode .inputpos{
+color: #fff !important;
+}
 </style>
 @section('content')
     <div class="row mt-5 mb-5">
@@ -898,7 +901,7 @@
                             <td class="text-right"
                                 style="padding:5px 10px 5px 10px; font-size: 14px;border-top: 1px solid #666; border-bottom: 1px solid #333; font-weight:bold; color:#000000;"
                                 colspan="2">
-                                <span id="total" style="color: #000000 !important;">
+                                <span id="total" style="color: #000000 ;">
                                     @if (isset($pos_open))
                                         <?php
                                         $sum = 0;
@@ -1336,6 +1339,8 @@
 
 <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{ asset('app-assets/js/theme-switcher.js') }}"></script>
+
 <script>
     $(document).ready(function() {
         setTimeout(function() {
@@ -1377,11 +1382,11 @@
             if ($("#" + product_id).length == 0) {
                 //add new row to the table..
                 var productRow = '<tr class="bg-white" id="' + product_id + '"> <td>' + product_name +
-                    '</td> <td style="padding:5px 1px 5px 1px !important;"><input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_price-' +
+                    '</td> <td style="padding:5px 1px 5px 1px !important;"><input type="number" class="inputpos" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_price-' +
                     product_id + '" class="edit_price w-100" value="' + product_price +
-                    '"></td> <td style="padding:5px 1px 5px 1px !important;"><input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_quantity-' +
+                    '"></td> <td style="padding:5px 1px 5px 1px !important;"><input class="inputpos" type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_quantity-' +
                     product_id +
-                    '" class="edit_quantity w-100" value="1"></td> <td style="padding:5px 1px 5px 1px !important;"><input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_discount-' +
+                    '" class="edit_quantity w-100" value="1"></td> <td style="padding:5px 1px 5px 1px !important;"><input class="inputpos" type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_discount-' +
                     product_id + '" class="edit_discount w-100" value="0"></td> <td id="totalPrice-' +
                     product_id + '" class="totalPrice font-weight-bold">' + product_price +
                     '</td> <td class="no-print"> <button class="btn btn-sm btn-danger remove_element"> <i class="fa fa-trash"></i> </button> </td> </tr>';
@@ -1420,11 +1425,11 @@
             if ($("#" + product_id).length == 0) {
                 //add new row to the table..
                 var productRow = '<tr class="bg-white" id="' + product_id + '"> <td>' + product_name +
-                    '</td> <td style="padding:5px 1px 5px 1px !important;"><input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_price-' +
+                    '</td> <td style="padding:5px 1px 5px 1px !important;"><input type="number" class="inputpos" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_price-' +
                     product_id + '" class="edit_price w-100" value="' + product_price +
-                    '"></td> <td style="padding:5px 1px 5px 1px !important;"><input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_quantity-' +
+                    '"></td> <td style="padding:5px 1px 5px 1px !important;"><input type="number" class="inputpos" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_quantity-' +
                     product_id +
-                    '" class="edit_quantity w-100" value="1"></td> <td style="padding:5px 1px 5px 1px !important;"><input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_discount-' +
+                    '" class="edit_quantity w-100" value="1"></td> <td style="padding:5px 1px 5px 1px !important;"><input class="inputpos" type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_discount-' +
                     product_id + '" class="edit_discount w-100" value="0"></td> <td id="totalPrice-' +
                     product_id + '" class="totalPrice font-weight-bold">' + product_price +
                     '</td> <td class="no-print"> <button class="btn btn-sm btn-danger remove_element"> <i class="fa fa-trash"></i> </button> </td> </tr>';
@@ -2144,13 +2149,13 @@
                         <tr class="bg-white" id="${product_id}">
                             <td>${product_name}</td>
                             <td style="padding:5px 1px !important;">
-                                <input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_price-${product_id}" class="edit_price w-100" value="${product_price}">
+                                <input type="number" class="inputpos" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_price-${product_id}" class="edit_price w-100" value="${product_price}">
                             </td>
                             <td style="padding:5px 1px !important;">
-                                <input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_quantity-${product_id}" class="edit_quantity w-100" value="${quantity}">
+                                <input type="number" class="inputpos" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_quantity-${product_id}" class="edit_quantity w-100" value="${quantity}">
                             </td>
                             <td style="padding:5px 1px !important;">
-                                <input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_discount-${product_id}" class="edit_discount w-100" value="${discount}">
+                                <input type="number" class="inputpos" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_discount-${product_id}" class="edit_discount w-100" value="${discount}">
                             </td>
                             <td id="totalPrice-${product_id}" class="totalPrice font-weight-bold">${product_price}</td>
                             <td class="no-print">

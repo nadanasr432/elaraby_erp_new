@@ -10,6 +10,9 @@
     .main-menu.menu-light .navigation>li.nav-item:hover {
         background: #ffffff42 !important;
     }
+    body.dark-mode .main-menu {
+        background-color: #212631 !important
+    }
 </style>
 <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow no-print"
     style="background:#222751;padding-top: 35px;" data-scroll-to-active="true">

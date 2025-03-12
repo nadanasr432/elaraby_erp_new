@@ -188,6 +188,10 @@
   overflow: hidden;
   color: #000;
 }
+body.dark-mode .bootstrap-select .dropdown-toggle .filter-option-inner-inner {
+  overflow: hidden;
+  color: #fff;
+}
 .bootstrap-select .dropdown-toggle .caret {
   position: absolute;
   top: 50%;
@@ -219,6 +223,10 @@
   border-radius: 0;
   -webkit-box-shadow: none;
           box-shadow: none;
+}
+body.dark-mode .bootstrap-select .dropdown-menu.inner {
+  background-color: #2a303d;
+  color: #fff !important;
 }
 .bootstrap-select .dropdown-menu li {
   position: relative;
@@ -294,6 +302,9 @@
 }
 .bootstrap-select.show-tick .dropdown-menu li a span.text {
   margin-right: 34px;
+}
+body.dark-mode .bootstrap-select.show-tick .dropdown-menu li a span.text {
+  color: #fff;
 }
 .bootstrap-select .bs-ok-default:after {
   content: '';
@@ -410,4 +421,7 @@
   -webkit-transition: all 0.25s;
   box-shadow: none;
   transform: scale(0.98);
+}
+body.dark-mode .searchproducts .filter-option {
+  background-color: #141723bd !important;
 }

@@ -9,7 +9,14 @@ html body {
     background-color: #F4F5FA;
     direction: rtl;
 }
+html body.light-mode {
+    background-color: #F4F5FA;
+}
 
+html body.dark-mode{
+    background-color: #2a303d;
+    color: #ffffff;
+}
 html body.fixed-navbar {
     padding-top: 5rem;
 }
@@ -17,7 +24,9 @@ html body.fixed-navbar {
 html body a {
     color: #222751;
 }
-
+body.dark-mode a {
+    color: #fff !important;
+}
 html body a:hover {
     color: #222751dd;
 }
@@ -261,9 +270,12 @@ footer.footer-transparent {
 footer.footer-light {
     background: #FFFFFF;
 }
-
-footer.footer-dark {
-    background: #2C303B;
+body.light-mode footer {
+    background: #222751 !important;
+    color: #FFFFFF;
+}
+body.dark-mode footer {
+    background: #212631 !important;
     color: #FFFFFF;
 }
 
@@ -675,7 +687,9 @@ footer.footer-dark {
     font-size: 15px !important;
     background: #282e5f;
 }
-
+body.dark-mode .main-menu.menu-dark .navigation > li.active > a {
+    background: #181b24 !important;
+}
 .main-menu.menu-dark .navigation > li .active {
     background: #1F2229;
 }
@@ -5857,4 +5871,14 @@ tr.shown td.details-control {
 }
 .form-control{
     border: 1px solid #EEF0F4 !important;
+}
+body.dark-mode .form-control{
+    border: 1px solid #eef0f45c !important;
+}
+body.dark-mode h5, body.dark-mode h2{
+    color: #fff;
+}
+body.dark-mode select.form-control:not([size]):not([multiple]),body.dark-mode input.form-control{
+    background-color: #2a303d;
+    color: #fff
 }

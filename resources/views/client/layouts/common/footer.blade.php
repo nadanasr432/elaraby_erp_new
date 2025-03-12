@@ -1,4 +1,4 @@
-<footer class="footer footer-static footer-dark navbar-border navbar-shadow no-print m-0" style="background: #222751 !important;">
+<footer class="footer footer-static footer-dark navbar-border navbar-shadow no-print m-0" >
     <p class="clearfix text-center mb-0 px-2 alarm-upgrade justify-content-center text-white w-100">
         @if ($user->company->subscription->type->type_name == 'تجربة')
             {{ __('main.you-are-now-in-the-beta-version') }} - {{ __('main.remaining-time') }}

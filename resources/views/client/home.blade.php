@@ -79,7 +79,22 @@
         transition: all 0.2s ease-in-out;
         cursor: pointer;
     }
+    body.dark-mode .tile_stats_count {
+        background: #212631;
+        color: rgb(215, 215, 215);
+    }
+    body.dark-mode .highcharts-background{
+        fill: #212631 !important;
+        color: #fff !important
 
+    }
+    body.dark-mode .highcharts-axis-labels .highcharts-xaxis-labels text{
+        color: #fff !important
+    }
+    body.dark-mode .card-header{
+        background-color: #212631 !important
+
+    }
     .tile_stats_count:hover {
         transform: scale(1.07) !important;
         background: #222751;
@@ -302,13 +317,23 @@
         border-top: 1px solid #2d2d2d20;
     }
 
+    body.dark-mode #recent-orders tr,
+    body.dark-mode #transactions tr {
+        border-top: 1px solid #c7c7c747;
+    }
+
     #recent-orders thead tr th,
     #transactions thead tr th {
         border-top: 1px solid #2d2d2d20 !important;
         background: #222751 !important;
         color: white !important;
     }
-
+    body.dark-mode #recent-orders thead tr th,
+    body.dark-mode #transactions thead tr th {
+        border-top: 1px solid #c7c7c747 !important;
+        background: #181b24 !important;
+        color: white !important;
+    }
     .client_statistic {
         border-bottom: 1px solid rgba(45, 45, 45, 0.06) !important;
         padding-bottom: 11px !important;
@@ -329,7 +354,9 @@
         background: #ff496121 !important;
     }
 
-
+    body.dark-mode .text-truncate a{
+        color: #fff !important
+    }
     .styled-card {}
 </style>
 @section('content')
@@ -540,8 +567,8 @@
                         << <span style="font-size: 16px !important;">{{ __('main.dashboard') }}</span>
                 @endif
             </h3>
-            <div class="row pr-2 mt-sm-0 mt-2 pl-sm-0 pl-2">
-                <a class="btn btn-danger d-flex align-items-center border-0 my-1" style="background: #222751 !important;border-radius: 7px;"
+            <div class="row pr-2 mt-sm-0 mt-2 pl-sm-0 pl-2 ">
+                <a class="btn btn-danger d-flex align-items-center addsalebill border-0 my-1" style="background:border-radius: 7px;"
                     href="{{ route('client.sale_bills.create1') }}">
                     <img src="{{ asset('assets/svgs/plus.svg') }}"
                         style="border: 1px dashed; border-radius: 50%; margin-left: 6px;">
@@ -550,13 +577,13 @@
                 </a>
 
                 <a class="btn d-flex align-items-center bg-none border-0 ml-1  my-1"
-                    style="    background: white !important;color: gray;border: 1px solid gray !important;border-radius: 7px;"
-                    href="{{ route('client.sale_bills.index1') }}">
+                    style=" color: gray;border: 1px solid gray !important;border-radius: 7px;"
+                    href="{{ route('client.sale_bills.index') }}">
                     <img src="{{ asset('assets/svgs/paper.svg') }}">
                     {{ __('main.mnge-bills') }}
                 </a>
                 <a class="btn d-flex align-items-center border-0 ml-1  my-1" href="{{ route('client.sale_bills.create1') }}"
-                    style="background: white !important; color: gray; border: 1px solid gray !important; border-radius: 7px; display: flex; align-items: center;">
+                    style=" color: gray; border: 1px solid gray !important; border-radius: 7px; display: flex; align-items: center;">
 
                     {{-- <img src="{{ asset('assets/svgs/plus.svg') }}"
         style="border: 1px dashed; border-radius: 50%; margin-left: 6px;"> --}}
@@ -566,7 +593,7 @@
                         style="font-size: 10px; border-radius: 50%; padding: 2px 5px;">{{ __('sidebar.new') }}</span> <!-- Add this line --> --}}
                 </a>
                 <a class="btn d-flex align-items-center border-0 ml-1  my-1" href="{{ route('client.quotations.create') }}"
-                style="background: white !important; color: gray; border: 1px solid gray !important; border-radius: 7px; display: flex; align-items: center;">
+                style=" color: gray; border: 1px solid gray !important; border-radius: 7px; display: flex; align-items: center;">
                 {{ __('Price Offers') }} 
                 </a>
             </div>
@@ -920,20 +947,20 @@
                                         @foreach ($cashs as $key => $cash)
                                             <tr>
                                                 <td
-                                                    style="color: #47427C !important; font-size: 18px; font-family: Cairo; font-weight: 600;">
+                                                    style="color: #47427C; font-size: 18px; font-family: Cairo; font-weight: 600;">
                                                     {{ $cash->bill_id }}</td>
                                                 <td
-                                                    style="color: #637381 !important; font-size: 18px; font-family: Cairo; font-weight: 600;">
+                                                    style="color: #637381 ; font-size: 18px; font-family: Cairo; font-weight: 600;">
                                                     {{ $cash->date }}</td>
                                                 <td
-                                                    style="color: #637381 !important; font-size: 18px; font-family: Cairo; font-weight: 600;">
+                                                    style="color: #637381 ; font-size: 18px; font-family: Cairo; font-weight: 600;">
                                                     {{ $cash->outerClient ? $cash->outerClient->client_name : 'نقدا' }}
                                                 </td>
                                                 <td
-                                                    style="color: #637381 !important; font-size: 18px; font-family: Cairo; font-weight: 600;">
+                                                    style="color: #637381 ; font-size: 18px; font-family: Cairo; font-weight: 600;">
                                                     {{ round($cash->amount, 2) }}</td>
                                                 <td
-                                                    style="color: #637381 !important; font-size: 18px; font-family: Cairo; font-weight: 600;">
+                                                    style="color: #637381 ; font-size: 18px; font-family: Cairo; font-weight: 600;">
                                                     {{ $cash->safe->safe_name }}</td>
                                             </tr>
                                         @endforeach
@@ -981,7 +1008,7 @@
                                             <tr>
                                                 <td class="text-truncate">
                                                     <a target="_blank"
-                                                        style="color: #47427C !important; font-size: 18px; font-family: Cairo; font-weight: 600;"
+                                                        style="color: #47427C ; font-size: 18px; font-family: Cairo; font-weight: 600;"
                                                         href="{{ route('client.sale_bills.print', $invoice->token) }}">{{ $invoice->sale_bill_number }}</a>
                                                 </td>
 
@@ -1177,6 +1204,8 @@
 
 <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="{{ asset('app-assets/js/theme-switcher.js') }}"></script>
+
 <script>
     $(document).ready(function() {
         let compeletionPercentage = $("#compeletionProcess").val();

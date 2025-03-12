@@ -49,239 +49,192 @@
                 </div>
             </div>
 
-            <!----TIME--->
-            <div class="col-md-6 pull-right no-print">
-                <div class="form-group" dir="rtl">
-                    <label>{{ __('sales_bills.invoice-time') }}</label>
-                    <span class="text-danger font-weight-bold">*</span>
-                    <input type="time" required name="time" id="time" class="form-control"
-                        value="{{ date('H:i:s') }}" />
-                </div>
-            </div>
-        </div>
-        <div class="row">
+                            <!----store---->
+                            <div class="form-group col-lg-4" dir="rtl">
+                                <label for="store_id">
 
-            <!----CLIENT--->
-            <div class="col-md-6 pull-right no-print">
-                <label>
-                    {{ __('sales_bills.client-name') }}
-                    <span class="text-danger font-weight-bold">*</span>
-                </label>
-                <div class="d-flex align-items-center justify-content-between">
-                    <select name="outer_client_id" id="outer_client_id" data-style="btn-new_color"
-                        title="{{ __('sales_bills.client-name') }}" class="selectpicker w-100 me-2" data-live-search="true">
-                        @foreach ($outer_clients as $outer_client)
-                            <option value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
-                        @endforeach
-                    </select>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClientModal">
-                        <i class="fa fa-plus" aria-hidden="true"> </i> {{ __('main.add immediate client') }}
-                    </button>
-                </div>
-            </div>
-            <!----Store--->
-            <div class="col-md-6 pull-right no-print">
-                <label>
-                    {{ __('sales_bills.select-store') }}
-                    <span class="text-danger font-weight-bold">*</span>
-                </label>
-                <div class="d-flex justify-content-between">
-                    <select name="store_id" id="store_id" class="selectpicker me-2" data-style="btn-new_color"
-                        data-live-search="true" title="{{ __('sales_bills.select-store') }}">
-                        @foreach ($stores as $index => $store)
-                            <option value="{{ $store->id }}" {{ $index == 0 ? 'selected' : '' }}>
-                                {{ $store->store_name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <a target="_blank" href="{{ route('client.stores.create') }}" role="button" class="btn btn-primary">
-                        <i class="fa fa-plus" aria-hidden="true"></i> {{ __('sales_bills.add-store') }}
-                    </a>
-                </div>
-            </div>
+                                    {{ __('products.store_name') }}
+                                    <span class="text-danger font-weight-bold">*</span>
+                                </label>
+                                <select required name="store_id" id="store" class="form-control">
+                                    <option value="">{{ __('products.choose_store') }}</option>
+                                    <?php $i = 0; ?>
+                                    @foreach ($stores as $store)
+                                        @if ($stores->count() == 1)
+                                            <option selected value="{{ $store->id }}">{{ $store->store_name }}</option>
+                                        @else
+                                            @if ($i == 0)
+                                                <option selected value="{{ $store->id }}">{{ $store->store_name }}
+                                                </option>
+                                            @else
+                                                <option value="{{ $store->id }}">{{ $store->store_name }}</option>
+                                            @endif
+                                        @endif
+                                        <?php $i++; ?>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <!---------------------->
 
-        </div>
-        <!--tax-->
-        <div class="row mt-2">
-            <!----->
-            <div class="col-md-6 pull-right no-print">
-                <label>
-                    {{ __('sales_bills.product-code') }}
-                    <span class="text-danger font-weight-bold">*</span>
-                </label>
-                <div class="d-flex align-items-center justify-content-between">
-                    <select name="product_id" id="product_id" class="selectpicker w-50" data-style="btn-new_color"
-                        data-live-search="true" title="{{ __('sales_bills.choose product') }}">
-                        <option value="new" style="color: red;">{{ __('sales_bills.Add immediate product') }}</option>
-                    </select>
-                    <button type="button" class="btn btn-primary instantProduct">
-                        <i class="fa fa-plus"></i> {{ __('main.add immediate product') }}
-                    </button>
-                </div>
-            </div>
+                            <!----category_id---->
+                            <div class="form-group col-lg-4" dir="rtl">
+                                <label for="store_id">
+                                    {{ __('products.main_cat') }}
+                                    <span class="text-danger font-weight-bold">*</span>
+                                </label>
+                                <select required name="category_id" id="category" class="form-control">
+                                    <option value="">{{ __('products.choose_main_cat') }}</option>
+                                    @foreach ($categories as $category)
+                                        <option type="{{ $category->category_type }}" value="{{ $category->id }}"
+                                            {{ $category->category_name == 'مخزونية' ? 'selected' : '' }}>
+                                            {{ $category->category_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
 
-            <div class="col-md-6 pull-right no-print">
-                <label for="value_added_tax">{{ __('sales_bills.prices-for-tax') }}
-                    <span class="text-danger font-weight-bold">*</span>
-
-                </label>
-
-                <div class="d-flex align-items-center justify-content-between">
-                    <select required name="value_added_tax" id="value_added_tax" class="selectpicker w-100"
-                        data-style="btn-new_color" data-live-search="true">
-                        <option value="0" selected>
-                            {{ __('sales_bills.not-including-tax') }}</option>
-                        <option value="2">
-                            {{ __('sales_bills.including-tax') }}</option>
-                        <option value="1">
-                            {{ __('sales_bills.exempt-tax') }}</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="clearfix no-print"></div>
-
-        <input type="number" id='grand_total_input' name="grand_total" hidden>
-        <input type="number" id='grand_tax_input' name="grand_tax" hidden>
-        <input type="number" id='grand_discount_input' name="total_discount" hidden>
+                            <!---------------------->
 
 
-        <div>
-            <div class="table-responsive">
-                <table class="table table-bordered mt-2" id="products_table"
-                    style="background-color: #ffffff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); border-radius: 5px;">
-                    <thead>
-                        <tr>
-                            <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                                {{ __('sales_bills.product') }}</th>
-                            <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                                {{ __('sales_bills.price_type') }}</th>
-                            <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                                {{ __('sales_bills.price') }}</th>
-                            <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                                {{ __('sales_bills.quantity') }}</th>
-                            <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                                {{ __('sales_bills.unit') }}</th>
-                            <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 5px; font-weight: bold;">
-                                {{ __('sales_bills.discount') }}
-                                <div class="tax_discount"
-                                    style="display: inline-block; margin-left: 10px; vertical-align: middle;">
-                                    <select id="discount_application" class="form-control"
-                                        style="font-size: 12px; height: 30px;" name="products_discount_type">
-                                        <option value="before_tax">{{ __('sales_bills.discount_before_tax') }}</option>
-                                        <option value="after_tax">{{ __('sales_bills.discount_after_tax') }}</option>
-                                    </select>
-                                </div>
-                            </th>
-                            <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                                {{ __('sales_bills.tax') }}</th>
-                            <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                                {{ __('sales_bills.total') }}</th>
-                            <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                                {{ __('sales_bills.actions') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody style="text-align: center;">
-                        <!-- هنا يتم عرض البيانات -->
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="6" style="background-color: #f9f9f9; font-weight: bold;">
-                                {{ __('sales_bills.grand_tax') }}</td>
-                            <td colspan="3" id="grand_tax" class="text-right" style="background-color: #f9f9f9;">0.00
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="6" style="background-color: #f9f9f9; font-weight: bold;">
-                                {{ __('sales_bills.grand_total') }}</td>
-                            <td colspan="3" id="grand_total" class="text-right" style="background-color: #f9f9f9;">
-                                0.00</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col-md-6 pull-right">
-                <div class="form-group" dir="rtl">
-                    <label for="discount">{{ __('sales_bills.discount-on-the-total-bill') }}</label> <br>
-                    <select name="discount_type" id="discount_type" class="form-control"
-                        style="width: 60%;display: inline;float: right; margin-left:5px;">
-                        <option value="">اختر نوع الخصم</option>
-                        <option value="pound">خصم قبل الضريبة (مسطح)</option>
-                        <option value="percent">خصم قبل الضريبة (%)</option>
-                        <option value="poundAfterTax">ضمان اعمال (مسطح)</option>
-                        <option value="poundAfterTaxPercent">ضمان اعمال (%)</option>
-                        <option value="afterTax" class="d-none">
-                            خصم علي اجمالي المبلغ شامل الضريبة
-                        </option>
-                    </select>
-                    <input type="number" value="0" name="discount_value" min="0"
-                        style="width: 20%;display: inline;float: right;" id="discount_value" class="form-control "
-                        step = "any" />
-                    <input type="text" name="discount_note" id="discount_note" placeholder="ملاحظات الخصم. . ."
-                        class="form-control mt-5" style="width: 80%;">
-                    {{-- <span id="dicountForBill"></span> --}}
-                </div>
+                            <!----sub_category---->
+                            <div class="form-group col-lg-4" dir="rtl">
+                                <label for="store_id">
+                                    {{ __('products.subcat') }}
 
+                                </label>
+                                <select name="sub_category_id" id="sub_category" class="form-control">
+                                    <option value="">{{ __('products.choose_subcat') }}</option>
+                                    @foreach ($sub_categories as $category)
+                                        <option value="{{ $category->id }}">
+                                            {{ $category->sub_category_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <!-------------------->
 
-            </div>
-            <div class="col-md-6 pull-right">
-                <div class="form-group" dir="rtl">
-                    <label for="extra">{{ __('main.shipping-expenses') }}</label> <br>
+                            <!----product_model---->
+                            <div class="form-group col-lg-4" dir="rtl">
+                                <label>{{ __('products.pmodel') }}</label>
+                                <input type="text" name="product_model" placeholder="{{ __('products.pmodel') }}"
+                                    class="form-control" id='model'>
+                            </div>
+                            <!---------------------->
 
-                    <select name="extra_type" id="extra_type" class="form-control"
-                        style="width:60%;display: inline;float: right;margin-left: 5px">
-                        <option value="">اختر نوع الشحن</option>
-                        <option value="pound">{{ $extra_settings->currency }}</option>
-                        <option value="percent">%</option>
-                    </select>
-                    <input value="0" type="number" name="extra_value" min='0'
-                        style="width: 20%;display: inline;float: right;" id="extra_value" class="form-control"
-                        step = "any" />
-                </div>
-            </div>
-        </div><!--  End Row -->
-        <!-----notes------->
-        <div class="col-sm-12 pull-right no-print">
-            <div class="form-group" dir="rtl">
-                <label for="time">{{ __('main.notes') }}</label>
-                <textarea name="main_notes" id="notes" class="summernotes">
-                  </textarea>
-                <a data-toggle="modal" data-target="#myModal3" class="btn btn-link add_extra_notes d-none"
-                    style="color: blue!important;">
-                    اضف ملاحظات اخرى
-                </a>
-            </div>
-        </div>
-        <div class="clearfix no-print"></div>
+                            <!----product_name---->
+                            <div class="form-group col-lg-4" dir="rtl">
+                                <label>
+                                    {{ __('products.pname') }}
+                                    <span class="text-danger font-weight-bold">*</span>
+                                </label>
+                                <input type="text" name="product_name" id="order_name"
+                                    placeholder="{{ __('products.pname') }}" class="form-control" required>
+                            </div>
+                            <div class="form-group col-lg-4" dir="rtl">
+                                <label>
+                                    {{ __('products.pname_en') }}
+                                </label>
+                                <input type="text" name="product_name_en" id="order_name"
+                                    placeholder="{{ __('products.pname_en') }}" class="form-control">
+                            </div>
+                            <!---------------------->
 
-        <hr>
-        </div>
-        <div class="company_details printy" style="display: none;">
-            <div class="text-center">
-                <img class="logo" style="width: 20%;" src="{{ asset($company->company_logo) }}" alt="">
-            </div>
-            <div class="text-center">
-                <div class="col-lg-12 text-center justify-content-center">
-                    <p class="alert alert-info text-center alert-sm"
-                        style="margin: 10px auto; font-size: 17px;line-height: 1.9;" dir="rtl">
-                        {{ $company->company_name }} -- {{ $company->business_field }} <br>
-                        {{ $company->company_owner }} -- {{ $company->phone_number }} <br>
-                    </p>
-                </div>
-            </div>
-        </div>
+                            <!----unit_id---->
+                            <div class="form-group col-lg-4">
+                                <label>
+                                    {{ __('products.punit') }}
+                                    <!--<span class="text-danger font-weight-bold">*</span>-->
+                                </label>
+                                <select name="unit_id" class="form-control">
+                                    <option value="">{{ __('products.choseunit') }}</option>
+                                    @foreach ($units as $unit)
+                                        <option value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <!---------------------->
+
+                            <!----code_universal---->
+                            <div class="form-group col-lg-4" dir="rtl">
+                                <label>
+                                    {{ __('products.barcodenum') }}
+                                    <span class="text-danger font-weight-bold">*</span>
+                                </label>
+                                <input type="text" class="form-control" value="{{ $code_universal }}" dir="ltr"
+                                    placeholder="{{ __('products.barcodenum') }}" id="order_universal"
+                                    name="code_universal" />
+                            </div>
+                            <!---------------------->
+
+                            <!----first_balance---->
+                            <div class="form-group col-lg-4" dir="rtl">
+                                <label>
+                                    {{ __('products.storeqty') }}
+                                    <span class="text-danger font-weight-bold">*</span>
+                                </label>
+                                <input type="number" step="0.01" placeholder="{{ __('products.storeqty') }}"
+                                    name="first_balance" id="first_balance" value="0" class="form-control"
+                                    required>
+                            </div>
+                            <!---------------------->
+
+                            <!----purchasing_price--->
+                            <div class="form-group col-lg-4" dir="rtl">
+                                <label>
+                                    {{ __('products.costprice') }}
+                                    <!--<span class="text-danger font-weight-bold">*</span>-->
+                                </label>
+                                <input type="number" step="0.01" name="purchasing_price" id='purchasing_price'
+                                    value="0" class="form-control" placeholder="{{ __('products.costprice') }}">
+                            </div>
+                            <!---------------------->
+
+                            <!----wholesale_price--->
+                            <div class="form-group col-lg-4" dir="rtl">
+                                <label>
+                                    {{ __('products.wholeprice') }}
+                                    <!--<span class="text-danger font-weight-bold">*</span>-->
+                                </label>
+                                <input type="number" step="0.01" name="wholesale_price" value="0"
+                                    id="wholesale_price" class="form-control"
+                                    placeholder="{{ __('products.wholeprice') }}">
+                            </div>
+                            <!-------------------->
+
+                            <!----sector_price--->
+                            <div class="form-group col-lg-4" dir="rtl">
+                                <label>
+                                    {{ __('products.sectorprice') }}
+                                    <!--<span class="text-danger font-weight-bold">*</span>-->
+                                </label>
+                                <input type="number" step="0.01" value="0" name="sector_price"
+                                    placeholder="{{ __('products.sectorprice') }}" id="sector_price"
+                                    class="form-control">
+                            </div>
+                            <!-------------------->
+
+                            <!----min_balance--->
+                            <div class="form-group pull-right col-lg-4" dir="rtl">
+                                <label>{{ __('products.minimumqty') }}</label>
+                                <input type="number" step="0.01" value="0" name="min_balance" id="min_balance"
+                                    class="form-control" />
+                            </div>
+                            <!-------------------->
+
+                            <!-------color------->
+                            <div class="form-group  col-lg-6 d-none" dir="rtl">
+                                <label>{{ __('products.choosecolor') }}</label>
+                                <input style="width: 100%!important;" type="color"
+                                    placeholder="{{ __('products.choosecolor') }}" name="color" id="color" />
+                            </div>
+                            <!---------------------->
+
+                            <!----description---->
+                            <div class="form-group col-lg-6" dir="rtl">
+                                <label>{{ __('products.pdesc') }}</label>
+                                <textarea name="description" id="description" class="form-control" placeholder="{{ __('products.pdesc2') }}"></textarea>
+                            </div>
 
         <div class="col-lg-12 no-print text-center pt-3">
             <div class="d-flex justify-content-start align-items-center flex-nowrap"
