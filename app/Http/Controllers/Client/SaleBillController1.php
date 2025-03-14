@@ -20,12 +20,14 @@ use App\Models\OuterClient;
 use App\Models\Transaction;
 use App\Models\SaleBillNote;
 use Illuminate\Http\Request;
+use Salla\ZATCA\GenerateCSR;
 use App\Mail\sendingSaleBill;
 use App\Models\BasicSettings;
 use App\Models\ExtraSettings;
 use App\Models\SaleBillExtra;
 use App\Models\SaleBillReturn;
 use App\Services\StockService;
+use App\Services\ZatcaService;
 use App\Exports\saleBillExport;
 use App\Models\accounting_tree;
 use App\Models\SaleBillElement;
@@ -35,11 +37,14 @@ use App\Models\SaleBillElement1;
 use App\Services\VoucherService;
 use App\Models\OuterClientAddress;
 use Illuminate\Support\Facades\DB;
+use Salla\ZATCA\Models\CSRRequest;
 use Illuminate\Support\Facades\URL;
+use Salla\ZATCA\Models\InvoiceSign;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
+use Salla\ZATCA\Helpers\Certificate;
 use AIOSEO\Plugin\Common\Utils\Cache;
 use App\Http\Requests\SaleBillRequest;
 use Illuminate\Support\Facades\Artisan;
@@ -3464,5 +3469,72 @@ class SaleBillController1 extends Controller
     public function exportExcel(Request $request)
     {
         return Excel::download(new SaleBillsExport($request->from, $request->to), 'sale_bills.xlsx');
+    }
+    public function generateCSR()
+    {
+        $data = CSRRequest::make()
+            ->setUID('OrganizationIdentifier')
+            ->setSerialNumber('solutionName', 'version', 'serialNumber')
+            ->setCommonName('commonName')
+            ->setCountryName('SA')
+            ->setOrganizationName('organizationName')
+            ->setOrganizationalUnitName('organizationalUnitName')
+            ->setRegisteredAddress('registeredAddress')
+            ->setInvoiceType(true, true)
+            ->setCurrentZatcaEnv('sandbox') // or 'simulation', 'core'
+            ->setBusinessCategory('businessCategory');
+
+        $CSR = GenerateCSR::fromRequest($data)->initialize()->generate();
+
+        // Save the private key to a file
+        Storage::put('private_key.pem', $CSR->getPrivateKey());
+
+        // Save the CSR content to a file
+        Storage::put('csr_content.pem', $CSR->getCsrContent());
+
+        return response()->json(['message' => 'CSR generated successfully']);
+    }
+    public function sendInvoiceToZATCA(Request $request)
+    {
+        try {
+            // استرجاع معرف الفاتورة ونوعها
+            $invoiceId = $request->input('sale_bill_id');
+            $invoiceType = $request->input('invoice_type');
+
+            // استرجاع الفاتورة من قاعدة البيانات
+            $invoice = SaleBill1::findOrFail($invoiceId);
+
+            // توليد CSR إذا لم يكن موجودًا
+            if (!ZatcaService::isCSRGenerated()) {
+                ZatcaService::generateCSR();
+            }
+
+            // تحويل الفاتورة إلى XML
+            // $xmlInvoice = ZatcaService::convertInvoiceToXML($invoiceId);
+            $xmlInvoice = ZatcaService::convertInvoiceToXML($invoiceId);
+
+
+            logger()->info('Generated XML Invoice', ['xml' => $xmlInvoice]);
+
+            // التحقق من صحة الـ XML
+            if (!ZatcaService::validateXML($xmlInvoice)) {
+                throw new \Exception('ملف XML غير صالح وفقاً لمتطلبات ZATCA.');
+            }
+
+            // توقيع الفاتورة
+            $signedInvoice = ZatcaService::signInvoice($xmlInvoice);
+            logger()->info('Signed Invoice', ['signed_invoice' => $signedInvoice]);
+
+            // إرسال الفاتورة إلى ZATCA بناءً على النوع
+            $zatcaService = new ZatcaService();
+            $response = $zatcaService->sendInvoiceToZatca($signedInvoice);
+            // $response = ZatcaService::sendInvoiceToZATCA($signedInvoice, $invoiceType);
+            logger()->info('ZATCA Response', ['response' => $response]);
+
+            return back()->with('success', 'تم إرسال الفاتورة بنجاح')->with('response', $response);
+        } catch (\Exception $e) {
+            logger()->error('Error sending invoice to ZATCA', ['error' => $e->getMessage()]);
+            return back()->with('error', 'حدث خطأ أثناء إرسال الفاتورة: ' . $e->getMessage());
+        }
     }
 }

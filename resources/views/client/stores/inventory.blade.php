@@ -1,6 +1,5 @@
 @extends('client.layouts.app-main')
 <style>
-    
 </style>
 @section('content')
     @if (session('success'))
@@ -21,9 +20,8 @@
             <div class="card">
                 <div class="card-header pb-0 no-print">
                     <div class="d-flex justify-content-between">
-                        <div class="col-lg-12 d-flex align-items-center">
-                            <h5 style="white-space: nowrap" class=" alert font-weight-bold m-0 p-0 d-flex
-                         custom-title align-items-end">{{ __('stores.inventory-all-stores') }}
+                        <div class="col-lg-12 margin-tb">
+                            <h5 class="pull-right alert alert-sm alert-success">{{ __('stores.inventory-all-stores') }}
                             </h5>
                         </div>
                     </div>
@@ -50,7 +48,7 @@
                         @method('POST')
                         <div class="col-lg-3 pull-right no-print">
                             <label for="" class="d-block">{{ __('stores.choose-store') }}</label>
-                            <select required name="store_id" id="store_id" class="form-control"
+                            <select required name="store_id" id="store_id" class="selectpicker" data-style="btn-info"
                                 data-live-search="true" title="{{ __('stores.store-name') }}">
                                 <option @if (isset($store_id) && $store_id == 'all') selected @endif value="all">كل المخازن
                                 </option>
@@ -61,10 +59,14 @@
                             </select>
                         </div>
                         <div class="col-lg-3 pull-right no-print">
-                            <label for="" class="d-block">{{ __('main.from') }}</label>
-                            <input type="date" @if (isset($from_date) && !empty($from_date)) value="{{ $from_date }}" @endif
-                                class="form-control" name="from_date" />
+                            <label for="from_date" class="d-block">{{ __('main.from') }}</label>
+                            <input type="date" 
+                                   id="from_date" 
+                                   name="from_date" 
+                                   class="form-control" 
+                                   value="{{ isset($from_date) && !empty($from_date) ? $from_date : '' }}" />
                         </div>
+
                         <div class="col-lg-3 pull-right no-print">
                             <label for="" class="d-block">{{ __('main.to') }}</label>
                             <input type="date" @if (isset($to_date) && !empty($to_date)) value="{{ $to_date }}" @endif
@@ -74,8 +76,8 @@
                             <label for="" class="d-block">
                                 {{ __('main.reports-fields') }}
                             </label>
-                            <select class="form-control selectpicker show-tick py-1" data-live-search="true"
-                                data-style="btn-third" data-title="{{ __('main.choose-fields') }}" multiple required
+                            <select class="form-control selectpicker show-tick" data-live-search="true"
+                                data-style="btn-success" data-title="{{ __('main.choose-fields') }}" multiple required
                                 name="options[]" id="">
                                 <option @if (isset($options) && in_array('product_name', $options)) selected @endif value="product_name">
                                     {{ __('main.product-name') }}
@@ -100,7 +102,7 @@
                         <div class="clearfix"></div>
 
                         <div class="col-lg-12 pull-right">
-                            <button class="btn btnn btn-md text-white px-4" style="font-size: 15px; height: 40px; margin-top: 25px; background-color: #222751"
+                            <button class="btn btn-md btn-danger" style="font-size: 15px; height: 40px; margin-top: 25px;"
                                 type="submit">
                                 <i class="fa fa-check"></i>
                                 {{ __('main.show-report') }}
@@ -111,7 +113,7 @@
                                     <i class="fa fa-print"></i>
                                     {{ __('main.print-report') }}
                                 </a>
-                                <button class="btn btnn btn-md ml-3 btn-warning" type="submit"
+                                <button class="btn btn-md ml-3 btn-warning" type="submit"
                                     formaction="{{ route('inventory.export') }}"
                                     style="font-size: 15px; height: 40px; margin-top: 25px;" role="button">
                                     <i class="fa fa-file-excel"></i>

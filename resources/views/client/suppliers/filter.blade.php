@@ -24,26 +24,25 @@
             <div class="card">
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
-                        <div class="col-lg-12 d-flex flex-wrap justify-content-between">
-                            <h5 class="alert custom-title"> {{ __('sidebar.suppliers-filter') }} </h5>
-                            <a class="btn btnn px-3 text-white py-1 "style="background-color: #36c7d6" href="{{ route('client.suppliers.index') }}">
+                        <div class="col-lg-12 margin-tb">
+                            <a class="btn pull-left btn-danger btn-sm" href="{{ route('client.suppliers.index') }}">
                                 {{ __('main.back') }} </a>
+                            <h5 class="pull-right alert alert-sm alert-info"> {{ __('sidebar.suppliers-filter') }} </h5>
                         </div>
                         <br>
                     </div>
                 </div>
-                <div class="card-body p-2">
-                    {{-- <h4 class="alert alert-sm alert-dark text-center  no-print"> {{ __('sidebar.suppliers-filter') }}</h4> --}}
-                    <div class="col-lg-6 pull-right  no-print">
+                <div class="card-body p-3">
+                    <h4 class="alert alert-sm alert-dark text-center  no-print"> {{ __('sidebar.suppliers-filter') }}</h4>
+                    <div class="col-lg-3 pull-right  no-print">
                         <form action="{{ route('client.suppliers.filter.key') }}" method="POST">
                             @csrf
                             @method('POST')
                             <div class="form-group">
                                 <label style="display:block;"
                                     for="national">{{ __('clients.search-by-nationality') }}</label>
-                                <div class="d-flex">
-                                    <select required class="selectpicker form-control w-100 " data-live-search="true" title="اكتب او اختر الجنسية"
-                                    data-style="btn-third" name="national" id="national">
+                                <select required class="selectpicker" data-live-search="true" title="اكتب او اختر الجنسية"
+                                    data-style="btn-info" name="national" id="national">
                                     @if (!empty($nationals[0]->supplier_national))
                                         <?php
                                         if ($nationals->count() > 0) {
@@ -67,31 +66,30 @@
                                         ?>
                                     @endif
                                 </select>
-                                <button type="submit" class="button_search btn-warning px-1"
-                                    >
+                                <button type="submit" class="button_search btn btn-md btn-info"
+                                    style="display: inline !important;width: 20% !important; float: left !important;">
                                     <i class="fa fa-search"></i>
                                 </button>
-                                </div>
                             </div>
                         </form>
                     </div>
 
-                    <div class="col-lg-6 pull-right  no-print">
+                    <div class="col-lg-3 pull-right  no-print">
                         <form action="{{ route('client.suppliers.filter.key') }}" method="POST">
                             @csrf
                             @method('POST')
                             <div class="form-group">
                                 <label style="display:block;" for="category">{{ __('clients.search-by-type') }} </label>
-                                <div class="d-flex">
-                                    <select required
+                                <select required
+                                    style="width: 75% !important; display: inline !important; float: right !important;"
                                     class="form-control" name="category">
                                     <option value="">اختر الفئة</option>
                                     <option value="جملة">جملة</option>
                                     <option value="قطاعى">قطاعى</option>
                                 </select>
-                                <button type="submit" class="button_search btn-md btn-warning px-1">
+                                <button type="submit" class="button_search btn btn-md btn-warning"
+                                    style="display: inline !important;width: 20% !important; float: left !important;">
                                     <i class="fa fa-search"></i></button>
-                                </div>
                             </div>
                         </form>
                     </div>

@@ -25,10 +25,10 @@
             <div class="card mg-b-20">
                 <div class="card-body">
                     <div class="col-12">
-                        <a class="btn btn-primary px-4 py=1" href="{{ route('supplier.bonds.index') }}">
+                        <a class="btn btn-primary btn-sm pull-left" href="{{ route('supplier.bonds.index') }}">
                             {{ __('main.back') }}
                         </a>
-                        <h5 style="min-width: 300px;" class="  alert custom-title">
+                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success">
                             {{ __('bonds.add_new_supplier_bonds') }}
                     </div>
                     <div class="clearfix"></div>
@@ -52,7 +52,7 @@
                             <div class="col-md-3">
                                 <label> {{ __('bonds.supplier_name') }} <span class="text-danger">*</span></label>
                                 <select dir="rtl" required class="form-control selectpicker" name="client" id="client"
-                                    data-live-search="true">
+                                    data-style="btn-danger" data-live-search="true">
                                     <option value="none" disabled selected>{{ __('bonds.choose_supplier') }}</option>
                                     @foreach($suppliers as $client)
                                         <option value="{{ $client->supplier_name }}">{{ $client->supplier_name }}</option>
@@ -82,7 +82,7 @@
 
                             <div class="col-md-3 mt-2">
                                 <label> {{ __('bonds.amount') }} <span class="text-danger">*</span></label>
-                                <input required class="form-control" dir="ltr" id="amount" name="amount"  min="0.001" type="number">
+                                <input required class="form-control" dir="ltr" id="amount"  min="0.001" name="amount" type="number">
                             </div>
                             
                             <div class="col-md-3" style="    margin-top: 20px;">

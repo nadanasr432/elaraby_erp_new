@@ -93,7 +93,7 @@
         color: white;
         background: #0A246A;
     }
-   
+
     .minusIcon {
         width: 19px;
         display: inline-block;
@@ -180,8 +180,8 @@
     }
 
     .products {
-        min-height: 640px !important;
-        max-height: 640px !important;
+        min-height: 64vh !important;
+        max-height: 64vh !important;
         overflow-y: scroll;
     }
 
@@ -225,20 +225,6 @@
     .inner.show {
         min-height: 159px !important;
     }
-    .payment .filter-option-inner-inner{
-        color: #fff !important
-    }
-    .searchproducts .filter-option{
-        background-color: #F4F5FA !important
-    }
-    .filter-option{
-        display: flex;
-    align-items: center;
-    justify-content: end;
-    }
-    body.dark-mode .inputpos{
-color: #fff !important;
-}
 </style>
 @section('content')
     <div class="row mt-5 mb-5">
@@ -272,7 +258,7 @@ color: #fff !important;
                                 @endforeach
                             </div>
                             <div class="col-md-4 d-flex justify-content-end mb-1">
-                                <a href="#" class="btn btn-warning p-1" data-toggle="modal"
+                                <a href="#" class="btn btn-success p-1" data-toggle="modal"
                                     data-target="#addProductModal" title="{{ __('main.add_product') }}">
                                     <i class="fa fa-plus"></i>
                                 </a>
@@ -321,12 +307,12 @@ color: #fff !important;
                                                             </label>
                                                             <select required name="store_id" id="store"
                                                                 class="form-control">
-                                                                <option value="" >{{ __('products.choose_store') }}
+                                                                <option value="">{{ __('products.choose_store') }}
                                                                 </option>
                                                                 <?php $i = 0; ?>
                                                                 @foreach ($stores as $store)
                                                                     @if ($stores->count() == 1)
-                                                                        <option selected  value="{{ $store->id }}">
+                                                                        <option selected value="{{ $store->id }}">
                                                                             {{ $store->store_name }}</option>
                                                                     @else
                                                                         @if ($i == 0)
@@ -552,7 +538,7 @@ color: #fff !important;
                                                         <div class="form-group col-lg-6" dir="rtl"
                                                             id="searchContainer" style="display: none;">
                                                             <label class="col-lg-6">{{ __('Search Products') }}</label>
-                                                            <select class="selectpicker" data-style="btn-warning"
+                                                            <select class="selectpicker" data-style="btn-success"
                                                                 data-live-search="true" id="productSearch">
                                                                 <option value="" disabled selected>
                                                                     {{ __('Search Products') }}</option>
@@ -588,7 +574,7 @@ color: #fff !important;
 
 
 
-                                                    <button class="btn btn-md btn-warning w-100 font-weight-bold"
+                                                    <button class="btn btn-md btn-success w-100 font-weight-bold"
                                                         type="submit">{{ __('products.add') }}</button>
                                                 </form>
                                             </div>
@@ -650,25 +636,25 @@ color: #fff !important;
         </div>
 
         <div class="col-md-5 py-1 px-0">
-            <div class="inner-sectoin bg-white rounded px-2 pl-nos py-1" style="border: 1px solid #2d2d2d1f;">
-                <div class="section bg-white border-0">
+            <div class="inner-sectoin bg-white rounded pr-2 pl-nos pb-2 pt-1" style="border: 1px solid #2d2d2d1f;">
+                <div class="section">
                     <div class="mb-nos">
-                        <div class=" d-flex justify-content-between align-items-center my-1 p-1 bg-white" style="border: 1px solid #a1a1a11f; border-radius:5px;">
+                        <div class=" d-flex justify-content-between">
 
-                            <h5 class="font-weight-bold m-0">
-                                <svg style="margin-left: 5px;" fill="#0A246A" width="10"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                                    <path
-                                        d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z">
-                                    </path>
-                                </svg>
-                                اختر العميل
-                            </h5>
-                            <a href="#" class="btn btn-warning" data-toggle="modal"
-                                data-target="#addCustomerModal" title="{{ __('home.Add a client') }}">
-                                <i class="fa fa-plus"></i>
-                            </a>
-                        </div>
+                        <h5 class="font-weight-bold">
+                            <svg style="margin-left: 5px;" fill="#0A246A" width="10"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                <path
+                                    d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z">
+                                </path>
+                            </svg>
+                            اختر العميل
+                        </h5>
+                        <a href="#" class="btn btn-secondary mb-1" data-toggle="modal"
+                            data-target="#addCustomerModal" title="{{ __('home.Add a client') }}">
+                            <i class="fa fa-plus"></i>
+                        </a>
+                    </div>
                     {{-- modal add client --}}
                     <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog"
                         aria-labelledby="addCustomerModalLabel" aria-hidden="true">
@@ -771,18 +757,17 @@ color: #fff !important;
                             </div>
                         </div>
                     </div>
-                    <select id="outer_client_id" class="selectpicker payment w-100" data-style="btn-warning"
-                        data-live-search="true" title="{{ __('pos.choose-client-name') }}" >
+                    <select id="outer_client_id" class="selectpicker w-100" data-style="btn-success"
+                        data-live-search="true" title="{{ __('pos.choose-client-name') }}">
                         @foreach ($outer_clients as $outer_client)
                             <option @if ($outer_client->client_name == 'Cash') selected @endif value="{{ $outer_client->id }}">
                                 {{ $outer_client->client_name }}
                             </option>
                         @endforeach
                     </select>
-                    <select id="product_id" class="selectpicker searchproducts form-control w-100 mt-nos p-0 " 
+                    <select id="product_id" class="selectpicker form-control w-100 mt-nos" data-style="btn-dark"
                         data-live-search="true"
-                        title="{{ __('pos.search-for-products-by-code-name-or-using-a-barcode-device') }}"
-                        >
+                        title="{{ __('pos.search-for-products-by-code-name-or-using-a-barcode-device') }}">
                         @foreach ($products as $product)
                             <option value="{{ $product->id }}" data-tokens="{{ $product->code_universal }}"
                                 product_name="{{ $product->product_name }}"
@@ -793,7 +778,7 @@ color: #fff !important;
                     </select>
                 </div>
 
-                <div class="table-responsive" style=" border:1px solid #f5f5f5;height: 370px; overflow:auto !important;">
+                <div class="table-responsive" style=" border:1px solid #FF9149;height: 370px; overflow:auto !important;">
                     <table class="table table-striped table-bordered table-condensed table-hover posTable"
                         style="margin-bottom: 0px; padding: 0px;border-collapse:separate;border-spacing:0 3px;">
                         <thead style="background: #FF9149; color: #fff;top: -2px !important; position: relative;">
@@ -894,14 +879,14 @@ color: #fff !important;
                             @endif
                         </tr>
                         <tr>
-                            <td style="padding: 5px 10px; border-top: 1px solid #666; border-bottom: 1px solid #333; font-weight:bold;  color:#000000;"
+                            <td style="padding: 5px 10px; border-top: 1px solid #666; border-bottom: 1px solid #333; font-weight:bold; background:#333; color:#FFF;"
                                 colspan="2">
                                 {{ __('main.total-amount') }}
                             </td>
                             <td class="text-right"
-                                style="padding:5px 10px 5px 10px; font-size: 14px;border-top: 1px solid #666; border-bottom: 1px solid #333; font-weight:bold; color:#000000;"
+                                style="padding:5px 10px 5px 10px; font-size: 14px;border-top: 1px solid #666; border-bottom: 1px solid #333; font-weight:bold; background:#333; color:#FFF;"
                                 colspan="2">
-                                <span id="total" style="color: #000000 ;">
+                                <span id="total" style="color: #fff !important;">
                                     @if (isset($pos_open))
                                         <?php
                                         $sum = 0;
@@ -948,74 +933,76 @@ color: #fff !important;
                 <div id="botbuttons" class="col-lg-12 text-center">
                     <input type="hidden" name="biller" id="biller" value="3">
                     <div class="row">
-                        <div class="col-lg-12 py-1" style="padding: 0;">
-                            <div class="d-flex flex-wrap flex-column">
-                                <div class="row g-2">
-                                  
-                                    @if ($pos_settings->suspension == '1')
-                                        <div class="col-lg-4 col-6 px-1 mt-2">
-                                            <a role="button" class="btn btn-warning w-100 font-weight-bold py-1" data-toggle="modal" href="#pendingPosInvModal">
-                                                <svg fill="white" width="8"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-                                                    <path d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z" />
-                                                </svg>
-                                                {{ __('pos.hold-invoice') }}
-                                            </a>
-                                        </div>
-                                    @endif
-                                    @if ($pos_settings->cancel == '1')
-                                    {{-- <div class="col-4">
-                                        <a role="button" class="d-none btn btn-danger btn-flat w-100 font-weight-bold" data-toggle="modal" href="#modaldemo5">
-                                            <i class="fa fa-trash-o" ></i> {{ __('pos.cancel-invoice') }}
-                                        </a>
-                                    </div> --}}
-                                    <div class="col-lg-4 col-6 px-1 mt-2">
-                                        <button class="deletePosInv btn  btn-flat w-100 font-weight-bold py-1" style="border:1px solid red; color: white; background-color: red; ">
-                                            <i class="fa fa-trash-o" style="color: white"></i> {{ __('pos.cancel-invoice') }}
-                                        </button>
-                                    </div>
+                        <div class="col-lg-12" style="padding: 0;">
+                            <div class="btn-group btn-block" style="width: 100.4%;">
+                                @if ($pos_settings->cancel == '1')
+                                    <a role="button"
+                                        class="d-none btn col-4 btn-danger btn-block btn-flat modal-effect mt-0 font-weight-bold"
+                                        data-toggle="modal" href="#modaldemo5">
+                                        <i class="fa fa-trash-o" style="font-size: 19px"></i>
+                                        {{ __('pos.cancel-invoice') }}
+                                    </a>
+                                    <button
+                                        class="deletePosInv btn col-4 btn-danger btn-block btn-flat modal-effect mt-0 font-weight-bold">
+                                        <i class="fa fa-trash-o" style="font-size: 19px"></i>
+                                        {{ __('pos.cancel-invoice') }}
+                                    </button>
                                 @endif
-                                    @if ($pos_settings->payment == '1')
-                                    <div class="col-lg-4 col-6 px-1 mt-2">
-                                        <a href="#recordPaymentModal" role="button" data-toggle="modal"
-                                            class="btn btn-warning w-100 font-weight-bold py-1" id="payment">
-                                            <i class="fa fa-money" ></i>
-                                            {{ __('pos.record-payment') }}
-                                        </a>
-                                    </div>
+                                @if ($pos_settings->suspension == '1')
+                                    <a role="button" class="btn col-4 btn-warning modal-effect mt-0 font-weight-bold"
+                                        data-toggle="modal" href="#pendingPosInvModal">
+                                        <svg style="position: inherit; top: 4px; margin-left: 6px;" fill="white"
+                                            width="10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                                            <path
+                                                d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z" />
+                                        </svg>
+                                        {{ __('pos.hold-invoice') }}
+                                    </a>
+                                @endif
 
+                                @if ($pos_settings->payment == '1')
+                                    <a href="#recordPaymentModal" role="button" data-toggle="modal"
+                                        class="btn col-4 btn-success modal-effect mt-0 font-weight-bold" id="payment"
+                                        tabindex="-1">
+                                        <i class="fa fa-money"
+                                            style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
+                                        {{ __('pos.record-payment') }}
+                                    </a>
                                 @endif
-                      
-                                   
-                                    @if ($pos_settings->fast_finish == '1')
-                                        <div class="col-lg-4 col-6 px-1 mt-2">
-                                            <button type="button" id="finishBank" class="btn w-100 btn-md font-weight-bold py-1"  style="border:1px solid white; color: white; background-color:#36c7d6 ; ">
-                                                <i class="fa fa-check-circle-o" style="color: white"></i>
-                                                دفع شبكة سريع
-                                            </button>
-                                        </div>
-                                        <div class="col-lg-4 col-6 px-1 mt-2">
-                                            <button type="button" id="finish" class="btn btn-warning w-100 btn-md font-weight-bold py-1">
-                                                <i class="fa fa-check-circle-o" ></i>
-                                                دفع كاش سريع
-                                            </button>
-                                        </div>
-                                    @endif
-                       
-                                    @if ($pos_settings->print_save == '1')
-                                        <div class="col-lg-4 col-6 px-1 mt-2">
-                                            <button type="button" class="btn  w-100 btn-md font-weight-bold py-1"  style="border:1px solid white; color: white;background-color: #36c7d6 " id="save_pos">
-                                                <i class="fa fa-save" style="color: white"></i>
-                                                {{ __('pos.save-and-print') }}
-                                            </button>
-                                        </div>
-                                    @endif
-                                </div>
                             </div>
-                            
                         </div>
                     </div>
-                   
+                    <div class="row">
+                        <div class="col-lg-12" style="padding: 0;">
+                            <div class="btn-group btn-block">
+                                @if ($pos_settings->fast_finish == '1')
+                                    <button type="button" id="finishBank"
+                                        style="background: #053e59d4;border-color:#053e59d4;height: 45px;padding-top: 5px;"
+                                        class="btn btn-dark btn-block btn-md modal-effect mt-0">
+                                        <i class="fa fa-check-circle-o"
+                                            style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
+                                        دفع شبكة سريع
+                                    </button>
+                                    <button type="button" id="finish" style="padding-top: 5px;"
+                                        class="btn btn-dark btn-block btn-md modal-effect mt-0">
+                                        <i class="fa fa-check-circle-o"
+                                            style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
+                                        دفع كاش سريع
+                                    </button>
+                                @endif
+                                @if ($pos_settings->print_save == '1')
+                                    <button type="button" class="btn text-white btn-block btn-md modal-effect mt-0"
+                                        style="background: #666ee8 !important;height: 45px;padding-top: 5px;"
+                                        id="save_pos" tabindex="-1">
+                                        <i class="fa fa-save"
+                                            style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
+                                        {{ __('pos.save-and-print') }}
+                                    </button>
+                                @endif
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1060,7 +1047,7 @@ color: #fff !important;
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-warning save_tax">حفظ</button>
+                    <button type="button" class="btn btn-success save_tax">حفظ</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
                 </div>
             </div>
@@ -1102,7 +1089,7 @@ color: #fff !important;
                         <i class="fa fa-plus" style="font-size: 16px"></i>
                         اضافة بنك جديد
                     </a>
-                    <button class="btn btn-warning rounded finishBank ml-1" type="button">
+                    <button class="btn btn-success rounded finishBank ml-1" type="button">
                         <i class="fa fa-check-circle-o"
                             style="font-size: 15px; margin-left: 2px; top: 2px; position: relative;"></i>
                         {{ __('banks.record-process') }}
@@ -1308,7 +1295,7 @@ color: #fff !important;
                     </div>
                     <hr>
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                        <button class="btn btn-warning pay_cash" style="height: 39px;">
+                        <button class="btn btn-success pay_cash" style="height: 39px;">
                             {{ __('banks.record-process') }}
                         </button>
                         <a href="{{ route('client.safes.create') }}" target="_blank"
@@ -1339,8 +1326,6 @@ color: #fff !important;
 
 <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="{{ asset('app-assets/js/theme-switcher.js') }}"></script>
-
 <script>
     $(document).ready(function() {
         setTimeout(function() {
@@ -1382,11 +1367,11 @@ color: #fff !important;
             if ($("#" + product_id).length == 0) {
                 //add new row to the table..
                 var productRow = '<tr class="bg-white" id="' + product_id + '"> <td>' + product_name +
-                    '</td> <td style="padding:5px 1px 5px 1px !important;"><input type="number" class="inputpos" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_price-' +
+                    '</td> <td style="padding:5px 1px 5px 1px !important;"><input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_price-' +
                     product_id + '" class="edit_price w-100" value="' + product_price +
-                    '"></td> <td style="padding:5px 1px 5px 1px !important;"><input class="inputpos" type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_quantity-' +
+                    '"></td> <td style="padding:5px 1px 5px 1px !important;"><input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_quantity-' +
                     product_id +
-                    '" class="edit_quantity w-100" value="1"></td> <td style="padding:5px 1px 5px 1px !important;"><input class="inputpos" type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_discount-' +
+                    '" class="edit_quantity w-100" value="1"></td> <td style="padding:5px 1px 5px 1px !important;"><input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_discount-' +
                     product_id + '" class="edit_discount w-100" value="0"></td> <td id="totalPrice-' +
                     product_id + '" class="totalPrice font-weight-bold">' + product_price +
                     '</td> <td class="no-print"> <button class="btn btn-sm btn-danger remove_element"> <i class="fa fa-trash"></i> </button> </td> </tr>';
@@ -1425,11 +1410,11 @@ color: #fff !important;
             if ($("#" + product_id).length == 0) {
                 //add new row to the table..
                 var productRow = '<tr class="bg-white" id="' + product_id + '"> <td>' + product_name +
-                    '</td> <td style="padding:5px 1px 5px 1px !important;"><input type="number" class="inputpos" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_price-' +
+                    '</td> <td style="padding:5px 1px 5px 1px !important;"><input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_price-' +
                     product_id + '" class="edit_price w-100" value="' + product_price +
-                    '"></td> <td style="padding:5px 1px 5px 1px !important;"><input type="number" class="inputpos" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_quantity-' +
+                    '"></td> <td style="padding:5px 1px 5px 1px !important;"><input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_quantity-' +
                     product_id +
-                    '" class="edit_quantity w-100" value="1"></td> <td style="padding:5px 1px 5px 1px !important;"><input class="inputpos" type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_discount-' +
+                    '" class="edit_quantity w-100" value="1"></td> <td style="padding:5px 1px 5px 1px !important;"><input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_discount-' +
                     product_id + '" class="edit_discount w-100" value="0"></td> <td id="totalPrice-' +
                     product_id + '" class="totalPrice font-weight-bold">' + product_price +
                     '</td> <td class="no-print"> <button class="btn btn-sm btn-danger remove_element"> <i class="fa fa-trash"></i> </button> </td> </tr>';
@@ -2149,13 +2134,13 @@ color: #fff !important;
                         <tr class="bg-white" id="${product_id}">
                             <td>${product_name}</td>
                             <td style="padding:5px 1px !important;">
-                                <input type="number" class="inputpos" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_price-${product_id}" class="edit_price w-100" value="${product_price}">
+                                <input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_price-${product_id}" class="edit_price w-100" value="${product_price}">
                             </td>
                             <td style="padding:5px 1px !important;">
-                                <input type="number" class="inputpos" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_quantity-${product_id}" class="edit_quantity w-100" value="${quantity}">
+                                <input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_quantity-${product_id}" class="edit_quantity w-100" value="${quantity}">
                             </td>
                             <td style="padding:5px 1px !important;">
-                                <input type="number" class="inputpos" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_discount-${product_id}" class="edit_discount w-100" value="${discount}">
+                                <input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_discount-${product_id}" class="edit_discount w-100" value="${discount}">
                             </td>
                             <td id="totalPrice-${product_id}" class="totalPrice font-weight-bold">${product_price}</td>
                             <td class="no-print">
@@ -2668,4 +2653,3 @@ color: #fff !important;
         $('.selectpicker').selectpicker();
  });
 </script>
-

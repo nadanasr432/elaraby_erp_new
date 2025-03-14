@@ -20,7 +20,7 @@
             <div class="card mg-b-20">
                 <div class="card-body">
                     <div class="col-12">
-                        <h5  class="alert custom-title">
+                        <h5 style="min-width: 300px;" class="pull-left alert alert-sm alert-success">
                             {{ __('sidebar.add-new-permission') }}
                         </h5>
                     </div>
@@ -220,10 +220,9 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-12 col-sm-12 col-md-12 ">
-                                <button type="submit" class="btn btnn btn-warning px-3 py-1">تأكيد</button>
-                                <button type="button" id="check_all" class="btn btnn btn-danger px-3 py-1"> تحديد الكل</button>
-
+                            <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                                <button type="button" id="check_all" class="btn btn-danger"> تحديد الكل</button>
+                                <button type="submit" class="btn btn-info">تأكيد</button>
                             </div>
                         </div>
                     </form>

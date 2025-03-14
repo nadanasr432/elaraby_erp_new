@@ -16,10 +16,10 @@
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
                         <div class="clearfix"></div>
-                        <div class="col-lg-12 margin-tb d-flex flex-wrap justify-content-between align-items-center">
-                            <h5 class=" custom-title">عرض مراكز التكلفة  </h5>
+                        <div class="col-lg-12 margin-tb">
+                            <h5 class="pull-right d-block mb-2">عرض مراكز التكلفة  </h5>
 
-                            <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6"
+                            <a class="btn pull-left btn-primary btn-sm"
                                href="{{ route('client.cost_center.create') }}"><i
                                     class="fa fa-plus"></i> اضافة مركز جديد </a>
 

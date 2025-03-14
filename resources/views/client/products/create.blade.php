@@ -5,7 +5,7 @@
     }
 
     .bootstrap-select {
-        width: 100% !important;
+        width: 80% !important;
     }
 
     .form-control {
@@ -25,11 +25,11 @@
             <div class="card">
                 <!------HEADER----->
                 <div class="card-header border-bottom border-secondary p-1">
-                    <div class="d-flex flex-wrap justify-content-between align-items-center">
-                        <h3 class="custom-title font-weight-bold ml-1">
+                    <div class="d-flex justify-content-between align-items-baseline">
+                        <h3 class="pull-right font-weight-bold ml-1">
                             {{ __('products.addnewproduct') }}
                         </h3>
-                        <a class="btn px-3 py-1 text-white" style="background-color: #36c7d6;" href="{{ route('client.products.index') }}">
+                        <a class="btn btn-danger btn-sm pull-left p-1" href="{{ route('client.products.index') }}">
                             {{ __('products.back') }}
                         </a>
                     </div>
@@ -47,17 +47,17 @@
 
                         <div class="row p-0">
                             <!-- Form Input for Start Date and End Date -->
-                            <div class="form-group col-lg-4">
+                            <div class="form-group col-lg-6">
                                 <label for="start_date">{{ __('Start Date') }}</label>
                                 <input type="date" class="form-control" id="start_date" name="start_date">
                             </div>
-                            <div class="form-group col-lg-4">
+                            <div class="form-group col-lg-6">
                                 <label for="end_date">{{ __('End Date') }}</label>
                                 <input type="date" class="form-control" id="end_date" name="end_date">
                             </div>
 
                             <!----store---->
-                            <div class="form-group col-lg-4" dir="rtl">
+                            <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label for="store_id">
 
                                     {{ __('products.store_name') }}
@@ -84,7 +84,7 @@
                             <!---------------------->
 
                             <!----category_id---->
-                            <div class="form-group col-lg-4" dir="rtl">
+                            <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label for="store_id">
                                     {{ __('products.main_cat') }}
                                     <span class="text-danger font-weight-bold">*</span>
@@ -105,7 +105,7 @@
 
 
                             <!----sub_category---->
-                            <div class="form-group col-lg-4" dir="rtl">
+                            <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label for="store_id">
                                     {{ __('products.subcat') }}
 
@@ -122,7 +122,7 @@
                             <!-------------------->
 
                             <!----product_model---->
-                            <div class="form-group col-lg-4" dir="rtl">
+                            <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>{{ __('products.pmodel') }}</label>
                                 <input type="text" name="product_model" placeholder="{{ __('products.pmodel') }}"
                                     class="form-control" id='model'>
@@ -130,7 +130,7 @@
                             <!---------------------->
 
                             <!----product_name---->
-                            <div class="form-group col-lg-4" dir="rtl">
+                            <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>
                                     {{ __('products.pname') }}
                                     <span class="text-danger font-weight-bold">*</span>
@@ -138,7 +138,7 @@
                                 <input type="text" name="product_name" id="order_name"
                                     placeholder="{{ __('products.pname') }}" class="form-control" required>
                             </div>
-                            <div class="form-group col-lg-4" dir="rtl">
+                            <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>
                                     {{ __('products.pname_en') }}
                                 </label>
@@ -148,7 +148,7 @@
                             <!---------------------->
 
                             <!----unit_id---->
-                            <div class="form-group col-lg-4">
+                            <div class="form-group col-lg-3 pr-0">
                                 <label>
                                     {{ __('products.punit') }}
                                     <!--<span class="text-danger font-weight-bold">*</span>-->
@@ -163,7 +163,7 @@
                             <!---------------------->
 
                             <!----code_universal---->
-                            <div class="form-group col-lg-4" dir="rtl">
+                            <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>
                                     {{ __('products.barcodenum') }}
                                     <span class="text-danger font-weight-bold">*</span>
@@ -175,7 +175,7 @@
                             <!---------------------->
 
                             <!----first_balance---->
-                            <div class="form-group col-lg-4" dir="rtl">
+                            <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>
                                     {{ __('products.storeqty') }}
                                     <span class="text-danger font-weight-bold">*</span>
@@ -187,7 +187,7 @@
                             <!---------------------->
 
                             <!----purchasing_price--->
-                            <div class="form-group col-lg-4" dir="rtl">
+                            <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>
                                     {{ __('products.costprice') }}
                                     <!--<span class="text-danger font-weight-bold">*</span>-->
@@ -198,7 +198,7 @@
                             <!---------------------->
 
                             <!----wholesale_price--->
-                            <div class="form-group col-lg-4" dir="rtl">
+                            <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>
                                     {{ __('products.wholeprice') }}
                                     <!--<span class="text-danger font-weight-bold">*</span>-->
@@ -210,7 +210,7 @@
                             <!-------------------->
 
                             <!----sector_price--->
-                            <div class="form-group col-lg-4" dir="rtl">
+                            <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label>
                                     {{ __('products.sectorprice') }}
                                     <!--<span class="text-danger font-weight-bold">*</span>-->
@@ -222,7 +222,7 @@
                             <!-------------------->
 
                             <!----min_balance--->
-                            <div class="form-group pull-right col-lg-4" dir="rtl">
+                            <div class="form-group pull-right col-lg-3" dir="rtl">
                                 <label>{{ __('products.minimumqty') }}</label>
                                 <input type="number" step="0.01" value="0" name="min_balance" id="min_balance"
                                     class="form-control" />
@@ -247,17 +247,16 @@
 
                             <!-------------------->
 
-                            
+                            <div class="form-group col-lg-6 pull-right" dir="rtl">
+                                <label>{{ __('products.pimg') }}</label>
+                                <input accept=".jpg,.png,.jpeg" type="file" name="product_pic"
+                                    oninput="pic.src=window.URL.createObjectURL(this.files[0])" id="file"
+                                    class="form-control">
+                                <label class="d-block mt-2"> {{ __('products.previewimg') }}</label>
+                                <img id="pic" style="width: 100px; height:100px;" />
+                            </div>
                             <!---------------------->
 
-                        </div>
-                        <div class="form-group col-lg-6 " dir="rtl">
-                            <label>{{ __('products.pimg') }}</label>
-                            <input accept=".jpg,.png,.jpeg" type="file" name="product_pic"
-                                oninput="pic.src=window.URL.createObjectURL(this.files[0])" id="file"
-                                class="form-control">
-                            <label class="d-block mt-2"> {{ __('products.previewimg') }}</label>
-                            <img id="pic" style="width: 100px; height:100px;" />
                         </div>
                         <!--ROW END-->
                         <div class="row">
@@ -310,7 +309,7 @@
 
 
 
-                        <button class="btn  btn-warning px-5 py-1 font-weight-bold"
+                        <button class="btn btn-md btn-success w-100 font-weight-bold"
                             type="submit">{{ __('products.add') }}</button>
                     </form>
                 </div>

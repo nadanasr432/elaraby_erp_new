@@ -41,7 +41,7 @@
                                 <li><a data-action="collapse"><i class="la la-minus"></i></a></li>
                                 <li><a data-action="reload"><i class="la la-refresh"></i></a></li>
                                 <li><a data-action="expand"><i class="la la-expand"></i></a></li>
-                                {{-- <li><a data-action="close"><i class="la la-close"></i></a></li> --}}
+                                <!--<li><a data-action="close"><i class="la la-close"></i></a></li>-->
                             </ul>
                         </div>
                     </div>

@@ -31,435 +31,433 @@
             </ul>
         </div>
     @endif
-    <div class="bg-white py-2">
-        <form id="myForm" target="_blank" action="#" method="POST">
-            @csrf
-            @method('POST')
-            <h6 class="alert custom-title font-weight-bold" dir="rtl"
-                >
-                
-                    {{ __('sidebar.addNewQuotation') }}
-                
-            </h6>
-    
-            <div class="row px-1">
-                <!----DATE--->
-                <div class="col-md-4 no-print">
-                    <div class="form-group" dir="rtl">
-                        <label> {{ __('sales_bills.offer-start-date') }}
-                        </label>
-                        <span class="text-danger font-weight-bold">*</span>
-                        <input type="date" name="start_date" class="form-control" value="{{ date('Y-m-d') }}"
-                            id="start_date" />
-                    </div>
-                </div>
-    
-                <!----TIME--->
-                <div class="col-md-4 no-print">
-                    <div class="form-group" dir="rtl">
-                        <label>{{ __('sales_bills.offer-end-date') }}</label>
-                        <span class="text-danger font-weight-bold">*</span>
-                        <input type="date" name="expiration_date" value="<?php echo date('Y-m-d'); ?>" id="expiration_date"
-                            class="form-control" />
-                    </div>
-                </div>
+    <form id="myForm" target="_blank" action="#" method="POST">
+        @csrf
+        @method('POST')
+        <h6 class="alert alert-info alert-sm text-center no-print  font-weight-bold" dir="rtl"
+            style="background-color: #d8daf5 !important; border:#d8daf5">
+            <center>
+                {{ __('sidebar.addNewQuotation') }}
+            </center>
+        </h6>
 
-                <div class="col-md-4 no-print">
-                    <label>
-                        {{ __('sales_bills.select-store') }}
-                        <span class="text-danger font-weight-bold">*</span>
+        <div class="row">
+            <!----DATE--->
+            <div class="col-md-6 pull-right no-print">
+                <div class="form-group" dir="rtl">
+                    <label> {{ __('sales_bills.offer-start-date') }}
                     </label>
-                    <div class="d-flex ">
-                        <select name="store_id" id="store_id" class="selectpicker form-control me-2" 
-                            data-live-search="true" title="{{ __('sales_bills.select-store') }}">
-                            <?php $i = 0; ?>
-                            @foreach ($stores as $store)
-                                @if ($stores->count() == 1)
+                    <span class="text-danger font-weight-bold">*</span>
+                    <input type="date" name="start_date" class="form-control" value="{{ date('Y-m-d') }}"
+                        id="start_date" />
+                </div>
+            </div>
+
+            <!----TIME--->
+            <div class="col-md-6 pull-right no-print">
+                <div class="form-group" dir="rtl">
+                    <label>{{ __('sales_bills.offer-end-date') }}</label>
+                    <span class="text-danger font-weight-bold">*</span>
+                    <input type="date" name="expiration_date" value="<?php echo date('Y-m-d'); ?>" id="expiration_date"
+                        class="form-control" />
+                </div>
+            </div>
+        </div>
+        <!----Store--->
+        <div class="row">
+            <div class="col-md-6 pull-right no-print">
+                <label>
+                    {{ __('sales_bills.select-store') }}
+                    <span class="text-danger font-weight-bold">*</span>
+                </label>
+                <div class="d-flex justify-content-between">
+                    <select name="store_id" id="store_id" class="selectpicker me-2" data-style="btn-new_color"
+                        data-live-search="true" title="{{ __('sales_bills.select-store') }}">
+                        <?php $i = 0; ?>
+                        @foreach ($stores as $store)
+                            @if ($stores->count() == 1)
+                                <option selected value="{{ $store->id }}">{{ $store->store_name }}</option>
+                            @else
+                                @if ($i == 0)
                                     <option selected value="{{ $store->id }}">{{ $store->store_name }}</option>
                                 @else
-                                    @if ($i == 0)
-                                        <option selected value="{{ $store->id }}">{{ $store->store_name }}</option>
-                                    @else
-                                        <option value="{{ $store->id }}">{{ $store->store_name }}</option>
-                                    @endif
+                                    <option value="{{ $store->id }}">{{ $store->store_name }}</option>
                                 @endif
-                                <?php $i++; ?>
-                            @endforeach
-                        </select>
-                        <a target="_blank" href="{{ route('client.stores.create') }}" role="button" class="btn btn-warning d-flex align-items-center justify-content-center">
-                            <i class="fa fa-plus" aria-hidden="true"> </i>
-                            {{ __('sales_bills.add-store') }}
-                        </a>
-                    </div>
+                            @endif
+                            <?php $i++; ?>
+                        @endforeach
+                    </select>
+                    <a target="_blank" href="{{ route('client.stores.create') }}" role="button" class="btn btn-primary ">
+                        <i class="fa fa-plus" aria-hidden="true"> </i>
+                        {{ __('sales_bills.add-store') }}
+                    </a>
                 </div>
-                <!----CLIENT--->
-                <div class="col-md-4 no-print">
-                    <label>
-                        {{ __('sales_bills.client-name') }}
-                        <span class="text-danger font-weight-bold">*</span>
-                    </label>
-                    <div class="d-flex ">
-                        <select name="outer_client_id" id="outer_client_id" 
-                            title="{{ __('sales_bills.client-name') }}" class="selectpicker form-control w-100 me-2"
-                            data-live-search="true">
-                            @foreach ($outer_clients as $outer_client)
-                                <option value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
-                            @endforeach
-                        </select>
-                        <a target="_blank" href="{{ route('client.outer_clients.create') }}" role="button"
-                            class="btn btn-warning py-1 d-flex align-items-center justify-content-center">
-                            <i class="fa fa-plus" aria-hidden="true"> </i> {{ __('sales_bills.add-client') }}
-                        </a>
-                    </div>
-                </div>
-
-                <!----->
-                <div class="col-md-4 no-print">
-                    <label>
-                        {{ __('sales_bills.product-code') }}
-                        <span class="text-danger font-weight-bold">*</span>
-                    </label>
-                    <div class="d-flex ">
-                        <select name="product_id" id="product_id" class="selectpicker form-control w-50" 
-                             data-dropup-auto="false" title="{{ __('sales_bills.choose product') }}">
-                            @foreach ($all_products as $product)
-                                <option value="{{ $product->id }}" data-name="{{ strtolower($product->product_name) }}"
-                                    data-sectorprice="{{ $product->sector_price }}"
-                                    data-wholesaleprice="{{ $product->wholesale_price }}"
-                                    data-tokens="{{ $product->code_universal }}"
-                                    data-remaining="{{ $product->total_remaining }}"
-                                    data-categorytype="{{ $product->category_type }}" data-unitid="{{ $product->unit_id }}">
-                                    {{ $product->product_name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <a target="_blank" href="{{ route('client.products.create') }}" role="button"
-                        class="btn btn-warning py-1 d-flex align-items-center justify-content-center">
-                        <i class="fa fa-plus" aria-hidden="true"> </i> {{ __('sales_bills.add-product') }}
-                        </a>
-                        {{-- <select name="outer_client_id" id="outer_client_id" data-style="btn-new_color"
-                        title="{{ __('sales_bills.client-name') }}" class="selectpicker w-100 me-2" data-live-search="true">
+            </div>
+            <!----CLIENT--->
+            <div class="col-md-6 pull-right no-print">
+                <label>
+                    {{ __('sales_bills.client-name') }}
+                    <span class="text-danger font-weight-bold">*</span>
+                </label>
+                <div class="d-flex align-items-center justify-content-between">
+                    <select name="outer_client_id" id="outer_client_id" data-style="btn-new_color"
+                        title="{{ __('sales_bills.client-name') }}" class="selectpicker w-100 me-2"
+                        data-live-search="true">
                         @foreach ($outer_clients as $outer_client)
                             <option value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
                         @endforeach
-                    </select> --}}
-                       
-                    </div>
-                </div>
-                <div class="col-md-4 no-print">
-                    <label for="value_added_tax">{{ __('sales_bills.prices-for-tax') }}
-                        <span class="text-danger font-weight-bold">*</span>
-    
-                    </label>
-    
-                    <div class="d-flex align-items-center justify-content-between">
-                        <select required disabled name="value_added_tax" id="value_added_tax" class="selectpicker form-control w-100 py-1"
-                             data-live-search="true">
-                            <option value="0" selected>
-                                {{ __('sales_bills.not-including-tax') }}</option>
-                            <option value="2">
-                                {{ __('sales_bills.including-tax') }}</option>
-                            <option value="1">
-                                {{ __('sales_bills.exempt-tax') }}</option>
-                        </select>
-                    </div>
+                    </select>
+                    <a target="_blank" href="{{ route('client.outer_clients.create') }}" role="button"
+                        class="btn btn-primary">
+                        <i class="fa fa-plus" aria-hidden="true"> </i> {{ __('sales_bills.add-client') }}
+                    </a>
                 </div>
             </div>
-            <div class="clearfix no-print"></div>
-    
-            <input type="number" id='grand_total_input' name="grand_total" hidden>
-            <input type="number" id='grand_tax_input' name="grand_tax" hidden>
-            <input type="number" id='grand_discount_input' name="total_discount" hidden>
-    
-    
-            <div class="container">
-                <div class="table-responsive">
-                    <table class="table table-bordered mt-2" id="products_table"
-                        style="background-color: #ffffff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); border-radius: 5px;">
-                        <thead>
-                            <tr>
-                                <th
-                                    style="background-color: #21254e; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                                    {{ __('sales_bills.product') }}</th>
-                                <th
-                                    style="background-color: #21254e; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                                    {{ __('sales_bills.price_type') }}</th>
-                                <th
-                                    style="background-color: #21254e; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                                    {{ __('sales_bills.price') }}</th>
-                                <th
-                                    style="background-color: #21254e; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                                    {{ __('sales_bills.quantity') }}</th>
-                                <th
-                                    style="background-color: #21254e; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                                    {{ __('sales_bills.unit') }}</th>
-                                {{-- <th
-                                    style="background-color: #21254e; color: #333; text-align: center; padding: 5px; font-weight: bold;">
-                                    {{ __('sales_bills.discount') }}
-                                    <div class="tax_discount"
-                                        style="display: inline-block; margin-left: 10px; vertical-align: middle;">
-                                        <select id="discount_application" class="form-control"
-                                            style="font-size: 12px; height: 30px;" name="products_discount_type">
-                                            <option value="before_tax">{{ __('sales_bills.discount_before_tax') }}</option>
-                                            <option value="after_tax">{{ __('sales_bills.discount_after_tax') }}</option>
-                                        </select>
-                                    </div>
-                                </th> --}}
-                                {{-- <th
-                                    style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                                    {{ __('sales_bills.tax') }}</th> --}}
-                                <th
-                                    style="background-color: #21254e; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                                    {{ __('sales_bills.total') }}</th>
-                                <th
-                                    style="background-color: #21254e; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                                    {{ __('sales_bills.actions') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody style="text-align: center;">
-                            <!-- هنا يتم عرض البيانات -->
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="6" style="background-color: #f9f9f9; font-weight: bold;">
-                                    {{ __('sales_bills.grand_tax') }}</td>
-                                <td colspan="3" id="grand_tax" class="text-right" style="background-color: #f9f9f9;">0.00
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="6" style="background-color: #f9f9f9; font-weight: bold;">
-                                    {{ __('sales_bills.grand_total') }}</td>
-                                <td colspan="3" id="grand_total" class="text-right" style="background-color: #f9f9f9;">
-                                    0.00</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-    
-    
-    
-    
-            {{-- <div class="row options no-print products">
-                <div class="col-lg-3 pull-right">
-                    <label for=""> {{ __('sales_bills.product-code') }} </label>
-                   <select name="product_id" id="product_id" class="selectpicker w-80" data-style="btn-success"
-                        data-live-search="true" title="{{ __('sales_bills.product-code') }}">
-    
+        </div>
+        <!--tax-->
+        <div class="row mt-2">
+            <!----->
+            <div class="col-md-6 pull-right no-print">
+                <label>
+                    {{ __('sales_bills.product-code') }}
+                    <span class="text-danger font-weight-bold">*</span>
+                </label>
+                <div class="d-flex align-items-center justify-content-between">
+                    <select name="product_id" id="product_id" class="selectpicker w-50" data-style="btn-new_color"
+                        data-live-search="true" data-dropup-auto="false" title="{{ __('sales_bills.choose product') }}">
                         @foreach ($all_products as $product)
-                            <option value="{{ $product->id }}" data-tokens="{{ $product->code_universal }}">
-                                {{ $product->product_name }}</option>
+                            <option value="{{ $product->id }}" data-name="{{ strtolower($product->product_name) }}"
+                                data-sectorprice="{{ $product->sector_price }}"
+                                data-wholesaleprice="{{ $product->wholesale_price }}"
+                                data-tokens="{{ $product->code_universal }}"
+                                data-remaining="{{ $product->total_remaining }}"
+                                data-categorytype="{{ $product->category_type }}" data-unitid="{{ $product->unit_id }}">
+                                {{ $product->product_name }}
+                            </option>
                         @endforeach
                     </select>
+                    {{-- <select name="outer_client_id" id="outer_client_id" data-style="btn-new_color"
+                    title="{{ __('sales_bills.client-name') }}" class="selectpicker w-100 me-2" data-live-search="true">
+                    @foreach ($outer_clients as $outer_client)
+                        <option value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
+                    @endforeach
+                </select> --}}
                     <a target="_blank" href="{{ route('client.products.create') }}" role="button"
-                       style="width: 15%;display: inline;" class="btn btn-primary btn-danger open_popup">
-                        <i class="fa fa-plus"></i>
+                        class="btn btn-primary">
+                        <i class="fa fa-plus" aria-hidden="true"> </i> {{ __('sales_bills.add-product') }}
                     </a>
-                    <div class="available text-center" style="color: #000; font-size: 14px; margin-top: 10px;"></div>
-    
                 </div>
-                <!------PRICE------>
-                <div class="col-lg-3 pull-right">
-                    <label for="">{{ __('sales_bills.product-price') }}</label>
-                    <input style="margin-right:5px;margin-left:5px;" type="radio" name="price" id="sector"/>
-                    {{ __('main.retail') }}
-                    <input style="margin-right:5px;margin-left:5px;" type="radio" name="price" id="wholesale"/>
-                    {{ __('main.wholesale') }}
-                    <input type="number" name="product_price" value="0"
-                           @cannot('تعديل السعر في فاتورة البيع') readonly @endcan
-                           id="product_price" class="form-control"/>
-                </div>
-    
-    
-                <!------UNIT------>
-                <div class="col-lg-3 pull-right">
-                    <label class="d-block" for=""> {{ __('main.quantity') }} </label>
-                    <input type="number" name="quantity" id="quantity"
-                           style="width: 50%;"
-                           class="form-control d-inline float-left"/>
-    
-                    <select style="width: 50%;" class="form-control d-inline float-right" name="unit_id" id="unit_id">
-                        <option value="">{{ __('units.unit-name') }}</option>
-                        @foreach ($units as $unit)
-                            <option value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
-                        @endforeach
+            </div>
+            <div class="col-md-6 pull-right no-print">
+                <label for="value_added_tax">{{ __('sales_bills.prices-for-tax') }}
+                    <span class="text-danger font-weight-bold">*</span>
+
+                </label>
+
+                <div class="d-flex align-items-center justify-content-between">
+                    <select required disabled name="value_added_tax" id="value_added_tax" class="selectpicker w-100"
+                        data-style="btn-new_color" data-live-search="true">
+                        <option value="0" selected>
+                            {{ __('sales_bills.not-including-tax') }}</option>
+                        <option value="2">
+                            {{ __('sales_bills.including-tax') }}</option>
+                        <option value="1">
+                            {{ __('sales_bills.exempt-tax') }}</option>
                     </select>
                 </div>
-    
-                <!------TOTAL------>
-                <div class="col-lg-3 pull-right">
-                    <label for=""> {{ __('main.total') }} </label>
-                    <input type="number" name="quantity_price" readonly
-                           id="quantity_price" class="form-control"/>
-                </div>
-            </div> --}}
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group" dir="rtl">
-                        <label for="discount">{{ __('sales_bills.discount-on-the-total-bill') }}</label> <br>
-                        <div class="d-flex">
-                            <select name="discount_type" id="discount_type" class="form-control">
-                                <option value="">اختر نوع الخصم</option>
-                                <option value="pound">خصم قبل الضريبة (مسطح)</option>
-                                <option value="percent">خصم قبل الضريبة (%)</option>
-                                <option value="poundAfterTax">ضمان اعمال (مسطح)</option>
-                                <option value="poundAfterTaxPercent">ضمان اعمال (%)</option>
-                                <option value="afterTax" class="d-none">
-                                    خصم علي اجمالي المبلغ شامل الضريبة
-                                </option>
-                            </select>
-                            <input type="number" value="0" name="discount_value" min="0"
-                                 id="discount_value" class="form-control "
-                                step = "any" />
-                            {{-- <input type="text" name="discount_note" id="discount_note" placeholder="ملاحظات الخصم. . ."
-                                class="form-control mt-5"> --}}
-                        </div>
-                        {{-- <span id="dicountForBill"></span> --}}
-                    </div>
-    
-    
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group" dir="rtl">
-                        <label for="extra">{{ __('main.shipping-expenses') }}</label> <br>
-    
-                        <div class="d-flex">
-                            <select name="extra_type" id="extra_type" class="form-control"
-                            >
-                            <option value="">اختر نوع الشحن</option>
-                            <option value="pound">{{ $extra_settings->currency }}</option>
-                            <option value="percent">%</option>
-                        </select>
-                        <input value="0" type="number" name="extra_value" min='0'
-                             id="extra_value" class="form-control"
-                            step = "any" />
-                        </div>
-                    </div>
-                </div>
-            </div><!--  End Row -->
-            <!-----notes------->
-            <div class="col-sm-12 pull-right no-print">
+            </div>
+        </div>
+        <div class="clearfix no-print"></div>
+
+        <input type="number" id='grand_total_input' name="grand_total" hidden>
+        <input type="number" id='grand_tax_input' name="grand_tax" hidden>
+        <input type="number" id='grand_discount_input' name="total_discount" hidden>
+
+
+        <div class="container">
+            <div class="table-responsive">
+                <table class="table table-bordered mt-2" id="products_table"
+                    style="background-color: #ffffff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); border-radius: 5px;">
+                    <thead>
+                        <tr>
+                            <th
+                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                {{ __('sales_bills.product') }}</th>
+                            <th
+                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                {{ __('sales_bills.price_type') }}</th>
+                            <th
+                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                {{ __('sales_bills.price') }}</th>
+                            <th
+                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                {{ __('sales_bills.quantity') }}</th>
+                            <th
+                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                {{ __('sales_bills.unit') }}</th>
+                            {{-- <th
+                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 5px; font-weight: bold;">
+                                {{ __('sales_bills.discount') }}
+                                <div class="tax_discount"
+                                    style="display: inline-block; margin-left: 10px; vertical-align: middle;">
+                                    <select id="discount_application" class="form-control"
+                                        style="font-size: 12px; height: 30px;" name="products_discount_type">
+                                        <option value="before_tax">{{ __('sales_bills.discount_before_tax') }}</option>
+                                        <option value="after_tax">{{ __('sales_bills.discount_after_tax') }}</option>
+                                    </select>
+                                </div>
+                            </th> --}}
+                            {{-- <th
+                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                {{ __('sales_bills.tax') }}</th> --}}
+                            <th
+                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                {{ __('sales_bills.total') }}</th>
+                            <th
+                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                {{ __('sales_bills.actions') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody style="text-align: center;">
+                        <!-- هنا يتم عرض البيانات -->
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="6" style="background-color: #f9f9f9; font-weight: bold;">
+                                {{ __('sales_bills.grand_tax') }}</td>
+                            <td colspan="3" id="grand_tax" class="text-right" style="background-color: #f9f9f9;">0.00
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" style="background-color: #f9f9f9; font-weight: bold;">
+                                {{ __('sales_bills.grand_total') }}</td>
+                            <td colspan="3" id="grand_total" class="text-right" style="background-color: #f9f9f9;">
+                                0.00</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+
+
+
+        {{-- <div class="row options no-print products">
+            <div class="col-lg-3 pull-right">
+                <label for=""> {{ __('sales_bills.product-code') }} </label>
+               <select name="product_id" id="product_id" class="selectpicker w-80" data-style="btn-success"
+                    data-live-search="true" title="{{ __('sales_bills.product-code') }}">
+
+                    @foreach ($all_products as $product)
+                        <option value="{{ $product->id }}" data-tokens="{{ $product->code_universal }}">
+                            {{ $product->product_name }}</option>
+                    @endforeach
+                </select>
+                <a target="_blank" href="{{ route('client.products.create') }}" role="button"
+                   style="width: 15%;display: inline;" class="btn btn-primary btn-danger open_popup">
+                    <i class="fa fa-plus"></i>
+                </a>
+                <div class="available text-center" style="color: #000; font-size: 14px; margin-top: 10px;"></div>
+
+            </div>
+            <!------PRICE------>
+            <div class="col-lg-3 pull-right">
+                <label for="">{{ __('sales_bills.product-price') }}</label>
+                <input style="margin-right:5px;margin-left:5px;" type="radio" name="price" id="sector"/>
+                {{ __('main.retail') }}
+                <input style="margin-right:5px;margin-left:5px;" type="radio" name="price" id="wholesale"/>
+                {{ __('main.wholesale') }}
+                <input type="number" name="product_price" value="0"
+                       @cannot('تعديل السعر في فاتورة البيع') readonly @endcan
+                       id="product_price" class="form-control"/>
+            </div>
+
+
+            <!------UNIT------>
+            <div class="col-lg-3 pull-right">
+                <label class="d-block" for=""> {{ __('main.quantity') }} </label>
+                <input type="number" name="quantity" id="quantity"
+                       style="width: 50%;"
+                       class="form-control d-inline float-left"/>
+
+                <select style="width: 50%;" class="form-control d-inline float-right" name="unit_id" id="unit_id">
+                    <option value="">{{ __('units.unit-name') }}</option>
+                    @foreach ($units as $unit)
+                        <option value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!------TOTAL------>
+            <div class="col-lg-3 pull-right">
+                <label for=""> {{ __('main.total') }} </label>
+                <input type="number" name="quantity_price" readonly
+                       id="quantity_price" class="form-control"/>
+            </div>
+        </div> --}}
+        <div class="row">
+            <div class="col-md-6 pull-right">
                 <div class="form-group" dir="rtl">
-                    <label for="time">{{ __('main.notes') }}</label>
-                    <textarea name="notes" id="notes" class="summernotes">
-                      </textarea>
-                    <a data-toggle="modal" data-target="#myModal3" class="btn btn-link add_extra_notes d-none"
-                        style="color: blue!important;">
-                        اضف ملاحظات اخرى
-                    </a>
+                    <label for="discount">{{ __('sales_bills.discount-on-the-total-bill') }}</label> <br>
+                    <select name="discount_type" id="discount_type" class="form-control"
+                        style="width: 60%;display: inline;float: right; margin-left:5px;">
+                        <option value="">اختر نوع الخصم</option>
+                        <option value="pound">خصم قبل الضريبة (مسطح)</option>
+                        <option value="percent">خصم قبل الضريبة (%)</option>
+                        <option value="poundAfterTax">ضمان اعمال (مسطح)</option>
+                        <option value="poundAfterTaxPercent">ضمان اعمال (%)</option>
+                        <option value="afterTax" class="d-none">
+                            خصم علي اجمالي المبلغ شامل الضريبة
+                        </option>
+                    </select>
+                    <input type="number" value="0" name="discount_value" min="0"
+                        style="width: 20%;display: inline;float: right;" id="discount_value" class="form-control "
+                        step = "any" />
+                    <input type="text" name="discount_note" id="discount_note" placeholder="ملاحظات الخصم. . ."
+                        class="form-control mt-5" style="width: 80%;">
+                    {{-- <span id="dicountForBill"></span> --}}
+                </div>
+
+
+            </div>
+            <div class="col-md-6 pull-right">
+                <div class="form-group" dir="rtl">
+                    <label for="extra">{{ __('main.shipping-expenses') }}</label> <br>
+
+                    <select name="extra_type" id="extra_type" class="form-control"
+                        style="width:60%;display: inline;float: right;margin-left: 5px">
+                        <option value="">اختر نوع الشحن</option>
+                        <option value="pound">{{ $extra_settings->currency }}</option>
+                        <option value="percent">%</option>
+                    </select>
+                    <input value="0" type="number" name="extra_value" min='0'
+                        style="width: 20%;display: inline;float: right;" id="extra_value" class="form-control"
+                        step = "any" />
                 </div>
             </div>
-            <div class="clearfix no-print"></div>
-    
-            <hr>
+        </div><!--  End Row -->
+        <!-----notes------->
+        <div class="col-sm-12 pull-right no-print">
+            <div class="form-group" dir="rtl">
+                <label for="time">{{ __('main.notes') }}</label>
+                <textarea name="notes" id="notes" class="summernotes">
+                  </textarea>
+                <a data-toggle="modal" data-target="#myModal3" class="btn btn-link add_extra_notes d-none"
+                    style="color: blue!important;">
+                    اضف ملاحظات اخرى
+                </a>
             </div>
-            <div class="company_details printy" style="display: none;">
-                <div class="text-center">
-                    <img class="logo" style="width: 20%;" src="{{ asset($company->company_logo) }}" alt="">
+        </div>
+        <div class="clearfix no-print"></div>
+
+        <hr>
+        </div>
+        <div class="company_details printy" style="display: none;">
+            <div class="text-center">
+                <img class="logo" style="width: 20%;" src="{{ asset($company->company_logo) }}" alt="">
+            </div>
+            <div class="text-center">
+                <div class="col-lg-12 text-center justify-content-center">
+                    <p class="alert alert-info text-center alert-sm"
+                        style="margin: 10px auto; font-size: 17px;line-height: 1.9;" dir="rtl">
+                        {{ $company->company_name }} -- {{ $company->business_field }} <br>
+                        {{ $company->company_owner }} -- {{ $company->phone_number }} <br>
+                    </p>
                 </div>
-                <div class="text-center">
-                    <div class="col-lg-12 text-center justify-content-center">
-                        <p class="alert alert-info text-center alert-sm"
-                            style="margin: 10px auto; font-size: 17px;line-height: 1.9;" dir="rtl">
-                            {{ $company->company_name }} -- {{ $company->business_field }} <br>
-                            {{ $company->company_owner }} -- {{ $company->phone_number }} <br>
-                        </p>
+            </div>
+        </div>
+
+        <div class="col-lg-12 no-print text-center pt-3" style="overflow-x: auto">
+            <div class="d-flex justify-content-center align-items-center flex-nowrap">
+                <!-- Save and Print 1 Button -->
+                <button type="button" role="button" class="btn save_btn1 btn-md btn-info text-white m-1"
+                    isMoswada="0" invoiceType="2" style="height: 40px">
+                    اضافة عرض سعر غير شامل الضريبة
+                </button>
+                <button type="button" role="button" class="btn save_btn2 btn-md btn-success text-white m-1"
+                    isMoswada="0" invoiceType="2" style="height: 40px">
+                    اضافة عرض سعر شامل الضريبة
+                </button>
+
+            </div>
+        </div>
+        <div class="modal fade" dir="rtl" id="myModal3" tabindex="-1" role="dialog"
+            aria-labelledby="myModalLabel3">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header w-100">
+                        <h4 class="modal-title w-100 text-center" id="myModalLabel3">
+                            ملاحظات على الفاتورة
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('save.notes') }}" method="post">
+                            @csrf
+                            @method('POST')
+
+                            {{-- <div class="notes">
+                                <div class="col-lg-6 pull-right">
+                                    <div class="form-group">
+                                        <label class="d-block">
+                                            الملاحظة رقم 1
+                                        </label>
+                                        <input type="text" class="form-control" name="notes[]" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 pull-right">
+                                    <div class="form-group">
+                                        <label class="d-block">
+                                            الملاحظة رقم 2
+                                        </label>
+                                        <input type="text" class="form-control" name="notes[]" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 pull-right">
+                                    <div class="form-group">
+                                        <label class="d-block">
+                                            الملاحظة رقم 3
+                                        </label><input type="text" class="form-control" name="notes[]" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 pull-right">
+                                    <div class="form-group">
+                                        <label class="d-block">
+                                            الملاحظة رقم 4
+                                        </label>
+                                        <input type="text" class="form-control" name="notes[]" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 pull-right">
+                                    <div class="form-group">
+                                        <label class="d-block">
+                                            الملاحظة رقم 5
+                                        </label><input type="text" class="form-control" name="notes[]" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 pull-right">
+                                    <div class="form-group">
+                                        <label class="d-block">
+                                            الملاحظة رقم 6
+                                        </label>
+                                        <input type="text" class="form-control" name="notes[]" />
+                                    </div>
+                                </div>
+                            </div> --}}
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button form="myForm" type="submit" class="btn btn-md btn-success">
+                            <i class="fa fa-save"></i>
+                            حفظ الملاحظات
+                        </button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i>
+                            اغلاق
+                        </button>
                     </div>
                 </div>
             </div>
-    
-            <div class="col-lg-12 no-print text-start pt-3" style="overflow-x: auto">
-                <div class="d-flex text-start align-items-center flex-nowrap">
-                    <!-- Save and Print 1 Button -->
-                    <button type="button" role="button" class="btn btnn save_btn1 btn-md btn-info text-white m-1"
-                        isMoswada="0" invoiceType="2" style="height: 40px">
-                        اضافة عرض سعر غير شامل الضريبة
-                    </button>
-                    <button type="button" role="button" class="btn btnn save_btn2 btn-md btn-success text-white m-1"
-                        isMoswada="0" invoiceType="2" style="height: 40px">
-                        اضافة عرض سعر شامل الضريبة
-                    </button>
-    
-                </div>
-            </div>
-            <div class="modal fade" dir="rtl" id="myModal3" tabindex="-1" role="dialog"
-                aria-labelledby="myModalLabel3">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header w-100">
-                            <h4 class="modal-title w-100 text-center" id="myModalLabel3">
-                                ملاحظات على الفاتورة
-                            </h4>
-                        </div>
-                        <div class="modal-body">
-                            <form action="{{ route('save.notes') }}" method="post">
-                                @csrf
-                                @method('POST')
-    
-                                {{-- <div class="notes">
-                                    <div class="col-lg-6 pull-right">
-                                        <div class="form-group">
-                                            <label class="d-block">
-                                                الملاحظة رقم 1
-                                            </label>
-                                            <input type="text" class="form-control" name="notes[]" />
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 pull-right">
-                                        <div class="form-group">
-                                            <label class="d-block">
-                                                الملاحظة رقم 2
-                                            </label>
-                                            <input type="text" class="form-control" name="notes[]" />
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 pull-right">
-                                        <div class="form-group">
-                                            <label class="d-block">
-                                                الملاحظة رقم 3
-                                            </label><input type="text" class="form-control" name="notes[]" />
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 pull-right">
-                                        <div class="form-group">
-                                            <label class="d-block">
-                                                الملاحظة رقم 4
-                                            </label>
-                                            <input type="text" class="form-control" name="notes[]" />
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 pull-right">
-                                        <div class="form-group">
-                                            <label class="d-block">
-                                                الملاحظة رقم 5
-                                            </label><input type="text" class="form-control" name="notes[]" />
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 pull-right">
-                                        <div class="form-group">
-                                            <label class="d-block">
-                                                الملاحظة رقم 6
-                                            </label>
-                                            <input type="text" class="form-control" name="notes[]" />
-                                        </div>
-                                    </div>
-                                </div> --}}
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button form="myForm" type="submit" class="btn btn-md btn-success">
-                                <i class="fa fa-save"></i>
-                                حفظ الملاحظات
-                            </button>
-                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i>
-                                اغلاق
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
+        </div>
+    </form>
 
 
     <input type="hidden" id="final_total" />

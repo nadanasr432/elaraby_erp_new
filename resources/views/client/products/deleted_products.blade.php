@@ -35,10 +35,10 @@
             <div class="card">
                 <!------HEADER----->
                 <div class="card-header border-bottom border-secondary p-1">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h3 class="pull-right font-weight-bold ml-1 custom-title">
+                    <div class="d-flex justify-content-between align-items-baseline">
+                        <h3 class="pull-right font-weight-bold ml-1">
                             {{__('sidebar.products-deleted')}}
-                            <span class="badge circle" style="background-color: #36c7d6">{{floatval( $products->count()  )}}</span>
+                            <span class="badge badge-success circle">{{floatval( $products->count()  )}}</span>
                         </h3>
                         {{-- <div class="row">
                             <a class="mr-1 btn btn-success btn-sm-new"
@@ -184,7 +184,7 @@
                                             </button>
                                             <div class="dropdown-menu p-0" aria-labelledby="dropdownMenuButton"
                                                 x-placement="bottom-start"
-                                                >
+                                                style="position: absolute; transform: translate3d(0px, 29px, 0px); top: 0px; left: 0px; will-change: transform;">
                                                 @can('قائمة المنتجات المتوفرة (تحكم كامل)')
                                                     <!--DELETE--->
                                                     <button product_id="{{ $product->id }}"

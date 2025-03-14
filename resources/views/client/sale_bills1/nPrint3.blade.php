@@ -512,7 +512,8 @@
                                             {{ $element->discount_value }}{{ $element->discount_type == 'percent' ? ' %' : '' }}
                                         </td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
-                                            {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
+                                           <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                           {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
                                         </td>
                                     </tr>
                                 @endforeach
@@ -563,7 +564,7 @@
                                     <tr
                                         style="font-size: 15px !important; height: 44px !important; text-align: center; {{ $currentColor }}">
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
-                                            {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
+                                           <img src="{{ asset('images/Sr_coin.svg') }}" width="15px"> {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
 
                                         </td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">

@@ -327,6 +327,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::get('pos-settings', [SettingsController::class, 'pos_settings'])->name('pos.settings');
             Route::get('pos-settings-edit/{id?}', [SettingsController::class, 'pos_settings_edit'])->name('pos.settings.edit');
             Route::patch('pos-settings-update', [SettingsController::class, 'pos_settings_update'])->name('pos.settings.update');
+            Route::post('/send-invoice-to-zatca', [SaleBillController1::class, 'sendInvoiceToZATCA'])->name('send.invoice.to.zatca');
 
             // Branches Routes
             Route::resource('branches', BranchController::class)->names([
@@ -357,6 +358,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::post('clients-stores-transfer-post', [StoreController::class, 'transfer_post'])->name('client.stores.transfer.post');
 
             Route::post('get-products-by-store-id', [StoreController::class, 'get_products_by_store_id'])->name('get.products.by.store.id');
+            Route::get('/get-store-products', [ProductController::class, 'getStoreProducts'])->name('get.store.products');
+
 
             // Safes Routes
             Route::resource('safes', SafeController::class)->names([

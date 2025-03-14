@@ -14,12 +14,12 @@
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-header pb-0">
-                    <div class="d-flex justify-content-between text-align-center">
+                    <div class="d-flex justify-content-between">
                         <div class="col-lg-12 margin-tb">
                             {{-- <a class="btn pull-left btn-primary btn-sm" href="{{ route('client.products.create') }}"><i
                                     class="fa fa-plus"></i> اضافة منتج جديد </a>
                             --}}
-                            <h5 class=" alert custom-title">عرض المنتجات التى اوشكت على انتهاء الصلاحية
+                            <h5 class="pull-right alert alert-sm alert-danger">عرض المنتجات التى اوشكت على انتهاء الصلاحية
                             </h5>
                         </div>
                         <br>
@@ -27,16 +27,18 @@
 
                     <form method="GET" action="{{ route('client.products.expires') }}" id="filterForm" class="mt-4">
                         <div class="row">
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-3">
                                 <label for="start_date">Start Date:</label>
                                 <input type="date" id="start_date" name="start_date" class="form-control">
                             </div>
 
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-3">
                                 <label for="end_date">End Date:</label>
                                 <input type="date" id="end_date" name="end_date" class="form-control">
                             </div>
-                            <div class="form-group col-md-4">
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-3">
                                 <label for="expiry_status">Expiry Status:</label>
                                 <select id="expiry_status" name="expiry_status" class="form-control">
                                     <option value="">Select Status</option>
@@ -44,14 +46,11 @@
                                     <option value="soon_expired">Soon Expired</option>
                                 </select>
                             </div>
-                        </div>
-                        <div class="row">
-                            
-                            <div class="form-group col-md-6" style="margin-top: 25px">
-                                <button type="submit" class=" btn text-white px-4 py-1 mb-1" style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
+                            <div class="form-group col-md-3" style="margin-top: 25px">
+                                <button type="submit" class=" btn btn-primary">
                                     <i class="fas fa-filter"></i> Filter
                                 </button>
-                                 <button type="button" class=" btn text-white px-4 py-1 mb-1" style="background-color: #36c7d6" onclick="resetForm()">
+                                 <button type="button" class=" btn btn-secondary" onclick="resetForm()">
                                 <i class="fas fa-undo"></i> Reset
                             </button>
                             </div>
@@ -97,10 +96,10 @@
                                                 data-placement="top"><i class="fa fa-eye"></i></a>
                                             @can('قائمة المنتجات المتوفرة (تحكم كامل)')
                                                 <a href="{{ route('client.products.edit', $product->id) }}"
-                                                    class="btn btnn btn-sm btn-info" data-toggle="tooltip" title="تعديل"
+                                                    class="btn btn-sm btn-info" data-toggle="tooltip" title="تعديل"
                                                     data-placement="top"><i class="fa fa-edit"></i></a>
 
-                                                <a class="modal-effect btn btnn btn-sm btn-danger delete_product"
+                                                <a class="modal-effect btn btn-sm btn-danger delete_product"
                                                     product_id="{{ $product->id }}"
                                                     product_name="{{ $product->product_name }}" data-toggle="modal"
                                                     href="#modaldemo9" title="delete"><i class="fa fa-trash"></i></a>
@@ -132,8 +131,8 @@
                             <input class="form-control" name="productname" id="productname" type="text" readonly>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btnn btn-secondary" data-dismiss="modal">الغاء</button>
-                            <button type="submit" class="btn btnn btn-danger">حذف</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
+                            <button type="submit" class="btn btn-danger">حذف</button>
                         </div>
                     </form>
                 </div>

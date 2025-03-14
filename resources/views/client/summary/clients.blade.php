@@ -28,51 +28,43 @@
             <div class="card mg-b-20">
                 <div class="card-body">
                     <div class="col-12 no-print">
-                        <h5  class=" alert custom-title">
+                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success">
                             كشف حساب العميل
                         </h5>
                     </div>
                     <div class="clearfix no-print"></div>
                     <hr class="no-print">
-                    <form class="parsley-style-1 no-print" id="selectForm2" name="selectForm2"
-                          action="{{route('clients.summary.post')}}" enctype="multipart/form-data"
-                          method="get">
+                   <form class="parsley-style-1 no-print" id="selectForm2" name="selectForm2"
+                        action="{{ route('clients.summary.post') }}" enctype="multipart/form-data" method="get"
+                        onsubmit="return validateDates()">
                         <div class="row mb-3">
                             <div class="col-md-4">
                                 <label class="d-block"> اختر العميل <span class="text-danger">*</span></label>
-                                <select required name="outer_client_id" id="outer_client_id" class="selectpicker py-1 form-control"
-                                 data-live-search="true" title="اكتب او اختار اسم العميل">
+                                <select required name="outer_client_id" id="outer_client_id" class="selectpicker"
+                                    data-style="btn-danger" data-live-search="true" title="اكتب او اختار اسم العميل">
                                     @foreach ($outer_clients as $outer_client)
                                         <option @if (isset($outer_client_k) && $outer_client_k->id == $outer_client->id) selected @endif
                                             value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
                                     @endforeach
                                 </select>
-                                
-                                
                             </div>
                             <div class="col-md-4">
                                 <label class="d-block"> من تاريخ <span class="text-danger">*</span></label>
-                                <input type="date"
-                                       @if(isset($from_date) && !empty($from_date))
-                                       value="{{$from_date}}"
-                                       @endif
-                                       class="form-control" name="from_date"/>
+                                <input type="date" @if (isset($from_date) && !empty($from_date)) value="{{ $from_date }}" @endif
+                                    class="form-control" name="from_date" />
                             </div>
                             <div class="col-md-4">
                                 <label class="d-block"> الى تاريخ <span class="text-danger">*</span></label>
-                                <input
-                                    @if(isset($to_date) && !empty($to_date))
-                                    value="{{$to_date}}"
-                                    @endif
-                                    type="date" class="form-control" name="to_date"/>
+                                <input @if (isset($to_date) && !empty($to_date)) value="{{ $to_date }}" @endif type="date"
+                                    class="form-control" name="to_date" />
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 ">
-                            <button class="btn btnn btn-warning px-3 py-1" name="submit" value="all" type="submit">
+                        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                            <button class="btn btn-success pd-x-20" name="submit" value="all" type="submit">
                                 <i class="fa fa-check"></i>
                                 عرض كشف الحساب
                             </button>
-                            <button class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" name="submit" value="today" type="submit">
+                            <button class="btn btn-info pd-x-20" name="submit" value="today" type="submit">
                                 <i class="fa fa-check"></i>
                                 كشف حساب اليوم
                             </button>
@@ -83,3 +75,27 @@
         </div>
     </div>
 @endsection
+<script>
+    function validateDates() {
+        const fromDate = document.querySelector('[name="from_date"]').value;
+        const toDate = document.querySelector('[name="to_date"]').value;
+
+        if (fromDate && !toDate) {
+            alert('يرجى اختيار المده من تاريخ - الى تاريخ .');
+            return false;
+
+        }
+
+        if (toDate && !fromDate) {
+            alert('يرجى اختيار المده من تاريخ - الى تاريخ .');
+            return false;
+        }
+          if (toDate < fromDate) {
+              alert('يجب ان تكون الفتره الثانيه اكبر من او تساوي الفتره الاولي ');
+            return false;
+        }
+
+        return true;
+    }
+</script>
+

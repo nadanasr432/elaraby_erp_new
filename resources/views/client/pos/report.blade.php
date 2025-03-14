@@ -32,47 +32,46 @@
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
                         <div class="col-lg-12 margin-tb">
-                            <div class="d-flex flex-wrap justify-content-between align-items-center">
-                                <h5 class="alert custom-title m-0 fw-bold">
-                                    {{ __('sidebar.point-of-sale-reports') }}
-                                </h5>
-                                <div class="d-flex flex-wrap">
-                                    <a class="btn btnn text-white ml-1 mb-1 py-1"style=" background-color: #222751" target="_blank"
-                                       href="{{ route('client.pos.sales_products_today') }}">
-                                        <i class="fa fa-plus"></i> تقرير المنتجات المباعة اليوم
-                                    </a>
-                        
-                                    <a class="btn btnn  ml-1 mb-1 py-1" id="mainPrintBtn" style="display: none;"
-                                       href="{{ route('pos.sales.report.print') }}">
-                                        <i class="fa fa-print"></i> {{ __('pos.print-invoice') }}
-                                    </a>
-                        
-                                    <a class="btn btnn ml-1 mb-1 py-1 text-white" id="todayPrintBtn"style="background-color: #36c7d6;"
-                                       href="{{ route('pos.sales.report.print-today') }}">
-                                        <i class="fa fa-print"></i> {{ __('pos.print-invoice') }}
-                                    </a>
-                        
-                                    <a class="btn btnn  ml-1 mb-1 text-dark py-1"style="background-color:#cfcfcf82;" id="todayPrintBtn"
-                                       href="{{ route('pos.sales.report.button.print-today') }}">
-                                        <i class="fa fa-print"></i> {{ __('pos.print-button') }}
-                                    </a>
-                        
-                                    <button id="getPosReportsToday" class="btn btnn ml-1 mb-1  py-1 text-white"style="background-color: #36c7d6">
-                                        عرض كل التقارير
-                                    </button>
-                        
-                                    <button id="getPosReports" style="display: none;" class="btn btnn btn btnn-dark btn btnn-sm ml-1 mb-1  py-1">
-                                        عرض تقرير اليوم
-                                    </button>
-                        
-                                    <button id="getPosReportsWithDates" class="btn btnn ml-1 mb-1 text-white  py-1" style=" background-color: #222751">
-                                        عرض بالتاريخ
-                                    </button>
-                                </div>
-                            </div>
+                            <a class="btn pull-left btn-primary btn-sm" target="_blank"
+                                href="{{ route('client.pos.sales_products_today') }}">
+                                <i class="fa fa-plus"></i>
+                                تقرير المنتجات المباعة اليوم
+                            </a>
+
+                            <a class="btn pull-left btn-info btn-sm mr-1" id="mainPrintBtn" style="display: none"
+                                href="{{ route('pos.sales.report.print') }}">
+                                <i class="fa fa-print"></i>
+                                {{ __('pos.print-invoice') }}
+                            </a>
+
+                            <a class="btn pull-left btn-info btn-sm mr-1" id="todayPrintBtn"
+                                href="{{ route('pos.sales.report.print-today') }}">
+                                <i class="fa fa-print"></i>
+                                {{ __('pos.print-invoice') }}
+                            </a>
+                            <a class="btn pull-left btn-info btn-sm mr-1" id="todayPrintBtn"
+                                href="{{ route('pos.sales.report.button.print-today') }}">
+                                <i class="fa fa-print"></i>
+                                {{ __('pos.print-button') }}
+                            </a>
+
+                            <button id="getPosReportsToday" class="btn pull-left btn-dark btn-sm mr-1">
+                                عرض كل التقارير
+                            </button>
+
+                            <button id="getPosReports" style="display: none;" class="btn pull-left btn-dark btn-sm mr-1">
+                                عرض تقرير اليوم
+                            </button>
+
+                            <button id="getPosReportsWithDates" class="btn pull-left btn-warning btn-sm mr-1">
+                                عرض بالتاريخ
+                            </button>
+
+                            <h5 class="pull-right alert alert-sm alert-success">
+                                {{ __('sidebar.point-of-sale-reports') }}
+                            </h5>
+
                         </div>
-                        
-                        
                         <br>
                     </div>
                 </div>
@@ -90,7 +89,7 @@
                         <input type="date" id="dateTo" class="form-control" placeholder="التاريخ الي">
                     </div>
                     <div class="col-1 form-groub">
-                        <button id="btnSearchPosReports" class="btn btnn btn btnn-success btn btnn-sm">
+                        <button id="btnSearchPosReports" class="btn btn-success btn-sm">
                             <svg style="width: 20px;fill:white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                 <path
                                     d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z" />
@@ -250,36 +249,36 @@
 
                         </table>
                     </div>
-                    <div class='row mb-3 mt-3 d-flex flex-wrap justify-content-between'>
-                        <div class='badge mb-1 p-1'
-                            style="margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;color: #000;">
+                    <div class='row mb-3 mt-3 text-center'>
+                        <div class='badge badge-dark mb-1 p-1'
+                            style="margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;">
                             مبيعات الكاش :
                             <span>{{ round($totalCash, 2) }}</span>
                         </div>
 
-                        <div class='badge mb-1 p-1'
-                            style="margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold; color: #000;">
+                        <div class='badge badge-warning mb-1 p-1'
+                            style="margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;">
                             مبيعات الشبكة :
                             <span>{{ round($totalBank, 2) }}</span>
                         </div>
 
                         <!--اجمالى الضريبة للفواتير-->
-                        <div class='badge  mb-1 p-1'
-                            style='margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold; color: black'>
+                        <div class='badge badge-danger mb-1 p-1'
+                            style='margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;'>
                             {{ __('pos.total-tax-for-all-invoices') }} :
                             <span>{{ round($sum3, 2) }}</span>
                         </div>
 
                         <!--المبلغ الاجمالي المدفوع--->
-                        <div class='badge  mb-1 p-1'
-                            style='margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold; color: #000'>
+                        <div class='badge badge-primary mb-1 p-1'
+                            style='margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;'>
                             {{ __('main.paid-amount') }} :
                             <span>{{ round($sum2, 2) }}</span>
                         </div>
 
                         <!--اجمالى الفواتير شامل الضريبة-->
-                        <div class='badge  mb-1 p-1'
-                            style='margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold; color: #000'>
+                        <div class='badge badge-success mb-1 p-1'
+                            style='margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;'>
                             {{ __('pos.total-invoices-including-tax') }} :
                             <span>{{ round($sum1, 2) }}</span>
                         </div>

@@ -25,19 +25,15 @@
                 <!-- *****************************Header********************************** -->
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
-                        <div class="col-lg-12 margin-tb d-flex flex-wrap justify-content-between align-items-center">
-                            <h5 class=" alert custom-title">
-                                {{ __('sidebar.point-of-sale-reports') }}
-                            </h5>
-                            <div>
-                                <a class="btn pull-left btn-info btn-sm"
+                        <div class="col-lg-12 margin-tb">
+                            <a class="btn pull-left btn-primary btn-sm"
                                target="_blank"
                                href="{{ route('client.pos.sales_products_today') }}">
                                 <i class="fa fa-plus"></i>
                                 تقرير المنتجات المباعة اليوم
                             </a>
 
-                            <a class="btn pull-left btn-warning btn-sm mr-1" id="printProductSales"
+                            <a class="btn pull-left btn-info btn-sm mr-1" id="printProductSales"
                                href="{{ route('pos.printProductSales') }}">
                                 <i class="fa fa-print"></i>
                                 {{ __('pos.print-invoice') }}
@@ -50,7 +46,7 @@
                             </a>
 
                             <button id="getPosReportsToday"
-                                    class="btn pull-left btn-info btn-sm mr-1">
+                                    class="btn pull-left btn-dark btn-sm mr-1">
                                 عرض تقرير اليوم
                             </button>
 
@@ -64,8 +60,9 @@
                                 عرض بالتاريخ
                             </button>
 
-                            </div>
-                            
+                            <h5 class="pull-right alert alert-sm alert-success">
+                                {{ __('sidebar.point-of-sale-reports') }}
+                            </h5>
 
                         </div>
                         <br>
@@ -116,7 +113,7 @@
                             <tbody>
                             @empty($productsSoldToday)
                                 <tr>
-                                    <th class="text-center" colspan="5" style="text-align: center;background: #F4F5FA">
+                                    <th class="text-center" colspan="5" style="text-align: center;background: #f69a9a">
                                         لم يتم بيع اي منتج اليوم حتي الان!
                                     </th>
                                 </tr>
@@ -140,19 +137,23 @@
                     </div>
 
 
-                    <div class="d-flex gap-2 align-items-start mb-3 mt-3">
-                        <div class="badge p-1" style="background-color: #002752 !important;">
-                            الاجمالي قبل الضريبة : {{ round($totalPrice - $totalTax, 2) }}
+                    <div class="row mb-3 mt-3 text-center justify-content-center">
+                        <div class="badge badge-danger mb-1 p-1"
+                             style="margin-right: 5px;width: fit-content;font-size: 14px !important;font-weight: bold;">
+                            الاجمالي قبل الضريبة :
+                            {{round($totalPrice - $totalTax,2)}}
                         </div>
-                        <div class="badge badge-primary p-1"style="background-color:#1E9FF2 !important;" >
-                            الاجمالي شامل الضريبة : {{ round($totalPrice, 2) }}
+                        <div class="badge badge-primary mb-1 p-1"
+                             style="margin-right: 5px;width: fit-content;font-size: 14px !important;font-weight: bold;">
+                            الاجمالي شامل الضريبة :
+                            {{round($totalPrice,2)}}
                         </div>
-                        <div class="badge badge-success p-1">
-                            اجمالى الضريبة : {{ round($totalTax, 2) }}
+                        <div class="badge badge-success mb-1 p-1"
+                             style="margin-right: 5px;width: fit-content;font-size: 14px !important;font-weight: bold;">
+                            اجمالى الضريبة :
+                            {{round($totalTax,2)}}
                         </div>
                     </div>
-                    
-                    
                 </div>
                 <!-- ********************************************************************* -->
 
