@@ -25,11 +25,10 @@
             <div class="card mg-b-20">
                 <div class="card-body">
                     <div class="col-12">
-                        <h5  class=" alert custom-title">
-                            اضافة مورد جديد </h5>
-                        <a class="btn btnn text-white px-3 py-1" style="background-color: ;" href="{{ route('client.suppliers.index') }}">
+                        <a class="btn btn-primary btn-sm pull-left" href="{{ route('client.suppliers.index') }}">
                             {{ __('main.back') }}</a>
-                        
+                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success">
+                            اضافة مورد جديد </h5>
                     </div>
                     <div class="clearfix"></div>
                     <br>

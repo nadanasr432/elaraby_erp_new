@@ -544,89 +544,79 @@
             <?php
             if ($sale_bill->company_id == 20) {
                 echo "<p style='text-align: justify; direction: rtl; font-size: 12px; padding: 11px; background: #f3f3f3; margin: 2px 10px; border-radius: 6px; border: 1px solid #2d2d2d10;'>
-                                                                                                                                                                            <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
-                                                                                                                                                                            شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
-                                                                                                                                                                            (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
-                                                                                                                                                                        </p>";
+                                                                                                                                        <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
+                                                                                                                                        شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
+                                                                                                                                        (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
+                                                                                                                                    </p>";
             }
             ?>
-            @if (app()->getLocale() == 'en')
-                <div class="row p-4 d-flex justify-content-end">
-                    <div class="products-details p-2 col-6">
-                        <table
-                            style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid; box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                            @if (!empty($discount) && $discount > 0)
-                                <tr
-                                    style="border-bottom:1px solid #2d2d2d30; font-weight: bold; font-size: 15px !important; height: 44px !important; text-align: center; background: #f2f2f2">
-                                    <td style="text-align: left; padding-left: 14px;">@lang('sales_bills.Discount')</td>
-                                    <td dir="rtl">
-                                        ({{ $sale_bill->total_discount }}) <img
-                                            src="{{ asset('images/Sr_coin.svg') }}" width="15px">
-                                    </td>
-                                </tr>
-                            @endif
-                            <tr
-                                style="font-size: 15px !important; background: #666EE8; color: white; height: 44px !important; text-align: center;">
-                                <td style="text-align: left; padding-left: 14px;">@lang('sales_bills.total price')</td>
-                                <td>{{ $sumWithOutTax }} <img src="{{ asset('images/Sr_coin.svg') }}"
-                                        width="15px"></td>
-                            </tr>
-                            @if (!empty($ifThereIsDiscountNote))
-                                <tr
-                                    style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;background: #f2f2f2">
-                                    <td style="width: 50% !important;">{{ $ifThereIsDiscountNote }}</td>
-                                    <td style="text-align: right;padding-right: 14px;">:@lang('sales_bills.Discount note') </td>
-                                </tr>
-                            @endif
-                        </table>
-                    </div>
-                    <div class="products-details p-2 col-6">
-                        <div class="mx-auto text-left p-2" dir="rtl">
-                            {{ $company->invoice_note }}
-                            <br />
-                        </div>
-                    </div>
-                    <hr />
-                </div>
-            @else
-                <div class="row p-4">
-                    <div class="products-details p-2 col-6">
-                        <table
-                            style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid; box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                            @if (!empty($discount) && $discount > 0)
-                                <tr
-                                    style="border-bottom:1px solid #2d2d2d30; font-weight: bold; font-size: 15px !important; height: 44px !important; text-align: center; background: #f2f2f2">
-                                    <td dir="rtl">
-                                        ({{ $sale_bill->total_discount }}) <img
-                                            src="{{ asset('images/Sr_coin.svg') }}" width="15px">
-                                    </td>
-                                    <td style="text-align: right; padding-right: 14px;">@lang('sales_bills.Discount')</td>
-                                </tr>
-                            @endif
-                            <tr
-                                style="font-size: 15px !important; background: #666EE8; color: white; height: 44px !important; text-align: center;">
-                                <td>{{ $sumWithOutTax }} <img src="{{ asset('images/Sr_coin.svg') }}"
-                                        width="15px"></td>
-                                <td style="text-align: right; padding-right: 14px;">@lang('sales_bills.total price')</td>
-                            </tr>
-                            @if (!empty($ifThereIsDiscountNote))
-                                <tr
-                                    style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;background: #f2f2f2">
-                                    <td style="width: 50% !important;">{{ $ifThereIsDiscountNote }}</td>
-                                    <td style="text-align: right;padding-right: 14px;">:@lang('sales_bills.Discount note') </td>
-                                </tr>
-                            @endif
-                        </table>
-                    </div>
-                    <div class="products-details p-2 col-6">
-                        <div class="mx-auto text-right p-2" dir="rtl">
-                            {{ $company->invoice_note }}
-                            <br />
-                        </div>
-                    </div>
-                    <hr />
-                </div>
-            @endif
+          @if (app()->getLocale() == 'en')
+    <div class="row p-4 d-flex justify-content-end">
+        <div class="products-details p-2 col-6">
+            <table style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid; box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+                @if (!empty($discount) && $discount > 0)
+                    <tr style="border-bottom:1px solid #2d2d2d30; font-weight: bold; font-size: 15px !important; height: 44px !important; text-align: center; background: #f2f2f2">
+                        <td style="text-align: left; padding-left: 14px;">@lang('sales_bills.Discount')</td>
+                        <td dir="rtl">
+                            ({{ $sale_bill->total_discount }}) <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                        </td>
+                    </tr>
+                @endif
+                <tr style="font-size: 15px !important; background: #666EE8; color: white; height: 44px !important; text-align: center;">
+                    <td style="text-align: left; padding-left: 14px;">@lang('sales_bills.total price')</td>
+                    <td>{{ $sumWithOutTax }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px"></td>
+                </tr>
+                  @if (!empty($ifThereIsDiscountNote)) 
+                    <tr
+                        style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;background: #f2f2f2">
+                        <td style="width: 50% !important;">{{ $ifThereIsDiscountNote }}</td>
+                        <td style="text-align: right;padding-right: 14px;">:@lang('sales_bills.Discount note') </td>
+                    </tr>
+                   @endif
+            </table>
+        </div>
+        <div class="products-details p-2 col-6">
+            <div class="mx-auto text-left p-2" dir="rtl">
+                {{ $company->invoice_note }}
+                <br />
+            </div>
+        </div>
+        <hr />
+    </div>
+@else
+    <div class="row p-4">
+        <div class="products-details p-2 col-6">
+            <table style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid; box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+                @if (!empty($discount) && $discount > 0)
+                    <tr style="border-bottom:1px solid #2d2d2d30; font-weight: bold; font-size: 15px !important; height: 44px !important; text-align: center; background: #f2f2f2">
+                        <td dir="rtl">
+                            ({{ $sale_bill->total_discount }}) <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                        </td>
+                        <td style="text-align: right; padding-right: 14px;">@lang('sales_bills.Discount')</td>
+                    </tr>
+                @endif
+                <tr style="font-size: 15px !important; background: #666EE8; color: white; height: 44px !important; text-align: center;">
+                    <td>{{ $sumWithOutTax }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px"></td>
+                    <td style="text-align: right; padding-right: 14px;">@lang('sales_bills.total price')</td>
+                </tr>
+                 @if (!empty($ifThereIsDiscountNote)) 
+                    <tr
+                        style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;background: #f2f2f2">
+                        <td style="width: 50% !important;">{{ $ifThereIsDiscountNote }}</td>
+                        <td style="text-align: right;padding-right: 14px;">:@lang('sales_bills.Discount note') </td>
+                    </tr>
+                   @endif
+            </table>
+        </div>
+        <div class="products-details p-2 col-6">
+            <div class="mx-auto text-right p-2" dir="rtl">
+                {{ $company->invoice_note }}
+                <br />
+            </div>
+        </div>
+        <hr />
+    </div>
+@endif
 
         </div>
     </div>

@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use App\Models\Store;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Store;
 
 class SaleBill extends Model
 {
@@ -33,10 +33,6 @@ class SaleBill extends Model
         'value_added_tax',
         'total_tax',
     ];
-    public function store()
-    {
-        return $this->belongsTo(Store::class);
-    }
     // protected static function boot()
     // {
     //     parent::boot();
@@ -53,6 +49,11 @@ class SaleBill extends Model
 
     //     return $lastBill ? $lastBill->sale_bill_number + 1 : 1;
     // }
+    public function store()
+    {
+        return $this->belongsTo(Store::class);
+    }
+
     public function elements()
     {
         return $this->hasMany('\App\Models\SaleBillElement', 'sale_bill_id', 'id');

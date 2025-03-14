@@ -103,6 +103,7 @@ class ProductController extends Controller
         ->with('success', 'تم استرجاع المنتج بنجاح');
     }
 
+
     public function createservice()
     {
         $company_id = Auth::user()->company_id;
@@ -306,12 +307,11 @@ class ProductController extends Controller
 
     public function destroy(Request $request)
     {
-        $product = Product::findOrFail($request->productid);
-        $product->delete(); // Now performs a soft delete
+        $product = Product::FindOrFail($request->productid);
+        $product->delete();
         return redirect()->route('client.products.index')
-        ->with('success', 'تم حذف المنتج بنجاح');
+            ->with('success', 'تم حذف المنتج بنجاح');
     }
-
     public function print()
     {
         $company_id = Auth::user()->company_id;
@@ -414,6 +414,41 @@ class ProductController extends Controller
         $product = Product::FindOrFail($request->product_id);
         return view('client.products.barcode', compact('product', 'count', 'exp_date', 'start_date'));
     }
+   public function getStoreProducts(Request $request)
+    {
+        $storeId = $request->store_id;
+    
+        if (!$storeId) {
+            return response()->json(['error' => 'Store ID is required'], 400);
+        }
+    
+        $company_id = Auth::user()->company_id;
+        $company = Company::findOrFail($company_id);
+        $stores = $company->stores; // Now, this is defined before using it
+        $flatStores = $stores->pluck('id')->toArray();
+    
+    $products = Product::where('company_id', $company_id)
+    ->where(function ($query) use ($flatStores) {
+        $query->whereIn('store_id', $flatStores)
+              ->where(function ($q) {
+                  $q->where('first_balance', '>', 0)
+                    ->orWhereNull('first_balance');
+              });
+    })
+    ->orWhere(function ($query) use ($company_id) {
+        $query->where('company_id', $company_id)
+              ->whereHas('category', function ($q) {
+                  $q->where('category_type', 'خدمية');
+              });
+    })
+    ->get();
+
+    
+    
+        return response()->json($products);
+    }
+     
+
 
 
 

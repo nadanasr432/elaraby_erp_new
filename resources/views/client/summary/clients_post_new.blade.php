@@ -134,7 +134,7 @@ $currency = $extra_settings->currency;
             <tr>
                 <div class="row mt-1 mb-1 no-print ">
                     <div class="col-lg-12 text-center">
-                        <button onclick="window.print()" type="button" class="btn btnn btn-md btn-info">
+                        <button onclick="window.print()" type="button" class="btn btn-md btn-info">
                             <i class="fa fa-print"></i>
                             طباعة تقرير كشف الحساب
                         </button>
@@ -178,7 +178,7 @@ $currency = $extra_settings->currency;
 
                             @endif
                         @endif
-                        <a class="btn btnn btn-warning btn-md" href="/client/clients-summary-get">
+                        <a class="btn btn-warning btn-md" href="/client/clients-summary-get">
                             العودة
                         </a>
                     </div>

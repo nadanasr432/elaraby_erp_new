@@ -357,6 +357,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::post('clients-stores-transfer-post', [StoreController::class, 'transfer_post'])->name('client.stores.transfer.post');
 
             Route::post('get-products-by-store-id', [StoreController::class, 'get_products_by_store_id'])->name('get.products.by.store.id');
+            Route::get('/get-store-products', [ProductController::class, 'getStoreProducts'])->name('get.store.products');
+
 
             // Safes Routes
             Route::resource('safes', SafeController::class)->names([

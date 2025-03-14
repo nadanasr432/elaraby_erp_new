@@ -13,7 +13,7 @@
     }
 
     .bootstrap-select {
-        width: 100% !important;
+        width: 80% !important;
     }
 
     .bill_details {

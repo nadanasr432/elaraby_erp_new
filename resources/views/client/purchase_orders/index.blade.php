@@ -1,9 +1,5 @@
 @extends('client.layouts.app-main')
 <style>
-    .content-body {
-        background-color: white;
-    }
-
     .bootstrap-select {
         width: 75% !important;
         height: 40px !important;
@@ -17,12 +13,6 @@
         padding: 5px !important;
         height: 30px !important;
     }
-
-    .dropdown-toggle::after {
-
-        position: absolute !important;
-
-    }
 </style>
 @section('content')
     @if (session('success'))
@@ -32,121 +22,112 @@
         </div>
     @endif
 
-    <h4 class="alert alert-sm custom-title text-end no-print"> اوامر الشراء السابقة </h4>
-    <div class="col-lg-4 pull-right  no-print">
+    <h4 class="alert alert-sm alert-dark text-center no-print"> اوامر الشراء السابقة </h4>
+    <div class="col-lg-3 pull-right  no-print">
         <form action="{{ route('client.purchase_orders.filter.key') }}" method="POST">
             @csrf
             @method('POST')
             <div class="form-group">
                 <label style="display:block;" for="bill_id">بحث برقم امر الشراء</label>
-                <div class="d-flex justify-items-center">
-                    <select required class="selectpicker form-control" data-live-search="true" title="اكتب او اختر الرقم"
-                        data-style="btn-third" name="purchase_order_id" id="purchase_order_id">
-                        @foreach ($purchase_orders as $purchase_order)
-                            <option class="d-flex align-items-center" title="{{ $purchase_order->purchase_order_number }}"
-                                @if (isset($purchase_order_k) && $purchase_order->id == $purchase_order_k->id) selected @endif value="{{ $purchase_order->id }}">
-                                {{ $purchase_order->purchase_order_number }}</option>
-                        @endforeach
-                    </select>
-                    <button type="submit" class="btn btnn btn-md btn-warning" id="by_purchase_order_id"><i
-                            class="fa fa-search"></i></button>
-                </div>
+                <select required class="selectpicker" data-live-search="true" title="اكتب او اختر الرقم"
+                    data-style="btn-danger" name="purchase_order_id" id="purchase_order_id">
+                    @foreach ($purchase_orders as $purchase_order)
+                        <option title="{{ $purchase_order->purchase_order_number }}"
+                            @if (isset($purchase_order_k) && $purchase_order->id == $purchase_order_k->id) selected @endif value="{{ $purchase_order->id }}">
+                            {{ $purchase_order->purchase_order_number }}</option>
+                    @endforeach
+                </select>
+                <button type="submit" class="btn btn-md btn-danger"
+                    style="display: inline !important;width: 20% !important; float: left !important;"
+                    id="by_purchase_order_id"><i class="fa fa-search"></i></button>
             </div>
         </form>
     </div>
 
-    <div class="col-lg-4 pull-right  no-print">
+    <div class="col-lg-3 pull-right  no-print">
         <form action="{{ route('client.purchase_orders.filter.supplier') }}" method="POST">
             @csrf
             @method('POST')
             <div class="form-group">
                 <label style="display:block;" for="supplier_id">بحث باسم المورد</label>
-                <div class="d-flex justify-items-center">
-                    <select required class="selectpicker form-control" data-live-search="true" title="اكتب او اختر الاسم"
-                        data-style="btn-third" name="supplier_id" id="supplier_id">
-                        @foreach ($suppliers as $supplier)
-                            <option title="{{ $supplier->supplier_name }}" @if (isset($supplier_k) && $supplier->id == $supplier_k->id) selected @endif
-                                value="{{ $supplier->id }}">{{ $supplier->supplier_name }}</option>
-                        @endforeach
-                    </select>
-                    <button type="submit" class="btn btnn btn-md btn-warning" id="by_supplier_id"><i
-                            class="fa fa-search"></i></button>
-                </div>
+                <select required class="selectpicker" data-live-search="true" title="اكتب او اختر الاسم"
+                    data-style="btn-info" name="supplier_id" id="supplier_id">
+                    @foreach ($suppliers as $supplier)
+                        <option title="{{ $supplier->supplier_name }}" @if (isset($supplier_k) && $supplier->id == $supplier_k->id) selected @endif
+                            value="{{ $supplier->id }}">{{ $supplier->supplier_name }}</option>
+                    @endforeach
+                </select>
+                <button type="submit" class="btn btn-md btn-info"
+                    style="display: inline !important;width: 20% !important; float: left !important;" id="by_supplier_id"><i
+                        class="fa fa-search"></i></button>
             </div>
         </form>
     </div>
-    <div class="col-lg-4 pull-right  no-print">
+    <div class="col-lg-3 pull-right  no-print">
         <form action="{{ route('client.purchase_orders.filter.code') }}" method="POST">
             @csrf
             @method('POST')
             <div class="form-group">
                 <label style="display:block;" for="code_universal">بحث بكود المنتج</label>
-                <div class="d-flex justify-items-center">
-                    <select required class="selectpicker form-control" data-live-search="true" title="اكتب او اختر الكود"
-                        data-style="btn-third" name="code_universal" id="code_universal">
-                        @foreach ($products as $product)
-                            <option title="{{ $product->code_universal }}"
-                                @if (isset($product_k) && $product->id == $product_k->id) selected @endif value="{{ $product->id }}">
-                                {{ $product->code_universal }}</option>
-                        @endforeach
-                    </select>
-                    <button type="submit" class="btn btnn btn-md btn-warning" id="by_code_universal"><i
-                            class="fa fa-search"></i></button>
-                </div>
+                <select required class="selectpicker" data-live-search="true" title="اكتب او اختر الكود"
+                    data-style="btn-success" name="code_universal" id="code_universal">
+                    @foreach ($products as $product)
+                        <option title="{{ $product->code_universal }}" @if (isset($product_k) && $product->id == $product_k->id) selected @endif
+                            value="{{ $product->id }}">{{ $product->code_universal }}</option>
+                    @endforeach
+                </select>
+                <button type="submit" class="btn btn-md btn-success"
+                    style="display: inline !important;width: 20% !important; float: left !important;"
+                    id="by_code_universal"><i class="fa fa-search"></i></button>
             </div>
         </form>
     </div>
 
-    <div class="col-lg-4 pull-right  no-print">
+    <div class="col-lg-3 pull-right  no-print">
         <form action="{{ route('client.purchase_orders.filter.product') }}" method="POST">
             @csrf
             @method('POST')
             <div class="form-group">
                 <label style="display:block;" for="product_name">بحث باسم المنتج</label>
-                <div class="d-flex justify-items-center">
-
-                    <select required class="selectpicker form-control" data-live-search="true" title="اكتب او اختر الاسم"
-                        data-style="btn-third" name="product_name" id="product_name">
-                        @foreach ($products as $product)
-                            <option title="{{ $product->product_name }}" @if (isset($product_k) && $product->id == $product_k->id) selected @endif
-                                value="{{ $product->id }}">{{ $product->product_name }}</option>
-                        @endforeach
-                    </select>
-                    <button type="submit" class="btn btnn btn-md btn-warning" id="by_product_name"><i
-                            class="fa fa-search"></i></button>
-                </div>
+                <select required class="selectpicker" data-live-search="true" title="اكتب او اختر الاسم"
+                    data-style="btn-warning" name="product_name" id="product_name">
+                    @foreach ($products as $product)
+                        <option title="{{ $product->product_name }}" @if (isset($product_k) && $product->id == $product_k->id) selected @endif
+                            value="{{ $product->id }}">{{ $product->product_name }}</option>
+                    @endforeach
+                </select>
+                <button type="submit" class="btn btn-md btn-warning"
+                    style="display: inline !important;width: 20% !important; float: left !important;"
+                    id="by_product_name"><i class="fa fa-search"></i></button>
             </div>
         </form>
     </div>
-    <div class="col-lg-4 pull-right no-print">
+    <div class="col-lg-3 pull-right no-print">
         <form action="{{ route('client.buy_bills.filter.storeId') }}" method="POST">
             @csrf
             <div class="form-group">
                 <label style="display:block;" for="store_id">{{ __('sales_bills.store-name') }}</label>
-                <div class="d-flex justify-items-center">
-                    <select required class="selectpicker form-control" data-live-search="true"
-                        title="{{ __('main.write-or-choose') }}" data-style="btn-third" name="store_id" id="store_id">
-                        @if (isset($stores) && $stores->count())
-                            @foreach ($stores as $store)
-                                <option title="{{ $store->store_name }}" @if (isset($store_k) && $store->id == $store_k->id) selected @endif
-                                    value="{{ $store->id }}">{{ $store->store_name }}
-                                </option>
-                            @endforeach
-                        @endif
-                    </select>
-                    <button type="submit" class="btn btn-md btn-warning" id="by_product_name"><i
-                            class="fa fa-search"></i></button>
-                </div>
+                <select required class="selectpicker" data-live-search="true" title="{{ __('main.write-or-choose') }}"
+                    data-style="btn-warning" name="store_id" id="store_id">
+                    @foreach ($stores as $store)
+                        <option title="{{ $store->store_name }}" @if (isset($store_k) && $store->id == $store_k->id) selected @endif
+                            value="{{ $store->id }}">{{ $store->store_name }}
+                        </option>
+                    @endforeach
+                </select>
+                <button type="submit" class="btn btn-md btn-warning"
+                    style="display: inline !important; width: 20% !important; float: left !important;"
+                    id="by_product_name"><i class="fa fa-search"></i></button>
             </div>
         </form>
     </div>
     <div class="clearfix"></div>
     <div class="row no-print" style="margin-top: 30px !important;">
-        <div class="col-lg-12 text-end px-3">
+        <div class="col-lg-12 text-center">
             <form action="{{ route('client.purchase_orders.filter.all') }}" method="POST">
                 @csrf
                 @method('POST')
-                <button type="submit" class="btn btnn btn-md btn-warning">
+                <button type="submit" class="btn btn-md btn-dark">
                     <i class="fa fa-list"></i>
                     عرض كل اوامر الشراء
                 </button>
@@ -279,7 +260,7 @@
                 تحويل لفاتورة مشتريات
             </a>
             <?php echo '
-                                                                    <a href="'; ?>{{ route('client.purchase_orders.send', $purchase_order_k->purchase_order_number) }}
+                                            <a href="'; ?>{{ route('client.purchase_orders.send', $purchase_order_k->purchase_order_number) }}
             <?php echo '" role="button"
                        class="btn send_btn btn-md btn-warning pull-right ml-3"><i
                             class="fa fa-check"></i>
@@ -361,7 +342,7 @@
                                         $purchase_order_extra_value = ($purchase_order_extra_value / 100) * $sum;
                                     }
                                     $after_discount = $sum + $purchase_order_extra_value;
-                                    
+
                                     if ($purchase_order_discount_type == 'percent') {
                                         $purchase_order_discount_value = ($purchase_order_discount_value / 100) * $sum;
                                     }
@@ -418,7 +399,7 @@
 
                     <span class="alert alert-secondary alert-sm">
                         اجمالى اسعار كل اوامر الشراء لهذا المورد
-                        ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                        ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                     </span>
                 </div>
             @else
@@ -489,7 +470,7 @@
                                         $purchase_order_extra_value = ($purchase_order_extra_value / 100) * $sum;
                                     }
                                     $after_discount = $sum + $purchase_order_extra_value;
-                                    
+
                                     if ($purchase_order_discount_type == 'percent') {
                                         $purchase_order_discount_value = ($purchase_order_discount_value / 100) * $sum;
                                     }
@@ -546,7 +527,7 @@
 
                     <span class="alert alert-secondary alert-sm">
                         اجمالى اسعار كل اوامر الشراء لهذا المورد
-                        ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                        ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                     </span>
                 </div>
             @else
@@ -619,7 +600,7 @@
                                         $purchase_order_extra_value = ($purchase_order_extra_value / 100) * $sum;
                                     }
                                     $after_discount = $sum + $purchase_order_extra_value;
-                                    
+
                                     if ($purchase_order_discount_type == 'percent') {
                                         $purchase_order_discount_value = ($purchase_order_discount_value / 100) * $sum;
                                     }
@@ -676,7 +657,7 @@
 
                     <span class="alert alert-secondary alert-sm">
                         اجمالى اسعار كل اوامر الشراء لهذا المنتج
-                        ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                        ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                     </span>
                 </div>
             @else
@@ -748,7 +729,7 @@
                                         $purchase_order_extra_value = ($purchase_order_extra_value / 100) * $sum;
                                     }
                                     $after_discount = $sum + $purchase_order_extra_value;
-                                    
+
                                     if ($purchase_order_discount_type == 'percent') {
                                         $purchase_order_discount_value = ($purchase_order_discount_value / 100) * $sum;
                                     }
@@ -805,7 +786,7 @@
 
                     <span class="alert alert-secondary alert-sm">
                         اجمالى اسعار كل اوامر الشراء
-                        ({{ floatval($total) }}) <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                        ({{ floatval($total) }}) <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                     </span>
                 </div>
             @else

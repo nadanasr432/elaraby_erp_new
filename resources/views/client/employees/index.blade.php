@@ -15,12 +15,11 @@
             <div class="card">
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
-                        <div class="col-lg-12 margin-tb d-flex flex-wrap align-items-center justify-content-between">
-                            <h5 class="alert custom-title">
-                                {{ __('sidebar.list-of-current-employees') }} </h5>
-                            <a class="btn btnn text-white px-3 py-1" style="background-color:#36c7d6" href="{{ route('client.employees.create') }}"><i
+                        <div class="col-lg-12 margin-tb">
+                            <a class="btn pull-left btn-primary btn-sm" href="{{ route('client.employees.create') }}"><i
                                     class="fa fa-plus"></i> {{ __('sidebar.add-new-employee') }} </a>
-                            
+                            <h5 class="pull-right alert alert-sm alert-success">
+                                {{ __('sidebar.list-of-current-employees') }} </h5>
                         </div>
                         <br>
                     </div>
@@ -93,9 +92,9 @@
                             <input class="form-control" name="employeename" id="employeename" type="text" readonly>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btnn btn-secondary"
+                            <button type="button" class="btn btn-secondary"
                                 data-dismiss="modal">{{ __('main.cancel') }}</button>
-                            <button type="submit" class="btn btnn btn-danger">{{ __('main.delete') }}</button>
+                            <button type="submit" class="btn btn-danger">{{ __('main.delete') }}</button>
                         </div>
                     </form>
                 </div>

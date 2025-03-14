@@ -16,9 +16,8 @@
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
                         <div class="col-lg-12 margin-tb">
-                            <h5 class="pull-right alert alert-sm custom-title">
-                                {{ __('sidebar.returns-purchases-invoices') }}
-                            </h5>
+                            <h5 class="pull-right alert alert-sm alert-success">
+                                {{ __('sidebar.returns-purchases-invoices') }}</h5>
                         </div>
                         <br>
                     </div>

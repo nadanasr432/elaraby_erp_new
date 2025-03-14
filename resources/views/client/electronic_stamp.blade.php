@@ -24,20 +24,19 @@
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-header pb-0">
-                    <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
-                        <h5 class=" alert custom-title">
+                    <div class="col-12">
+                        <a class="btn btn-primary btn-sm pull-left text-white"
+                            onclick="window.location.href='home'">{{ __('main.back') }}</a>
+                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success">
                             {{ __('sidebar.add-new-electronic-stamp') }}
                         </h5>
-                        <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6"
-                            onclick="window.location.href='home'">{{ __('main.back') }}</a>
-                        
                     </div>
                 </div>
                 <div class="card-body p-1 m-1">
                     <form id="electronicStampForm" method="post">
                         {{ csrf_field() }}
-                        <div class="row mx-1 mb-3">
-                            <div class="col-md-6 px-0">
+                        <div class="row m-t-3 mb-3">
+                            <div class="col-md-4">
                                 <label> {{ __('sidebar.electronic-stamp') }} <span class="text-danger">*</span></label>
                                 <input type="file" id="imgInput" class="form-control mg-b-20 mb-3" name="elec_stamp" required>
                                 @if(isset($electronicStamp))
@@ -48,8 +47,8 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 text-end">
-                            <button class="btn btnn btn-warning py-1 px-3 "  type="submit" id="">{{ __('main.save') }}</button>
+                        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                            <button class="btn btn-info pd-x-20" type="submit" id="submitBTN">{{ __('main.save') }}</button>
                         </div>
                     </form>
                     @if (session('error'))

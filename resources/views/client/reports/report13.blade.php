@@ -79,81 +79,81 @@
                     <hr>
 
                  @php
-                        $i = 0;
-                        $total = 0;
-                        $total_profits = 0;
-                    
-                        // Fetch all necessary products at once
-                        $productPrices = \App\Models\Product::whereIn('id', $pos_bills->pluck('elements.*.product_id')->flatten())
-                            ->where('company_id', $pos_bills->pluck('company_id')->unique())
-                            ->pluck('purchasing_price', 'id');
-                    @endphp
-                    
-                    @if(isset($pos_bills) && !$pos_bills->isEmpty())
-                        <p class="alert alert-info font-weight-bold text-white mt-1 text-center">
-                            ارباح فواتير نقطة البيع
-                        </p>
-                        <div class="table-responsive">
-                            <table border="1" cellpadding="14" style="width: 100%!important;">
-                                <thead class="text-center">
+                    $i = 0;
+                    $total = 0;
+                    $total_profits = 0;
+                
+                    // Fetch all necessary products at once
+                    $productPrices = \App\Models\Product::whereIn('id', $pos_bills->pluck('elements.*.product_id')->flatten())
+                        ->where('company_id', $pos_bills->pluck('company_id')->unique())
+                        ->pluck('purchasing_price', 'id');
+                @endphp
+                
+                @if(isset($pos_bills) && !$pos_bills->isEmpty())
+                    <p class="alert alert-info font-weight-bold text-white mt-1 text-center">
+                        ارباح فواتير نقطة البيع
+                    </p>
+                    <div class="table-responsive">
+                        <table border="1" cellpadding="14" style="width: 100%!important;">
+                            <thead class="text-center">
+                            <tr>
+                                <th>#</th>
+                                <th class="text-center">رقم</th>
+                                <th class="text-center">العميل</th>
+                                <th class="text-center"> تاريخ - وقت</th>
+                                <th class="text-center"> سعر المبيعات</th>
+                                <th class="text-center">سعر الشراء</th>
+                                <th class="text-center"> الربح</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach ($pos_bills as $pos)
+                                @php
+                                    $i++;
+                                    $sum = 0;
+                                    $realPrice = 0;
+                
+                                    foreach ($pos->elements as $pos_element) {
+                                        $sum += $pos_element->quantity_price;
+                                        $realPrice += ($productPrices[$pos_element->product_id] ?? 0) * $pos_element->quantity;
+                                    }
+                
+                                    // Apply Discount
+                                    if ($pos->discount) {
+                                        $discount = $pos->discount->discount_value;
+                                        $sum -= ($pos->discount->discount_type === "pound") ? $discount : ($discount / 100) * $sum;
+                                    }
+                
+                                    // Apply Tax
+                                    if ($pos->tax) {
+                                        $sum += ($pos->tax->tax_value / 100) * $sum;
+                                    }
+                
+                                    // Value Added Tax Adjustment
+                                    if ($pos->value_added_tax == 1) {
+                                        $sum = ($sum * (100 / 115)) * 1.15;
+                                    }
+                
+                                    $sum = round($sum, 2);
+                                    $total += $sum;
+                                    $profit = $sum - $realPrice;
+                                    $total_profits += $profit;
+                                @endphp
+                
                                 <tr>
-                                    <th>#</th>
-                                    <th class="text-center">رقم</th>
-                                    <th class="text-center">العميل</th>
-                                    <th class="text-center"> تاريخ - وقت</th>
-                                    <th class="text-center"> سعر المبيعات</th>
-                                    <th class="text-center">سعر الشراء</th>
-                                    <th class="text-center"> الربح</th>
+                                    <td>{{ $i }}</td>
+                                    <td>{{ $pos->id }}</td>
+                                    <td>{{ $pos->outerClient->client_name ?? 'زبون' }}</td>
+                                    <td>{{ $pos->created_at }}</td>
+                                    <td>{{ $sum }}</td>
+                                    <td>{{ $realPrice }}</td>
+                                    <td>{{ $profit }}</td>
                                 </tr>
-                                </thead>
-                                <tbody>
-                                @foreach ($pos_bills as $pos)
-                                    @php
-                                        $i++;
-                                        $sum = 0;
-                                        $realPrice = 0;
-                    
-                                        foreach ($pos->elements as $pos_element) {
-                                            $sum += $pos_element->quantity_price;
-                                            $realPrice += ($productPrices[$pos_element->product_id] ?? 0) * $pos_element->quantity;
-                                        }
-                    
-                                        // Apply Discount
-                                        if ($pos->discount) {
-                                            $discount = $pos->discount->discount_value;
-                                            $sum -= ($pos->discount->discount_type === "pound") ? $discount : ($discount / 100) * $sum;
-                                        }
-                    
-                                        // Apply Tax
-                                        if ($pos->tax) {
-                                            $sum += ($pos->tax->tax_value / 100) * $sum;
-                                        }
-                    
-                                        // Value Added Tax Adjustment
-                                        if ($pos->value_added_tax == 1) {
-                                            $sum = ($sum * (100 / 115)) * 1.15;
-                                        }
-                    
-                                        $sum = round($sum, 2);
-                                        $total += $sum;
-                                        $profit = $sum - $realPrice;
-                                        $total_profits += $profit;
-                                    @endphp
-                    
-                                    <tr>
-                                        <td>{{ $i }}</td>
-                                        <td>{{ $pos->id }}</td>
-                                        <td>{{ $pos->outerClient->client_name ?? 'زبون' }}</td>
-                                        <td>{{ $pos->created_at }}</td>
-                                        <td>{{ $sum }}</td>
-                                        <td>{{ $realPrice }}</td>
-                                        <td>{{ $profit }}</td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @endif
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
 
 
 

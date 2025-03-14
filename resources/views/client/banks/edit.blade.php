@@ -22,7 +22,7 @@
             <div class="card mg-b-20">
                 <div class="card-body">
                     <div class="col-12">
-                        <a class="btn btnn btn-primary btn-sm pull-left" href="{{ route('client.banks.index') }}">
+                        <a class="btn btn-primary btn-sm pull-left" href="{{ route('client.banks.index') }}">
                             {{ __('main.back') }}</a>
                         <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success">
                             تحديث بيانات البنك
@@ -32,7 +32,8 @@
                     <br>
 
                     <form class="parsley-style-1" id="selectForm2" name="selectForm2"
-                        action="{{ route('client.banks.update', $bank->id) }}" enctype="multipart/form-data" method="post">
+                        action="{{ route('client.banks.update', $bank->id) }}" enctype="multipart/form-data"
+                        method="post">
                         @csrf
                         @method('PATCH')
                         <input type="hidden" name="company_id" value="{{ $company_id }}">
@@ -54,15 +55,13 @@
 
                             <div class="col-md-4">
                                 <label>سبب التعديل <span class="text-danger">*</span></label>
-                                <input dir="rtl" required class="form-control" name="reason" type="text"
-                                    id="reasonInput">
-                                <span id="reasonError" class="text-danger" style="display: none;">يجب إدخال سبب
-                                    التعديل</span>
+                                <input dir="rtl" required class="form-control" name="reason" type="text" id="reasonInput">
+                                <span id="reasonError" class="text-danger" style="display: none;">يجب إدخال سبب التعديل</span>
                             </div>
 
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                            <button class="btn btnn btn-info pd-x-20" type="submit">تحديث</button>
+                            <button class="btn btn-info pd-x-20" type="submit">تحديث</button>
                         </div>
                     </form>
                 </div>
@@ -73,7 +72,7 @@
         document.getElementById('reasonInput').addEventListener('input', function() {
             let inputField = this;
             let errorMessage = document.getElementById('reasonError');
-
+        
             // Trim input and check if it's empty or contains only spaces
             if (inputField.value.trim() === "") {
                 inputField.setCustomValidity("يرجى إدخال سبب التعديل");

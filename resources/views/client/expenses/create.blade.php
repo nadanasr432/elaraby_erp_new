@@ -1,6 +1,10 @@
 @extends('client.layouts.app-main')
 <style>
-
+    .bootstrap-select,
+    select.form-control {
+        width: 80% !important;
+        display: inline !important;
+    }
 </style>
 @section('content')
     @if (count($errors) > 0)
@@ -21,12 +25,11 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
-                        <h5 class=" alert custom-title">
-                            {{ __('sidebar.add-new-expenses') }} </h5>
-                        <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.expenses.index') }}">
+                    <div class="col-12">
+                        <a class="btn btn-primary btn-sm pull-left" href="{{ route('client.expenses.index') }}">
                             {{ __('main.back') }}</a>
-                        
+                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success">
+                            {{ __('sidebar.add-new-expenses') }} </h5>
                     </div>
                     <div class="clearfix"></div>
                     <br>
@@ -38,38 +41,37 @@
                         <h5 class="col-lg-12 d-block mb-2">{{ __('main.main-information') }}</h5>
                         <hr>
                         <div class="row mb-3">
-                            <div class="col-md-6 mb-1">
+                            <div class="col-md-3">
                                 <label> رقم المصروف <span class="text-danger">*</span></label>
                                 <input required readonly value="{{ $pre_expenses }}" class="form-control"
                                     name="expense_number" type="text">
                             </div>
-                            <div class="col-md-6 mb-1">
+                            <div class="col-md-3">
                                 <label> نوع المصروف <span class="text-danger">*</span></label>
-                                <div class="d-flex w-100">
-                                    <select required name="fixed_expense" class="form-control">
-                                        <option value="">اختر المصروف الثابت</option>
-                                        @foreach ($fixed_expenses as $fixed_expense)
-                                            <option value="{{ $fixed_expense->id }}">{{ $fixed_expense->fixed_expense }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <a target="_blank" href="{{ route('client.fixed.expenses') }}" role="button"
-                                         class=" btn-sm btn-warning open_popup d-flex align-items-center">
-                                        <i class="fa fa-plus"></i>
-                                    </a>
-                                </div>
+                                <select required name="fixed_expense" class="form-control">
+                                    <option value="">اختر المصروف الثابت</option>
+                                    @foreach ($fixed_expenses as $fixed_expense)
+                                        <option value="{{ $fixed_expense->id }}">{{ $fixed_expense->fixed_expense }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <a target="_blank" href="{{ route('client.fixed.expenses') }}" role="button"
+                                    style="width: 15%;display: inline;" class="btn btn-sm btn-warning open_popup">
+                                    <i class="fa fa-plus"></i>
+                                </a>
                             </div>
 
-                            <div class="col-md-6 mb-1">
+                            <div class="col-md-3">
                                 <label> تفاصيل المصروف <span class="text-danger">*</span></label>
                                 <input dir="rtl" required class="form-control" name="expense_details" type="text">
                             </div>
-                            <div class="col-md-6 mb-1">
+                            <div class="col-md-3">
                                 <label> المبلغ <span class="text-danger">*</span></label>
                                 <input required class="form-control" name="amount" type="text">
                             </div>
-                     
-                            <div class="col-md-6 mb-1">
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-3">
                                 <label for="payment_method">طريقة الدفع <span class="text-danger">*</span></label>
                                 <select required id="payment_method" name="payment_method" class="form-control">
                                     <option value="">اختر طريقة الدفع</option>
@@ -77,28 +79,27 @@
                                     <option value="bank">دفع بنكى شبكة</option>
                                 </select>
                             </div>
-                            <div class="col-md-6 mb-1">
-                                <label class="d-block"> البنك <span class="text-danger">*</span></label>
-                                <div class="d-flex align-items-center">
-                                    <select  id="bank_id"
-                                    name="bank_id" class="form-control">
-                                    <option value="">اختر البنك</option>
-                                    @foreach ($banks as $bank)
-                                        <option value="{{ $bank->id }}">{{ $bank->bank_name }}</option>
-                                    @endforeach
-                                </select>
-                                <a target="_blank" href="{{ route('client.banks.create') }}" role="button"
-                                    class="btn btn-sm btn-warning open_popu py-1">
-                                    <i class="fa fa-plus"></i>
-                                </a>
+                            <div class="row mb-3 bank-section" style="display: none;">
+                                <div class="col-md-12">
+                                    <label class="d-block"> البنك <span class="text-danger">*</span></label>
+                                    <select style="width: 80% !important; display: inline !important;" id="bank_id"
+                                        name="bank_id" class="form-control">
+                                        <option value="">اختر البنك</option>
+                                        @foreach ($banks as $bank)
+                                            <option value="{{ $bank->id }}">{{ $bank->bank_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <a target="_blank" href="{{ route('client.banks.create') }}" role="button"
+                                        style="width: 15%;display: inline;" class="btn btn-sm btn-danger open_popup">
+                                        <i class="fa fa-plus"></i>
+                                    </a>
                                 </div>
-                                
+                                <div class="col-md-6 mt-2">
+                                    <label for="">رقم المعاملة</label>
+                                    <input type="text" name="payment_no" class="form-control" id="bank_check_number" />
+                                </div>
                             </div>
-                            <div class="col-md-6 mb-1">
-                                <label for="">رقم المعاملة</label>
-                                <input type="text" name="payment_no" class="form-control" id="bank_check_number" />
-                            </div>
-                            <div class="col-md-6 mb-1 safe-section" style="display: none;">
+                            <div class="col-md-3 safe-section" style="display: none;">
                                 <label> خزنة الدفع <span class="text-danger">*</span></label>
                                 <select name="safe_id" class="form-control">
                                     <option value="">اختر خزنة الدفع</option>
@@ -107,29 +108,29 @@
                                     @endforeach
                                 </select>
                                 <a target="_blank" href="{{ route('client.safes.create') }}" role="button"
-                                    style="width: 15%;display: inline;" class=" btn-sm btn-warning open_popup d-flex align-items-center px-1">
+                                    style="width: 15%;display: inline;" class="btn btn-sm btn-warning open_popup">
                                     <i class="fa fa-plus"></i>
                                 </a>
                             </div>
 
-                            <div class="col-md-6 mb-1">
+                            <div class="col-md-3">
                                 <label> الموظف <span class="text-danger">*</span></label>
                                 <select name="employee_id" data-live-search="true" data-title="اختر الموظف"
-                                    class="form-control selectpicker show-tick">
+                                    data-style="btn-danger" class="form-control selectpicker show-tick">
                                     @foreach ($employees as $employee)
                                         <option value="{{ $employee->id }}">{{ $employee->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-6 mb-1">
+                            <div class="col-md-3">
                                 <label> ملاحظات <span class="text-danger">*</span></label>
                                 <input class="form-control" name="notes" id="notes" type="text">
                             </div>
-                            <div class="col-md-6 mb-1">
+                            <div class="col-md-3">
                                 <label> التاريخ <span class="text-danger">*</span></label>
                                 <input class="form-control" name="date" id="date" type="date">
                             </div>
-                            <div class="col-md-6 mb-1">
+                            <div class="col-md-3">
                                 <label> صورة المصروف <span class="text-danger">*</span></label>
                                 <input accept=".jpg,.png,.jpeg" type="file"
                                     oninput="pic.src=window.URL.createObjectURL(this.files[0])" id="file"
@@ -139,8 +140,8 @@
                             </div>
 
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 text-end p-0">
-                            <button class="btn btnn btn-warning px-3 py-1" type="submit">اضافة</button>
+                        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                            <button class="btn btn-info pd-x-20" type="submit">اضافة</button>
                         </div>
                     </form>
                 </div>

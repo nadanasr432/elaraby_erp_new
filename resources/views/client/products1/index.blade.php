@@ -179,7 +179,7 @@
                                             </button>
                                             <div class="dropdown-menu p-0" aria-labelledby="dropdownMenuButton"
                                                 x-placement="bottom-start"
-                                                >
+                                                style="position: absolute; transform: translate3d(0px, 29px, 0px); top: 0px; left: 0px; will-change: transform;">
                                                 <!--SHOW--->
                                                 <a href="{{ route('client.products.show', $product->id) }}"
                                                     class="dropdown-item" target="_blank"

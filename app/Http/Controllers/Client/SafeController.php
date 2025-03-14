@@ -88,7 +88,6 @@ class SafeController extends Controller
                 'amount' => __('validation.transfer_amount_exceeds_balance'),
             ])->withInput();
         }
-
         $company_id = Auth::user()->company_id;
         $company = Company::FindOrFail($company_id);
         $safes = $company->safes;

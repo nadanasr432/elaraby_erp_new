@@ -905,8 +905,7 @@
                         <label for="" class="d-block">قيمة الخصم</label>
                         <select name="discount_type" id="discount_type" class="form-control"
                             style="width: 40%;display: inline;float: right; margin-left:5px;">
-                            <option @if (isset($pos_open) && !empty($pos_open_discount) && $pos_open_discount->discount_type == 'pound') selected @endif value="pound"><img
-                                    src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                            <option @if (isset($pos_open) && !empty($pos_open_discount) && $pos_open_discount->discount_type == 'pound') selected @endif value="pound"><img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                             </option>
                             <option @if (isset($pos_open) && !empty($pos_open_discount) && $pos_open_discount->discount_type == 'percent') selected @endif value="percent"> %
                             </option>
@@ -1142,7 +1141,6 @@
 @endsection
 <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="{{ asset('app-assets/js/theme-switcher.js') }}"></script>
 
 <script>
     $(document).ready(function() {
@@ -1751,7 +1749,7 @@
             $("#finishBankModal").modal();
         });
 
-        $('.edit_bill').on('click', function() {
+            $('.edit_bill').on('click', function() {
             let bill_id = $('#bill_id').val();
             $.post("{{ route('pos.edit') }}", {
                 "_token": "{{ csrf_token() }}",

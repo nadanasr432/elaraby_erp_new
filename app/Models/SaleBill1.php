@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Store;
 
 class SaleBill1 extends Model
 {
@@ -46,6 +47,10 @@ class SaleBill1 extends Model
             ->first();
 
         return $lastBill ? $lastBill->sale_bill_number + 1 : 1;
+    }
+     public function store()
+    {
+        return $this->belongsTo(Store::class);
     }
     public function elements()
     {

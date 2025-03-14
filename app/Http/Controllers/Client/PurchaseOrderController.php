@@ -590,7 +590,7 @@ class PurchaseOrderController extends Controller
             $total = array_sum($sum);
             $percentage = ($tax_value_added / 100) * $total;
             $after_total = $total + $percentage;
-            $image = "<img src='" . asset('images/Sr_coin.svg') . "' width='3%' style='vertical-align: middle;'>";
+            $image = "<img src='" . asset('images/Sr_coin.svg') . "' width='15px' style='vertical-align: middle;'>";
 
             echo "
             <div class='clearfix'></div>
@@ -683,7 +683,7 @@ class PurchaseOrderController extends Controller
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
         $currency = $extra_settings->currency;
         $tax_value_added = $company->tax_value_added;
-        $image = "<img src='" . asset('images/Sr_coin.svg') . "' width='3%' style='vertical-align: middle;'>";
+        $image = "<img src='" . asset('images/Sr_coin.svg') . "' width='15px' style='vertical-align: middle;'>";
 
         $sum = array();
         if (!$elements->isEmpty()) {
@@ -762,7 +762,7 @@ class PurchaseOrderController extends Controller
         $currency = $extra_settings->currency;
         $tax_value_added = $company->tax_value_added;
         $sum = array();
-        $image = "<img src='" . asset('images/Sr_coin.svg') . "' width='3%' style='vertical-align: middle;'>";
+        $image = "<img src='" . asset('images/Sr_coin.svg') . "' width='15px' style='vertical-align: middle;'>";
 
         if (!$elements->isEmpty()) {
             foreach ($elements as $element) {
@@ -830,22 +830,13 @@ class PurchaseOrderController extends Controller
     public function destroy(Request $request)
     {
         $purchase_order_number = $request->purchase_order_number;
-    
         $purchase_order = PurchaseOrder::where('purchase_order_number', $purchase_order_number)->first();
-    
-        if (!$purchase_order) {
-            return redirect()->route('client.purchase_orders.create')
-                ->with('error', 'لم يتم العثور على أمر الشراء');
-        }
-    
         $purchase_order->elements()->delete();
         $purchase_order->extras()->delete();
         $purchase_order->delete();
-    
         return redirect()->route('client.purchase_orders.create')
             ->with('success', 'تم حذف امر الشراء بنجاح');
     }
-    
 
     public function redirect()
     {

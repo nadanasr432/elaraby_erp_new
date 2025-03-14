@@ -252,7 +252,7 @@ class Router extends Base {
 		$role_uid = $_COOKIE[ 'litespeed_role' ];
 		Debug2::debug( '[Router] role simulate litespeed_role uid ' . $role_uid );
 
-		wp_set_current_user( $role_uid );
+		// wp_set_current_user( $role_uid );
 	}
 
 	/**

@@ -309,17 +309,14 @@
                                 style="font-size: 16px !important; height: 40px !important; text-align: center;">
 
                                 <td class="borderLeftH" dir="rtl">
-                                    {{ floatval($product->quantity_price) }} <img
-                                        src="{{ asset('images/Sr_coin.svg') }}" width="15px"><img
-                                        src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                    {{ floatval($product->quantity_price) }} {{ $company->extra_settings->currency }}
                                 </td>
                                 <td class="borderLeftH" dir="rtl">
                                     {{ $product->quantity }}
                                     {{ $product->product->unit ? $product->product->unit->unit_name : '-' }}
                                 </td>
                                 <td class="borderLeftH" dir="rtl">
-                                    {{ $product->product_price }} <img src="{{ asset('images/Sr_coin.svg') }}"
-                                        width="15px">
+                                    {{ $product->product_price }} {{ $company->extra_settings->currency }}
                                 </td>
                                 <td class="borderLeftH">{{ $product->product->product_name }}</td>
                                 <td class="borderLeftH">{{ $counter }}</td>
@@ -354,11 +351,9 @@
                                 @foreach ($extras as $key)
                                     @if ($key->action == 'discount')
                                         @if ($key->action_type == 'pound')
-                                            {{ $key->value }} <img src="{{ asset('images/Sr_coin.svg') }}"
-                                                width="15px">
+                                            {{ $key->value }} <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                                         @else
-                                            {{ ($totalSum * $key->value) / 100 }} <img
-                                                src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                            {{ ($totalSum * $key->value) / 100 }} <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                                             {{-- Calculate percentage discount --}}
                                         @endif
                                     @endif
@@ -376,11 +371,9 @@
                                 @foreach ($extras as $key)
                                     @if ($key->action != 'discount')
                                         @if ($key->action_type == 'pound')
-                                            {{ $key->value }} <img src="{{ asset('images/Sr_coin.svg') }}"
-                                                width="15px">
+                                            {{ $key->value }} <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                                         @else
-                                            {{ ($totalSum * $key->value) / 100 }} <img
-                                                src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                            {{ ($totalSum * $key->value) / 100 }} <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                                             {{-- Calculate percentage shipping charge --}}
                                         @endif
                                     @endif
@@ -394,7 +387,7 @@
                         <tr class="even"
                             style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 14px !important; height: 40px !important; text-align: center;">
                             <td dir="rtl">
-                                {{ $percentage }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                {{ $percentage }} {{ $company->extra_settings->currency }}
                             </td>
                             <td style="text-align: right;padding-right: 14px;">
                                 @lang('sales_bills.Total tax')
@@ -404,7 +397,7 @@
                         <tr
                             style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 40px !important; text-align: center;">
                             <td dir="rtl">
-                                {{ $totalSum }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                {{ $totalSum }} {{ $company->extra_settings->currency }}
                             </td>
                             <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
                         </tr>
@@ -412,8 +405,7 @@
                         <tr
                             style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 40px !important; text-align: center;background: #222751;color:white;">
                             <td dir="rtl">
-                                {{ floatval($after_total_all) }} <img src="{{ asset('images/Sr_coin.svg') }}"
-                                    width="15px">
+                                {{ floatval($after_total_all) }} <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                             </td>
                             <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total including tax') </td>
                         </tr>

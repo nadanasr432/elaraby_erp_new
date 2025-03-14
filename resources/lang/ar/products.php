@@ -51,6 +51,8 @@ return [
     'man' => '',
     'man' => '',
     'addnewproductseveces'=>'اضافة منتج خدمي جديد',
+    "restore" => "استرجاع",
     'pname_en'=>'اسم المنتج بالانجليزية',
-    "restore" => "استرجاع"
+    "Start Date"=>"تاريخ البداية",
+    "End Date"=>"تاريخ الانتهاء"
 ];

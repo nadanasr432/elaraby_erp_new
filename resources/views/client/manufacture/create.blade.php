@@ -5,7 +5,7 @@
     }
 
     .bootstrap-select {
-        width: 100% !important;
+        width: 80% !important;
     }
 
     .form-control {
@@ -25,11 +25,11 @@
             <div class="card">
                 <!------HEADER----->
                 <div class="card-header border-bottom border-secondary p-1">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h3 class=" font-weight-bold custom-title">
+                    <div class="d-flex justify-content-between align-items-baseline">
+                        <h3 class="pull-right font-weight-bold ml-1">
                             {{ __('manufactures.addnewmanufacture') }}
                         </h3>
-                        <a class="btn btnn text-white py-1 px-3" style="background-color: #36c7d6" href="http://arabygithub.test/ar/client/journal/get">
+                        <a class="btn btn-danger btn-sm pull-left p-1" href="http://arabygithub.test/ar/client/journal/get">
                             {{ __('products.back') }}
                         </a>
                     </div>
@@ -49,7 +49,7 @@
                         <div class="row p-0">
 
                             <!----store---->
-                            <div class="form-group col-lg-4" dir="rtl">
+                            <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label for="store_id">
 
                                     {{ __('products.store_name') }}
@@ -73,7 +73,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group col-lg-4" dir="rtl">
+                            <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label for="status">
 
                                     {{ __('manufactures.status') }}
@@ -86,7 +86,7 @@
 
                                 </select>
                             </div>
-                            <div class="form-group col-lg-4 pr-0" dir="rtl">
+                            <div class="form-group col-lg-3 pr-0" dir="rtl">
                                 <label for="date">
 
                                     {{ __('manufactures.date') }}
@@ -144,7 +144,7 @@
                             <textarea name="note" class="form-control"></textarea>
 
                         </div>
-                        <button class="btn btnn  btn-warning py-1 px-5 font-weight-bold"
+                        <button class="btn btn-md btn-success w-100 font-weight-bold"
                             type="submit">{{ __('products.add') }}</button>
                     </form>
                 </div>
