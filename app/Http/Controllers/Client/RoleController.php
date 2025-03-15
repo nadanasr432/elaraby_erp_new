@@ -28,9 +28,9 @@ class RoleController extends Controller
         $company_id = Auth::user()->company_id;
         $company = Company::FindOrFail($company_id);
         $roles = Role::orderBy('id', 'ASC')
-            ->where('company_id',$company_id)
-            ->orwhere('name','مدير النظام')
-            ->orwhere('name','مستخدمين')
+            ->where('company_id', $company_id)
+            ->orwhere('name', 'مدير النظام')
+            ->orwhere('name', 'مستخدمين')
             ->get();
         return view('client.roles.index', compact('roles'));
     }
@@ -45,18 +45,18 @@ class RoleController extends Controller
     {
         $company_id = Auth::user()->company_id;
         $company = Company::findOrFail($company_id);
-    
+
         $role = Role::create([
             'name' => $request->input('name'),
             'guard_name' => 'client-web',
             'company_id' => $company_id
         ]);
-    
+
         // Validate and sync permissions
         $permissions = $request->input('permission', []);
         $validPermissions = Permission::where('guard_name', 'client-web')->whereIn('name', $permissions)->pluck('name');
         $role->syncPermissions($validPermissions);
-    
+
         return redirect()->route('client.roles.index')
             ->with('success', 'تم اضافة الصلاحية بنجاح');
     }
@@ -72,15 +72,26 @@ class RoleController extends Controller
         return view('client.roles.edit', compact('role', 'permission', 'rolePermissions'));
     }
 
-    public function update(RoleRequest  $request, $id)
+    // use Spatie\Permission\Models\Permission;
+
+    public function update(RoleRequest $request, $id)
     {
         $role = Role::findOrFail($id);
+
+        // Update the role name
         $role->name = $request->input('name');
         $role->save();
-        $role->syncPermissions($request->input('permission'));
+
+        // Convert permission IDs to their names
+        $permissions = Permission::whereIn('id', $request->input('permission'))->pluck('name')->toArray();
+
+        // Sync permissions using names
+        $role->syncPermissions($permissions);
+
         return redirect()->route('client.roles.index')
             ->with('success', 'تم تحديث الدور او الصلاحية بنجاح');
     }
+
 
     public function destroy(Request $request)
     {
@@ -88,6 +99,4 @@ class RoleController extends Controller
         return redirect()->route('client.roles.index')
             ->with('success', 'تم حذف الدور او الصلاحية بنجاح');
     }
-
-
 }

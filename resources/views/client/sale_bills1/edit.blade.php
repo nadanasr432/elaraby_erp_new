@@ -182,20 +182,22 @@
                         <th
                             style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
                             {{ __('sales_bills.unit') }}</th>
-                        <th
-                            style="background-color: #d8daf5; color: #333; text-align: center; padding: 5px; font-weight: bold;">
-                            {{ __('sales_bills.discount') }}
-                            <div class="tax_discount"
-                                style="display: inline-block; margin-left: 10px; vertical-align: middle;">
-                                <select id="discount_application" class="form-control"
-                                    style="font-size: 12px; height: 30px;" name="products_discount_type">
-                                    <option {{ $saleBill->products_discount_type == 'before_tax' ? 'selected' : '' }}
-                                        value="before_tax">{{ __('sales_bills.discount_before_tax') }}</option>
-                                    <option {{ $saleBill->products_discount_type == 'after_tax' ? 'selected' : '' }}
-                                        value="after_tax">{{ __('sales_bills.discount_after_tax') }}</option>
-                                </select>
-                            </div>
-                        </th>
+                        @if('الخصم')
+                            <th
+                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 5px; font-weight: bold;">
+                                {{ __('sales_bills.discount') }}
+                                <div class="tax_discount"
+                                    style="display: inline-block; margin-left: 10px; vertical-align: middle;">
+                                    <select id="discount_application" class="form-control"
+                                        style="font-size: 12px; height: 30px;" name="products_discount_type">
+                                        <option {{ $saleBill->products_discount_type == 'before_tax' ? 'selected' : '' }}
+                                            value="before_tax">{{ __('sales_bills.discount_before_tax') }}</option>
+                                        <option {{ $saleBill->products_discount_type == 'after_tax' ? 'selected' : '' }}
+                                            value="after_tax">{{ __('sales_bills.discount_after_tax') }}</option>
+                                    </select>
+                                </div>
+                            </th>
+                        @endif
                         <th
                             style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
                             {{ __('sales_bills.tax') }}</th>
@@ -228,34 +230,34 @@
         </div>
         <div class="row">
             <div class="col-md-6 pull-right">
-                <div class="form-group" dir="rtl">
-                    <label for="discount">{{ __('sales_bills.discount-on-the-total-bill') }}</label> <br>
-                    <select name="discount_type" id="discount_type" class="form-control"
-                        style="width: 60%;display: inline;float: right; margin-left:5px;">
-                        <option value="">اختر نوع الخصم</option>
-                        <option {{ $discount?->action_type == 'pound' ? 'selected' : '' }} value="pound">خصم قبل الضريبة
-                            (مسطح)</option>
-                        <option {{ $discount?->action_type == 'percent' ? 'selected' : '' }} value="percent">خصم قبل
-                            الضريبة (%)</option>
-                        <option {{ $discount?->action_type == 'poundAfterTax' ? 'selected' : '' }} value="poundAfterTax">
-                            ضمان اعمال (مسطح)</option>
-                        <option {{ $discount?->action_type == 'poundAfterTaxPercent' ? 'selected' : '' }}
-                            value="poundAfterTaxPercent">ضمان اعمال (%)</option>
-                        <option {{ $discount?->action_type == 'afterTax' ? 'selected' : '' }} value="afterTax"
-                            class="d-none">
-                            خصم علي اجمالي المبلغ شامل الضريبة
-                        </option>
-                    </select>
-                    <input type="number" name="discount_value" min="0"
-                        style="width: 20%;display: inline;float: right;" id="discount_value" class="form-control "
-                        value="{{ $discount?->value }}" step = "any" />
-                    <input type="text" name="discount_note" value="{{ $discount?->discount_note }}"
-                        id="discount_note" placeholder="ملاحظات الخصم. . ." class="form-control mt-5"
-                        style="width: 80%;">
-                    {{-- <span id="dicountForBill"></span> --}}
-                </div>
-
-
+                @if('الخصم')
+                    <div class="form-group" dir="rtl">
+                        <label for="discount">{{ __('sales_bills.discount-on-the-total-bill') }}</label> <br>
+                        <select name="discount_type" id="discount_type" class="form-control"
+                            style="width: 60%;display: inline;float: right; margin-left:5px;">
+                            <option value="">اختر نوع الخصم</option>
+                            <option {{ $discount?->action_type == 'pound' ? 'selected' : '' }} value="pound">خصم قبل الضريبة
+                                (مسطح)</option>
+                            <option {{ $discount?->action_type == 'percent' ? 'selected' : '' }} value="percent">خصم قبل
+                                الضريبة (%)</option>
+                            <option {{ $discount?->action_type == 'poundAfterTax' ? 'selected' : '' }} value="poundAfterTax">
+                                ضمان اعمال (مسطح)</option>
+                            <option {{ $discount?->action_type == 'poundAfterTaxPercent' ? 'selected' : '' }}
+                                value="poundAfterTaxPercent">ضمان اعمال (%)</option>
+                            <option {{ $discount?->action_type == 'afterTax' ? 'selected' : '' }} value="afterTax"
+                                class="d-none">
+                                خصم علي اجمالي المبلغ شامل الضريبة
+                            </option>
+                        </select>
+                        <input type="number" name="discount_value" min="0"
+                            style="width: 20%;display: inline;float: right;" id="discount_value" class="form-control "
+                            value="{{ $discount?->value }}" step = "any" />
+                        <input type="text" name="discount_note" value="{{ $discount?->discount_note }}"
+                            id="discount_note" placeholder="ملاحظات الخصم. . ." class="form-control mt-5"
+                            style="width: 80%;">
+                        {{-- <span id="dicountForBill"></span> --}}
+                    </div>
+                @endif
             </div>
             <div class="col-md-6 pull-right">
                 <div class="form-group" dir="rtl">
@@ -607,6 +609,10 @@
         };
     </script>
     <script>
+        // تعريف المتغير في النطاق العام
+        window.canDiscount = @json($user->roles->flatMap->permissions->contains('name', 'الخصم'));
+    </script>
+    <script>
         // Initialize rowIndex with the current count of existing rows
         var rowIndex = {{ count($saleBill->elements) }};
 
@@ -639,25 +645,27 @@
                         @endforeach
                     </select>
                 </td>
-                <td>
-                    <label>
-                        <input type="radio" name="products[{{ $index }}][discount_type]" value="pound" class="discount_type" {{ $element->discount_type == 'pound' ? 'checked' : '' }}>
-                        ${translations.pound}
-                    </label>
-                    <label>
-                        <input type="radio" name="products[{{ $index }}][discount_type]" value="percent" class="discount_type" {{ $element->discount_type == 'percent' ? 'checked' : '' }}>
-                        ${translations.percent}
-                    </label>
-                    <input
-                        type="number"
-                        name="products[{{ $index }}][discount]"
-                        class="form-control discount"
-                        value="{{ $element->discount_value == 0 ? 0 : ($element->discount_type == 'percent' ? $element->discount_value : $element->discount_value) }}"
-                        min="0"
-                        step="any">
+            ${canDiscount ? `
+                            <td>
+                                <label>
+                                    <input type="radio" name="products[{{ $index }}][discount_type]" value="pound" class="discount_type" {{ $element->discount_type == 'pound' ? 'checked' : '' }}>
+                                    ${translations.pound}
+                                </label>
+                                <label>
+                                    <input type="radio" name="products[{{ $index }}][discount_type]" value="percent" class="discount_type" {{ $element->discount_type == 'percent' ? 'checked' : '' }}>
+                                    ${translations.percent}
+                                </label>
+                                <input
+                                    type="number"
+                                    name="products[{{ $index }}][discount]"
+                                    class="form-control discount"
+                                    value="{{ $element->discount_value == 0 ? 0 : ($element->discount_type == 'percent' ? $element->discount_value : $element->discount_value) }}"
+                                    min="0"
+                                    step="any">
 
-                    <input type="number" hidden name="products[{{ $index }}][applied_discount]" class="form-control applied_discount" value="{{ $element->applied_discount }}" style="display:none;" step="any">
-                </td>
+                                <input type="number" hidden name="products[{{ $index }}][applied_discount]" class="form-control applied_discount" value="{{ $element->applied_discount }}" style="display:none;" step="any">
+                            </td>
+                                            ` : ''}
                 <td>
                     <select name="products[{{ $index }}][tax]" class="form-control tax_type w-100 mb-1">
                         <option value="0" {{ $element->tax_type == 0 ? 'selected' : '' }}>${translations.not_including_tax}</option>
@@ -732,19 +740,21 @@
                 </select>
             </div>
         </td>
-        <td>
-            <div class="d-flex flex-column">
-                <label class="form-check-inline">
-                    <input type="radio" name="products[${rowIndex}][discount_type]" value="pound" class="discount_type form-check-input">
-                    ${translations.pound}
-                </label>
-                <label class="form-check-inline">
-                    <input type="radio" name="products[${rowIndex}][discount_type]" value="percent" class="discount_type form-check-input" checked>
-                    ${translations.percent}
-                </label>
-                <input type="number" name="products[${rowIndex}][discount]" class="form-control discount w-100 mt-1" value="0" min="0" step="any">
-            </div>
-        </td>
+ ${canDiscount ? `
+                                <td>
+                                    <div class="d-flex flex-column">
+                                        <label class="form-check-inline">
+                                            <input type="radio" name="products[${rowIndex}][discount_type]" value="pound" class="discount_type form-check-input">
+                                            ${translations.pound}
+                                        </label>
+                                        <label class="form-check-inline">
+                                            <input type="radio" name="products[${rowIndex}][discount_type]" value="percent" class="discount_type form-check-input" checked>
+                                            ${translations.percent}
+                                        </label>
+                                        <input type="number" name="products[${rowIndex}][discount]" class="form-control discount w-100 mt-1" value="0" min="0" step="any">
+                                    </div>
+                                </td>
+                                ` : ''}
         <td>
             <div class="input-group">
                 <select name="products[${rowIndex}][tax]" class="form-control tax_type w-100 mb-1">
@@ -1908,20 +1918,22 @@
                                         </select>
                                     </div>
                                 </td>
-                                <td>
-                                    <div class="d-flex flex-column">
-                                        <label class="form-check-inline">
-                                            <input type="radio" name="products[${rowIndex}][discount_type]" value="pound" class="form-check-input">
-                                            ${translations.pound}
-                                        </label>
-                                        <label class="form-check-inline">
-                                            <input type="radio" name="products[${rowIndex}][discount_type]" value="percent" class="form-check-input" checked>
-                                            ${translations.percent}
-                                        </label>
-                                        <input type="number" name="products[${rowIndex}][discount]" class="form-control w-100 mt-1" placeholder="${translations.enter_discount}" value="0" min="0" step="any">
-                                        <input type="number" hidden name="products[${rowIndex}][applied_discount]" class="form-control applied_discount w-100 mt-1" value="0" step="any">
-                                    </div>
-                                </td>
+            ${canDiscount ? `
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <label class="form-check-inline">
+                                                <input type="radio" name="products[${rowIndex}][discount_type]" value="pound" class="form-check-input">
+                                                ${translations.pound}
+                                            </label>
+                                            <label class="form-check-inline">
+                                                <input type="radio" name="products[${rowIndex}][discount_type]" value="percent" class="form-check-input" checked>
+                                                ${translations.percent}
+                                            </label>
+                                            <input type="number" name="products[${rowIndex}][discount]" class="form-control w-100 mt-1" placeholder="${translations.enter_discount}" value="0" min="0" step="any">
+                                            <input type="number" hidden name="products[${rowIndex}][applied_discount]" class="form-control applied_discount w-100 mt-1" value="0" step="any">
+                                        </div>
+                                    </td>
+                                                                            ` : ''}
                                 <td>
                                     <div class="input-group">
                                         <select name="products[${rowIndex}][tax]" class="form-control tax_type w-100 mb-1">
