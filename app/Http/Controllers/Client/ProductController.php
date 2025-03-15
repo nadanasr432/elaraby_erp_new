@@ -417,16 +417,16 @@ class ProductController extends Controller
    public function getStoreProducts(Request $request)
     {
         $storeId = $request->store_id;
-    
+
         if (!$storeId) {
             return response()->json(['error' => 'Store ID is required'], 400);
         }
-    
+
         $company_id = Auth::user()->company_id;
         $company = Company::findOrFail($company_id);
         $stores = $company->stores; // Now, this is defined before using it
         $flatStores = $stores->pluck('id')->toArray();
-    
+
     $products = Product::where('company_id', $company_id)
     ->where(function ($query) use ($flatStores) {
         $query->whereIn('store_id', $flatStores)
@@ -443,11 +443,11 @@ class ProductController extends Controller
     })
     ->get();
 
-    
-    
+
+
         return response()->json($products);
     }
-     
+
 
 
 
@@ -486,10 +486,10 @@ class ProductController extends Controller
 
         return response()->json($products);
     }
-     public function getStoreProducts(Request $request)
-    {
-        $products = Product::where('store_id', $request->store_id)->get();
-        
-        return response()->json($products);
-    }
+    //  public function getStoreProducts(Request $request)
+    // {
+    //     $products = Product::where('store_id', $request->store_id)->get();
+
+    //     return response()->json($products);
+    // }
 }
