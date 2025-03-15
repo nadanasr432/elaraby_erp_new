@@ -2046,7 +2046,7 @@ $('.save_btn2').on('click', function (e) {
 
             handleTaxCalculation(); // Initial call to set the correct tax logic
         });
-     
+
 
     </script>
 <!--    <script>-->
