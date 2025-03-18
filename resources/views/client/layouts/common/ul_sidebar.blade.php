@@ -303,7 +303,7 @@
                                                 </svg>
                                                 {{ __('sidebar.list-of-products-sold-out') }}
                                                 <span class="badge badge-danger" id="numOfProductsEnded"
-                                                    style="position: absolute;display:none;margin-right:5px;border-radius: 50%;font-size: 12px !important;width: 20px;height:20px;font-weight: bold;"></span>
+                                                    style="position: absolute;margin-right:5px;border-radius: 50%;font-size: 12px !important;width: 20px;height:20px;font-weight: bold;"></span>
                                             </a>
                                         </li>
                                     @endcan
