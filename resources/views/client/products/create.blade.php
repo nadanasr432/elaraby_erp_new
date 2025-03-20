@@ -171,9 +171,9 @@
                             <div class="form-group col-lg-4" dir="rtl">
                                 <label>
                                     {{ __('products.storeqty') }}
-                                    <span class="text-danger font-weight-bold">*</span>
+                                    {{-- <span class="text-danger font-weight-bold">*</span> --}}
                                 </label>
-                                <input type="number" step="0.01" placeholder="{{ __('products.storeqty') }}"
+                                <input type="number" placeholder="{{ __('products.storeqty') }}"
                                     name="first_balance" id="first_balance" value="0" class="form-control"
                                     required>
                             </div>
