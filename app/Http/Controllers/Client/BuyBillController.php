@@ -91,8 +91,8 @@ class BuyBillController extends Controller
 
             if (!empty($step)) {
                 $open_buy_bill = $step;
-                $buy_bill_cash = BuyCash::where('bill_id', $step->company_counter)->get();
-                $buy_bill_bank_cash = BankBuyCash::where('bill_id', $step->company_counter)->get();
+                $buy_bill_cash = BuyCash::where('bill_id', $step->buy_bill_number)->get();
+                $buy_bill_bank_cash = BankBuyCash::where('bill_id', $step->buy_bill_number)->get();
                 return view('client.buy_bills.create', compact(
                     'company',
                     'buy_bill_cash',
@@ -140,9 +140,9 @@ class BuyBillController extends Controller
                     ->first();
                 if (!empty($step)) {
                     $open_buy_bill = $step;
-                    $buy_bill_cash = BuyCash::where('bill_id', $step->company_counter)
+                    $buy_bill_cash = BuyCash::where('bill_id', $step->buy_bill_number)
                         ->get();
-                    $buy_bill_bank_cash = BankBuyCash::where('bill_id', $step->company_counter)
+                    $buy_bill_bank_cash = BankBuyCash::where('bill_id', $step->buy_bill_number)
                         ->get();
                     return view(
                         'client.buy_bills.create',
@@ -281,7 +281,7 @@ class BuyBillController extends Controller
         $data['status'] = 'open';
 
         # chk to create or to update invoice.
-        $BuyBill = BuyBill::where('company_counter', $data['company_counter'])->first();
+        $BuyBill = BuyBill::where('buy_bill_number', $data['buy_bill_number'])->first();
         if (empty($BuyBill)) $BuyBill = BuyBill::create($data);
         else $BuyBill->update($data);
 
@@ -335,8 +335,8 @@ class BuyBillController extends Controller
         $company = Company::FindOrFail($company_id);
 
         # get invoiceData.
-        $company_counter = $request->company_counter;
-        $buy_bill = BuyBill::where('company_counter', $company_counter)->first();
+        $buy_bill_number = $request->buy_bill_number;
+        $buy_bill = BuyBill::where('buy_bill_number', $buy_bill_number)->first();
         $elements = BuyBillElement::where('buy_bill_id', $buy_bill->id)->get();
         $extras = BuyBillExtra::where('buy_bill_id', $buy_bill->id)->get();
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
@@ -374,10 +374,10 @@ class BuyBillController extends Controller
                 echo "<td>" . $element->quantity . " " . $element->unit->unit_name . "</td>";
                 echo "<td>" . $element->quantity_price . "</td>";
                 echo "<td class='no-print'>
-                    <button type='button' company_counter='" . $element->BuyBill->company_counter . "' element_id='" . $element->id . "' class='btn btn-sm btn-info edit_element'>
+                    <button type='button' buy_bill_number='" . $element->BuyBill->buy_bill_number . "' element_id='" . $element->id . "' class='btn btn-sm btn-info edit_element'>
                         <i class='fa fa-pencil'></i> تعديل
                     </button>
-                    <button type='button' company_counter='" . $element->BuyBill->company_counter . "' element_id='" . $element->id . "' class='btn btn-sm btn-danger remove_element'>
+                    <button type='button' buy_bill_number='" . $element->BuyBill->buy_bill_number . "' element_id='" . $element->id . "' class='btn btn-sm btn-danger remove_element'>
                         <i class='fa fa-trash'></i> حذف
                     </button>
                 </td>";
@@ -414,7 +414,7 @@ class BuyBillController extends Controller
         <script>
             $('.remove_element').on('click',function(){
                 let element_id = $(this).attr('element_id');
-                let company_counter = $(this).attr('company_counter');
+                let buy_bill_number = $(this).attr('buy_bill_number');
                 let discount_type = $('#discount_type').val();
                 let discount_value = $('#discount_value').val();
                 let extra_type = $('#extra_type').val();
@@ -424,7 +424,7 @@ class BuyBillController extends Controller
                     '_token': '" . csrf_token() . "', element_id: element_id
                     },function (data) {
                     $.post('/client/buy-bills/elements', {
-                        '_token': '" . csrf_token() . "', company_counter: company_counter
+                        '_token': '" . csrf_token() . "', buy_bill_number: buy_bill_number
                         },function (elements) {
                             $('.bill_details').html(elements);
                     });
@@ -432,7 +432,7 @@ class BuyBillController extends Controller
 
                 $.post('/client/buy-bills/discount',{
                     '_token': '" . csrf_token() . "',
-                    company_counter:company_counter,
+                    buy_bill_number:buy_bill_number,
                     discount_type: discount_type,
                     discount_value: discount_value
                 },function (data) {
@@ -441,7 +441,7 @@ class BuyBillController extends Controller
 
                 $.post('/client/buy-bills/extra',{
                     '_token': '" . csrf_token() . "',
-                    company_counter:company_counter,
+                    buy_bill_number:buy_bill_number,
                     extra_type: extra_type,
                     extra_value: extra_value
                 },function (data) {
@@ -450,7 +450,7 @@ class BuyBillController extends Controller
 
                 $.post('/client/buy-bills/refresh',{
                     '_token': '" . csrf_token() . "',
-                    company_counter : company_counter,
+                    buy_bill_number : buy_bill_number,
                 },function (data) {
                     $('#final_total').val(data.final_total);
                 });
@@ -460,10 +460,10 @@ class BuyBillController extends Controller
 
             $('.edit_element').on('click', function () {
             let element_id = $(this).attr('element_id');
-            let company_counter = $(this).attr('company_counter');
+            let buy_bill_number = $(this).attr('buy_bill_number');
             $.post('/client/buy-bills/edit-element',{
                     '_token': '" . csrf_token() . "',
-                    company_counter: company_counter,
+                    buy_bill_number: buy_bill_number,
                     element_id: element_id
                 },
                 function (data) {
@@ -476,7 +476,7 @@ class BuyBillController extends Controller
                     let product_id = data.product_id;
                     $.post('/client/buy-bills/get-edit', {
                         product_id: product_id,
-                        company_counter: company_counter,
+                        buy_bill_number: buy_bill_number,
                         '_token': '" . csrf_token() . "'
                     }, function (data) {
                         $('input#quantity').attr('max', data.first_balance);
@@ -485,7 +485,7 @@ class BuyBillController extends Controller
                     $('#add').hide();
                     $('#edit').show();
                     $('#edit').attr('element_id', element_id);
-                    $('#edit').attr('company_counter', company_counter);
+                    $('#edit').attr('buy_bill_number', buy_bill_number);
                 });
             });
         </script>
@@ -500,12 +500,12 @@ class BuyBillController extends Controller
         $company = Company::FindOrFail($company_id);
 
         # get formData.
-        $company_counter = $request->company_counter;
+        $buy_bill_number = $request->buy_bill_number;
         $discount_type = $request->discount_type;
         $discount_value = $request->discount_value;
 
         # get invoiceData.
-        $buy_bill = BuyBill::where('company_counter', $company_counter)->first();
+        $buy_bill = BuyBill::where('buy_bill_number', $buy_bill_number)->first();
         $elements = BuyBillElement::where('buy_bill_id', $buy_bill->id)->get();
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
         $currency = $extra_settings->currency;
@@ -596,12 +596,12 @@ class BuyBillController extends Controller
         $company = Company::FindOrFail($company_id);
 
         # get formData.
-        $company_counter = $request->company_counter;
+        $buy_bill_number = $request->buy_bill_number;
         $extra_type = $request->extra_type;
         $extra_value = $request->extra_value;
 
         # get invoiceData.
-        $buy_bill = BuyBill::where('company_counter', $company_counter)->first();
+        $buy_bill = BuyBill::where('buy_bill_number', $buy_bill_number)->first();
         $elements = BuyBillElement::where('buy_bill_id', $buy_bill->id)->get();
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
         $currency = $extra_settings->currency;
@@ -693,8 +693,8 @@ class BuyBillController extends Controller
         $company = Company::FindOrFail($company_id);
 
         # get invoiceData -> elements and tax.
-        $company_counter = $request->company_counter;
-        $buy_bill = BuyBill::where('company_counter', $company_counter)->first();
+        $buy_bill_number = $request->buy_bill_number;
+        $buy_bill = BuyBill::where('buy_bill_number', $buy_bill_number)->first();
         $elements = $buy_bill->elements;
         $tax_value_added = $company->tax_value_added;
 
@@ -771,7 +771,7 @@ class BuyBillController extends Controller
         $client_id = Auth::user()->id;
 
         # get invoiceData.
-        $buy_bill = BuyBill::where('company_counter', $request->company_counter)->first();
+        $buy_bill = BuyBill::where('buy_bill_number', $request->buy_bill_number)->first();
         $elements = $buy_bill->elements;
         foreach ($elements as $element) {
             $product = Product::FindOrFail($element->product_id);
@@ -839,7 +839,7 @@ class BuyBillController extends Controller
                 $after_total_all = $total;
         }
 
-        $cash = BuyCash::where('bill_id', $buy_bill->company_counter)
+        $cash = BuyCash::where('bill_id', $buy_bill->buy_bill_number)
             ->where('company_id', $company_id)
             ->where('client_id', $buy_bill->client_id)
             ->where('supplier_id', $buy_bill->supplier_id)
@@ -867,7 +867,7 @@ class BuyBillController extends Controller
                 'rest' => $rest,
             ]);
         }
-        $bank_cash = BankBuyCash::where('bill_id', $buy_bill->company_counter)
+        $bank_cash = BankBuyCash::where('bill_id', $buy_bill->buy_bill_number)
             ->where('company_id', $company_id)
             ->where('client_id', $buy_bill->client_id)
             ->where('supplier_id', $buy_bill->supplier_id)
@@ -914,7 +914,7 @@ class BuyBillController extends Controller
 
     public function send($id)
     {
-        $buy_bill = BuyBill::where('company_counter', $id)->first();
+        $buy_bill = BuyBill::where('buy_bill_number', $id)->first();
         $url = 'https://' . request()->getHttpHost() . '/buy-bills/print/' . $id;
         $data = array(
             'body' => 'بيانات الفاتورة ',
@@ -936,11 +936,11 @@ class BuyBillController extends Controller
         $company_id = Auth::user()->company_id;
         $company = Company::FindOrFail($company_id);
         $client_id = Auth::user()->id;
-        $company_counter = $request->company_counter;
-        $buy_bill = BuyBill::where('company_counter', $company_counter)->first();
+        $buy_bill_number = $request->buy_bill_number;
+        $buy_bill = BuyBill::where('buy_bill_number', $buy_bill_number)->first();
         $buy_bill->elements()->delete();
         $buy_bill->extras()->delete();
-        $cash = BuyCash::where('bill_id', $buy_bill->company_counter)
+        $cash = BuyCash::where('bill_id', $buy_bill->buy_bill_number)
             ->where('company_id', $company_id)
             ->where('client_id', $buy_bill->client_id)
             ->where('supplier_id', $buy_bill->supplier_id)
@@ -948,7 +948,7 @@ class BuyBillController extends Controller
         if (!empty($cash)) {
             $cash->delete();
         }
-        $cash = BankBuyCash::where('bill_id', $buy_bill->company_counter)
+        $cash = BankBuyCash::where('bill_id', $buy_bill->buy_bill_number)
             ->where('company_id', $company_id)
             ->where('client_id', $buy_bill->client_id)
             ->where('supplier_id', $buy_bill->supplier_id)
@@ -987,7 +987,7 @@ class BuyBillController extends Controller
 
         $buy_bill->elements()->delete();
         $buy_bill->extras()->delete();
-        $cash = BuyCash::where('bill_id', $buy_bill->company_counter)
+        $cash = BuyCash::where('bill_id', $buy_bill->buy_bill_number)
             ->where('company_id', $company_id)
             ->where('client_id', $buy_bill->client_id)
             ->where('supplier_id', $buy_bill->supplier_id)
@@ -1003,7 +1003,7 @@ class BuyBillController extends Controller
 
             $cash->delete();
         }
-        $bank_cash = BankBuyCash::where('bill_id', $buy_bill->company_counter)
+        $bank_cash = BankBuyCash::where('bill_id', $buy_bill->buy_bill_number)
             ->where('company_id', $company_id)
             ->where('client_id', $buy_bill->client_id)
             ->where('supplier_id', $buy_bill->supplier_id)
@@ -1050,7 +1050,7 @@ class BuyBillController extends Controller
                 'first_balance' => $curr_balance
             ]);
         }
-        $cash = BuyCash::where('bill_id', $buy_bill->company_counter)
+        $cash = BuyCash::where('bill_id', $buy_bill->buy_bill_number)
             ->where('company_id', $company_id)
             ->where('client_id', $buy_bill->client_id)
             ->where('supplier_id', $buy_bill->supplier_id)
@@ -1064,7 +1064,7 @@ class BuyBillController extends Controller
                 'balance' => $safe_balance_after
             ]);
         }
-        $bank_cash = BankBuyCash::where('bill_id', $buy_bill->company_counter)
+        $bank_cash = BankBuyCash::where('bill_id', $buy_bill->buy_bill_number)
             ->where('company_id', $company_id)
             ->where('client_id', $buy_bill->client_id)
             ->where('supplier_id', $buy_bill->supplier_id)
@@ -1147,14 +1147,14 @@ class BuyBillController extends Controller
         $company_id = Auth::user()->company_id;
         $company = Company::FindOrFail($company_id);
         $stores = $company->stores;
-        
+
         $products = $company->products;
         $buy_bills = BuyBill::where('company_id', $company_id)->where('status', 'done')->get();
         $suppliers = $company->suppliers;
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
         $currency = $extra_settings->currency;
         $all_buy_bills = BuyBill::where('company_id', $company_id)->where('status', 'done')->get();
-        return view('client.buy_bills.index', compact('currency','stores','products', 'all_buy_bills', 'buy_bills', 'suppliers', 'company'));
+        return view('client.buy_bills.index', compact('currency','stores', 'products', 'all_buy_bills', 'buy_bills', 'suppliers', 'company'));
     }
 
     public function filter_supplier(Request $request)
@@ -1222,11 +1222,11 @@ class BuyBillController extends Controller
         $currency = $extra_settings->currency;
 
         $buy_bill_k = BuyBill::FindOrFail($buy_bill_id);
-        $cash = BuyCash::where('bill_id', $buy_bill_k->company_counter)
+        $cash = BuyCash::where('bill_id', $buy_bill_k->buy_bill_number)
             ->where('company_id', $company_id)
             ->where('client_id', $buy_bill_k->client_id)
             ->where('supplier_id', $buy_bill_k->supplier_id)
-            // ->where('store_id', $buy_bill_k->store_id)
+            ->where('store_id', $buy_bill_k->store_id)
             ->first();
 
         $elements = $buy_bill_k->elements;
@@ -1358,8 +1358,8 @@ class BuyBillController extends Controller
     {
         $company_id = Auth::user()->company_id;
         $company = Company::FindOrFail($company_id);
-        $company_counter = $request->company_counter;
-        $buy_bill = BuyBill::where('company_counter', $company_counter)->first();
+        $buy_bill_number = $request->buy_bill_number;
+        $buy_bill = BuyBill::where('buy_bill_number', $buy_bill_number)->first();
         $elements = BuyBillElement::where('buy_bill_id', $buy_bill->id)->get();
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
         $currency = $extra_settings->currency;
@@ -1452,7 +1452,7 @@ class BuyBillController extends Controller
 
     public function print($id)
     {
-        $buy_bill = BuyBill::where('company_counter', $id)->first();
+        $buy_bill = BuyBill::where('buy_bill_number', $id)->first();
         if (!empty($buy_bill)) {
             $elements = $buy_bill->elements;
             if ($elements->isEmpty()) {
