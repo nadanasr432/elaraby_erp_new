@@ -176,18 +176,20 @@
                             <th
                                 style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
                                 {{ __('sales_bills.unit') }}</th>
-                            <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 5px; font-weight: bold;">
-                                {{ __('sales_bills.discount') }}
-                                <div class="tax_discount"
-                                    style="display: inline-block; margin-left: 10px; vertical-align: middle;">
-                                    <select id="discount_application" class="form-control"
-                                        style="font-size: 12px; height: 30px;" name="products_discount_type">
-                                        <option value="before_tax">{{ __('sales_bills.discount_before_tax') }}</option>
-                                        <option value="after_tax">{{ __('sales_bills.discount_after_tax') }}</option>
-                                    </select>
-                                </div>
-                            </th>
+                            @if($user->roles->flatMap->permissions->contains('name', 'الخصم'))
+                                <th
+                                    style="background-color: #d8daf5; color: #333; text-align: center; padding: 5px; font-weight: bold;">
+                                    {{ __('sales_bills.discount') }}
+                                    <div class="tax_discount"
+                                        style="display: inline-block; margin-left: 10px; vertical-align: middle;">
+                                        <select id="discount_application" class="form-control"
+                                            style="font-size: 12px; height: 30px;" name="products_discount_type">
+                                            <option value="before_tax">{{ __('sales_bills.discount_before_tax') }}</option>
+                                            <option value="after_tax">{{ __('sales_bills.discount_after_tax') }}</option>
+                                        </select>
+                                    </div>
+                                </th>
+                            @endif
                             <th
                                 style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
                                 {{ __('sales_bills.tax') }}</th>
@@ -222,27 +224,28 @@
 
         <div class="row">
             <div class="col-md-6 pull-right">
-                <div class="form-group" dir="rtl">
-                    <label for="discount">{{ __('sales_bills.discount-on-the-total-bill') }}</label> <br>
-                    <select name="discount_type" id="discount_type" class="form-control"
-                        style="width: 60%;display: inline;float: right; margin-left:5px;">
-                        <option value="">اختر نوع الخصم</option>
-                        <option value="pound">خصم قبل الضريبة (مسطح)</option>
-                        <option value="percent">خصم قبل الضريبة (%)</option>
-                        <option value="poundAfterTax">ضمان اعمال (مسطح)</option>
-                        <option value="poundAfterTaxPercent">ضمان اعمال (%)</option>
-                        <option value="afterTax" class="d-none">
-                            خصم علي اجمالي المبلغ شامل الضريبة
-                        </option>
-                    </select>
-                    <input type="number" value="0" name="discount_value" min="0"
-                        style="width: 20%;display: inline;float: right;" id="discount_value" class="form-control "
-                        step = "any" />
-                    <input type="text" name="discount_note" id="discount_note" placeholder="ملاحظات الخصم. . ."
-                        class="form-control mt-5" style="width: 80%;">
-                    {{-- <span id="dicountForBill"></span> --}}
-                </div>
-
+                @if($user->roles->flatMap->permissions->contains('name', 'الخصم'))
+                    <div class="form-group" dir="rtl">
+                        <label for="discount">{{ __('sales_bills.discount-on-the-total-bill') }}</label> <br>
+                        <select name="discount_type" id="discount_type" class="form-control"
+                            style="width: 60%;display: inline;float: right; margin-left:5px;">
+                            <option value="">اختر نوع الخصم</option>
+                            <option value="pound">خصم قبل الضريبة (مسطح)</option>
+                            <option value="percent">خصم قبل الضريبة (%)</option>
+                            <option value="poundAfterTax">ضمان اعمال (مسطح)</option>
+                            <option value="poundAfterTaxPercent">ضمان اعمال (%)</option>
+                            <option value="afterTax" class="d-none">
+                                خصم علي اجمالي المبلغ شامل الضريبة
+                            </option>
+                        </select>
+                        <input type="number" value="0" name="discount_value" min="0"
+                            style="width: 20%;display: inline;float: right;" id="discount_value" class="form-control "
+                            step = "any" />
+                        <input type="text" name="discount_note" id="discount_note" placeholder="ملاحظات الخصم. . ."
+                            class="form-control mt-5" style="width: 80%;">
+                        {{-- <span id="dicountForBill"></span> --}}
+                    </div>
+                @endif
 
             </div>
             <div class="col-md-6 pull-right">
@@ -601,12 +604,6 @@
     <input type="hidden" id="net_total" placeholder="اجمالى قبل الخصم" name="total" />
     <input type="hidden" value="0" id="check" />
     <style>
-        button:disabled {
-            pointer-events: none !important;
-            opacity: 0.5 !important;
-            cursor: not-allowed !important;
-        }
-
         input {
             min-width: 100px;
         }
@@ -635,6 +632,10 @@
         };
     </script>
     <script>
+        // تعريف المتغير في النطاق العام
+        window.canDiscount = @json($user->roles->flatMap->permissions->contains('name', 'الخصم'));
+    </script>
+    <script>
         var somethingChanged = false;
         $(document).ready(function() {
             $('.summernotes').summernote({
@@ -644,264 +645,50 @@
         })
         //onsave btn حفظ الفاتورة
         $(document).ready(function() {
-            // $('#value_added_tax').on('change', function() {
-            //     const newTaxType = $(this).val();
+            $('#value_added_tax').on('change', function() {
+                const newTaxType = $(this).val();
 
-            //     // Show a SweetAlert confirmation dialog
-            //     Swal.fire({
-            //         title: 'تأكيد التغيير',
-            //         text: 'سيتم تغيير نوع الضريبة لجميع العناصر في الجدول إلى القيمة المحددة. هل تريد المتابعة؟',
-            //         icon: 'warning',
-            //         showCancelButton: true,
-            //         confirmButtonText: 'نعم، تغيير',
-            //         cancelButtonText: 'إلغاء',
-            //     }).then((result) => {
-            //         if (result.isConfirmed) {
-            //             // Update all tax types in the table to match the selected value
-            //             $('#products_table tbody tr').each(function() {
-            //                 $(this).find('select[name*="[tax]"]').val(newTaxType).trigger(
-            //                     'change');
-            //             });
+                // Show a SweetAlert confirmation dialog
+                Swal.fire({
+                    title: 'تأكيد التغيير',
+                    text: 'سيتم تغيير نوع الضريبة لجميع العناصر في الجدول إلى القيمة المحددة. هل تريد المتابعة؟',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'نعم، تغيير',
+                    cancelButtonText: 'إلغاء',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Update all tax types in the table to match the selected value
+                        $('#products_table tbody tr').each(function() {
+                            $(this).find('select[name*="[tax]"]').val(newTaxType).trigger(
+                                'change');
+                        });
 
-            //             handleTaxCalculation(); // Recalculate taxes after the update
-            //             Swal.fire(
-            //                 'تم التغيير!',
-            //                 'تم تحديث نوع الضريبة بنجاح.',
-            //                 'success'
-            //             );
-            //         } else {
-            //             // Reset the dropdown to its previous value
-            //             $(this).val($(this).data('previous-value'));
-            //         }
-            //     });
+                        handleTaxCalculation(); // Recalculate taxes after the update
+                        Swal.fire(
+                            'تم التغيير!',
+                            'تم تحديث نوع الضريبة بنجاح.',
+                            'success'
+                        );
+                    } else {
+                        // Reset the dropdown to its previous value
+                        $(this).val($(this).data('previous-value'));
+                    }
+                });
 
-            //     // Save the current value as previous for potential reset
-            //     $(this).data('previous-value', newTaxType);
-            // });
-            // $('.save_btn1').on('click', function(e) {
-            //     e.preventDefault(); // Prevent default form submission
-
-            //     // Disable both buttons to prevent multiple clicks
-            //     $('.save_btn1, .save_btn2').prop('disabled', true);
-
-            //     const discountType = document.getElementById('discount_type').value;
-            //     const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
-            //     const grandTotal = parseFloat(document.getElementById('grand_total').textContent) || 0;
-
-            //     if ((discountType === 'pound' || discountType === 'poundAfterTax') && discountValue >
-            //         grandTotal + discountValue) {
-            //         Swal.fire({
-            //             icon: 'warning',
-            //             title: 'تحذير',
-            //             text: 'لا يمكن أن يكون الخصم أكبر من الإجمالي!',
-            //             confirmButtonText: 'موافق'
-            //         });
-            //         $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
-            //         return false;
-            //     }
-
-            //     let outerClientId = $('#outer_client_id').val();
-            //     if (!outerClientId) {
-            //         Swal.fire({
-            //             icon: 'warning',
-            //             title: 'تحذير',
-            //             text: 'يجب اختيار العميل',
-            //             confirmButtonText: 'موافق'
-            //         });
-            //         $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
-            //         return false;
-            //     }
-
-            //     let hasProduct = false;
-            //     $('#products_table tbody tr').each(function() {
-            //         let quantity = $(this).find('input[name*="[quantity]"]').val();
-            //         let price = $(this).find('input[name*="[product_price]"]').val();
-            //         let unit = $(this).find('select[name*="[unit_id]"]').val();
-
-            //         if (quantity > 0 && price > 0 && unit) {
-            //             hasProduct = true;
-            //         }
-            //     });
-
-            //     if (!hasProduct) {
-            //         Swal.fire({
-            //             icon: 'warning',
-            //             title: 'تحذير',
-            //             text: 'يجب اختيار منتج واحد على الأقل، وتحديد الكمية، والسعر، والوحدة لكل منتج',
-            //             confirmButtonText: 'موافق'
-            //         });
-            //         $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
-            //         return false;
-            //     }
-
-            //     var formData = $('#myForm').serialize();
-
-            //     $.post("{{ url('/client/sale-bills/saveAll1') }}", formData)
-            //         .done(function(data) {
-            //             location.href = '/sale-bills/print/' + data;
-            //         })
-            //         .fail(function(jqXHR) {
-            //             let errorMessage = "حدث خطأ أثناء حفظ البيانات";
-            //             if (jqXHR.responseJSON) {
-            //                 errorMessage = jqXHR.responseJSON.message || jqXHR.responseJSON.error ||
-            //                     errorMessage;
-            //             } else if (jqXHR.responseText) {
-            //                 errorMessage = jqXHR.responseText;
-            //             }
-
-            //             Swal.fire({
-            //                 icon: 'error',
-            //                 title: errorMessage,
-            //                 text: '',
-            //                 confirmButtonText: 'إغلاق'
-            //             });
-
-            //             $('.save_btn1, .save_btn2').prop('disabled',
-            //             false); // Re-enable buttons on error
-            //         });
-            // });
-
-            // // Save button 2
-            // $('.save_btn2').on('click', function(e) {
-            //     e.preventDefault(); // Prevent default form submission
-
-            //     // Disable both buttons to prevent multiple clicks
-            //     $('.save_btn1, .save_btn2').prop('disabled', true);
-
-            //     let printColor = $(this).attr('printColor');
-            //     let isMoswada = $(this).attr('isMoswada');
-            //     let invoiceType = $(this).attr('invoiceType');
-            //     let outerClientId = $('#outer_client_id').val();
-
-            //     const discountType = document.getElementById('discount_type').value;
-            //     const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
-            //     const grandTotal = parseFloat(document.getElementById('grand_total').textContent) || 0;
-
-            //     if ((discountType === 'pound' || discountType === 'poundAfterTax') && discountValue >
-            //         grandTotal + discountValue) {
-            //         Swal.fire({
-            //             icon: 'warning',
-            //             title: 'تحذير',
-            //             text: 'لا يمكن أن يكون الخصم أكبر من الإجمالي!',
-            //             confirmButtonText: 'موافق'
-            //         });
-            //         $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
-            //         return false;
-            //     }
-
-            //     if (!outerClientId) {
-            //         Swal.fire({
-            //             icon: 'warning',
-            //             title: 'تحذير',
-            //             text: 'يجب اختيار العميل',
-            //             confirmButtonText: 'موافق'
-            //         });
-            //         $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
-            //         return false;
-            //     }
-
-            //     let hasProduct = false;
-            //     $('#products_table tbody tr').each(function() {
-            //         let quantity = $(this).find('input[name*="[quantity]"]').val();
-            //         let price = $(this).find('input[name*="[product_price]"]').val();
-            //         let unit = $(this).find('select[name*="[unit_id]"]').val();
-
-            //         if (quantity > 0 && price > 0 && unit) {
-            //             hasProduct = true;
-            //         }
-            //     });
-
-            //     if (!hasProduct) {
-            //         Swal.fire({
-            //             icon: 'warning',
-            //             title: 'تحذير',
-            //             text: 'يجب اختيار منتج واحد على الأقل، وتحديد الكمية، والسعر، والوحدة لكل منتج',
-            //             confirmButtonText: 'موافق'
-            //         });
-            //         $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
-            //         return false;
-            //     }
-
-            //     var formData = $('#myForm').serialize();
-
-            //     $.post("{{ url('/client/sale-bills/saveAll1') }}", formData)
-            //         .done(function(data) {
-            //             location.href = '/sale-bills/print/' + data + '/' + invoiceType + '/' +
-            //                 printColor + '/' + isMoswada;
-            //         })
-            //         .fail(function(jqXHR) {
-            //             let errorMessage = "حدث خطأ أثناء حفظ البيانات";
-            //             if (jqXHR.responseJSON) {
-            //                 errorMessage = jqXHR.responseJSON.message || jqXHR.responseJSON.error ||
-            //                     errorMessage;
-            //             } else if (jqXHR.responseText) {
-            //                 errorMessage = jqXHR.responseText;
-            //             }
-
-            //             Swal.fire({
-            //                 icon: 'error',
-            //                 title: errorMessage,
-            //                 text: '',
-            //                 confirmButtonText: 'إغلاق'
-            //             });
-
-            //             $('.save_btn1, .save_btn2').prop('disabled',
-            //             false); // Re-enable buttons on error
-            //         });
-            // });
-            function disableButtons() {
-                console.log('hi');
-
-                $('.save_btn1, .save_btn2')
-                    .prop('disabled', true)
-                    .attr('disabled', 'disabled')
-                    .off('click'); // Remove all event listeners
-
-                setTimeout(() => {
-                    console.log('Disabled state after 1s:', $('.save_btn1').prop('disabled'));
-                }, 1000);
-            }
-
-
-            function disableButtons() {
-                console.log('Disabling buttons...');
-
-                $('.save_btn1, .save_btn2')
-                    .prop('disabled', true)
-                    .attr('disabled', 'disabled')
-                    .off('click'); // Remove all event listeners
-
-                setTimeout(() => {
-                    console.log('Disabled state after 1s:', $('.save_btn1').prop('disabled'));
-                }, 1000);
-            }
-
-            function enableButtons() {
-                console.log('Enabling buttons...');
-
-                $('.save_btn1, .save_btn2')
-                    .prop('disabled', false)
-                    .removeAttr('disabled')
-                    .on('click', function() {
-                        console.log('Button clicked after enabling');
-                    }); // Restore event listeners if needed
-
-                setTimeout(() => {
-                    console.log('Enabled state after 1s:', $('.save_btn1').prop('disabled'));
-                }, 1000);
-            }
-
-
+                // Save the current value as previous for potential reset
+                $(this).data('previous-value', newTaxType);
+            });
             $('.save_btn1').on('click', function(e) {
                 e.preventDefault(); // Prevent default form submission
 
-                disableButtons(); // Disable both buttons to prevent multiple clicks
+                // Disable both buttons to prevent multiple clicks
+                $('.save_btn1, .save_btn2').prop('disabled', true);
 
                 const discountType = document.getElementById('discount_type').value;
                 const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
                 const grandTotal = parseFloat(document.getElementById('grand_total').textContent) || 0;
 
-                // Check if discount exceeds grand total
                 if ((discountType === 'pound' || discountType === 'poundAfterTax') && discountValue >
                     grandTotal + discountValue) {
                     Swal.fire({
@@ -910,23 +697,11 @@
                         text: 'لا يمكن أن يكون الخصم أكبر من الإجمالي!',
                         confirmButtonText: 'موافق'
                     });
-                    enableButtons(); // Re-enable buttons if validation fails
-                    return false;
-                }
-
-                if (discountValue > grandTotal + discountValue) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'تحذير',
-                        text: 'يجب أن يكون الخصم أقل أو مساوياً للإجمالي!',
-                        confirmButtonText: 'موافق'
-                    });
-                    enableButtons(); // Re-enable buttons if validation fails
+                    $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
                     return false;
                 }
 
                 let outerClientId = $('#outer_client_id').val();
-
                 if (!outerClientId) {
                     Swal.fire({
                         icon: 'warning',
@@ -934,7 +709,7 @@
                         text: 'يجب اختيار العميل',
                         confirmButtonText: 'موافق'
                     });
-                    enableButtons();
+                    $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
                     return false;
                 }
 
@@ -956,7 +731,7 @@
                         text: 'يجب اختيار منتج واحد على الأقل، وتحديد الكمية، والسعر، والوحدة لكل منتج',
                         confirmButtonText: 'موافق'
                     });
-                    enableButtons();
+                    $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
                     return false;
                 }
 
@@ -969,7 +744,8 @@
                     .fail(function(jqXHR) {
                         let errorMessage = "حدث خطأ أثناء حفظ البيانات";
                         if (jqXHR.responseJSON) {
-                            errorMessage = jqXHR.responseJSON.message || jqXHR.responseJSON.error;
+                            errorMessage = jqXHR.responseJSON.message || jqXHR.responseJSON.error ||
+                                errorMessage;
                         } else if (jqXHR.responseText) {
                             errorMessage = jqXHR.responseText;
                         }
@@ -980,14 +756,18 @@
                             text: '',
                             confirmButtonText: 'إغلاق'
                         });
-                        enableButtons(); // Re-enable buttons on failure
+
+                        $('.save_btn1, .save_btn2').prop('disabled',
+                            false); // Re-enable buttons on error
                     });
             });
 
+            // Save button 2
             $('.save_btn2').on('click', function(e) {
-                e.preventDefault();
+                e.preventDefault(); // Prevent default form submission
 
-                disableButtons(); // Disable both buttons to prevent multiple clicks
+                // Disable both buttons to prevent multiple clicks
+                $('.save_btn1, .save_btn2').prop('disabled', true);
 
                 let printColor = $(this).attr('printColor');
                 let isMoswada = $(this).attr('isMoswada');
@@ -1006,18 +786,7 @@
                         text: 'لا يمكن أن يكون الخصم أكبر من الإجمالي!',
                         confirmButtonText: 'موافق'
                     });
-                    enableButtons();
-                    return false;
-                }
-
-                if (discountValue > grandTotal + discountValue) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'تحذير',
-                        text: 'يجب أن يكون الخصم أقل أو مساوياً للإجمالي!',
-                        confirmButtonText: 'موافق'
-                    });
-                    enableButtons();
+                    $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
                     return false;
                 }
 
@@ -1028,7 +797,7 @@
                         text: 'يجب اختيار العميل',
                         confirmButtonText: 'موافق'
                     });
-                    enableButtons();
+                    $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
                     return false;
                 }
 
@@ -1050,7 +819,7 @@
                         text: 'يجب اختيار منتج واحد على الأقل، وتحديد الكمية، والسعر، والوحدة لكل منتج',
                         confirmButtonText: 'موافق'
                     });
-                    enableButtons();
+                    $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
                     return false;
                 }
 
@@ -1064,7 +833,8 @@
                     .fail(function(jqXHR) {
                         let errorMessage = "حدث خطأ أثناء حفظ البيانات";
                         if (jqXHR.responseJSON) {
-                            errorMessage = jqXHR.responseJSON.message || jqXHR.responseJSON.error;
+                            errorMessage = jqXHR.responseJSON.message || jqXHR.responseJSON.error ||
+                                errorMessage;
                         } else if (jqXHR.responseText) {
                             errorMessage = jqXHR.responseText;
                         }
@@ -1075,9 +845,12 @@
                             text: '',
                             confirmButtonText: 'إغلاق'
                         });
-                        enableButtons(); // Re-enable buttons on failure
+
+                        $('.save_btn1, .save_btn2').prop('disabled',
+                            false); // Re-enable buttons on error
                     });
             });
+
 
 
 
@@ -1760,76 +1533,78 @@
             unitId,
             isImmediate = false
         }) {
+
             var valueAddedTax = $('#value_added_tax').val(); // Get the selected tax setting
 
             var rowHtml = `
-            <tr data-product-id="${productId}" data-index="${rowIndex}">
-                <td>${isImmediate ? `<input type="text" name="products[${rowIndex}][product_name]" class="form-control" placeholder="${translations.enter_product_name}" required>` : productName}</td>
-                <td class="text-left">
-                    <div class="d-flex flex-column">
-                        <label class="form-check-inline">
-                            <input type="radio" name="products[${rowIndex}][price_type]" value="sector" class="price_type form-check-input" checked>
-                            ${translations.sector}
-                        </label>
-                        <label class="form-check-inline">
-                            <input type="radio" name="products[${rowIndex}][price_type]" value="wholesale" class="price_type form-check-input">
-                            ${translations.wholesale}
-                        </label>
-                    </div>
-                </td>
-                <td>
-                    <div class="input-group">
-                        <input type="number" min="1" name="products[${rowIndex}][product_price]" class="form-control price w-100" value="${sectorPrice}" step="any">
-                        <input type="number" hidden name="products[${rowIndex}][product_id]" class="form-control product_id w-100" value="${productId}" >
-                    </div>
-                </td>
-                <td>
-                    <div class="input-group">
-                        <input type="number" name="products[${rowIndex}][quantity]" class="form-control quantity w-100" value="1" min="1" max="${remaining}" step="any">
-                    </div>
-                </td>
-                <td>
-                    <div class="input-group">
-                        <select name="products[${rowIndex}][unit_id]" class="form-control w-100 unit">
-                            <option disabled>${translations.choose_unit}</option>
-                            @foreach ($units as $unit)
-                                             <option value="{{ $unit->id }}" ${unitId === {{ $unit->id }} ? 'selected' : ''}>{{ $unit->unit_name }}</option>
-                                     @endforeach
-                        </select>
-                    </div>
-                </td>
-                <td>
-                    <div class="d-flex flex-column">
-                        <label class="form-check-inline">
-                            <input type="radio" name="products[${rowIndex}][discount_type]" value="pound" class="discount_type form-check-input">
-                            ${translations.pound}
-                        </label>
-                        <label class="form-check-inline">
-                            <input type="radio" name="products[${rowIndex}][discount_type]" value="percent" class="discount_type form-check-input" checked>
-                            ${translations.percent}
-                        </label>
-                        <input type="number" name="products[${rowIndex}][discount]" class="form-control discount w-100 mt-1" value="0" min="0" step="any">
-                    </div>
-                </td>
-                <td>
-                    <div class="input-group">
-                        <select name="products[${rowIndex}][tax]" class="form-control tax_type w-100 mb-1">
-                            <option value="0" ${valueAddedTax == 0 ? 'selected' : ''}>${translations.not_including_tax}</option>
-                            <option value="1" ${valueAddedTax == 1 ? 'selected' : ''}>${translations.exempt_tax}</option>
-                            <option value="2" ${valueAddedTax == 2 ? 'selected' : ''}>${translations.including_tax}</option>
-                        </select>
-                        <input type="number" readonly name="products[${rowIndex}][tax_amount]" class="form-control tax_amount w-100 mt-1" value="0" min="0" step="any">
-
-                    </div>
-                </td>
-                <td>
-                    <input type="number" name="products[${rowIndex}][total]" class="form-control total w-100" value="0" readonly step="any">
-                </td>
-                <td>
-                    <button type="button" class="btn btn-danger btn-sm remove-product">${translations.remove}</button>
-                </td>
-            </tr>
-          `;
+    <tr data-product-id="${productId}" data-index="${rowIndex}">
+        <td>${isImmediate ? `<input type="text" name="products[${rowIndex}][product_name]" class="form-control" placeholder="${translations.enter_product_name}" required>` : productName}</td>
+        <td class="text-left">
+            <div class="d-flex flex-column">
+                <label class="form-check-inline">
+                    <input type="radio" name="products[${rowIndex}][price_type]" value="sector" class="price_type form-check-input" checked>
+                    ${translations.sector}
+                </label>
+                <label class="form-check-inline">
+                    <input type="radio" name="products[${rowIndex}][price_type]" value="wholesale" class="price_type form-check-input">
+                    ${translations.wholesale}
+                </label>
+            </div>
+        </td>
+        <td>
+            <div class="input-group">
+                <input type="number" min="1" name="products[${rowIndex}][product_price]" class="form-control price w-100" value="${sectorPrice}" step="any">
+                <input type="number" hidden name="products[${rowIndex}][product_id]" class="form-control product_id w-100" value="${productId}" >
+            </div>
+        </td>
+        <td>
+            <div class="input-group">
+                <input type="number" name="products[${rowIndex}][quantity]" class="form-control quantity w-100" value="1" min="1" max="${remaining}" step="any">
+            </div>
+        </td>
+        <td>
+            <div class="input-group">
+                <select name="products[${rowIndex}][unit_id]" class="form-control w-100 unit">
+                    <option disabled>${translations.choose_unit}</option>
+                    @foreach ($units as $unit)
+                                         <option value="{{ $unit->id }}" ${unitId === {{ $unit->id }} ? 'selected' : ''}>{{ $unit->unit_name }}</option>
+                                 @endforeach
+                </select>
+            </div>
+        </td>
+        ${canDiscount ? `
+                            <td>
+                                <div class="d-flex flex-column">
+                                    <label class="form-check-inline">
+                                        <input type="radio" name="products[${rowIndex}][discount_type]" value="pound" class="discount_type form-check-input">
+                                        ${translations.pound}
+                                    </label>
+                                    <label class="form-check-inline">
+                                        <input type="radio" name="products[${rowIndex}][discount_type]" value="percent" class="discount_type form-check-input" checked>
+                                        ${translations.percent}
+                                    </label>
+                                    <input type="number" name="products[${rowIndex}][discount]" class="form-control discount w-100 mt-1" value="0" min="0" step="any">
+                                </div>
+                            </td>
+                            ` : ''}
+        <td>
+            <div class="input-group">
+                <select name="products[${rowIndex}][tax]" class="form-control tax_type w-100 mb-1">
+                    <option value="0" ${valueAddedTax == 0 ? 'selected' : ''}>${translations.not_including_tax}</option>
+                    <option value="1" ${valueAddedTax == 1 ? 'selected' : ''}>${translations.exempt_tax}</option>
+                    <option value="2" ${valueAddedTax == 2 ? 'selected' : ''}>${translations.including_tax}</option>
+                </select>
+                <input type="number" readonly name="products[${rowIndex}][tax_amount]" class="form-control tax_amount w-100 mt-1" value="0" min="0" step="any">
+            </div>
+        </td>
+        <td>
+            <input type="number" name="products[${rowIndex}][total]" class="form-control total w-100" value="0" readonly step="any">
+        </td>
+        <td>
+            <button type="button" class="btn btn-danger btn-sm remove-product">${translations.remove}</button>
+        </td>
+    </tr>
+    `;
 
             $('#products_table tbody').append(rowHtml);
             rowIndex++;
@@ -1853,28 +1628,51 @@
         }
 
         function validateDiscount() {
-            $('input[name^="products["][name$="[discount]"]').each(function() {
-                var discountInput = $(this);
-                var rowIndex = discountInput.attr('name').match(/\[(\d+)\]/)[1]; // Extract row index
-                var discountType = $('input[name="products[' + rowIndex + '][discount_type]"]:checked')
-                    .val();
-                var discountValue = parseFloat(discountInput.val());
+            $('#products_table tbody tr').each(function() {
+                var row = $(this);
+                var discountInput = row.find('input[name*="[discount]"]');
+                var discountType = row.find('input[name*="[discount_type]"]:checked').val();
+                var discountValue = parseFloat(discountInput.val()) || 0;
 
-                if (discountType === 'percent' && discountValue > 100) {
-                    alert('Discount cannot be more than 100% for percentage discount.');
-                    discountInput.val(100); // Reset to maximum allowed value
+                var productPrice = parseFloat(row.find('input[name*="[product_price]"]').val()) || 0;
+                var quantity = parseFloat(row.find('input[name*="[quantity]"]').val()) || 0;
+                var rowTotal = productPrice * quantity;
+
+
+                if (discountType === 'percent') {
+                    // Percentage discount: Ensure it doesn't exceed 100%
+                    if (discountValue > 100) {
+                        alert('Discount cannot be more than 100% for percentage discount.');
+                        discountInput.val(100); // Reset to maximum allowed value
+                    }
+                } else if (discountType === 'pound') {
+                    // Flat discount: Ensure it doesn't exceed the row total
+                    if (discountValue > rowTotal) {
+                        alert('Discount cannot be more than the total amount for this product.');
+                        discountInput.val(rowTotal); // Reset to the row total
+                    }
                 }
             });
         }
 
         function validateDiscountTotal() {
             var discountType = $('#discount_type').val(); // Get selected discount type
-            var discountValue = parseFloat($('#discount_value').val()); // Get discount value
-
-            // Check if discount type is percentage-based
-            if ((discountType === 'percent' || discountType === 'poundAfterTaxPercent') && discountValue > 100) {
-                alert('الخصم لا يمكن أن يكون أكثر من 100% لنوع الخصم المحدد.');
-                $('#discount_value').val(100); // Reset discount value to 100
+            var discountValue = parseFloat($('#discount_value').val()) || 0; // Get discount value
+            var grandTotal = parseFloat($('#grand_total').text()) || 0; // Get the grand total
+            var grandTax = parseFloat($('#grand_tax').text()) || 0; // Get the grand total
+            total = grandTotal - grandTax;
+            if (discountType === 'percent' || discountType === 'poundAfterTaxPercent') {
+                // Percentage discount: Ensure it doesn't exceed 100%
+                if (discountValue > 100) {
+                    alert('Discount cannot be more than 100% for percentage discount.');
+                    $('#discount_value').val(100); // Reset to maximum allowed value
+                }
+            } else if (discountType === 'pound' || discountType === 'poundAfterTax') {
+                // Flat discount: Ensure it doesn't exceed the grand total
+                if (discountValue > total) {
+                    alert('Discount cannot be more than the total amount of the invoice.');
+                    $('#discount_value').val(total); // Reset to the grand total
+                }
             }
         }
 
