@@ -10,7 +10,7 @@ $tax_value_added = $company->tax_value_added;
 
 <head>
     <title>
-        <?php echo $buy_bill->supplier->supplier_name . ' - فاتورة رقم ' . $buy_bill->buy_bill_number; ?>
+        <?php echo $buy_bill->supplier->supplier_name . ' - فاتورة رقم ' . $buy_bill->company_counter; ?>
     </title>
 
     <meta charset="utf-8" />
@@ -258,7 +258,7 @@ $tax_value_added = $company->tax_value_added;
                         </tr>
                     </thead>
                     @php
-                        $billNum = $buy_bill->company_counter ? $buy_bill->company_counter : $buy_bill->buy_bill_number;
+                        $billNum = $buy_bill->company_counter ? $buy_bill->company_counter : $buy_bill->company_counter;
                     @endphp
                     <tbody style="font-size:18px !important;">
                         <tr class="even"
@@ -376,7 +376,7 @@ $tax_value_added = $company->tax_value_added;
                             $extras = $buy_bill->extras;
                             $billNum = $buy_bill->company_counter
                                 ? $buy_bill->company_counter
-                                : $buy_bill->buy_bill_number;
+                                : $buy_bill->company_counter;
 
                         @endphp
                         @foreach ($elements as $element)
@@ -556,11 +556,11 @@ $tax_value_added = $company->tax_value_added;
                         </tr>
 
                         @php
-                            $cash = \App\Models\BuyCash::where('bill_id', $buy_bill->buy_bill_number)
+                            $cash = \App\Models\BuyCash::where('bill_id', $buy_bill->company_counter)
                                 ->where('company_id', $company_id)
                                 ->where('supplier_id', $buy_bill->supplier_id)
                                 ->first();
-                            $bank_cash = \App\Models\BankBuyCash::where('bill_id', $buy_bill->buy_bill_number)
+                            $bank_cash = \App\Models\BankBuyCash::where('bill_id', $buy_bill->company_counter)
                                 ->where('company_id', $company_id)
                                 ->where('supplier_id', $buy_bill->supplier_id)
                                 ->first();

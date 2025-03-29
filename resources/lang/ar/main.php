@@ -210,7 +210,7 @@ return [
     "Bahraini Dinar" => "دينار بحريني",
     "United Arab Emirates Dirham" => "درهم اماراتي",
     "Saudi Riyal" => "ريال سعودي",
-    "wel-msg" => "منصة العربي نقدم خدمات رفع الاقرار الضريبي و كل ما يتعلق ب امور الزكاه و الضريبة 0562354761 تواصل معنا",
+    "wel-msg" => "متاح الان الربط مع هيئة الزكاة والدخل تواصل معنا 0562354761 ",
     "Omani Rial" => "ريال عماني",
     "price" => "الاجمالي",
     "pmethod" => "طريقة الدفع",
@@ -346,7 +346,7 @@ return [
     "close" => "اغلاق",
     "add immediate client" => "اضافة عميل سريع",
     'value_cannot_exceed_100' => 'القيمة لا يمكن أن تتجاوز 100.',
-    "Update Client Information"=>"تحديث بيانات العميل",
+    "Update Client Information" => "تحديث بيانات العميل",
     "add immediate product" => "اضافة منتج سريع",
 
 ];

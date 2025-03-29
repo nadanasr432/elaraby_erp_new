@@ -8,6 +8,7 @@ use App\Models\Information;
 use App\Http\Middleware\CheckStatus;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ZatcaController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\Admin\TypeController;
 use App\Http\Controllers\Client\PosController;
@@ -46,8 +47,8 @@ use App\Http\Controllers\Client\CategoryController;
 use App\Http\Controllers\Client\EmployeeController;
 use App\Http\Controllers\Client\SaleBillController;
 use App\Http\Controllers\Client\SettingsController;
-use App\Http\Controllers\Client\SupplierController;
 // use App\Http\Controllers\Client\JournalEntryController;
+use App\Http\Controllers\Client\SupplierController;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Client\QuotationController;
 use App\Http\Controllers\Client\SaleBillController1;
@@ -61,7 +62,10 @@ use App\Http\Controllers\Client\ClientProfileController;
 use App\Http\Controllers\Client\PurchaseOrderController;
 use App\Http\Controllers\Client\CategoriesAssetController;
 use App\Http\Controllers\Client\SaleBillPrintDemoController;
-
+use App\Services\Zatca\TestZatca;
+Route::get('/test-zatca', function () {
+    require_once app_path('Services/Zatca/TestZatca.php');
+});
 Route::get('admin/createTokensForAllInvoices', [\App\Http\Controllers\Client\SaleBillController::class, 'createTokensForAllInvoices']);
 Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect::class, \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter::class, \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class]], function () {
 
@@ -144,7 +148,6 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::get('/pos-print/{pos_id?}', [PosController::class, 'print'])
                 ->name('pos.open.print');
             Route::post('buy-bills/update-color', [BuyBillController::class, 'updateColor'])->name('buy-bills.update-color');
-
         });
     // *********  Admin Routes ******** //
 
@@ -328,7 +331,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::get('pos-settings-edit/{id?}', [SettingsController::class, 'pos_settings_edit'])->name('pos.settings.edit');
             Route::patch('pos-settings-update', [SettingsController::class, 'pos_settings_update'])->name('pos.settings.update');
             Route::post('/send-invoice-to-zatca', [SaleBillController1::class, 'sendInvoiceToZATCA'])->name('send.invoice.to.zatca');
-
+            Route::post('/company/{company}/zatca/onboard', [ZatcaController::class, 'onboard'])->name('zatca.onboard');
+            Route::post('/sale-bill/{saleBillId}/zatca/send', [ZatcaController::class, 'sendInvoice'])->name('zatca.send');
             // Branches Routes
             Route::resource('branches', BranchController::class)->names([
                 'index' => 'client.branches.index',

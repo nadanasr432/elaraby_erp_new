@@ -54,9 +54,9 @@
         @csrf
         @method('POST')
         @if (isset($open_buy_bill) && !empty($open_buy_bill))
-            <input type="hidden" value="{{ $open_buy_bill->buy_bill_number }}" id="buy_bill_number"/>
+            <input type="hidden" value="{{ $open_buy_bill->company_counter }}" id="company_counter"/>
         @else
-            <input type="hidden" value="{{ $pre_bill }}" id="buy_bill_number"/>
+            <input type="hidden" value="{{ $pre_bill }}" id="company_counter"/>
         @endif
         <h6 class="alert alert-info alert-sm text-center no-print mb-3" dir="rtl">
             <center>
@@ -335,15 +335,15 @@
                         echo '<td>' . $element->quantity . ' ' . $element->unit->unit_name . '</td>';
                         echo '<td>' . $element->quantity_price . '</td>';
                         echo "<td class='no-print'>
-                                                                                                                                                                                                                                                                                                                                                                <button type='button' buy_bill_number='" .
-                            $element->BuyBill->buy_bill_number .
+                                                                                                                                                                                                                                                                                                                                                                <button type='button' company_counter='" .
+                            $element->BuyBill->company_counter .
                             "' element_id='" .
                             $element->id .
                             "' class='btn btn-sm btn-info edit_element'>
                                                                                                                                                                                                                                                                                                                                                                     <i class='fa fa-pencil'></i> تعديل
                                                                                                                                                                                                                                                                                                                                                                 </button>
-                                                                                                                                                                                                                                                                                                                                                                    <button type='button' buy_bill_number='" .
-                            $element->BuyBill->buy_bill_number .
+                                                                                                                                                                                                                                                                                                                                                                    <button type='button' company_counter='" .
+                            $element->BuyBill->company_counter .
                             "' element_id='" .
                             $element->id .
                             "' class='btn btn-sm btn-danger remove_element'>
@@ -553,9 +553,9 @@
             @csrf
             @method('POST')
             @if (isset($open_buy_bill) && !empty($open_buy_bill))
-                <input type="hidden" value="{{ $open_buy_bill->buy_bill_number }}" name="buy_bill_number"/>
+                <input type="hidden" value="{{ $open_buy_bill->company_counter }}" name="company_counter"/>
             @else
-                <input type="hidden" value="{{ $pre_bill }}" name="buy_bill_number"/>
+                <input type="hidden" value="{{ $pre_bill }}" name="company_counter"/>
             @endif
             <button href="" type="submit" @if (!isset($open_buy_bill) || empty($open_buy_bill)) disabled @endif
             class="btn btn-md close_btn btn-danger pull-right ml-3"><i class="fa fa-check"></i>
@@ -713,14 +713,14 @@
 
         //-----save buy_invoice -- finish-----//
         $('.save_btn').on('click', function () {
-            let buy_bill_number = $('#buy_bill_number').val();
+            let company_counter = $('#company_counter').val();
             let payment_method = $('#payment_method').val();
             $.post("{{ url('/client/buy-bills/saveAll') }}", {
-                buy_bill_number: buy_bill_number,
+                company_counter: company_counter,
                 payment_method: payment_method,
                 "_token": "{{ csrf_token() }}"
             }, function (data) {
-                location.href = '/buy-bills/print/' + buy_bill_number;
+                location.href = '/buy-bills/print/' + company_counter;
             });
         });
 
@@ -728,7 +728,7 @@
         $('.pay_cash').on('click', function () {
             let company_id = $('#company_id').val();
             let supplier_id = $('#supplier_id').val();
-            let buy_bill_number = $('#buy_bill_number').val();
+            let company_counter = $('#company_counter').val();
             let date = $('#date').val();
             let time = $('#time').val()
             let cash_number = $('#cash_number').val();
@@ -741,7 +741,7 @@
             $.post("{{ route('client.store.cash.suppliers.buyBill', 'test') }}", {
                 supplier_id: supplier_id,
                 company_id: company_id,
-                bill_id: buy_bill_number,
+                bill_id: company_counter,
                 date: date,
                 time: time,
                 cash_number: cash_number,
@@ -854,7 +854,7 @@
         $('#add').on('click', function () {
             let supplier_id = $('#supplier_id').val();
             let store_id = $('#store_id').val();
-            let buy_bill_number = $('#buy_bill_number').val();
+            let company_counter = $('#company_counter').val();
             let product_id = $('#product_id').val();
             let product_price = $('#product_price').val();
             let quantity = $('#quantity').val();
@@ -887,7 +887,7 @@
                     $.post("{{ url('/client/buy-bills/post') }}", {
                         supplier_id: supplier_id,
                         store_id: store_id,
-                        buy_bill_number: buy_bill_number,
+                        company_counter: company_counter,
                         product_id: product_id,
                         product_price: product_price,
                         quantity: quantity,
@@ -926,7 +926,7 @@
                             //-----get elements to show----//
                             $.post("{{ url('/client/buy-bills/elements') }}", {
                                 "_token": "{{ csrf_token() }}",
-                                buy_bill_number: buy_bill_number
+                                company_counter: company_counter
                             }, function (elements) {
                                 $('.bill_details').html(elements);
                             });
@@ -934,7 +934,7 @@
                             //-----apply discount----//
                             $.post("{{ url('/client/buy-bills/discount') }}", {
                                 "_token": "{{ csrf_token() }}",
-                                buy_bill_number: buy_bill_number,
+                                company_counter: company_counter,
                                 discount_type: discount_type,
                                 discount_value: discount_value
                             }, function (data) {
@@ -944,7 +944,7 @@
                             //-----apply shipping value----//
                             $.post("{{ url('/client/buy-bills/extra') }}", {
                                 "_token": "{{ csrf_token() }}",
-                                buy_bill_number: buy_bill_number,
+                                company_counter: company_counter,
                                 extra_type: extra_type,
                                 extra_value: extra_value
                             }, function (data) {
@@ -954,7 +954,7 @@
                             //-----refresh----//
                             $.post("{{ url('/client/buy-bills/refresh') }}", {
                                 "_token": "{{ csrf_token() }}",
-                                buy_bill_number: buy_bill_number,
+                                company_counter: company_counter,
                             }, function (data) {
                                 $('#final_total').val(data.final_total);
                             });
@@ -966,14 +966,14 @@
 
                             $.post("{{ url('/client/buy-bills/elements') }}", {
                                 "_token": "{{ csrf_token() }}",
-                                buy_bill_number: buy_bill_number
+                                company_counter: company_counter
                             }, function (elements) {
                                 $('.bill_details').html(elements);
                             });
 
                             $.post("{{ url('/client/buy-bills/discount') }}", {
                                 "_token": "{{ csrf_token() }}",
-                                buy_bill_number: buy_bill_number,
+                                company_counter: company_counter,
                                 discount_type: discount_type,
                                 discount_value: discount_value
                             }, function (data) {
@@ -982,7 +982,7 @@
 
                             $.post("{{ url('/client/buy-bills/extra') }}", {
                                 "_token": "{{ csrf_token() }}",
-                                buy_bill_number: buy_bill_number,
+                                company_counter: company_counter,
                                 extra_type: extra_type,
                                 extra_value: extra_value
                             }, function (data) {
@@ -991,7 +991,7 @@
 
                             $.post("{{ url('/client/buy-bills/refresh') }}", {
                                 "_token": "{{ csrf_token() }}",
-                                buy_bill_number: buy_bill_number,
+                                company_counter: company_counter,
                             }, function (data) {
                                 $('#final_total').val(data.final_total);
                             });
@@ -1006,12 +1006,12 @@
 
         //------on apply discount to the invoice---------------//
         $('#exec_discount').on('click', function () {
-            let buy_bill_number = $('#buy_bill_number').val();
+            let company_counter = $('#company_counter').val();
             let discount_type = $('#discount_type').val();
             let discount_value = $('#discount_value').val();
             $.post("{{ url('/client/buy-bills/discount') }}", {
                 "_token": "{{ csrf_token() }}",
-                buy_bill_number: buy_bill_number,
+                company_counter: company_counter,
                 discount_type: discount_type,
                 discount_value: discount_value
             }, function (data) {
@@ -1020,7 +1020,7 @@
 
             $.post("{{ url('/client/buy-bills/refresh') }}", {
                 "_token": "{{ csrf_token() }}",
-                buy_bill_number: buy_bill_number,
+                company_counter: company_counter,
             }, function (data) {
                 $('#final_total').val(data.final_total);
             });
@@ -1038,10 +1038,10 @@
         //-----------onclick edit element ----------------//
         $('.edit_element').on('click', function () {
             let element_id = $(this).attr('element_id');
-            let buy_bill_number = $(this).attr('buy_bill_number');
+            let company_counter = $(this).attr('company_counter');
             $.post("{{ url('/client/buy-bills/edit-element') }}", {
                 "_token": "{{ csrf_token() }}",
-                buy_bill_number: buy_bill_number,
+                company_counter: company_counter,
                 element_id: element_id
             }, function (data) {
                 $('#product_id').val(data.product_id);
@@ -1053,7 +1053,7 @@
                 let product_id = data.product_id;
                 $.post("{{ url('/client/buy-bills/get-edit') }}", {
                     product_id: product_id,
-                    buy_bill_number: buy_bill_number,
+                    company_counter: company_counter,
                     "_token": "{{ csrf_token() }}"
                 }, function (data) {
                     $('input#quantity').attr('max', data.first_balance);
@@ -1062,7 +1062,7 @@
                 $('#add').hide();
                 $('#edit').show();
                 $('#edit').attr('element_id', element_id);
-                $('#edit').attr('buy_bill_number', buy_bill_number);
+                $('#edit').attr('company_counter', company_counter);
 
             });
         });
@@ -1072,7 +1072,7 @@
         //-----------onclick edit invoice ----------------//
         $('#edit').on('click', function () {
             let element_id = $(this).attr('element_id');
-            let buy_bill_number = $(this).attr('buy_bill_number');
+            let company_counter = $(this).attr('company_counter');
 
             let product_id = $('#product_id').val();
             let product_price = $('#product_price').val();
@@ -1107,7 +1107,7 @@
                 }, function (data) {
                     $.post('/client/buy-bills/elements', {
                         '_token': "{{ csrf_token() }}",
-                        buy_bill_number: buy_bill_number
+                        company_counter: company_counter
                     }, function (elements) {
                         $('.bill_details').html(elements);
                     });
@@ -1123,7 +1123,7 @@
 
                 $.post('/client/buy-bills/discount', {
                     '_token': "{{ csrf_token() }}",
-                    buy_bill_number: buy_bill_number,
+                    company_counter: company_counter,
                     discount_type: discount_type,
                     discount_value: discount_value
                 }, function (data) {
@@ -1132,7 +1132,7 @@
 
                 $.post('/client/buy-bills/extra', {
                     '_token': "{{ csrf_token() }}",
-                    buy_bill_number: buy_bill_number,
+                    company_counter: company_counter,
                     extra_type: extra_type,
                     extra_value: extra_value
                 }, function (data) {
@@ -1141,7 +1141,7 @@
 
                 $.post("{{ url('/client/buy-bills/refresh') }}", {
                     "_token": "{{ csrf_token() }}",
-                    buy_bill_number: buy_bill_number,
+                    company_counter: company_counter,
                 }, function (data) {
                     $('#final_total').val(data.final_total);
                 });
@@ -1154,7 +1154,7 @@
         //-----------onclick removing elements ----------------//
         $('.remove_element').on('click', function () {
             let element_id = $(this).attr('element_id');
-            let buy_bill_number = $(this).attr('buy_bill_number');
+            let company_counter = $(this).attr('company_counter');
 
             let discount_type = $('#discount_type').val();
             let discount_value = $('#discount_value').val();
@@ -1168,7 +1168,7 @@
             }, function (data) {
                 $.post('/client/buy-bills/elements', {
                     '_token': "{{ csrf_token() }}",
-                    buy_bill_number: buy_bill_number
+                    company_counter: company_counter
                 }, function (elements) {
                     $('.bill_details').html(elements);
                 });
@@ -1176,7 +1176,7 @@
 
             $.post('/client/buy-bills/discount', {
                 '_token': "{{ csrf_token() }}",
-                buy_bill_number: buy_bill_number,
+                company_counter: company_counter,
                 discount_type: discount_type,
                 discount_value: discount_value
             }, function (data) {
@@ -1185,7 +1185,7 @@
 
             $.post('/client/buy-bills/extra', {
                 '_token': "{{ csrf_token() }}",
-                buy_bill_number: buy_bill_number,
+                company_counter: company_counter,
                 extra_type: extra_type,
                 extra_value: extra_value
             }, function (data) {
@@ -1194,7 +1194,7 @@
 
             $.post("{{ url('/client/buy-bills/refresh') }}", {
                 "_token": "{{ csrf_token() }}",
-                buy_bill_number: buy_bill_number,
+                company_counter: company_counter,
             }, function (data) {
                 $('#final_total').val(data.final_total);
             });
@@ -1206,13 +1206,13 @@
 
         //-----------apply shipping value ----------------//
         $('#exec_extra').on('click', function () {
-            let buy_bill_number = $('#buy_bill_number').val();
+            let company_counter = $('#company_counter').val();
             let extra_type = $('#extra_type').val();
             let extra_value = $('#extra_value').val();
 
             $.post("{{ url('/client/buy-bills/extra') }}", {
                 "_token": "{{ csrf_token() }}",
-                buy_bill_number: buy_bill_number,
+                company_counter: company_counter,
                 extra_type: extra_type,
                 extra_value: extra_value
             }, function (data) {
@@ -1221,7 +1221,7 @@
 
             $.post("{{ url('/client/buy-bills/refresh') }}", {
                 "_token": "{{ csrf_token() }}",
-                buy_bill_number: buy_bill_number,
+                company_counter: company_counter,
             }, function (data) {
                 $('#final_total').val(data.final_total);
             });

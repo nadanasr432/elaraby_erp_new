@@ -11,8 +11,21 @@ class Company extends Model
 {
     protected $table = "companies";
     protected $fillable = [
-        'company_name', 'company_name_en', 'business_field', 'phone_number', 'company_owner', 'company_address', 'country', 'currency',
-        'tax_number', 'civil_registration_number', 'tax_value_added', 'company_logo', 'status', 'notes',
+        'company_name',
+        'company_name_en',
+        'business_field',
+        'onboarding_data',
+        'phone_number',
+        'company_owner',
+        'company_address',
+        'country',
+        'currency',
+        'tax_number',
+        'civil_registration_number',
+        'tax_value_added',
+        'company_logo',
+        'status',
+        'notes',
         'all_users_access_main_branch'
     ];
 
@@ -200,5 +213,8 @@ class Company extends Model
     {
         return $this->hasOne('\App\Models\ExtraSettings', 'company_id', 'id');
     }
-
+    public function zatca()
+    {
+        return $this->hasOne(ZatcaCompany::class);
+    }
 }

@@ -612,7 +612,7 @@ class SaleBillController1 extends Controller
                     'product_name' => 'required|string|max:255',
                     'product_price' => 'required|numeric|min:0',
                     'unit_id' => 'required|integer|exists:units,id',
-                    'quantity' => 'required|integer|min:0',
+                    'quantity' => 'required|number|min:0',
                 ], [
                     'product_name.required' => 'رجاء كتابة اسم المنتج.',
                     'product_name.string' => 'اسم المنتج يجب أن يكون نصًا.',
@@ -621,10 +621,10 @@ class SaleBillController1 extends Controller
                     'product_price.numeric' => 'سعر المنتج يجب أن يكون رقمًا.',
                     'product_price.min' => 'سعر المنتج يجب أن يكون أكبر من أو يساوي 0.',
                     'unit_id.required' => 'الوحدة مطلوبة.',
-                    'unit_id.integer' => 'رقم الوحدة يجب أن يكون رقمًا صحيحًا.',
+                    'unit_id.number' => 'رقم الوحدة يجب أن يكون رقمًا صحيحًا.',
                     'unit_id.exists' => 'الوحدة المحددة غير موجودة.',
                     'quantity.required' => 'الكمية مطلوبة.',
-                    'quantity.integer' => 'الكمية يجب أن تكون رقمًا صحيحًا.',
+                    'quantity.number' => 'الكمية يجب أن تكون رقمًا صحيحًا.',
                     'quantity.min' => 'الكمية يجب أن تكون على الأقل 0.',
                 ])->validate();
 
@@ -3494,47 +3494,47 @@ class SaleBillController1 extends Controller
 
         return response()->json(['message' => 'CSR generated successfully']);
     }
-    public function sendInvoiceToZATCA(Request $request)
-    {
-        try {
-            // استرجاع معرف الفاتورة ونوعها
-            $invoiceId = $request->input('sale_bill_id');
-            $invoiceType = $request->input('invoice_type');
+    // public function sendInvoiceToZATCA(Request $request)
+    // {
+    //     try {
+    //         // استرجاع معرف الفاتورة ونوعها
+    //         $invoiceId = $request->input('sale_bill_id');
+    //         $invoiceType = $request->input('invoice_type');
 
-            // استرجاع الفاتورة من قاعدة البيانات
-            $invoice = SaleBill1::findOrFail($invoiceId);
+    //         // استرجاع الفاتورة من قاعدة البيانات
+    //         $invoice = SaleBill1::findOrFail($invoiceId);
 
-            // توليد CSR إذا لم يكن موجودًا
-            if (!ZatcaService::isCSRGenerated()) {
-                ZatcaService::generateCSR();
-            }
+    //         // توليد CSR إذا لم يكن موجودًا
+    //         if (!ZatcaService::isCSRGenerated()) {
+    //             ZatcaService::generateCSR();
+    //         }
 
-            // تحويل الفاتورة إلى XML
-            // $xmlInvoice = ZatcaService::convertInvoiceToXML($invoiceId);
-            $xmlInvoice = ZatcaService::convertInvoiceToXML($invoiceId);
+    //         // تحويل الفاتورة إلى XML
+    //         // $xmlInvoice = ZatcaService::convertInvoiceToXML($invoiceId);
+    //         $xmlInvoice = ZatcaService::convertInvoiceToXML($invoiceId);
 
 
-            logger()->info('Generated XML Invoice', ['xml' => $xmlInvoice]);
+    //         logger()->info('Generated XML Invoice', ['xml' => $xmlInvoice]);
 
-            // التحقق من صحة الـ XML
-            if (!ZatcaService::validateXML($xmlInvoice)) {
-                throw new \Exception('ملف XML غير صالح وفقاً لمتطلبات ZATCA.');
-            }
+    //         // التحقق من صحة الـ XML
+    //         if (!ZatcaService::validateXML($xmlInvoice)) {
+    //             throw new \Exception('ملف XML غير صالح وفقاً لمتطلبات ZATCA.');
+    //         }
 
-            // توقيع الفاتورة
-            $signedInvoice = ZatcaService::signInvoice($xmlInvoice);
-            logger()->info('Signed Invoice', ['signed_invoice' => $signedInvoice]);
+    //         // توقيع الفاتورة
+    //         $signedInvoice = ZatcaService::signInvoice($xmlInvoice);
+    //         logger()->info('Signed Invoice', ['signed_invoice' => $signedInvoice]);
 
-            // إرسال الفاتورة إلى ZATCA بناءً على النوع
-            $zatcaService = new ZatcaService();
-            $response = $zatcaService->sendInvoiceToZatca($signedInvoice);
-            // $response = ZatcaService::sendInvoiceToZATCA($signedInvoice, $invoiceType);
-            logger()->info('ZATCA Response', ['response' => $response]);
+    //         // إرسال الفاتورة إلى ZATCA بناءً على النوع
+    //         $zatcaService = new ZatcaService();
+    //         $response = $zatcaService->sendInvoiceToZatca($signedInvoice);
+    //         // $response = ZatcaService::sendInvoiceToZATCA($signedInvoice, $invoiceType);
+    //         logger()->info('ZATCA Response', ['response' => $response]);
 
-            return back()->with('success', 'تم إرسال الفاتورة بنجاح')->with('response', $response);
-        } catch (\Exception $e) {
-            logger()->error('Error sending invoice to ZATCA', ['error' => $e->getMessage()]);
-            return back()->with('error', 'حدث خطأ أثناء إرسال الفاتورة: ' . $e->getMessage());
-        }
-    }
+    //         return back()->with('success', 'تم إرسال الفاتورة بنجاح')->with('response', $response);
+    //     } catch (\Exception $e) {
+    //         logger()->error('Error sending invoice to ZATCA', ['error' => $e->getMessage()]);
+    //         return back()->with('error', 'حدث خطأ أثناء إرسال الفاتورة: ' . $e->getMessage());
+    //     }
+    // }
 }

@@ -238,7 +238,7 @@ return [
     "price" => "Price",
     "rkm-fat" => "Inv ID",
     "pmethod" => "Payment Method",
-    "wel-msg" => "Al-Araby Accounting Platform Provides Services For Filing Tax Returns & Everything Related To Zakat & Other Matters",
+    "wel-msg" => "You can integrate with Zatca Now",
     "Aknana for business incubators and accelerators" => "Aknana for business incubators ",
     "cost_center" => "Cost Center",
     "add_cost_center" => "Add Cost Center",

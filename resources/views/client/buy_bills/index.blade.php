@@ -32,8 +32,8 @@
                 <select required class="selectpicker" data-live-search="true" title="{{ __('main.write-or-choose') }}"
                     data-style="btn-danger" name="buy_bill_id" id="buy_bill_id">
                     @foreach ($buy_bills as $buy_bill)
-                        <option title="{{ $buy_bill->buy_bill_number }}" @if (isset($buy_bill_k) && $buy_bill->id == $buy_bill_k->id) selected @endif
-                            value="{{ $buy_bill->id }}">{{ $buy_bill->buy_bill_number }}</option>
+                        <option title="{{ $buy_bill->company_counter }}" @if (isset($buy_bill_k) && $buy_bill->id == $buy_bill_k->id) selected @endif
+                            value="{{ $buy_bill->id }}">{{ $buy_bill->company_counter }}</option>
                     @endforeach
                 </select>
                 <button type="submit" class="btn btn-md btn-danger"
@@ -157,12 +157,12 @@
             <h6 class="alert alert-sm alert-danger text-center">
                 <i class="fa fa-info-circle"></i>
                 بيانات عناصر الفاتورة رقم
-                {{ $buy_bill_k->buy_bill_number }}
+                {{ $buy_bill_k->company_counter }}
             </h6>
             <div class="col-lg-12 mb-1  alert alert-secondary alert-sm">
                 <div class="col-3 pull-right">
                     رقم الفاتورة :
-                    {{ $buy_bill_k->buy_bill_number }}
+                    {{ $buy_bill_k->company_counter }}
                 </div>
                 <div class="col-3 pull-right">
                     تاريخ الفاتورة :
@@ -297,11 +297,11 @@
             echo '
                <div class="col-lg-12 no-print" style="padding-top: 25px;height: 40px !important;">';
             ?>
-            <a target="_blank" role="button" href="{{ route('client.buy_bills.print', $buy_bill_k->buy_bill_number) }}"
+            <a target="_blank" role="button" href="{{ route('client.buy_bills.print', $buy_bill_k->company_counter) }}"
                 class="btn btn-md btn-info print_btn pull-right"><i class="fa fa-print"></i> طباعة فاتورة المشتريات
             </a>
             @if (!empty($buy_bill_k->supplier->supplier_email))
-                <a role="button" href="{{ route('client.buy_bills.send', $buy_bill_k->buy_bill_number) }}"
+                <a role="button" href="{{ route('client.buy_bills.send', $buy_bill_k->company_counter) }}"
                     class="btn btn-md btn-warning pull-right ml-2"><i class="fa fa-envelope"></i>
                     ارسال الفاتورة الى بريد المورد
                 </a>
@@ -313,7 +313,7 @@
 
             @if (!$buy_bill_k->supplier->phones->isEmpty())
                 <?php
-                $url = 'https://' . request()->getHttpHost() . '/buy-bills/print/' . $buy_bill_k->buy_bill_number;
+                $url = 'https://' . request()->getHttpHost() . '/buy-bills/print/' . $buy_bill_k->company_counter;
                 $text = 'مرفق رابط لفاتورة مشتريات ' . '%0a' . $url;
                 $text = str_replace('&', '%26', $text);
                 $phone_number = $buy_bill_k->supplier->phones[0]->supplier_phone;
@@ -329,7 +329,7 @@
             @endif
 
             <?php echo '
-                    <button bill_id="' . $buy_bill_k->id . '" buy_bill_number="' . $buy_bill_k->supplier->supplier_name . '"
+                    <button bill_id="' . $buy_bill_k->id . '" company_counter="' . $buy_bill_k->supplier->supplier_name . '"
                         data-toggle="modal" href="#modaldemo9" title="delete"
                         type="button" class="modal-effect ml-2 btn btn-md btn-danger delete_bill pull-right">
                         <i class="fa fa-trash"></i>
@@ -352,7 +352,6 @@
                 </div>
                 <table class='table table-condensed table-striped table-bordered'>
                     <thead class="text-center">
-                        <th>#</th>
                         <th>رقم الفاتورة</th>
                         <th>تاريخ الفاتورة</th>
                         <th> وقت الفاتورة</th>
@@ -367,8 +366,7 @@
                         $total = 0; ?>
                         @foreach ($supplier_buy_bills as $buy_bill)
                             <tr>
-                                <td>{{ ++$i }}</td>
-                                <td>{{ $buy_bill->buy_bill_number }}</td>
+                                <td>{{ $buy_bill->company_counter }}</td>
                                 <td>{{ $buy_bill->date }}</td>
                                 <td>{{ $buy_bill->time }}</td>
                                 <td>{{ $buy_bill->supplier->supplier_name }}</td>
@@ -435,7 +433,7 @@
                                         </button>
                                     </form>
                                     <button bill_id="{{ $buy_bill->id }}"
-                                        buy_bill_number="{{ $buy_bill->buy_bill_number }}" data-toggle="modal"
+                                        company_counter="{{ $buy_bill->company_counter }}" data-toggle="modal"
                                         href="#modaldemo9" title="delete" type="button"
                                         class="modal-effect btn btn-sm btn-danger delete_bill d-inline">
                                         <i class="fa fa-trash"></i>
@@ -478,7 +476,6 @@
                 </div>
                 <table class='table table-condensed table-striped table-bordered'>
                     <thead class="text-center">
-                        <th>#</th>
                         <th>رقم الفاتورة</th>
                         <th>تاريخ الفاتورة</th>
                         <th> وقت الفاتورة</th>
@@ -493,8 +490,7 @@
                         $total = 0; ?>
                         @foreach ($store_buy_bills as $buy_bill)
                             <tr>
-                                <td>{{ ++$i }}</td>
-                                <td>{{ $buy_bill->buy_bill_number }}</td>
+                                <td>{{ $buy_bill->company_counter }}</td>
                                 <td>{{ $buy_bill->date }}</td>
                                 <td>{{ $buy_bill->time }}</td>
                                 <td>{{ $buy_bill->supplier->supplier_name }}</td>
@@ -560,7 +556,7 @@
                                         </button>
                                     </form>
                                     <button bill_id="{{ $buy_bill->id }}"
-                                        buy_bill_number="{{ $buy_bill->buy_bill_number }}" data-toggle="modal"
+                                        company_counter="{{ $buy_bill->company_counter }}" data-toggle="modal"
                                         href="#modaldemo9" title="delete" type="button"
                                         class="modal-effect btn btn-sm btn-danger delete_bill d-inline">
                                         <i class="fa fa-trash"></i>
@@ -604,7 +600,7 @@
                 </div>
                 <table class='table table-condensed table-striped table-bordered'>
                     <thead class="text-center">
-                        <th>#</th>
+                        
                         <th>رقم الفاتورة</th>
                         <th>اسم المورد</th>
                         <th>تاريخ الفاتورة</th>
@@ -618,8 +614,7 @@
                         $total = 0; ?>
                         @foreach ($product_buy_bills as $buy_bill)
                             <tr>
-                                <td>{{ ++$i }}</td>
-                                <td>{{ $buy_bill->buy_bill_number }}</td>
+                                <td>{{ $buy_bill->company_counter }}</td>
                                 <td>{{ $buy_bill->store->store_name }}</td>
                                 <td>{{ $buy_bill->date }}</td>
                                 <td>{{ $buy_bill->time }}</td>
@@ -684,7 +679,7 @@
                                         </button>
                                     </form>
                                     <button bill_id="{{ $buy_bill->id }}"
-                                        buy_bill_number="{{ $buy_bill->buy_bill_number }}" data-toggle="modal"
+                                        company_counter="{{ $buy_bill->company_counter }}" data-toggle="modal"
                                         href="#modaldemo9" title="delete" type="button"
                                         class="modal-effect btn btn-sm btn-danger delete_bill d-inline">
                                         <i class="fa fa-trash"></i>
@@ -726,7 +721,7 @@
                 </div>
                 <table class='table table-condensed table-striped table-bordered'>
                     <thead class="text-center">
-                        <th>#</th>
+                       
                         <th>رقم الفاتورة</th>
                         <th>اسم المورد</th>
                         <th>تاريخ الفاتورة</th>
@@ -740,8 +735,8 @@
                         $total = 0; ?>
                         @foreach ($all_buy_bills as $buy_bill)
                             <tr>
-                                <td>{{ ++$i }}</td>
-                                <td>{{ $buy_bill->buy_bill_number }}</td>
+                               
+                                <td>{{ $buy_bill->company_counter }}</td>
                                 <td>{{ $buy_bill->supplier->supplier_name }}</td>
                                 <td>{{ $buy_bill->date }}</td>
                                 <td>{{ $buy_bill->time }}</td>
@@ -806,7 +801,7 @@
                                         </button>
                                     </form>
                                     <button bill_id="{{ $buy_bill->id }}"
-                                        buy_bill_number="{{ $buy_bill->buy_bill_number }}" data-toggle="modal"
+                                        company_counter="{{ $buy_bill->company_counter }}" data-toggle="modal"
                                         href="#modaldemo9" title="delete" type="button"
                                         class="modal-effect btn btn-sm btn-danger delete_bill d-inline">
                                         <i class="fa fa-trash"></i>
@@ -878,9 +873,9 @@
     $(document).ready(function() {
         $('.delete_bill').on('click', function() {
             var bill_id = $(this).attr('bill_id');
-            var buy_bill_number = $(this).attr('buy_bill_number');
+            var company_counter = $(this).attr('company_counter');
             $('.modal-body #billid').val(bill_id);
-            $('.modal-body #buybillnumber').val(buy_bill_number);
+            $('.modal-body #buybillnumber').val(company_counter);
         });
 
         $('#buy_bill_id').on('change', function() {
@@ -889,7 +884,7 @@
         });
         $('.remove_element').on('click', function() {
             let element_id = $(this).attr('element_id');
-            let buy_bill_number = $(this).attr('buy_bill_number');
+            let company_counter = $(this).attr('company_counter');
 
             let discount_type = $('#discount_type').val();
             let discount_value = $('#discount_value').val();
@@ -904,7 +899,7 @@
                 function(data) {
                     $.post('{{ url('/client/buy-bills/updateData') }}', {
                             '_token': '{{ csrf_token() }}',
-                            buy_bill_number: buy_bill_number
+                            company_counter: company_counter
                         },
                         function(elements) {
                             $('.before_totals').html(elements);
@@ -912,7 +907,7 @@
                 });
             $.post('{{ url('/client/buy-bills/discount') }}', {
                     '_token': '{{ csrf_token() }}',
-                    buy_bill_number: buy_bill_number,
+                    company_counter: company_counter,
                     discount_type: discount_type,
                     discount_value: discount_value
                 },
@@ -922,7 +917,7 @@
 
             $.post('{{ url('/client/buy-bills/extra') }}', {
                     '_token': '{{ csrf_token() }}',
-                    buy_bill_number: buy_bill_number,
+                    company_counter: company_counter,
                     extra_type: extra_type,
                     extra_value: extra_value
                 },
@@ -932,12 +927,12 @@
             $(this).parent().parent().fadeOut(300);
         });
         $('#exec_discount').on('click', function() {
-            let buy_bill_number = $(this).attr('buy_bill_number');
+            let company_counter = $(this).attr('company_counter');
             let discount_type = $('#discount_type').val();
             let discount_value = $('#discount_value').val();
             $.post("{{ url('/client/buy-bills/discount') }}", {
                     "_token": "{{ csrf_token() }}",
-                    buy_bill_number: buy_bill_number,
+                    company_counter: company_counter,
                     discount_type: discount_type,
                     discount_value: discount_value
                 },
@@ -946,12 +941,12 @@
                 });
         });
         $('#exec_extra').on('click', function() {
-            let buy_bill_number = $(this).attr('buy_bill_number');
+            let company_counter = $(this).attr('company_counter');
             let extra_type = $('#extra_type').val();
             let extra_value = $('#extra_value').val();
             $.post("{{ url('/client/buy-bills/extra') }}", {
                     "_token": "{{ csrf_token() }}",
-                    buy_bill_number: buy_bill_number,
+                    company_counter: company_counter,
                     extra_type: extra_type,
                     extra_value: extra_value
                 },

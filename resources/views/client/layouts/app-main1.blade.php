@@ -160,7 +160,8 @@
         .main-news {
             padding: 3px !important;
             background: #222751 !important;
-            color: white !important;
+            color: rgb(122, 190, 122) !important
+            /* color: white !important; */
         }
 
         .main-news p {
