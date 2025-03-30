@@ -232,23 +232,26 @@
             </div>
 
             <!------price------>
-            <div class="col-lg-2 pull-right">
-                <label for="">{{ __('sales_bills.product-price') }}</label>
+            <div class="col-12 col-md-3">
+                <label for="product_price">{{ __('sales_bills.product-price') }}</label>
                 <input type="text" name="product_price" value="0" id="product_price" class="form-control"/>
             </div>
 
             <!------quantity and unit------>
-            <div class="col-lg-4 pull-right">
+            <div class="col-12 col-md-6">
                 <label class="d-block" for=""> {{ __('main.quantity') }} </label>
-                <input style="width: 50%;" type="text" name="quantity" id="quantity"
-                       class="form-control d-inline float-left"/>
-                <select style="width: 50%;" class="form-control d-inline float-right" name="unit_id" id="unit_id">
-                    <option value="">{{ __('units.unit-name') }}</option>
-                    @foreach ($units as $unit)
-                        <option value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
-                    @endforeach
-                </select>
+                <div class="d-flex">
+                    <input type="text" name="quantity" id="quantity" class="form-control w-50"/>
+                    <select class="form-control w-50" name="unit_id" id="unit_id">
+                        <option value="">{{ __('units.unit-name') }}</option>
+                        @foreach ($units as $unit)
+                            <option value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
+
+
 
             <!------total price------>
             <div class="col-lg-2 pull-right">
