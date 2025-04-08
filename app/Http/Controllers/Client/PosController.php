@@ -1679,7 +1679,8 @@ class PosController extends Controller
         $pos_sales = PosOpen::where('status', 'done')
             ->where('company_id', $company_id)
             ->where('client_id', $client_id)
-            ->whereDate('created_at', Carbon::today())
+            ->orderBy('created_at', 'asc')
+            ->select('*', DB::raw('ROW_NUMBER() OVER (ORDER BY created_at) as number'))
             ->get();
         return view('client.pos.report', compact('company_id', 'company', 'pos_sales'));
     }

@@ -31,12 +31,11 @@ class ZatcaController extends Controller
             'app_name' => $request->app_name,
             'app_version' => $request->app_version,
             'app_copy_sn' => $request->app_copy_sn,
-            'is_production' => $request->is_production === '1',
+            'is_production' => $request->is_production,
         ];
 
         $response = $this->zatcaService->onboard($data);
-
-        if ($response['status'] === 'onboarded') {
+        if (isset($response['onboarding_data']) && $response['onboarding_data']) {
             $company->update([
                 'onboarding_data' => $response['onboarding_data'],
             ]);

@@ -612,7 +612,7 @@ class SaleBillController1 extends Controller
                     'product_name' => 'required|string|max:255',
                     'product_price' => 'required|numeric|min:0',
                     'unit_id' => 'required|integer|exists:units,id',
-                    'quantity' => 'required|number|min:0',
+                    'quantity' => 'required|numeric|min:0',
                 ], [
                     'product_name.required' => 'رجاء كتابة اسم المنتج.',
                     'product_name.string' => 'اسم المنتج يجب أن يكون نصًا.',
@@ -621,10 +621,10 @@ class SaleBillController1 extends Controller
                     'product_price.numeric' => 'سعر المنتج يجب أن يكون رقمًا.',
                     'product_price.min' => 'سعر المنتج يجب أن يكون أكبر من أو يساوي 0.',
                     'unit_id.required' => 'الوحدة مطلوبة.',
-                    'unit_id.number' => 'رقم الوحدة يجب أن يكون رقمًا صحيحًا.',
+                    'unit_id.numeric' => 'رقم الوحدة يجب أن يكون رقمًا صحيحًا.',
                     'unit_id.exists' => 'الوحدة المحددة غير موجودة.',
                     'quantity.required' => 'الكمية مطلوبة.',
-                    'quantity.number' => 'الكمية يجب أن تكون رقمًا صحيحًا.',
+                    'quantity.numeric' => 'الكمية يجب أن تكون رقمًا صحيحًا.',
                     'quantity.min' => 'الكمية يجب أن تكون على الأقل 0.',
                 ])->validate();
 
@@ -1284,8 +1284,13 @@ class SaleBillController1 extends Controller
     public function show($id)
     {
         $saleBill = SaleBill1::find($id);
+        if (!$saleBill) {
+            return redirect()->route('client.sale_bills.create1')
+            ->with('error', 'تم حذف الفاتورة');
+        }
+        logger( $saleBill?->company_id);
         $company_id = Auth::user()->company_id;
-        $sale_bills_done = SaleBill1::where('company_id', $saleBill->company_id)
+        $sale_bills_done = SaleBill1::where('company_id', $saleBill?->company_id)
             ->where('status', 'done')
             ->orderBy('created_at', 'asc')
             ->get();
@@ -1296,6 +1301,7 @@ class SaleBillController1 extends Controller
         $position = $sale_bills_done->search(function ($item) use ($saleBill) {
             return $item->id === $saleBill->id;
         }) + 1; // +1 to make it 1-based index
+
         $saleBill->sale_bill_number = $position;
         $saleBill->save();
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();

@@ -108,7 +108,7 @@
                             id="example-table">
                             <thead>
                                 <tr>
-                                    <th class="text-center">#</th>
+                                    {{-- <th class="text-center">#</th> --}}
                                     <th class="text-center">{{ __('pos.invoice-number') }}</th>
                                     <th class="text-center">{{ __('pos.client-name') }}</th>
                                     <th class="text-center"> {{ __('pos.invoice-date') }}</th>
@@ -140,8 +140,8 @@
                                         $totalPaid = 0;
                                     @endphp
                                     <tr>
-                                        <td>{{ ++$i }}</td>
-                                        <td>{{ $pos->id }}</td>
+                                        {{-- <td>{{ ++$i }}</td> --}}
+                                        <td>{{ $pos->number }}</td>
                                         <td>
                                             @if (isset($pos->outerClient->client_name))
                                                 {{ $pos->outerClient->client_name }}

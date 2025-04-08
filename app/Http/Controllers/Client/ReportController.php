@@ -645,7 +645,8 @@ class ReportController extends Controller
     {
         $company_id = Auth::user()->company_id;
         $company = Company::FindOrFail($company_id);
-        return view('client.reports.report13', compact('company'));
+        $pos_bills = $company->pos_bills;
+        return view('client.reports.report13', compact('company', 'pos_bills'));
     }
 
     public function post_report13(Request $request)
