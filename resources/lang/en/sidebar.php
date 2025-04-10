@@ -193,5 +193,6 @@ return [
     "products-deleted"=> "Deleted Products",
     "Total billing taxes"=>"Total billing taxes",
     "Goods Receipt Order"=>"Goods Receipt Order",
+    "transport_policy"=>"Transport Policy"
 
 ];

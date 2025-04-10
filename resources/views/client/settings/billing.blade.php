@@ -91,6 +91,13 @@
                             </div>
                         </div>
                         <div class="col-lg-6 col-xs-12 ">
+                            <div class="form-group">
+                                <label for="transport_license">رخصة النقل</label>
+                                <input type="text" class="form-control" dir="ltr" name="transport_license"
+                                    value="{{ $company->transport_license }}" id="transport_license" />
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-xs-12 ">
                             <div class="form-group" dir="ltr">
                                 <label for="tax_value_added">ضريبة القيمة المضافة</label>
                                 <div class="input-group">

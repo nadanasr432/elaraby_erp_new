@@ -224,4 +224,5 @@ return [
     "products-deleted" => "المنتجات المحذوفه",
     "Total billing taxes" => " اجمالى ضرائب الفواتير",
     "Goods Receipt Order" => "سند أمر استلام بضاعة",
+    "transport_policy"=>"بوليصة النقل"
 ];
