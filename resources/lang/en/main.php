@@ -238,7 +238,7 @@ return [
     "price" => "Price",
     "rkm-fat" => "Inv ID",
     "pmethod" => "Payment Method",
-    "wel-msg" => "You can integrate with Zatca Now",
+        "wel-msg" => "You can integrate with Zatca Now",
     "Aknana for business incubators and accelerators" => "Aknana for business incubators ",
     "cost_center" => "Cost Center",
     "add_cost_center" => "Add Cost Center",
@@ -349,5 +349,7 @@ return [
     'value_cannot_exceed_100' => 'The value cannot exceed 100.',
     "Update Client Information"=>"Update Client Information",
     "add immediate product" => "add immediate product",
+    "unit"=>"Unit",
+    "actions" => "Actions",
 
 ];

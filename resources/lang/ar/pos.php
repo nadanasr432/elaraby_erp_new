@@ -27,7 +27,7 @@ return [
     "invoice-date" => "تاريخ الفاتورة",
     "invoice-status" => "حالة الفاتورة",
     "chooseTableNum" => "اختر رقم الطاولة",
-    "ed" => "",
+    "print" => "طباعة",
     "ed" => "",
     "ed" => "",
     "ed" => "",

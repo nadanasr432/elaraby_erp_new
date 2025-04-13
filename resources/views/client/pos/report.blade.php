@@ -108,20 +108,19 @@
                             id="example-table">
                             <thead>
                                 <tr>
-                                    {{-- <th class="text-center">#</th> --}}
                                     <th class="text-center">{{ __('pos.invoice-number') }}</th>
                                     <th class="text-center">{{ __('pos.client-name') }}</th>
-                                    <th class="text-center"> {{ __('pos.invoice-date') }}</th>
-                                    <th class="text-center"> {{ __('pos.invoice-status') }}</th>
-                                    <th class="text-center"> {{ __('main.amount') }}</th>
-                                    <th class="text-center"> {{ __('main.paid-amount') }}</th>
-                                    <th class="text-center"> {{ __('main.remaining-amount') }}</th>
-                                    <th class="text-center"> {{ __('main.taxes') }} </th>
-                                    <th class="text-center"> {{ __('main.items') }}</th>
+                                    <th class="text-center">{{ __('pos.invoice-date') }}</th>
+                                    <th class="text-center">{{ __('pos.invoice-status') }}</th>
+                                    <th class="text-center">{{ __('main.amount') }}</th>
+                                    <th class="text-center">{{ __('main.paid-amount') }}</th>
+                                    <th class="text-center">{{ __('main.remaining-amount') }}</th>
+                                    <th class="text-center">{{ __('main.taxes') }}</th>
+                                    <th class="text-center">{{ __('main.items') }}</th>
+                                    <th class="text-center">{{ __('main.actions') }}</th> <!-- New Actions Column -->
                                 </tr>
                             </thead>
                             <tbody>
-
                                 @php
                                     // Initialization of variables
                                     $i = 0;
@@ -140,8 +139,7 @@
                                         $totalPaid = 0;
                                     @endphp
                                     <tr>
-                                        {{-- <td>{{ ++$i }}</td> --}}
-                                        <td>{{ $pos->number }}</td>
+                                        <td>{{ $pos->company_counter }}</td>
                                         <td>
                                             @if (isset($pos->outerClient->client_name))
                                                 {{ $pos->outerClient->client_name }}
@@ -149,10 +147,8 @@
                                                 زبون
                                             @endif
                                         </td>
-
                                         <!-- Invoice date -->
                                         <td>{{ explode(' ', $pos->created_at)[0] }}</td>
-
                                         <!-- Invoice status -->
                                         <td>
                                             @php
@@ -172,13 +168,11 @@
                                                 }
                                             @endphp
                                         </td>
-
                                         <!-- Amount -->
                                         <td>
                                             {{ $pos->total_amount }}
                                             @php $sum1 += $pos->total_amount; @endphp
                                         </td>
-
                                         <!-- Paid amount -->
                                         <td>
                                             @if ($pos->class == 'paid')
@@ -217,10 +211,8 @@
                                                 @endphp
                                             @endif
                                         </td>
-
                                         <!-- Remaining amount -->
                                         <td>{{ round($restAmount, 2) }}</td>
-
                                         <!-- Taxes -->
                                         <td>
                                             @php
@@ -235,6 +227,7 @@
                                             @endif
                                             @php $sum3 += $pos->tax_amount; @endphp
                                         </td>
+                                        <!-- Items -->
                                         <td>
                                             @if (isset($pos))
                                                 @php $pos_elements = $pos->elements; @endphp
@@ -243,42 +236,45 @@
                                                 0
                                             @endif
                                         </td>
+                                        <!-- Actions Column -->
+                                        <td>
+                                            <a href="{{ route('pos.open.print', $pos->id) }}"
+                                               class="btn btn-sm btn-primary"
+                                               title="{{ __('pos.print-invoice') }}">
+                                                <i class="fa fa-print"></i> {{ __('pos.print') }}
+                                            </a>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
-
                         </table>
                     </div>
                     <div class='row mb-3 mt-3 text-center'>
                         <div class='badge badge-dark mb-1 p-1'
-                            style="margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;">
+                             style="margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;">
                             مبيعات الكاش :
                             <span>{{ round($totalCash, 2) }}</span>
                         </div>
-
                         <div class='badge badge-warning mb-1 p-1'
-                            style="margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;">
+                             style="margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;">
                             مبيعات الشبكة :
                             <span>{{ round($totalBank, 2) }}</span>
                         </div>
-
                         <!--اجمالى الضريبة للفواتير-->
                         <div class='badge badge-danger mb-1 p-1'
-                            style='margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;'>
+                             style='margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;'>
                             {{ __('pos.total-tax-for-all-invoices') }} :
                             <span>{{ round($sum3, 2) }}</span>
                         </div>
-
                         <!--المبلغ الاجمالي المدفوع--->
                         <div class='badge badge-primary mb-1 p-1'
-                            style='margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;'>
+                             style='margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;'>
                             {{ __('main.paid-amount') }} :
                             <span>{{ round($sum2, 2) }}</span>
                         </div>
-
                         <!--اجمالى الفواتير شامل الضريبة-->
                         <div class='badge badge-success mb-1 p-1'
-                            style='margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;'>
+                             style='margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;'>
                             {{ __('pos.total-invoices-including-tax') }} :
                             <span>{{ round($sum1, 2) }}</span>
                         </div>

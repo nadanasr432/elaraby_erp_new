@@ -10,8 +10,20 @@ class PosOpen extends Model
     protected $fillable = [
         'company_id', 'client_id', 'editing', 'outer_client_id', 'tableNum',
         'notes', 'status', 'value_added_tax',
-        'total_amount', 'tax_amount', 'tax_value','class'
+        'total_amount', 'tax_amount', 'tax_value','class', 'company_counter'
     ];
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($posOpen) {
+            if (is_null($posOpen->company_counter)) {
+                $maxCounter = static::where('company_id', $posOpen->company_id)
+                    ->max('company_counter') ?? 0;
+                $posOpen->company_counter = $maxCounter + 1;
+            }
+        });
+    }
 
     public function elements()
     {

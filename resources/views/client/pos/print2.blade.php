@@ -157,7 +157,7 @@
         <div class="text-right mt-3">
             <div class="text-right">
                 رقم الفاتورة :
-                {{ $pos->id }}
+                {{ $pos->company_counter }}
                 <br>
                 تاريخ - وقت :
                 {{ $pos->created_at }}
@@ -381,7 +381,7 @@
                 //     // TODO :: Support others tags
                 // ])->render();
                 $invoiceDate = date('Y-m-d\TH:i:s\Z', strtotime($pos->created_at . ' ' . $pos->created_at));
-                
+
                 $displayQRCodeAsBase64 = GenerateQrCode::fromArray([
                     new Seller($pos->company->company_name), // seller name
                     new TaxNumber($pos->company->tax_number), // seller tax number

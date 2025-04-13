@@ -182,7 +182,7 @@
                         <th
                             style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
                             {{ __('sales_bills.unit') }}</th>
-                            @if($user->roles->flatMap->permissions->contains('name', 'الخصم'))
+                        @if ($user->roles->flatMap->permissions->contains('name', 'الخصم'))
                             <th
                                 style="background-color: #d8daf5; color: #333; text-align: center; padding: 5px; font-weight: bold;">
                                 {{ __('sales_bills.discount') }}
@@ -230,17 +230,19 @@
         </div>
         <div class="row">
             <div class="col-md-6 pull-right">
-                @if('الخصم')
+                @if ('الخصم')
                     <div class="form-group" dir="rtl">
                         <label for="discount">{{ __('sales_bills.discount-on-the-total-bill') }}</label> <br>
                         <select name="discount_type" id="discount_type" class="form-control"
                             style="width: 60%;display: inline;float: right; margin-left:5px;">
                             <option value="">اختر نوع الخصم</option>
-                            <option {{ $discount?->action_type == 'pound' ? 'selected' : '' }} value="pound">خصم قبل الضريبة
+                            <option {{ $discount?->action_type == 'pound' ? 'selected' : '' }} value="pound">خصم قبل
+                                الضريبة
                                 (مسطح)</option>
                             <option {{ $discount?->action_type == 'percent' ? 'selected' : '' }} value="percent">خصم قبل
                                 الضريبة (%)</option>
-                            <option {{ $discount?->action_type == 'poundAfterTax' ? 'selected' : '' }} value="poundAfterTax">
+                            <option {{ $discount?->action_type == 'poundAfterTax' ? 'selected' : '' }}
+                                value="poundAfterTax">
                                 ضمان اعمال (مسطح)</option>
                             <option {{ $discount?->action_type == 'poundAfterTaxPercent' ? 'selected' : '' }}
                                 value="poundAfterTaxPercent">ضمان اعمال (%)</option>
@@ -609,91 +611,86 @@
         };
     </script>
     <script>
-        // تعريف المتغير في النطاق العام
+        // Define global permissions
         window.canDiscount = @json($user->roles->flatMap->permissions->contains('name', 'الخصم'));
     </script>
     <script>
-        // Initialize rowIndex with the current count of existing rows
+        // Initialize rowIndex globally with the current count of existing rows
         var rowIndex = {{ count($saleBill->elements) }};
+        var somethingChanged = false;
 
-        // Function to populate existing elements into the table
+        // Populate existing elements into the table
         @foreach ($saleBill->elements as $index => $element)
             var rowHtml = `
-            <tr data-product-id="{{ $element->product_id }}" data-index="{{ $index }}">
-                <td>{{ $element->product->product_name }}</td>
-                <td class="text-left">
-                    <label>
-                        <input type="radio" name="products[{{ $index }}][price_type]" required value="sector" class="price_type" {{ $element->price_type == 'sector' ? 'checked' : '' }}>
-                        ${translations.sector}
-                    </label>
-                    <label>
-                        <input type="radio" name="products[{{ $index }}][price_type]"  required value="wholesale" class="price_type" {{ $element->price_type == 'wholesale' ? 'checked' : '' }}>
-                        ${translations.wholesale}
-                    </label>
-                </td>
-                <td>
-                    <input type="number" min="1" name="products[{{ $index }}][product_price]" class="form-control price" value="{{ $element->product_price }}" step="any">
-                </td>
-                <td>
-                    <input type="number" name="products[{{ $index }}][quantity]" class="form-control quantity" value="{{ $element->quantity }}" min="1" max="{{ $element->remaining }}" step="any">
-                </td>
-                <td>
-                    <select name="products[{{ $index }}][unit_id]" class="form-control unit">
-                        <option disabled>${translations.choose_unit}</option>
-                        @foreach ($units as $unit)
-                            <option value="{{ $unit->id }}" {{ $element->unit_id == $unit->id ? 'selected' : '' }}>{{ $unit->unit_name }}</option>
-                        @endforeach
-                    </select>
-                </td>
-            ${canDiscount ? `
-                            <td>
-                                <label>
-                                    <input type="radio" name="products[{{ $index }}][discount_type]" value="pound" class="discount_type" {{ $element->discount_type == 'pound' ? 'checked' : '' }}>
-                                    ${translations.pound}
-                                </label>
-                                <label>
-                                    <input type="radio" name="products[{{ $index }}][discount_type]" value="percent" class="discount_type" {{ $element->discount_type == 'percent' ? 'checked' : '' }}>
-                                    ${translations.percent}
-                                </label>
-                                <input
-                                    type="number"
-                                    name="products[{{ $index }}][discount]"
-                                    class="form-control discount"
-                                    value="{{ $element->discount_value == 0 ? 0 : ($element->discount_type == 'percent' ? $element->discount_value : $element->discount_value) }}"
-                                    min="0"
-                                    step="any">
-
-                                <input type="number" hidden name="products[{{ $index }}][applied_discount]" class="form-control applied_discount" value="{{ $element->applied_discount }}" style="display:none;" step="any">
-                            </td>
-                                            ` : ''}
-                <td>
-                    <select name="products[{{ $index }}][tax]" class="form-control tax_type w-100 mb-1">
-                        <option value="0" {{ $element->tax_type == 0 ? 'selected' : '' }}>${translations.not_including_tax}</option>
-                        <option value="1" {{ $element->tax_type == 1 ? 'selected' : '' }}>${translations.exempt_tax}</option>
-                        <option value="2" {{ $element->tax_type == 2 ? 'selected' : '' }}>${translations.including_tax}</option>
-                    </select>
-                    <input type="number" readonly name="products[{{ $index }}][tax_amount]" class="form-control tax_amount" value="{{ $element->tax_value }}" min="0" step="any">
-                </td>
-                <td>
-                    <input type="number" name="products[{{ $index }}][total]" class="form-control total" value="{{ $element->quantity_price }}" readonly step="any">
-                    <input type="number" hidden name="products[{{ $index }}][product_id]" class="form-control total" value="{{ $element->product_id }}">
-                </td>
-                <td>
-                    <button type="button" class="btn btn-danger remove-product">${translations.remove}</button>
-                </td>
-            </tr>
+                <tr data-product-id="{{ $element->product_id }}" data-index="{{ $index }}">
+                    <td>{{ $element->product->product_name }}</td>
+                    <td class="text-left">
+                        <label>
+                            <input type="radio" name="products[{{ $index }}][price_type]" required value="sector" class="price_type" {{ $element->price_type == 'sector' || !$element->price_type ? 'checked' : '' }}>
+                            ${translations.sector}
+                        </label>
+                        <label>
+                            <input type="radio" name="products[{{ $index }}][price_type]" required value="wholesale" class="price_type" {{ $element->price_type == 'wholesale' ? 'checked' : '' }}>
+                            ${translations.wholesale}
+                        </label>
+                    </td>
+                    <td>
+                        <input type="number" min="1" name="products[{{ $index }}][product_price]" class="form-control price" value="{{ $element->product_price }}" step="any">
+                    </td>
+                    <td>
+                        <input type="number" name="products[{{ $index }}][quantity]" class="form-control quantity" value="{{ $element->quantity }}" min="1" max="{{ $element->remaining }}" step="any">
+                    </td>
+                    <td>
+                        <select name="products[{{ $index }}][unit_id]" class="form-control unit">
+                            <option disabled>${translations.choose_unit}</option>
+                            @foreach ($units as $unit)
+                                <option value="{{ $unit->id }}" {{ $element->unit_id == $unit->id ? 'selected' : '' }}>{{ $unit->unit_name }}</option>
+                            @endforeach
+                        </select>
+                    </td>
+                    ${canDiscount ? `
+                        <td>
+                            <label>
+                                <input type="radio" name="products[{{ $index }}][discount_type]" value="pound" class="discount_type" {{ $element->discount_type == 'pound' || !$element->discount_type ? 'checked' : '' }}>
+                                ${translations.pound}
+                            </label>
+                            <label>
+                                <input type="radio" name="products[{{ $index }}][discount_type]" value="percent" class="discount_type" {{ $element->discount_type == 'percent' ? 'checked' : '' }}>
+                                ${translations.percent}
+                            </label>
+                            <input
+                                type="number"
+                                name="products[{{ $index }}][discount]"
+                                class="form-control discount"
+                                value="{{ $element->discount_value == 0 ? 0 : ($element->discount_type == 'percent' ? $element->discount_value : $element->discount_value) }}"
+                                min="0"
+                                step="any">
+                            <input type="number" hidden name="products[{{ $index }}][applied_discount]" class="form-control applied_discount" value="{{ $element->applied_discount }}" style="display:none;" step="any">
+                        </td>
+                    ` : ''}
+                    <td>
+                        <select name="products[{{ $index }}][tax]" class="form-control tax_type w-100 mb-1">
+                            <option value="0" {{ $element->tax_type == 0 ? 'selected' : '' }}>${translations.not_including_tax}</option>
+                            <option value="1" {{ $element->tax_type == 1 ? 'selected' : '' }}>${translations.exempt_tax}</option>
+                            <option value="2" {{ $element->tax_type == 2 ? 'selected' : '' }}>${translations.including_tax}</option>
+                        </select>
+                        <input type="number" readonly name="products[{{ $index }}][tax_amount]" class="form-control tax_amount" value="{{ $element->tax_value }}" min="0" step="any">
+                    </td>
+                    <td>
+                        <input type="number" name="products[{{ $index }}][total]" class="form-control total" value="{{ $element->quantity_price }}" readonly step="any">
+                        <input type="number" hidden name="products[{{ $index }}][product_id]" class="form-control total" value="{{ $element->product_id }}">
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger remove-product">${translations.remove}</button>
+                    </td>
+                </tr>
             `;
-
             $('#products_table tbody').append(rowHtml);
         @endforeach
-    </script>
 
-    <script>
-        var somethingChanged = false;
-        var rowIndex = 0;
-
+        // Function to add a new product row
         function addProductRow({
-            productId,
+            productId = null,
             productName,
             sectorPrice,
             wholesalePrice,
@@ -701,112 +698,253 @@
             unitId,
             isImmediate = false
         }) {
-            var valueAddedTax = $('#value_added_tax').val(); // Get the selected tax setting
+            var valueAddedTax = $('#value_added_tax').val();
 
             var rowHtml = `
-    <tr data-product-id="${productId}" data-index="${rowIndex}">
-        <td>${isImmediate ? `<input type="text" name="products[${rowIndex}][product_name]" class="form-control" placeholder="${translations.enter_product_name}" required>` : productName}</td>
-        <td class="text-left">
-            <div class="d-flex flex-column">
-                <label class="form-check-inline">
-                    <input type="radio" name="products[${rowIndex}][price_type]" value="sector" class="price_type form-check-input" checked>
-                    ${translations.sector}
-                </label>
-                <label class="form-check-inline">
-                    <input type="radio" name="products[${rowIndex}][price_type]" value="wholesale" class="price_type form-check-input">
-                    ${translations.wholesale}
-                </label>
-            </div>
-        </td>
-        <td>
-            <div class="input-group">
-                        <input type="number" hidden name="products[${rowIndex}][product_id]" class="form-control product_id w-100" value="${productId}" >
-
-                <input type="number" min="1" name="products[${rowIndex}][product_price]" class="form-control price w-100" value="${sectorPrice}" step="any">
-            </div>
-        </td>
-        <td>
-            <div class="input-group">
-                <input type="number" name="products[${rowIndex}][quantity]" class="form-control quantity w-100" value="1" min="1" max="${remaining}" step="any">
-            </div>
-        </td>
-        <td>
-            <div class="input-group">
-                <select name="products[${rowIndex}][unit_id]" class="form-control w-100 unit">
-                    <option disabled>${translations.choose_unit}</option>
-                    @foreach ($units as $unit)
-                                     <option value="{{ $unit->id }}" ${unitId === {{ $unit->id }} ? 'selected' : ''}>{{ $unit->unit_name }}</option>
-                             @endforeach
-                </select>
-            </div>
-        </td>
- ${canDiscount ? `
-                                <td>
-                                    <div class="d-flex flex-column">
-                                        <label class="form-check-inline">
-                                            <input type="radio" name="products[${rowIndex}][discount_type]" value="pound" class="discount_type form-check-input">
-                                            ${translations.pound}
-                                        </label>
-                                        <label class="form-check-inline">
-                                            <input type="radio" name="products[${rowIndex}][discount_type]" value="percent" class="discount_type form-check-input" checked>
-                                            ${translations.percent}
-                                        </label>
-                                        <input type="number" name="products[${rowIndex}][discount]" class="form-control discount w-100 mt-1" value="0" min="0" step="any">
-                                    </div>
-                                </td>
-                                ` : ''}
-        <td>
-            <div class="input-group">
-                <select name="products[${rowIndex}][tax]" class="form-control tax_type w-100 mb-1">
-                    <option value="0" ${valueAddedTax == 0 ? 'selected' : ''}>${translations.not_including_tax}</option>
-                    <option value="1" ${valueAddedTax == 1 ? 'selected' : ''}>${translations.exempt_tax}</option>
-                    <option value="2" ${valueAddedTax == 2 ? 'selected' : ''}>${translations.including_tax}</option>
-                </select>
-                <input type="number" readonly name="products[${rowIndex}][tax_amount]" class="form-control tax_amount w-100 mt-1" value="0" min="0" step="any">
-
-            </div>
-        </td>
-        <td>
-            <input type="number" name="products[${rowIndex}][total]" class="form-control total w-100" value="0" readonly step="any">
-        </td>
-        <td>
-            <button type="button" class="btn btn-danger btn-sm remove-product">${translations.remove}</button>
-        </td>
-    </tr>
-  `;
+                <tr data-product-id="${isImmediate ? '' : productId}" data-index="${rowIndex}">
+                    <td>${isImmediate ? `<input type="text" name="products[${rowIndex}][product_name]" class="form-control" placeholder="${translations.enter_product_name}" required>` : productName}</td>
+                    <td class="text-left">
+                        <div class="d-flex flex-column">
+                            <label class="form-check-inline">
+                                <input type="radio" name="products[${rowIndex}][price_type]" value="sector" class="price_type form-check-input" checked>
+                                ${translations.sector}
+                            </label>
+                            <label class="form-check-inline">
+                                <input type="radio" name="products[${rowIndex}][price_type]" value="wholesale" class="price_type form-check-input">
+                                ${translations.wholesale}
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group">
+                            ${isImmediate ? '' : `<input type="number" hidden name="products[${rowIndex}][product_id]" class="form-control product_id w-100" value="${productId}">`}
+                            <input type="number" min="1" name="products[${rowIndex}][product_price]" class="form-control price w-100" value="${sectorPrice}" step="any">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group">
+                            <input type="number" name="products[${rowIndex}][quantity]" class="form-control quantity w-100" value="1" min="1" max="${remaining}" step="any">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="input-group">
+                            <select name="products[${rowIndex}][unit_id]" class="form-control w-100 unit">
+                                <option disabled>${translations.choose_unit}</option>
+                                @foreach ($units as $unit)
+                                    <option value="{{ $unit->id }}" ${unitId === {{ $unit->id }} ? 'selected' : ''}>{{ $unit->unit_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </td>
+                    ${canDiscount ? `
+                        <td>
+                            <div class="d-flex flex-column">
+                                <label class="form-check-inline">
+                                    <input type="radio" name="products[${rowIndex}][discount_type]" value="pound" class="discount_type form-check-input">
+                                    ${translations.pound}
+                                </label>
+                                <label class="form-check-inline">
+                                    <input type="radio" name="products[${rowIndex}][discount_type]" value="percent" class="discount_type form-check-input" checked>
+                                    ${translations.percent}
+                                </label>
+                                <input type="number" name="products[${rowIndex}][discount]" class="form-control discount w-100 mt-1" value="0" min="0" step="any">
+                                <input type="number" hidden name="products[${rowIndex}][applied_discount]" class="form-control applied_discount w-100 mt-1" value="0" step="any">
+                            </div>
+                        </td>
+                    ` : ''}
+                    <td>
+                        <div class="input-group">
+                            <select name="products[${rowIndex}][tax]" class="form-control tax_type w-100 mb-1">
+                                <option value="0" ${valueAddedTax == 0 ? 'selected' : ''}>${translations.not_including_tax}</option>
+                                <option value="1" ${valueAddedTax == 1 ? 'selected' : ''}>${translations.exempt_tax}</option>
+                                <option value="2" ${valueAddedTax == 2 ? 'selected' : ''}>${translations.including_tax}</option>
+                            </select>
+                            <input type="number" readonly name="products[${rowIndex}][tax_amount]" class="form-control tax_amount w-100 mt-1" value="0" min="0" step="any">
+                        </div>
+                    </td>
+                    <td>
+                        <input type="number" name="products[${rowIndex}][total]" class="form-control total w-100" value="0" readonly step="any">
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger btn-sm remove-product">${translations.remove}</button>
+                    </td>
+                </tr>
+            `;
 
             $('#products_table tbody').append(rowHtml);
+            handleTaxCalculation();
             rowIndex++;
         }
 
-        function handleAddProductRow(event) {
-            event.preventDefault();
-            rowIndex = $('#products_table tbody tr').length;
-            console.log(rowIndex);
+        // Tax and total calculation functions
+        function handleTaxCalculation(flag = 1) {
+            var taxRate = 0.15; // Tax rate of 15%
+            $('#products_table tbody tr').each(function() {
+                var row = $(this);
+                var taxTypeSelect = row.find(`select[name="products[${row.data('index')}][tax]"]`);
+                var taxAmountField = row.find(`input[name="products[${row.data('index')}][tax_amount]"]`);
+                var productPrice = parseFloat(row.find(`input[name="products[${row.data('index')}][product_price]"]`).val()) || 0;
+                var quantity = parseFloat(row.find(`input[name="products[${row.data('index')}][quantity]"]`).val()) || 0;
+                var taxType = taxTypeSelect.val();
+                var tax = 0;
 
-            // Call the addProductRow function with the required parameters
-            addProductRow({
-                productId: `new-${rowIndex}`,
-                productName: '',
-                sectorPrice: 0,
-                wholesalePrice: 0,
-                remaining: 99999,
-                unitId: 191,
-                isImmediate: true
+                switch (taxType) {
+                    case "2": // Including tax
+                        tax = (productPrice - (productPrice / (1 + taxRate))) * quantity;
+                        taxAmountField.show().val(tax.toFixed(2));
+                        break;
+                    case "0": // Not including tax
+                        tax = (productPrice * taxRate) * quantity;
+                        taxAmountField.show().val(tax.toFixed(2));
+                        break;
+                    case "1": // Exempt from tax
+                    default:
+                        taxAmountField.show().val(0);
+                        break;
+                }
+                calculateRowTotal(row);
+            });
+            calculateGrandTotal();
+        }
+
+        function calculateRowTotal(row) {
+            var taxType = row.find(`select[name="products[${row.data('index')}][tax]"]`).val();
+            var quantity = parseFloat(row.find(`input[name="products[${row.data('index')}][quantity]"]`).val()) || 0;
+            var price = parseFloat(row.find(`input[name="products[${row.data('index')}][product_price]"]`).val()) || 0;
+            var discount = parseFloat(row.find(`input[name="products[${row.data('index')}][discount]"]`).val()) || 0;
+            var discountType = row.find(`input[name="products[${row.data('index')}][discount_type]"]:checked`).val();
+            var taxRate = 0.15;
+            var discountApplication = $('#discount_application').val();
+
+            var subtotal = quantity * price;
+            var discountAmount = discountType === 'percent' ? (subtotal * discount / 100) : discount;
+            var total;
+            var taxValue = 0;
+
+            if (discountApplication === 'before_tax' && discount) {
+                var discountedSubtotal = subtotal - discountAmount;
+                if (taxType === "0") {
+                    taxValue = discountedSubtotal * taxRate;
+                    total = discountedSubtotal + taxValue;
+                } else if (taxType === "2") {
+                    taxValue = (price - (price / (1 + taxRate))) * quantity;
+                    total = discountedSubtotal;
+                } else if (taxType === "1") {
+                    taxValue = 0;
+                    total = discountedSubtotal;
+                }
+            } else {
+                if (taxType === "0") {
+                    taxValue = subtotal * taxRate;
+                    total = subtotal + taxValue - discountAmount;
+                } else if (taxType === "2") {
+                    taxValue = (price - (price / (1 + taxRate))) * quantity;
+                    total = subtotal - discountAmount;
+                } else if (taxType === "1") {
+                    taxValue = 0;
+                    total = subtotal + taxValue - discountAmount;
+                }
+            }
+
+            row.find(`input[name="products[${row.data('index')}][applied_discount]"]`).val(discountAmount.toFixed(2));
+            row.find(`input[name="products[${row.data('index')}][tax_amount]"]`).val(taxValue.toFixed(2));
+            row.find(`input[name="products[${row.data('index')}][total]"]`).val(total.toFixed(2));
+            calculateGrandTotal();
+        }
+
+        function calculateGrandTotal() {
+            var grandTotal = 0;
+            var grandTax = 0;
+            var totalAppliedDiscount = 0;
+            var totalDiscount = 0;
+            var discountType = $('#discount_type').val();
+            var discountValue = parseFloat($('#discount_value').val()) || 0;
+            var extraType = $('#extra_type').val();
+            var extraValue = parseFloat($('#extra_value').val()) || 0;
+
+            $('#products_table tbody tr').each(function() {
+                var total = parseFloat($(this).find(`input[name="products[${$(this).data('index')}][total]"]`).val()) || 0;
+                var appliedDiscount = parseFloat($(this).find(`input[name="products[${$(this).data('index')}][applied_discount]"]`).val()) || 0;
+                var taxAmount = parseFloat($(this).find(`input[name="products[${$(this).data('index')}][tax_amount]"]`).val()) || 0;
+                grandTotal += total;
+                totalAppliedDiscount += appliedDiscount;
+                grandTax += taxAmount;
+            });
+
+            var totalWithoutTax = grandTotal - grandTax;
+            var taxRatio = $('#value_added_tax').val() == 0 ? 0.15 : 0;
+            if (discountType === 'pound') {
+                total = totalWithoutTax - discountValue;
+                grandTotal = total + grandTax;
+            } else if (discountType === 'percent') {
+                discountValue = (totalWithoutTax * discountValue / 100);
+                total = totalWithoutTax - discountValue;
+                grandTotal = total + grandTax;
+            } else if (discountType === 'poundAfterTax') {
+                grandTotal -= discountValue;
+            } else if (discountType === 'poundAfterTaxPercent') {
+                discountValue = (grandTotal * discountValue / 100);
+                grandTotal -= discountValue;
+            }
+
+            if (extraType === 'percent') {
+                grandTotal += (grandTotal * extraValue / 100);
+            } else if (extraType === 'pound') {
+                grandTotal += extraValue;
+            }
+
+            totalDiscount = totalAppliedDiscount + discountValue;
+            $('#grand_tax').text(grandTax.toFixed(2));
+            $('#grand_total').text(grandTotal.toFixed(2));
+            $('#grand_tax_input').val(grandTax.toFixed(2));
+            $('#grand_total_input').val(grandTotal.toFixed(2));
+            $('#grand_discount_input').val(totalDiscount.toFixed(2));
+        }
+
+        function reindexRows() {
+            $('#products_table tbody tr').each(function(index) {
+                $(this).data('index', index);
+                $(this).find('input, select').each(function() {
+                    var name = $(this).attr('name');
+                    if (name) {
+                        var newName = name.replace(/\[\d+\]/, `[${index}]`);
+                        $(this).attr('name', newName);
+                    }
+                });
+            });
+            rowIndex = $('#products_table tbody tr').length;
+        }
+
+        function validateDiscount() {
+            $('input[name^="products["][name$="[discount]"]').each(function() {
+                var discountInput = $(this);
+                var rowIndex = discountInput.attr('name').match(/\[(\d+)\]/)[1];
+                var discountType = $('input[name="products[' + rowIndex + '][discount_type]"]:checked').val();
+                var discountValue = parseFloat(discountInput.val());
+                if (discountType === 'percent' && discountValue > 100) {
+                    alert('Discount cannot be more than 100% for percentage discount.');
+                    discountInput.val(100);
+                }
             });
         }
+
+        function validateDiscountTotal() {
+            var discountType = $('#discount_type').val();
+            var discountValue = parseFloat($('#discount_value').val());
+            if ((discountType === 'percent' || discountType === 'poundAfterTaxPercent') && discountValue > 100) {
+                alert('الخصم لا يمكن أن يكون أكثر من 100% لنوع الخصم المحدد.');
+                $('#discount_value').val(100);
+            }
+        }
+
         $(document).ready(function() {
             $('.summernotes').summernote({
                 height: 100,
                 direction: 'rtl',
             });
-        })
-        //onsave btn حفظ الفاتورة
-        $(document).ready(function() {
+
             $('#value_added_tax').on('change', function() {
                 const newTaxType = $(this).val();
-
-                // Show a SweetAlert confirmation dialog
                 Swal.fire({
                     title: 'تأكيد التغيير',
                     text: 'سيتم تغيير نوع الضريبة لجميع العناصر في الجدول إلى القيمة المحددة. هل تريد المتابعة؟',
@@ -816,31 +954,20 @@
                     cancelButtonText: 'إلغاء',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Update all tax types in the table to match the selected value
                         $('#products_table tbody tr').each(function() {
-                            $(this).find('select[name*="[tax]"]').val(newTaxType).trigger(
-                                'change');
+                            $(this).find('select[name*="[tax]"]').val(newTaxType).trigger('change');
                         });
-
-                        handleTaxCalculation(); // Recalculate taxes after the update
-                        Swal.fire(
-                            'تم التغيير!',
-                            'تم تحديث نوع الضريبة بنجاح.',
-                            'success'
-                        );
+                        handleTaxCalculation();
+                        Swal.fire('تم التغيير!', 'تم تحديث نوع الضريبة بنجاح.', 'success');
                     } else {
-                        // Reset the dropdown to its previous value
                         $(this).val($(this).data('previous-value'));
                     }
                 });
-
-                // Save the current value as previous for potential reset
                 $(this).data('previous-value', newTaxType);
             });
+
             $('.save_btn1').on('click', function() {
                 let outerClientId = $('#outer_client_id').val();
-
-                // Check if the outer client ID is selected
                 if (!outerClientId) {
                     Swal.fire({
                         icon: 'warning',
@@ -850,20 +977,13 @@
                     });
                     return false;
                 }
-
-                // Validate that at least one product is selected
                 let hasProduct = false;
                 $('#products_table tbody tr').each(function() {
                     let quantity = $(this).find('input[name*="[quantity]"]').val();
                     let price = $(this).find('input[name*="[product_price]"]').val();
-
                     let unit = $(this).find('select[name*="[unit_id]"]').val();
-
-                    if (quantity > 0 && price > 0 && unit) {
-                        hasProduct = true;
-                    }
+                    if (quantity > 0 && price > 0 && unit) hasProduct = true;
                 });
-
                 if (!hasProduct) {
                     Swal.fire({
                         icon: 'warning',
@@ -874,21 +994,16 @@
                     return false;
                 }
                 var formData = $('#myForm').serialize();
-
                 $.post("{{ url('/client/sale-bills/saveAll') }}", formData, function(data) {
-
                     location.href = '/sale-bills/print/' + data;
                 });
             });
 
-            //onsave btn حفظ الفاتورة
             $('.save_btn2').on('click', function() {
                 let printColor = $(this).attr('printColor');
                 let isMoswada = $(this).attr('isMoswada');
                 let invoiceType = $(this).attr('invoiceType');
                 let outerClientId = $('#outer_client_id').val();
-
-                // Check if the outer client ID is selected
                 if (!outerClientId) {
                     Swal.fire({
                         icon: 'warning',
@@ -898,19 +1013,13 @@
                     });
                     return false;
                 }
-
-                // Validate that at least one product is selected
                 let hasProduct = false;
                 $('#products_table tbody tr').each(function() {
                     let quantity = $(this).find('input[name*="[quantity]"]').val();
                     let price = $(this).find('input[name*="[product_price]"]').val();
                     let unit = $(this).find('select[name*="[unit_id]"]').val();
-
-                    if (quantity > 0 && price > 0 && unit) {
-                        hasProduct = true;
-                    }
+                    if (quantity > 0 && price > 0 && unit) hasProduct = true;
                 });
-
                 if (!hasProduct) {
                     Swal.fire({
                         icon: 'warning',
@@ -921,21 +1030,17 @@
                     return false;
                 }
                 var formData = $('#myForm').serialize();
-
                 $.post("{{ url('/client/sale-bills/saveAll') }}", formData, function(data) {
-                    location.href = '/sale-bills/print/' + data + '/' + invoiceType + '/' +
-                        printColor + '/' +
-                        isMoswada;
+                    location.href = '/sale-bills/print/' + data + '/' + invoiceType + '/' + printColor + '/' + isMoswada;
                 });
             });
-
 
             $('.pay_cash').on('click', function() {
                 let company_id = $('#company_id').val();
                 let outer_client_id = $('#outer_client_id').val();
                 let sale_bill_number = $('#sale_bill_number').val();
                 let date = $('#date').val();
-                let time = $('#time').val()
+                let time = $('#time').val();
                 let cash_number = $('#cash_number').val();
                 let amount = $('#amount').val();
                 let safe_id = $('#safe_id').val();
@@ -943,11 +1048,11 @@
                 let bank_check_number = $('#bank_check_number').val();
                 let notes = $('#bank_notes').val();
                 let payment_method = $('#payment_method').val();
-                if (payment_method == "cash" && safe_id == "") {
+                if (payment_method == "cash" && !safe_id) {
                     alert('اختر الخزنة اولا');
-                } else if (payment_method == "bank" && bank_id == "") {
+                } else if (payment_method == "bank" && !bank_id) {
                     alert('اختر البنك اولا ');
-                } else if (payment_method == "") {
+                } else if (!payment_method) {
                     alert('اختر طريقة الدفع اولا ');
                 } else {
                     $.post("{{ route('client.store.cash.outerClients.SaleBill', 'test') }}", {
@@ -966,10 +1071,7 @@
                         "_token": "{{ csrf_token() }}"
                     }, function(data) {
                         if (data.status == true) {
-                            $('<div class="alert alert-dark alert-sm"> ' + data.msg + '</div>')
-                                .insertAfter(
-                                    '#company_id');
-
+                            $('<div class="alert alert-dark alert-sm"> ' + data.msg + '</div>').insertAfter('#company_id');
                             $('.delete_pay').on('click', function() {
                                 let payment_method = $(this).attr('payment_method');
                                 let cash_id = $(this).attr('cash_id');
@@ -977,28 +1079,23 @@
                                     '_token': "{{ csrf_token() }}",
                                     payment_method: payment_method,
                                     cash_id: cash_id,
-                                }, function(data) {
-
-                                });
+                                }, function(data) {});
                                 $(this).parent().hide();
-
                             });
                             setTimeout(function() {
                                 $('#myModal2').hide();
                                 $('#myModal2').removeClass('show');
-                                $('#myModal2').css('display', 'none')
+                                $('#myModal2').css('display', 'none');
                                 $('body').removeClass('modal-open');
                                 $('.modal-backdrop').remove();
                             }, 2000);
-
                         } else {
-                            $('<br/><br/> <p class="alert alert-dark alert-sm"> ' + data.msg +
-                                    '</p>')
-                                .insertAfter('#company_id');
+                            $('<br/><br/> <p class="alert alert-dark alert-sm"> ' + data.msg + '</p>').insertAfter('#company_id');
                         }
                     });
                 }
             });
+
             $('.delete_pay').on('click', function() {
                 let payment_method = $(this).attr('payment_method');
                 let cash_id = $(this).attr('cash_id');
@@ -1006,12 +1103,10 @@
                     '_token': "{{ csrf_token() }}",
                     payment_method: payment_method,
                     cash_id: cash_id,
-                }, function(data) {
-
-                });
+                }, function(data) {});
                 $(this).parent().parent().hide();
-
             });
+
             $('#outer_client_id').on('change', function() {
                 let outer_client_id = $(this).val();
                 if (outer_client_id != "") {
@@ -1032,9 +1127,10 @@
                     $('.outer_client_details').fadeOut(200);
                 }
             });
+
             $('#store_id').on('change', function() {
                 let store_id = $(this).val();
-                if (store_id != "" || store_id != "0") {
+                if (store_id != "" && store_id != "0") {
                     $('.options').fadeIn(200);
                     $.post("{{ url('/client/sale-bills/getProducts') }}", {
                         store_id: store_id,
@@ -1047,26 +1143,44 @@
                     $('.options').fadeOut(200);
                 }
             });
+
             $('#product_id').on('change', function() {
                 $('#sector').prop('checked', false);
                 $('#quantity').val('');
                 $('#quantity_price').val('');
                 let sale_bill_number = $('#sale_bill_number').val();
                 let product_id = $(this).val();
-                $.post("{{ url('/client/sale-bills/get') }}", {
-                    product_id: product_id,
-                    sale_bill_number: sale_bill_number,
-                    "_token": "{{ csrf_token() }}"
-                }, function(data) {
-                    $('#wholesale').prop('checked', true);
-                    $('input#product_price').val(data.wholesale_price);
-                    $('input#quantity_price').val(data.wholesale_price);
-                    $('input#quantity').val("1");
-                    $('select#unit_id').val(data.unit_id);
-                    $('input#quantity').attr('max', data.first_balance);
-                    $('.available').html('الكمية المتاحة : ' + data.first_balance);
-                });
+                var productName = $('option:selected', this).data('name');
+                var sectorPrice = $('option:selected', this).data('sectorprice');
+                var wholesalePrice = $('option:selected', this).data('wholesaleprice');
+                var categoryType = $('option:selected', this).data('categorytype');
+                var unitId = $('option:selected', this).data('unitid') || 191;
+                var remaining = categoryType !== "خدمية" ? $('option:selected', this).data('remaining') : 99999;
+                var existingRow = $(`#products_table tbody tr[data-product-id="${product_id}"]`);
+                $(this).val("");
+                if (existingRow.length > 0 && product_id != 'new') {
+                    var quantityInput = existingRow.find(`input[name="products[${existingRow.data('index')}][quantity]"]`);
+                    var currentQuantity = parseFloat(quantityInput.val()) || 0;
+                    var newQuantity = currentQuantity + 1;
+                    if (categoryType !== "خدمية" && newQuantity > remaining) {
+                        alert(`${translations.max_quantity} ${remaining}`);
+                        newQuantity = remaining;
+                    }
+                    quantityInput.val(newQuantity);
+                    calculateRowTotal(existingRow);
+                } else {
+                    addProductRow({
+                        productId: product_id,
+                        productName: productName,
+                        sectorPrice: sectorPrice,
+                        wholesalePrice: wholesalePrice,
+                        remaining: remaining,
+                        unitId: unitId,
+                        isImmediate: product_id === 'new'
+                    });
+                }
             });
+
             $('#wholesale').on('click', function() {
                 let product_id = $('#product_id').val();
                 $.post("{{ url('/client/sale-bills/get') }}", {
@@ -1079,6 +1193,7 @@
                     $('#quantity_price').val(quantity_price);
                 });
             });
+
             $('#sector').on('click', function() {
                 let product_id = $('#product_id').val();
                 $.post("{{ url('/client/sale-bills/get') }}", {
@@ -1091,35 +1206,27 @@
                     $('#quantity_price').val(quantity_price);
                 });
             });
+
             $('#quantity').on('keyup change', function() {
-                let product_id = $('#product_id').val();
                 let product_price = $('#product_price').val();
                 let quantity = $(this).val();
                 let quantity_price = quantity * product_price;
                 $('#quantity_price').val(quantity_price);
             });
+
             $('#product_price').on('keyup change', function() {
-                let product_id = $('#product_id').val();
                 let product_price = $(this).val();
                 let quantity = $('#quantity').val();
                 let quantity_price = quantity * product_price;
                 $('#quantity_price').val(quantity_price);
             });
 
-        });
-
-        //add-new-sale-bill button --- اضافة فاتورة بيع جديدة.
-        $(document).ready(function() {
             $('#myModal2').on('hide.bs.modal', function(e) {
                 let amount = $('#amount').val();
-
-                // Check if #amount exists and has a value greater than 0
                 if (amount && parseFloat(amount) > 0) {
                     let paymentMethod = $('#payment_method').val();
                     let safeId = $('#safe_id').val();
                     let bankId = $('#bank_id').val();
-
-                    // Validate payment method based on the value of #amount
                     if (paymentMethod === "cash" && !safeId) {
                         Swal.fire({
                             icon: 'warning',
@@ -1127,7 +1234,7 @@
                             text: 'اختر الخزنة اولا',
                             confirmButtonText: 'موافق'
                         });
-                        e.preventDefault(); // Prevent the modal from closing
+                        e.preventDefault();
                     } else if (paymentMethod === "bank" && !bankId) {
                         Swal.fire({
                             icon: 'warning',
@@ -1135,7 +1242,7 @@
                             text: 'اختر البنك اولا',
                             confirmButtonText: 'موافق'
                         });
-                        e.preventDefault(); // Prevent the modal from closing
+                        e.preventDefault();
                     } else if (!paymentMethod) {
                         Swal.fire({
                             icon: 'warning',
@@ -1143,35 +1250,26 @@
                             text: 'اختر طريقة الدفع اولا',
                             confirmButtonText: 'موافق'
                         });
-                        e.preventDefault(); // Prevent the modal from closing
+                        e.preventDefault();
                     }
                 }
             });
 
-            $('#add').on('click', function(e) { // Add 'e' as the event parameter
-                e.preventDefault(); // Prevent default form submission
-
+            $('#add').on('click', function(e) {
+                e.preventDefault();
                 let outerClientId = $('#outer_client_id').val();
-
                 const discountType = document.getElementById('discount_type').value;
                 const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
                 const grandTotal = parseFloat(document.getElementById('grand_total').textContent) || 0;
-
-                // Check if discount exceeds grand total
-                if (
-                    (discountType === 'pound' || discountType === 'poundAfterTax') &&
-                    discountValue > grandTotal
-                ) {
+                if ((discountType === 'pound' || discountType === 'poundAfterTax') && discountValue > grandTotal) {
                     Swal.fire({
                         icon: 'warning',
                         title: 'تحذير',
                         text: 'لا يمكن أن يكون الخصم أكبر من الإجمالي!',
                         confirmButtonText: 'موافق'
                     });
-                    return false; // Stop submission
+                    return false;
                 }
-
-                // Check if the outer client ID is selected
                 if (!outerClientId) {
                     Swal.fire({
                         icon: 'warning',
@@ -1181,19 +1279,13 @@
                     });
                     return false;
                 }
-
-                // Validate that at least one product is selected
                 let hasProduct = false;
                 $('#products_table tbody tr').each(function() {
                     let quantity = $(this).find('input[name*="[quantity]"]').val();
                     let price = $(this).find('input[name*="[product_price]"]').val();
                     let unit = $(this).find('select[name*="[unit_id]"]').val();
-
-                    if (quantity > 0 && price > 0 && unit) {
-                        hasProduct = true;
-                    }
+                    if (quantity > 0 && price > 0 && unit) hasProduct = true;
                 });
-
                 if (!hasProduct) {
                     Swal.fire({
                         icon: 'warning',
@@ -1203,62 +1295,45 @@
                     });
                     return false;
                 }
-
                 var formData = $('#myForm').serialize();
                 $.post("{{ url('/client/sale-bills/update') }}", formData)
                     .done(function(data) {
                         if (data.status === true) {
-                            // Show success message
                             Swal.fire({
                                 icon: 'success',
                                 title: 'تم التحديث بنجاح',
                                 text: 'سيتم توجيهك إلى الصفحة المطلوبة',
                                 confirmButtonText: 'حسنًا'
                             }).then(() => {
-                                // Redirect to the specific page
                                 window.location.href = `/client/sale-bill1/${data.id}`;
                             });
                         } else {
-                            // Handle the case where data.status is false
-                            let errorMessage = data.message ||
-                                "حدث خطأ أثناء التحديث"; // Fallback error message
+                            let errorMessage = data.message || "حدث خطأ أثناء التحديث";
                             let errorDetails = '';
-
-                            // If there are field-specific errors, build the detailed error message
                             if (data.errors) {
                                 $.each(data.errors, function(field, messages) {
                                     errorDetails += messages.join('<br>') + '<br>';
                                 });
                             }
-
-                            // Use SweetAlert to display the error message
                             Swal.fire({
                                 icon: 'error',
                                 title: 'خطأ',
-                                html: errorMessage + '<br>' +
-                                    errorDetails, // Combine general and detailed errors
+                                html: errorMessage + '<br>' + errorDetails,
                                 confirmButtonText: 'موافق'
                             });
                         }
                     })
                     .fail(function(jqXHR) {
-                        // Handle request failure
                         let errorMessage = "حدث خطأ أثناء الاتصال بالخادم";
                         let errorDetails = '';
-
-                        // Extract error details from the response, if available
                         if (jqXHR.responseJSON) {
-                            if (jqXHR.responseJSON.message) {
-                                errorMessage = jqXHR.responseJSON.message;
-                            }
+                            if (jqXHR.responseJSON.message) errorMessage = jqXHR.responseJSON.message;
                             if (jqXHR.responseJSON.errors) {
                                 $.each(jqXHR.responseJSON.errors, function(field, messages) {
                                     errorDetails += messages.join('<br>') + '<br>';
                                 });
                             }
                         }
-
-                        // Show error alert with SweetAlert
                         Swal.fire({
                             icon: 'error',
                             title: 'خطأ',
@@ -1266,115 +1341,147 @@
                             confirmButtonText: 'موافق'
                         });
                     });
-
-
             });
 
-
-
-        });
-
-
-
-
-        // apply discount //
-        $('#exec_discount').on('click', function() {
-            let sale_bill_number = $('#sale_bill_number').val();
-            let discount_type = $('#discount_type').val();
-            let discount_value = $('#discount_value').val();
-            let discount_note = $('#discount_note').val();
-
-            // apply discount //
-            $.post("{{ url('/client/sale-bills/discount') }}", {
-                "_token": "{{ csrf_token() }}",
-                sale_bill_number: sale_bill_number,
-                discount_type: discount_type,
-                discount_value: discount_value,
-                discount_note: discount_note
-            }, function(data) {
-                alert('تم تطبيق الخصم');
-                $('.after_totals').html(data);
-            });
-
-            // refresh //
-            $.post("{{ url('/client/sale-bills/refresh') }}", {
-                "_token": "{{ csrf_token() }}",
-                sale_bill_number: sale_bill_number,
-            }, function(data) {
-                $('#final_total').val(data.final_total);
-            });
-        });
-
-        $('.pay_btn').on('click', function() {
-            let final_total = $('#grand_total_input').val();
-            $('#amount').val(final_total);
-        })
-
-        $('.edit_element').on('click', function() {
-            let element_id = $(this).attr('element_id');
-            let sale_bill_number = $(this).attr('sale_bill_number');
-
-            $.post("{{ url('/client/sale-bills/edit-element') }}", {
-                "_token": "{{ csrf_token() }}",
-                sale_bill_number: sale_bill_number,
-                element_id: element_id
-            }, function(data) {
-                $('#product_id').val(data.product_id);
-                $('#product_id').selectpicker('refresh');
-                $('#product_price').val(data.product_price);
-                $('#unit_id').val(data.unit_id);
-                $('#quantity').val(data.quantity);
-                $('#quantity_price').val(data.quantity_price);
-                let product_id = data.product_id;
-                $.post("{{ url('/client/sale-bills/get-edit') }}", {
-                    product_id: product_id,
+            $('#exec_discount').on('click', function() {
+                let sale_bill_number = $('#sale_bill_number').val();
+                let discount_type = $('#discount_type').val();
+                let discount_value = $('#discount_value').val();
+                let discount_note = $('#discount_note').val();
+                $.post("{{ url('/client/sale-bills/discount') }}", {
+                    "_token": "{{ csrf_token() }}",
                     sale_bill_number: sale_bill_number,
-                    "_token": "{{ csrf_token() }}"
+                    discount_type: discount_type,
+                    discount_value: discount_value,
+                    discount_note: discount_note
                 }, function(data) {
-                    $('input#quantity').attr('max', data.first_balance);
-                    $('.available').html('الكمية المتاحة : ' + data.first_balance);
+                    alert('تم تطبيق الخصم');
+                    $('.after_totals').html(data);
                 });
-                $('#add').hide();
-                $('#edit').show();
-                $('#edit').attr('element_id', element_id);
-                $('#edit').attr('sale_bill_number', sale_bill_number);
-
+                $.post("{{ url('/client/sale-bills/refresh') }}", {
+                    "_token": "{{ csrf_token() }}",
+                    sale_bill_number: sale_bill_number,
+                }, function(data) {
+                    $('#final_total').val(data.final_total);
+                });
             });
-        });
 
-        $('#edit').on('click', function() {
-            let element_id = $(this).attr('element_id');
-            let sale_bill_number = $(this).attr('sale_bill_number');
+            $('.pay_btn').on('click', function() {
+                let final_total = $('#grand_total_input').val();
+                $('#amount').val(final_total);
+            });
 
-            let product_id = $('#product_id').val();
-            let product_price = $('#product_price').val();
-            let quantity = $('#quantity').val();
-            let quantity_price = $('#quantity_price').val();
-            let unit_id = $('#unit_id').val();
+            $('.edit_element').on('click', function() {
+                let element_id = $(this).attr('element_id');
+                let sale_bill_number = $(this).attr('sale_bill_number');
+                $.post("{{ url('/client/sale-bills/edit-element') }}", {
+                    "_token": "{{ csrf_token() }}",
+                    sale_bill_number: sale_bill_number,
+                    element_id: element_id
+                }, function(data) {
+                    $('#product_id').val(data.product_id);
+                    $('#product_id').selectpicker('refresh');
+                    $('#product_price').val(data.product_price);
+                    $('#unit_id').val(data.unit_id);
+                    $('#quantity').val(data.quantity);
+                    $('#quantity_price').val(data.quantity_price);
+                    let product_id = data.product_id;
+                    $.post("{{ url('/client/sale-bills/get-edit') }}", {
+                        product_id: product_id,
+                        sale_bill_number: sale_bill_number,
+                        "_token": "{{ csrf_token() }}"
+                    }, function(data) {
+                        $('input#quantity').attr('max', data.first_balance);
+                        $('.available').html('الكمية المتاحة : ' + data.first_balance);
+                    });
+                    $('#add').hide();
+                    $('#edit').show();
+                    $('#edit').attr('element_id', element_id);
+                    $('#edit').attr('sale_bill_number', sale_bill_number);
+                });
+            });
 
-            let discount_type = $('#discount_type').val();
-            let discount_value = $('#discount_value').val();
-            let first_balance = parseFloat($('#quantity').attr('max'));
-            let extra_type = $('#extra_type').val();
-            let extra_value = $('#extra_value').val();
-            let value_added_tax = $('#value_added_tax').val();
-            if (!isNaN(first_balance)) {
-                if (product_id == "" || product_id <= "0") {
-                    alert("لابد ان تختار المنتج أولا");
-                } else if (product_price == "" || product_price == "0") {
-                    alert("لم يتم اختيار سعر المنتج");
-                } else if (quantity == "" || quantity <= "0" || quantity > first_balance) {
-                    alert("الكمية غير مناسبة");
-                } else if (quantity_price == "" || quantity_price == "0") {
-                    alert("الكمية غير مناسبة او الاجمالى غير صحيح");
-                } else if (unit_id == "" || unit_id == "0") {
-                    alert("اختر الوحدة");
+            $('#edit').on('click', function() {
+                let element_id = $(this).attr('element_id');
+                let sale_bill_number = $(this).attr('sale_bill_number');
+                let product_id = $('#product_id').val();
+                let product_price = $('#product_price').val();
+                let quantity = $('#quantity').val();
+                let quantity_price = $('#quantity_price').val();
+                let unit_id = $('#unit_id').val();
+                let discount_type = $('#discount_type').val();
+                let discount_value = $('#discount_value').val();
+                let first_balance = parseFloat($('#quantity').attr('max'));
+                let extra_type = $('#extra_type').val();
+                let extra_value = $('#extra_value').val();
+                let value_added_tax = $('#value_added_tax').val();
+                if (!isNaN(first_balance)) {
+                    if (!product_id || product_id <= "0") {
+                        alert("لابد ان تختار المنتج أولا");
+                    } else if (!product_price || product_price == "0") {
+                        alert("لم يتم اختيار سعر المنتج");
+                    } else if (!quantity || quantity <= "0" || quantity > first_balance) {
+                        alert("الكمية غير مناسبة");
+                    } else if (!quantity_price || quantity_price == "0") {
+                        alert("الكمية غير مناسبة او الاجمالى غير صحيح");
+                    } else if (!unit_id || unit_id == "0") {
+                        alert("اختر الوحدة");
+                    } else {
+                        $.post('/client/sale-bills/element/update', {
+                            '_token': "{{ csrf_token() }}",
+                            element_id: element_id,
+                            value_added_tax: value_added_tax,
+                            product_id: product_id,
+                            product_price: product_price,
+                            quantity: quantity,
+                            quantity_price: quantity_price,
+                            unit_id: unit_id,
+                        }, function(data) {
+                            $.post('/client/sale-bills/elements', {
+                                '_token': "{{ csrf_token() }}",
+                                sale_bill_number: sale_bill_number
+                            }, function(elements) {
+                                $('.bill_details').html(elements);
+                            });
+                            $('#add').show();
+                            $('#edit').hide();
+                            $('#product_id').val('').trigger('change');
+                            $('#unit_id').val('');
+                            $('.available').html("");
+                            $('#product_price').val('0');
+                            $('#quantity').val('');
+                            $('#quantity_price').val('');
+                        });
+                        $.post('/client/sale-bills/discount', {
+                            '_token': "{{ csrf_token() }}",
+                            sale_bill_number: sale_bill_number,
+                            discount_type: discount_type,
+                            discount_value: discount_value
+                        }, function(data) {
+                            alert('تم تطبيق الخصم');
+                            $('.after_totals').html(data);
+                        });
+                        $.post('/client/sale-bills/extra', {
+                            '_token': "{{ csrf_token() }}",
+                            sale_bill_number: sale_bill_number,
+                            extra_type: extra_type,
+                            extra_value: extra_value
+                        }, function(data) {
+                            $('.after_totals').html(data);
+                        });
+                        $.post("{{ url('/client/sale-bills/refresh') }}", {
+                            "_token": "{{ csrf_token() }}",
+                            sale_bill_number: sale_bill_number,
+                        }, function(data) {
+                            $('#final_total').val(data.final_total);
+                        });
+                    }
                 } else {
                     $.post('/client/sale-bills/element/update', {
                         '_token': "{{ csrf_token() }}",
                         element_id: element_id,
-                        value_added_tax: value_added_tax,
                         product_id: product_id,
+                        value_added_tax: value_added_tax,
                         product_price: product_price,
                         quantity: quantity,
                         quantity_price: quantity_price,
@@ -1386,7 +1493,6 @@
                         }, function(elements) {
                             $('.bill_details').html(elements);
                         });
-
                         $('#add').show();
                         $('#edit').hide();
                         $('#product_id').val('').trigger('change');
@@ -1405,7 +1511,6 @@
                         alert('تم تطبيق الخصم');
                         $('.after_totals').html(data);
                     });
-
                     $.post('/client/sale-bills/extra', {
                         '_token': "{{ csrf_token() }}",
                         sale_bill_number: sale_bill_number,
@@ -1421,17 +1526,18 @@
                         $('#final_total').val(data.final_total);
                     });
                 }
-            } else {
+            });
 
-                $.post('/client/sale-bills/element/update', {
+            $('.remove_element').on('click', function() {
+                let element_id = $(this).attr('element_id');
+                let sale_bill_number = $(this).attr('sale_bill_number');
+                let discount_type = $('#discount_type').val();
+                let discount_value = $('#discount_value').val();
+                let extra_type = $('#extra_type').val();
+                let extra_value = $('#extra_value').val();
+                $.post('/client/sale-bills/element/delete', {
                     '_token': "{{ csrf_token() }}",
-                    element_id: element_id,
-                    product_id: product_id,
-                    value_added_tax: value_added_tax,
-                    product_price: product_price,
-                    quantity: quantity,
-                    quantity_price: quantity_price,
-                    unit_id: unit_id,
+                    element_id: element_id
                 }, function(data) {
                     $.post('/client/sale-bills/elements', {
                         '_token': "{{ csrf_token() }}",
@@ -1439,26 +1545,15 @@
                     }, function(elements) {
                         $('.bill_details').html(elements);
                     });
-                    $('#add').show();
-                    $('#edit').hide();
-                    $('#product_id').val('').trigger('change');
-                    $('#unit_id').val('');
-                    $('.available').html("");
-                    $('#product_price').val('0');
-                    $('#quantity').val('');
-                    $('#quantity_price').val('');
                 });
-
                 $.post('/client/sale-bills/discount', {
                     '_token': "{{ csrf_token() }}",
                     sale_bill_number: sale_bill_number,
                     discount_type: discount_type,
                     discount_value: discount_value
                 }, function(data) {
-                    alert('تم تطبيق الخصم');
                     $('.after_totals').html(data);
                 });
-
                 $.post('/client/sale-bills/extra', {
                     '_token': "{{ csrf_token() }}",
                     sale_bill_number: sale_bill_number,
@@ -1467,581 +1562,52 @@
                 }, function(data) {
                     $('.after_totals').html(data);
                 });
-
                 $.post("{{ url('/client/sale-bills/refresh') }}", {
                     "_token": "{{ csrf_token() }}",
                     sale_bill_number: sale_bill_number,
                 }, function(data) {
                     $('#final_total').val(data.final_total);
                 });
-            }
+                $(this).parent().parent().fadeOut(300);
+            });
 
-        });
-
-        $('.remove_element').on('click', function() {
-            let element_id = $(this).attr('element_id');
-            let sale_bill_number = $(this).attr('sale_bill_number');
-
-            let discount_type = $('#discount_type').val();
-            let discount_value = $('#discount_value').val();
-
-            let extra_type = $('#extra_type').val();
-            let extra_value = $('#extra_value').val();
-
-            $.post('/client/sale-bills/element/delete', {
-                '_token': "{{ csrf_token() }}",
-                element_id: element_id
-            }, function(data) {
-                $.post('/client/sale-bills/elements', {
-                    '_token': "{{ csrf_token() }}",
-                    sale_bill_number: sale_bill_number
-                }, function(elements) {
-                    $('.bill_details').html(elements);
+            $('#exec_extra').on('click', function() {
+                let sale_bill_number = $('#sale_bill_number').val();
+                let extra_type = $('#extra_type').val();
+                let extra_value = $('#extra_value').val();
+                $.post("{{ url('/client/sale-bills/extra') }}", {
+                    "_token": "{{ csrf_token() }}",
+                    sale_bill_number: sale_bill_number,
+                    extra_type: extra_type,
+                    extra_value: extra_value
+                }, function(data) {
+                    $('.after_totals').html(data);
+                });
+                $.post("{{ url('/client/sale-bills/refresh') }}", {
+                    "_token": "{{ csrf_token() }}",
+                    sale_bill_number: sale_bill_number,
+                }, function(data) {
+                    $('#final_total').val(data.final_total);
                 });
             });
 
-            $.post('/client/sale-bills/discount', {
-                '_token': "{{ csrf_token() }}",
-                sale_bill_number: sale_bill_number,
-                discount_type: discount_type,
-                discount_value: discount_value
-            }, function(data) {
-                $('.after_totals').html(data);
-            });
-
-            $.post('/client/sale-bills/extra', {
-                '_token': "{{ csrf_token() }}",
-                sale_bill_number: sale_bill_number,
-                extra_type: extra_type,
-                extra_value: extra_value
-            }, function(data) {
-                $('.after_totals').html(data);
-            });
-
-            $.post("{{ url('/client/sale-bills/refresh') }}", {
-                "_token": "{{ csrf_token() }}",
-                sale_bill_number: sale_bill_number,
-            }, function(data) {
-                $('#final_total').val(data.final_total);
-            });
-
-            $(this).parent().parent().fadeOut(300);
-        });
-
-        $('#exec_extra').on('click', function() {
-            let sale_bill_number = $('#sale_bill_number').val();
-            let extra_type = $('#extra_type').val();
-            let extra_value = $('#extra_value').val();
-            $.post("{{ url('/client/sale-bills/extra') }}", {
-                "_token": "{{ csrf_token() }}",
-                sale_bill_number: sale_bill_number,
-                extra_type: extra_type,
-                extra_value: extra_value
-            }, function(data) {
-                $('.after_totals').html(data);
-            });
-
-            $.post("{{ url('/client/sale-bills/refresh') }}", {
-                "_token": "{{ csrf_token() }}",
-                sale_bill_number: sale_bill_number,
-            }, function(data) {
-                $('#final_total').val(data.final_total);
-            });
-        });
-
-        $('#payment_method').on('change', function() {
-            let payment_method = $(this).val();
-            if (payment_method == "cash") {
-                $('.cash').show();
-                $('.bank').hide();
-            } else if (payment_method == "bank") {
-                $('.bank').show();
-                $('.cash').hide();
-            } else {
-                $('.bank').hide();
-                $('.cash').hide();
-            }
-        });
-
-        function checkChanges() {
-            somethingChanged = true
-        }
-        document.getElementById('addClientForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const formData = new FormData(this);
-            const url = this.action;
-
-            fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                            'content'),
-                        'Accept': 'application/json',
-                    },
-                    body: formData,
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Append the new client to the dropdown
-                        const newOption = new Option(data.client.client_name, data.client.id, false, false);
-                        document.getElementById('outer_client_id').add(newOption);
-
-                        // Refresh the selectpicker (if using Bootstrap Select)
-                        $('.selectpicker').selectpicker('refresh');
-
-                        // Close the modal
-                        $('#addClientModal').modal('hide');
-
-                        // Optionally, display a success message
-                        alert(data.message || '{{ __('main.client-added-successfully') }}');
-                    } else {
-                        alert(data.message || '{{ __('main.error-adding-client') }}');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('{{ __('main.error-adding-client') }}');
-                });
-        });
-
-        window.addEventListener("pageshow", function(event) {
-            var historyTraversal = event.persisted ||
-                (typeof window.performance != "undefined" &&
-                    window.performance.navigation.type === 2);
-            if (historyTraversal) {
-                // Handle page restore.
-                window.location.reload();
-            }
-        });
-
-        function validateDiscount() {
-            $('input[name^="products["][name$="[discount]"]').each(function() {
-                var discountInput = $(this);
-                var rowIndex = discountInput.attr('name').match(/\[(\d+)\]/)[1]; // Extract row index
-                var discountType = $('input[name="products[' + rowIndex + '][discount_type]"]:checked')
-                    .val();
-                var discountValue = parseFloat(discountInput.val());
-
-                if (discountType === 'percent' && discountValue > 100) {
-                    alert('Discount cannot be more than 100% for percentage discount.');
-                    discountInput.val(100); // Reset to maximum allowed value
-                }
-            });
-        }
-
-        function validateDiscountTotal() {
-            var discountType = $('#discount_type').val(); // Get selected discount type
-            var discountValue = parseFloat($('#discount_value').val()); // Get discount value
-
-            // Check if discount type is percentage-based
-            if ((discountType === 'percent' || discountType === 'poundAfterTaxPercent') && discountValue > 100) {
-                alert('الخصم لا يمكن أن يكون أكثر من 100% لنوع الخصم المحدد.');
-                $('#discount_value').val(100); // Reset discount value to 100
-            }
-        }
-        $(document).ready(function() {
-            var rowIndex = 0;
-            var roductPrice = 0;
-
-            function handleTaxCalculation(flag = 1) {
-                var taxRate = 0.15; // Tax rate of 15%
-
-                $('#products_table tbody tr').each(function() {
-                    var row = $(this);
-                    var taxTypeSelect = row.find(`select[name="products[${row.data('index')}][tax]"]`);
-                    var taxAmountField = row.find(
-                        `input[name="products[${row.data('index')}][tax_amount]"]`);
-                    var productPrice = parseFloat(row.find(
-                        `input[name="products[${row.data('index')}][product_price]"]`).val()) || 0;
-                    var quantity = parseFloat(row.find(
-                        `input[name="products[${row.data('index')}][quantity]"]`).val()) || 0;
-                    var taxType = taxTypeSelect.val();
-                    var tax = 0;
-
-                    switch (taxType) {
-                        case "2": // Including tax
-                            tax = (productPrice - (productPrice / (1 + taxRate))) *
-                                quantity; // Calculate the tax amount considering quantity
-                            taxAmountField.show().val(tax.toFixed(2));
-                            break;
-                        case "0": // Not including tax
-                            tax = (productPrice * taxRate) *
-                                quantity; // Calculate the tax amount considering quantity
-                            taxAmountField.show().val(tax.toFixed(2));
-                            break;
-                        case "1": // Exempt from tax
-                        default:
-                            taxAmountField.show().val(0); // Set tax to 0 if exempt
-                            break;
-                    }
-
-                    calculateRowTotal(row); // Recalculate the row total after updating the tax
-                });
-
-                calculateGrandTotal(); // Recalculate the grand total after updating all rows
-            }
-
-            function calculateRowTotal(row) {
-                var taxType = row.find(`select[name="products[${row.data('index')}][tax]"]`)
-                    .val(); // Get tax type for this row
-
-                var quantity = parseFloat(row.find(`input[name="products[${row.data('index')}][quantity]"]`)
-                    .val()) || 0;
-                var price = parseFloat(row.find(`input[name="products[${row.data('index')}][product_price]"]`)
-                    .val()) || 0;
-                var discount = parseFloat(row.find(`input[name="products[${row.data('index')}][discount]"]`)
-                    .val()) || 0;
-                var discountType = row.find(`input[name="products[${row.data('index')}][discount_type]"]:checked`)
-                    .val();
-                var taxRate = 0.15; // 15% tax rate
-                var discountApplication = $('#discount_application')
-                    .val(); // whether discount is applied before or after tax
-
-                var subtotal = quantity * price;
-                var discountAmount = discountType === 'percent' ? (subtotal * discount / 100) : discount;
-
-                var total;
-                var taxValue = 0; // Default to no tax
-
-                // If discount is applied before tax
-                if (discountApplication === 'before_tax' && discount) {
-                    // Subtotal after applying discount
-                    var discountedSubtotal = subtotal - discountAmount;
-
-                    // Apply tax based on tax type
-                    if (taxType === "0") { // Not including tax
-                        taxValue = discountedSubtotal * taxRate;
-                        total = discountedSubtotal + taxValue;
-
-                    } else if (taxType === "2") { // Including tax
-                        // No additional tax, already included in price
-                        taxValue = (price - (price / (1 + taxRate))) * quantity;
-                        total = discountedSubtotal;
-
-                        // taxValue = 0;
-                    } else if (taxType === "1") { // Exempt from tax
-                        taxValue = 0;
-                        total = discountedSubtotal;
-
-                    }
-
-
-                } else { // If discount is applied after tax
-                    // Apply tax based on the subtotal before discount
-                    if (taxType === "0") { // Not including tax
-                        taxValue = subtotal * taxRate;
-                        total = subtotal + taxValue - discountAmount;
-
-                    } else if (taxType === "2") { // Including tax
-                        // No additional tax, already included in price
-                        taxValue = (price - (price / (1 + taxRate))) * quantity;
-                        total = subtotal - discountAmount;
-                    } else if (taxType === "1") { // Exempt from tax
-                        taxValue = 0;
-                        total = subtotal + taxValue - discountAmount;
-
-                    }
-
-                    // Total after applying tax and then subtracting the discount
-                }
-
-                // Update row fields
-                row.find(`input[name="products[${row.data('index')}][applied_discount]"]`).val(discountAmount
-                    .toFixed(2));
-                row.find(`input[name="products[${row.data('index')}][tax_amount]"]`).val(taxValue.toFixed(2));
-                row.find(`input[name="products[${row.data('index')}][total]"]`).val(total.toFixed(2));
-
-                calculateGrandTotal(); // Update the overall totals
-            }
-
-            function calculateGrandTotal() {
-                var grandTotal = 0;
-                var grandTotalWithoutChange = 0;
-                var totalAppliedDiscount = 0;
-                var totalDiscount = 0;
-                var discount = 0;
-                var grandTax = 0;
-                var discountType = $('#discount_type').val();
-                var discountValue = parseFloat($('#discount_value').val()) || 0;
-                var extraType = $('#extra_type').val();
-                var extraValue = parseFloat($('#extra_value').val()) || 0;
-
-                $('#products_table tbody tr').each(function() {
-                    var total = parseFloat($(this).find(
-                        `input[name="products[${$(this).data('index')}][total]"]`).val()) || 0;
-                    var appliedDiscount = parseFloat($(this).find(
-                            `input[name="products[${$(this).data('index')}][applied_discount]"]`).val()) ||
-                        0;
-                    var totalWithoutChange = parseFloat($(this).find(
-                        `input[name="products[${$(this).data('index')}][product_price]"]`).val()) || 0;
-
-                    var taxAmount = parseFloat($(this).find(
-                        `input[name="products[${$(this).data('index')}][tax_amount]"]`).val()) || 0;
-                    grandTotal += total;
-                    grandTotalWithoutChange += totalWithoutChange;
-                    totalAppliedDiscount += appliedDiscount;
-                    grandTax += taxAmount;
-                });
-
-                // Apply discount to grand total based on the selected option
-                // var discount = 0;
-                // Apply discount based on type
-                // var oldgrandToatal = grandTotal;
-                // var oldgrandTax = grandTax;
-                var valueAddedTax = $('#value_added_tax').val(); // الحصول على إعداد الضريبة المختار
-
-                var totalWithoutTax = grandTotal - grandTax;
-                var taxRatio = valueAddedTax == 0 ? .15 : 0;
-                if (discountType === 'pound') {
-                    total = totalWithoutTax - discountValue;
-                    // grandTax = total * taxRatio;
-                    grandTotal = total + grandTax;
-                } else if (discountType === 'percent') {
-                    discountValue = (totalWithoutTax * discountValue / 100);
-                    total = totalWithoutTax - discountValue;
-                    // grandTax = total * taxRatio;
-                    grandTotal = total + grandTax;
-                }
-
-                // Apply discounts after tax if specified
-                if (discountType === 'poundAfterTax') {
-                    grandTotal -= discountValue; // Apply flat discount after tax
-
-                } else if (discountType === 'poundAfterTaxPercent') {
-                    discountValue = (grandTotal * discountValue / 100);
-                    grandTotal -= discountValue; // Apply percentage discount after tax
-                }
-
-                // Apply extra charges
-                if (extraType === 'percent') {
-                    grandTotal += (grandTotal * extraValue / 100); // Extra as percentage
-                } else if (extraType === 'pound') {
-                    grandTotal += extraValue; // Extra as fixed amount
-                }
-
-                // Total discount = row-level discounts + bill-level discounts
-                totalDiscount = totalAppliedDiscount + discountValue;
-                $('#grand_tax').text(grandTax.toFixed(2));
-                $('#grand_total').text(grandTotal.toFixed(2));
-                $('#grand_tax_input').val(grandTax.toFixed(2));
-                $('#grand_total_input').val(grandTotal.toFixed(2));
-                $('#grand_discount_input').val(totalDiscount.toFixed(2));
-                $('#dicountForBill').text(discount);
-
-            }
-
-            function reindexRows() {
-                $('#products_table tbody tr').each(function(index) {
-                    $(this).data('index', index);
-                    $(this).find('input, select').each(function() {
-                        var name = $(this).attr('name');
-                        if (name) {
-                            var newName = name.replace(/\[\d+\]/, `[${index}]`);
-                            $(this).attr('name', newName);
-                        }
-                    });
-                });
-                rowIndex = $('#products_table tbody tr').length;
-            }
-
-            $('#value_added_tax').on('change', function() {
-                handleTaxCalculation();
-            });
-
-            $('#product_id').on('change', function() {
-                let rowIndex = $('#products_table tbody tr').length;
-                console.log(rowIndex);
-
-                var productId = $(this).val() || 'new';
-                var productName = $('option:selected', this).data('name');
-                var sectorPrice = $('option:selected', this).data('sectorprice');
-                var wholesalePrice = $('option:selected', this).data('wholesaleprice');
-                var categoryType = $('option:selected', this).data('categorytype');
-                var unitId = $('option:selected', this).data('unitid') || 191; // Default to 191 if null
-                var existingRow = $(`#products_table tbody tr[data-product-id="${productId}"]`);
-                var remaining = categoryType !== "خدمية" ? $('option:selected', this).data('remaining') :
-                    99999;
-                var valueAddedTax = $('#value_added_tax').val(); // الحصول على إعداد الضريبة المختار
-                console.log(valueAddedTax);
-                $(this).val("");
-                if (existingRow.length > 0 && productId != 'new') {
-                    var quantityInput = existingRow.find(
-                        `input[name="products[${existingRow.data('index')}][quantity]"]`);
-                    var currentQuantity = parseFloat(quantityInput.val()) || 0;
-                    var newQuantity = currentQuantity + 1;
-
-                    if (categoryType !== "خدمية" && newQuantity > remaining) {
-                        alert(`${translations.max_quantity} ${remaining}`);
-                        newQuantity = remaining;
-                    }
-
-                    quantityInput.val(newQuantity);
-                    calculateRowTotal(existingRow);
+            $('#payment_method').on('change', function() {
+                let payment_method = $(this).val();
+                if (payment_method == "cash") {
+                    $('.cash').show();
+                    $('.bank').hide();
+                } else if (payment_method == "bank") {
+                    $('.bank').show();
+                    $('.cash').hide();
                 } else {
-                    if (productId === 'new') {
-                        var rowHtml = `
-                            <tr data-index="${rowIndex}">
-                                <td>
-                                    <input type="text" name="products[${rowIndex}][product_name]" class="form-control" placeholder="${translations.enter_product_name}">
-                                </td>
-                                <td class="text-left">
-                               <div class="d-flex flex-column">
-                                        <label class="form-check-inline">
-                                            <input type="radio" name="products[${rowIndex}][price_type]" value="sector" class="price_type form-check-input" checked>
-                                            ${translations.sector}
-                                        </label>
-                                        <label class="form-check-inline">
-                                            <input type="radio" name="products[${rowIndex}][price_type]" value="wholesale" class="price_type form-check-input">
-                                            ${translations.wholesale}
-                                        </label>
-                                    </div>
-                                </td>
-                                <td class="text-left">
-                                    <div class="input-group">
-                                        <input type="number" min="1" name="products[${rowIndex}][product_price]" class="form-control w-100 price" value="${sectorPrice}" step="any">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="input-group">
-                                        <input type="number" name="products[${rowIndex}][quantity]" class="form-control w-100 quantity" value="1" min="1" max="${remaining}" step="any">
-                                    </div>
-                                </td>
-                                 <td>
-                                    <div class="input-group">
-                                        <select name="products[${rowIndex}][unit_id]" class="form-control w-100 unit">
-                                            <option disabled>${translations.choose_unit}</option>
-                                            @foreach ($units as $unit)
-                                                <option value="{{ $unit->id }}" ${unitId === {{ $unit->id }} ? 'selected' : ''}>{{ $unit->unit_name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </td>
-            ${canDiscount ? `
-                                    <td>
-                                        <div class="d-flex flex-column">
-                                            <label class="form-check-inline">
-                                                <input type="radio" name="products[${rowIndex}][discount_type]" value="pound" class="form-check-input">
-                                                ${translations.pound}
-                                            </label>
-                                            <label class="form-check-inline">
-                                                <input type="radio" name="products[${rowIndex}][discount_type]" value="percent" class="form-check-input" checked>
-                                                ${translations.percent}
-                                            </label>
-                                            <input type="number" name="products[${rowIndex}][discount]" class="form-control w-100 mt-1" placeholder="${translations.enter_discount}" value="0" min="0" step="any">
-                                            <input type="number" hidden name="products[${rowIndex}][applied_discount]" class="form-control applied_discount w-100 mt-1" value="0" step="any">
-                                        </div>
-                                    </td>
-                                                                            ` : ''}
-                                <td>
-                                    <div class="input-group">
-                                        <select name="products[${rowIndex}][tax]" class="form-control tax_type w-100 mb-1">
-                                            <option value="0" ${valueAddedTax == 0 ? 'selected' : ''}>${translations.not_including_tax}</option>
-                                            <option value="1" ${valueAddedTax == 1 ? 'selected' : ''}>${translations.exempt_tax}</option>
-                                            <option value="2" ${valueAddedTax == 2 ? 'selected' : ''}>${translations.including_tax}</option>
-                                        </select>
-                                        <input type="number" readonly name="products[${rowIndex}][tax_amount]" class="form-control tax_amount w-100 mt-1" value="0" min="0" step="any">
-                                    </div>
-                                </td>
-                                <td>
-                                        <input type="number" name="products[${rowIndex}][total]" class="form-control total w-100" value="0" readonly step="any">
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-danger btn-sm remove-product">${translations.remove}</button>
-                                </td>
-                            </tr>
-                                `;
-                    } else {
-                        var rowHtml = `
-                            <tr data-product-id="${productId}" data-index="${rowIndex}">
-                                <td class="text-truncate">${productName}</td>
-                                <td class="text-left">
-                                    <div class="d-flex flex-column">
-                                        <label class="form-check-inline">
-                                            <input type="radio" name="products[${rowIndex}][price_type]" value="sector" class="price_type form-check-input" checked>
-                                            ${translations.sector}
-                                        </label>
-                                        <label class="form-check-inline">
-                                            <input type="radio" name="products[${rowIndex}][price_type]" value="wholesale" class="price_type form-check-input">
-                                            ${translations.wholesale}
-                                        </label>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="input-group">
-                                        <input type="number" min="1" name="products[${rowIndex}][product_price]" class="form-control w-100 price" value="${sectorPrice}" step="any">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="input-group">
-                                        <input type="number" name="products[${rowIndex}][quantity]" class="form-control w-100 quantity" value="1" min="1" max="${remaining}" step="any">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="input-group">
-                                        <select name="products[${rowIndex}][unit_id]" class="form-control w-100 unit">
-                                            <option disabled>${translations.choose_unit}</option>
-                                            @foreach ($units as $unit)
-                                                <option value="{{ $unit->id }}" ${unitId === {{ $unit->id }} ? 'selected' : ''}>{{ $unit->unit_name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="d-flex flex-column">
-                                        <label class="form-check-inline">
-                                            <input type="radio" name="products[${rowIndex}][discount_type]" value="pound" class="discount_type form-check-input">
-                                            ${translations.pound}
-                                        </label>
-                                        <label class="form-check-inline">
-                                            <input type="radio" name="products[${rowIndex}][discount_type]" value="percent" class="discount_type form-check-input" checked>
-                                            ${translations.percent}
-                                        </label>
-                                        <input type="number" name="products[${rowIndex}][discount]" class="form-control discount w-100 mt-1" value="0" min="0" step="any">
-                                        <input type="number" hidden name="products[${rowIndex}][applied_discount]" class="form-control applied_discount w-100 mt-1" value="0" step="any">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="input-group">
-                                        <select name="products[${rowIndex}][tax]" class="form-control tax_type w-100 mb-1">
-                                            <option value="0" ${valueAddedTax == 0 ? 'selected' : ''}>${translations.not_including_tax}</option>
-                                            <option value="1" ${valueAddedTax == 1 ? 'selected' : ''}>${translations.exempt_tax}</option>
-                                            <option value="2" ${valueAddedTax == 2 ? 'selected' : ''}>${translations.including_tax}</option>
-                                        </select>
-                                        <input type="number" readonly name="products[${rowIndex}][tax_amount]" class="form-control tax_amount w-100 mt-1" value="0" min="0" step="any">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="input-group">
-                                        <input type="number" name="products[${rowIndex}][total]" class="form-control total w-100" value="0" readonly step="any">
-                                        <input type="number" hidden name="products[${rowIndex}][product_id]" class="form-control total w-100" value="${productId}">
-                                    </div>
-                                </td>
-                                <td>
-                                    <button type="button" class="btn btn-danger btn-sm remove-product">${translations.remove}</button>
-                                </td>
-                            </tr>
-                            `;
-
-                    }
-
-                    $('#products_table tbody').append(rowHtml);
-                    handleTaxCalculation();
-                    rowIndex++;
+                    $('.bank').hide();
+                    $('.cash').hide();
                 }
-
-                calculateGrandTotal();
             });
 
-            // Handle "Add Product" button
             $('.instantProduct').on('click', function(e) {
-                rowIndex = $('#products_table tbody tr').length;
-                console.log('Row index:', rowIndex);
-
-                // Call the addProductRow function with the required parameters
+                e.preventDefault();
                 addProductRow({
-                    productId: `new-${rowIndex}`,
                     productName: '',
                     sectorPrice: 0,
                     wholesalePrice: 0,
@@ -2054,28 +1620,12 @@
             $('#products_table').on('input', '.quantity', function() {
                 var row = $(this).closest('tr');
                 var maxQty = parseFloat($(this).attr('max')) || Infinity;
-
                 if ($(this).val() > maxQty) {
                     alert(`Maximum available quantity is ${maxQty}`);
                     $(this).val(maxQty);
                 }
-
                 calculateRowTotal(row);
             });
-
-
-            $('#products_table').on('input', '.quantity', function() {
-                var row = $(this).closest('tr');
-                var maxQty = parseFloat($(this).attr('max')) || Infinity;
-
-                if ($(this).val() > maxQty) {
-                    alert(`Maximum available quantity is ${maxQty}`);
-                    $(this).val(maxQty);
-                }
-
-                calculateRowTotal(row);
-            });
-
 
             $('#products_table').on('change', '.price_type', function() {
                 var row = $(this).closest('tr');
@@ -2084,30 +1634,24 @@
                 var sectorPrice = $('option[value="' + productId + '"]').data('sectorprice');
                 var wholesalePrice = $('option[value="' + productId + '"]').data('wholesaleprice');
                 var selectedPrice = selectedPriceType === 'sector' ? sectorPrice : wholesalePrice;
-
                 row.find(`input[name="products[${row.data('index')}][product_price]"]`).val(selectedPrice);
                 handleTaxCalculation();
             });
 
-            $('#products_table').on('input', '.price, .quantity, .discount, .tax_amount', function() {
+            $('#products_table').on('input', '.price, .discount, .tax_amount', function() {
                 validateDiscount();
                 var row = $(this).closest('tr');
                 handleTaxCalculation();
             });
+
             $('#discount_value').on('input', function() {
                 validateDiscount();
                 validateDiscountTotal();
             });
+
             $('#products_table').on('change', '.tax_type', function() {
                 var row = $(this).closest('tr');
-                var taxAmountField = row.find(`input[name="products[${row.data('index')}][tax_amount]"]`);
-                if ($(this).is(':checked')) {
-                    flag = 1;
-                } else {
-                    flag = 0;
-
-                }
-                handleTaxCalculation(flag);
+                handleTaxCalculation();
             });
 
             $('#products_table').on('change', '.discount_type', function() {
@@ -2138,48 +1682,43 @@
                 reindexRows();
             });
 
-            function reindexRows() {
-                $('#products_table tbody tr').each(function(index) {
-                    $(this).data('index', index);
-                    $(this).find('input, select').each(function() {
-                        var name = $(this).attr('name');
-                        if (name) {
-                            var newName = name.replace(/\[\d+\]/, `[${index}]`);
-                            $(this).attr('name', newName);
-                        }
-                    });
-                });
-                rowIndex = $('#products_table tbody tr').length;
-            }
-
-            handleTaxCalculation(); // Initial call to set the correct tax logic
-        });
-        $(document).ready(function() {
-            // Function to validate discount based on discount type
-            function validateDiscount() {
-                $('input[name^="products["][name$="[discount]"]').each(function() {
-                    var discountInput = $(this);
-                    var rowIndex = discountInput.attr('name').match(/\[(\d+)\]/)[1]; // Extract row index
-                    var discountType = $('input[name="products[' + rowIndex + '][discount_type]"]:checked')
-                        .val();
-                    var discountValue = parseFloat(discountInput.val());
-
-                    if (discountType === 'percent' && discountValue > 100) {
-                        alert('Discount cannot be more than 100% for percentage discount.');
-                        discountInput.val(100); // Reset to maximum allowed value
+            document.getElementById('addClientForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                fetch(this.action, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Accept': 'application/json',
+                    },
+                    body: formData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const newOption = new Option(data.client.client_name, data.client.id, false, false);
+                        document.getElementById('outer_client_id').add(newOption);
+                        $('.selectpicker').selectpicker('refresh');
+                        $('#addClientModal').modal('hide');
+                        alert(data.message || '{{ __('main.client-added-successfully') }}');
+                    } else {
+                        alert(data.message || '{{ __('main.error-adding-client') }}');
                     }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('{{ __('main.error-adding-client') }}');
                 });
-            }
-
-            // Attach the validation function to the discount input change event
-            $('input[name^="products["][name$="[discount]"]').on('input', function() {
-                validateDiscount();
             });
 
-            // Attach the validation function to the discount type change event
-            $('input[name^="products["][name$="[discount_type]"]').on('change', function() {
-                validateDiscount();
+            window.addEventListener("pageshow", function(event) {
+                var historyTraversal = event.persisted || (typeof window.performance != "undefined" && window.performance.navigation.type === 2);
+                if (historyTraversal) {
+                    window.location.reload();
+                }
             });
+
+            handleTaxCalculation(); // Initial call
         });
     </script>
 @endsection

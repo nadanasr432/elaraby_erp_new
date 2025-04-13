@@ -27,7 +27,6 @@ return [
     "total-tax-for-all-invoices" => "Total tax for all invoices",
     "edit-invoice" => "Edit invoice",
     "chooseTableNum" => "Choose Table Number",
-    
-     'print-button'=>'Print Button'
-
+    'print' => 'Print',
+    'print-button' => 'Print Button',
 ];
