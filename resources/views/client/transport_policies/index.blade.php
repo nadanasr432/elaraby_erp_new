@@ -77,10 +77,10 @@
                                                 <i class="fas fa-print"></i> طباعة
                                             </a>
 
-                                            <!-- Optional: Add this if you want it to auto-print when opened -->
+                                            {{-- <!-- Optional: Add this if you want it to auto-print when opened -->
                                             <a href="{{ route('transport-policies.print', $policy) }}?autoprint=1" class="btn btn-sm btn-warning" target="_blank">
                                                 <i class="fas fa-print"></i> طباعة تلقائية
-                                            </a>
+                                            </a> --}}
                                         </td>
                                     </tr>
                                 @endforeach
