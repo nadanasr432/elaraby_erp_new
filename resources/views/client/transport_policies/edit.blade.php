@@ -17,7 +17,7 @@
                 <div class="card-body">
                     <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
                         <h5 class="alert custom-title">
-                            {{ __('sidebar.Edit Transport Policy') }}
+                            {{ __('main.Edit Transport Policy') }}
                         </h5>
                         <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6"
                             href="{{ route('transport-policies.index') }}">

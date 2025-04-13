@@ -16,7 +16,7 @@
         <div class="card-body">
             <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
                 <h5 s class=" alert custom-title">
-                    {{ __('sidebar.add-new-owner') }}
+                    {{ __('main.add-new-owner') }}
                 </h5>
                 <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('vehicle-owners.index') }}">
                     {{ __('main.back') }}</a>
@@ -28,15 +28,15 @@
                 @csrf
                 <div class="row mb-3">
                     <div class="col-md-4">
-                        <label>{{ __('Company Name') }}</label>
+                        <label>{{ __('main.Company Name') }}</label>
                         <input type="text" name="company_name" class="form-control" value="{{ old('company_name', $company->company_name ?? '') }}" required>
                     </div>
                     <div class="col-md-4">
-                        <label>{{ __('Supervisor Name') }}</label>
+                        <label>{{ __('main.Supervisor Name') }}</label>
                         <input type="text" name="supervisor_name" class="form-control" value="{{ old('supervisor_name') }}" required>
                     </div>
                     <div class="col-md-4">
-                        <label>{{ __('Mobile Number') }}</label>
+                        <label>{{ __('main.Mobile Number') }}</label>
                         <input type="text" name="mobile_number" class="form-control" value="{{ old('mobile_number') }}" required>
                     </div>
                 </div>

@@ -16,8 +16,8 @@
             <div class="card mg-b-20">
                 <div class="card-body">
                     <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
-                        <h5 s class=" alert custom-title">
-                            {{ __('sidebar.add-new-shipment') }}
+                        <h5 class="alert custom-title">
+                            {{ __('main.add-new-shipment') }}
                         </h5>
                         <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('shipments.index') }}">
                             {{ __('main.back') }}</a>
@@ -36,22 +36,22 @@
                                 <input dir="rtl" class="form-control" name="name" type="text">
                             </div>
                              <div class="col-md-4 mb-3">
-                            <label>{{ __('Payload Type') }}</label>
+                            <label>{{ __('main.Payload Type') }}</label>
                             <input type="text" name="payload_type" class="form-control" value="{{ old('payload_type') }}" required>
                         </div>
 
                         <div class="col-md-4 mb-3">
-                            <label>{{ __('Containers No') }}</label>
+                            <label>{{ __('main.Containers No') }}</label>
                             <input type="text" name="containers_no" class="form-control" value="{{ old('containers_no') }}">
                         </div>
 
                         <div class="col-md-4 mb-3">
-                            <label>{{ __('Weight') }}</label>
+                            <label>{{ __('main.Weight') }}</label>
                             <input type="text" name="weight" class="form-control" value="{{ old('weight') }}">
                         </div>
 
                         <div class="col-md-4 mb-3">
-                            <label>{{ __('Height') }}</label>
+                            <label>{{ __('main.Height') }}</label>
                             <input type="text" name="height" class="form-control" value="{{ old('height') }}">
                         </div>
 

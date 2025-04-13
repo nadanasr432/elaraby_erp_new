@@ -16,7 +16,7 @@
         <div class="card-body">
             <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
                 <h5 s class=" alert custom-title">
-                    {{ __('Edit Vehicle') }}
+                    {{ __('main.Edit Vehicle') }}
                 </h5>
                 <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('vehicles.index') }}">
                     {{ __('main.back') }}</a>
@@ -28,15 +28,15 @@
                 @method('PUT')
                 <div class="row mb-3">
                     <div class="col-md-4">
-                        <label>{{ __('Vehicle Number') }}</label>
+                        <label>{{ __('main.Vehicle Number') }}</label>
                         <input type="text" name="vehicle_number" class="form-control" value="{{ old('vehicle_number', $vehicle->vehicle_number) }}" required>
                     </div>
                     <div class="col-md-4">
-                        <label>{{ __('Plate Number') }}</label>
+                        <label>{{ __('main.Plate Number') }}</label>
                         <input type="text" name="plate_number" class="form-control" value="{{ old('plate_number', $vehicle->plate_number) }}" required>
                     </div>
                     <div class="col-md-4">
-                        <label>{{ __('Trailer Type') }}</label>
+                        <label>{{ __('main.Trailer Type') }}</label>
                         <input type="text" name="trailer_type" class="form-control" value="{{ old('trailer_type', $vehicle->trailer_type) }}">
                     </div>
                 </div>

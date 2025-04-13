@@ -18,7 +18,7 @@
                 <div class="card-body">
                     <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
                         <h5 class="alert custom-title">
-                            {{ __('sidebar.edit-shipment') }}
+                            {{ __('main.edit-shipment') }}
                         </h5>
                         <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6"
                            href="{{ route('shipments.index') }}">
@@ -45,25 +45,25 @@
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label>{{ __('Payload Type') }}</label>
+                                <label>{{ __('main.Payload Type') }}</label>
                                 <input type="text" name="payload_type" class="form-control"
                                        value="{{ old('payload_type', $shipment->payload_type) }}" required>
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label>{{ __('Containers No') }}</label>
+                                <label>{{ __('main.Containers No') }}</label>
                                 <input type="text" name="containers_no" class="form-control"
                                        value="{{ old('containers_no', $shipment->containers_no) }}">
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label>{{ __('Weight') }}</label>
+                                <label>{{ __('main.Weight') }}</label>
                                 <input type="text" name="weight" class="form-control"
                                        value="{{ old('weight', $shipment->weight) }}">
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label>{{ __('Height') }}</label>
+                                <label>{{ __('main.Height') }}</label>
                                 <input type="text" name="height" class="form-control"
                                        value="{{ old('height', $shipment->height) }}">
                             </div>

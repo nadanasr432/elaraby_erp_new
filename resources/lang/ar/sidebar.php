@@ -224,5 +224,12 @@ return [
     "products-deleted" => "المنتجات المحذوفه",
     "Total billing taxes" => " اجمالى ضرائب الفواتير",
     "Goods Receipt Order" => "سند أمر استلام بضاعة",
-    "transport_policy"=>"بوليصة النقل"
+    "transport_policy"=>"بوليصة النقل",
+    'transport-policies' => 'بوليصات النقل',
+    'charging_stations' => 'محطات الشحن',
+    'discharging_stations' => 'محطات التفريغ',
+    'drivers' => 'السائقين',
+    'shipments' => 'الشحنات',
+    'vehicle-owners' => 'مالكي المركبات',
+    'vehicles' => 'المركبات',
 ];

@@ -13,10 +13,10 @@
                 <div class="card-header pb-0">
                     <div class="col-lg-12 margin-tb d-flex flex-wrap align-items-center justify-content-between">
                         <h5 class=" alert custom-title">
-                            {{ __('sidebar.list-of-Transport_policies') }}</h5>
+                            {{ __('main.list-of-Transport_policies') }}</h5>
                         <a class="btn btnn text-white px-3 py-1" style="background-color:#36c7d6""
                             href="{{ route('transport-policies.create') }}">
-                            <i class="fa fa-plus"></i> {{ __('sidebar.add-new-policy') }} </a>
+                            <i class="fa fa-plus"></i> {{ __('main.add-new-policy') }} </a>
 
                     </div>
                     <div class="clearfix"></div>
@@ -31,7 +31,7 @@
                                     <th class="wd-15p border-bottom-0 text-center">{{ __('main.client') }}</th>
                                     <th class="wd-15p border-bottom-0 text-center">{{ __('main.charging_station') }}</th>
                                     <th class="wd-20p border-bottom-0 text-center">{{ __('main.discharging_station') }}</th>
-                                    <th class="wd-15p border-bottom-0 text-center">{{ __('main.diver') }}</th>
+                                    <th class="wd-15p border-bottom-0 text-center">{{ __('main.driver') }}</th>
                                     <th class="wd-15p border-bottom-0 text-center">{{ __('main.payload_type') }}</th>
                                     <th class="wd-15p border-bottom-0 text-center">{{ __('main.vehicle_plate_number') }}</th>
                                     <th class="wd-15p border-bottom-0 text-center">{{ __('main.vehicle_owner') }}</th>
