@@ -74,7 +74,7 @@
                                                 </svg>
                                             </a>
                                             <a href="{{ route('transport-policies.print', $policy) }}" class="btn btn-sm btn-info" target="_blank">
-                                                <i class="fas fa-print"></i> طباعة
+                                                <i class="fas fa-print"></i>  @lang('main.print')
                                             </a>
 
                                             {{-- <!-- Optional: Add this if you want it to auto-print when opened -->

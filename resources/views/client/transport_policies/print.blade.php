@@ -207,7 +207,7 @@
 <body>
     <div class="text-center" id="buttons">
         <button class="btn  btn-success" onclick="window.print()">@lang('sales_bills.Print the invoice')</button>
-        <a class="btn  btn-danger" href="{{ route('client.sale_bills.create1') }}">@lang('sales_bills.back') </a>
+        <a class="btn  btn-danger" href="{{ route('transport-policies.index') }}">@lang('sales_bills.back') </a>
         <button class="btn  btn-success" dir="ltr" onclick="sendToWhatsApp()">
             <i class="fa fa-whatsapp"></i>
             @lang('sales_bills.Send to whatsapp')

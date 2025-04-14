@@ -408,6 +408,7 @@ return [
     'Trailer Type' => 'نوع المقطورة',
     'Update' => 'تحديث',
     'Add New Vehicle' => 'إضافة مركبة جديدة',
-    'driver'=>'السائق'
+    'driver'=>'السائق',
+    "region"=>"المنطقة"
 
 ];

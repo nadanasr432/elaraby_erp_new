@@ -408,5 +408,6 @@ return [
 'plate_number' => 'Plate Number',
 'trailer_type' => 'Trailer Type',
 'Add New Vehicle' => 'Add New Vehicle',
-'driver'=>'driver'
+'driver'=>'driver',
+"region"=>"region"
 ];
