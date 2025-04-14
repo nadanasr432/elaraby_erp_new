@@ -409,6 +409,8 @@ return [
     'Update' => 'تحديث',
     'Add New Vehicle' => 'إضافة مركبة جديدة',
     'driver'=>'السائق',
-    "region"=>"المنطقة"
+    "region"=>"المنطقة",
+    'Are you sure you want to return all items?' => 'هل أنت متأكد أنك تريد إرجاع جميع العناصر؟',
+    'Return All Items' => 'إرجاع جميع العناصر',    
 
 ];
