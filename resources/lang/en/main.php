@@ -412,5 +412,6 @@ return [
 "region"=>"region",
 'Are you sure you want to return all items?' => 'Are you sure you want to return all items?',
 'Return All Items' => 'Return All Items',
+'return'=>'return'
  
 ];
