@@ -52,8 +52,6 @@ class TransportPolicyController extends Controller
     public function store(Request $request)
     {
         $company_id = Auth::user()->company_id;
-        // dd($request->all());
-
         $request->validate([
             'outer_client_id'=>'required|exists:outer_clients,id',
             'discharging_station_id' => 'required|exists:discharging_stations,id',
@@ -62,6 +60,8 @@ class TransportPolicyController extends Controller
             'shipment_id' => 'required|exists:shipments,id',
             'vehicle_id' => 'required|exists:vehicles,id',
             'vehicle_owner_id' => 'required|exists:vehicle_owners,id',
+            'receiver'=>'nullable',
+            'sender'=>'nullable'
         ]);
         $request->merge(['company_id' => $company_id]);
 
@@ -94,6 +94,8 @@ class TransportPolicyController extends Controller
             'shipment_id' => 'required|exists:shipments,id',
             'vehicle_id' => 'required|exists:vehicles,id',
             'vehicle_owner_id' => 'required|exists:vehicle_owners,id',
+            'receiver'=>'nullable',
+            'sender'=>'nullable'
         ]);
         $request->merge(['company_id' => $company_id]);
         

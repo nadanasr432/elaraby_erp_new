@@ -18,7 +18,9 @@ class TransportPolicy extends Model
         'vehicle_id', 
         'vehicle_owner_id',
         'outer_client_id',
-        'company_id'
+        'company_id',
+        'receiver',  
+        'sender',
     ];
 
     public function dischargingStation()

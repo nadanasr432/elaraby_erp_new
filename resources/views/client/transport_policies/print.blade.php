@@ -289,6 +289,34 @@
             <table class="col-md-6 table table-bordered text-center align-middle">
                 <tr style="background-color:cornflowerblue !important">
                     <th colspan="3" class="fw-bold fs-5" style="background-color:cornflowerblue !important">
+                        receiver / المرسل اليه</th>
+                </tr>
+                <tbody>
+                    <tr>
+                        <td class="fw-bold text-start w-25">Name</td>
+                        <td class="w-50">{{ $transportPolicy->receiver }}</td>
+                        <td class="fw-bold text-end w-25">الاسم</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="col-md-6 table table-bordered text-center align-middle">
+                <tr style="background-color:cornflowerblue !important">
+                    <th colspan="3" class="fw-bold fs-5" style="background-color:cornflowerblue !important">
+                        sender / المرسل </th>
+                </tr>
+                <tbody>
+                    <tr>
+                        <td class="fw-bold text-start w-25">Name</td>
+                        <td class="w-50">{{ $transportPolicy->sender }}</td>
+                        <td class="fw-bold text-end w-25">الاسم</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="container d-flex justify-content-between">
+            <table class="col-md-6 table table-bordered text-center align-middle">
+                <tr style="background-color:cornflowerblue !important">
+                    <th colspan="3" class="fw-bold fs-5" style="background-color:cornflowerblue !important">
                         discharging station /محطة التفريغ</th>
                 </tr>
                 <tbody>
