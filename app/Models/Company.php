@@ -14,7 +14,7 @@ class Company extends Model
         'company_name',
         'company_name_en' ,'business_field', 'phone_number', 'company_owner', 'company_address', 'country', 'currency',
         'tax_number', 'civil_registration_number', 'tax_value_added', 'company_logo', 'status', 'notes',
-        'all_users_access_main_branch'
+        'all_users_access_main_branch','transport_license'
     ];
 
     public function print_demo()

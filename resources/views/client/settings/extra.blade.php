@@ -9,8 +9,9 @@
         background: #222751;
         color: #fff;
 
-    } 
-    .active:hover{
+    }
+
+    .active:hover {
         color: #fff;
 
     }
@@ -55,16 +56,19 @@
             <div class="px-2 d-flex flex-wrap">
                 <a class="nav-link text-dark" style="border:1px solid #bbb" href="{{ route('client.basic.settings.edit') }}">
                     <i class="fa fa-home"></i> {{ __('main.main-information') }} للنظام</a>
-        
+
                 <a class="nav-link  active" style="border:1px solid #bbb" href="{{ route('client.extra.settings.edit') }}">
                     <i class="fa fa-money"></i> البيانات الاضافية للنظام </a>
-        
-                <a class="nav-link text-dark " style="border:1px solid #bbb" href="{{ route('client.backup.settings.edit') }}">
+
+                <a class="nav-link text-dark " style="border:1px solid #bbb"
+                    href="{{ route('client.backup.settings.edit') }}">
                     <i class="fa fa-copy"></i> اعدادات النسخة الاحتياطية </a>
-                <a class="nav-link text-dark " style="border:1px solid #bbb" href="{{ route('client.get.product_expires') }}">
+                <a class="nav-link text-dark " style="border:1px solid #bbb"
+                    href="{{ route('client.get.product_expires') }}">
                     <i class="fa fa-copy"></i> اعدادات صلاحية المنتجات </a>
-        
-                <a class="nav-link text-dark" style="border:1px solid #bbb" href="{{ route('client.billing.settings.edit') }}">
+
+                <a class="nav-link text-dark" style="border:1px solid #bbb"
+                    href="{{ route('client.billing.settings.edit') }}">
                     <i class="fa fa-envelope"></i> بيانات الفواتير والضرائب </a>
             </div>
             <div class="col-12 mt-3">
@@ -73,45 +77,60 @@
                     @method('PATCH')
                     <input type="hidden" name="company_id" value="{{ $company->id }}" />
                     <div class="row">
-                    <div class="col-lg-6 col-xs-12 ">
-                        <div class="form-group">
-                            <label for="brand_name">الدولة او المدينة</label>
-                            <select required name="timezone" class="form-control">
-                                <option value="">اختر بلدك</option>
-                                @foreach ($timezones as $timezone)
-                                    <option @if ($extra->timezone == $timezone->timezone) selected @endif value="{{ $timezone->timezone }}">
-                                        {{ $timezone->country_name }}</option>
-                                @endforeach
-                            </select>
+                        <div class="col-lg-6 col-xs-12 ">
+                            <div class="form-group">
+                                <label for="brand_name">الدولة او المدينة</label>
+                                <select required name="timezone" class="form-control">
+                                    <option value="">اختر بلدك</option>
+                                    @foreach ($timezones as $timezone)
+                                        <option @if ($extra->timezone == $timezone->timezone) selected @endif
+                                            value="{{ $timezone->timezone }}">
+                                            {{ $timezone->country_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-xs-12 ">
+                            <div class="form-group">
+                                <label for="person_name">العملة المرادفة لبلدك</label>
+                                <select required name="currency" class="form-control">
+                                    <option value="">اختر العملة</option>
+                                    @foreach ($currencies as $currency)
+                                        <option @if ($extra->currency == $currency->currency) selected @endif
+                                            value="{{ $currency->currency }}">{{ $currency->currency }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-xs-12 ">
+                            <div class="form-group">
+                                <label class="d-block" for="person_name"> حجم الخط بالبيكسل </label>
+                                <span class="d-inline pull-right">25 px</span>
+                                <input style="width:70%;" name="font_size" type="range" min="10" max="25"
+                                    value="{{ $extra->font_size }}" class="d-inline pull-right form-control"
+                                    oninput="showVal(this.value)" step="1" onchange="showVal(this.value)" />
+                                <span class="d-inline pull-right">12 px</span>
+                            </div>
+                            <div class="clearfix"></div>
+                            <span class="d-block text-danger tx-16" id="valBox">{{ $extra->font_size }} px</span>
+                        </div>
+                        <div class="col-lg-6 col-xs-12">
+                            <div class="form-group">
+                                <label class="d-block">عرض موديل المنتج</label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="show_model" value="1" @if ($extra->show_model == 1) checked @endif>
+                                    <label class="form-check-label">نعم</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="show_model" value="0" @if ($extra->show_model == 0) checked @endif>
+                                    <label class="form-check-label">لا</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-xs-12 ">
-                        <div class="form-group">
-                            <label for="person_name">العملة المرادفة لبلدك</label>
-                            <select required name="currency" class="form-control">
-                                <option value="">اختر العملة</option>
-                                @foreach ($currencies as $currency)
-                                    <option @if ($extra->currency == $currency->currency) selected @endif
-                                        value="{{ $currency->currency }}">{{ $currency->currency }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-xs-12 ">
-                        <div class="form-group">
-                            <label class="d-block" for="person_name"> حجم الخط بالبيكسل </label>
-                            <span class="d-inline pull-right">25 px</span>
-                            <input style="width:70%;" name="font_size" type="range" min="10" max="25"
-                                value="{{ $extra->font_size }}" class="d-inline pull-right form-control"
-                                oninput="showVal(this.value)" step="1" onchange="showVal(this.value)" />
-                            <span class="d-inline pull-right">12 px</span>
-                        </div>
-                        <div class="clearfix"></div>
-                        <span class="d-block text-danger tx-16" id="valBox">{{ $extra->font_size }} px</span>
-                    </div>
-                    </div>
+
                     <div class="clearfix"></div>
-    
+
                     <div class="col-lg-12 col-xs-12 pull-right">
                         <div class="form-group">
                             <button class="btn btn-md btn-success py-1 px-4 my-2"><i class="fa fa-check"></i> حفظ

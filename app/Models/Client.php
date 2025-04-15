@@ -1,10 +1,11 @@
 <?php
 namespace App\Models;
-use App\Notifications\ResetPasswordNotification;
-use App\Notifications\VerifyEmailNotification;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use App\Models\TransportPolicy;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
+use App\Notifications\VerifyEmailNotification;
+use App\Notifications\ResetPasswordNotification;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * @method static create(array $array)
@@ -76,6 +77,10 @@ class Client extends Authenticatable
     public function sendEmailVerificationNotification()
     {
         $this->notify(new VerifyEmailNotification('client.verification.verify'));
+    }
+    public function transportPolicies()
+    {
+        return $this->hasMany(TransportPolicy::class);
     }
 }
 

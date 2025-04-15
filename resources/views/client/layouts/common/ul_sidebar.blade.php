@@ -10,6 +10,7 @@
     .main-menu.menu-light .navigation>li.nav-item:hover {
         background: #ffffff42 !important;
     }
+
     body.dark-mode .main-menu {
         background-color: #212631 !important
     }
@@ -229,8 +230,8 @@
                                     @can('قائمة فئات الشركة')
                                         <li class="{{ Request::is('*/units') ? 'active' : '' }}">
                                             <a href="{{ route('client.units.index') }}">
-                                                <svg style="width: 15px;fill:#36c7d6;"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                <svg style="width: 15px;fill:#36c7d6;" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 512 512">
                                                     <path
                                                         d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
                                                 </svg>
@@ -252,8 +253,8 @@
                                     @can('قائمة المنتجات المتوفرة (عرض فقط)')
                                         <li class="{{ Request::is('*/products') ? 'active' : '' }}">
                                             <a href="{{ route('client.products.index') }}">
-                                                <svg style="width: 15px;fill:#36c7d6;"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                <svg style="width: 15px;fill:#36c7d6;" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 512 512">
                                                     <path
                                                         d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
                                                 </svg>
@@ -262,8 +263,8 @@
                                         </li>
                                         <li class="{{ Request::is('*/clients-products-deleted') ? 'active' : '' }}">
                                             <a href="{{ route('client.products.deleted') }}">
-                                                <svg style="width: 15px;fill:#36c7d6;"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                <svg style="width: 15px;fill:#36c7d6;" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 512 512">
                                                     <path
                                                         d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
                                                 </svg>
@@ -274,8 +275,8 @@
                                     @can('قائمة المنتجات المتوفرة (تحكم كامل)')
                                         <li class="{{ Request::is('*/generate-barcode') ? 'active' : '' }}">
                                             <a href="{{ route('barcode') }}">
-                                                <svg style="width: 15px;fill:#36c7d6;"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                <svg style="width: 15px;fill:#36c7d6;" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 512 512">
                                                     <path
                                                         d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
                                                 </svg>
@@ -286,8 +287,8 @@
                                     @can('قائمة المنتجات التى نفذت')
                                         <li class="{{ Request::is('*/clients-products-limited') ? 'active' : '' }}">
                                             <a href="{{ route('client.products.limited') }}">
-                                                <svg style="width: 15px;fill:#36c7d6;"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                <svg style="width: 15px;fill:#36c7d6;" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 512 512">
                                                     <path
                                                         d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
                                                 </svg>
@@ -296,22 +297,22 @@
                                         </li>
                                         <li class="{{ Request::is('*/clients-products-empty') ? 'active' : '' }}">
                                             <a href="{{ route('client.products.empty') }}" id="setProducts_viewed">
-                                                <svg style="width: 15px;fill:#36c7d6;"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                <svg style="width: 15px;fill:#36c7d6;" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 512 512">
                                                     <path
                                                         d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
                                                 </svg>
                                                 {{ __('sidebar.list-of-products-sold-out') }}
                                                 <span class="badge badge-danger" id="numOfProductsEnded"
-                                                    style="position: absolute;display:none;margin-right:5px;border-radius: 50%;font-size: 12px !important;width: 20px;height:20px;font-weight: bold;"></span>
+                                                    style="position: absolute;margin-right:5px;border-radius: 50%;font-size: 12px !important;width: 20px;height:20px;font-weight: bold;"></span>
                                             </a>
                                         </li>
                                     @endcan
                                     @can('قائمة المنتجات التى نفذت')
                                         <li class="{{ Request::is('*/client.products.expires') ? 'active' : '' }}">
                                             <a href="{{ route('client.products.expires') }}">
-                                                <svg style="width: 15px;fill:#36c7d6;"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                <svg style="width: 15px;fill:#36c7d6;" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 512 512">
                                                     <path
                                                         d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
                                                 </svg>
@@ -324,8 +325,8 @@
                                     @endcan
                                     <li class="{{ Request::is('*/client/manufactures') ? 'active' : '' }}">
                                         <a href="{{ route('client.manufactures.index') }}">
-                                            <svg style="width: 15px;fill:#36c7d6;"
-                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                            <svg style="width: 15px;fill:#36c7d6;" xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 512 512">
                                                 <path
                                                     d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
                                             </svg>
@@ -369,8 +370,8 @@
                                     @can('فواتير البيع السابقة (عرض فقط)')
                                         <li class="{{ Request::is('*/sale_bills') ? 'active' : '' }}">
                                             <a href="{{ route('client.sale_bills.index') }}">
-                                                <svg style="width: 12px;fill:#36c7d6;"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                <svg style="width: 12px;fill:#36c7d6;" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 512 512">
                                                     <path
                                                         d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
                                                 </svg>
@@ -384,8 +385,8 @@
                                         <li
                                             class="nav-item {{ Request::is('*/pos-sales-report*') ? 'active open' : '' }}">
                                             <a href="{{ route('pos.sales.report') }}">
-                                                <svg style="width: 12px;fill:#36c7d6;"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                <svg style="width: 12px;fill:#36c7d6;" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 512 512">
                                                     <path
                                                         d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
                                                 </svg>
@@ -398,8 +399,8 @@
                                     @can('مرتجعات فواتير البيع عملاء')
                                         <li class="{{ Request::is('*/sale-bills/get-returns') ? 'active' : '' }}">
                                             <a href="{{ url('/client/sale-bills/get-returns') }}">
-                                                <svg style="width: 12px;fill:#36c7d6;"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                <svg style="width: 12px;fill:#36c7d6;" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 512 512">
                                                     <path
                                                         d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
                                                 </svg>
@@ -555,10 +556,10 @@
                                 style="padding: 7px 9px !important;">{{ __('sidebar.new') }}</span>
                         </a>
                     </li>
-                </ul>
-                </li>
-                @endif
-            @endif
+        </ul>
+        </li>
+        @endif
+        @endif
 
         <!----------------------------------------SALES SECTION------------------------------------>
 
@@ -1648,7 +1649,103 @@
 
             </ul>
         </li>
+        <li class="nav-item {{ Request::is('*/Transport Policy*', '*/transport_policy*') ? 'active open' : '' }}">
+            <a href="javascript:;">
+                <i class="la la-truck"></i>
+                <span class="menu-title">
+                    {{ __('sidebar.transport_policy') }}
+                </span>
+            </a>
+            <ul class="menu-content">
+                <li class="nav-item {{ Request::is('*/transport-policies*') ? 'active open' : '' }}">
+                    <a href="{{ route('transport-policies.index') }}">
+                        <svg style="width: 15px;fill:#36c7d6;" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 512 512">
+                            <path
+                                d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                        </svg>
+                        <span class="menu-title">
+                            {{ __('sidebar.transport-policies') }}
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item {{ Request::is('*/charging-stations*') ? 'active open' : '' }}">
+                    <a href="{{ route('charging-stations.index') }}">
+                        <svg style="width: 15px;fill:#36c7d6;" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 512 512">
+                            <path
+                                d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                        </svg>
+                        <span class="menu-title">
+                            {{ __('sidebar.charging_stations') }}
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item {{ Request::is('*/discharging-stations*') ? 'active open' : '' }}">
+                    <a href="{{ route('discharging-stations.index') }}">
+                        <svg style="width: 15px;fill:#36c7d6;" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 512 512">
+                            <path
+                                d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                        </svg>
+                        <span class="menu-title">
+                            {{ __('sidebar.discharging_stations') }}
+                        </span>
+                    </a>
+                </li>
 
+                <li class="nav-item {{ Request::is('*/drivers*') ? 'active open' : '' }}">
+                    <a href="{{ route('drivers.index') }}">
+                        <svg style="width: 15px;fill:#36c7d6;" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 512 512">
+                            <path
+                                d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                        </svg>
+                        <span class="menu-title">
+                            {{ __('sidebar.drivers') }}
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item {{ Request::is('*/shipments*') ? 'active open' : '' }}">
+                    <a href="{{ route('shipments.index') }}">
+                        <svg style="width: 15px;fill:#36c7d6;" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 512 512">
+                            <path
+                                d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                        </svg>
+                        <span class="menu-title">
+                            {{ __('sidebar.shipments') }}
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item {{ Request::is('*/vehicle-owners*') ? 'active open' : '' }}">
+                    <a href="{{ route('vehicle-owners.index') }}">
+                        <svg style="width: 15px;fill:#36c7d6;" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 512 512">
+                            <path
+                                d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                        </svg>
+                        <span class="menu-title">
+                            {{ __('sidebar.vehicle-owners') }}
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item {{ Request::is('*/vehicles*') ? 'active open' : '' }}">
+                    <a href="{{ route('vehicles.index') }}">
+                         <svg style="width: 15px;fill:#36c7d6;" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 512 512">
+                            <path
+                                d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                        </svg>
+                        <span class="menu-title">
+                            {{ __('sidebar.vehicles') }}
+                        </span>
+                    </a>
+                </li>
+
+            </ul>
+
+        </li>
         <!---------------------------------accounting section--------------------------------->
         @if (empty($package) || $package->accounting == '1')
             @if ($screen_settings->accounting == '1')

@@ -262,10 +262,10 @@
             $.post("{{ route('getNumProductsOutOfStock') }}", {
                 "_token": "{{ csrf_token() }}"
             }, function(data) {
-                if (data >= 1) {
+                // if (data >= 1) {
                     $("#numOfProductsEnded").text(data);
-                    $("#numOfProductsEnded").show();
-                }
+                //     $("#numOfProductsEnded").show();
+                // }
             });
 
             //set products that are out of stock ===> ok i viewed it...

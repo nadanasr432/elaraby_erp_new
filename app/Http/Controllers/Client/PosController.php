@@ -262,17 +262,22 @@ class PosController extends Controller
             // Extract store IDs from the collection
             $storeIds = $stores->pluck('id')->toArray();
 
-            // Query products
-            $products = Product::where('company_id', $company_id)
-                ->where(function ($query) use ($storeIds) {
-                    $query->whereIn('store_id', $storeIds)
-                        ->orWhereNull('store_id');
-                })
-                ->where(function ($query) {
-                    $query->where('first_balance', '>', 0)
+         $products = Product::where('company_id', $company_id)
+        ->where(function ($query) use ($storeIds) {
+            $query->whereIn('store_id', $storeIds)
+                  ->where(function ($q) {
+                      $q->where('first_balance', '>', 0)
                         ->orWhereNull('first_balance');
-                })
-                ->get();
+                  });
+        })
+        ->orWhere(function ($query) use ($company_id) {
+            $query->where('company_id', $company_id)
+                  ->whereHas('category', function ($q) {
+                      $q->where('category_type', 'خدمية');
+                  });
+        })
+        ->get();
+
         } else {
             $safes = $company->safes;
             $products = Product::where('company_id', $company_id)
