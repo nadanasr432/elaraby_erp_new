@@ -21,18 +21,6 @@
     .productList .dropdown-toggle::after{
         color: #fff !important
     }
-    .dropdown-toggle::after {
-    font-size: 0.8rem;
-    font-family: 'LineAwesome';
-    content: '\f110' !important;
-    border: none !important;
-    position: relative;
-    top: auto !important; 
-    left: auto !important; 
-    padding: 0 6px 0 2px;
-    margin: 0 0 0 0.3em;
-    vertical-align: 0;
-}
 </style>
 @section('content')
     @if (session('success'))
@@ -214,44 +202,15 @@
                             <th
                                 style="background-color: #222751; color: #333; text-align: center; padding: 10px; font-weight: bold;">
                                 {{ __('sales_bills.product') }}</th>
-                            {{-- <th
+                            <th
                                 style="background-color: #222751; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                                {{ __('sales_bills.price_type') }}</th> --}}
-                            {{-- <th
+                                {{ __('sales_bills.price_type') }}</th>
+                            <th
                                 style="background-color: #222751; color: #333; text-align: center; padding: 10px; font-weight: bold;">
-                                {{ __('sales_bills.price') }}</th> --}}
-                                 
-                                <th style="background-color: #222751; color: #fff; text-align: center; padding: 10px; font-weight: bold; position: relative;">
-                                    <div class="dropdown">
-                                        <button class="btn text-white dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                            {{ __('sales_bills.price') }}
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <li class="px-3">
-                                                <div class="d-flex flex-column">
-                                                    <label class="form-check-inline">
-                                                        <input type="radio" name="price_type" value="sector" class="price_type form-check-input" checked>
-                                                        {{ __('translations.sector') }}
-
-                                                    </label>
-                                                    <label class="form-check-inline">
-                                                        <input type="radio" name="price_type" value="wholesale" class="price_type form-check-input">
-                                                        {{ __('translations.wholesale') }}
-
-                                                                                                            
-                                                    </label>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </th>
-
-                                
+                                {{ __('sales_bills.price') }}</th>
                             <th
                                 style="background-color: #222751; color: #333; text-align: center; padding: 10px; font-weight: bold;">
                                 {{ __('sales_bills.quantity') }}</th>
-
-
                             <th
                                 style="background-color: #222751; color: #333; text-align: center; padding: 10px; font-weight: bold;">
                                 {{ __('sales_bills.unit') }}</th>
@@ -262,8 +221,8 @@
                                     style="display: inline-block; margin-left: 10px; vertical-align: middle;">
                                     <select id="discount_application" class="form-control text-white"
                                         style="font-size: 12px; height: 30px;" name="products_discount_type">
-                                        <option value="before_tax" class="text-dark">{{ __('sales_bills.discount_before_tax') }}</option>
-                                        <option value="after_tax" class="text-dark">{{ __('sales_bills.discount_after_tax') }}</option>
+                                        <option value="before_tax">{{ __('sales_bills.discount_before_tax') }}</option>
+                                        <option value="after_tax">{{ __('sales_bills.discount_after_tax') }}</option>
                                     </select>
                                 </div>
                             </th>
@@ -1630,22 +1589,22 @@
             isImmediate = false
         }) {
             var valueAddedTax = $('#value_added_tax').val(); // Get the selected tax setting
-            // <td class="text-left">
-            //         <div class="d-flex flex-column">
-            //             <label class="form-check-inline">
-            //                 <input type="radio" name="products[${rowIndex}][price_type]" value="sector" class="price_type form-check-input" checked>
-            //                 ${translations.sector}
-            //             </label>
-            //             <label class="form-check-inline">
-            //                 <input type="radio" name="products[${rowIndex}][price_type]" value="wholesale" class="price_type form-check-input">
-            //                 ${translations.wholesale}
-            //             </label>
-            //         </div>
-            //     </td>
+
             var rowHtml = `
             <tr data-product-id="${productId}" data-index="${rowIndex}">
                 <td>${isImmediate ? `<input type="text" name="products[${rowIndex}][product_name]" class="form-control" placeholder="${translations.enter_product_name}" required>` : productName}</td>
-     
+                <td class="text-left">
+                    <div class="d-flex flex-column">
+                        <label class="form-check-inline">
+                            <input type="radio" name="products[${rowIndex}][price_type]" value="sector" class="price_type form-check-input" checked>
+                            ${translations.sector}
+                        </label>
+                        <label class="form-check-inline">
+                            <input type="radio" name="products[${rowIndex}][price_type]" value="wholesale" class="price_type form-check-input">
+                            ${translations.wholesale}
+                        </label>
+                    </div>
+                </td>
                 <td>
                     <div class="input-group">
                         <input type="number" min="1" name="products[${rowIndex}][product_price]" class="form-control price w-100" value="${sectorPrice}" step="any">
