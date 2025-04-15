@@ -412,6 +412,8 @@ return [
     "region"=>"المنطقة",
     'Are you sure you want to return all items?' => 'هل أنت متأكد أنك تريد إرجاع جميع العناصر؟',
     'Return All Items' => 'إرجاع جميع العناصر',    
-    'return'=>"ارجاع"
+    'return'=>"ارجاع",
+    'sender'=>'المرسل',
+    "receiver"=>"المرسل اليه"
 
 ];

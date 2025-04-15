@@ -33,6 +33,14 @@
                         <hr>
                         <div class="row mb-3">
                             <div class="col-md-4 mb-3">
+                                <label>{{ __('main.sender') }}</label>
+                                <input type="text" name="sender" class="form-control" value="{{ old('sender') }}" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>{{ __('main.receiver') }}</label>
+                                <input type="text" name="receiver" class="form-control" value="{{ old('receiver') }}" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
                                 <label>{{ __('main.client') }} <span class="text-danger">*</span></label>
                                 <div class="d-flex">
                                     <select required name="outer_client_id" class="form-control selectpicker py-1"
