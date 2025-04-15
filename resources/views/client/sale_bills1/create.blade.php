@@ -23,6 +23,7 @@
     }
 </style>
 @section('content')
+{{-- jsw --}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissable fade show text-center">
             <button class="close" data-dismiss="alert" aria-label="Close">×</button>
@@ -2116,4 +2117,6 @@
             handleTaxCalculation(); // Initial call to set the correct tax logic
         });
     </script>
+    
 @endsection
+
