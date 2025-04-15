@@ -208,10 +208,10 @@
     <div class="text-center" id="buttons">
         <button class="btn  btn-success" onclick="window.print()">@lang('sales_bills.Print the invoice')</button>
         <a class="btn  btn-danger" href="{{ route('transport-policies.index') }}">@lang('sales_bills.back') </a>
-        <button class="btn  btn-success" dir="ltr" onclick="sendToWhatsApp()">
+        {{-- <button class="btn  btn-success" dir="ltr" onclick="sendToWhatsApp()">
             <i class="fa fa-whatsapp"></i>
             @lang('sales_bills.Send to whatsapp')
-        </button>
+        </button> --}}
     </div>
     <div class="invoice-container border">
         <div class="container d-flex justify-content-between mt-2 mb-2">
