@@ -408,6 +408,7 @@ class SummaryController extends Controller
                 $buyBorrows = BuyCash::where('supplier_id', $supplier_id)->where('amount', '<', 0)->get();
                 $bankbuyCashs = $supplier_k->bankbuyCashs;
                 $returns = $supplier_k->buyBillReturns;
+                $bondSuppliers = $supplier_k->bondSuppliers;
             } else {
                 // from - to
                 $buyBills = BuyBill::where('supplier_id', $supplier_id)
@@ -424,7 +425,10 @@ class SummaryController extends Controller
                     ->whereDate('created_at', '>=', $from_date)->whereDate('created_at', '<=', $to_date)->get();
                 $returns = BuyBillReturn::where('supplier_id', $supplier_id)
                     ->whereDate('created_at', '>=', $from_date)->whereDate('created_at', '<=', $to_date)->get();
-            }
+                $bondSuppliers = $supplier_k->bondSuppliers()
+                    ->whereDate('created_at', '>=', $from_date)->whereDate('created_at', '<=', $to_date)->get();
+
+                }
         }
         if (isset($submit) && $submit == "today") {
             // today
@@ -443,7 +447,10 @@ class SummaryController extends Controller
 
             $returns = BuyBillReturn::where('supplier_id', $supplier_id)
                 ->whereDate('created_at', 'LIKE', '%' . $today . '%')->get();
-        }
+            $bondSuppliers = $supplier_k->bondSuppliers()
+                        ->whereDate('created_at', 'LIKE', '%' . $today . '%')->get();
+
+            }
         return view(
             'client.summary.suppliers_post',
             compact(
@@ -454,7 +461,8 @@ class SummaryController extends Controller
                 'buyCashs',
                 'bankbuyCashs',
                 'returns',
-                'buyBorrows'
+                'buyBorrows',
+                'bondSuppliers'
             )
         );
     }

@@ -33,6 +33,7 @@ use App\Http\Controllers\Client\AssetsController;
 use App\Http\Controllers\Client\BranchController;
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\Client\CouponController;
+use App\Http\Controllers\Client\DriverController;
 use App\Http\Controllers\Client\GroupeController;
 use App\Http\Controllers\Client\ReportController;
 use App\Http\Controllers\Client\BuyBillController;
@@ -41,13 +42,15 @@ use App\Http\Controllers\Client\CountryController;
 use App\Http\Controllers\Client\ExpenseController;
 use App\Http\Controllers\Client\ProductController;
 use App\Http\Controllers\Client\SummaryController;
+use App\Http\Controllers\Client\VehicleController;
 use App\Http\Controllers\Client\CashBankController;
 use App\Http\Controllers\Client\CategoryController;
 use App\Http\Controllers\Client\EmployeeController;
 use App\Http\Controllers\Client\SaleBillController;
-use App\Http\Controllers\Client\SettingsController;
-use App\Http\Controllers\Client\SupplierController;
 // use App\Http\Controllers\Client\JournalEntryController;
+use App\Http\Controllers\Client\SettingsController;
+use App\Http\Controllers\Client\ShipmentController;
+use App\Http\Controllers\Client\SupplierController;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Client\QuotationController;
 use App\Http\Controllers\Client\SaleBillController1;
@@ -57,10 +60,14 @@ use App\Http\Controllers\Client\OuterClientController;
 use App\Http\Controllers\Client\SubCategoryController;
 use App\Http\Controllers\Client\BuildingRoleController;
 use App\Http\Controllers\Client\ImportExportController;
+use App\Http\Controllers\Client\VehicleOwnerController;
 use App\Http\Controllers\Client\ClientProfileController;
 use App\Http\Controllers\Client\PurchaseOrderController;
 use App\Http\Controllers\Client\CategoriesAssetController;
+use App\Http\Controllers\Client\ChargingStationController;
+use App\Http\Controllers\Client\TransportPolicyController;
 use App\Http\Controllers\Client\SaleBillPrintDemoController;
+use App\Http\Controllers\Client\DischargingStationController;
 
 Route::get('admin/createTokensForAllInvoices', [\App\Http\Controllers\Client\SaleBillController::class, 'createTokensForAllInvoices']);
 Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect::class, \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter::class, \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class]], function () {
@@ -300,7 +307,15 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
                 'edit' => 'client.clients.edit',
                 'store' => 'client.clients.store',
             ]);
-
+            Route::resource('discharging-stations', DischargingStationController::class);
+            Route::resource('charging-stations', ChargingStationController::class);
+            Route::resource('drivers', DriverController::class);
+            Route::resource('shipments', ShipmentController::class);
+            Route::resource('vehicles', VehicleController::class);
+            Route::resource('vehicle-owners', VehicleOwnerController::class);
+            Route::resource('transport-policies', TransportPolicyController::class);
+            Route::get('transport-policies/{transportPolicy}/print', [TransportPolicyController::class, 'print'])
+                ->name('transport-policies.print');
             // ClientProfile Routes
             Route::get('profile/edit/{id}', [ClientProfileController::class, 'edit'])->name('client.profile.edit');
             Route::patch('profile/edit/{id}', [ClientProfileController::class, 'update'])->name('client.profile.update');
@@ -357,6 +372,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::post('clients-stores-transfer-post', [StoreController::class, 'transfer_post'])->name('client.stores.transfer.post');
 
             Route::post('get-products-by-store-id', [StoreController::class, 'get_products_by_store_id'])->name('get.products.by.store.id');
+            Route::get('/get-store-products', [ProductController::class, 'getStoreProducts'])->name('get.store.products');
 
             // Safes Routes
             Route::resource('safes', SafeController::class)->names([
