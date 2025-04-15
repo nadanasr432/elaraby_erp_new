@@ -21,6 +21,28 @@
     .productList .dropdown-toggle::after{
         color: #fff !important
     }
+    body.dark-mode .alert, .alert-sm, .alert-info, .alert-primary {
+        color: #fff !important;
+    }
+    .table thead tr {
+        background-color: #222751;
+        color: #333;
+        text-align: center;
+        padding: 10px;
+        font-weight: bold;
+    }
+    body.dark-mode .table thead tr {
+        background-color: #181b23f5;
+    }
+    body.dark-mode .table tbody tr td{
+        background-color: #181b23f5;
+
+    }
+    .table th, .table td {
+        color: #000
+    }
+
+
 </style>
 @section('content')
 {{-- jsw --}}
@@ -56,8 +78,8 @@
         @csrf
         @method('POST')
         <div class="bg-white p-2">
-        <h6 class="alert alert-info alert-sm text-start no-print custom-title font-weight-bold "
-            style="background-color: #ffffff !important; border:#d8daf5">
+        <h6 class="alert alert-sm text-start no-print custom-title font-weight-bold "
+            style="border:#d8daf5">
                 {{ __('sidebar.add-new-sales-invoice') }}
         </h6>
 
@@ -201,22 +223,22 @@
                     <thead>
                         <tr>
                             <th
-                                style="background-color: #222751; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                               >
                                 {{ __('sales_bills.product') }}</th>
                             <th
-                                style="background-color: #222751; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                               >
                                 {{ __('sales_bills.price_type') }}</th>
                             <th
-                                style="background-color: #222751; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                              >
                                 {{ __('sales_bills.price') }}</th>
                             <th
-                                style="background-color: #222751; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                              >
                                 {{ __('sales_bills.quantity') }}</th>
                             <th
-                                style="background-color: #222751; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                             >
                                 {{ __('sales_bills.unit') }}</th>
                             <th
-                                style="background-color: #222751; color: #333; text-align: center; padding: 5px; font-weight: bold;">
+                                >
                                 {{ __('sales_bills.discount') }}
                                 <div class="tax_discount"
                                     style="display: inline-block; margin-left: 10px; vertical-align: middle;">
@@ -228,13 +250,13 @@
                                 </div>
                             </th>
                             <th
-                                style="background-color: #222751; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                               >
                                 {{ __('sales_bills.tax') }}</th>
                             <th
-                                style="background-color: #222751; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                >
                                 {{ __('sales_bills.total') }}</th>
                             <th
-                                style="background-color: #222751; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                              >
                                 {{ __('sales_bills.actions') }}</th>
                         </tr>
                     </thead>
@@ -243,15 +265,15 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="6" style="background-color: #f9f9f9; font-weight: bold;">
+                            <td colspan="6">
                                 {{ __('sales_bills.grand_tax') }}</td>
-                            <td colspan="3" id="grand_tax" class="text-right" style="background-color: #f9f9f9;">0.00
+                            <td colspan="3" id="grand_tax" class="text-right">0.00
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="6" style="background-color: #f9f9f9; font-weight: bold;">
+                            <td colspan="6" style=" font-weight: bold;">
                                 {{ __('sales_bills.grand_total') }}</td>
-                            <td colspan="3" id="grand_total" class="text-right" style="background-color: #f9f9f9;">
+                            <td colspan="3" id="grand_total" class="text-right" >
                                 0.00</td>
                         </tr>
                     </tfoot>
