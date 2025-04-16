@@ -417,16 +417,16 @@ class ProductController extends Controller
    public function getStoreProducts(Request $request)
     {
         $storeId = $request->store_id;
-    
+
         if (!$storeId) {
             return response()->json(['error' => 'Store ID is required'], 400);
         }
-    
+
         $company_id = Auth::user()->company_id;
         $company = Company::findOrFail($company_id);
         $stores = $company->stores; // Now, this is defined before using it
         $flatStores = $stores->pluck('id')->toArray();
-    
+
     $products = Product::where('company_id', $company_id)
     ->where(function ($query) use ($flatStores) {
         $query->whereIn('store_id', $flatStores)
@@ -443,11 +443,11 @@ class ProductController extends Controller
     })
     ->get();
 
-    
-    
+
+
         return response()->json($products);
     }
-     
+
 
 
 
@@ -458,7 +458,7 @@ class ProductController extends Controller
     {
         $num = Product::where('company_id', Auth::user()->company_id)
             ->where('first_balance', '<=', 0)
-            ->where('viewed', 0)
+            // ->where('viewed', 0)
             ->count();
         return json_encode($num);
     }
@@ -484,32 +484,6 @@ class ProductController extends Controller
             ->orWhere('first_balance', 'like', '%' . $query . '%')
             ->get();
 
-        return response()->json($products);
-    }
-   public function getStoreProducts(Request $request)
-    {
-        $storeId = $request->store_id;
-    
-        if (!$storeId) {
-            return response()->json(['error' => 'Store ID is required'], 400);
-        }
-    
-        $company_id = Auth::user()->company_id;
-        $company = Company::findOrFail($company_id);
-        $stores = $company->stores; 
-        $flatStores = $stores->pluck('id')->toArray();
-    
-       $products = Product::where('company_id', $company_id)
-        ->whereNull('deleted_at')
-        ->where(function ($query) use ($storeId) {
-            $query->where('store_id', $storeId) 
-                  ->orWhereHas('category', function ($q) {
-                      $q->where('category_type', 'خدمية'); 
-                  });
-        })
-        ->get();
-    
-    
         return response()->json($products);
     }
 }

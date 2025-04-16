@@ -5,6 +5,7 @@ use App\Models\Store;
 use App\Models\Branch;
 use App\Models\IntroMovie;
 use App\Models\Information;
+use App\Services\Zatca\TestZatca;
 use App\Http\Middleware\CheckStatus;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -47,8 +48,8 @@ use App\Http\Controllers\Client\VehicleController;
 use App\Http\Controllers\Client\CashBankController;
 use App\Http\Controllers\Client\CategoryController;
 use App\Http\Controllers\Client\EmployeeController;
-use App\Http\Controllers\Client\SaleBillController;
 // use App\Http\Controllers\Client\JournalEntryController;
+use App\Http\Controllers\Client\SaleBillController;
 use App\Http\Controllers\Client\SettingsController;
 use App\Http\Controllers\Client\ShipmentController;
 use App\Http\Controllers\Client\SupplierController;
@@ -68,10 +69,13 @@ use App\Http\Controllers\Client\CategoriesAssetController;
 use App\Http\Controllers\Client\ChargingStationController;
 use App\Http\Controllers\Client\TransportPolicyController;
 use App\Http\Controllers\Client\SaleBillPrintDemoController;
-use App\Services\Zatca\TestZatca;
+
 Route::get('/test-zatca', function () {
     require_once app_path('Services/Zatca/TestZatca.php');
-});use App\Http\Controllers\Client\DischargingStationController;
+});
+
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use App\Http\Controllers\Client\DischargingStationController;
 
 Route::get('admin/createTokensForAllInvoices', [\App\Http\Controllers\Client\SaleBillController::class, 'createTokensForAllInvoices']);
 Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect::class, \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter::class, \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class]], function () {
@@ -1040,7 +1044,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
 
             // pos-invoice -- فاتورة الاعداد
             Route::get('/prod_pos/{invID}', [PosController::class, 'prod_pos'])->name('pos.prod_pos');
-
+            Route::post('/pos/client/delete', [PosController::class, 'deleteClientPos'])->name('pos.client.delete');
+            Route::post('/pos/{pos_id}/delete', [PosController::class, 'deleteSpecificPos'])->name('pos.specific.delete');
+            Route::post('/company/counter/rearrange', [PosController::class, 'rearrangeCompanyCounter'])->name('company.counter.rearrange');
 
             // Journal routes voucher routes
             Route::get('/voucher/create', [VoucherController::class, 'create_voucher_entries'])->name('client.voucher.create');

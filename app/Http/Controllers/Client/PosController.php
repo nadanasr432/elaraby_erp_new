@@ -1669,18 +1669,29 @@ class PosController extends Controller
     }
 
     //pos_sales for main table-main page...
-    public function pos_sales_report()
+    public function pos_sales_report(Request $request)
     {
         $company_id = Auth::user()->company_id;
-        // dd($company_id);
-        $company = Company::FindOrFail($company_id);
         $client_id = Auth::user()->id;
-        //get pos sales...
-        $pos_sales = PosOpen::where('status', 'done')
+        $company = Company::findOrFail($company_id);
+
+        $query = PosOpen::where('status', 'done')
             ->where('company_id', $company_id)
-            ->where('client_id', $client_id)
-            ->whereDate('created_at', Carbon::today())
-            ->get();
+            ->where('client_id', $client_id);
+
+        if ($request->has('filter') && $request->filter === 'today') {
+            $query->whereDate('created_at', Carbon::today());
+        } elseif ($request->has('filter') && $request->filter === 'all') {
+            // no date filter
+        } elseif ($request->has(['date_from', 'date_to'])) {
+            $query->whereBetween('created_at', [
+                Carbon::parse($request->date_from)->startOfDay(),
+                Carbon::parse($request->date_to)->endOfDay(),
+            ]);
+        }
+
+        $pos_sales = $query->get();
+
         return view('client.pos.report', compact('company_id', 'company', 'pos_sales'));
     }
 
@@ -2619,5 +2630,176 @@ class PosController extends Controller
                 ->paginate(80);
         }
         return json_encode([$subCategories, $products]);
+    }
+    // 1. Delete POS of client
+    public function deleteClientPos(Request $request)
+    {
+        $company_id = Auth::user()->company_id;
+        $client_id = Auth::user()->id;
+
+        $pos_opens = PosOpen::where('client_id', $client_id)
+            ->where('status', 'done')
+            ->get();
+
+        if (!$pos_opens->isEmpty()) {
+            try {
+                DB::transaction(function () use ($pos_opens) {
+                    foreach ($pos_opens as $pos_open) {
+                        $cash_id = "pos_" . $pos_open->id;
+
+                        // Handle cash transactions
+                        $cash = Cash::where('bill_id', $cash_id)->get();
+                        if (!$cash->isEmpty()) {
+                            foreach ($cash as $item) {
+                                $amount = $item->amount;
+                                $safe = Safe::findOrFail($item->safe_id);
+                                $new_safe_balance = $safe->balance - $amount;
+                                $safe->update(['balance' => $new_safe_balance]);
+                                $item->delete();
+                            }
+                        }
+
+                        // Handle bank cash
+                        $bank_cash = BankCash::where('bill_id', $cash_id)->get();
+                        if (!$bank_cash->isEmpty()) {
+                            foreach ($bank_cash as $item) {
+                                $amount = $item->amount;
+                                $bank = Bank::findOrFail($item->bank_id);
+                                $new_bank_balance = $bank->bank_balance - $amount;
+                                $bank->update(['bank_balance' => $new_bank_balance]);
+                                $item->delete();
+                            }
+                        }
+
+                        // Handle coupon cash
+                        $coupon_cash = CouponCash::where('bill_id', $cash_id)->get();
+                        if (!$coupon_cash->isEmpty()) {
+                            foreach ($coupon_cash as $item) {
+                                $item->coupon->update(['status' => 'new']);
+                                $item->delete();
+                            }
+                        }
+
+                        // Restock items
+                        $sale_items = $pos_open->elements;
+                        foreach ($sale_items as $sale_item) {
+                            $product = $sale_item->product;
+                            $product->update([
+                                'first_balance' => $product->first_balance + $sale_item->quantity
+                            ]);
+                            $sale_item->delete();
+                        }
+
+                        $pos_open->delete();
+                    }
+                });
+
+                return redirect()->back()->with('success', 'تم إلغاء جميع فواتير العميل بنجاح');
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'حدث خطأ أثناء إلغاء الفواتير: ' . $e->getMessage());
+            }
+        }
+
+        return redirect()->back()->with('error', 'لا يوجد فواتير لحذفها');
+    }
+
+    // 2. Delete specific POS
+    public function deleteSpecificPos(Request $request, $pos_id)
+    {
+        $company_id = Auth::user()->company_id;
+        $pos_open = PosOpen::where('id', $pos_id)
+            ->where('company_id', $company_id)
+            ->first();
+
+        if (!empty($pos_open)) {
+            try {
+                DB::transaction(function () use ($pos_open) {
+                    $cash_id = "pos_" . $pos_open->id;
+
+                    // Handle cash transactions
+                    $cash = Cash::where('bill_id', $cash_id)->get();
+                    if (!$cash->isEmpty()) {
+                        foreach ($cash as $item) {
+                            $amount = $item->amount;
+                            $safe = Safe::findOrFail($item->safe_id);
+                            $new_safe_balance = $safe->balance - $amount;
+                            $safe->update(['balance' => $new_safe_balance]);
+                            $item->delete();
+                        }
+                    }
+
+                    // Handle bank cash
+                    $bank_cash = BankCash::where('bill_id', $cash_id)->get();
+                    if (!$bank_cash->isEmpty()) {
+                        foreach ($bank_cash as $item) {
+                            $amount = $item->amount;
+                            $bank = Bank::findOrFail($item->bank_id);
+                            $new_bank_balance = $bank->bank_balance - $amount;
+                            $bank->update(['bank_balance' => $new_bank_balance]);
+                            $item->delete();
+                        }
+                    }
+
+                    // Handle coupon cash
+                    $coupon_cash = CouponCash::where('bill_id', $cash_id)->get();
+                    if (!$coupon_cash->isEmpty()) {
+                        foreach ($coupon_cash as $item) {
+                            $item->coupon->update(['status' => 'new']);
+                            $item->delete();
+                        }
+                    }
+
+                    // Restock items
+                    $sale_items = $pos_open->elements;
+                    foreach ($sale_items as $sale_item) {
+                        $product = $sale_item->product;
+                        $product->update([
+                            'first_balance' => $product->first_balance + $sale_item->quantity
+                        ]);
+                        $sale_item->delete();
+                    }
+
+                    $pos_open->delete();
+                });
+
+                return redirect()->back()->with('success', 'تم إلغاء الفاتورة المحددة بنجاح');
+            } catch (\Exception $e) {
+                logger($e);
+                return redirect()->back()->with('error', 'حدث خطأ أثناء إلغاء الفاتورة: ' . $e->getMessage());
+            }
+        }
+
+        return redirect()->back()->with('error', 'الفاتورة المحددة غير موجودة');
+    }
+
+    // 3. Rearrange company counter
+    public function rearrangeCompanyCounter(Request $request)
+    {
+        $company_id = Auth::user()->company_id;
+        $pos_opens = PosOpen::where('company_id', $company_id)
+            ->where('status', 'done')
+            ->orderBy('id')
+            ->get();
+
+        if ($pos_opens->isEmpty()) {
+            return redirect()->back()->with('error', 'لا يوجد فواتير مفتوحة لإعادة الترتيب');
+        }
+
+        try {
+            DB::transaction(function () use ($pos_opens) {
+                // Reassign company_counter starting from 1
+                $counter = 1;
+                foreach ($pos_opens as $pos_open) {
+                    $pos_open->update([
+                        'company_counter' => $counter
+                    ]);
+                    $counter++;
+                }
+            });
+
+            return redirect()->back()->with('success', 'تم إعادة ترتيب عداد الفواتير بنجاح');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'حدث خطأ أثناء إعادة ترتيب العداد: ' . $e->getMessage());
+        }
     }
 }

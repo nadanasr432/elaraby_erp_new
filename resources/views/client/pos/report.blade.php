@@ -23,11 +23,16 @@
             {{ session('success') }}
         </div>
     @endif
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissable fade show">
+            <button class="close" data-dismiss="alert" aria-label="Close">×</button>
+            {{ session('error') }}
+        </div>
+    @endif
     <!-- row -->
     <div class="row row-sm">
         <div class="col-xl-12">
             <div class="card">
-
                 <!-- *****************************Header********************************** -->
                 <div class="card-header pb-0">
                     <div class="d-flex justify-content-between">
@@ -55,50 +60,69 @@
                                 {{ __('pos.print-button') }}
                             </a>
 
-                            <button id="getPosReportsToday" class="btn pull-left btn-dark btn-sm mr-1">
-                                عرض كل التقارير
-                            </button>
+                            {{-- Button to show today's sales --}}
+                            @if (request('filter') == 'all')
+                                <a href="{{ route('pos.sales.report', ['filter' => 'today']) }}"
+                                    class="btn pull-left btn-dark btn-sm mr-1" id="getPosReports" >
+                                    عرض تقرير اليوم
+                                </a>
+                            @endif
+                            {{-- Button to show all sales --}}
+                            {{-- "عرض كل التقارير" button (only show when filter is NOT 'all') --}}
+                            @if (request('filter') !== 'all')
+                                <a href="{{ route('pos.sales.report', ['filter' => 'all']) }}"
+                                    class="btn pull-left btn-dark btn-sm mr-1" id="getPosReportsToday">
+                                    عرض كل التقارير
+                                </a>
+                            @endif
 
-                            <button id="getPosReports" style="display: none;" class="btn pull-left btn-dark btn-sm mr-1">
-                                عرض تقرير اليوم
-                            </button>
-
+                            {{-- "عرض بالتاريخ" button (only show when filter IS NOT 'dates') --}}
+                            {{-- @if (!request()->has('date_from') && !request()->has('date_to')) --}}
                             <button id="getPosReportsWithDates" class="btn pull-left btn-warning btn-sm mr-1">
                                 عرض بالتاريخ
+                            </button>
+                            {{-- @endif --}}
+
+
+                            <!-- New Buttons -->
+                            <button id="deleteClientPos" class="btn pull-left btn-danger btn-sm mr-1">
+                                <i class="fa fa-trash"></i> حذف فواتير الفرع
+                            </button>
+                            <button id="rearrangeCompanyCounter" class="btn pull-left btn-success btn-sm mr-1">
+                                <i class="fa fa-sort-numeric-asc"></i> إعادة ترتيب العداد
                             </button>
 
                             <h5 class="pull-right alert alert-sm alert-success">
                                 {{ __('sidebar.point-of-sale-reports') }}
                             </h5>
-
                         </div>
                         <br>
                     </div>
                 </div>
                 <!-- ********************************************************************* -->
 
-
                 <!-- **************************Search Form******************************** -->
-                <div style="display: none" class="searchFormDates row p-2 pl-3 align-items-end">
-                    <div class="col-3 form-groub">
-                        <label for=""> من</label>
-                        <input type="date" id="dateFrom" class="form-control" placeholder="التاريخ من">
+                {{-- Date range filter form --}}
+                <form action="{{ route('pos.sales.report') }}" method="GET"
+                    class="searchFormDates row p-2 pl-3 align-items-end" style="display: none;">
+                    <div class="col-3 form-group">
+                        <label>من</label>
+                        <input type="date" name="date_from" class="form-control" required>
                     </div>
-                    <div class="col-3 form-groub">
-                        <label for=""> الي</label>
-                        <input type="date" id="dateTo" class="form-control" placeholder="التاريخ الي">
+                    <div class="col-3 form-group">
+                        <label>إلى</label>
+                        <input type="date" name="date_to" class="form-control" required>
                     </div>
-                    <div class="col-1 form-groub">
-                        <button id="btnSearchPosReports" class="btn btn-success btn-sm">
+                    <div class="col-1 form-group">
+                        <button type="submit" class="btn btn-success btn-sm">
                             <svg style="width: 20px;fill:white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                 <path
                                     d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z" />
                             </svg>
                         </button>
                     </div>
-                </div>
+                </form>
                 <!-- ********************************************************************* -->
-
 
                 <!-- ************************mainTable AllReport************************** -->
                 <div class="posReportsTodayMain card-body">
@@ -117,12 +141,11 @@
                                     <th class="text-center">{{ __('main.remaining-amount') }}</th>
                                     <th class="text-center">{{ __('main.taxes') }}</th>
                                     <th class="text-center">{{ __('main.items') }}</th>
-                                    <th class="text-center">{{ __('main.actions') }}</th> <!-- New Actions Column -->
+                                    <th class="text-center">{{ __('main.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @php
-                                    // Initialization of variables
                                     $i = 0;
                                     $sum1 = 0; // total-invoices-including-tax
                                     $sum2 = 0; // main.paid-amount
@@ -133,9 +156,7 @@
 
                                 @foreach ($pos_sales as $key => $pos)
                                     @php
-                                        // total amount
                                         $totalAmount = 0;
-                                        // total paid
                                         $totalPaid = 0;
                                     @endphp
                                     <tr>
@@ -147,9 +168,7 @@
                                                 زبون
                                             @endif
                                         </td>
-                                        <!-- Invoice date -->
                                         <td>{{ explode(' ', $pos->created_at)[0] }}</td>
-                                        <!-- Invoice status -->
                                         <td>
                                             @php
                                                 $bill_id = 'pos_' . $pos->id;
@@ -168,12 +187,10 @@
                                                 }
                                             @endphp
                                         </td>
-                                        <!-- Amount -->
                                         <td>
                                             {{ $pos->total_amount }}
                                             @php $sum1 += $pos->total_amount; @endphp
                                         </td>
-                                        <!-- Paid amount -->
                                         <td>
                                             @if ($pos->class == 'paid')
                                                 {{ $pos->total_amount }}
@@ -211,9 +228,7 @@
                                                 @endphp
                                             @endif
                                         </td>
-                                        <!-- Remaining amount -->
                                         <td>{{ round($restAmount, 2) }}</td>
-                                        <!-- Taxes -->
                                         <td>
                                             @php
                                                 if ($pos->value_added_tax == 1) {
@@ -227,7 +242,6 @@
                                             @endif
                                             @php $sum3 += $pos->tax_amount; @endphp
                                         </td>
-                                        <!-- Items -->
                                         <td>
                                             @if (isset($pos))
                                                 @php $pos_elements = $pos->elements; @endphp
@@ -236,13 +250,15 @@
                                                 0
                                             @endif
                                         </td>
-                                        <!-- Actions Column -->
                                         <td>
                                             <a href="{{ route('pos.open.print', $pos->id) }}"
-                                               class="btn btn-sm btn-primary"
-                                               title="{{ __('pos.print-invoice') }}">
+                                                class="btn btn-sm btn-primary" title="{{ __('pos.print-invoice') }}">
                                                 <i class="fa fa-print"></i> {{ __('pos.print') }}
                                             </a>
+                                            <button class="btn btn-sm btn-danger delete-specific-pos"
+                                                data-pos-id="{{ $pos->id }}" title="{{ __('pos.delete-invoice') }}">
+                                                <i class="fa fa-trash"></i> {{ __('main.delete') }}
+                                            </button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -251,37 +267,33 @@
                     </div>
                     <div class='row mb-3 mt-3 text-center'>
                         <div class='badge badge-dark mb-1 p-1'
-                             style="margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;">
+                            style="margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;">
                             مبيعات الكاش :
                             <span>{{ round($totalCash, 2) }}</span>
                         </div>
                         <div class='badge badge-warning mb-1 p-1'
-                             style="margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;">
+                            style="margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;">
                             مبيعات الشبكة :
                             <span>{{ round($totalBank, 2) }}</span>
                         </div>
-                        <!--اجمالى الضريبة للفواتير-->
                         <div class='badge badge-danger mb-1 p-1'
-                             style='margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;'>
+                            style='margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;'>
                             {{ __('pos.total-tax-for-all-invoices') }} :
                             <span>{{ round($sum3, 2) }}</span>
                         </div>
-                        <!--المبلغ الاجمالي المدفوع--->
                         <div class='badge badge-primary mb-1 p-1'
-                             style='margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;'>
+                            style='margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;'>
                             {{ __('main.paid-amount') }} :
                             <span>{{ round($sum2, 2) }}</span>
                         </div>
-                        <!--اجمالى الفواتير شامل الضريبة-->
                         <div class='badge badge-success mb-1 p-1'
-                             style='margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;'>
+                            style='margin-right: 5px;width: fit-content;font-size: 11px !important;font-weight: bold;'>
                             {{ __('pos.total-invoices-including-tax') }} :
                             <span>{{ round($sum1, 2) }}</span>
                         </div>
                     </div>
                 </div>
                 <!-- ********************************************************************* -->
-
 
                 <!-- ************************SPINNER************************************** -->
                 <div class="spinner-box"
@@ -295,15 +307,11 @@
                 </div>
                 <!-- ********************************************************************* -->
 
-
                 <!-- ************************posReportsForToday*************************** -->
                 <div style="display: none;" class="posReportsTodayCard card-body">
-                    <div class="posReportsForTodayContainer table-responsive">
-
-                    </div>
+                    <div class="posReportsForTodayContainer table-responsive"></div>
                 </div>
                 <!-- ********************************************************************* -->
-
             </div>
         </div>
     </div>
@@ -311,81 +319,94 @@
 <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
 <script>
     $(document).ready(function() {
-        // $('.spinner-box').show();
+        // CSRF Token for AJAX requests
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        // Delete Client POS
+        $('#deleteClientPos').click(function() {
+            if (confirm('هل أنت متأكد من حذف فواتير الفرع؟')) {
+                $('.spinner-box').show();
+                $.ajax({
+                    url: '{{ route('pos.client.delete') }}',
+                    type: 'POST',
+                    success: function(response) {
+                        $('.spinner-box').hide();
+                        // Since the controller redirects, we can't directly get the session message
+                        // Reload the page to show the flash message
+                        location.reload();
+                    },
+                    error: function(xhr) {
+                        $('.spinner-box').hide();
+                        var errorMsg = xhr.responseJSON && xhr.responseJSON.message ?
+                            xhr.responseJSON.message :
+                            'حدث خطأ أثناء حذف فواتير الفرع';
+                        // Display error message
+                        $('<div class="alert alert-danger alert-dismissable fade show">' +
+                            '<button class="close" data-dismiss="alert" aria-label="Close">×</button>' +
+                            errorMsg + '</div>').prependTo('.row-sm').fadeOut(5000);
+                    }
+                });
+            }
+        });
+
+        // Delete Specific POS
+        $('.delete-specific-pos').click(function() {
+            var posId = $(this).data('pos-id');
+            if (confirm('هل أنت متأكد من حذف هذه الفاتورة؟')) {
+                $('.spinner-box').show();
+                $.ajax({
+                    url: '{{ route('pos.specific.delete', ':pos_id') }}'.replace(':pos_id',
+                        posId),
+                    type: 'POST',
+                    success: function(response) {
+                        $('.spinner-box').hide();
+                        location.reload();
+                    },
+                    error: function(xhr) {
+                        $('.spinner-box').hide();
+                        var errorMsg = xhr.responseJSON && xhr.responseJSON.message ?
+                            xhr.responseJSON.message :
+                            'حدث خطأ أثناء حذف الفاتورة';
+                        $('<div class="alert alert-danger alert-dismissable fade show">' +
+                            '<button class="close" data-dismiss="alert" aria-label="Close">×</button>' +
+                            errorMsg + '</div>').prependTo('.row-sm').fadeOut(5000);
+                    }
+                });
+            }
+        });
+
+        // Rearrange Company Counter
+        $('#rearrangeCompanyCounter').click(function() {
+            if (confirm('هل أنت متأكد من إعادة ترتيب عداد الفواتير؟')) {
+                $('.spinner-box').show();
+                $.ajax({
+                    url: '{{ route('company.counter.rearrange') }}',
+                    type: 'POST',
+                    success: function(response) {
+                        $('.spinner-box').hide();
+                        location.reload();
+                    },
+                    error: function(xhr) {
+                        $('.spinner-box').hide();
+                        var errorMsg = xhr.responseJSON && xhr.responseJSON.message ?
+                            xhr.responseJSON.message :
+                            'حدث خطأ أثناء إعادة ترتيب العداد';
+                        $('<div class="alert alert-danger alert-dismissable fade show">' +
+                            '<button class="close" data-dismiss="alert" aria-label="Close">×</button>' +
+                            errorMsg + '</div>').prependTo('.row-sm').fadeOut(5000);
+                    }
+                });
+            }
+        });
+
+        // Existing JavaScript
+        $('.spinner-box').hide();
         //------show searchFormDates-----//
-        $("#getPosReportsWithDates").click(function() {
-            $(".searchFormDates").fadeToggle(400);
-        });
 
-        //------pos reports for today-----//
-        $("#getPosReportsToday").click(function() {
-            //-----buttons
-            $(this).hide();
-            $("#getPosReports").show();
-
-            $('#mainPrintBtn').show();
-            $('#todayPrintBtn').hide();
-            //---------------------
-
-            $(".posReportsTodayMain").hide();
-            $(".posReportsTodayCard").hide();
-            $('.spinner-box').show();
-
-            //start ajax...
-            $.post("{{ route('posTodayReport') }}", function(res) {
-                if (res) {
-                    setTimeout(function() {
-                        $(".posReportsForTodayContainer").html(res);
-                        $(".posReportsTodayCard").fadeIn(600);
-                        $('.spinner-box').hide();
-                    }, 700);
-                }
-            });
-        });
-
-        //------get pos reports between dates-----//
-        $("#btnSearchPosReports").click(function() {
-            //get form data..
-            let dateFrom = $("#dateFrom").val();
-            let dateTo = $("#dateTo").val();
-
-            $(".posReportsTodayMain").hide();
-            $(".posReportsTodayCard").hide();
-            $('.spinner-box').show();
-
-            //start ajax...
-            $.post("{{ route('posReportsBetweenDates') }}", {
-                dateFrom: dateFrom,
-                dateTo: dateTo
-            }, function(res) {
-                if (res) {
-                    setTimeout(function() {
-                        $(".posReportsForTodayContainer").html(res);
-                        $(".posReportsTodayCard").fadeIn(600);
-                        $('.spinner-box').hide();
-                    }, 700);
-                }
-            });
-        });
-
-        //-------show or view all reports div-----//
-        $("#getPosReports").click(function() {
-            //buttons
-            $(this).hide();
-            $("#getPosReportsToday").show();
-
-            $('#mainPrintBtn').show();
-            $('#todayPrintBtn').hide();
-            //---------------------
-
-            $(".posReportsTodayCard").hide();
-            $('.spinner-box').show();
-
-            setTimeout(function() {
-                $(".posReportsTodayMain").fadeIn(600);
-                $('.spinner-box').hide();
-            }, 700);
-        });
 
 
     });
