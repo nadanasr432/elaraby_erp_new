@@ -253,6 +253,18 @@
                                                                 </svg>
                                                                 {{ __('sidebar.show') }}
                                                             </a>
+                                                             <form action="{{ route('client.sale_bills.post.returnAll') }}" method="POST" style="display:inline-block;" onsubmit="return confirm('{{ __('main.Are you sure you want to return all items?') }}')">
+                                                                @csrf
+                                                                <input type="hidden" name="sale_bill_id" value="{{ $sale_bill->id }}">
+                                                                <button type="submit" class="dropdown-item"
+                                                                style="font-size: 12px  !important; padding: 9px 11px;border-bottom: 1px solid #2d2d2d2d">
+                                                                    <svg style="width: 15px; fill: crimson; display: inline; margin-left: 5px;"
+                                                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                                        <path d="M32 32h448v64H32zm416 96H64l32 352h320z" />
+                                                                    </svg>
+                                                                    {{ __('main.Return All Items') }}
+                                                                </button>
+                                                            </form>
 
                                                             <!--EDIT--->
                                                             <a href="{{ route('client.sale_bills.edit1', [$sale_bill->token, $sale_bill->company_id]) }}"

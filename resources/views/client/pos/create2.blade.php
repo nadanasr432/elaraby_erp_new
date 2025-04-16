@@ -224,6 +224,20 @@
 
     .inner.show {
         min-height: 159px !important;
+        }
+    .payment .filter-option-inner-inner{
+        color: #fff !important
+    }
+    .searchproducts .filter-option{
+        background-color: #F4F5FA !important
+    }
+    .filter-option{
+        display: flex;
+    align-items: center;
+    justify-content: end;
+    }
+    body.dark-mode .edit_price ,body.dark-mode .edit_quantity,body.dark-mode .edit_discount{
+color: #fff !important;
     }
 </style>
 @section('content')
@@ -650,7 +664,7 @@
                             </svg>
                             اختر العميل
                         </h5>
-                        <a href="#" class="btn btn-secondary mb-1" data-toggle="modal"
+                        <a href="#" class="btn btn-warning" data-toggle="modal"
                             data-target="#addCustomerModal" title="{{ __('home.Add a client') }}">
                             <i class="fa fa-plus"></i>
                         </a>
@@ -765,7 +779,7 @@
                             </option>
                         @endforeach
                     </select>
-                    <select id="product_id" class="selectpicker form-control w-100 mt-nos" data-style="btn-dark"
+                    <select id="product_id" class="selectpicker searchproducts form-control w-100 mt-nos p-0 "
                         data-live-search="true"
                         title="{{ __('pos.search-for-products-by-code-name-or-using-a-barcode-device') }}">
                         @foreach ($products as $product)
@@ -1368,7 +1382,7 @@
                 //add new row to the table..
                 var productRow = '<tr class="bg-white" id="' + product_id + '"> <td>' + product_name +
                     '</td> <td style="padding:5px 1px 5px 1px !important;"><input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_price-' +
-                    product_id + '" class="edit_price w-100" value="' + product_price +
+                    product_id + '" class="edit_price w-100 inputpos" value="' + product_price +
                     '"></td> <td style="padding:5px 1px 5px 1px !important;"><input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_quantity-' +
                     product_id +
                     '" class="edit_quantity w-100" value="1"></td> <td style="padding:5px 1px 5px 1px !important;"><input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_discount-' +
@@ -1642,7 +1656,7 @@
                 (allData[1].data).forEach(function(product) {
                     let productElement =
                     '<div class="card cproduct m-nos product" product_id="' + product.id +
-                    '" product_name="' + product.product_name + '" product_price="' + product.sector_price + 
+                    '" product_name="' + product.product_name + '" product_price="' + product.sector_price +
                     '" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important; border: 1px solid rgba(229, 229, 229, 0.4) !important; min-height: 172px !important; max-height: 172px !important; width: 12rem !important;margin-bottom: 5px !important;">' +
                     '<div class="imgBox" style="height: 75px !important; width: 100% !important;">' +
                     '<img style="height: 100% !important; width: 100% !important; object-fit: contain !important;" src="../../../' +
@@ -1842,6 +1856,19 @@
         });
     });
 });
+// function autoPrintInvoice(posId) {
+//     var iframe = document.createElement('iframe');
+//     iframe.style.display = "none";
+//     iframe.src = '/pos-print/' + posId;
+//     document.body.appendChild(iframe);
+
+//     iframe.onload = function () {
+//         iframe.contentWindow.print();
+//         setTimeout(() => {
+//             document.body.removeChild(iframe); // Clean up
+//         }, 1000);
+//     };
+// }
         //==================================================
 
         //================دفع شبكة سريع================
@@ -2208,7 +2235,7 @@
                 let totalPrice = (edit_quantity * edit_price) - edit_discount;
                 $("#totalPrice-" + element_id).text(totalPrice.toFixed(3));
             } else {
-                
+
                 return false;
             }
             refreshBillDetails();
@@ -2226,7 +2253,7 @@
                 let totalPrice = (edit_quantity * edit_price) - edit_discount;
                 $("#totalPrice-" + element_id).text(totalPrice.toFixed(3));
             } else {
-                
+
                 return false;
             }
             refreshBillDetails();
@@ -2244,7 +2271,7 @@
                 let totalPrice = (edit_quantity * edit_price) - edit_discount;
                 $("#totalPrice-" + element_id).text(totalPrice.toFixed(3));
             } else {
-                
+
                 return false;
             }
             refreshBillDetails();

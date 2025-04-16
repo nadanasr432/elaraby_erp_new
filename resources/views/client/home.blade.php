@@ -813,7 +813,7 @@
         <!------------------------------------------------------------------->
 
         <!----------------------------Center Row----------------------------->
-        <div class="row match-height p-1 mt-1">
+        <div class="row match-height p-1" style=";">
             <div class="col-md-8 px-0">
                 <div class="card" style="height: 460px;border: 1px solid #2d2d2d30;">
                     <div class="card-header p-1" style="background: #222751;">
@@ -822,69 +822,18 @@
                             {{ __('main.income-expenses-jan') }}
                         </h4>
                     </div>
-                    <div class="card-content">
+
+                    <div class="card-content ">
                         <div id="container" style="min-width: 310px; height: 372px; margin: 0 auto"></div>
                     </div>
 
+
                 </div>
             </div>
-            <div class="col-md-4 pr-0 pl-sm-1 pl-0">
-                <div class="card styled-card" style="border: 1px solid #2d2d2d30;">
-                    <div class="card-header p-1" style="background: #222751;">
-                        <h4 class="card-title" style="font-weight: 600;color:white;">
-                            {{ __('main.latest-customers') }}
-                        </h4>
-                    </div>
-                    <div class="card-content px-1">
-                        <div id="recent-buyers" class=" mt-1 position-relative">
-                            @foreach ($all_outer_clients as $client)
-                                <a target="_blank" href="{{ route('client.outer_clients.edit', $client->id) }}"
-                                    class="media client_statistic mt-1" style="border-radius: 0 !important;">
-                                    <div class="media-left pr-1">
-                                        <span
-                                            class="avatar avatar-md avatar-online
-                                            @if ($client->prev_balance > 0) client-border-paid @else client-border-notpaid @endif">
-
-                                            <img class="media-object rounded-circle"
-                                                src="{{ asset('assets/images/mty-client.png') }}">
-                                            <i></i>
-                                        </span>
-                                    </div>
-                                    <div class="media-body w-100">
-                                        <h6 class="list-group-item-heading font-medium-2">{{ $client->client_name }}
-                                            <span
-                                                class="float-right badge @if ($client->prev_balance > 0) badge-success scsss @else badge-danger errr @endif"
-                                                style="border-radius: 30px;font-size: 10px !important;font-weight: 500;padding: 9px 14px;">
-                                                @if ($client->prev_balance > 0)
-                                                    {{ __('main.t-paid') }}
-                                                @else
-                                                    {{ __('main.notpaid') }}
-                                                @endif
-                                            </span>
-                                        </h6>
-                                        <?php
-                                        $prev_balance = floatval($client->prev_balance); // Convert to float
-                                        $abs_prev_balance = abs($prev_balance);
-                                        ?>
-
-                                        <p class="list-group-item-text mb-0">
-                                            <span class="float-left"
-                                                style="color: #B5B5C3; font-size: 16px; font-weight: 500;">
-                                                المبلغ المدفوع:
-                                                {{ $abs_prev_balance }}
-                                            </span>
-                                        </p>
-
-                                    </div>
-                                </a>
-                            @endforeach
-
-
-                        </div>
-                        <br>
-                    </div>
-                </div>
+            <div class="col-md-4 ">
+                <div id="pieContainer" style="border: 1px solid #2d2d2d30; height: 460px;"  class="card"></div>
             </div>
+
         </div>
         <!------------------------------------------------------------------->
 
@@ -1233,20 +1182,69 @@
                 name: 'Income',
                 data: [148, 133, 124, 133, 124, 133, 124, 133, 124, 133, 124, 124],
                 stack: 'Europe',
-                color: '#449f2d',
+                color: '#59a4d5',
             }, {
                 name: 'Expenses',
                 data: [55, 68, 25, 13, 35, 48, 15, 20, 30, 55, 50, 65],
                 stack: 'Europe',
-                color: '#f6a600'
+                color: '#ac46bc'
             }, {
                 name: 'Revenues',
                 data: [102, 98, 65, 98, 65, 98, 65, 98, 65, 98, 65, 65],
                 stack: 'Europe',
-                color: '#45c5cd'
+                color: '#ee697c'
             }]
         });
         //end chars
 
-    });
+        // Pie Chart
+        Highcharts.chart('pieContainer', {
+            chart: {
+                type: 'pie',
+                animation: {
+                    duration: 2000
+                }
+            },
+            title: {
+                text: 'Income vs Expenses vs Revenues'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            accessibility: {
+                point: {
+                    valueSuffix: '%'
+                }
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    borderRadius: 10,
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                    }
+                }
+            },
+            series: [{
+                name: 'Share',
+                colorByPoint: true,
+                data: [{
+                    name: 'Income',
+                    y: 1585,
+                    color: '#59a4d5'
+                }, {
+                    name: 'Expenses',
+                    y: 509,
+                    color: '#ac46bc'
+                }, {
+                    name: 'Revenues',
+                    y: 1042,
+                    color: '#ee697c'
+                }]
+            }]
+        });
+
+            });
 </script>

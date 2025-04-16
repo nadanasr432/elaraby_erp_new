@@ -193,5 +193,13 @@ return [
     "products-deleted"=> "Deleted Products",
     "Total billing taxes"=>"Total billing taxes",
     "Goods Receipt Order"=>"Goods Receipt Order",
+    "transport_policy"=>"Transport Policy",
+    'transport-policies' => 'Transport Policies',
+    'charging_stations' => 'Charging Stations',
+    'discharging_stations' => 'Discharging Stations',
+    'drivers' => 'Drivers',
+    'shipments' => 'Shipments',
+    'vehicle-owners' => 'Vehicle Owners',
+    'vehicles' => 'Vehicles',
 
 ];

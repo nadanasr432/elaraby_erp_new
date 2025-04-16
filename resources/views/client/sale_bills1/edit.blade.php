@@ -1,4 +1,27 @@
 @extends('client.layouts.app-main1')
+<style>
+    .btn-danger .filter-option-inner-inner{
+        color: #fff !important
+    }
+    .btn-danger .dropdown-toggle::after{
+        color: #fff !important
+    }
+    .dropdown-toggle::after {
+        position: absolute !important;
+
+    }
+    .productList .filter-option-inner-inner{
+        color: #fff !important
+    }
+    .productList{
+
+        background-color: #36c7d6 !important;
+
+    }
+    .productList .dropdown-toggle::after{
+        color: #fff !important
+    }
+</style>
 @section('content')
     @if (session('success'))
         <div class="alert alert-success alert-dismissable fade show text-center">
@@ -111,7 +134,7 @@
                     <span class="text-danger font-weight-bold">*</span>
                 </label>
                 <div class="d-flex align-items-center justify-content-between">
-                    <select name="product_id" id="product_id" class="selectpicker w-50" data-style="btn-new_color"
+                    <select name="product_id" id="product_id" class="selectpicker w-50 form-control productList" data-style="btn-new_color"
                         data-live-search="true" title="{{ __('sales_bills.product-code') }}">
                         <option value="new" style="color: red;">{{ __('sales_bills.Add immediate product') }}</option>
                         @foreach ($all_products as $product)

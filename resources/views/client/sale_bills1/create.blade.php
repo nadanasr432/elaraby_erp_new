@@ -1,5 +1,51 @@
 @extends('client.layouts.app-main1')
+<style>
+    .btn-danger .filter-option-inner-inner{
+        color: #fff !important
+    }
+    .btn-danger .dropdown-toggle::after{
+        color: #fff !important
+    }
+    .dropdown-toggle::after {
+        position: absolute !important;
+
+    }
+    .productList .filter-option-inner-inner{
+        color: #fff !important
+    }
+    .productList{
+
+        background-color: #36c7d6 !important;
+
+    }
+    .productList .dropdown-toggle::after{
+        color: #fff !important
+    }
+    body.dark-mode .alert, .alert-sm, .alert-info, .alert-primary {
+        color: #fff !important;
+    }
+    .table thead tr {
+        background-color: #222751;
+        color: #333;
+        text-align: center;
+        padding: 10px;
+        font-weight: bold;
+    }
+    body.dark-mode .table thead tr {
+        background-color: #181b23f5;
+    }
+    body.dark-mode .table tbody tr td{
+        background-color: #181b23f5;
+
+    }
+    .table th, .table td {
+        color: #000
+    }
+
+
+</style>
 @section('content')
+{{-- jsw --}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissable fade show text-center">
             <button class="close" data-dismiss="alert" aria-label="Close">×</button>
@@ -31,9 +77,9 @@
     <form id="myForm" target="_blank" action="#" method="POST">
         @csrf
         @method('POST')
-        <h6 class="alert alert-info alert-sm text-center no-print  font-weight-bold" dir="rtl"
-            style="background-color: #d8daf5 !important; border:#d8daf5">
-            <center>
+        <div class="bg-white p-2">
+        <h6 class="alert alert-sm text-start no-print custom-title font-weight-bold "
+            style="border:#d8daf5">
                 {{ __('sidebar.add-new-sales-invoice') }}
             </center>
         </h6>
@@ -162,42 +208,40 @@
                     <thead>
                         <tr>
                             <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                               >
                                 {{ __('sales_bills.product') }}</th>
                             <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                               >
                                 {{ __('sales_bills.price_type') }}</th>
                             <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                              >
                                 {{ __('sales_bills.price') }}</th>
                             <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                              >
                                 {{ __('sales_bills.quantity') }}</th>
                             <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                             >
                                 {{ __('sales_bills.unit') }}</th>
-                            @if($user->roles->flatMap->permissions->contains('name', 'الخصم'))
-                                <th
-                                    style="background-color: #d8daf5; color: #333; text-align: center; padding: 5px; font-weight: bold;">
-                                    {{ __('sales_bills.discount') }}
-                                    <div class="tax_discount"
-                                        style="display: inline-block; margin-left: 10px; vertical-align: middle;">
-                                        <select id="discount_application" class="form-control"
-                                            style="font-size: 12px; height: 30px;" name="products_discount_type">
-                                            <option value="before_tax">{{ __('sales_bills.discount_before_tax') }}</option>
-                                            <option value="after_tax">{{ __('sales_bills.discount_after_tax') }}</option>
-                                        </select>
-                                    </div>
-                                </th>
-                            @endif
                             <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                >
+                                {{ __('sales_bills.discount') }}
+                                <div class="tax_discount"
+                                    style="display: inline-block; margin-left: 10px; vertical-align: middle;">
+                                    <select id="discount_application" class="form-control text-white"
+                                        style="font-size: 12px; height: 30px;" name="products_discount_type">
+                                        <option value="before_tax">{{ __('sales_bills.discount_before_tax') }}</option>
+                                        <option value="after_tax">{{ __('sales_bills.discount_after_tax') }}</option>
+                                    </select>
+                                </div>
+                            </th>
+                            <th
+                               >
                                 {{ __('sales_bills.tax') }}</th>
                             <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                                >
                                 {{ __('sales_bills.total') }}</th>
                             <th
-                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
+                              >
                                 {{ __('sales_bills.actions') }}</th>
                         </tr>
                     </thead>
@@ -206,15 +250,15 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="6" style="background-color: #f9f9f9; font-weight: bold;">
+                            <td colspan="6">
                                 {{ __('sales_bills.grand_tax') }}</td>
-                            <td colspan="3" id="grand_tax" class="text-right" style="background-color: #f9f9f9;">0.00
+                            <td colspan="3" id="grand_tax" class="text-right">0.00
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="6" style="background-color: #f9f9f9; font-weight: bold;">
+                            <td colspan="6" style=" font-weight: bold;">
                                 {{ __('sales_bills.grand_total') }}</td>
-                            <td colspan="3" id="grand_total" class="text-right" style="background-color: #f9f9f9;">
+                            <td colspan="3" id="grand_total" class="text-right" >
                                 0.00</td>
                         </tr>
                     </tfoot>
@@ -2086,117 +2130,6 @@
             handleTaxCalculation(); // Initial call to set the correct tax logic
         });
     </script>
-    <!--    <script>
-        -- >
-        <
-        !--$(document).ready(function() {
-            -- >
-            <
-            !-- function loadProducts(storeId) {
-                -- >
-                <
-                !--
-                if (storeId) {
-                    -- >
-                    <
-                    !--$.ajax({
-                        -- >
-                        <
-                        !--url: "{{ route('get.store.products') }}",
-                        -- >
-                        <
-                        !--type: "GET",
-                        -- >
-                        <
-                        !--data: {
-                            store_id: storeId
-                        },
-                        -- >
-                        <
-                        !--dataType: "json",
-                        -- >
-                        <
-                        !--success: function(data) {
-                            -- >
-                            <
-                            !--
-                            let productDropdown = $('#product_id');
-                            -- >
-                            <
-                            !--productDropdown.empty();
-                            -- >
 
-                            <
-                            !--$.each(data, function(key, product) {
-                                -- >
-                                <
-                                !--productDropdown.append(`-->
-<!--                            <option value="${product.id}" data-tokens="${product.code_universal}"-->
-<!--                                product_name="${product.product_name}" product_price="${product.sector_price}">-->
-<!--                                ${product.product_name}-->
-<!--                            </option>-->
-<!--                        `);
-                                -- >
-                                <
-                                !--
-                            });
-                            -- >
-
-                            $('.selectpicker').selectpicker('refresh'); // Refresh the dropdown
-                            <
-                            !--
-                        },
-                        -- >
-                        <
-                        !--error: function(xhr) {
-                                -- >
-                                <
-                                !--console.log("Error:", xhr.responseText);
-                                -- >
-                                <
-                                !--
-                            }-- >
-                            <
-                            !--
-                    });
-                    -- >
-                    <
-                    !--
-                }-- >
-                <
-                !--
-            }-- >
-
-            // Load products for the first store on page load
-            <
-            !--
-            let firstStoreId = $('#store_id').val();
-            -- >
-            <
-            !--loadProducts(firstStoreId);
-            -- >
-
-            // Update products when the store changes
-            <
-            !--$('#store_id').on('change', function() {
-                -- >
-                <
-                !--
-                let storeId = $(this).val();
-                -- >
-                <
-                !--loadProducts(storeId);
-                -- >
-                <
-                !--
-            });
-            -- >
-            <
-            !--
-        });
-        -- >
-
-        <
-        !--
-    </script>-->
 @endsection
+
