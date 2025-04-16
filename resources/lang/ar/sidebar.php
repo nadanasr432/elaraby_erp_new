@@ -232,4 +232,6 @@ return [
     'shipments' => 'الشحنات',
     'vehicle-owners' => 'مالكي المركبات',
     'vehicles' => 'المركبات',
+    'Returned' => 'مرتجع',
+    'Not Returned' => 'غير مرتجع'
 ];

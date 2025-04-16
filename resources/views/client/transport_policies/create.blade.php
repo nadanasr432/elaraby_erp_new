@@ -97,7 +97,7 @@
                                     <select required name="shipment_id" class="form-control selectpicker py-1"
                                         data-style="btn-third" data-live-search="true" title="{{ __('main.shipment_containers_no') }}">
                                         @foreach ($shipments as $shipment)
-                                            <option value="{{ $shipment->id }}">{{ $shipment->containers_no }}</option>
+                                            <option value="{{ $shipment->id }}">{{ $shipment->payload_type }}</option>
                                         @endforeach
                                     </select>
                                 </div>

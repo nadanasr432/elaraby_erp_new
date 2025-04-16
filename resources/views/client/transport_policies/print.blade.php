@@ -208,10 +208,10 @@
     <div class="text-center" id="buttons">
         <button class="btn  btn-success" onclick="window.print()">@lang('sales_bills.Print the invoice')</button>
         <a class="btn  btn-danger" href="{{ route('transport-policies.index') }}">@lang('sales_bills.back') </a>
-        {{-- <button class="btn  btn-success" dir="ltr" onclick="sendToWhatsApp()">
-            <i class="fa fa-whatsapp"></i>
-            @lang('sales_bills.Send to whatsapp')
-        </button> --}}
+        <!--<button class="btn  btn-success" dir="ltr" onclick="sendToWhatsApp()">-->
+        <!--    <i class="fa fa-whatsapp"></i>-->
+        <!--    @lang('sales_bills.Send to whatsapp')-->
+        <!--</button>-->
     </div>
     <div class="invoice-container border">
         <div class="container d-flex justify-content-between mt-2 mb-2">
@@ -244,7 +244,7 @@
                                 class="fw-bold fs-5">{{ $company->civil_registration_number }}</strong></span>
                     </div>
                     <div class="col-12 d-flex justify-content-end text-end">
-                        <span>رخصة نقل:<strong class="fw-bold fs-5">{{ $company->transport_license }}</strong></span>
+                        <span> رقم الجوال:<strong class="fw-bold fs-5">{{ $company->phone_number }}</strong></span>
                     </div>
                     <div class="col-12 d-flex justify-content-end text-end">
                         <span>رقم ضريبي:<strong>{{ $company->tax_number }}</strong></span>
@@ -393,7 +393,7 @@
             <table class="col-md-6 table table-bordered text-center align-middle">
                 <tr style="background-color:cornflowerblue !important">
                     <th colspan="3" class="fw-bold fs-5" style="background-color:cornflowerblue !important">Shipment
-                        Information</th>
+                        Information / بيان الحمولة </th>
                 </tr>
                 <tbody>
                     <tr>
@@ -429,7 +429,7 @@
                     <tr>
                         <td class="fw-bold text-start w-25">Vehicle number</td>
                         <td class="w-50">{{ $vehicle->vehicle_number }}</td>
-                        <td class="fw-bold text-end w-25">رقم المركبة</td>
+                        <td class="fw-bold text-end w-25">نوع المركبة</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">Plate Number</td>
@@ -481,7 +481,7 @@
             </table>
         </div>
         <div class="container">
-            <table class="table table-sm table-bordered  text-center" style="height: 200px;">
+            <table class="table table-sm table-bordered  text-center" style="height: 170px;">
                 <tbody>
                     <tr style="font-weight: bold;">
                         <td rowspan="8" class="qr-code">

@@ -182,6 +182,7 @@
                                             <th>{{ __('products.store') }}</th>
                                             <th>{{ __('sidebar.Final total') }}</th>
                                             <th>{{ __('sidebar.Number of items') }}</th>
+                                            <th>{{ __('sidebar.Returned') }}</th>
                                             <th>{{ __('sidebar.Status') }}</th>
                                             <th style="border-radius: 10px 0 0 0;width: 10% !important;">
                                                 {{ __('sidebar.Show') }}</th>
@@ -194,7 +195,38 @@
                                         $totalTax = 0;
                                         ?>
                                         @foreach ($sale_bills as $index => $sale_bill)
-                                            <tr class="{{ $index % 2 == 0 ? 'even' : 'odd' }}" role="row">
+                                            @php
+                                                $total += $sale_bill->final_total;
+                                                $totalTax += $sale_bill->total_tax;
+
+                                                $items = \App\Models\SaleBillElement::where(
+                                                    'sale_bill_id',
+                                                    $sale_bill->id,
+                                                )
+                                                    ->where('company_id', $sale_bill->company_id)
+                                                    ->get();
+
+                                                $allReturned = true;
+
+                                                foreach ($items as $product) {
+                                                    $alreadyReturnedQty = \App\Models\SaleBillReturn::where(
+                                                        'bill_id',
+                                                        $sale_bill->id,
+                                                    )
+                                                        ->where('product_id', $product->product_id)
+                                                        ->sum('return_quantity');
+
+                                                    if ($alreadyReturnedQty < $product->quantity) {
+                                                        $allReturned = false;
+                                                        break;
+                                                    }
+                                                }
+
+                                                $rowClass =
+                                                    ($index % 2 == 0 ? 'even' : 'odd') .
+                                                    ($allReturned ? ' table-danger' : '');
+                                            @endphp
+                                            <tr class="{{ $rowClass }}" role="row">
                                                 <td>{{ $sale_bills_count - $index }}</td>
                                                 {{-- <td>{{ $sale_bill->sale_bill_number }}</td> --}}
                                                 <td>
@@ -214,9 +246,18 @@
                                                         $total += $sale_bill->final_total;
                                                         $totalTax += $sale_bill->total_tax;
                                                     @endphp
-                                                    {{ $sale_bill->final_total }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                                    {{ $sale_bill->final_total }} <img
+                                                        src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                                                 </td>
                                                 <td>{{ $sale_bill->elements->count() }}</td>
+                                                <td>
+                                                    @if ($allReturned)
+                                                        <span class="badge bg-danger">{{ __('sidebar.Returned') }}</span>
+                                                    @else
+                                                        <span
+                                                            class="badge bg-success">{{ __('sidebar.Not Returned') }}</span>
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     <input type="checkbox" class="toggle-status"
                                                         data-id="{{ $sale_bill->id }}"
@@ -253,18 +294,27 @@
                                                                 </svg>
                                                                 {{ __('sidebar.show') }}
                                                             </a>
-                                                             <form action="{{ route('client.sale_bills.post.returnAll') }}" method="POST" style="display:inline-block;" onsubmit="return confirm('{{ __('main.Are you sure you want to return all items?') }}')">
-                                                                @csrf
-                                                                <input type="hidden" name="sale_bill_id" value="{{ $sale_bill->id }}">
-                                                                <button type="submit" class="dropdown-item"
-                                                                style="font-size: 12px  !important; padding: 9px 11px;border-bottom: 1px solid #2d2d2d2d">
-                                                                    <svg style="width: 15px; fill: crimson; display: inline; margin-left: 5px;"
-                                                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                                                        <path d="M32 32h448v64H32zm416 96H64l32 352h320z" />
-                                                                    </svg>
-                                                                    {{ __('main.Return All Items') }}
-                                                                </button>
-                                                            </form>
+                                                            @if (!$allReturned)
+                                                                <form
+                                                                    action="{{ route('client.sale_bills.post.returnAll') }}"
+                                                                    method="POST" style="display:inline-block;"
+                                                                    onsubmit="return confirm('{{ __('main.Are you sure you want to return all items?') }}')">
+                                                                    @csrf
+                                                                    <input type="hidden" name="sale_bill_id"
+                                                                        value="{{ $sale_bill->id }}">
+                                                                    <button type="submit" class="dropdown-item"
+                                                                        style="font-size: 12px !important; padding: 9px 11px; border-bottom: 1px solid #2d2d2d2d">
+                                                                        <svg style="width: 15px; fill: crimson; display: inline; margin-left: 5px;"
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            viewBox="0 0 512 512">
+                                                                            <path
+                                                                                d="M32 32h448v64H32zm416 96H64l32 352h320z" />
+                                                                        </svg>
+                                                                        {{ __('main.Return All Items') }}
+                                                                    </button>
+                                                                </form>
+                                                            @endif
+
 
                                                             <!--EDIT--->
                                                             <a href="{{ route('client.sale_bills.edit1', [$sale_bill->token, $sale_bill->company_id]) }}"
@@ -280,8 +330,8 @@
                                                                 {{ __('sidebar.edit or return') }}
                                                             </a>
                                                             <a href="{{ route('client.sale_bills.print', [$sale_bill->token, 9, 3, 0]) }}"
-                                                                class="dropdown-item"
-                                                                printColor="2" isMoswada="0" invoiceType='9'
+                                                                class="dropdown-item" printColor="2" isMoswada="0"
+                                                                invoiceType='9'
                                                                 style="font-size: 12px  !important; padding: 9px 11px;border-bottom: 1px solid #2d2d2d2d">
                                                                 <svg style="width: 15px; fill: #1956ad;display: inline;margin-left: 5px;"
                                                                     xmlns="http://www.w3.org/2000/svg"
@@ -332,7 +382,8 @@
                         <div>
                             <span class="badge badge-success p-1 font-weight-bold">
                                 {{ __('sidebar.Total billing taxes') }}
-                                ( {{ floatval($totalTax) }} ) <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                ( {{ floatval($totalTax) }} ) <img src="{{ asset('images/Sr_coin.svg') }}"
+                                    width="15px">
                             </span>
                         </div>
                     </div>
