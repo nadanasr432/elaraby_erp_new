@@ -294,7 +294,7 @@
                 <tbody>
                     <tr>
                         <td class="fw-bold text-start w-25">Name</td>
-                        <td class="w-50">{{ $transportPolicy->receiver }}</td>
+                        <td class="w-50">{{ $transportPolicy->receiver  ?? '' }}</td>
                         <td class="fw-bold text-end w-25">الاسم</td>
                     </tr>
                 </tbody>
@@ -307,7 +307,7 @@
                 <tbody>
                     <tr>
                         <td class="fw-bold text-start w-25">Name</td>
-                        <td class="w-50">{{ $transportPolicy->sender }}</td>
+                        <td class="w-50">{{ $transportPolicy->sender  ?? ''}}</td>
                         <td class="fw-bold text-end w-25">الاسم</td>
                     </tr>
                 </tbody>
@@ -322,17 +322,17 @@
                 <tbody>
                     <tr>
                         <td class="fw-bold text-start w-25">Country</td>
-                        <td class="w-50">{{ $dischargingStation->country }}</td>
+                        <td class="w-50">{{ $dischargingStation->country   ?? ''}}</td>
                         <td class="fw-bold text-end w-25">الدولة</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">Region</td>
-                        <td>{{ $dischargingStation->region }}</td>
+                        <td>{{ $dischargingStation->region   ?? ''}}</td>
                         <td class="fw-bold text-end">المنطقة</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">City</td>
-                        <td>{{ $dischargingStation->city }}</td>
+                        <td>{{ $dischargingStation->city   ?? ''}}</td>
                         <td class="fw-bold text-end">المدينة</td>
                     </tr>
                 </tbody>
@@ -345,17 +345,17 @@
                 <tbody>
                     <tr>
                         <td class="fw-bold text-start w-25">Country</td>
-                        <td class="w-50">{{ $chargingStation->country }}</td>
+                        <td class="w-50">{{ $chargingStation->country   ?? ''}}</td>
                         <td class="fw-bold text-end w-25">الدولة</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">Region</td>
-                        <td>{{ $chargingStation->region }}</td>
+                        <td>{{ $chargingStation->region   ?? ''}}</td>
                         <td class="fw-bold text-end">المنطقة</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">City</td>
-                        <td>{{ $chargingStation->city }}</td>
+                        <td>{{ $chargingStation->city   ?? ''}}</td>
                         <td class="fw-bold text-end">المدينة</td>
                     </tr>
                 </tbody>
@@ -370,22 +370,22 @@
                 <tbody>
                     <tr>
                         <td class="fw-bold text-start w-25">Driver name</td>
-                        <td class="w-50">{{ $driver->name }}</td>
+                        <td class="w-50">{{ $driver->name   ?? ''}}</td>
                         <td class="fw-bold text-end w-25">اسم السائق</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">Iqama number</td>
-                        <td>{{ $driver->iqama_number }}</td>
+                        <td>{{ $driver->iqama_number   ?? ''}}</td>
                         <td class="fw-bold text-end">رقم الاقامة</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">Nationality</td>
-                        <td>{{ $driver->nationality }}</td>
+                        <td>{{ $driver->nationality   ?? ''}}</td>
                         <td class="fw-bold text-end">الجنسية</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">Mobile numder</td>
-                        <td>{{ $driver->mobile_number }}</td>
+                        <td>{{ $driver->mobile_number   ?? ''}}</td>
                         <td class="fw-bold text-end">رقم الجوال</td>
                     </tr>
                 </tbody>
@@ -398,22 +398,22 @@
                 <tbody>
                     <tr>
                         <td class="fw-bold text-start w-25">Payload type</td>
-                        <td class="w-50">{{ $shipment->payload_type }}</td>
+                        <td class="w-50">{{ $shipment->payload_type   ?? ''}}</td>
                         <td class="fw-bold text-end w-25">نوع الحمولة</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">Container no</td>
-                        <td>{{ $shipment->containers_no }}</td>
+                        <td>{{ $shipment->containers_no   ?? ''}}</td>
                         <td class="fw-bold text-end">رقم الحاوية</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">Weight</td>
-                        <td>{{ $shipment->weight }}</td>
+                        <td>{{ $shipment->weight   ?? ''}}</td>
                         <td class="fw-bold text-end">الوزن</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">Height</td>
-                        <td>{{ $shipment->height }}</td>
+                        <td>{{ $shipment->height   ?? ''}}</td>
                         <td class="fw-bold text-end">الارتفاع</td>
                     </tr>
                 </tbody>
@@ -428,17 +428,17 @@
                 <tbody>
                     <tr>
                         <td class="fw-bold text-start w-25">Vehicle number</td>
-                        <td class="w-50">{{ $vehicle->vehicle_number }}</td>
+                        <td class="w-50">{{ $vehicle->vehicle_number   ?? ''}}</td>
                         <td class="fw-bold text-end w-25">نوع المركبة</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">Plate Number</td>
-                        <td>{{ $vehicle->plate_number }}</td>
+                        <td>{{ $vehicle->plate_number   ?? ''}}</td>
                         <td class="fw-bold text-end">رقم اللوحة</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">Trailer type</td>
-                        <td>{{ $vehicle->trailer_type }}</td>
+                        <td>{{ $vehicle->trailer_type   ?? ''}}</td>
                         <td class="fw-bold text-end">نوع المقطورة</td>
                     </tr>
                 </tbody>
@@ -451,17 +451,17 @@
                 <tbody>
                     <tr>
                         <td class="fw-bold text-start w-25">Company name</td>
-                        <td class="w-50">{{ $vehicleOwner->company_name }}</td>
+                        <td class="w-50">{{ $vehicleOwner->company_name   ?? ''}}</td>
                         <td class="fw-bold text-end w-25">اسم الشركة</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">Supervisor</td>
-                        <td>{{ $vehicleOwner->supervisor_name }}</td>
+                        <td>{{ $vehicleOwner->supervisor_name   ?? ''}}</td>
                         <td class="fw-bold text-end">اسم المشرف</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">Mobile number</td>
-                        <td>{{ $vehicleOwner->mobile_number }}</td>
+                        <td>{{ $vehicleOwner->mobile_number   ?? ''}}</td>
                         <td class="fw-bold text-end">رقم الجوال</td>
                     </tr>
                 </tbody>
