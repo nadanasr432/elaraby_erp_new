@@ -172,7 +172,7 @@
         }
         .main-news {
             padding: 3px !important;
-            background: #222751 !important;
+            background: #222751 ;
             color: white !important;
         }
         body.dark-mode .main-news {
@@ -225,7 +225,7 @@
     @include('client.layouts.common.ul_sidebar')
     <div class="app-content content">
         <div class="main-news d-sm-block d-none no-print">
-            <p class="no-print">
+            <p class="no-print" style="font-size: 18px !important">
                 {{ __('main.wel-msg') }}
             </p>
         </div>

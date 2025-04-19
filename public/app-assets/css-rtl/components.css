@@ -271,7 +271,7 @@ footer.footer-light {
     background: #FFFFFF;
 }
 body.light-mode footer {
-    background: #222751 !important;
+    background: #222751 ;
     color: #FFFFFF;
 }
 body.dark-mode footer {

@@ -2709,7 +2709,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
       -ms-user-select : none;
           user-select : none;
   border : 1px solid transparent;
-  padding : 0.45rem 1rem;
+  padding : 1rem 1.2rem;
   font-size : 1rem;
   line-height : 1.25;
   border-radius : 0.25rem;
@@ -4595,7 +4595,8 @@ body.dark-mode .border-secondary {
   color: #ffffff;
 }
 body.light-mode .addsalebill{
-  background-color: #222751 !important;
+  background-color: #222751 ;
+  color: #fff;
 }
 body.dark-mode .addsalebill{
   background-color: #2a303d !important;
@@ -4655,10 +4656,13 @@ body.dark-mode .card-header {
   border-bottom : 1px solid rgba(0, 0, 0, 0.06);
 }
 .card-header:first-child {
+  background-color: #222751;
+
   border-radius : -webkit-calc(0.35rem - 1px) -webkit-calc(0.35rem - 1px) 0 0;
   border-radius :    -moz-calc(0.35rem - 1px) -moz-calc(0.35rem - 1px) 0 0;
   border-radius :         calc(0.35rem - 1px) calc(0.35rem - 1px) 0 0;
 }
+
 .card-header + .list-group .list-group-item:first-child {
   border-top : 0;
 }

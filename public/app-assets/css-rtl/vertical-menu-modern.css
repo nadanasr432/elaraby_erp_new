@@ -58,7 +58,7 @@ body.vertical-layout.vertical-menu-modern .main-menu li a span {
     -o-animation: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) 0s normal forwards 1 fadein;
     animation: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) 0s normal forwards 1 fadein;
     margin-right: 7px;
-    font-size: 11px !important;
+    font-size: 16px !important;
 }
 
 body.vertical-layout.vertical-menu-modern.menu-expanded .navbar .navbar-header {
