@@ -177,7 +177,7 @@
     }
 
     .bootstrap-select {
-        width: 100% !important;
+        width: 80% !important;
     }
 
     /*
@@ -199,7 +199,7 @@
     }
 
     .note-toolbar button.note-btn {
-        background-color: #222751 !important;
+        background-color: #666EE8 !important;
 
     }
     body.dark-mode .navbar-container {

@@ -74,13 +74,13 @@
             <div class="card">
                 <!------HEADER----->
                 <div class="card-header border-bottom border-secondary p-1">
-                    <div class="d-flex flex-wrap justify-content-between align-items-center">
-                        <h3 class=" font-weight-bold custom-title">
+                    <div class="d-flex justify-content-between align-items-baseline">
+                        <h3 class="pull-right font-weight-bold">
                             {{ __('sidebar.sales-invoices') }}
-                            <span class="badge " style="background-color: #36c7d6">{{ count($sale_bills) }}</span>
+                            <span class="badge badge-success">{{ count($sale_bills) }}</span>
                         </h3>
-                        <div class="row mx-1 justify-content-end">
-                            <a class="btn btnn btn-primary pull-left p-1 mainBtnNewDes d-flex align-items-center mb-1"
+                        <div class="row mr-1 justify-content-end">
+                            <a class="btn btn-primary pull-left p-1 mainBtnNewDes d-flex align-items-center"
                                 href="{{ route('client.sale_bills.create1') }}">
                                 <span
                                     style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
@@ -93,8 +93,9 @@
                                 </span>
                                 {{ __('sidebar.Add a new sales invoice') }}
                             </a>
-                            <a onclick="history.back()" class="btn btnn pull-left text-white d-flex align-items-center ml-1"
-                                style="height: 37px; font-size: 11px !important; background-color: #36c7d6;">
+                            <a onclick="history.back()"
+                                class="btn btn-danger pull-left text-white d-flex align-items-center ml-1"
+                                style="height: 37px; font-size: 11px !important;">
                                 <span
                                     style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
                                     <svg style="width: 10px;height: 15px;fill: #f5f1f1;margin-top: 1px;"
@@ -155,8 +156,7 @@
                                                 <td>{{ $sale_bill->store?->store_name ?? ' ' }}</td>
                                                 <td>
                                                     @php $total += $sale_bill->final_total; @endphp
-                                                    {{ $sale_bill->final_total }} <img
-                                                        src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                                    {{ $sale_bill->final_total }} {{ $company->extra_settings->currency }}
                                                 </td>
                                                 <td>{{ $sale_bill->elements->count() }}</td>
                                                 <td>
@@ -179,7 +179,8 @@
                                                             </svg>
                                                         </button>
                                                         <div class="dropdown-menu p-0" aria-labelledby="dropdownMenuButton"
-                                                            x-placement="bottom-start" style="right: -80px">
+                                                            x-placement="bottom-start"
+                                                            style="position: absolute; transform: translate3d(0px, 29px, 0px); top: 0px; left: 0px; will-change: transform;">
                                                             <!--SHOW--->
                                                             <a href="{{ route('client.sale_bills.print', $sale_bill->token) }}"
                                                                 class="dropdown-item" target="_blank"
@@ -220,7 +221,7 @@
 
                                                             <script>
                                                                 function confirmDelete() {
-                                                                    return confirm("@lang('main.delete_confirm')");
+                                                                       return confirm("@lang('main.delete_confirm')");
                                                                 }
                                                             </script>
 
@@ -238,10 +239,9 @@
                     </div>
                     <hr>
                     <div class="mt-1 mb-1">
-                        <span
-                            class="badge  p-1 font-weight-bold"style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
+                        <span class="badge badge-success p-1 font-weight-bold">
                             {{ __('sidebar.Total billing prices') }}
-                            ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                            ( {{ floatval($total) }} ) {{ $company->extra_settings->currency }}
                         </span>
                     </div>
 

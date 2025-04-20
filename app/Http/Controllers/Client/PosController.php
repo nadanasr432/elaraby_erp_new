@@ -262,22 +262,21 @@ class PosController extends Controller
             // Extract store IDs from the collection
             $storeIds = $stores->pluck('id')->toArray();
 
-         $products = Product::where('company_id', $company_id)
-        ->where(function ($query) use ($storeIds) {
-            $query->whereIn('store_id', $storeIds)
-                  ->where(function ($q) {
-                      $q->where('first_balance', '>', 0)
-                        ->orWhereNull('first_balance');
-                  });
-        })
-        ->orWhere(function ($query) use ($company_id) {
-            $query->where('company_id', $company_id)
-                  ->whereHas('category', function ($q) {
-                      $q->where('category_type', 'خدمية');
-                  });
-        })
-        ->get();
-
+            $products = Product::where('company_id', $company_id)
+                ->where(function ($query) use ($storeIds) {
+                    $query->whereIn('store_id', $storeIds)
+                        ->where(function ($q) {
+                            $q->where('first_balance', '>', 0)
+                                ->orWhereNull('first_balance');
+                        });
+                })
+                ->orWhere(function ($query) use ($company_id) {
+                    $query->where('company_id', $company_id)
+                        ->whereHas('category', function ($q) {
+                            $q->where('category_type', 'خدمية');
+                        });
+                })
+                ->get();
         } else {
             $safes = $company->safes;
             $products = Product::where('company_id', $company_id)
@@ -658,7 +657,7 @@ class PosController extends Controller
             $img = $product->product_pic ? $product->product_pic : 'images/noprod.png';
 
             echo '
-            <div class="card cproduct m-nos product" product_id="' . $product->id . '" product_name="' . $product->product_name . '" product_price="' . $product->sector_price . '"
+            <div class="card cproduct m-nos product" product_id="' . $product->id . '" wholesale_price="' . $product->wholesale_price . '" product_name="' . $product->product_name . '" product_price="' . $product->sector_price . '"
                  style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important; border: 1px solid rgba(229, 229, 229, 0.4) !important; min-height: 172px !important; max-height: 172px !important; width: 12rem !important;margin-bottom: 5px !important;">
                 <div class="imgBox" style="height: 75px !important; width: 100% !important;">
                     <img style="height: 100% !important; width: 100% !important; object-fit: contain !important;"
@@ -730,7 +729,7 @@ class PosController extends Controller
             foreach ($products as $product) {
                 $img = $product->product_pic ? $product->product_pic : 'images/noprod.png';
                 echo '
-            <div class="card cproduct m-nos product" product_id="' . $product->id . '" product_name="' . $product->product_name . '" product_price="' . $product->wholesale_price . '"
+            <div class="card cproduct m-nos product" product_id="' . $product->id . '" product_name="' . $product->product_name . '" wholesale_price="' . $product->wholesale_price . '" product_price="' . $product->sector_price . '"
                  style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important; border: 1px solid rgba(229, 229, 229, 0.4) !important; min-height: 172px !important; max-height: 172px !important; width: 12rem !important;margin-bottom: 5px !important;">
                 <div class="imgBox" style="height: 75px !important; width: 100% !important;">
                     <img style="height: 100% !important; width: 100% !important; object-fit: contain !important;"
@@ -780,7 +779,7 @@ class PosController extends Controller
                 $img = $product->product_pic ? $product->product_pic : 'images/noprod.png';
 
                 echo '
-            <div class="card cproduct m-nos product" product_id="' . $product->id . '" product_name="' . $product->product_name . '" product_price="' . $product->sector_price . '"
+            <div class="card cproduct m-nos product" product_id="' . $product->id . '" product_name="' . $product->product_name . '" wholesale_price="' . $product->wholesale_price . '" product_price="' . $product->sector_price . '"
                  style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important; border: 1px solid rgba(229, 229, 229, 0.4) !important; min-height: 172px !important; max-height: 172px !important; width: 12rem !important;margin-bottom: 5px !important;">
                 <div class="imgBox" style="height: 75px !important; width: 100% !important;">
                     <img style="height: 100% !important; width: 100% !important; object-fit: contain !important;"
@@ -1670,17 +1669,29 @@ class PosController extends Controller
     }
 
     //pos_sales for main table-main page...
-    public function pos_sales_report()
+    public function pos_sales_report(Request $request)
     {
         $company_id = Auth::user()->company_id;
-        $company = Company::FindOrFail($company_id);
         $client_id = Auth::user()->id;
-        //get pos sales...
-        $pos_sales = PosOpen::where('status', 'done')
+        $company = Company::findOrFail($company_id);
+
+        $query = PosOpen::where('status', 'done')
             ->where('company_id', $company_id)
-            ->where('client_id', $client_id)
-            ->whereDate('created_at', Carbon::today())
-            ->get();
+            ->where('client_id', $client_id);
+
+        if ($request->has('filter') && $request->filter === 'today') {
+            $query->whereDate('created_at', Carbon::today());
+        } elseif ($request->has('filter') && $request->filter === 'all') {
+            // no date filter
+        } elseif ($request->has(['date_from', 'date_to'])) {
+            $query->whereBetween('created_at', [
+                Carbon::parse($request->date_from)->startOfDay(),
+                Carbon::parse($request->date_to)->endOfDay(),
+            ]);
+        }
+
+        $pos_sales = $query->get();
+
         return view('client.pos.report', compact('company_id', 'company', 'pos_sales'));
     }
 
@@ -1702,7 +1713,7 @@ class PosController extends Controller
         <table id='posReportToday' class='table table-condensed table-striped table-bordered text-center table-hover'>
             <thead>
                 <tr>
-                    <th class='text-center'>#</th>
+
                     <th class='text-center'>" . __('pos.invoice-number') . "</th>
                     <th class='text-center'>" . __('pos.client-name') . "</th>
                     <th class='text-center'>" . __('pos.invoice-date') . "</th>
@@ -1712,6 +1723,8 @@ class PosController extends Controller
                     <th class='text-center'>" . __('main.remaining-amount') . "</th>
                     <th class='text-center'>" . __('main.taxes') . "</th>
                     <th class='text-center'>" . __('main.items') . "</th>
+                    <th class='text-center'>" . __('main.actions') . "</th> <!-- New Actions Column -->
+
                 </tr>
             </thead>
             <tbody class='posReportTodayTbody'>";
@@ -1733,8 +1746,7 @@ class PosController extends Controller
 
                 echo "
             <tr>
-                <td>" . ++$i . "</td>
-                <td>" . $pos->id . "</td>
+                <td>" . $pos->company_counter . "</td>
                 <td>";
                 if (isset($pos->outerClient->client_name))
                     echo $pos->outerClient->client_name;
@@ -1866,6 +1878,14 @@ class PosController extends Controller
 
                 echo "
             </td>
+             <!-- Actions -->
+                    <td>
+                        <a href='" . route('pos.open.print', $pos->id) . "'
+                           class='btn btn-sm btn-primary'
+                           title='" . __('pos.print-invoice') . "'>
+                            <i class='fa fa-print'></i> " . __('pos.print') . "
+                        </a>
+                    </td>
         </tr>";
             }
         } else {
@@ -1923,7 +1943,6 @@ class PosController extends Controller
         <table id='posReportToday' class='table table-condensed table-striped table-bordered text-center table-hover'>
             <thead>
                 <tr>
-                    <th class='text-center'>#</th>
                     <th class='text-center'>" . __('pos.invoice-number') . "</th>
                     <th class='text-center'>" . __('pos.client-name') . "</th>
                     <th class='text-center'>" . __('pos.invoice-date') . "</th>
@@ -1933,41 +1952,41 @@ class PosController extends Controller
                     <th class='text-center'>" . __('main.remaining-amount') . "</th>
                     <th class='text-center'>" . __('main.taxes') . "</th>
                     <th class='text-center'>" . __('main.items') . "</th>
+                    <th class='text-center'>" . __('main.actions') . "</th> <!-- New Actions Column -->
                 </tr>
             </thead>
             <tbody class='posReportTodayTbody'>";
 
-        #initialization.
+        # Initialization
         $i = 0;
         $sum1 = 0; # total-invoices-including-tax
         $sum2 = 0; # main.paid-amount
         $sum3 = 0; # total-tax-for-all-invoices
         $totalCash = 0; # total-cash
-        $totalBank = 0; # total-tax-for-all-invoices
+        $totalBank = 0; # total-bank
 
         if (!empty($pos_sales) && count($pos_sales)) {
             foreach ($pos_sales as $key => $pos) {
-                //totalamount
+                // Total amount
                 $totalAmount = 0;
-                //totalPaid
+                // Total paid
                 $totalPaid = 0;
 
                 echo "
-            <tr>
-                <td>" . ++$i . "</td>
-                <td>" . $pos->id . "</td>
-                <td>";
-                if (isset($pos->outerClient->client_name))
-                    echo $pos->outerClient->client_name;
-                else
+                <tr>
+                    <td>" . $pos->company_counter . "</td>
+                    <td>";
+                if (isset($pos->outerClient->client_name)) {
+                    echo htmlspecialchars($pos->outerClient->client_name, ENT_QUOTES, 'UTF-8');
+                } else {
                     echo 'زبون';
+                }
                 echo "
-                </td>
-
-                <!---invoice date--->
-                <td>" . explode(' ', $pos->created_at)[0] . "</td>
-                <!---invoice-status--->
-                <td>";
+                    </td>
+                    <!-- Invoice date -->
+                    <td>" . explode(' ', $pos->created_at)[0] . "</td>
+                    <!-- Invoice status -->
+                    <td>";
                 $bill_id = 'pos_' . $pos->id;
                 $check = Cash::where('bill_id', $bill_id)->first();
                 if (empty($check)) {
@@ -1983,31 +2002,30 @@ class PosController extends Controller
                     echo 'مدفوعة كاش';
                 }
                 echo "
-                </td>
-
-                <!----amount---->
-                <td>";
+                    </td>
+                    <!-- Amount -->
+                    <td>";
                 if (isset($pos)) {
-                    $pos_elements = $pos->elements; #get elements
-                    $pos_discount = $pos->discount; #get discount
-                    $pos_tax = $pos->tax; #get tax
+                    $pos_elements = $pos->elements; # Get elements
+                    $pos_discount = $pos->discount; # Get discount
+                    $pos_tax = $pos->tax; # Get tax
                     $percent = 0;
 
-                    #get total price of products
+                    # Get total price of products
                     $sum = 0;
                     foreach ($pos_elements as $pos_element) {
                         $sum = $sum + $pos_element->quantity_price;
                         $totalAmount += $pos_element->quantity_price;
                     }
 
-                    //calc Tax
+                    // Calc Tax
                     if (isset($pos) && isset($pos_tax) && empty($pos_discount)) {
-                        # if there is tax and no discount.
+                        # If there is tax and no discount
                         $tax_value = $pos_tax->tax_value;
                         $percent = ($tax_value / 100) * $sum;
                         $sum = $sum + $percent;
                     } elseif (isset($pos) && isset($pos_discount) && empty($pos_tax)) {
-                        # if there is discount and no tax.
+                        # If there is discount and no tax
                         $discount_value = $pos_discount->discount_value;
                         $discount_type = $pos_discount->discount_type;
                         if ($discount_type == 'pound') {
@@ -2028,22 +2046,22 @@ class PosController extends Controller
                         }
                         $percent = ($tax_value / 100) * $sum;
                         $sum = $sum + $percent;
-                    } elseif (isset($pos) && empty($pos_discount) && empty($pos_tax)) { #inclusive
-                        if ($pos->value_added_tax)
+                    } elseif (isset($pos) && empty($pos_discount) && empty($pos_tax)) { # Inclusive
+                        if ($pos->value_added_tax) {
                             $percent = round($sum - ((100 / 115) * $sum), 2);
-                        else
+                        } else {
                             $percent = 0;
+                        }
                     }
                     echo round($sum, 2);
-
                     $sum1 = $sum1 + $sum;
-                } else echo 0;
-
+                } else {
+                    echo 0;
+                }
                 echo "
-            </td>
-
-            <!---paid-amount---->
-            <td>";
+                    </td>
+                    <!-- Paid amount -->
+                    <td>";
                 $bill_id = 'pos_' . $pos->id;
                 $check = Cash::where('bill_id', $bill_id)->first();
                 if (empty($check)) {
@@ -2062,41 +2080,45 @@ class PosController extends Controller
                     $sum2 = $sum2 + $check->amount;
                 }
                 echo "
-            </td>
-
-            <!---remaining-amount-->
-            <td>";
-                //$rest = $totalAmount - $totalPaid;
+                    </td>
+                    <!-- Remaining amount -->
+                    <td>";
                 echo round($sum - $totalPaid, 2);
                 echo "
-            </td>
-
-            <!--taxes--->
-            <td>";
+                    </td>
+                    <!-- Taxes -->
+                    <td>";
                 echo round($percent, 2);
                 $sum3 = $sum3 + $percent;
                 echo "
-            </td>
-
-            <td>";
+                    </td>
+                    <!-- Items -->
+                    <td>";
                 if (isset($pos)) {
                     $pos_elements = $pos->elements;
                     echo $pos_elements->count();
-                } else
+                } else {
                     echo 0;
-
+                }
                 echo "
-            </td>
-        </tr>";
+                    </td>
+                    <!-- Actions -->
+                    <td>
+                        <a href='" . route('pos.open.print', $pos->id) . "'
+                           class='btn btn-sm btn-primary'
+                           title='" . __('pos.print-invoice') . "'>
+                            <i class='fa fa-print'></i> " . __('pos.print') . "
+                        </a>
+                    </td>
+                </tr>";
             }
         } else {
-            echo "<tr class='alert alert-danger font-weight-bold'><td colspan='10' >لا يوجد فواتير لليوم!</td></tr>";
+            echo "<tr class='alert alert-danger font-weight-bold'><td colspan='10'>لا يوجد فواتير لليوم!</td></tr>";
         }
 
         echo "</tbody>
         </table>
         <div class='row mb-3 mt-3 text-center'>
-
             <div class='badge badge-dark mb-1 p-1'
                  style='margin-right: 5px;width: fit-content;font-size: 14px !important;font-weight: bold;'>
                 مبيعات الكاش :
@@ -2119,7 +2141,7 @@ class PosController extends Controller
             </div>
             <div class='badge badge-success mb-1 p-1'
                  style='margin-right: 5px;width: fit-content;font-size: 14px !important;font-weight: bold;'>
-                 " . __('pos.total-invoices-including-tax') . " :
+                " . __('pos.total-invoices-including-tax') . " :
                 " . round($sum1, 2) . "
             </div>
         </div>";
@@ -2608,5 +2630,176 @@ class PosController extends Controller
                 ->paginate(80);
         }
         return json_encode([$subCategories, $products]);
+    }
+    // 1. Delete POS of client
+    public function deleteClientPos(Request $request)
+    {
+        $company_id = Auth::user()->company_id;
+        $client_id = Auth::user()->id;
+
+        $pos_opens = PosOpen::where('client_id', $client_id)
+            ->where('status', 'done')
+            ->get();
+
+        if (!$pos_opens->isEmpty()) {
+            try {
+                DB::transaction(function () use ($pos_opens) {
+                    foreach ($pos_opens as $pos_open) {
+                        $cash_id = "pos_" . $pos_open->id;
+
+                        // Handle cash transactions
+                        $cash = Cash::where('bill_id', $cash_id)->get();
+                        if (!$cash->isEmpty()) {
+                            foreach ($cash as $item) {
+                                $amount = $item->amount;
+                                $safe = Safe::findOrFail($item->safe_id);
+                                $new_safe_balance = $safe->balance - $amount;
+                                $safe->update(['balance' => $new_safe_balance]);
+                                $item->delete();
+                            }
+                        }
+
+                        // Handle bank cash
+                        $bank_cash = BankCash::where('bill_id', $cash_id)->get();
+                        if (!$bank_cash->isEmpty()) {
+                            foreach ($bank_cash as $item) {
+                                $amount = $item->amount;
+                                $bank = Bank::findOrFail($item->bank_id);
+                                $new_bank_balance = $bank->bank_balance - $amount;
+                                $bank->update(['bank_balance' => $new_bank_balance]);
+                                $item->delete();
+                            }
+                        }
+
+                        // Handle coupon cash
+                        $coupon_cash = CouponCash::where('bill_id', $cash_id)->get();
+                        if (!$coupon_cash->isEmpty()) {
+                            foreach ($coupon_cash as $item) {
+                                $item->coupon->update(['status' => 'new']);
+                                $item->delete();
+                            }
+                        }
+
+                        // Restock items
+                        $sale_items = $pos_open->elements;
+                        foreach ($sale_items as $sale_item) {
+                            $product = $sale_item->product;
+                            $product->update([
+                                'first_balance' => $product->first_balance + $sale_item->quantity
+                            ]);
+                            $sale_item->delete();
+                        }
+
+                        $pos_open->delete();
+                    }
+                });
+
+                return redirect()->back()->with('success', 'تم إلغاء جميع فواتير العميل بنجاح');
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'حدث خطأ أثناء إلغاء الفواتير: ' . $e->getMessage());
+            }
+        }
+
+        return redirect()->back()->with('error', 'لا يوجد فواتير لحذفها');
+    }
+
+    // 2. Delete specific POS
+    public function deleteSpecificPos(Request $request, $pos_id)
+    {
+        $company_id = Auth::user()->company_id;
+        $pos_open = PosOpen::where('id', $pos_id)
+            ->where('company_id', $company_id)
+            ->first();
+
+        if (!empty($pos_open)) {
+            try {
+                DB::transaction(function () use ($pos_open) {
+                    $cash_id = "pos_" . $pos_open->id;
+
+                    // Handle cash transactions
+                    $cash = Cash::where('bill_id', $cash_id)->get();
+                    if (!$cash->isEmpty()) {
+                        foreach ($cash as $item) {
+                            $amount = $item->amount;
+                            $safe = Safe::findOrFail($item->safe_id);
+                            $new_safe_balance = $safe->balance - $amount;
+                            $safe->update(['balance' => $new_safe_balance]);
+                            $item->delete();
+                        }
+                    }
+
+                    // Handle bank cash
+                    $bank_cash = BankCash::where('bill_id', $cash_id)->get();
+                    if (!$bank_cash->isEmpty()) {
+                        foreach ($bank_cash as $item) {
+                            $amount = $item->amount;
+                            $bank = Bank::findOrFail($item->bank_id);
+                            $new_bank_balance = $bank->bank_balance - $amount;
+                            $bank->update(['bank_balance' => $new_bank_balance]);
+                            $item->delete();
+                        }
+                    }
+
+                    // Handle coupon cash
+                    $coupon_cash = CouponCash::where('bill_id', $cash_id)->get();
+                    if (!$coupon_cash->isEmpty()) {
+                        foreach ($coupon_cash as $item) {
+                            $item->coupon->update(['status' => 'new']);
+                            $item->delete();
+                        }
+                    }
+
+                    // Restock items
+                    $sale_items = $pos_open->elements;
+                    foreach ($sale_items as $sale_item) {
+                        $product = $sale_item->product;
+                        $product->update([
+                            'first_balance' => $product->first_balance + $sale_item->quantity
+                        ]);
+                        $sale_item->delete();
+                    }
+
+                    $pos_open->delete();
+                });
+
+                return redirect()->back()->with('success', 'تم إلغاء الفاتورة المحددة بنجاح');
+            } catch (\Exception $e) {
+                logger($e);
+                return redirect()->back()->with('error', 'حدث خطأ أثناء إلغاء الفاتورة: ' . $e->getMessage());
+            }
+        }
+
+        return redirect()->back()->with('error', 'الفاتورة المحددة غير موجودة');
+    }
+
+    // 3. Rearrange company counter
+    public function rearrangeCompanyCounter(Request $request)
+    {
+        $company_id = Auth::user()->company_id;
+        $pos_opens = PosOpen::where('company_id', $company_id)
+            ->where('status', 'done')
+            ->orderBy('id')
+            ->get();
+
+        if ($pos_opens->isEmpty()) {
+            return redirect()->back()->with('error', 'لا يوجد فواتير مفتوحة لإعادة الترتيب');
+        }
+
+        try {
+            DB::transaction(function () use ($pos_opens) {
+                // Reassign company_counter starting from 1
+                $counter = 1;
+                foreach ($pos_opens as $pos_open) {
+                    $pos_open->update([
+                        'company_counter' => $counter
+                    ]);
+                    $counter++;
+                }
+            });
+
+            return redirect()->back()->with('success', 'تم إعادة ترتيب عداد الفواتير بنجاح');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'حدث خطأ أثناء إعادة ترتيب العداد: ' . $e->getMessage());
+        }
     }
 }

@@ -26,11 +26,11 @@
             <div class="card">
                 <!------HEADER----->
                 <div class="card-header border-bottom border-secondary p-1">
-                    <div class="d-flex flex-wrap justify-content-between align-items-baseline">
-                        <h3 class="custom-title font-weight-bold">
+                    <div class="d-flex justify-content-between align-items-baseline">
+                        <h3 class="pull-right font-weight-bold">
                             {{__('sales_bills.termsAndConditionsSaleBills')}}
                         </h3>
-                        <a class="btn py-1 px-4 text-white"style="background-color: #36c7d6 !important;" href="http://arabygithub.test/ar/client/journal/get">
+                        <a class="btn btn-danger pull-left p-1" href="http://arabygithub.test/ar/client/journal/get">
                             {{__('sales_bills.back')}}
                         </a>
                     </div>
@@ -45,8 +45,8 @@
                         </div>
                         <div class="col-12 text-center pt-2 pr-0 pl-0">
                             <button
-                                class="btn w-100 font-weight-bold updateConditionSaleBills text-white"
-                                style="width: 91px !important;float: right;margin-right: 12px; background-color: #222751 ;box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
+                                class="btn btn-success w-100 font-weight-bold updateConditionSaleBills"
+                                style="width: 91px !important;float: right;margin-right: 12px;">
                                 {{__('sales_bills.update')}}
                             </button>
                         </div>
@@ -65,7 +65,7 @@
                 <!------HEADER----->
                 <div class="card-header border-bottom border-secondary p-1">
                     <div class="d-flex justify-content-between align-items-baseline">
-                        <h3 class="custom-title font-weight-bold">
+                        <h3 class="pull-right font-weight-bold">
                             {{__('sales_bills.termsAndConditionsQuotation')}}
                         </h3>
                     </div>
@@ -80,8 +80,8 @@
                         </div>
                         <div class="col-12 text-center pt-2 pr-0 pl-0">
                             <button
-                                class="btn w-100 font-weight-bold updateConditionQuotation text-white"
-                                style="width: 91px !important;float: right;margin-right: 12px;background-color: #222751;box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
+                                class="btn btn-success w-100 font-weight-bold updateConditionQuotation"
+                                style="width: 91px !important;float: right;margin-right: 12px;">
                                 {{__('sales_bills.update')}}
                             </button>
                         </div>

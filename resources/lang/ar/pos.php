@@ -27,7 +27,7 @@ return [
     "invoice-date" => "تاريخ الفاتورة",
     "invoice-status" => "حالة الفاتورة",
     "chooseTableNum" => "اختر رقم الطاولة",
-    "ed" => "",
+    "print" => "طباعة",
     "ed" => "",
     "ed" => "",
     "ed" => "",
@@ -44,9 +44,7 @@ return [
     "ed" => "",
     "ed" => "",
 
-    'print-button'=>'طباعة ازرار التقارير',
-    "Start Date"=>"تاريخ البداية",
-    "End Date"=>"تاريخ الانتهاء"
+    'print-button'=>'طباعة ازرار التقارير'
 
 
 ];

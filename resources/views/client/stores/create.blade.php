@@ -1,15 +1,6 @@
 @extends('client.layouts.app-main')
 <style>
-.custom-title::before {
-    content: "";  
-    display: inline-block;
-    width: 32px;
-    height: 2px;
-    background-color: #36c7d6;
-    align-self: flex-end;
-    bottom: 4px;
 
-}
 </style>
 @section('content')
     @if (count($errors) > 0)
@@ -30,13 +21,12 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <div class="col-12  d-flex flex-wrap align-items-center justify-content-between">
-                        <h5 style="white-space: nowrap" class="alert alert-sm font-weight-bold m-0 d-flex custom-title align-items-end">
+                    <div class="col-12">
+                        <a class="btn btn-primary btn-sm pull-left" href="{{ route('client.stores.index') }}">
+                            {{ __('main.back') }} </a>
+                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success">
                             {{ __('sidebar.add-new-storage') }}
                         </h5>
-                        <a class="btn btnn text-white px-3 py-1"style="background-color: #36c7d6" href="{{ route('client.stores.index') }}">
-                            {{ __('main.back') }} </a>
-                        
                     </div>
                     <div class="clearfix"></div>
                     <br>
@@ -48,30 +38,29 @@
                         <h5 class="col-lg-12 d-block mb-2">{{ __('main.main-information') }}</h5>
                         <hr>
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label> {{ __('stores.store-name') }} <span class="text-danger">*</span></label>
                                 <input dir="rtl" required class="form-control" name="store_name" type="text">
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label> {{ __('stores.inside-a-branch') }} <span class="text-danger">*</span></label>
-                               <div class="d-flex w-100">
-                                    <select required name="branch_id" class="form-control">
-                                    <option value="">Choose a branch</option>
+                                <select required name="branch_id" class="form-control"
+                                    style="width: 80%;display: inline;">
+                                    <option value="">اختر فرع</option>
                                     @foreach ($branches as $branch)
                                         <option value="{{ $branch->id }}">{{ $branch->branch_name }}</option>
                                     @endforeach
-                                    </select>
-                                    <a target="_blank" href="{{ route('client.branches.create') }}" role="button"
-                                        class=" btn-sm btn-warning open_popup d-flex align-items-center px-1">
-                                        <i class="fa fa-plus"></i>
-                                    </a>
-                               </div>
+                                </select>
+                                <a target="_blank" href="{{ route('client.branches.create') }}" role="button"
+                                    style="width: 15%;display: inline;" class="btn btn-sm btn-warning open_popup">
+                                    <i class="fa fa-plus"></i>
+                                </a>
                             </div>
 
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 text-center d-flex justify-content-start">
-                            <button style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);" class="btn btnn btn-info pd-x-20 px-5 py-1" type="submit">{{ __('main.add') }}</button>
+                        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                            <button class="btn btn-info pd-x-20" type="submit">{{ __('main.add') }}</button>
                         </div>
                     </form>
                 </div>

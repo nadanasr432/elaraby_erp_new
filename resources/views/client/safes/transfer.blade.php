@@ -17,13 +17,12 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
-                        <h5 class=" alert custom-title">
+                    <div class="col-12">
+                        <a class="btn btn-primary btn-sm pull-left" href="{{ route('client.safes.index') }}">
+                            {{ __('main.back') }}</a>
+                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success">
                             {{ __('sidebar.transfer-between-stores') }}
                         </h5>
-                        <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.safes.index') }}">
-                            {{ __('main.back') }}</a>
-                       
                     </div>
                     <div class="clearfix"></div>
                     <br>
@@ -38,10 +37,10 @@
                         <div class="row mb-3">
                             <div class="col-md-3">
                                 <label class="d-block"> {{ __('stores.from-store') }} <span
-                                        >*</span></label>
-                                <select required class="form-control selectpicker show-tick py-1"
+                                        class="text-danger">*</span></label>
+                                <select required class="form-control selectpicker show-tick"
                                     data-title="{{ __('stores.from-store') }}" data-live-search="true"
-                                    data-style="btn-third" name="from_safe" id="">
+                                    data-style="btn-danger" name="from_safe" id="">
                                     @foreach ($safes as $safe)
                                         <option value="{{ $safe->id }}">{{ $safe->safe_name }}</option>
                                     @endforeach
@@ -49,10 +48,10 @@
                             </div>
                             <div class="col-md-3">
                                 <label class="d-block"> {{ __('stores.to-store') }} <span
-                                        >*</span></label>
-                                <select required class="form-control selectpicker show-tick py-1"
+                                        class="text-danger">*</span></label>
+                                <select required class="form-control selectpicker show-tick"
                                     data-title="{{ __('stores.to-store') }}" data-live-search="true"
-                                    data-style="btn-third" name="to_safe" id="">
+                                    data-style="btn-info" name="to_safe" id="">
                                     @foreach ($safes as $safe)
                                         <option value="{{ $safe->id }}">{{ $safe->safe_name }}</option>
                                     @endforeach
@@ -65,15 +64,14 @@
                                     <div class="text-danger mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
-
                             <div class="col-md-3">
                                 <label class="d-block"> {{ __('safes.notes') }} <span
                                         class="text-danger">*</span></label>
                                 <input type="text" dir="rtl" class="form-control" name="reason" />
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 text-end">
-                            <button class="btn btnn btn-warning py-1 px-3" type="submit">
+                        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                            <button class="btn btn-info pd-x-20" type="submit">
                                 {{ __('main.transfer') }}
                             </button>
                         </div>

@@ -1,7 +1,7 @@
 @extends('client.layouts.app-main')
 <style>
     .bootstrap-select {
-        width: 100% !important;
+        width: 80% !important;
     }
 
 </style>
@@ -32,13 +32,12 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
-                        <h5 class="custom-title alert ">
+                    <div class="col-12">
+                        <a class="btn btn-primary btn-sm pull-left" href="{{ route('client.banks.index') }}">
+                            {{ __('main.back') }}</a>
+                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success">
                             {{ __('sidebar.transfer-between-banks') }}
                         </h5>
-                        <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.banks.index') }}">
-                            {{ __('main.back') }}</a>
-                       
                     </div>
                     <div class="clearfix"></div>
                     <br>
@@ -51,10 +50,9 @@
                         <h5 class="col-lg-12 d-block mb-2">{{ __('main.main-information') }}</h5>
                         <hr>
                         <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label> {{ __('banks.withdraw-bank') }} <span >*</span></label>
-                                <div class="d-flex">
-                                    <select required class="form-control selectpicker show-tick py-1" data-style="btn-third"
+                            <div class="col-md-3">
+                                <label> {{ __('banks.withdraw-bank') }} <span class="text-danger">*</span></label>
+                                <select required class="form-control selectpicker show-tick" data-style="btn-danger"
                                     data-live-search="true" title="{{ __('banks.withdraw-bank') }}"
                                     name="withdrawal_bank">
                                     @foreach ($banks as $bank)
@@ -62,37 +60,34 @@
                                     @endforeach
                                 </select>
                                 <a target="_blank" href="{{ route('client.banks.create') }}" role="button"
-                                     class="btn  btn-warning open_popup align-content-center">
+                                    style="width: 15%;display: inline;" class="btn btn-sm btn-warning open_popup">
                                     <i class="fa fa-plus"></i>
                                 </a>
-                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <label> {{ __('banks.deposit-bank') }} <span >*</span></label>
-                                <div class="d-flex">
-                                    <select required class="form-control selectpicker show-tick py-1" data-style="btn-third"
+                            <div class="col-md-3">
+                                <label> {{ __('banks.deposit-bank') }} <span class="text-danger">*</span></label>
+                                <select required class="form-control selectpicker show-tick" data-style="btn-danger"
                                     data-live-search="true" title="{{ __('banks.deposit-bank') }}" name="deposit_bank">
                                     @foreach ($banks as $bank)
                                         <option value="{{ $bank->id }}">{{ $bank->bank_name }}</option>
                                     @endforeach
                                 </select>
                                 <a target="_blank" href="{{ route('client.banks.create') }}" role="button"
-                                     class="btn  btn-warning open_popup align-content-center">
+                                    style="width: 15%;display: inline;" class="btn btn-sm btn-warning open_popup">
                                     <i class="fa fa-plus"></i>
                                 </a>
-                                </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <label> {{ __('main.amount') }} <span class="text-danger">*</span></label>
                                 <input dir="ltr" required class="form-control" name="amount" type="text">
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <label> {{ __('banks.process-reason') }} <span class="text-danger">*</span></label>
                                 <input dir="rtl" required class="form-control" name="reason" type="text">
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 text-end">
-                            <button class="btn btnn btn-warning px-3 py-1" type="submit">{{ __('banks.record-process') }}</button>
+                        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                            <button class="btn btn-info pd-x-20" type="submit">{{ __('banks.record-process') }}</button>
                         </div>
                     </form>
                     <div class="clearfix"></div>

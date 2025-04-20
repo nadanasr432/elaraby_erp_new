@@ -20,7 +20,7 @@ use App\Http\Requests\CashSuppliersRequest;
 
 class CashController extends Controller
 {
-    public function add_cash_clients()
+   public function add_cash_clients()
     {
         $company_id = Auth::user()->company_id;
         $company = Company::FindOrFail($company_id);
@@ -80,7 +80,6 @@ class CashController extends Controller
             'cash_position'
         ));
     }
-
 
     public function edit_borrow_clients($id)
     {
@@ -466,9 +465,9 @@ class CashController extends Controller
         $old_safe->update([
             'balance' => $new_safe_balance,
         ]);
-        // $old_supplier->update([
-        //     'prev_balance' => $new_supplier_balance,
-        // ]);
+        $old_supplier->update([
+            'prev_balance' => $new_supplier_balance,
+        ]);
         // Assign the new values of the operation
         $company_id = $data['company_id'];
         $data['client_id'] = Auth::user()->id;

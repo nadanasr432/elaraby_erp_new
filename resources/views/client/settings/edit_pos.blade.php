@@ -8,13 +8,16 @@
             {{ session('success') }}
         </div>
     @endif
-    
+    <div class="row">
+        <div class="col-12">
+            <p class="alert alert-danger alert-sm text-center">
+                اعدادات نقطة البيع
+            </p>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="card mg-b-20">
-                <p class="alert custom-title">
-                    اعدادات نقطة البيع
-                </p>
                 <div class="card-body">
                     <form action="{{route('pos.settings.update')}}" method="POST">
                         @csrf
@@ -39,8 +42,8 @@
                             <div class="form-group">
                                 <label for="">اختر محتوى شاشة نقطة البيع لهذا الفرع</label>
                                 <select name="pos[]" required
-                                        class="form-control selectpicker show-tick py-1"
-                                         multiple data-live-search="true"
+                                        class="form-control selectpicker show-tick"
+                                        data-style="btn-danger" multiple data-live-search="true"
                                         data-title="اختر الشاشات">
                                     <option @if($pos_setting->status == "open") selected @endif value="status">اقفال اليومية</option>
                                     <option @if($pos_setting->discount == "1") selected @endif value="discount">الخصم</option>
@@ -62,9 +65,9 @@
                         </div>
 
                         <div class="clearfix"></div>
-                        <div class="col-lg-12 text-start">
-                            <button class="btn btn-md btn-warning py-1 px-3"
-                                   type="submit">
+                        <div class="col-lg-12 text-center">
+                            <button class="btn btn-md btn-success"
+                                    style="font-size: 15px; margin-top: 25px;" type="submit">
                                 <i class="fa fa-check"></i>
                                 حفظ التغييرات
                             </button>

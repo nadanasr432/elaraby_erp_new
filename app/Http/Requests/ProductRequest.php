@@ -35,7 +35,7 @@ class ProductRequest extends FormRequest
                 'nullable',
                 // Rule::unique('products', 'code_universal')
                 //     ->where('company_id', $this->company_id)
-                //     ->ignore($this->product), // Handles the update scenario
+                //     ->ignore($this->product),
             ],
             "purchasing_price" => 'nullable',
             "wholesale_price" => 'nullable',

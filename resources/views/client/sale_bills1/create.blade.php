@@ -1,29 +1,39 @@
 @extends('client.layouts.app-main1')
 <style>
-    .btn-danger .filter-option-inner-inner{
+    .btn-danger .filter-option-inner-inner {
         color: #fff !important
     }
-    .btn-danger .dropdown-toggle::after{
+
+    .btn-danger .dropdown-toggle::after {
         color: #fff !important
     }
+
     .dropdown-toggle::after {
         position: absolute !important;
 
     }
-    .productList .filter-option-inner-inner{
+
+    .productList .filter-option-inner-inner {
         color: #fff !important
     }
-    .productList{
+
+    .productList {
 
         background-color: #36c7d6 !important;
 
     }
-    .productList .dropdown-toggle::after{
+
+    .productList .dropdown-toggle::after {
         color: #fff !important
     }
-    body.dark-mode .alert, .alert-sm, .alert-info, .alert-primary {
+
+    body.dark-mode .alert,
+    .alert-sm,
+    .alert-info,
+    .alert-primary {
         color: #fff !important;
     }
+
     .table thead tr {
         background-color: #222751;
         color: #333;
@@ -31,21 +41,23 @@
         padding: 10px;
         font-weight: bold;
     }
+
     body.dark-mode .table thead tr {
         background-color: #181b23f5;
     }
-    body.dark-mode .table tbody tr td{
+
+    body.dark-mode .table tbody tr td {
         background-color: #181b23f5;
 
     }
-    .table th, .table td {
+
+    .table th,
+    .table td {
         color: #000
     }
-
-
 </style>
 @section('content')
-{{-- jsw --}}
+    {{-- jsw --}}
     @if (session('success'))
         <div class="alert alert-success alert-dismissable fade show text-center">
             <button class="close" data-dismiss="alert" aria-label="Close">×</button>
@@ -78,269 +90,246 @@
         @csrf
         @method('POST')
         <div class="bg-white p-2">
-        <h6 class="alert alert-sm text-start no-print custom-title font-weight-bold "
-            style="border:#d8daf5">
+            <h6 class="alert alert-sm text-start no-print custom-title font-weight-bold " style="border:#d8daf5">
                 {{ __('sidebar.add-new-sales-invoice') }}
-        </h6>
+                </center>
+            </h6>
 
-        <div class="row">
-            <!----DATE--->
-            <div class="col-md-6 pull-right no-print">
+            <div class="row">
+                <!----DATE--->
+                <div class="col-md-6 pull-right no-print">
+                    <div class="form-group" dir="rtl">
+                        <label>{{ __('sales_bills.invoice-date') }}</label>
+                        <span class="text-danger font-weight-bold">*</span>
+                        <input type="date" required name="date" id="date" class="form-control"
+                            value="{{ date('Y-m-d') }}" />
+                    </div>
+                </div>
+
+                <!----TIME--->
+                <div class="col-md-6 pull-right no-print">
+                    <div class="form-group" dir="rtl">
+                        <label>{{ __('sales_bills.invoice-time') }}</label>
+                        <span class="text-danger font-weight-bold">*</span>
+                        <input type="time" required name="time" id="time" class="form-control"
+                            value="{{ date('H:i:s') }}" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <!----CLIENT--->
+                <div class="col-md-6 pull-right no-print">
+                    <label>
+                        {{ __('sales_bills.client-name') }}
+                        <span class="text-danger font-weight-bold">*</span>
+                    </label>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <select name="outer_client_id" id="outer_client_id" data-style="btn-new_color"
+                            title="{{ __('sales_bills.client-name') }}" class="selectpicker w-100 me-2"
+                            data-live-search="true">
+                            @foreach ($outer_clients as $outer_client)
+                                <option value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
+                            @endforeach
+                        </select>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#addClientModal">
+                            <i class="fa fa-plus" aria-hidden="true"> </i> {{ __('main.add immediate client') }}
+                        </button>
+                    </div>
+                </div>
+                <!----Store--->
+                <div class="col-md-6 pull-right no-print">
+                    <label>
+                        {{ __('sales_bills.select-store') }}
+                        <span class="text-danger font-weight-bold">*</span>
+                    </label>
+                    <div class="d-flex justify-content-between">
+                        <select name="store_id" id="store_id" class="selectpicker me-2" data-style="btn-new_color"
+                            data-live-search="true" title="{{ __('sales_bills.select-store') }}">
+                            @foreach ($stores as $index => $store)
+                                <option value="{{ $store->id }}" {{ $index == 0 ? 'selected' : '' }}>
+                                    {{ $store->store_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <a target="_blank" href="{{ route('client.stores.create') }}" role="button"
+                            class="btn btn-primary">
+                            <i class="fa fa-plus" aria-hidden="true"></i> {{ __('sales_bills.add-store') }}
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            <!--tax-->
+            <div class="row mt-2">
+                <!----->
+                <div class="col-md-6 pull-right no-print">
+                    <label>
+                        {{ __('sales_bills.product-code') }}
+                        <span class="text-danger font-weight-bold">*</span>
+                    </label>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <select name="product_id" id="product_id" class="selectpicker w-50" data-style="btn-new_color"
+                            data-live-search="true" title="{{ __('sales_bills.choose product') }}">
+                            @foreach ($all_products as $product)
+                                <option value="{{ $product->id }}" data-name="{{ strtolower($product->product_name) }}"
+                                    data-sectorprice="{{ $product->sector_price }}"
+                                    data-wholesaleprice="{{ $product->wholesale_price }}"
+                                    data-tokens="{{ $product->code_universal }}"
+                                    data-remaining="{{ $product->total_remaining }}"
+                                    data-categorytype="{{ $product->category_type }}"
+                                    data-unitid="{{ $product->unit_id }}">
+                                    {{ $product->product_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <button type="button" class="btn btn-primary instantProduct">
+                            <i class="fa fa-plus"></i> {{ __('main.add immediate product') }}
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-md-6 pull-right no-print">
+                    <label for="value_added_tax">{{ __('sales_bills.prices-for-tax') }}
+                        <span class="text-danger font-weight-bold">*</span>
+
+                    </label>
+
+                    <div class="d-flex align-items-center justify-content-between">
+                        <select required name="value_added_tax" id="value_added_tax" class="selectpicker w-100"
+                            data-style="btn-new_color" data-live-search="true">
+                            <option value="0" selected>
+                                {{ __('sales_bills.not-including-tax') }}</option>
+                            <option value="2">
+                                {{ __('sales_bills.including-tax') }}</option>
+                            <option value="1">
+                                {{ __('sales_bills.exempt-tax') }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix no-print"></div>
+
+            <input type="number" id='grand_total_input' name="grand_total" hidden>
+            <input type="number" id='grand_tax_input' name="grand_tax" hidden>
+            <input type="number" id='grand_discount_input' name="total_discount" hidden>
+
+
+            <div>
+                <div class="table-responsive">
+                    <table class="table table-bordered mt-2" id="products_table"
+                        style="background-color: #ffffff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); border-radius: 5px;">
+                        <thead>
+                            <tr>
+                                <th>
+                                    {{ __('sales_bills.product') }}</th>
+                                <th>
+                                    {{ __('sales_bills.price_type') }}</th>
+                                <th>
+                                    {{ __('sales_bills.price') }}</th>
+                                <th>
+                                    {{ __('sales_bills.quantity') }}</th>
+                                <th>
+                                    {{ __('sales_bills.unit') }}</th>
+                                <th>
+                                    {{ __('sales_bills.discount') }}
+                                    <div class="tax_discount"
+                                        style="display: inline-block; margin-left: 10px; vertical-align: middle;">
+                                        <select id="discount_application" class="form-control text-white"
+                                            style="font-size: 12px; height: 30px;" name="products_discount_type">
+                                            <option value="before_tax">{{ __('sales_bills.discount_before_tax') }}
+                                            </option>
+                                            <option value="after_tax">{{ __('sales_bills.discount_after_tax') }}</option>
+                                        </select>
+                                    </div>
+                                </th>
+                                <th>
+                                    {{ __('sales_bills.tax') }}</th>
+                                <th>
+                                    {{ __('sales_bills.total') }}</th>
+                                <th>
+                                    {{ __('sales_bills.actions') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody style="text-align: center;">
+                            <!-- هنا يتم عرض البيانات -->
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="6">
+                                    {{ __('sales_bills.grand_tax') }}</td>
+                                <td colspan="3" id="grand_tax" class="text-right">0.00
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" style=" font-weight: bold;">
+                                    {{ __('sales_bills.grand_total') }}</td>
+                                <td colspan="3" id="grand_total" class="text-right">
+                                    0.00</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 pull-right">
+                    @if ($user->roles->flatMap->permissions->contains('name', 'الخصم'))
+                        <div class="form-group" dir="rtl">
+                            <label for="discount">{{ __('sales_bills.discount-on-the-total-bill') }}</label> <br>
+                            <select name="discount_type" id="discount_type" class="form-control"
+                                style="width: 60%;display: inline;float: right; margin-left:5px;">
+                                <option value="">اختر نوع الخصم</option>
+                                <option value="pound">خصم قبل الضريبة (مسطح)</option>
+                                <option value="percent">خصم قبل الضريبة (%)</option>
+                                <option value="poundAfterTax">ضمان اعمال (مسطح)</option>
+                                <option value="poundAfterTaxPercent">ضمان اعمال (%)</option>
+                                <option value="afterTax" class="d-none">
+                                    خصم علي اجمالي المبلغ شامل الضريبة
+                                </option>
+                            </select>
+                            <input type="number" value="0" name="discount_value" min="0"
+                                style="width: 20%;display: inline;float: right;" id="discount_value"
+                                class="form-control " step = "any" />
+                            <input type="text" name="discount_note" id="discount_note"
+                                placeholder="ملاحظات الخصم. . ." class="form-control mt-5" style="width: 80%;">
+                            {{-- <span id="dicountForBill"></span> --}}
+                        </div>
+                    @endif
+
+                </div>
+                <div class="col-md-6 pull-right">
+                    <div class="form-group" dir="rtl">
+                        <label for="extra">{{ __('main.shipping-expenses') }}</label> <br>
+
+                        <select name="extra_type" id="extra_type" class="form-control"
+                            style="width:60%;display: inline;float: right;margin-left: 5px">
+                            <option value="">اختر نوع الشحن</option>
+                            <option value="pound">{{ $extra_settings->currency }}</option>
+                            <option value="percent">%</option>
+                        </select>
+                        <input value="0" type="number" name="extra_value" min='0'
+                            style="width: 20%;display: inline;float: right;" id="extra_value" class="form-control"
+                            step = "any" />
+                    </div>
+                </div>
+            </div><!--  End Row -->
+            <!-----notes------->
+            <div class="col-sm-12 pull-right no-print">
                 <div class="form-group" dir="rtl">
-                    <label>{{ __('sales_bills.invoice-date') }}</label>
-                    <span class="text-danger font-weight-bold">*</span>
-                    <input type="date" required name="date" id="date" class="form-control"
-                        value="{{ date('Y-m-d') }}" />
-                </div>
-            </div>
-
-            <!----TIME--->
-            <div class="col-md-6 pull-right no-print">
-                <div class="form-group" dir="rtl">
-                    <label>{{ __('sales_bills.invoice-time') }}</label>
-                    <span class="text-danger font-weight-bold">*</span>
-                    <input type="time" required name="time" id="time" class="form-control"
-                        value="{{ date('H:i:s') }}" />
-                </div>
-            </div>
-        </div>
-        <div class="row">
-
-            <!----CLIENT--->
-            <div class="col-md-6 pull-right no-print">
-                <label>
-                    {{ __('sales_bills.client-name') }}
-                    <span class="text-danger font-weight-bold">*</span>
-                </label>
-                <div class="d-flex justify-content-between">
-                    <select name="outer_client_id" id="outer_client_id"
-                        title="{{ __('sales_bills.client-name') }}" class="selectpicker w-100 form-control btn-danger " data-live-search="true">
-                        @foreach ($outer_clients as $outer_client)
-                            <option value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
-                        @endforeach
-                    </select>
-                    <button target="_blank" type="button" class="btn btn-warning py-1" data-bs-toggle="modal" data-bs-target="#addClientModal">
-                        <i class="fa fa-plus" aria-hidden="true"> </i> {{ __('main.add immediate client') }}
-                    </button>
-                </div>
-            </div>
-            <!----Store--->
-            <div class="col-md-6 pull-right no-print">
-                <label>
-                    {{ __('sales_bills.select-store') }}
-                    <span class="text-danger font-weight-bold">*</span>
-                </label>
-                <div class="d-flex justify-content-between">
-                    <select name="store_id" id="store_id" class="selectpicker me-2 form-control" 
-                        data-live-search="true" title="{{ __('sales_bills.select-store') }}">
-                        <?php $i = 0; ?>
-                        @foreach ($stores as $store)
-                            @if ($stores->count() == 1)
-                                <option selected value="{{ $store->id }}">{{ $store->store_name }}</option>
-                            @else
-                                @if ($i == 0)
-                                    <option selected value="{{ $store->id }}">{{ $store->store_name }}</option>
-                                @else
-                                    <option value="{{ $store->id }}">{{ $store->store_name }}</option>
-                                @endif
-                            @endif
-                            <?php $i++; ?>
-                        @endforeach
-                    </select>
-                    <a target="_blank" href="{{ route('client.stores.create') }}" role="button" class="py-1 btn btn-warning d-flex align-items-center ">
-                        <i class="fa fa-plus" aria-hidden="true"> </i>
-                        {{ __('sales_bills.add-store') }}
+                    <label for="time">{{ __('main.notes') }}</label>
+                    <textarea name="main_notes" id="notes" class="summernotes">
+                  </textarea>
+                    <a data-toggle="modal" data-target="#myModal3" class="btn btn-link add_extra_notes d-none"
+                        style="color: blue!important;">
+                        اضف ملاحظات اخرى
                     </a>
                 </div>
             </div>
-        </div>
-        <!--tax-->
-        <div class="row mt-2">
-            <!----->
-            <div class="col-md-6 pull-right no-print">
-                <label>
-                    {{ __('sales_bills.product-code') }}
-                    <span class="text-danger font-weight-bold">*</span>
-                </label>
-                <div class="d-flex justify-content-between">
-                    <select name="product_id" id="product_id" class="selectpicker w-50 form-control productList"  
-                        data-live-search="true" title="{{ __('sales_bills.choose product') }}">
-                        <option value="new" style="color: red;">{{ __('sales_bills.Add immediate product') }}</option>
+            <div class="clearfix no-print"></div>
 
-                        @foreach ($all_products as $product)
-                            <option value="{{ $product->id }}" data-name="{{ strtolower($product->product_name) }}"
-                                data-sectorprice="{{ $product->sector_price }}"
-                                data-wholesaleprice="{{ $product->wholesale_price }}"
-                                data-tokens="{{ $product->code_universal }}"
-                                data-remaining="{{ $product->total_remaining }}"
-                                data-categorytype="{{ $product->category_type }}" data-unitid="{{ $product->unit_id }}">
-                                {{ $product->product_name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    {{-- <select name="outer_client_id" id="outer_client_id" data-style="btn-new_color"
-                    title="{{ __('sales_bills.client-name') }}" class="selectpicker w-100 me-2" data-live-search="true">
-                    @foreach ($outer_clients as $outer_client)
-                        <option value="{{ $outer_client->id }}">{{ $outer_client->client_name }}</option>
-                    @endforeach
-                </select> --}}
-                    <button type="button" class="btn btn-warning instantProduct py-1">
-                        <i class="fa fa-plus"></i> {{ __('main.add immediate product') }}
-                    </button>
-                </div>
-            </div>
-            <div class="col-md-6 pull-right no-print">
-                <label for="value_added_tax">
-                    {{ __('sales_bills.prices-for-tax') }}
-                    <span class="text-danger font-weight-bold">*</span>
-
-                </label>
-
-                <div class="d-flex align-items-center justify-content-between">
-                    <select required name="value_added_tax" id="value_added_tax" class="selectpicker w-100 form-control pb-2"
-                         data-live-search="true">
-                        <option value="0" selected>
-                            {{ __('sales_bills.not-including-tax') }}</option>
-                        <option value="2">
-                            {{ __('sales_bills.including-tax') }}</option>
-                        <option value="1">
-                            {{ __('sales_bills.exempt-tax') }}</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="clearfix no-print"></div>
-
-        <input type="number" id='grand_total_input' name="grand_total" hidden>
-        <input type="number" id='grand_tax_input' name="grand_tax" hidden>
-        <input type="number" id='grand_discount_input' name="total_discount" hidden>
-
-
-        <div>
-            <div class="table-responsive">
-                <table class="table table-bordered mt-2" id="products_table"
-                    style="background-color: #ffffff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); border-radius: 5px;">
-                    <thead>
-                        <tr>
-                            <th
-                               >
-                                {{ __('sales_bills.product') }}</th>
-                            <th
-                               >
-                                {{ __('sales_bills.price_type') }}</th>
-                            <th
-                              >
-                                {{ __('sales_bills.price') }}</th>
-                            <th
-                              >
-                                {{ __('sales_bills.quantity') }}</th>
-                            <th
-                             >
-                                {{ __('sales_bills.unit') }}</th>
-                            <th
-                                >
-                                {{ __('sales_bills.discount') }}
-                                <div class="tax_discount"
-                                    style="display: inline-block; margin-left: 10px; vertical-align: middle;">
-                                    <select id="discount_application" class="form-control text-white"
-                                        style="font-size: 12px; height: 30px;" name="products_discount_type">
-                                        <option value="before_tax">{{ __('sales_bills.discount_before_tax') }}</option>
-                                        <option value="after_tax">{{ __('sales_bills.discount_after_tax') }}</option>
-                                    </select>
-                                </div>
-                            </th>
-                            <th
-                               >
-                                {{ __('sales_bills.tax') }}</th>
-                            <th
-                                >
-                                {{ __('sales_bills.total') }}</th>
-                            <th
-                              >
-                                {{ __('sales_bills.actions') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody style="text-align: center;">
-                        <!-- هنا يتم عرض البيانات -->
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="6">
-                                {{ __('sales_bills.grand_tax') }}</td>
-                            <td colspan="3" id="grand_tax" class="text-right">0.00
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="6" style=" font-weight: bold;">
-                                {{ __('sales_bills.grand_total') }}</td>
-                            <td colspan="3" id="grand_total" class="text-right" >
-                                0.00</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 pull-right">
-                <div class="form-group" dir="rtl">
-                    <label for="discount">{{ __('sales_bills.discount-on-the-total-bill') }}</label> <br>
-                    <div class="d-flex">
-                        <select name="discount_type" id="discount_type" class="form-control w-75"
-                        >
-                        <option value="">اختر نوع الخصم</option>
-                        <option value="pound">خصم قبل الضريبة (مسطح)</option>
-                        <option value="percent">خصم قبل الضريبة (%)</option>
-                        <option value="poundAfterTax">ضمان اعمال (مسطح)</option>
-                        <option value="poundAfterTaxPercent">ضمان اعمال (%)</option>
-                        <option value="afterTax" class="d-none">
-                            خصم علي اجمالي المبلغ شامل الضريبة
-                        </option>
-                    </select>
-                    <input type="number" value="0" name="discount_value" min="0"
-                         id="discount_value" class="form-control w-25"
-                        step = "any" />
-                    </div>
-                    <input type="text" name="discount_note" id="discount_note" placeholder="ملاحظات الخصم. . ."
-                        class="form-control mt-1 w-100" >
-                    {{-- <span id="dicountForBill"></span> --}}
-                </div>
-
-
-            </div>
-            <div class="col-md-6 pull-right">
-                <div class="form-group" dir="rtl">
-                    <label for="extra">{{ __('main.shipping-expenses') }}</label> <br>
-                    <div class="d-flex">
-
-                    <select name="extra_type" id="extra_type" class="form-control w-75"
-                        >
-                        <option value="">اختر نوع الشحن</option>
-                        <option value="pound">{{ $extra_settings->currency }}</option>
-                        <option value="percent">%</option>
-                    </select>
-                    <input value="0" type="number" name="extra_value" min='0'
-                        id="extra_value" class="form-control w-25"
-                        step = "any" />
-                    </div>
-                </div>
-            </div>
-        </div><!--  End Row -->
-        <!-----notes------->
-        <div class="col-sm-12 pull-right no-print">
-            <div class="form-group" dir="rtl">
-                <label for="time">{{ __('main.notes') }}</label>
-                <textarea name="main_notes" id="notes" class="summernotes">
-                  </textarea>
-                <a data-toggle="modal" data-target="#myModal3" class="btn btn-link add_extra_notes d-none"
-                    style="color: blue!important;">
-                    اضف ملاحظات اخرى
-                </a>
-            </div>
-        </div>
-        <div class="clearfix no-print"></div>
-
-        <hr>
+            <hr>
         </div>
         <div class="company_details printy" style="display: none;">
             <div class="text-center">
@@ -357,80 +346,80 @@
             </div>
         </div>
 
-        <div class="col-lg-12 no-print text-center pt-2 px-0">
-            <div class="d-flex justify-content-start align-items-center flex-nowrap  bg-white p-2"
+        <div class="col-lg-12 no-print text-center pt-3">
+            <div class="d-flex justify-content-start align-items-center flex-nowrap"
                 style="overflow-x: auto; white-space: nowrap;">
                 <!-- Record Button -->
-                <button type="button" data-toggle="modal"  data-target="#myModal2"
-                    class="btn btn-md btn-warning py-1  pay_btn m-1">
+                <button type="button" data-toggle="modal" style="height: 40px" data-target="#myModal2"
+                    class="btn btn-md btn-dark pay_btn m-1">
                     <i class="fa fa-money"></i> {{ __('main.record') }}
                 </button>
-                <button type="button" id="add" class="btn btn-md m-1 text-white py-1" style=" background-color: #36c7d6;">
+                <button type="button" id="add" class="btn btn-info btn-md m-1" style="height: 40px">
                     <i class="fa fa-plus"></i> {{ __('sales_bills.save and show') }}
                 </button>
 
                 <!-- Save and Print 1 Button -->
-                <button type="button" role="button" class="btn save_btn1 py-1 text-dark m-1"
-                    isMoswada="0" invoiceType="2" style=" background-color: #0a09092e;">
+                <button type="button" role="button" class="btn save_btn1 btn-md btn-info text-white m-1"
+                    isMoswada="0" invoiceType="2" style="height: 40px">
                     حفظ و طباعة 1
                 </button>
 
                 <!-- Save and Print 2 Button -->
-                <a href="javascript:;" role="button" class="btn py-1 save_btn2 btn-warning m-1"
-                    style="  color: white;"
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md m-1"
+                    style="height: 40px; border: 1px solid #085d4a !important; background: #085d4a !important; color: white;"
                     printColor="1" isMoswada="0" invoiceType="2">
                     حفظ و طباعة 2
                 </a>
 
                 <!-- Save and Print 3 Button -->
-                <a href="javascript:;" role="button" class="btn py-1 save_btn2 m-1"
-                    style=" background-color: #36c7d6; color: white;"
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-primary m-1"
+                    style="height: 40px; border: 1px solid #5e8b0b !important; background: #5e8b0b !important; color: white;"
                     printColor="2" isMoswada="0" invoiceType="4">
                     حفظ و طباعة 3
                 </a>
 
                 <!-- Save and Print 4 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2  m-1 py-1"
-                    style="height: 40px;background-color: #0a09092e;"
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-primary pull-right m-1"
+                    style="height: 40px; border: 1px solid #0bb3b3 !important; background: #0bb3b3 !important; color: white;"
                     printColor="3" isMoswada="0" invoiceType="5">
                     حفظ و طباعة 4
                 </a>
 
                 <!-- Save and Print 5 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2  btn-warning py-1 m-1"
-                     printColor="2" isMoswada="0" invoiceType="2">
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-primary pull-right m-1"
+                    style="height: 40px;" printColor="2" isMoswada="0" invoiceType="2">
                     حفظ و طباعة 5
                 </a>
 
                 <!-- Save and Print 6 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-md py-1 m-1"
-                    style=" background-color: #36c7d6; color: white;"
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-primary pull-right m-1"
+                    style="height: 40px; border: 1px solid #0b228b !important; background: #0b228b !important; color: white;"
                     printColor="2" isMoswada="0" invoiceType="6">
                     حفظ و طباعة 6
                 </a>
 
                 <!-- Save and Print 7 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 py-1 text-dark pull-right m-1"
-                    style=" background-color: #0a09092e;"
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-primary pull-right m-1"
+                    style="height: 40px; border: 1px solid #9b4aad !important; background: #9b4aad !important; color: white;"
                     printColor="2" isMoswada="0" invoiceType="7">
                     حفظ و طباعة 7
                 </a>
 
                 <!-- Save and Print 8 Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 btn-warning py-1 m-1"
-                    style=" color: white;"
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-primary pull-right m-1"
+                    style="height: 40px; border: 1px solid #3d121264 !important; background: #3d121264 !important; color: white;"
                     printColor="2" isMoswada="0" invoiceType="8">
                     حفظ و طباعة 8
                 </a>
 
                 <!-- Draft Invoice Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 py-1 m-1 text-white" style=" background-color: #36c7d6;"
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-warning m-1" style="height: 40px;"
                     printColor="2" isMoswada="1" invoiceType="2">
                     فاتورة مسودة
                 </a>
 
                 <!-- Non-Tax Invoice Button -->
-                <a href="javascript:;" role="button" class="btn save_btn2 py-1 text-dark m-1" style=" background-color: #0a09092e;"
+                <a href="javascript:;" role="button" class="btn save_btn2 btn-md btn-success m-1" style="height: 40px;"
                     printColor="2" isMoswada="0" invoiceType="3">
                     فاتورة غير ضريبية
                 </a>
@@ -598,7 +587,6 @@
                 </div>
             </div>
         </div>
-    </div>
     </form>
     <div class="modal fade" id="addClientModal" tabindex="-1" aria-labelledby="addClientModalLabel"
         aria-hidden="true">
@@ -695,6 +683,10 @@
         };
     </script>
     <script>
+        // تعريف المتغير في النطاق العام
+        window.canDiscount = @json($user->roles->flatMap->permissions->contains('name', 'الخصم'));
+    </script>
+    <script>
         var somethingChanged = false;
         $(document).ready(function() {
             $('.summernotes').summernote({
@@ -738,42 +730,29 @@
                 // Save the current value as previous for potential reset
                 $(this).data('previous-value', newTaxType);
             });
-            // Save button 1
             $('.save_btn1').on('click', function(e) {
                 e.preventDefault(); // Prevent default form submission
+
+                // Disable both buttons to prevent multiple clicks
+                $('.save_btn1, .save_btn2').prop('disabled', true);
 
                 const discountType = document.getElementById('discount_type').value;
                 const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
                 const grandTotal = parseFloat(document.getElementById('grand_total').textContent) || 0;
 
-                // Check if discount exceeds grand total
-                if (
-                    (discountType === 'pound' || discountType === 'poundAfterTax') &&
-                    discountValue > grandTotal + discountValue
-                ) {
+                if ((discountType === 'pound' || discountType === 'poundAfterTax') && discountValue >
+                    grandTotal + discountValue) {
                     Swal.fire({
                         icon: 'warning',
                         title: 'تحذير',
                         text: 'لا يمكن أن يكون الخصم أكبر من الإجمالي!',
                         confirmButtonText: 'موافق'
                     });
-                    return false; // Stop submission
-                }
-
-                // Ensure discount is less than or equal to the grand total
-                if (discountValue > grandTotal + discountValue) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'تحذير',
-                        text: 'يجب أن يكون الخصم أقل أو مساوياً للإجمالي!',
-                        confirmButtonText: 'موافق'
-                    });
-                    return false; // Stop submission
+                    $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
+                    return false;
                 }
 
                 let outerClientId = $('#outer_client_id').val();
-
-                // Check if the outer client ID is selected
                 if (!outerClientId) {
                     Swal.fire({
                         icon: 'warning',
@@ -781,10 +760,10 @@
                         text: 'يجب اختيار العميل',
                         confirmButtonText: 'موافق'
                     });
+                    $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
                     return false;
                 }
 
-                // Validate that at least one product is selected
                 let hasProduct = false;
                 $('#products_table tbody tr').each(function() {
                     let quantity = $(this).find('input[name*="[quantity]"]').val();
@@ -795,6 +774,7 @@
                         hasProduct = true;
                     }
                 });
+
                 if (!hasProduct) {
                     Swal.fire({
                         icon: 'warning',
@@ -802,6 +782,7 @@
                         text: 'يجب اختيار منتج واحد على الأقل، وتحديد الكمية، والسعر، والوحدة لكل منتج',
                         confirmButtonText: 'موافق'
                     });
+                    $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
                     return false;
                 }
 
@@ -814,62 +795,52 @@
                     .fail(function(jqXHR) {
                         let errorMessage = "حدث خطأ أثناء حفظ البيانات";
                         if (jqXHR.responseJSON) {
-                            if (jqXHR.responseJSON.message) {
-                                errorMessage = jqXHR.responseJSON.message;
-                            } else if (jqXHR.responseJSON.error) {
-                                errorMessage = jqXHR.responseJSON.error;
-                            }
+                            errorMessage = jqXHR.responseJSON.message || jqXHR.responseJSON.error ||
+                                errorMessage;
                         } else if (jqXHR.responseText) {
                             errorMessage = jqXHR.responseText;
                         }
 
                         Swal.fire({
                             icon: 'error',
-                            title: errorMessage, // Replace title with the error message
+                            title: errorMessage,
                             text: '',
                             confirmButtonText: 'إغلاق'
                         });
+
+                        $('.save_btn1, .save_btn2').prop('disabled',
+                            false); // Re-enable buttons on error
                     });
             });
 
             // Save button 2
             $('.save_btn2').on('click', function(e) {
+                e.preventDefault(); // Prevent default form submission
+
+                // Disable both buttons to prevent multiple clicks
+                $('.save_btn1, .save_btn2').prop('disabled', true);
+
                 let printColor = $(this).attr('printColor');
                 let isMoswada = $(this).attr('isMoswada');
                 let invoiceType = $(this).attr('invoiceType');
                 let outerClientId = $('#outer_client_id').val();
-                e.preventDefault(); // Prevent default form submission
 
                 const discountType = document.getElementById('discount_type').value;
                 const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
                 const grandTotal = parseFloat(document.getElementById('grand_total').textContent) || 0;
 
-                // Check if discount exceeds grand total
-                if (
-                    (discountType === 'pound' || discountType === 'poundAfterTax') &&
-                    discountValue > grandTotal + discountValue
-                ) {
+                if ((discountType === 'pound' || discountType === 'poundAfterTax') && discountValue >
+                    grandTotal + discountValue) {
                     Swal.fire({
                         icon: 'warning',
                         title: 'تحذير',
                         text: 'لا يمكن أن يكون الخصم أكبر من الإجمالي!',
                         confirmButtonText: 'موافق'
                     });
-                    return false; // Stop submission
+                    $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
+                    return false;
                 }
 
-                // Ensure discount is less than or equal to the grand total
-                if (discountValue > grandTotal + discountValue) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'تحذير',
-                        text: 'يجب أن يكون الخصم أقل أو مساوياً للإجمالي!',
-                        confirmButtonText: 'موافق'
-                    });
-                    return false; // Stop submission
-                }
-
-                // Check if the outer client ID is selected
                 if (!outerClientId) {
                     Swal.fire({
                         icon: 'warning',
@@ -877,10 +848,10 @@
                         text: 'يجب اختيار العميل',
                         confirmButtonText: 'موافق'
                     });
+                    $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
                     return false;
                 }
 
-                // Validate that at least one product is selected
                 let hasProduct = false;
                 $('#products_table tbody tr').each(function() {
                     let quantity = $(this).find('input[name*="[quantity]"]').val();
@@ -899,6 +870,7 @@
                         text: 'يجب اختيار منتج واحد على الأقل، وتحديد الكمية، والسعر، والوحدة لكل منتج',
                         confirmButtonText: 'موافق'
                     });
+                    $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
                     return false;
                 }
 
@@ -912,23 +884,24 @@
                     .fail(function(jqXHR) {
                         let errorMessage = "حدث خطأ أثناء حفظ البيانات";
                         if (jqXHR.responseJSON) {
-                            if (jqXHR.responseJSON.message) {
-                                errorMessage = jqXHR.responseJSON.message;
-                            } else if (jqXHR.responseJSON.error) {
-                                errorMessage = jqXHR.responseJSON.error;
-                            }
+                            errorMessage = jqXHR.responseJSON.message || jqXHR.responseJSON.error ||
+                                errorMessage;
                         } else if (jqXHR.responseText) {
                             errorMessage = jqXHR.responseText;
                         }
 
                         Swal.fire({
                             icon: 'error',
-                            title: errorMessage, // Replace title with the error message
+                            title: errorMessage,
                             text: '',
                             confirmButtonText: 'إغلاق'
                         });
+
+                        $('.save_btn1, .save_btn2').prop('disabled',
+                            false); // Re-enable buttons on error
                     });
             });
+
 
 
 
@@ -1611,76 +1584,78 @@
             unitId,
             isImmediate = false
         }) {
+
             var valueAddedTax = $('#value_added_tax').val(); // Get the selected tax setting
 
             var rowHtml = `
-            <tr data-product-id="${productId}" data-index="${rowIndex}">
-                <td>${isImmediate ? `<input type="text" name="products[${rowIndex}][product_name]" class="form-control" placeholder="${translations.enter_product_name}" required>` : productName}</td>
-                <td class="text-left">
-                    <div class="d-flex flex-column">
-                        <label class="form-check-inline">
-                            <input type="radio" name="products[${rowIndex}][price_type]" value="sector" class="price_type form-check-input" checked>
-                            ${translations.sector}
-                        </label>
-                        <label class="form-check-inline">
-                            <input type="radio" name="products[${rowIndex}][price_type]" value="wholesale" class="price_type form-check-input">
-                            ${translations.wholesale}
-                        </label>
-                    </div>
-                </td>
-                <td>
-                    <div class="input-group">
-                        <input type="number" min="1" name="products[${rowIndex}][product_price]" class="form-control price w-100" value="${sectorPrice}" step="any">
-                        <input type="number" hidden name="products[${rowIndex}][product_id]" class="form-control product_id w-100" value="${productId}" >
-                    </div>
-                </td>
-                <td>
-                    <div class="input-group">
-                        <input type="number" name="products[${rowIndex}][quantity]" class="form-control quantity w-100" value="1" min="1" max="${remaining}" step="any">
-                    </div>
-                </td>
-                <td>
-                    <div class="input-group">
-                        <select name="products[${rowIndex}][unit_id]" class="form-control w-100 unit">
-                            <option disabled>${translations.choose_unit}</option>
-                            @foreach ($units as $unit)
-                                             <option value="{{ $unit->id }}" ${unitId === {{ $unit->id }} ? 'selected' : ''}>{{ $unit->unit_name }}</option>
-                                     @endforeach
-                        </select>
-                    </div>
-                </td>
-                <td>
-                    <div class="d-flex flex-column">
-                        <label class="form-check-inline">
-                            <input type="radio" name="products[${rowIndex}][discount_type]" value="pound" class="discount_type form-check-input">
-                            ${translations.pound}
-                        </label>
-                        <label class="form-check-inline">
-                            <input type="radio" name="products[${rowIndex}][discount_type]" value="percent" class="discount_type form-check-input" checked>
-                            ${translations.percent}
-                        </label>
-                        <input type="number" name="products[${rowIndex}][discount]" class="form-control discount w-100 mt-1" value="0" min="0" step="any">
-                    </div>
-                </td>
-                <td>
-                    <div class="input-group">
-                        <select name="products[${rowIndex}][tax]" class="form-control tax_type w-100 mb-1">
-                            <option value="0" ${valueAddedTax == 0 ? 'selected' : ''}>${translations.not_including_tax}</option>
-                            <option value="1" ${valueAddedTax == 1 ? 'selected' : ''}>${translations.exempt_tax}</option>
-                            <option value="2" ${valueAddedTax == 2 ? 'selected' : ''}>${translations.including_tax}</option>
-                        </select>
-                        <input type="number" readonly name="products[${rowIndex}][tax_amount]" class="form-control tax_amount w-100 mt-1" value="0" min="0" step="any">
-
-                    </div>
-                </td>
-                <td>
-                    <input type="number" name="products[${rowIndex}][total]" class="form-control total w-100" value="0" readonly step="any">
-                </td>
-                <td>
-                    <button type="button" class="btn btn-danger btn-sm remove-product">${translations.remove}</button>
-                </td>
-            </tr>
-          `;
+    <tr data-product-id="${productId}" data-index="${rowIndex}">
+        <td>${isImmediate ? `<input type="text" name="products[${rowIndex}][product_name]" class="form-control" placeholder="${translations.enter_product_name}" required>` : productName}</td>
+        <td class="text-left">
+            <div class="d-flex flex-column">
+                <label class="form-check-inline">
+                    <input type="radio" name="products[${rowIndex}][price_type]" value="sector" class="price_type form-check-input" checked>
+                    ${translations.sector}
+                </label>
+                <label class="form-check-inline">
+                    <input type="radio" name="products[${rowIndex}][price_type]" value="wholesale" class="price_type form-check-input">
+                    ${translations.wholesale}
+                </label>
+            </div>
+        </td>
+        <td>
+            <div class="input-group">
+                <input type="number" min="1" name="products[${rowIndex}][product_price]" class="form-control price w-100" value="${sectorPrice}" step="any">
+                <input type="number" hidden name="products[${rowIndex}][product_id]" class="form-control product_id w-100" value="${productId}" >
+            </div>
+        </td>
+        <td>
+            <div class="input-group">
+                <input type="number" name="products[${rowIndex}][quantity]" class="form-control quantity w-100" value="1" min="1" max="${remaining}" step="any">
+            </div>
+        </td>
+        <td>
+            <div class="input-group">
+                <select name="products[${rowIndex}][unit_id]" class="form-control w-100 unit">
+                    <option disabled>${translations.choose_unit}</option>
+                    @foreach ($units as $unit)
+                                         <option value="{{ $unit->id }}" ${unitId === {{ $unit->id }} ? 'selected' : ''}>{{ $unit->unit_name }}</option>
+                                 @endforeach
+                </select>
+            </div>
+        </td>
+        ${canDiscount ? `
+                                <td>
+                                    <div class="d-flex flex-column">
+                                        <label class="form-check-inline">
+                                            <input type="radio" name="products[${rowIndex}][discount_type]" value="pound" class="discount_type form-check-input">
+                                            ${translations.pound}
+                                        </label>
+                                        <label class="form-check-inline">
+                                            <input type="radio" name="products[${rowIndex}][discount_type]" value="percent" class="discount_type form-check-input" checked>
+                                            ${translations.percent}
+                                        </label>
+                                        <input type="number" name="products[${rowIndex}][discount]" class="form-control discount w-100 mt-1" value="0" min="0" step="any">
+                                    </div>
+                                </td>
+                                ` : ''}
+        <td>
+            <div class="input-group">
+                <select name="products[${rowIndex}][tax]" class="form-control tax_type w-100 mb-1">
+                    <option value="0" ${valueAddedTax == 0 ? 'selected' : ''}>${translations.not_including_tax}</option>
+                    <option value="1" ${valueAddedTax == 1 ? 'selected' : ''}>${translations.exempt_tax}</option>
+                    <option value="2" ${valueAddedTax == 2 ? 'selected' : ''}>${translations.including_tax}</option>
+                </select>
+                <input type="number" readonly name="products[${rowIndex}][tax_amount]" class="form-control tax_amount w-100 mt-1" value="0" min="0" step="any">
+            </div>
+        </td>
+        <td>
+            <input type="number" name="products[${rowIndex}][total]" class="form-control total w-100" value="0" readonly step="any">
+        </td>
+        <td>
+            <button type="button" class="btn btn-danger btn-sm remove-product">${translations.remove}</button>
+        </td>
+    </tr>
+    `;
 
             $('#products_table tbody').append(rowHtml);
             rowIndex++;
@@ -1704,28 +1679,51 @@
         }
 
         function validateDiscount() {
-            $('input[name^="products["][name$="[discount]"]').each(function() {
-                var discountInput = $(this);
-                var rowIndex = discountInput.attr('name').match(/\[(\d+)\]/)[1]; // Extract row index
-                var discountType = $('input[name="products[' + rowIndex + '][discount_type]"]:checked')
-                    .val();
-                var discountValue = parseFloat(discountInput.val());
+            $('#products_table tbody tr').each(function() {
+                var row = $(this);
+                var discountInput = row.find('input[name*="[discount]"]');
+                var discountType = row.find('input[name*="[discount_type]"]:checked').val();
+                var discountValue = parseFloat(discountInput.val()) || 0;
 
-                if (discountType === 'percent' && discountValue > 100) {
-                    alert('Discount cannot be more than 100% for percentage discount.');
-                    discountInput.val(100); // Reset to maximum allowed value
+                var productPrice = parseFloat(row.find('input[name*="[product_price]"]').val()) || 0;
+                var quantity = parseFloat(row.find('input[name*="[quantity]"]').val()) || 0;
+                var rowTotal = productPrice * quantity;
+
+
+                if (discountType === 'percent') {
+                    // Percentage discount: Ensure it doesn't exceed 100%
+                    if (discountValue > 100) {
+                        alert('Discount cannot be more than 100% for percentage discount.');
+                        discountInput.val(100); // Reset to maximum allowed value
+                    }
+                } else if (discountType === 'pound') {
+                    // Flat discount: Ensure it doesn't exceed the row total
+                    if (discountValue > rowTotal) {
+                        alert('Discount cannot be more than the total amount for this product.');
+                        discountInput.val(rowTotal); // Reset to the row total
+                    }
                 }
             });
         }
 
         function validateDiscountTotal() {
             var discountType = $('#discount_type').val(); // Get selected discount type
-            var discountValue = parseFloat($('#discount_value').val()); // Get discount value
-
-            // Check if discount type is percentage-based
-            if ((discountType === 'percent' || discountType === 'poundAfterTaxPercent') && discountValue > 100) {
-                alert('الخصم لا يمكن أن يكون أكثر من 100% لنوع الخصم المحدد.');
-                $('#discount_value').val(100); // Reset discount value to 100
+            var discountValue = parseFloat($('#discount_value').val()) || 0; // Get discount value
+            var grandTotal = parseFloat($('#grand_total').text()) || 0; // Get the grand total
+            var grandTax = parseFloat($('#grand_tax').text()) || 0; // Get the grand total
+            total = grandTotal - grandTax;
+            if (discountType === 'percent' || discountType === 'poundAfterTaxPercent') {
+                // Percentage discount: Ensure it doesn't exceed 100%
+                if (discountValue > 100) {
+                    alert('Discount cannot be more than 100% for percentage discount.');
+                    $('#discount_value').val(100); // Reset to maximum allowed value
+                }
+            } else if (discountType === 'pound' || discountType === 'poundAfterTax') {
+                // Flat discount: Ensure it doesn't exceed the grand total
+                if (discountValue > total) {
+                    alert('Discount cannot be more than the total amount of the invoice.');
+                    $('#discount_value').val(total); // Reset to the grand total
+                }
             }
         }
 
@@ -2139,6 +2137,5 @@
             handleTaxCalculation(); // Initial call to set the correct tax logic
         });
     </script>
-    
-@endsection
 
+@endsection

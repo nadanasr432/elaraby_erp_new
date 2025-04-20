@@ -111,18 +111,18 @@
                     </div>
                     <div class="clearfix"></div>
                     <hr>
-                    <div class="col-lg-4 col-xs-12 pull-right text-right">
-                        <div class="form-group">
-                            <label for="" class="d-block"> {{ __('main.there-is-a-branches') }}
-                            </label>
-                            <span style="margin-left: 20px;">{{ __('main.yes') }}</span>
-                            <label class="switch">
-                                <input type="checkbox" name="have_branches" value="yes">
-                                <span class="slider round"></span>
-                            </label>
-                            <span style="margin-right: 20px;">{{ __('main.no') }}</span>
-                        </div>
-                    </div>
+                    <!--<div class="col-lg-4 col-xs-12 pull-right text-right">-->
+                    <!--    <div class="form-group">-->
+                    <!--        <label for="" class="d-block"> {{ __('main.there-is-a-branches') }}-->
+                    <!--        </label>-->
+                    <!--        <span style="margin-left: 20px;">{{ __('main.yes') }}</span>-->
+                    <!--        <label class="switch">-->
+                    <!--            <input type="checkbox" name="have_branches" value="yes">-->
+                    <!--            <span class="slider round"></span>-->
+                    <!--        </label>-->
+                    <!--        <span style="margin-right: 20px;">{{ __('main.no') }}</span>-->
+                    <!--    </div>-->
+                    <!--</div>-->
                     <div class="clearfix"></div>
                     <div class="col-lg-12 col-xs-12 text-center justify-content-center text-center mt-3">
                         <button type="submit" dir="rtl" class="col-lg-4 btn btn-md btn-outline-danger"

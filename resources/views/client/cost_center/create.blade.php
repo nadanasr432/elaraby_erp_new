@@ -5,7 +5,7 @@
     }
 
     .bootstrap-select {
-        width: 100% !important;
+        width: 80% !important;
     }
 
     .form-control {
@@ -32,9 +32,8 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <div class="col-12 d-flex flex-wrap justify-content-between align-items-center">
-                        <h1></h1>
-                        <a class="btn btnn text-white  px-3 py-1 " style="background-color: #36c7d6" href="{{ route('client.products.index') }}">
+                    <div class="col-12">
+                        <a class="btn btn-primary btn-sm pull-left" href="{{ route('client.products.index') }}">
                             {{ __('main.back') }}</a>
                     </div>
                     <div class="clearfix"></div>
@@ -51,29 +50,29 @@
                         <hr>
                         <div class="row mb-3">
 
-                            <div class="col-md-6 text-center">
+                            <div class="col-md-4 text-center">
                                 <input type="radio" name="level" value="0" id="main" checked><label
                                     for="main" class="px-1"> رئيسي </label>
                             </div>
-                            <div class="col-md-6 text-center">
+                            <div class="col-md-4 text-center">
                                 <input type="radio" name="level" value="1" id="sub"><label for="sub"
                                     class="px-1"> فرعي </label>
                             </div>
                         </div>
                         <div class="row mb-3 pull-right">
 
-                            <div class="form-group  col-lg-4 " dir="rtl">
+                            <div class="form-group  col-lg-4  pull-right" dir="rtl">
                                 <label for="store_id">رقم المركز</label>
                                 <input type="hidden" name="account_id" id="account_id" value="">
                                 <input type="number" name="account_number" id="account_number" class="form-control"
                                     @if ($id != null) value="{{ $id + 1 }}" @else value="1" @endif">
                             </div>
-                            <div class="form-group  col-lg-4  " dir="rtl">
+                            <div class="form-group  col-lg-4  pull-right" dir="rtl">
                                 <label style="display: block;">اسم المركز </label>
                                 <input type="text" class="form-control" value="" dir="ltr" name="account_name"
                                     id="account_name" required />
                             </div>
-                            <div class="form-group  col-lg-4  " dir="rtl">
+                            <div class="form-group  col-lg-4  pull-right" dir="rtl">
                                 <label style="display: block;">الاسم بالانجليزي </label>
                                 <input type="text" class="form-control" value="" dir="ltr"
                                     name="account_name_en" id="account_name_en" required />
@@ -81,7 +80,7 @@
 
 
 
-                            <div class="form-group col-lg-4  " dir="rtl">
+                            <div class="form-group col-lg-4  pull-right" dir="rtl">
                                 <label for="model"> مركز رئيسي</label>
                                 <select name="parent_id" class="form-control" id="parent_id" disabled>
                                     <option value=""> مركز رئيسي </option>
@@ -93,39 +92,39 @@
                                     @endif
                                 </select>
                             </div>
-                            <div class="form-group  col-lg-4  " dir="rtl">
+                            <div class="form-group  col-lg-4  pull-right" dir="rtl">
                                 <label style="display: block;">الشخص المسئول </label>
                                 <input type="text" class="form-control" value="" dir="ltr"
                                     name="responsible_name" id="responsible_name" required />
                             </div>
-                            <div class="form-group  col-lg-4  " dir="rtl">
+                            <div class="form-group  col-lg-4  pull-right" dir="rtl">
                                 <label style="display: block;">الإميل</label>
                                 <input type="text" class="form-control" value="" dir="ltr" name="email"
                                     id="email" required />
                             </div>
 
-                            <div class="form-group col-lg-4  " dir="rtl">
+                            <div class="form-group col-lg-4  pull-right" dir="rtl">
                                 <label for="model"> الهاتف </label>
                                 <input type="text" name="phone" id="phone" class="form-control">
                             </div>
-                            <div class="form-group col-lg-4  " dir="rtl">
+                            <div class="form-group col-lg-4  pull-right" dir="rtl">
                                 <label for="model"> الموقع </label>
                                 <input type="text" name="location" id="location" class="form-control">
                             </div>
-                            <div class="form-group col-lg-4  " dir="rtl">
+                            <div class="form-group col-lg-4  pull-right" dir="rtl">
                                 <label for="model"> القيمة </label>
                                 <input type="text" name="value" id="value" class="form-control">
                             </div>
-                            <div class="form-group col-lg-4  " dir="rtl">
+                            <div class="form-group col-lg-4  pull-right" dir="rtl">
                                 <label for="model"> المدة </label>
                                 <input type="text" name="period" id="period" class="form-control">
                             </div>
 
-                            <div class="form-group col-lg-4  " dir="rtl">
+                            <div class="form-group col-lg-4  pull-right" dir="rtl">
                                 <label for="model"> تاريخ البداية </label>
                                 <input type="date" name="started_at" id="started_at" class="form-control">
                             </div>
-                            <div class="form-group col-lg-4  " dir="rtl">
+                            <div class="form-group col-lg-4  pull-right" dir="rtl">
                                 <label for="model"> تاريخ الإنتهاء </label>
                                 <input type="date" name="ended_at" id="ended_at" class="form-control">
                             </div>
@@ -134,11 +133,11 @@
                         </div>
                         <div class="clearfix"></div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-left">
-                            <a class="btn btnn btn-md btn-info pd-x-20 d-none" id="new">إضافة جديد</a>
-                            <button class="btn btnn btn-md btn-warning pd-x-20 d-none" type="submit"
+                            <a class="btn btn-md btn-info pd-x-20 d-none" id="new">إضافة جديد</a>
+                            <button class="btn btn-md btn-warning pd-x-20 d-none" type="submit"
                                 id="edit">تعديل</button>
-                            <button class="btn btnn  btn-md btn-warning px-3 py-1" type="submit" id="save">حفظ</button>
-                            <a class="btn btnn btn-md btn-danger pd-x-20 d-none" id="delete">حذف</a>
+                            <button class="btn btn-md btn-success pd-x-20" type="submit" id="save">حفظ</button>
+                            <a class="btn btn-md btn-danger pd-x-20 d-none" id="delete">حذف</a>
                         </div>
 
                         <div class="clearfix"></div>

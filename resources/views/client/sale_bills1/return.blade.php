@@ -7,7 +7,6 @@
     a, a:hover {
         text-decoration: none;
         color: #444;
-        
     }
 
     .bootstrap-select {

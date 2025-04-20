@@ -32,7 +32,7 @@ Carbon::setLocale('ar');
 
 class CompanyController extends Controller
 {
-    public function store(Request $request)
+     public function store(Request $request)
     {
         $request->validate([
             'company_name' => 'required|string|regex:/\S+/',

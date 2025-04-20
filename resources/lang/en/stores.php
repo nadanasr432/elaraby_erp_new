@@ -11,5 +11,7 @@ return [
     "choose-store" => "Choose store",
     "from-store" => "From store",
     "to-store" => "To store",
-    "choose-product" => "Choose product"
+    "choose-product" => "Choose product",
+     'from-store'=>"from-store",
+    'to-store'=>"to-store"
 ];

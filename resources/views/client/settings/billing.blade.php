@@ -46,14 +46,12 @@
             {{ session('success') }}
         </div>
     @endif
-    <div class="bg-white p-2 m-1">
-        <div class="row">
-            <div class="col-12">
-                <p class="alert custom-title">
-                    الاعدادات العامة للنظام
-                </p>
-            </div>
-            <div class="px-2 d-flex flex-wrap">
+    <div class="row">
+        <div class="col-12">
+            <p class="alert alert-danger alert-sm text-center">
+                الاعدادات العامة للنظام
+            </p>
+        </div>
 
                 <a class="nav-link text-dark" style="border:1px solid #bbb" href="{{ route('client.basic.settings.edit') }}">
                     <i class="fa fa-home"></i> {{ __('main.main-information') }} للنظام</a>
@@ -83,7 +81,7 @@
                                 <label>الرقم الضريبى</label>
                                 <input style="width:100%" type="text" class="form-control" dir="ltr"
                                     name="tax_number" id="tax_number"
-                                    @if ($company->tax_number) value="{{ $company->tax_number }}" 
+                                    @if ($company->tax_number) value="{{ $company->tax_number }}"
                                         disabled @endif />
                             </div>
                         </div>

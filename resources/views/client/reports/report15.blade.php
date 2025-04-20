@@ -7,12 +7,6 @@
     .bootstrap-select {
         width: 100% !important;
     }
-    .bootstrap-select .dropdown-toggle .filter-option {
-    text-align: right !important;
-    display: flex
-;
-    align-items: center;
-}
 </style>
 @section('content')
     @if (count($errors) > 0)
@@ -34,7 +28,7 @@
             <div class="card mg-b-20">
                 <div class="card-body">
                     <div class="col-12">
-                        <h5  class=" alert  custom-title">
+                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-danger">
                             تقرير حركة بنك
                         </h5>
                     </div>
@@ -43,35 +37,33 @@
                     <form action="{{route('client.report15.post')}}" method="POST">
                         @csrf
                         @method('POST')
-                        <div class="row">
-                            <div class="col-lg-4 mb-3 no-print">
-                                <label for="bank_id" class="d-block"> اخترالبنك </label>
-                                <select required name="bank_id" id="bank_id" class="form-control selectpicker p-0"
-                                         data-live-search="true"
-                                        title="اكتب او اختار البنك ">
-                                    @foreach($banks as $bank)
-                                        <option
-                                            @if(isset($bank_id) && $bank->id == $bank_id)
-                                            selected
-                                            @endif
-                                            value="{{$bank->id}}">{{$bank->bank_name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-lg-4 mb-3 no-print">
-                                <label for="" class="d-block">من تاريخ</label>
-                                <input type="date" @if(isset($from_date) && !empty($from_date)) value="{{$from_date}}"
-                                       @endif class="form-control" name="from_date"/>
-                            </div>
-                            <div class="col-lg-4 mb-3 no-print">
-                                <label for="" class="d-block">الى تاريخ</label>
-                                <input type="date" @if(isset($to_date) && !empty($to_date)) value="{{$to_date}}"
-                                       @endif  class="form-control" name="to_date"/>
-                            </div>
+                        <div class="col-lg-3 pull-right no-print">
+                            <label for="bank_id" class="d-block"> اخترالبنك </label>
+                            <select required name="bank_id" id="bank_id" class="selectpicker"
+                                    data-style="btn-info" data-live-search="true"
+                                    title="اكتب او اختار البنك ">
+                                @foreach($banks as $bank)
+                                    <option
+                                        @if(isset($bank_id) && $bank->id == $bank_id)
+                                        selected
+                                        @endif
+                                        value="{{$bank->id}}">{{$bank->bank_name}}</option>
+                                @endforeach
+                            </select>
                         </div>
-                        <div class="">
-                            <button class="btn btnn btn-md btn-warning py-1 px-3"
-                                     type="submit">
+                        <div class="col-lg-3 pull-right no-print">
+                            <label for="" class="d-block">من تاريخ</label>
+                            <input type="date" @if(isset($from_date) && !empty($from_date)) value="{{$from_date}}"
+                                   @endif class="form-control" name="from_date"/>
+                        </div>
+                        <div class="col-lg-3 pull-right no-print">
+                            <label for="" class="d-block">الى تاريخ</label>
+                            <input type="date" @if(isset($to_date) && !empty($to_date)) value="{{$to_date}}"
+                                   @endif  class="form-control" name="to_date"/>
+                        </div>
+                        <div class="col-lg-3 pull-right">
+                            <button class="btn btn-md btn-danger"
+                                    style="font-size: 15px; height: 40px; margin-top: 25px;" type="submit">
                                 <i class="fa fa-check"></i>
                                 عرض التقرير
                             </button>

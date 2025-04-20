@@ -24,14 +24,12 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <div class="col-12 d-flex flex-wrap justify-content-between">
-                        <h5  class=" alert custom-title">
-                            اضف اهلاك جديد
-                        </h5>
-                        <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.depreciations.index') }}">
+                    <div class="col-12">
+                        <a class="btn btn-primary btn-sm pull-left" href="{{ route('client.depreciations.index') }}">
                             {{ __('main.back') }}
                         </a>
-                        
+                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success">
+                            اضف اهلاك جديد
                     </div>
                     <div class="clearfix"></div>
                     <br>
@@ -43,38 +41,38 @@
                         <h5 class="col-lg-12 d-block mb-2">{{ __('main.main-information') }}</h5>
                         <hr>
                         <div class="row mb-3">
-                            <div class=" col-md-4 mb-1">
+                            <div class="col-md-3">
                                 <label> تصنيف الاصل <span class="text-danger">*</span></label>
                                 <select dir="rtl" required name="category" data-live-search="true"
-                                     class="form-control selectpicker show-tick py-1">
+                                    data-style="btn-danger" class="form-control selectpicker show-tick">
                                     <option></option>
                                 </select>
                             </div>
-                            <div class=" col-md-4 mb-1">
+                            <div class="col-md-3">
                                 <label> اسم الاصل <span class="text-danger">*</span></label>
                                 <select dir="rtl" required name="category" data-live-search="true"
-                                    class="form-control selectpicker show-tick py-1">
+                                    data-style="btn-danger" class="form-control selectpicker show-tick">
                                     <option></option>
                                 </select>
                             </div>
-                            <div class=" col-md-4 mb-1">
+                            <div class="col-md-3">
                                 <label> نوع فترة الاهلاك <span class="text-danger">*</span></label>
                                 <select dir="rtl" required name="category" data-live-search="true"
-                                     class="form-control selectpicker show-tick py-1">
+                                    data-style="btn-danger" class="form-control selectpicker show-tick">
                                     <option></option>
                                 </select>
                             </div>
-                            <div class=" col-md-4 mb-1">
+                            <div class="col-md-3">
                                 <label> الفترة من <span class="text-danger">*</span></label>
                                 <input required type="date" class="form-control" dir="ltr" name="ref-number">
                             </div>
-                            <div class=" col-md-4 mb-1">
+                            <div class="col-md-3">
                                 <label> الفترة الي <span class="text-danger">*</span></label>
                                 <input required type="date" class="form-control" dir="ltr" name="ref-number">
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 text-start">
-                            <button class="btn btnn btn-warning px-3 py-1" type="submit">{{ __('main.add') }}</button>
+                        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                            <button class="btn btn-info pd-x-20" type="submit">{{ __('main.add') }}</button>
                         </div>
                     </form>
                 </div>

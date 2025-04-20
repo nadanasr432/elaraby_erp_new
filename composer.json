@@ -8,7 +8,6 @@
         "php": "^8.2",
         "barryvdh/laravel-dompdf": "^3.0",
         "laravel/framework": "^11.0",
-        "laravel/serializable-closure": "*",
         "laravel/tinker": "^2.9",
         "laravel/ui": "*",
         "maatwebsite/excel": "^3.1",
