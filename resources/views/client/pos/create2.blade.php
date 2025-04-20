@@ -1357,31 +1357,31 @@
 <script>
     // تعريف المتغير في النطاق العام
     window.canDiscount = @json($user->roles->flatMap->permissions->contains('name', 'الخصم'));
+    // ==== (refresh | update) bill details =======//
+    function refreshBillDetails() {
+        //----update bill details----//
+        let totalSum = 0;
+        let totalQty = 0;
+        $(".edit_price").each(function(index) {
+            var productPrice = Number($($(".edit_price")[index]).val());
+            var productQty = Number($($(".edit_quantity")[index]).val());
+            totalQty += productQty;
+            var productDiscount = Number($($(".edit_discount")[index]).val());
+            totalSum += productPrice * productQty - productDiscount;
+        });
+        $("#sum").text(totalSum.toFixed(3));
+        //------Calc Tax Value & total PriceWithTax-------//
+        let posTaxValue = Number($("#posTaxValue").text());
+        let taxValueAmount = totalSum / 100 * posTaxValue;
+        $("#taxValueAmount").text(taxValueAmount.toFixed(3));
+        $("#total").text((totalSum + taxValueAmount).toFixed(3));
+        $("#total_quantity").text(totalQty);
+        $("#items").text($('.bill_details tr').length);
+    }
 </script>
 <script>
     $(document).ready(function() {
 
-        // ==== (refresh | update) bill details =======//
-        function refreshBillDetails() {
-            //----update bill details----//
-            let totalSum = 0;
-            let totalQty = 0;
-            $(".edit_price").each(function(index) {
-                var productPrice = Number($($(".edit_price")[index]).val());
-                var productQty = Number($($(".edit_quantity")[index]).val());
-                totalQty += productQty;
-                var productDiscount = Number($($(".edit_discount")[index]).val());
-                totalSum += productPrice * productQty - productDiscount;
-            });
-            $("#sum").text(totalSum.toFixed(3));
-            //------Calc Tax Value & total PriceWithTax-------//
-            let posTaxValue = Number($("#posTaxValue").text());
-            let taxValueAmount = totalSum / 100 * posTaxValue;
-            $("#taxValueAmount").text(taxValueAmount.toFixed(3));
-            $("#total").text((totalSum + taxValueAmount).toFixed(3));
-            $("#total_quantity").text(totalQty);
-            $("#items").text($('.bill_details tr').length);
-        }
         setTimeout(function() {
             $(".app-content.content").show();
             $(".loader").hide();
@@ -2719,16 +2719,20 @@
         }
     });
     //=============on change discount'===========//
-    $(document).on('keyup', '.edit_discount', function() {
-        //----update row details----//
-        let element_id = $(this).parent().parent().attr('id');
-        let edit_discount = Number($(this).val());
-        let edit_price = Number($("#edit_price-" + element_id).val());
-        let edit_quantity = Number($("#edit_quantity-" + element_id).val());
+    $(document).on('keyup', '.edit_discount, .edit_price, .edit_quantity', function() {
+        // Get the row ID
+        let row = $(this).closest('tr');
+        let element_id = row.attr('id');
 
-        // Calculate maximum allowed discount (price * quantity)
+        // Parse input values (default to 0 if empty/NaN)
+        let edit_discount = Number($("#edit_discount-" + element_id).val()) || 0;
+        let edit_price = Number($("#edit_price-" + element_id).val()) || 0;
+        let edit_quantity = Number($("#edit_quantity-" + element_id).val()) || 0;
+
+        // Calculate maximum allowed discount (price × quantity)
         let maxDiscount = edit_price * edit_quantity;
 
+        // If discount exceeds total price, reset it to 0 and show error
         if (edit_discount > maxDiscount) {
             Swal.fire({
                 icon: 'error',
@@ -2738,20 +2742,21 @@
                 confirmButtonColor: '#d33',
             });
 
-            // Reset discount to maximum allowed value
-            $(this).val(maxDiscount);
-            edit_discount = maxDiscount;
+            // Reset discount to 0
+            $("#edit_discount-" + element_id).val('0');
+            edit_discount = 0;
         }
 
+        // Update total price only if quantity is valid (>0)
         if (edit_quantity > 0) {
-            let totalPrice = (edit_quantity * edit_price) - edit_discount;
-
+            let totalPrice = (edit_price * edit_quantity) - edit_discount;
             $("#totalPrice-" + element_id).text(totalPrice.toFixed(3));
-        } else {
-            return false;
         }
-        refreshBillDetails();
+
+        refreshBillDetails(); // Update bill summary
     });
+    // Handle price changes while maintaining original and wholesale prices
+
     //=============================================
     $(document).ready(function() {
         function performSearch() {
