@@ -1,4 +1,3 @@
-```php
 @extends('client.layouts.app-main')
 <style>
     .btn.dropdown-toggle.bs-placeholder {
@@ -349,4 +348,3 @@
 <script src="{{asset('app-assets/js/jquery.min.js')}}"></script>
 <script>
 </script>
-```

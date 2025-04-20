@@ -460,14 +460,16 @@
                             <tr
                                 style="font-size: 16px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
                                 <th>#</th>
-                                <th>@lang('sales_bills.product name')</th>
-                                <th>@lang('sales_bills.unit price')</th>
+                                 @if ($company->extra_settings->show_model == 1)
+                                 <th>@lang('products.pmodel1')</th>@endif
+                                <th>@lang('sales_bills.product_name')</th>
                                 <th>@lang('sales_bills.Quantity')</th>
+                                <th>@lang('main.unit')</th>
+                                <th>@lang('sales_bills.unit price')</th>
                                 <th>@lang('sales_bills.The amount does not include tax')</th>
                                 <th>@lang('sales_bills.Tax')</th>
                                 <th>@lang('sales_bills.Discount')</th>
                                 <th>@lang('products.pdesc')</th>
-                                <th>@lang('products.pmodel1')</th>
                                 <th>@lang('sales_bills.total')</th>
 
                             </tr>
@@ -509,12 +511,17 @@
                                     <tr
                                         style="font-size: 16px !important; height: 34px !important; text-align: center; background: #f8f9fb">
                                         <td class="borderLeftH">{{ ++$i }}</td>
+                                        @if ($company->extra_settings->show_model == 1)
+                                            <td class="borderLeftH">{{ $element->product->product_model }}</td>
+                                        @endif
                                         <td class="borderLeftH">{{ $element->product->product_name }}</td>
-                                        <td class="borderLeftH">{{ $element->product_price }}</td>
                                         <td class="borderLeftH text-center">
-                                            <span>{{ $element->quantity }}</span>
-                                            <span>{{ $element->unit->unit_name }}</span>
+                                            {{ $element->quantity }}
                                         </td>
+                                        <td class="borderLeftH text-center">
+                                            {{ $element->unit->unit_name }}
+                                        </td>
+                                        <td class="borderLeftH">{{ $element->product_price }}</td>
                                         <td class="borderLeftH">
                                             {{ $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
                                         </td>
@@ -525,7 +532,6 @@
                                             <div class="text-center" style="text-align: start !important;">
                                                 {!! $element->product->description !!}</div>
                                         </td>
-                                        <td class="borderLeftH">{{ $element->product->product_model }}</td>
                                         <td class="borderLeftH">
                                             {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
                                         </td>
@@ -545,15 +551,16 @@
                             <tr
                                 style="font-size: 16px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
                                 <th>@lang('sales_bills.total')</th>
-                                <th>@lang('products.pmodel1')</th>
                                 <th>@lang('products.pdesc')</th>
-
                                 <th>@lang('sales_bills.Tax')</th>
                                 <th>@lang('sales_bills.Discount')</th>
                                 <th>@lang('sales_bills.The amount does not include tax')</th>
-                                <th>@lang('sales_bills.Quantity')</th>
                                 <th>@lang('sales_bills.unit price')</th>
-                                <th>@lang('sales_bills.product name')</th>
+                                <th>@lang('main.unit'))</th>
+                                <th>@lang('sales_bills.Quantity')</th>
+                                <th>@lang('sales_bills.product_name')</th>
+                                 @if ($company->extra_settings->show_model == 1)
+                                 <th>@lang('products.pmodel1')</th>@endif
                                 <th>#</th>
                             </tr>
 
@@ -598,7 +605,6 @@
                                         <td class="borderLeftH">
                                             {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
                                         </td>
-                                        <td class="borderLeftH">{{ $element->product->product_model }}</td>
                                         <td class="borderLeftH d-flex justify-content-center">
                                             <div class="text-center" style="text-align: start !important;">
                                                 {!! $element->product->description !!}</div>
@@ -610,12 +616,17 @@
                                         <td class="borderLeftH">
                                             {{ $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
                                         </td>
-                                        <td class="borderLeftH text-center">
-                                            <span>{{ $element->quantity }}</span>
-                                            <span>{{ $element->unit->unit_name }}</span>
-                                        </td>
                                         <td class="borderLeftH">{{ $element->product_price }}</td>
+                                        <td class="borderLeftH text-center">
+                                            {{ $element->unit->unit_name }}
+                                        </td>
+                                        <td class="borderLeftH text-center">
+                                            {{ $element->quantity }}
+                                        </td>
                                         <td class="borderLeftH">{{ $element->product->product_name }}</td>
+                                         @if ($company->extra_settings->show_model == 1)
+                                            <td class="borderLeftH">{{ $element->product->product_model }}</td>
+                                        @endif
                                         <td class="borderLeftH">{{ ++$i }}</td>
                                     </tr>
                                 @endforeach

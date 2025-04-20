@@ -40,7 +40,7 @@
                     </div>
                 </div>
                 <div class="text-end">
-                    <button type="submit" class="btn btn-warning">{{ __('Add') }}</button>
+                    <button type="submit" class="btn btn-warning">{{ __('main.Add') }}</button>
                 </div>
             </form>
         </div>

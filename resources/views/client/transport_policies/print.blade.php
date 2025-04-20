@@ -208,10 +208,10 @@
     <div class="text-center" id="buttons">
         <button class="btn  btn-success" onclick="window.print()">@lang('sales_bills.Print the invoice')</button>
         <a class="btn  btn-danger" href="{{ route('transport-policies.index') }}">@lang('sales_bills.back') </a>
-        {{-- <button class="btn  btn-success" dir="ltr" onclick="sendToWhatsApp()">
-            <i class="fa fa-whatsapp"></i>
-            @lang('sales_bills.Send to whatsapp')
-        </button> --}}
+        <!--<button class="btn  btn-success" dir="ltr" onclick="sendToWhatsApp()">-->
+        <!--    <i class="fa fa-whatsapp"></i>-->
+        <!--    @lang('sales_bills.Send to whatsapp')-->
+        <!--</button>-->
     </div>
     <div class="invoice-container border">
         <div class="container d-flex justify-content-between mt-2 mb-2">
@@ -244,7 +244,7 @@
                                 class="fw-bold fs-5">{{ $company->civil_registration_number }}</strong></span>
                     </div>
                     <div class="col-12 d-flex justify-content-end text-end">
-                        <span>رخصة نقل:<strong class="fw-bold fs-5">{{ $company->transport_license }}</strong></span>
+                        <span> رقم الجوال:<strong class="fw-bold fs-5">{{ $company->phone_number }}</strong></span>
                     </div>
                     <div class="col-12 d-flex justify-content-end text-end">
                         <span>رقم ضريبي:<strong>{{ $company->tax_number }}</strong></span>
@@ -294,7 +294,7 @@
                 <tbody>
                     <tr>
                         <td class="fw-bold text-start w-25">Name</td>
-                        <td class="w-50">{{ $transportPolicy->receiver }}</td>
+                        <td class="w-50">{{ $transportPolicy->receiver  ?? '' }}</td>
                         <td class="fw-bold text-end w-25">الاسم</td>
                     </tr>
                 </tbody>
@@ -307,7 +307,7 @@
                 <tbody>
                     <tr>
                         <td class="fw-bold text-start w-25">Name</td>
-                        <td class="w-50">{{ $transportPolicy->sender }}</td>
+                        <td class="w-50">{{ $transportPolicy->sender  ?? ''}}</td>
                         <td class="fw-bold text-end w-25">الاسم</td>
                     </tr>
                 </tbody>
@@ -322,17 +322,17 @@
                 <tbody>
                     <tr>
                         <td class="fw-bold text-start w-25">Country</td>
-                        <td class="w-50">{{ $dischargingStation->country }}</td>
+                        <td class="w-50">{{ $dischargingStation->country   ?? ''}}</td>
                         <td class="fw-bold text-end w-25">الدولة</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">Region</td>
-                        <td>{{ $dischargingStation->region }}</td>
+                        <td>{{ $dischargingStation->region   ?? ''}}</td>
                         <td class="fw-bold text-end">المنطقة</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">City</td>
-                        <td>{{ $dischargingStation->city }}</td>
+                        <td>{{ $dischargingStation->city   ?? ''}}</td>
                         <td class="fw-bold text-end">المدينة</td>
                     </tr>
                 </tbody>
@@ -345,17 +345,17 @@
                 <tbody>
                     <tr>
                         <td class="fw-bold text-start w-25">Country</td>
-                        <td class="w-50">{{ $chargingStation->country }}</td>
+                        <td class="w-50">{{ $chargingStation->country   ?? ''}}</td>
                         <td class="fw-bold text-end w-25">الدولة</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">Region</td>
-                        <td>{{ $chargingStation->region }}</td>
+                        <td>{{ $chargingStation->region   ?? ''}}</td>
                         <td class="fw-bold text-end">المنطقة</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">City</td>
-                        <td>{{ $chargingStation->city }}</td>
+                        <td>{{ $chargingStation->city   ?? ''}}</td>
                         <td class="fw-bold text-end">المدينة</td>
                     </tr>
                 </tbody>
@@ -370,22 +370,22 @@
                 <tbody>
                     <tr>
                         <td class="fw-bold text-start w-25">Driver name</td>
-                        <td class="w-50">{{ $driver->name }}</td>
+                        <td class="w-50">{{ $driver->name   ?? ''}}</td>
                         <td class="fw-bold text-end w-25">اسم السائق</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">Iqama number</td>
-                        <td>{{ $driver->iqama_number }}</td>
+                        <td>{{ $driver->iqama_number   ?? ''}}</td>
                         <td class="fw-bold text-end">رقم الاقامة</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">Nationality</td>
-                        <td>{{ $driver->nationality }}</td>
+                        <td>{{ $driver->nationality   ?? ''}}</td>
                         <td class="fw-bold text-end">الجنسية</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">Mobile numder</td>
-                        <td>{{ $driver->mobile_number }}</td>
+                        <td>{{ $driver->mobile_number   ?? ''}}</td>
                         <td class="fw-bold text-end">رقم الجوال</td>
                     </tr>
                 </tbody>
@@ -393,27 +393,27 @@
             <table class="col-md-6 table table-bordered text-center align-middle">
                 <tr style="background-color:cornflowerblue !important">
                     <th colspan="3" class="fw-bold fs-5" style="background-color:cornflowerblue !important">Shipment
-                        Information</th>
+                        Information / بيان الحمولة </th>
                 </tr>
                 <tbody>
                     <tr>
                         <td class="fw-bold text-start w-25">Payload type</td>
-                        <td class="w-50">{{ $shipment->payload_type }}</td>
+                        <td class="w-50">{{ $shipment->payload_type   ?? ''}}</td>
                         <td class="fw-bold text-end w-25">نوع الحمولة</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">Container no</td>
-                        <td>{{ $shipment->containers_no }}</td>
+                        <td>{{ $shipment->containers_no   ?? ''}}</td>
                         <td class="fw-bold text-end">رقم الحاوية</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">Weight</td>
-                        <td>{{ $shipment->weight }}</td>
+                        <td>{{ $shipment->weight   ?? ''}}</td>
                         <td class="fw-bold text-end">الوزن</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">Height</td>
-                        <td>{{ $shipment->height }}</td>
+                        <td>{{ $shipment->height   ?? ''}}</td>
                         <td class="fw-bold text-end">الارتفاع</td>
                     </tr>
                 </tbody>
@@ -428,17 +428,17 @@
                 <tbody>
                     <tr>
                         <td class="fw-bold text-start w-25">Vehicle number</td>
-                        <td class="w-50">{{ $vehicle->vehicle_number }}</td>
-                        <td class="fw-bold text-end w-25">رقم المركبة</td>
+                        <td class="w-50">{{ $vehicle->vehicle_number   ?? ''}}</td>
+                        <td class="fw-bold text-end w-25">نوع المركبة</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">Plate Number</td>
-                        <td>{{ $vehicle->plate_number }}</td>
+                        <td>{{ $vehicle->plate_number   ?? ''}}</td>
                         <td class="fw-bold text-end">رقم اللوحة</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">Trailer type</td>
-                        <td>{{ $vehicle->trailer_type }}</td>
+                        <td>{{ $vehicle->trailer_type   ?? ''}}</td>
                         <td class="fw-bold text-end">نوع المقطورة</td>
                     </tr>
                 </tbody>
@@ -451,17 +451,17 @@
                 <tbody>
                     <tr>
                         <td class="fw-bold text-start w-25">Company name</td>
-                        <td class="w-50">{{ $vehicleOwner->company_name }}</td>
+                        <td class="w-50">{{ $vehicleOwner->company_name   ?? ''}}</td>
                         <td class="fw-bold text-end w-25">اسم الشركة</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">Supervisor</td>
-                        <td>{{ $vehicleOwner->supervisor_name }}</td>
+                        <td>{{ $vehicleOwner->supervisor_name   ?? ''}}</td>
                         <td class="fw-bold text-end">اسم المشرف</td>
                     </tr>
                     <tr>
                         <td class="fw-bold text-start">Mobile number</td>
-                        <td>{{ $vehicleOwner->mobile_number }}</td>
+                        <td>{{ $vehicleOwner->mobile_number   ?? ''}}</td>
                         <td class="fw-bold text-end">رقم الجوال</td>
                     </tr>
                 </tbody>
@@ -481,7 +481,7 @@
             </table>
         </div>
         <div class="container">
-            <table class="table table-sm table-bordered  text-center" style="height: 200px;">
+            <table class="table table-sm table-bordered  text-center" style="height: 170px;">
                 <tbody>
                     <tr style="font-weight: bold;">
                         <td rowspan="8" class="qr-code">

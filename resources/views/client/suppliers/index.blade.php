@@ -69,15 +69,16 @@
                                         <td>{{ $supplier->shop_name }}</td>
 
                                         <td>
-                                            @if ($supplier->prev_balance > 0)
+                                            @if (floatval($supplier->prev_balance) > 0)
                                                 {{ __('main.from') }}
                                                 {{ floatval($supplier->prev_balance) }}
-                                            @elseif($supplier->prev_balance < 0)
+                                            @elseif (floatval($supplier->prev_balance) < 0)
                                                 {{ __('main.on') }}
-                                                {{ floatval(abs($supplier->prev_balance)) }}
+                                                {{ abs(floatval($supplier->prev_balance)) }}
                                             @else
                                                 0
                                             @endif
+
                                         </td>
                                         <td style="width: 20% !important;">
                                             <a href="{{ route('client.suppliers.show', $supplier->id) }}"

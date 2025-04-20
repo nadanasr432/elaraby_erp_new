@@ -76,16 +76,17 @@
                                     <td>{{ $outer_client->tax_number }}</td>
                                     <td>{{ $outer_client->shop_name }}</td>
                                     <td>
-                                        @if ($outer_client->prev_balance > 0)
+                                        @if (floatval($outer_client->prev_balance) > 0)
                                             {{ __('main.from') }}
                                             {{ floatval($outer_client->prev_balance) }}
-                                        @elseif($outer_client->prev_balance < 0)
+                                        @elseif(floatval($outer_client->prev_balance) < 0)
                                             {{ __('main.to') }}
-                                            {{ floatval(abs($outer_client->prev_balance)) }}
+                                            {{ floatval(abs(floatval($outer_client->prev_balance))) }}
                                         @else
                                             0
                                         @endif
                                     </td>
+
                                     <td style="width: 20% !important;">
                                         @if($outer_client->client_name != "Cash")
                                             <a href="{{ route('client.outer_clients.show', $outer_client->id) }}"

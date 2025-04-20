@@ -182,6 +182,7 @@
                                             <th>{{ __('products.store') }}</th>
                                             <th>{{ __('sidebar.Final total') }}</th>
                                             <th>{{ __('sidebar.Number of items') }}</th>
+                                            <!--<th>{{ __('sidebar.Returned') }}</th>-->
                                             <th>{{ __('sidebar.Status') }}</th>
                                             <th style="border-radius: 10px 0 0 0;width: 10% !important;">
                                                 {{ __('sidebar.Show') }}</th>
@@ -194,7 +195,30 @@
                                         $totalTax = 0;
                                         ?>
                                         @foreach ($sale_bills as $index => $sale_bill)
-                                            <tr class="{{ $index % 2 == 0 ? 'even' : 'odd' }}" role="row">
+                                         @php
+                                                        $total += $sale_bill->final_total;
+                                                        $totalTax += $sale_bill->total_tax;
+                                                   
+                                                        $items = \App\Models\SaleBillElement::where('sale_bill_id', $sale_bill->id)
+                                                            ->where('company_id', $sale_bill->company_id)
+                                                            ->get();
+                                                
+                                                        $allReturned = true;
+                                                
+                                                        foreach ($items as $product) {
+                                                            $alreadyReturnedQty = \App\Models\SaleBillReturn::where('bill_id', $sale_bill->id)
+                                                                ->where('product_id', $product->product_id)
+                                                                ->sum('return_quantity');
+                                                
+                                                            if ($alreadyReturnedQty < $product->quantity) {
+                                                                $allReturned = false;
+                                                                break;
+                                                            }
+                                                        }
+                                                
+                                                        $rowClass = ($index % 2 == 0 ? 'even' : 'odd') . ($allReturned ? ' table-danger' : '');
+                                                    @endphp
+                                                <tr class="{{ $rowClass }}" role="row">
                                                 <td>{{ $sale_bills_count - $index }}</td>
                                                 {{-- <td>{{ $sale_bill->sale_bill_number }}</td> --}}
                                                 <td>
@@ -210,18 +234,23 @@
                                                 <td>{{ $sale_bill->time }}</td>
                                                 <td>{{ $sale_bill->store?->store_name ?? ' ' }}</td>
                                                 <td>
-                                                    @php
-                                                        $total += $sale_bill->final_total;
-                                                        $totalTax += $sale_bill->total_tax;
-                                                    @endphp
+                                                   
                                                     {{ $sale_bill->final_total }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                                                 </td>
                                                 <td>{{ $sale_bill->elements->count() }}</td>
                                                 <td>
-                                                    <input type="checkbox" class="toggle-status"
-                                                        data-id="{{ $sale_bill->id }}"
-                                                        {{ $sale_bill->deleted_at ? '' : 'checked' }}>
+                                                    @if($allReturned)
+                                                        <span class="badge bg-danger">{{ __('sidebar.Returned') }}</span>
+                                                    @else
+                                                        <span class="badge bg-success">{{ __('sales_bills.Tax bill') }}</span>
+                                                    @endif
                                                 </td>
+
+                                                <!--<td>-->
+                                                <!--    <input type="checkbox" class="toggle-status"-->
+                                                <!--        data-id="{{ $sale_bill->id }}"-->
+                                                <!--        {{ $sale_bill->deleted_at ? '' : 'checked' }}>-->
+                                                <!--</td>-->
                                                 <td style="padding: 5px !important;">
 
                                                     <div class="dropdown">
@@ -253,18 +282,21 @@
                                                                 </svg>
                                                                 {{ __('sidebar.show') }}
                                                             </a>
-                                                             <form action="{{ route('client.sale_bills.post.returnAll') }}" method="POST" style="display:inline-block;" onsubmit="return confirm('{{ __('main.Are you sure you want to return all items?') }}')">
-                                                                @csrf
-                                                                <input type="hidden" name="sale_bill_id" value="{{ $sale_bill->id }}">
-                                                                <button type="submit" class="dropdown-item"
-                                                                style="font-size: 12px  !important; padding: 9px 11px;border-bottom: 1px solid #2d2d2d2d">
-                                                                    <svg style="width: 15px; fill: crimson; display: inline; margin-left: 5px;"
-                                                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                                                        <path d="M32 32h448v64H32zm416 96H64l32 352h320z" />
-                                                                    </svg>
-                                                                    {{ __('main.Return All Items') }}
-                                                                </button>
-                                                            </form>
+                                                            
+                                                            @if (!$allReturned)
+                                                                <form action="{{ route('client.sale_bills.post.returnAll') }}" method="POST" style="display:inline-block;" onsubmit="return confirm('{{ __('main.Are you sure you want to return all items?') }}')">
+                                                                    @csrf
+                                                                    <input type="hidden" name="sale_bill_id" value="{{ $sale_bill->id }}">
+                                                                    <button type="submit" class="dropdown-item"
+                                                                        style="font-size: 12px !important; padding: 9px 11px; border-bottom: 1px solid #2d2d2d2d">
+                                                                        <svg style="width: 15px; fill: crimson; display: inline; margin-left: 5px;"
+                                                                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                                            <path d="M32 32h448v64H32zm416 96H64l32 352h320z" />
+                                                                        </svg>
+                                                                        {{ __('main.Return All Items') }}
+                                                                    </button>
+                                                                </form>
+                                                            @endif
 
                                                             <!--EDIT--->
                                                             <a href="{{ route('client.sale_bills.edit1', [$sale_bill->token, $sale_bill->company_id]) }}"
@@ -277,7 +309,7 @@
                                                                         d="M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152V424c0 48.6 39.4 88 88 88H360c48.6 0 88-39.4 88-88V312c0-13.3-10.7-24-24-24s-24 10.7-24 24V424c0 22.1-17.9 40-40 40H88c-22.1 0-40-17.9-40-40V152c0-22.1 17.9-40 40-40H200c13.3 0 24-10.7 24-24s-10.7-24-24-24H88z">
                                                                     </path>
                                                                 </svg>
-                                                                {{ __('sidebar.edit or return') }}
+                                                                {{ __('sidebar.edit') }}
                                                             </a>
                                                             <a href="{{ route('client.sale_bills.print', [$sale_bill->token, 9, 3, 0]) }}"
                                                                 class="dropdown-item"

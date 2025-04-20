@@ -87,7 +87,7 @@
                                     @if ($supplier->prev_balance < 0) checked @endif type="radio" value="on"
                                     name="balance" /> عليه
 
-                                <input required value="{{ abs($supplier->prev_balance) }}" type="text" name="prev_balance"
+                                <input required value="{{ $supplier->prev_balance}}" type="text" name="prev_balance"
                                     class="form-control" dir="ltr" />
                             </div>
                             <div class="form-group pull-right col-lg-6" dir="ltr">

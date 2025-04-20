@@ -24,8 +24,6 @@
                     <a class="nav-link open-navbar-container" data-toggle="collapse" data-target="#navbar-mobile"><i
                             class="la la-ellipsis-v"></i></a>
                 </li>
-
-                
             </ul>
         </div>
         <div class="navbar-container content">

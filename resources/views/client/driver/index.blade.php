@@ -16,7 +16,7 @@
                             {{ __('main.list-of-drivers') }}</h5>
                         <a class="btn btnn text-white px-3 py-1" style="background-color:#36c7d6""
                             href="{{ route('drivers.create') }}">
-                            <i class="fa fa-plus"></i> {{ __('main.add-new-driver') }} </a>
+                            <i class="fa fa-plus"></i> {{ __('main.add-new-diver') }} </a>
 
                     </div>
                     <div class="clearfix"></div>

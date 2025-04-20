@@ -126,13 +126,6 @@
             margin: 0px;
         }
 
-        body.dark-mode .section {
-            background: #212631 ;
-            min-height: 500px !important;
-            border: 1px solid #f5f5f5;
-            margin: 0px;
-        }
-
         button.no-print {
             position: fixed;
             bottom: 0;

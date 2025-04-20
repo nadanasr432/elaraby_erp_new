@@ -41,7 +41,7 @@
                     </div>
                 </div>
                 <div class="text-end">
-                    <button type="submit" class="btn btn-warning">{{ __('Update') }}</button>
+                    <button type="submit" class="btn btn-warning">{{ __('main.Update') }}</button>
                 </div>
             </form>
         </div>

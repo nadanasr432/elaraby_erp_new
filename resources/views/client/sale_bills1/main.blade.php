@@ -143,7 +143,6 @@
         // Get the current page color from the settings
 
     @endphp
-
     <div class="invoice-container border mt-4">
         <div class="text-center" id="buttons">
             <button class="btn  btn-success" onclick="window.print()">@lang('sales_bills.Print the invoice')</button>
@@ -160,25 +159,12 @@
                 <i class="fa fa-whatsapp"></i>
                 @lang('sales_bills.Send to whatsapp')
             </button>
-            {{-- <form action="{{ route('send.invoice.to.zatca') }}" method="POST">
-                @csrf
-                <input type="hidden" name="sale_bill_id" value="{{ $sale_bill->id }}">
-
-                <button type="submit" name="invoice_type" value="standard" class="btn btn-primary">إرسال الفاتورة
-                    العادية إلى ZATCA</button>
-                <button type="submit" name="invoice_type" value="simplified" class="btn btn-secondary">إرسال الفاتورة
-                    المبسطة إلى ZATCA</button>
-                <button type="submit" name="invoice_type" value="credit" class="btn btn-warning">إرسال إشعار دائن إلى
-                    ZATCA</button>
-                <button type="submit" name="invoice_type" value="debit" class="btn btn-danger">إرسال إشعار مدين إلى
-                    ZATCA</button>
-            </form> --}}
             @if (!$sale_bill->zatca_status && $company->onboarding_data)
                 <form action="{{ route('zatca.send', $sale_bill->id) }}" method="POST">
                     @csrf
                     <button type="submit" class="btn btn-primary mt-3">Send to ZATCA</button>
                 </form>
-
+           
             @endif
             <div class="col-md-3">
                 <div class="card shadow-sm border-light rounded p-3 mb-3">
@@ -215,19 +201,7 @@
                 </div>
             </div>
         </div>
-        @if (count($errors) > 0)
-            <div class="alert alert-dark no-print">
-                <button aria-label="Close" class="close" data-dismiss="alert" type="button">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <strong>الاخطاء :</strong>
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+
         <div class="all-data" style="border-top: 1px solid #2d2d2d20;padding-top: 25px;">
 
             @if (!empty($company->basic_settings->header))
@@ -244,12 +218,12 @@
                 use Salla\ZATCA\Tags\TaxNumber;
 
                 // Ensure date and time are formatted correctly
-                $sale_billDate = date('Y-m-d\TH:i:s\Z', strtotime($sale_bill->date . ' ' . $sale_bill->time));
+                $invoiceDate = date('Y-m-d\TH:i:s\Z', strtotime($sale_bill->date . ' ' . $sale_bill->time));
 
                 $displayQRCodeAsBase64 = GenerateQrCode::fromArray([
                     new Seller($company->company_name), // seller name
                     new TaxNumber($company->tax_number), // seller tax number
-                    new InvoiceDate($sale_billDate), // invoice date in ISO 8601 format
+                    new InvoiceDate($invoiceDate), // invoice date in ISO 8601 format
                     new InvoiceTotalAmount(number_format($sale_bill->final_total, 2, '.', '')), // invoice total amount
                     new InvoiceTaxAmount(number_format($sale_bill->total_tax, 2, '.', '')), // invoice tax amount
                     // Additional tags can be added here if needed
@@ -505,9 +479,13 @@
                             <tr
                                 style="font-size:18px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
                                 <th>#</th>
-                                <th>@lang('sales_bills.product name')</th>
-                                <th>@lang('sales_bills.unit price')</th>
+                                @if ($company->extra_settings->show_model == 1)
+                                    <th>@lang('products.pmodel1')</th>
+                                @endif
+                                <th>@lang('sales_bills.product_name')</th>
                                 <th>@lang('sales_bills.Quantity')</th>
+                                <th>@lang('main.unit')</th>
+                                <th>@lang('sales_bills.unit price')</th>
                                 <th>@lang('sales_bills.The amount does not include tax')</th>
                                 <th>@lang('sales_bills.Tax')</th>
                                 <th>@lang('sales_bills.Discount')</th>
@@ -553,12 +531,17 @@
                                     <tr
                                         style="font-size:18px !important; height: 34px !important; text-align: center; background: #f8f9fb">
                                         <td>{{ ++$i }}</td>
+                                        @if ($company->extra_settings->show_model == 1)
+                                            <td>{{ $element->product->product_model }}</td>
+                                        @endif
                                         <td>{{ $element->product->product_name }}</td>
-                                        <td>{{ round($element->product_price, 2) }}
+                                        <td class="text-center">
+                                           {{ $element->quantity }}
                                         </td>
                                         <td class="text-center">
-                                            <span>{{ $element->quantity }}</span>
-                                            <span>{{ $element->unit->unit_name }}</span>
+                                           {{ $element->unit->unit_name }}
+                                        </td>
+                                        <td>{{ round($element->product_price, 2) }}
                                         </td>
                                         <td>
                                             {{ round($element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price, 2) }}
@@ -588,9 +571,13 @@
                                 <th>@lang('sales_bills.Tax')</th>
                                 <th>@lang('sales_bills.Discount')</th>
                                 <th>@lang('sales_bills.The amount does not include tax')</th>
-                                <th>@lang('sales_bills.Quantity')</th>
                                 <th>@lang('sales_bills.unit price')</th>
-                                <th>@lang('sales_bills.product name')</th>
+                                <th>@lang('main.unit')</th>
+                                <th>@lang('sales_bills.Quantity')</th>
+                                <th>@lang('sales_bills.product_name')</th>
+                                @if ($company->extra_settings->show_model == 1)
+                                    <th>@lang('products.pmodel1')</th>
+                                @endif
                                 <th>#</th>
                             </tr>
 
@@ -640,12 +627,18 @@
                                         <td>
                                             {{ round($element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price, 2) }}
                                         </td>
-                                        <td class="text-center">
-                                            <span>{{ $element->unit->unit_name }}</span>
-                                            <span>{{ $element->quantity }}</span>
-                                        </td>
                                         <td>{{ round($element->product_price, 2) }}</td>
+
+                                        <td class="text-center">
+                                           {{ $element->unit->unit_name }}
+                                        </td>
+                                         <td class="text-center">
+                                           {{ $element->quantity }}
+                                        </td>
                                         <td>{{ $element->product->product_name }}</td>
+                                        @if ($company->extra_settings->show_model == 1)
+                                            <td>{{ $element->product->product_model }}</td>
+                                        @endif
                                         <td>{{ ++$i }}</td>
                                     </tr>
                                 @endforeach
@@ -659,10 +652,10 @@
             <?php
             if ($sale_bill->company_id == 20) {
                 echo "<p style='text-align: justify; direction: rtl; font-size: 12px; padding: 11px; background: #f3f3f3; margin: 2px 10px; border-radius: 6px; border: 1px solid #2d2d2d10;'>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </p>";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </p>";
             }
             ?>
             @if (app()->getLocale() == 'en')
@@ -685,10 +678,10 @@
                                         {{-- @if ($realtotal > 0)
                                             @if ($discount2 && ($discount2->action_type == 'poundAfterTax' || $discount2->action_type == 'pound'))
                                                 ({{ $discount2->value }}) --}}
-                                        ({{ $sale_bill->total_discount }})
+                                            ({{ $sale_bill->total_discount }})
 
-                                        <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
-                                        {{-- @elseif($discount2)
+                                                <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                            {{-- @elseif($discount2)
                                                 ({{ $discount2->value }}%)
                                             @endif
                                         @endif --}}
@@ -741,8 +734,7 @@
                                     ({{ $company->tax_value_added ?? '0' }}%)
                                 </td>
                                 {{-- @if ($company->tax_value_added && $company->tax_value_added != 0) --}}
-                                <td dir="rtl">{{ $sale_bill->total_tax }} <img
-                                        src="{{ asset('images/Sr_coin.svg') }}" width="15px"> </td>
+                                <td dir="rtl">{{ $sale_bill->total_tax }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px"> </td>
                                 {{-- @else
                                     <td dir="rtl">0 <img src="{{ asset('images/Sr_coin.svg') }}" width="15px"> </td>
                                 @endif --}}
@@ -780,8 +772,7 @@
                                 <td style="text-align: left;padding-right: 14px;">
                                     @lang('sales_bills.The amount paid')
                                 </td>
-                                <td dir="rtl">{{ $sale_bill->paid }} <img
-                                        src="{{ asset('images/Sr_coin.svg') }}" width="15px"></td>
+                                <td dir="rtl">{{ $sale_bill->paid }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px"></td>
 
                             </tr>
                             <tr
@@ -790,8 +781,7 @@
                                     @lang('sales_bills.Residual')
                                 </td>
                                 <td dir="rtl">
-                                    {{ $sale_bill->final_total - $sale_bill->paid }} <img
-                                        src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                    {{ $sale_bill->final_total - $sale_bill->paid }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                                 </td>
 
                             </tr>
@@ -911,8 +901,7 @@
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                 {{-- @if ($company->tax_value_added && $company->tax_value_added != 0) --}}
-                                <td dir="rtl">{{ $sale_bill->total_tax }} <img
-                                        src="{{ asset('images/Sr_coin.svg') }}" width="15px"> </td>
+                                <td dir="rtl">{{ $sale_bill->total_tax }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px"> </td>
                                 {{-- @else
                                     <td dir="rtl">0 <img src="{{ asset('images/Sr_coin.svg') }}" width="15px"> </td>
                                 @endif --}}
@@ -948,8 +937,7 @@
                             </tr>
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: #f8f9fb">
-                                <td dir="rtl">{{ $sale_bill->paid }} <img
-                                        src="{{ asset('images/Sr_coin.svg') }}" width="15px"></td>
+                                <td dir="rtl">{{ $sale_bill->paid }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px"></td>
                                 <td style="text-align: right;padding-right: 14px;">
                                     @lang('sales_bills.The amount paid')
                                 </td>
@@ -957,8 +945,7 @@
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: #f8f9fb">
                                 <td dir="rtl">
-                                    {{ $sale_bill->final_total - $sale_bill->paid }} <img
-                                        src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                    {{ $sale_bill->final_total - $sale_bill->paid }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                                 </td>
                                 <td style="text-align: right;padding-right: 14px;">
                                     @lang('sales_bills.Residual')

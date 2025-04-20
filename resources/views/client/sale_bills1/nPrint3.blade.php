@@ -440,9 +440,12 @@
                             <tr
                                 style="font-size: 15px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
                                 <th style="border: 1px solid white;padding: 6px;">#</th>
-                                <th style="border: 1px solid white;">@lang('sales_bills.product name') </th>
-                                <th style="border: 1px solid white;">@lang('sales_bills.unit price') </th>
+                                 @if ($company->extra_settings->show_model == 1)
+                                 <th style="border: 1px solid white;padding: 6px;">@lang('products.pmodel1')</th>@endif
+                                <th style="border: 1px solid white;">@lang('sales_bills.product_name') </th>
                                 <th style="border: 1px solid white;">@lang('sales_bills.Quantity')</th>
+                                <th style="border: 1px solid white;">@lang('main.unit')</th>
+                                <th style="border: 1px solid white;">@lang('sales_bills.unit price') </th>
                                 <th style="border: 1px solid white;">@lang('sales_bills.The amount does not include tax') </th>
                                 <th style="border: 1px solid white;">@lang('sales_bills.Tax')</th>
                                 <th style="border: 1px solid white;">@lang('sales_bills.Discount')</th>
@@ -493,14 +496,20 @@
                                     <tr
                                         style="font-size: 15px !important; height: 44px !important; text-align: center; {{ $currentColor }}">
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">{{ ++$i }}</td>
+                                        @if ($company->extra_settings->show_model == 1)
+                                            <td style="border: 1px solid rgba(161,161,161,0.63);">{{ $element->product->product_model }}</td>
+                                        @endif
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
                                             {{ $element->product->product_name }}</td>
-                                        <td style="border: 1px solid rgba(161,161,161,0.63);">
-                                            <img src="{{ asset('images/Sr_coin.svg') }}" width="15px"> {{ $element->product_price }} </td>
+                                       
                                         <td class="text-center" style="border: 1px solid rgba(161,161,161,0.63);">
-                                            <span>{{ $element->quantity }}</span>
-                                            <span>{{ $element->unit->unit_name }}</span>
+                                              {{ $element->quantity }}
                                         </td>
+                                        <td class="text-center" style="border: 1px solid rgba(161,161,161,0.63);">
+                                            {{ $element->unit->unit_name }}
+                                        </td>
+                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
+                                            <img src="{{ asset('images/Sr_coin.svg') }}" width="15px"> {{ $element->product_price }} </td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
                                           <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">  {{ $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
 
@@ -534,9 +543,12 @@
                                 <th style="border: 1px solid white;">@lang('sales_bills.Discount')</th>
                                 <th style="border: 1px solid white;">@lang('sales_bills.Tax')</th>
                                 <th style="border: 1px solid white;">@lang('sales_bills.The amount does not include tax') </th>
-                                <th style="border: 1px solid white;">@lang('sales_bills.Quantity')</th>
                                 <th style="border: 1px solid white;">@lang('sales_bills.unit price') </th>
-                                <th style="border: 1px solid white;">@lang('sales_bills.product name') </th>
+                                <th style="border: 1px solid white;">@lang('main.unit') </th>
+                                <th style="border: 1px solid white;">@lang('sales_bills.Quantity')</th>
+                                <th style="border: 1px solid white;">@lang('sales_bills.product_name') </th>
+                                 @if ($company->extra_settings->show_model == 1)
+                                 <th style="border: 1px solid white;padding: 6px;">@lang('products.pmodel1')</th>@endif
                                 <th style="border: 1px solid white;padding: 6px;">#</th>
                             </tr>
 
@@ -576,14 +588,19 @@
                                            <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">  {{ $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
                                            
                                         </td>
-                                        <td class="text-center" style="border: 1px solid rgba(161,161,161,0.63);">
-                                            <span>{{ $element->unit->unit_name }}</span>
-                                            <span>{{ $element->quantity }}</span>
-                                        </td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
                                          <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">   {{ $element->product_price }} </td>
+                                        <td class="text-center" style="border: 1px solid rgba(161,161,161,0.63);">
+                                            {{ $element->unit->unit_name }} 
+                                        </td>
+                                        <td class="text-center" style="border: 1px solid rgba(161,161,161,0.63);">
+                                            {{ $element->quantity }}
+                                        </td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
                                             {{ $element->product->product_name }}</td>
+                                            @if ($company->extra_settings->show_model == 1)
+                                            <td>{{ $element->product->product_model }}</td>
+                                        @endif
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">{{ ++$i }}</td>
                                     </tr>
                                 @endforeach

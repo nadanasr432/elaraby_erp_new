@@ -126,13 +126,13 @@
                                     @foreach ($transfers as $key => $transfer)
                                         <tr>
                                             <td>{{ ++$i }}</td>
-                                            <td>{{ $transfer->fromStore->store_name ?? " " }}</td>
-                                            <td>{{ $transfer->toStore->store_name ?? " " }}</td>
-                                            <td>{{ $transfer->product->product_name ?? " " }}</td>
-                                            <td>{{ $transfer->quantity ?? " " }}</td>
-                                            <td>{{ $transfer->date ?? " " }}</td>
-                                            <td>{{ $transfer->notes ?? " " }}</td>
-                                            <td>{{ $transfer->client->name ?? " " }}</td>
+                                            <td>{{ $transfer->fromStore->store_name ?? '' }}</td>
+                                            <td>{{ $transfer->toStore->store_name ?? '' }}</td>
+                                            <td>{{ $transfer->product->product_name ?? '' }}</td>
+                                            <td>{{ $transfer->quantity ?? '' }}</td>
+                                            <td>{{ $transfer->date ?? '' }}</td>
+                                            <td>{{ $transfer->notes ?? '' }}</td>
+                                            <td>{{ $transfer->client->name ?? '' }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

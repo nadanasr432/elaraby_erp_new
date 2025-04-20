@@ -410,12 +410,23 @@ return [
     'Trailer Type' => 'نوع المقطورة',
     'Update' => 'تحديث',
     'Add New Vehicle' => 'إضافة مركبة جديدة',
-    'driver'=>'السائق',
+    'diver'=>'السائق',
+    "print"=>"طباعة",
     "region"=>"المنطقة",
-    'Are you sure you want to return all items?' => 'هل أنت متأكد أنك تريد إرجاع جميع العناصر؟',
-    'Return All Items' => 'إرجاع جميع العناصر',
+        'iqama_number' => 'رقم الاقامة',
+         'Company Name' => 'اسم الشركة',
+    'Supervisor Name' => 'اسم المشرف',
+    'Mobile Number' => 'رقم الجوال',
+    'Edit Vehicle' => 'تعديل المركبة',
+    'Vehicle Number' => 'رقم المركبة',
+     'Are you sure you want to return all items?' => 'هل أنت متأكد أنك تريد إرجاع جميع العناصر؟',
+'Return All Items' => 'إرجاع جميع العناصر',    
     'return'=>"ارجاع",
-    'sender'=>'المرسل',
+     'sender'=>'المرسل',
     "receiver"=>"المرسل اليه"
+
+     
+ 
+
 
 ];

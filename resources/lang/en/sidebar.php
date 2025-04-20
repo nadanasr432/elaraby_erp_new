@@ -201,5 +201,9 @@ return [
     'shipments' => 'Shipments',
     'vehicle-owners' => 'Vehicle Owners',
     'vehicles' => 'Vehicles',
+    'Returned' => 'Returned',
+    'Not Returned' => 'Not Returned',
+
+
 
 ];

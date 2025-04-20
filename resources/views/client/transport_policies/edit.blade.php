@@ -113,7 +113,7 @@
                                         @foreach ($shipments as $shipment)
                                             <option value="{{ $shipment->id }}" 
                                                 @if($shipment->id == $transportPolicy->shipment_id) selected @endif>
-                                                {{ $shipment->containers_no }}
+                                                {{ $shipment->payload_type }}
                                             </option>
                                         @endforeach
                                     </select>

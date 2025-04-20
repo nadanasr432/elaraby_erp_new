@@ -458,12 +458,11 @@
                             <tr
                                 style="font-size:18px !important; background:{{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
                                 <th>#</th>
-                                @if ($company->extra_settings->show_model == 1)
-                                    <th>@lang('products.pmodel1')</th>
-                                @endif
-                                <th>@lang('main.name')</th>
-                                <th>@lang('sales_bills.unit price')</th>
+                                <th>@lang('products.pmodel1')</th>
+                                <th>@lang('sales_bills.product_name')</th>
                                 <th>@lang('sales_bills.Quantity')</th>
+                                <th>@lang('main.unit')</th>
+                                <th>@lang('sales_bills.unit price')</th>
                                 <th>@lang('sales_bills.The amount does not include tax')</th>
                                 <th>@lang('sales_bills.Tax')</th>
                                 <th>@lang('sales_bills.Discount')</th>
@@ -518,15 +517,15 @@
                                     <tr
                                         style="font-size:18px !important; height: 34px !important; text-align: center; background: #f8f9fb">
                                         <td>{{ $i }}</td>
-                                        @if ($company->extra_settings->show_model == 1)
-                                            <td>{{ $element->product->product_model }}</td>
-                                        @endif
+                                        <td>{{ $element->product->product_model }}</td>
                                         <td>{{ $element->product->product_name }}</td>
-                                        <td>{{ round($element->product_price, 2) }}</td>
                                         <td class="text-center">
-                                            <span>{{ $element->quantity }}</span>
-                                            <span>{{ $element->unit->unit_name }}</span>
+                                            {{ $element->quantity }}
                                         </td>
+                                        <td class="text-center">
+                                           {{ $element->unit->unit_name }}
+                                        </td>
+                                        <td>{{ round($element->product_price, 2) }}</td>
                                         <td> {{ $element->tax_type == 2 ? round($element->quantity_price - $element->tax_value, 2) : round($element->quantity_price, 2) }}
                                         </td>
                                         <td>{{ $element->tax_value }}</td>
@@ -555,13 +554,11 @@
                                 <th>@lang('sales_bills.Tax')</th>
                                 <th>@lang('sales_bills.Discount')</th>
                                 <th>@lang('sales_bills.The amount does not include tax')</th>
-                                <th>@lang('sales_bills.Quantity')</th>
-                                
                                 <th>@lang('sales_bills.unit price')</th>
-                                <th>@lang('main.name')</th>
-                                @if ($company->extra_settings->show_model == 1)
-                                    <th>@lang('products.pmodel1')</th>
-                                @endif
+                                <th>@lang('main.unit')</th>
+                                <th>@lang('sales_bills.Quantity')</th>
+                                <th>@lang('sales_bills.product_name')</th>
+                                <th>@lang('products.pmodel1')</th>
                                 <th>#</th>
                             </tr>
 
@@ -621,15 +618,16 @@
                                             {{ $element->tax_type == 2 ? round($element->quantity_price - $element->tax_value, 2) : round($element->quantity_price, 2) }}
 
                                         </td>
+                                         <td>{{ round($element->product_price, 2) }}</td>
                                         <td class="text-center">
-                                            <span>{{ $element->unit->unit_name }}</span>
-                                            <span>{{ $element->quantity }}</span>
+                                            {{ $element->unit->unit_name }}
+
                                         </td>
-                                        <td>{{ round($element->product_price, 2) }}</td>
+                                        <td class="text-center">
+                                            {{ $element->quantity }} 
+                                        </td>
                                         <td>{{ $element->product->product_name }}</td>
-                                        @if ($company->extra_settings->show_model == 1)
-                                            <td>{{ $element->product->product_model }}</td>
-                                        @endif
+                                        <td>{{ $element->product->product_model }}</td>
                                         <td>{{ $i }}</td>
                                     </tr>
                                 @endforeach
