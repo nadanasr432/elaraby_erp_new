@@ -657,7 +657,7 @@ class PosController extends Controller
             $img = $product->product_pic ? $product->product_pic : 'images/noprod.png';
 
             echo '
-            <div class="card cproduct m-nos product" product_id="' . $product->id . '" product_name="' . $product->product_name . '" product_price="' . $product->sector_price . '"
+            <div class="card cproduct m-nos product" product_id="' . $product->id . '" wholesale_price="' . $product->wholesale_price . '" product_name="' . $product->product_name . '" product_price="' . $product->sector_price . '"
                  style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important; border: 1px solid rgba(229, 229, 229, 0.4) !important; min-height: 172px !important; max-height: 172px !important; width: 12rem !important;margin-bottom: 5px !important;">
                 <div class="imgBox" style="height: 75px !important; width: 100% !important;">
                     <img style="height: 100% !important; width: 100% !important; object-fit: contain !important;"
@@ -729,7 +729,7 @@ class PosController extends Controller
             foreach ($products as $product) {
                 $img = $product->product_pic ? $product->product_pic : 'images/noprod.png';
                 echo '
-            <div class="card cproduct m-nos product" product_id="' . $product->id . '" product_name="' . $product->product_name . '" product_price="' . $product->wholesale_price . '"
+            <div class="card cproduct m-nos product" product_id="' . $product->id . '" product_name="' . $product->product_name . '" wholesale_price="' . $product->wholesale_price . '" product_price="' . $product->sector_price . '"
                  style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important; border: 1px solid rgba(229, 229, 229, 0.4) !important; min-height: 172px !important; max-height: 172px !important; width: 12rem !important;margin-bottom: 5px !important;">
                 <div class="imgBox" style="height: 75px !important; width: 100% !important;">
                     <img style="height: 100% !important; width: 100% !important; object-fit: contain !important;"
@@ -779,7 +779,7 @@ class PosController extends Controller
                 $img = $product->product_pic ? $product->product_pic : 'images/noprod.png';
 
                 echo '
-            <div class="card cproduct m-nos product" product_id="' . $product->id . '" product_name="' . $product->product_name . '" product_price="' . $product->sector_price . '"
+            <div class="card cproduct m-nos product" product_id="' . $product->id . '" product_name="' . $product->product_name . '" wholesale_price="' . $product->wholesale_price . '" product_price="' . $product->sector_price . '"
                  style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important; border: 1px solid rgba(229, 229, 229, 0.4) !important; min-height: 172px !important; max-height: 172px !important; width: 12rem !important;margin-bottom: 5px !important;">
                 <div class="imgBox" style="height: 75px !important; width: 100% !important;">
                     <img style="height: 100% !important; width: 100% !important; object-fit: contain !important;"

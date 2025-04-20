@@ -136,7 +136,7 @@ class ReportController extends Controller
                 $saleBills = SaleBill::where('company_id', $company_id)
                     ->whereBetween('date', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
                 $posBills = PosOpen::where('company_id', $company_id)
-                    ->whereBetween('date', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
+                    ->whereBetween('created_at', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
             } else {
                 $saleBillElements = SaleBillElement::where('company_id', $company_id)
                     ->where('product_id', $product_id)
@@ -664,7 +664,7 @@ class ReportController extends Controller
             $sale_bills = SaleBill::where('company_id', $company_id)
                 ->whereBetween('date', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
             $pos_bills = PosOpen::where('company_id', $company_id)
-                ->whereBetween('date', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
+                ->whereBetween('created_at', [$from_date, date('Y-m-d', strtotime($to_date . ' +1 day'))])->get();
         }
         return view(
             'client.reports.report13',

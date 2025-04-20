@@ -1226,7 +1226,7 @@ class BuyBillController extends Controller
             ->where('company_id', $company_id)
             ->where('client_id', $buy_bill_k->client_id)
             ->where('supplier_id', $buy_bill_k->supplier_id)
-            ->where('store_id', $buy_bill_k->store_id)
+            // ->where('store_id', $buy_bill_k->store_id)
             ->first();
 
         $elements = $buy_bill_k->elements;

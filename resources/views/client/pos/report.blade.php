@@ -85,9 +85,9 @@
 
 
                             <!-- New Buttons -->
-                            <button id="deleteClientPos" class="btn pull-left btn-danger btn-sm mr-1">
+                            {{-- <button id="deleteClientPos" class="btn pull-left btn-danger btn-sm mr-1">
                                 <i class="fa fa-trash"></i> حذف فواتير الفرع
-                            </button>
+                            </button> --}}
                             <button id="rearrangeCompanyCounter" class="btn pull-left btn-success btn-sm mr-1">
                                 <i class="fa fa-sort-numeric-asc"></i> إعادة ترتيب العداد
                             </button>
@@ -255,10 +255,10 @@
                                                 class="btn btn-sm btn-primary" title="{{ __('pos.print-invoice') }}">
                                                 <i class="fa fa-print"></i> {{ __('pos.print') }}
                                             </a>
-                                            <button class="btn btn-sm btn-danger delete-specific-pos"
+                                            {{-- <button class="btn btn-sm btn-danger delete-specific-pos"
                                                 data-pos-id="{{ $pos->id }}" title="{{ __('pos.delete-invoice') }}">
                                                 <i class="fa fa-trash"></i> {{ __('main.delete') }}
-                                            </button>
+                                            </button> --}}
                                         </td>
                                     </tr>
                                 @endforeach

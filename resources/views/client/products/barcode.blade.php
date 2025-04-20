@@ -51,10 +51,25 @@
         div.barcode .company-name {
             font-size: 16px;
             font-weight: bold;
-            margin-top: 8px;
             color: #000;
             border-bottom: 1px dashed #000;
             padding-bottom: 5px;
+        }
+
+        /* تنسيق شعار الشركة */
+        div.barcode .company-logo {
+            width: 20px;
+            height: 20px;
+            display: block;
+        }
+
+        /* تنسيق حاوية الشعار واسم الشركة */
+        div.barcode .company-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 8px;
         }
     </style>
 </head>
@@ -71,13 +86,20 @@
                 $company = \App\Models\Company::find(Auth::user()->company_id);
             @endphp
             <div class="barcode">
-                <!-- إضافة اسم الشركة -->
-                <div class="company-name">{{ $company->company_name }}</div>
+                <!-- حاوية الشعار واسم الشركة -->
+                <div class="company-container">
+                    @if ($company->company_logo)
+                        <img src="{{ asset($company->company_logo) }}" class="company-logo" alt="Company Logo">
+                    @endif
+                    <div class="company-name">{{ $company->company_name }}</div>
+                </div>
 
                 <div style="display: flex; justify-content: center; gap:15px">
                     <div class="col-6">
-                        <div>Start: {{ $start_date }}</div>
-                        <div>Exp: {{ $exp_date }}</div>
+                        @if ($start_date)
+                            <div>Start: {{ $start_date }}</div>
+                            <div>Exp: {{ $exp_date }}</div>
+                        @endif
                     </div>
                     <div class="col-6" style="margin-right: 10px;">
                         <div>{{ $product->product_name }}</div>
@@ -86,7 +108,8 @@
                 <div class="barcode-img">
                     <?php echo '<img src="data:image/png;base64,' . base64_encode($generator->getBarcode($code_barre, $generator::TYPE_CODE_128)) . '">'; ?>
                 </div>
-                <div style="letter-spacing: 5px; font-weight: 600;" class="barcode-number">*{{ $product->code_universal }}*</div>
+                <div style="letter-spacing: 5px; font-weight: 600;" class="barcode-number">
+                    *{{ $product->code_universal }}*</div>
                 <div>
                     السعر: {{ $product->sector_price }}
                 </div>

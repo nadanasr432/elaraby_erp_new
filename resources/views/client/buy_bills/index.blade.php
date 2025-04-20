@@ -370,7 +370,7 @@
                                 <td>{{ $buy_bill->date }}</td>
                                 <td>{{ $buy_bill->time }}</td>
                                 <td>{{ $buy_bill->supplier->supplier_name }}</td>
-                                <td>{{ $buy_bill->store->store_name }}</td>
+                                <td>{{ $buy_bill->store?->store_name }}</td>
 
                                 <td>
                                     <?php $sum = 0; ?>
@@ -494,7 +494,7 @@
                                 <td>{{ $buy_bill->date }}</td>
                                 <td>{{ $buy_bill->time }}</td>
                                 <td>{{ $buy_bill->supplier->supplier_name }}</td>
-                                <td>{{ $buy_bill->store->store_name }}</td>
+                                <td>{{ $buy_bill->store?->store_name }}</td>
                                 <td>
                                     <?php $sum = 0; ?>
                                     @foreach ($buy_bill->elements as $element)
@@ -600,7 +600,7 @@
                 </div>
                 <table class='table table-condensed table-striped table-bordered'>
                     <thead class="text-center">
-                        
+
                         <th>رقم الفاتورة</th>
                         <th>اسم المورد</th>
                         <th>تاريخ الفاتورة</th>
@@ -615,7 +615,7 @@
                         @foreach ($product_buy_bills as $buy_bill)
                             <tr>
                                 <td>{{ $buy_bill->company_counter }}</td>
-                                <td>{{ $buy_bill->store->store_name }}</td>
+                                <td>{{ $buy_bill->store?->store_name }}</td>
                                 <td>{{ $buy_bill->date }}</td>
                                 <td>{{ $buy_bill->time }}</td>
                                 <td>
@@ -721,7 +721,7 @@
                 </div>
                 <table class='table table-condensed table-striped table-bordered'>
                     <thead class="text-center">
-                       
+
                         <th>رقم الفاتورة</th>
                         <th>اسم المورد</th>
                         <th>تاريخ الفاتورة</th>
@@ -735,7 +735,7 @@
                         $total = 0; ?>
                         @foreach ($all_buy_bills as $buy_bill)
                             <tr>
-                               
+
                                 <td>{{ $buy_bill->company_counter }}</td>
                                 <td>{{ $buy_bill->supplier->supplier_name }}</td>
                                 <td>{{ $buy_bill->date }}</td>
