@@ -1360,6 +1360,28 @@
 </script>
 <script>
     $(document).ready(function() {
+
+        // ==== (refresh | update) bill details =======//
+        function refreshBillDetails() {
+            //----update bill details----//
+            let totalSum = 0;
+            let totalQty = 0;
+            $(".edit_price").each(function(index) {
+                var productPrice = Number($($(".edit_price")[index]).val());
+                var productQty = Number($($(".edit_quantity")[index]).val());
+                totalQty += productQty;
+                var productDiscount = Number($($(".edit_discount")[index]).val());
+                totalSum += productPrice * productQty - productDiscount;
+            });
+            $("#sum").text(totalSum.toFixed(3));
+            //------Calc Tax Value & total PriceWithTax-------//
+            let posTaxValue = Number($("#posTaxValue").text());
+            let taxValueAmount = totalSum / 100 * posTaxValue;
+            $("#taxValueAmount").text(taxValueAmount.toFixed(3));
+            $("#total").text((totalSum + taxValueAmount).toFixed(3));
+            $("#total_quantity").text(totalQty);
+            $("#items").text($('.bill_details tr').length);
+        }
         setTimeout(function() {
             $(".app-content.content").show();
             $(".loader").hide();
@@ -1503,7 +1525,7 @@
                     '<i class="fa fa-trash"></i>' +
                     '</button>' +
                     '</td>' +
-                    '<td class="original-price">' + product_price + '</td>' +
+                    '<td class="original-price hidden">' + product_price + '</td>' +
                     '</tr>';
 
                 $('.bill_details').append(productRow);
@@ -1548,7 +1570,8 @@
                 });
 
                 // Reset discount to maximum allowed value
-                $(this).val(maxDiscount);
+                // $(this).val(maxDiscount);
+                $(this).val(0);
                 edit_discount = maxDiscount;
             }
 
@@ -1558,7 +1581,7 @@
 
                 // Show price after discount
                 let priceAfterDiscount = (edit_price - (edit_discount / edit_quantity)).toFixed(3);
-                $("#edit_price-" + element_id).val(priceAfterDiscount);
+                // $("#edit_price-" + element_id).val(priceAfterDiscount);
             }
 
             refreshBillDetails();
@@ -2484,27 +2507,6 @@
 
         //==============================================
 
-        // ==== (refresh | update) bill details =======//
-        function refreshBillDetails() {
-            //----update bill details----//
-            let totalSum = 0;
-            let totalQty = 0;
-            $(".edit_price").each(function(index) {
-                var productPrice = Number($($(".edit_price")[index]).val());
-                var productQty = Number($($(".edit_quantity")[index]).val());
-                totalQty += productQty;
-                var productDiscount = Number($($(".edit_discount")[index]).val());
-                totalSum += productPrice * productQty - productDiscount;
-            });
-            $("#sum").text(totalSum.toFixed(3));
-            //------Calc Tax Value & total PriceWithTax-------//
-            let posTaxValue = Number($("#posTaxValue").text());
-            let taxValueAmount = totalSum / 100 * posTaxValue;
-            $("#taxValueAmount").text(taxValueAmount.toFixed(3));
-            $("#total").text((totalSum + taxValueAmount).toFixed(3));
-            $("#total_quantity").text(totalQty);
-            $("#items").text($('.bill_details tr').length);
-        }
 
         //===============================================
 
