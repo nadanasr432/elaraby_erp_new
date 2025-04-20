@@ -2103,18 +2103,47 @@ class SaleBillController extends Controller
     public function post_returnAll(Request $request)
     {
         $company_id = Auth::user()->company_id;
-        $company = Company::FindOrFail($company_id);
+        $company = Company::findOrFail($company_id);
         $data = $request->all();
         $data['company_id'] = $company_id;
         $data['client_id'] = Auth::user()->id;
         $data['bill_id'] = $request->sale_bill_id;
+
         $invoice = SaleBill::findOrFail($data['bill_id']);
         $items = \App\Models\SaleBillElement::where('sale_bill_id', $invoice->id)
             ->where('company_id', $invoice->company_id)
             ->get();
 
         $clientData = OuterClient::where("id", $invoice->outer_client_id)->first();
+
+        // Validation: Check if all items are already returned
+        $allReturned = true;
         foreach ($items as $product) {
+            $alreadyReturnedQty = SaleBillReturn::where('bill_id', $invoice->id)
+                ->where('product_id', $product->product_id)
+                ->sum('return_quantity');
+
+            if ($alreadyReturnedQty < $product->quantity) {
+                $allReturned = false;
+                break;
+            }
+        }
+
+        if ($allReturned) {
+            return redirect()->back()->with('error', 'All items have already been returned.');
+        }
+
+        foreach ($items as $product) {
+            $alreadyReturnedQty = SaleBillReturn::where('bill_id', $invoice->id)
+                ->where('product_id', $product->product_id)
+                ->sum('return_quantity');
+
+            $remainingQty = $product->quantity - $alreadyReturnedQty;
+
+            if ($remainingQty <= 0) {
+                continue; // Skip already fully returned items
+            }
+
             $data['return_quantity'] = $product->quantity;
             $data['quantity_price'] = $product->product_price * $product->quantity;
             $data['product_price'] = $product->product_price;
@@ -2189,16 +2218,22 @@ class SaleBillController extends Controller
 
         $returnSaleInvoices = [];
         foreach ($billIDS as $invID) {
-            $invoices = SaleBillReturn::where("bill_id", $invID->bill_id)->get();
+            // Order the returned bills from newest to oldest based on 'created_at'
+            $invoices = SaleBillReturn::where("bill_id", $invID->bill_id)
+                ->orderBy('created_at', 'desc') // Sorting by 'created_at' in descending order
+                ->get();
+
             foreach ($invoices as $bill_return) {
                 $saleBill = SaleBill::find($bill_return->bill_id);
                 $bill_return->setAttribute('value_added_tax', $saleBill->value_added_tax ?? 0);
             }
+
             array_push($returnSaleInvoices, $invoices);
         }
 
         return view('client.sale_bills.returns', compact('returnSaleInvoices'));
     }
+
 
     public function redirect()
     {
