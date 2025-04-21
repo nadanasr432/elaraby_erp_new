@@ -10,6 +10,8 @@
     <title> {{ $system->name }} </title>
     <meta name="_token" content="{{ csrf_token() }}" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- include summernote css/js -->
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
@@ -59,6 +61,12 @@
                 color: #3e4045 !important;
             }
 
+            body.dark-mode .alert,
+            body.dark-mode .alert-sm,
+            body.dark-mode .alert-info,
+            body.dark-mode .alert-primary {
+                color: #fff !important;
+            }
 
         }
     </style>
@@ -156,7 +164,12 @@
         .alert-primary {
             color: #3e4045 !important;
         }
-
+        body.dark-mode .alert,
+        body.dark-mode .alert-sm,
+        body.dark-mode .alert-info,
+        body.dark-mode .alert-primary {
+            color: #fff !important;
+        }
         .main-news {
             padding: 3px !important;
             background: #222751 ;
@@ -167,7 +180,6 @@
             background: #212631 !important;
             color: white !important;
         }
-
         .main-news p {
             margin-top: 19px !important;
         }
