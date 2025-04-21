@@ -647,6 +647,9 @@
         document.querySelector('.tile_stats_count.active').style.backgroundColor = newColor;
         document.querySelector('.card-header:first-child').style.backgroundColor = newColor;
         document.querySelector('.table thead').style.setProperty('background-color', newColor, 'important');
+        document.querySelectorAll('table thead th').forEach(th => {
+            th.style.setProperty('background-color', newColor, 'important');
+        });
     });
 </script>
 
