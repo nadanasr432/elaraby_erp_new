@@ -217,7 +217,12 @@ pre code {
 .table-borderless td, .table-borderless th {
     border: none;
 }
-
+.table thead {
+    background-color: #222751 ;
+}
+body.dark-mode .table thead {
+    background-color: #212631 !important;
+}
 .table thead th {
     vertical-align: bottom;
     border-bottom: 2px solid #E3EBF3;

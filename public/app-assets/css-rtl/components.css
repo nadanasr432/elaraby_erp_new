@@ -261,9 +261,12 @@ footer.footer-transparent {
 footer.footer-light {
     background: #FFFFFF;
 }
-
-footer.footer-dark {
-    background: #2C303B;
+body.light-mode footer {
+    background: #222751 ;
+    color: #FFFFFF;
+}
+body.dark-mode footer {
+    background: #212631 !important;
     color: #FFFFFF;
 }
 

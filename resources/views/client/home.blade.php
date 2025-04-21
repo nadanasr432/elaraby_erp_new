@@ -72,18 +72,34 @@
         box-shadow: rgb(50 50 93 / 25%) -1px -7px 34px -19px, rgb(0 0 0 / 30%) 0px 18px 36px -18px;
         background: white;
         color: gray;
-        min-height: 86px !important;
+        min-height: 105px !important;
         border-radius: 7px;
         overflow: hidden !important;
         padding: 8px 13px 2px 1px !important;
         transition: all 0.2s ease-in-out;
         cursor: pointer;
     }
+    body.dark-mode .tile_stats_count {
+        background: #212631 !important;
+        color: rgb(215, 215, 215);
+    }
+    body.dark-mode .highcharts-background{
+        fill: #212631 !important;
+        color: #fff !important
+
+    }
+    body.dark-mode .highcharts-axis-labels .highcharts-xaxis-labels text{
+        color: #fff !important
+    }
+    body.dark-mode .card-header{
+        background-color: #212631 !important
+
+    }
 
     .tile_stats_count:hover {
         transform: scale(1.07) !important;
         background: #222751;
-        min-height: 86px !important;
+        min-height: 105px !important;
     }
 
     .tile_stats_count:hover .col-9 span {
@@ -93,7 +109,7 @@
     .tile_stats_count.active {
         background: #222751;
         color: white;
-        min-height: 86px !important;
+        min-height: 105px !important;
     }
 
     .tile_stats_count.col-9 {
@@ -305,7 +321,7 @@
     #recent-orders thead tr th,
     #transactions thead tr th {
         border-top: 1px solid #2d2d2d20 !important;
-        background: #222751 !important;
+        background: #222751 ;
         color: white !important;
     }
 
@@ -539,6 +555,8 @@
                         << <span style="font-size: 16px !important;">{{ __('main.dashboard') }}</span>
                 @endif
             </h3>
+            <div class="row pr-2 mt-sm-0 mt-2 pl-sm-0 pl-2 ">
+                <a class="btn d-flex align-items-center addsalebill border-0 my-1" style="background:border-radius: 7px;"
             <div class="row pr-2 mt-sm-0 mt-2 pl-sm-0 pl-2">
                 <a class="btn btn-danger border-0" style="background: #222751 !important;border-radius: 7px;"
                     href="{{ route('client.sale_bills.create1') }}">
@@ -671,7 +689,7 @@
 
             @if (empty($package) || $package->banks_safes == '1')
                 <div class="col-md-2 col-6 homeBoxs">
-                    <div class="tile_stats_count active d-flex">
+                    <div class="tile_stats_count active d-flex align-items-center">
                         <div class="col-3 verticalCenter">
                             <span style="background: #383d62; padding: 9px; border-radius: 50%;">
                                 <img src="{{ asset('assets/svgs/money.svg') }}" alt="">
@@ -816,6 +834,7 @@
         <div class="row match-height p-1 mt-1">
             <div class="col-md-8 px-0">
                 <div class="card" style="height: 460px;border: 1px solid #2d2d2d30;">
+                    <div class="card-header p-1 mt-4">
                     <div class="card-header p-1" style="background: #222751;">
                         <h4 class="card-title text-left" style="font-weight: 600;color:white;">
 
@@ -828,6 +847,10 @@
 
                 </div>
             </div>
+            <div class="col-md-4 ">
+                <div id="pieContainer" style="border: 1px solid #2d2d2d30; height: 460px;"  class="card pt-3"></div>
+            </div>
+                      
             <div class="col-md-4 pr-0 pl-sm-1 pl-0">
                 <div class="card styled-card" style="border: 1px solid #2d2d2d30;">
                     <div class="card-header p-1" style="background: #222751;">
