@@ -1375,7 +1375,7 @@
     // تعريف المتغير في النطاق العام
     window.canDiscount = @json($user->roles->flatMap->permissions->contains('name', 'الخصم'));
     // console.log(window.canDiscount);
-   var productDiscount = 0;
+    var productDiscount = 0;
     // ==== (refresh | update) bill details =======//
     function toValidNumber(value, defaultValue = 0) {
         const parsed = parseFloat(value);
@@ -1394,7 +1394,7 @@
             const productPrice = toValidNumber($($(".edit_price")[index]).val());
             const productQty = toValidNumber($($(".edit_quantity")[index]).val());
             // إذا لم يكن المستخدم مخولًا بالخصم، اجعل الخصم 0
-            
+
             const productDiscount = window.canDiscount ? toValidNumber($($(".edit_discount")[index]).val()) : 0;
 
             // التحقق من القيم
@@ -1404,7 +1404,7 @@
                 );
                 return; // تخطي هذا الصف
             }
-            
+
             // حساب الإجمالي للصف
             const rowTotal = (productPrice * productQty) - productDiscount;
             if (isNaN(rowTotal)) {
@@ -1412,7 +1412,7 @@
                 return;
             }
 
-            console.log(productDiscount,productPrice);
+            console.log(productDiscount, productPrice);
             totalQty += productQty;
             totalSum += rowTotal;
 
@@ -1433,7 +1433,7 @@
         const posTaxValue = toValidNumber($("#posTaxValue").text());
         const taxValueAmount = (totalSum / 100) * posTaxValue;
         console.log('tax', taxValueAmount);
-        
+
         $("#taxValueAmount").text(taxValueAmount.toFixed(3));
 
         // حساب الإجمالي مع الضريبة
@@ -1793,8 +1793,9 @@
                     let product_id = $($(".edit_price")[index]).parent().parent().attr('id');
                     var productPrice = $($(".edit_price")[index]).val();
                     var productQty = $($(".edit_quantity")[index]).val();
-                    
-                    var productDiscount = window.canDiscount ? $($(".edit_discount")[index]).val() : 0;
+
+                    var productDiscount = window.canDiscount ? $($(".edit_discount")[index])
+                        .val() : 0;
                     totalSum = productPrice * productQty - productDiscount;
 
                     productsArr.push({
@@ -2024,7 +2025,11 @@
         $('#save_pos').on('click', function() {
             if (!chkInvHasProductsAndClient()) return false;
 
-            //---bill details---//
+            // تعطيل الزر وتغيير النص لإظهار التحميل
+            const $button = $(this);
+            $button.prop('disabled', true).text('جاري الحفظ...');
+
+            // ---bill details---//
             let billDetails = {
                 outer_client_id: $('#outer_client_id').val(),
                 tableNum: $('#tableNum').val(),
@@ -2036,7 +2041,7 @@
                 tax_value: Number($("#posTaxValue").text()),
             };
 
-            //---products details---//
+            // ---products details---//
             let productsArr = [];
             let totalSum = 0;
             let hasInvalidProduct = false;
@@ -2045,13 +2050,13 @@
                 let product_id = $($(".edit_price")[index]).parent().parent().attr('id');
                 let productPrice = Number($($(".edit_price")[index]).val());
                 let productQty = Number($($(".edit_quantity")[index]).val());
-                let productDiscount = window.canDiscount ? Number($($(".edit_discount")[index]).val()) : 0;
+                let productDiscount = window.canDiscount ? Number($($(".edit_discount")[index])
+                    .val()) : 0;
                 totalSum = productPrice * productQty - productDiscount;
 
-                // Check if the product price is zero
                 if (productPrice === 0) {
                     hasInvalidProduct = true;
-                    return false; // Break out of the loop
+                    return false;
                 }
 
                 productsArr.push({
@@ -2061,10 +2066,8 @@
                     discount: productDiscount,
                     quantity_price: totalSum,
                 });
-                
             });
 
-            // If any product has a price of 0, show an alert and stop the process
             if (hasInvalidProduct) {
                 Swal.fire({
                     icon: 'warning',
@@ -2073,9 +2076,10 @@
                     confirmButtonText: 'إغلاق',
                     confirmButtonColor: '#d33',
                 });
+                // إعادة تمكين الزر في حالة الخطأ
+                $button.prop('disabled', false).text('حفظ وطباعة');
                 return false;
             }
-// console.log(billDetails,productsArr);
 
             $.post("{{ route('pos.open.done') }}", {
                 "_token": "{{ csrf_token() }}",
@@ -2097,9 +2101,7 @@
                     }, 50);
                 }
             }).fail(function(jqXHR) {
-                let errorMessage = jqXHR.responseJSON ? jqXHR.responseJSON.message :
-                    "An error occurred";
-
+                let errorMessage = jqXHR.responseJSON ? jqXHR.responseJSON.message : "حدث خطأ";
                 Swal.fire({
                     icon: 'error',
                     title: 'خطأ',
@@ -2107,6 +2109,8 @@
                     confirmButtonText: 'إغلاق',
                     confirmButtonColor: '#d33',
                 });
+                // إعادة تمكين الزر في حالة الفشل
+                $button.prop('disabled', false).text('حفظ وطباعة');
             });
         });
         // function autoPrintInvoice(posId) {
@@ -2127,16 +2131,20 @@
         //================دفع شبكة سريع================
         $('#finishBank').on('click', function() {
             if (!chkInvHasProductsAndClient()) return false;
+            // $(this).prop('disabled', true); // تعطيل الزر
             $("#finishBankModal").modal();
         });
 
-        //============= ACTION DB دفع شبكة سريع========
         $(".finishBank").click(function() {
-            // Validation
-            let bank_id = $('#fast_bank_id').val();
-            if (!chkIfExistsBanks(bank_id)) return false;
+            const $button = $(this);
+            $button.prop('disabled', true).text('جاري الدفع...');
 
-            //--- Bill details ---//
+            let bank_id = $('#fast_bank_id').val();
+            if (!chkIfExistsBanks(bank_id)) {
+                $button.prop('disabled', false).text('تأكيد الدفع');
+                return false;
+            }
+
             let billDetails = {
                 outer_client_id: $('#outer_client_id').val(),
                 tableNum: $('#tableNum').val(),
@@ -2149,14 +2157,14 @@
                 bank_id: bank_id,
             };
 
-            //--- Products details ---//
             let productsArr = [];
             let totalSum = 0;
             $(".edit_price").each(function(index) {
                 let product_id = $($(".edit_price")[index]).parent().parent().attr('id');
                 var productPrice = $($(".edit_price")[index]).val();
                 var productQty = $($(".edit_quantity")[index]).val();
-                var productDiscount = window.canDiscount ?  $($(".edit_discount")[index]).val() : 0;
+                var productDiscount = window.canDiscount ? $($(".edit_discount")[index]).val() :
+                    0;
                 totalSum = productPrice * productQty - productDiscount;
 
                 productsArr.push({
@@ -2187,10 +2195,7 @@
                         window.location.href = '/pos-print/' + response.pos_id;
                 }, 50);
             }).fail(function(jqXHR) {
-                // Extract the error message from the response
                 let errorMessage = jqXHR.responseJSON ? jqXHR.responseJSON.message : "حدث خطأ";
-
-                // Display the error message using Swal
                 Swal.fire({
                     icon: 'error',
                     title: 'خطأ',
@@ -2198,17 +2203,19 @@
                     confirmButtonText: 'إغلاق',
                     confirmButtonColor: '#d33',
                 });
+                $button.prop('disabled', false).text('تأكيد الدفع');
+                $('#finishBank').prop('disabled', false); // إعادة تمكين زر فتح النافذة
             });
         });
-
         //=============================================
 
         //================دفع كاش سريع==================
         $('#finish').on('click', function() {
-            // validation //
             if (!chkInvHasProductsAndClient()) return false;
 
-            //---bill details---//
+            const $button = $(this);
+            $button.prop('disabled', true).text('جاري الدفع...');
+
             let billDetails = {
                 outer_client_id: $('#outer_client_id').val(),
                 tableNum: $('#tableNum').val(),
@@ -2220,14 +2227,14 @@
                 tax_value: Number($("#posTaxValue").text()),
             };
 
-            //---products details---//
             let productsArr = [];
             let totalSum = 0;
             $(".edit_price").each(function(index) {
                 let product_id = $($(".edit_price")[index]).parent().parent().attr('id');
                 var productPrice = $($(".edit_price")[index]).val();
                 var productQty = $($(".edit_quantity")[index]).val();
-                var productDiscount = window.canDiscount ? $($(".edit_discount")[index]).val() : 0 ;
+                var productDiscount = window.canDiscount ? $($(".edit_discount")[index]).val() :
+                    0;
                 totalSum = productPrice * productQty - productDiscount;
 
                 productsArr.push({
@@ -2258,10 +2265,7 @@
                         window.location.href = '/pos-print/' + response.pos_id;
                 }, 50);
             }).fail(function(jqXHR) {
-                // Extracting the error message from the response
                 let errorMessage = jqXHR.responseJSON ? jqXHR.responseJSON.message : "حدث خطأ";
-
-                // Display the error message using Swal
                 Swal.fire({
                     icon: 'error',
                     title: 'خطأ',
@@ -2269,6 +2273,7 @@
                     confirmButtonText: 'إغلاق',
                     confirmButtonColor: '#d33',
                 });
+                $button.prop('disabled', false).text('دفع كاش سريع');
             });
         });
 
@@ -2287,7 +2292,9 @@
         $('.pay_cash').on('click', function() {
             if (!validateRecordPayment()) return false;
 
-            //---bill details---//
+            const $button = $(this);
+            $button.prop('disabled', true).text('جاري التسجيل...');
+
             let billDetails = {
                 outer_client_id: $('#outer_client_id').val(),
                 tableNum: $('#tableNum').val(),
@@ -2297,7 +2304,6 @@
                 total_amount: Number($("#total").text()),
                 tax_amount: Number($("#taxValueAmount").text()),
                 tax_value: Number($("#posTaxValue").text()),
-                //====paying options=====//
                 payment_method: $('#payment_method').val(),
                 paid_amount: $('#amount').val(),
                 safe_id: $('#safe_id').val(),
@@ -2308,14 +2314,14 @@
                 coupon_code: $('#couponcode').val(),
             };
 
-            //---products details---//
             let productsArr = [];
             let totalSum = 0;
             $(".edit_price").each(function(index) {
                 let product_id = $($(".edit_price")[index]).parent().parent().attr('id');
                 var productPrice = $($(".edit_price")[index]).val();
                 var productQty = $($(".edit_quantity")[index]).val();
-                var productDiscount = window.canDiscount ?  $($(".edit_discount")[index]).val(): 0 ;
+                var productDiscount = window.canDiscount ? $($(".edit_discount")[index]).val() :
+                    0;
                 totalSum = productPrice * productQty - productDiscount;
 
                 productsArr.push({
@@ -2324,8 +2330,9 @@
                     quantity: productQty,
                     discount: productDiscount,
                     quantity_price: totalSum,
-                })
+                });
             });
+
             $.post("{{ route('client.store.cash.clients.pos') }}", {
                 "_token": "{{ csrf_token() }}",
                 billDetails: billDetails,
@@ -2344,10 +2351,7 @@
                     window.location.href = '/pos-print/' + posID;
                 }, 50);
             }).fail(function(jqXHR) {
-                // Extract the error message from the response
                 let errorMessage = jqXHR.responseJSON ? jqXHR.responseJSON.message : "حدث خطأ";
-
-                // Display the error message using Swal
                 Swal.fire({
                     icon: 'error',
                     title: 'خطأ',
@@ -2355,9 +2359,8 @@
                     confirmButtonText: 'إغلاق',
                     confirmButtonColor: '#d33',
                 });
+                $button.prop('disabled', false).text('تسجيل العملية');
             });
-
-
         });
         //=============================================
         //############################PAYING BUTTONS ACTIONS END####################//
