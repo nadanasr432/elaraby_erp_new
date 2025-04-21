@@ -189,18 +189,18 @@
                                         </td>
                                         <td>
                                             {{ $pos->total_amount }}
-                                            @php $sum1 += $pos->total_amount; @endphp
+                                            @php $sum1 += floatval($pos->total_amount);@endphp
                                         </td>
                                         <td>
                                             @if ($pos->class == 'paid')
                                                 {{ $pos->total_amount }}
                                                 @php
                                                     $restAmount = 0;
-                                                    $sum2 += $pos->total_amount;
+                                                    $sum2 += floatval($pos->total_amount);
                                                 @endphp
                                             @elseif($pos->class == 'not')
                                                 0
-                                                @php $restAmount = $pos->total_amount; @endphp
+                                                @php $restAmount = floatval($pos->total_amount); @endphp
                                             @else
                                                 @php
                                                     $bill_id = 'pos_' . $pos->id;
@@ -216,13 +216,13 @@
                                                         } else {
                                                             echo round($bankCash->amount, 2);
                                                             $totalPaid = $bankCash->amount;
-                                                            $restAmount = $pos->total_amount - $bankCash->amount;
+                                                            $restAmount = floatval($pos->total_amount) - $bankCash->amount;
                                                             $sum2 += $bankCash->amount;
                                                         }
                                                     } else {
                                                         echo round($cash->amount, 2);
                                                         $totalPaid = $cash->amount;
-                                                        $restAmount = $pos->total_amount - $cash->amount;
+                                                        $restAmount = floatval($pos->total_amount)- $cash->amount;
                                                         $sum2 += $cash->amount;
                                                     }
                                                 @endphp
@@ -232,15 +232,15 @@
                                         <td>
                                             @php
                                                 if ($pos->value_added_tax == 1) {
-                                                    $pos->tax_amount = $pos->total_amount - $pos->total_amount / 1.15;
+                                                    $pos->tax_amount = floatval($pos->total_amount)- floatval($pos->total_amount)/ 1.15;
                                                 }
                                             @endphp
                                             @if ($pos->value_added_tax == 1)
                                                 {{ number_format($pos->total_amount - $pos->total_amount / 1.15, 2) }}
                                             @else
-                                                {{ round($pos->tax_amount, 2) }}
+                                                {{ round(floatval($pos->tax_amount), 2) }}
                                             @endif
-                                            @php $sum3 += $pos->tax_amount; @endphp
+                                            @php $sum3 += floatval($pos->tax_amount); @endphp
                                         </td>
                                         <td>
                                             @if (isset($pos))

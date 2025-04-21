@@ -256,7 +256,7 @@
                     @if (isset($pos) && isset($pos_elements) && !$pos_elements->isEmpty())
                         <?php
                         foreach ($pos_elements as $element) {
-                            $totalDiscountOnEveryElement += $element->discount;
+                            $totalDiscountOnEveryElement += floatval($element->discount);
                             echo "<tr style='border: 1px solid #aaa;'>";
                             echo "<td style='border: 1px solid #aaa;' dir='ltr'><span>" . $element->product_price . '</span></td>';
                             echo "<td style='border: 1px solid #aaa;' dir='ltr'><span>" . $element->quantity . ' </span></td>';
@@ -280,7 +280,7 @@
                                 <?php
                                 $sum = 0;
                                 foreach ($pos_elements as $pos_element) {
-                                    $sum = $sum + $pos_element->quantity_price;
+                                    $sum = $sum + floatval($pos_element->quantity_price);
                                 }
                                 ?>
                                 @if ($pos->value_added_tax == 1)
