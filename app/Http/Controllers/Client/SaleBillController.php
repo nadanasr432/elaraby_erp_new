@@ -2100,7 +2100,7 @@ class SaleBillController extends Controller
         return redirect()->route('client.sale_bills.returns');
     }
 
-    public function post_returnAll(Request $request)
+      public function post_returnAll(Request $request)
     {
         $company_id = Auth::user()->company_id;
         $company = Company::findOrFail($company_id);
@@ -2133,37 +2133,56 @@ class SaleBillController extends Controller
             return redirect()->back()->with('error', 'All items have already been returned.');
         }
 
-        foreach ($items as $product) {
+       foreach ($items as $product) {
             $alreadyReturnedQty = SaleBillReturn::where('bill_id', $invoice->id)
                 ->where('product_id', $product->product_id)
                 ->sum('return_quantity');
-
+        
             $remainingQty = $product->quantity - $alreadyReturnedQty;
-
+        
             if ($remainingQty <= 0) {
-                continue; // Skip already fully returned items
+                continue;
             }
-
-            $data['return_quantity'] = $product->quantity;
-            $data['quantity_price'] = $product->product_price * $product->quantity;
-            $data['product_price'] = $product->product_price;
-            $data['product_id'] = $product->product->id;
-            $data['outer_client_id'] = $clientData->id;
-            $data['balance_before'] = $clientData->prev_balance;
-            $data['balance_after'] = $clientData->prev_balance - $data['quantity_price'];
-            $data['before_return'] = $product->product->first_balance;
-            $data['after_return'] = $product->product->first_balance - $data['return_quantity'];
-            $data['date'] = date("Y-m-d");
-            $data['time'] = date("h:i:s");
+        
+            $returnQuantity = $remainingQty;
+            $quantityPrice = $product->product_price * $returnQuantity;
+        
+            $data = [
+                'return_quantity' => $returnQuantity,
+                'quantity_price' => $quantityPrice,
+                'product_price' => $product->product_price,
+                'product_id' => $product->product->id,
+                'outer_client_id' => $clientData->id,
+                'balance_before' => $clientData->prev_balance,
+                'balance_after' => $clientData->prev_balance - $quantityPrice,
+                'before_return' => $product->product->first_balance,
+                'after_return' => $product->product->first_balance + $returnQuantity,
+                'date' => date("Y-m-d"),
+                'time' => date("H:i:s"),
+                'bill_id' => $invoice->id,
+                'company_id' => $company_id, // ✅ This line is required!
+                'client_id' => Auth::user()->id, // Optional if required in your table
+            ];
+        
             $category_type = $product->product->category->category_type;
             if ($category_type == "مخزونية") {
                 $product->product->update([
-                    'first_balance' => $data['balance_after']
+                    'first_balance' => $data['after_return']
                 ]);
             }
-            unset($data['sale_bill_id'], $data['_token']);
-            SaleBillReturn::create($data);
+        
+            unset($data['_token'], $data['sale_bill_id']);
+        
+            try {
+                SaleBillReturn::create($data);
+            } catch (\Exception $e) {
+                dd("SaleBillReturn creation failed: " . $e->getMessage(), $data);
+                // \Log::error("SaleBillReturn creation failed: " . $e->getMessage(), $data);
+
+            }
         }
+
+
         $tax_value_added = $company->tax_value_added;
         $sum = array();
         foreach ($items as $element) {

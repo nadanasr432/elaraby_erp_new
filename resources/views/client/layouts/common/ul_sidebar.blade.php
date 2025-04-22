@@ -345,7 +345,7 @@
 
 
             <!------------------------------------SALES SECTION------------------------------------>
-            @if (empty($package) || $package->sales == '1')
+            {{-- @if (empty($package) || $package->sales == '1')
                 @if ($screen_settings->sales == '1')
                     <li class="nav-item {{ Request::is('*/quotations*', '*/sale_bills*') ? 'active open' : '' }}">
                         <a href="javascript:;">
@@ -444,7 +444,7 @@
                         </ul>
                     </li>
                 @endif
-            @endif
+            @endif --}}
             <!----------------------------------------SALES SECTION------------------------------------>
             <!------------------------------------new SALES SECTION------------------------------------>
             @if (empty($package) || $package->sales == '1')
@@ -495,6 +495,18 @@
                                             {{ __('sidebar.sales-invoices') }}
                                         </span>
                                     </a>
+                                </li>
+                                <li class="{{ Request::is('*/sale_bills') ? 'active' : '' }}">
+                                            <a href="{{ route('client.sale_bills.index') }}">
+                                                <svg style="width: 12px;fill:#36c7d6;" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 512 512">
+                                                    <path
+                                                        d="M160 256C160 202.1 202.1 160 256 160C309 160 352 202.1 352 256C352 309 309 352 256 352C202.1 352 160 309 160 256zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" />
+                                                </svg>
+                                                <span class="menu-title">
+                                                   {{ __('sidebar.Return invoice items') }}
+                                                </span>
+                                            </a>
                                 </li>
                             @endcan
                             @can('فواتير البيع السابقة (تحكم كامل)')
