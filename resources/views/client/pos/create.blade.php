@@ -408,6 +408,7 @@
                                         ( <span id="posTaxValue">0</span> %)
                                     </span>
                                 </td>
+                                
 
                             @endif
                             @if ($pos_settings->discount == '1')
