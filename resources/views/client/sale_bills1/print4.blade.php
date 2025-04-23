@@ -244,9 +244,28 @@
                         <img class="logo" style="object-fit: scale-down;" width="204"
                             src="{{ asset($company->company_logo) }}">
                     </div>
-                    <div class="col-md-6 d-flex justify-content-end ">
+                   
+                         @php
+                    
+                        $items = \App\Models\SaleBillElement::where('sale_bill_id', $sale_bill->id)
+                            ->where('company_id', $sale_bill->company_id)
+                            ->get();
+                
+                        $allReturned = true;
+                
+                        foreach ($items as $product) {
+                            $alreadyReturnedQty = \App\Models\SaleBillReturn::where('bill_id', $sale_bill->id)
+                                ->where('product_id', $product->product_id)
+                                ->sum('return_quantity');
+                
+                            if ($alreadyReturnedQty < $product->quantity) {
+                                $allReturned = false;
+                                break;
+                            }
+                        }
+                    @endphp
                         <div class="txtheader text-center pr-4">
-                            @if (!$isMoswada)
+                            @if (!$isMoswada && !$allReturned)
                                 <span style="font-size:35px">
                                     {{ $company->company_name }}
                                 </span>
@@ -257,6 +276,16 @@
                                 <br>
                                 @lang('sales_bills.Tax bill')
                                 TaxInvoice
+                              @elseif($allReturned)
+                               <span style="font-size:35px">
+                                    {{ $company->company_name }}
+                                </span>
+                                <br>
+                                <span style="font-size:30px">
+                                    VAT :{{ $company->tax_number ?? '-' }}
+                                </span>
+                                <br>
+                               @lang('sales_bills.Return invoice')
                             @else
                                 @lang('sales_bills.Draft invoice')
                             @endif
@@ -266,18 +295,47 @@
             @else
                 <div class="row d-flex align-items-center">
                     <div class="col-md-6 d-flex justify-content-start ">
-                        <div class="txtheader text-center pl-3">
-                            @if (!$isMoswada)
-                                <span style="font-size:30px">
+                         @php
+                    
+                        $items = \App\Models\SaleBillElement::where('sale_bill_id', $sale_bill->id)
+                            ->where('company_id', $sale_bill->company_id)
+                            ->get();
+                
+                        $allReturned = true;
+                
+                        foreach ($items as $product) {
+                            $alreadyReturnedQty = \App\Models\SaleBillReturn::where('bill_id', $sale_bill->id)
+                                ->where('product_id', $product->product_id)
+                                ->sum('return_quantity');
+                
+                            if ($alreadyReturnedQty < $product->quantity) {
+                                $allReturned = false;
+                                break;
+                            }
+                        }
+                    @endphp
+                        <div class="txtheader text-center pr-4">
+                            @if (!$isMoswada && !$allReturned)
+                                <span style="font-size:35px">
                                     {{ $company->company_name }}
                                 </span>
                                 <br>
-                                <span style="font-size:35px">
+                                <span style="font-size:30px">
                                     VAT :{{ $company->tax_number ?? '-' }}
                                 </span>
                                 <br>
-                                TaxInvoice
                                 @lang('sales_bills.Tax bill')
+                                TaxInvoice
+                             @elseif($allReturned)
+                               <span style="font-size:35px">
+                                    {{ $company->company_name }}
+                                </span>
+                                <br>
+                                <span style="font-size:30px">
+                                    VAT :{{ $company->tax_number ?? '-' }}
+                                </span>
+                                <br>
+                               @lang('sales_bills.Return invoice')
                             @else
                                 @lang('sales_bills.Draft invoice')
                             @endif
