@@ -239,13 +239,35 @@
                     @endif
 
                 </div>
-                <div class="txtheader mx-auto text-center">
-                    @if (!$isMoswada)
-                        @lang('sales_bills.Tax invoice')
-                    @else
-                        @lang('sales_bills.Draft invoice')
-                    @endif
-                </div>
+                 @php
+                    
+                        $items = \App\Models\SaleBillElement::where('sale_bill_id', $sale_bill->id)
+                            ->where('company_id', $sale_bill->company_id)
+                            ->get();
+                
+                        $allReturned = true;
+                
+                        foreach ($items as $product) {
+                            $alreadyReturnedQty = \App\Models\SaleBillReturn::where('bill_id', $sale_bill->id)
+                                ->where('product_id', $product->product_id)
+                                ->sum('return_quantity');
+                
+                            if ($alreadyReturnedQty < $product->quantity) {
+                                $allReturned = false;
+                                break;
+                            }
+                        }
+                    @endphp
+                    <div class="txtheader mx-auto text-center">
+                        @if (!$isMoswada && !$allReturned)
+                            @lang('sales_bills.Tax invoice')
+                        @elseif($allReturned)
+                            @lang('sales_bills.Return invoice')
+                        @else
+                            @lang('sales_bills.Draft invoice')
+                        @endif
+                    </div>
+
 
 
                 <div class="logo">

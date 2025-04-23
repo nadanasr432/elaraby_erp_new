@@ -130,7 +130,7 @@
                                             <th>{{ __('sidebar.Number of items') }}</th>
                                             <th>{{ __('sidebar.Status') }}</th>
                                             <th style="border-radius: 10px 0 0 0;width: 10% !important;">
-                                                {{ __('sidebar.Show') }}</th>
+                                                {{ __('main.return') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -166,7 +166,7 @@
                                                 </td>
                                                 <td style="padding: 5px !important;">
 
-                                                    <div class="dropdown">
+                                                    {{-- <div class="dropdown">
                                                         <button class="btn dropDownBtn dropdown-toggle" type="button"
                                                             id="dropdownMenuButton" data-toggle="dropdown"
                                                             aria-haspopup="true" aria-expanded="false">
@@ -226,8 +226,13 @@
                                                             </script>
 
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
+                                                    <a href="{{ route('client.sale_bills.edit', [$sale_bill->token, $sale_bill->company_id]) }}"
+                                                        class="dropdown-item"
+                                                        style="font-size: 12px  !important; padding: 9px 11px;border-bottom: 1px solid #2d2d2d2d">
+                                                        <i class="fa fa-refresh"></i>
 
+                                                    </a>
                                                 </td>
                                             </tr>
                                         @endforeach

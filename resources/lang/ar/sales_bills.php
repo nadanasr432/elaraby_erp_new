@@ -137,4 +137,6 @@ return [
     'purchases_tax_invoice' => 'فاتورة ضريبية مشتريات',
     "Supplier data" => "بيانات المورد",
     "elements number" => "عدد عناصر الفاتورة",
+    'Return invoice'=>'فاتورة مرتجع'
+
 ];
