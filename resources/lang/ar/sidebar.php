@@ -234,5 +234,7 @@ return [
     'vehicles' => 'المركبات',
       'Returned' => 'مرتجع',
     'Not Returned' => 'غير مرتجع',
+    'Return invoice items'=>'ارجاع عناصر الفاتورة'
+,
     'returns-pos-invoices' => 'مرتجعات نقطة البيع',
 ];
