@@ -2753,10 +2753,12 @@ class PosController extends Controller
                     $sale_items = $pos_open->elements;
                     foreach ($sale_items as $sale_item) {
                         $product = $sale_item->product;
-                        $product->update([
-                            'first_balance' => $product->first_balance + $sale_item->quantity
-                        ]);
-                        $sale_item->delete();
+                        if ($product) {
+                            $product->update([
+                                'first_balance' => $product->first_balance + $sale_item->quantity
+                            ]);
+                            $sale_item->delete();
+                        }
                     }
 
                     $pos_open->delete();

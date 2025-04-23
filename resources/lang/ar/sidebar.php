@@ -233,5 +233,6 @@ return [
     'vehicle-owners' => 'مالكي المركبات',
     'vehicles' => 'المركبات',
       'Returned' => 'مرتجع',
-    'Not Returned' => 'غير مرتجع'
+    'Not Returned' => 'غير مرتجع',
+    'returns-pos-invoices' => 'مرتجعات نقطة البيع',
 ];

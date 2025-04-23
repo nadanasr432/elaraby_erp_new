@@ -63,7 +63,7 @@
                             {{-- Button to show today's sales --}}
                             @if (request('filter') == 'all')
                                 <a href="{{ route('pos.sales.report', ['filter' => 'today']) }}"
-                                    class="btn pull-left btn-dark btn-sm mr-1" id="getPosReports" >
+                                    class="btn pull-left btn-dark btn-sm mr-1" id="getPosReports">
                                     عرض تقرير اليوم
                                 </a>
                             @endif
@@ -85,9 +85,9 @@
 
 
                             <!-- New Buttons -->
-                            {{-- <button id="deleteClientPos" class="btn pull-left btn-danger btn-sm mr-1">
+                            <button id="deleteClientPos" class="btn pull-left btn-danger btn-sm mr-1">
                                 <i class="fa fa-trash"></i> حذف فواتير الفرع
-                            </button> --}}
+                            </button>
                             <button id="rearrangeCompanyCounter" class="btn pull-left btn-success btn-sm mr-1">
                                 <i class="fa fa-sort-numeric-asc"></i> إعادة ترتيب العداد
                             </button>
@@ -216,13 +216,14 @@
                                                         } else {
                                                             echo round($bankCash->amount, 2);
                                                             $totalPaid = $bankCash->amount;
-                                                            $restAmount = floatval($pos->total_amount) - $bankCash->amount;
+                                                            $restAmount =
+                                                                floatval($pos->total_amount) - $bankCash->amount;
                                                             $sum2 += $bankCash->amount;
                                                         }
                                                     } else {
                                                         echo round($cash->amount, 2);
                                                         $totalPaid = $cash->amount;
-                                                        $restAmount = floatval($pos->total_amount)- $cash->amount;
+                                                        $restAmount = floatval($pos->total_amount) - $cash->amount;
                                                         $sum2 += $cash->amount;
                                                     }
                                                 @endphp
@@ -232,7 +233,9 @@
                                         <td>
                                             @php
                                                 if ($pos->value_added_tax == 1) {
-                                                    $pos->tax_amount = floatval($pos->total_amount)- floatval($pos->total_amount)/ 1.15;
+                                                    $pos->tax_amount =
+                                                        floatval($pos->total_amount) -
+                                                        floatval($pos->total_amount) / 1.15;
                                                 }
                                             @endphp
                                             @if ($pos->value_added_tax == 1)
@@ -255,10 +258,15 @@
                                                 class="btn btn-sm btn-primary" title="{{ __('pos.print-invoice') }}">
                                                 <i class="fa fa-print"></i> {{ __('pos.print') }}
                                             </a>
-                                            {{-- <button class="btn btn-sm btn-danger delete-specific-pos"
+                                            <button class="btn btn-sm btn-danger delete-specific-pos"
                                                 data-pos-id="{{ $pos->id }}" title="{{ __('pos.delete-invoice') }}">
                                                 <i class="fa fa-trash"></i> {{ __('main.delete') }}
-                                            </button> --}}
+                                            </button>
+                                            <button class="btn btn-sm btn-danger return-specific-pos"
+                                                data-pos-id="{{ $pos->id }}" title="{{ __('pos.return-invoice') }}">
+                                                <i class="fa fa-trash"></i> {{ __('main.return') }}
+                                            </button>
+
                                         </td>
                                     </tr>
                                 @endforeach
@@ -365,6 +373,60 @@
                     success: function(response) {
                         $('.spinner-box').hide();
                         location.reload();
+                    },
+                    error: function(xhr) {
+                        $('.spinner-box').hide();
+                        var errorMsg = xhr.responseJSON && xhr.responseJSON.message ?
+                            xhr.responseJSON.message :
+                            'حدث خطأ أثناء حذف الفاتورة';
+                        $('<div class="alert alert-danger alert-dismissable fade show">' +
+                            '<button class="close" data-dismiss="alert" aria-label="Close">×</button>' +
+                            errorMsg + '</div>').prependTo('.row-sm').fadeOut(5000);
+                    }
+                });
+            }
+        });
+        // Delete Specific POS
+        $('.delete-specific-pos').click(function() {
+            var posId = $(this).data('pos-id');
+            if (confirm('هل أنت متأكد من حذف هذه الفاتورة؟')) {
+                $('.spinner-box').show();
+                $.ajax({
+                    url: '{{ route('pos.specific.delete', ':pos_id') }}'.replace(':pos_id',
+                        posId),
+                    type: 'POST',
+                    success: function(response) {
+                        $('.spinner-box').hide();
+                        location.reload();
+                    },
+                    error: function(xhr) {
+                        $('.spinner-box').hide();
+                        var errorMsg = xhr.responseJSON && xhr.responseJSON.message ?
+                            xhr.responseJSON.message :
+                            'حدث خطأ أثناء حذف الفاتورة';
+                        $('<div class="alert alert-danger alert-dismissable fade show">' +
+                            '<button class="close" data-dismiss="alert" aria-label="Close">×</button>' +
+                            errorMsg + '</div>').prependTo('.row-sm').fadeOut(5000);
+                    }
+                });
+            }
+        });
+        // return Specific POS
+        $('.return-specific-pos').click(function() {
+            var posId = $(this).data('pos-id');
+            if (confirm('هل أنت متأكد من ارجاع هذه الفاتورة؟')) {
+                $('.spinner-box').show();
+                $.ajax({
+                    url: '{{ route('pos.specific.return', ':pos_id') }}'.replace(':pos_id',
+                        posId),
+                    type: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        $('.spinner-box').hide();
+                        // Redirect to the pos-returns-list route
+                        window.location.href = '{{ route('client.pos-returns.index') }}';
                     },
                     error: function(xhr) {
                         $('.spinner-box').hide();

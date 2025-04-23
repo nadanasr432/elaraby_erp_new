@@ -176,18 +176,18 @@
                             <th
                                 style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
                                 {{ __('sales_bills.unit') }}</th>
-                                <th
-                                    style="background-color: #d8daf5; color: #333; text-align: center; padding: 5px; font-weight: bold;">
-                                    {{ __('sales_bills.discount') }}
-                                    <div class="tax_discount"
-                                        style="display: inline-block; margin-left: 10px; vertical-align: middle;">
-                                        <select id="discount_application" class="form-control"
-                                            style="font-size: 12px; height: 30px;" name="products_discount_type">
-                                            <option value="before_tax">{{ __('sales_bills.discount_before_tax') }}</option>
-                                            <option value="after_tax">{{ __('sales_bills.discount_after_tax') }}</option>
-                                        </select>
-                                    </div>
-                                </th>
+                            <th
+                                style="background-color: #d8daf5; color: #333; text-align: center; padding: 5px; font-weight: bold;">
+                                {{ __('sales_bills.discount') }}
+                                <div class="tax_discount"
+                                    style="display: inline-block; margin-left: 10px; vertical-align: middle;">
+                                    <select id="discount_application" class="form-control"
+                                        style="font-size: 12px; height: 30px;" name="products_discount_type">
+                                        <option value="before_tax">{{ __('sales_bills.discount_before_tax') }}</option>
+                                        <option value="after_tax">{{ __('sales_bills.discount_after_tax') }}</option>
+                                    </select>
+                                </div>
+                            </th>
                             <th
                                 style="background-color: #d8daf5; color: #333; text-align: center; padding: 10px; font-weight: bold;">
                                 {{ __('sales_bills.tax') }}</th>
@@ -222,26 +222,26 @@
 
         <div class="row">
             <div class="col-md-6 pull-right">
-                    <div class="form-group" dir="rtl">
-                        <label for="discount">{{ __('sales_bills.discount-on-the-total-bill') }}</label> <br>
-                        <select name="discount_type" id="discount_type" class="form-control"
-                            style="width: 60%;display: inline;float: right; margin-left:5px;">
-                            <option value="">اختر نوع الخصم</option>
-                            <option value="pound">خصم قبل الضريبة (مسطح)</option>
-                            <option value="percent">خصم قبل الضريبة (%)</option>
-                            <option value="poundAfterTax">ضمان اعمال (مسطح)</option>
-                            <option value="poundAfterTaxPercent">ضمان اعمال (%)</option>
-                            <option value="afterTax" class="d-none">
-                                خصم علي اجمالي المبلغ شامل الضريبة
-                            </option>
-                        </select>
-                        <input type="number" value="0" name="discount_value" min="0"
-                            style="width: 20%;display: inline;float: right;" id="discount_value" class="form-control "
-                            step = "any" />
-                        <input type="text" name="discount_note" id="discount_note" placeholder="ملاحظات الخصم. . ."
-                            class="form-control mt-5" style="width: 80%;">
-                        {{-- <span id="dicountForBill"></span> --}}
-                    </div>
+                <div class="form-group" dir="rtl">
+                    <label for="discount">{{ __('sales_bills.discount-on-the-total-bill') }}</label> <br>
+                    <select name="discount_type" id="discount_type" class="form-control"
+                        style="width: 60%;display: inline;float: right; margin-left:5px;">
+                        <option value="">اختر نوع الخصم</option>
+                        <option value="pound">خصم قبل الضريبة (مسطح)</option>
+                        <option value="percent">خصم قبل الضريبة (%)</option>
+                        <option value="poundAfterTax">ضمان اعمال (مسطح)</option>
+                        <option value="poundAfterTaxPercent">ضمان اعمال (%)</option>
+                        <option value="afterTax" class="d-none">
+                            خصم علي اجمالي المبلغ شامل الضريبة
+                        </option>
+                    </select>
+                    <input type="number" value="0" name="discount_value" min="0"
+                        style="width: 20%;display: inline;float: right;" id="discount_value" class="form-control "
+                        step = "any" />
+                    <input type="text" name="discount_note" id="discount_note" placeholder="ملاحظات الخصم. . ."
+                        class="form-control mt-5" style="width: 80%;">
+                    {{-- <span id="dicountForBill"></span> --}}
+                </div>
 
             </div>
             <div class="col-md-6 pull-right">
@@ -672,16 +672,25 @@
                 // Save the current value as previous for potential reset
                 $(this).data('previous-value', newTaxType);
             });
-            $('.save_btn1').on('click', function(e) {
-                e.preventDefault(); // Prevent default form submission
+            // للزر save_btn1
+            // Store original texts for each button individually
+            $('.save_btn1, .save_btn2, #add').each(function() {
+                $(this).data('original-text', $(this).html()); // Store original text in data attribute
+            });
 
-                // Disable both buttons to prevent multiple clicks
-                $('.save_btn1, .save_btn2').prop('disabled', true);
+            // For save_btn1 buttons
+            $('.save_btn1').on('click', function(e) {
+                e.preventDefault();
+
+                // Disable all buttons and show loading state
+                $('.save_btn1, .save_btn2, #add').prop('disabled', true).html(
+                    '<i class="fa fa-spinner fa-spin"></i> جاري الحفظ...');
 
                 const discountType = document.getElementById('discount_type').value;
                 const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
                 const grandTotal = parseFloat(document.getElementById('grand_total').textContent) || 0;
 
+                // Validate discount
                 if ((discountType === 'pound' || discountType === 'poundAfterTax') && discountValue >
                     grandTotal + discountValue) {
                     Swal.fire({
@@ -690,7 +699,10 @@
                         text: 'لا يمكن أن يكون الخصم أكبر من الإجمالي!',
                         confirmButtonText: 'موافق'
                     });
-                    $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
+                    // Re-enable buttons and restore original texts
+                    $('.save_btn1, .save_btn2, #add').each(function() {
+                        $(this).prop('disabled', false).html($(this).data('original-text'));
+                    });
                     return false;
                 }
 
@@ -702,7 +714,9 @@
                         text: 'يجب اختيار العميل',
                         confirmButtonText: 'موافق'
                     });
-                    $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
+                    $('.save_btn1, .save_btn2, #add').each(function() {
+                        $(this).prop('disabled', false).html($(this).data('original-text'));
+                    });
                     return false;
                 }
 
@@ -711,7 +725,6 @@
                     let quantity = $(this).find('input[name*="[quantity]"]').val();
                     let price = $(this).find('input[name*="[product_price]"]').val();
                     let unit = $(this).find('select[name*="[unit_id]"]').val();
-
                     if (quantity > 0 && price > 0 && unit) {
                         hasProduct = true;
                     }
@@ -724,7 +737,9 @@
                         text: 'يجب اختيار منتج واحد على الأقل، وتحديد الكمية، والسعر، والوحدة لكل منتج',
                         confirmButtonText: 'موافق'
                     });
-                    $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
+                    $('.save_btn1, .save_btn2, #add').each(function() {
+                        $(this).prop('disabled', false).html($(this).data('original-text'));
+                    });
                     return false;
                 }
 
@@ -750,17 +765,20 @@
                             confirmButtonText: 'إغلاق'
                         });
 
-                        $('.save_btn1, .save_btn2').prop('disabled',
-                            false); // Re-enable buttons on error
+                        // Re-enable buttons and restore original texts
+                        $('.save_btn1, .save_btn2, #add').each(function() {
+                            $(this).prop('disabled', false).html($(this).data('original-text'));
+                        });
                     });
             });
 
-            // Save button 2
+            // For save_btn2 buttons
             $('.save_btn2').on('click', function(e) {
-                e.preventDefault(); // Prevent default form submission
+                e.preventDefault();
 
-                // Disable both buttons to prevent multiple clicks
-                $('.save_btn1, .save_btn2').prop('disabled', true);
+                // Disable all buttons and show loading state
+                $('.save_btn1, .save_btn2, #add').prop('disabled', true).html(
+                    '<i class="fa fa-spinner fa-spin"></i> جاري الحفظ...');
 
                 let printColor = $(this).attr('printColor');
                 let isMoswada = $(this).attr('isMoswada');
@@ -779,7 +797,9 @@
                         text: 'لا يمكن أن يكون الخصم أكبر من الإجمالي!',
                         confirmButtonText: 'موافق'
                     });
-                    $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
+                    $('.save_btn1, .save_btn2, #add').each(function() {
+                        $(this).prop('disabled', false).html($(this).data('original-text'));
+                    });
                     return false;
                 }
 
@@ -790,7 +810,9 @@
                         text: 'يجب اختيار العميل',
                         confirmButtonText: 'موافق'
                     });
-                    $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
+                    $('.save_btn1, .save_btn2, #add').each(function() {
+                        $(this).prop('disabled', false).html($(this).data('original-text'));
+                    });
                     return false;
                 }
 
@@ -799,7 +821,6 @@
                     let quantity = $(this).find('input[name*="[quantity]"]').val();
                     let price = $(this).find('input[name*="[product_price]"]').val();
                     let unit = $(this).find('select[name*="[unit_id]"]').val();
-
                     if (quantity > 0 && price > 0 && unit) {
                         hasProduct = true;
                     }
@@ -812,7 +833,9 @@
                         text: 'يجب اختيار منتج واحد على الأقل، وتحديد الكمية، والسعر، والوحدة لكل منتج',
                         confirmButtonText: 'موافق'
                     });
-                    $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
+                    $('.save_btn1, .save_btn2, #add').each(function() {
+                        $(this).prop('disabled', false).html($(this).data('original-text'));
+                    });
                     return false;
                 }
 
@@ -839,12 +862,390 @@
                             confirmButtonText: 'إغلاق'
                         });
 
-                        $('.save_btn1, .save_btn2').prop('disabled',
-                            false); // Re-enable buttons on error
+                        $('.save_btn1, .save_btn2, #add').each(function() {
+                            $(this).prop('disabled', false).html($(this).data('original-text'));
+                        });
                     });
             });
 
+            // For #add button
+            $('#add').on('click', function(e) {
+                e.preventDefault();
 
+                // Disable all buttons and show loading state
+                $('.save_btn1, .save_btn2, #add').prop('disabled', true).html(
+                    '<i class="fa fa-spinner fa-spin"></i> جاري الحفظ...');
+
+                let outerClientId = $('#outer_client_id').val();
+
+                const discountType = document.getElementById('discount_type').value;
+                const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
+                const grandTotal = parseFloat(document.getElementById('grand_total').textContent) || 0;
+
+                if ((discountType === 'pound' || discountType === 'poundAfterTax') && discountValue >
+                    grandTotal + discountValue) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'تحذير',
+                        text: 'لا يمكن أن يكون الخصم أكبر من الإجمالي!',
+                        confirmButtonText: 'موافق'
+                    });
+                    $('.save_btn1, .save_btn2, #add').each(function() {
+                        $(this).prop('disabled', false).html($(this).data('original-text'));
+                    });
+                    return false;
+                }
+
+                if (!outerClientId) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'تحذير',
+                        text: 'يجب اختيار العميل',
+                        confirmButtonText: 'موافق'
+                    });
+                    $('.save_btn1, .save_btn2, #add').each(function() {
+                        $(this).prop('disabled', false).html($(this).data('original-text'));
+                    });
+                    return false;
+                }
+
+                let hasProduct = false;
+                $('#products_table tbody tr').each(function() {
+                    let quantity = $(this).find('input[name*="[quantity]"]').val();
+                    let price = $(this).find('input[name*="[product_price]"]').val();
+                    let unit = $(this).find('select[name*="[unit_id]"]').val();
+                    if (quantity > 0 && price > 0 && unit) {
+                        hasProduct = true;
+                    }
+                });
+
+                if (!hasProduct) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'تحذير',
+                        text: 'يجب اختيار منتج واحد على الأقل، وتحديد الكمية، والسعر، والوحدة لكل منتج',
+                        confirmButtonText: 'موافق'
+                    });
+                    $('.save_btn1, .save_btn2, #add').each(function() {
+                        $(this).prop('disabled', false).html($(this).data('original-text'));
+                    });
+                    return false;
+                }
+
+                var formData = $('#myForm').serialize();
+
+                $.post("{{ url('/client/sale-bills/saveAll1') }}", formData)
+                    .done(function(data) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'تم الحفظ بنجاح',
+                            text: 'سيتم توجيهك إلى صفحة الطباعة',
+                            confirmButtonText: 'حسنًا'
+                        }).then(() => {
+                            location.href = '/sale-bills/print/' + data;
+                        });
+                    })
+                    .fail(function(jqXHR) {
+                        let errorMessage = "حدث خطأ أثناء حفظ البيانات";
+                        if (jqXHR.responseJSON) {
+                            errorMessage = jqXHR.responseJSON.message || jqXHR.responseJSON.error ||
+                                errorMessage;
+                        } else if (jqXHR.responseText) {
+                            errorMessage = jqXHR.responseText;
+                        }
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: errorMessage,
+                            text: '',
+                            confirmButtonText: 'إغلاق'
+                        });
+
+                        $('.save_btn1, .save_btn2, #add').each(function() {
+                            $(this).prop('disabled', false).html($(this).data('original-text'));
+                        });
+                    });
+            });
+            // $('.save_btn1').on('click', function(e) {
+            //     e.preventDefault(); // Prevent default form submission
+
+            //     // Disable both buttons to prevent multiple clicks
+            //     $('.save_btn1, .save_btn2').prop('disabled', true);
+
+            //     const discountType = document.getElementById('discount_type').value;
+            //     const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
+            //     const grandTotal = parseFloat(document.getElementById('grand_total').textContent) || 0;
+
+            //     if ((discountType === 'pound' || discountType === 'poundAfterTax') && discountValue >
+            //         grandTotal + discountValue) {
+            //         Swal.fire({
+            //             icon: 'warning',
+            //             title: 'تحذير',
+            //             text: 'لا يمكن أن يكون الخصم أكبر من الإجمالي!',
+            //             confirmButtonText: 'موافق'
+            //         });
+            //         $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
+            //         return false;
+            //     }
+
+            //     let outerClientId = $('#outer_client_id').val();
+            //     if (!outerClientId) {
+            //         Swal.fire({
+            //             icon: 'warning',
+            //             title: 'تحذير',
+            //             text: 'يجب اختيار العميل',
+            //             confirmButtonText: 'موافق'
+            //         });
+            //         $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
+            //         return false;
+            //     }
+
+            //     let hasProduct = false;
+            //     $('#products_table tbody tr').each(function() {
+            //         let quantity = $(this).find('input[name*="[quantity]"]').val();
+            //         let price = $(this).find('input[name*="[product_price]"]').val();
+            //         let unit = $(this).find('select[name*="[unit_id]"]').val();
+
+            //         if (quantity > 0 && price > 0 && unit) {
+            //             hasProduct = true;
+            //         }
+            //     });
+
+            //     if (!hasProduct) {
+            //         Swal.fire({
+            //             icon: 'warning',
+            //             title: 'تحذير',
+            //             text: 'يجب اختيار منتج واحد على الأقل، وتحديد الكمية، والسعر، والوحدة لكل منتج',
+            //             confirmButtonText: 'موافق'
+            //         });
+            //         $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
+            //         return false;
+            //     }
+
+            //     var formData = $('#myForm').serialize();
+
+            //     $.post("{{ url('/client/sale-bills/saveAll1') }}", formData)
+            //         .done(function(data) {
+            //             location.href = '/sale-bills/print/' + data;
+            //         })
+            //         .fail(function(jqXHR) {
+            //             let errorMessage = "حدث خطأ أثناء حفظ البيانات";
+            //             if (jqXHR.responseJSON) {
+            //                 errorMessage = jqXHR.responseJSON.message || jqXHR.responseJSON.error ||
+            //                     errorMessage;
+            //             } else if (jqXHR.responseText) {
+            //                 errorMessage = jqXHR.responseText;
+            //             }
+
+            //             Swal.fire({
+            //                 icon: 'error',
+            //                 title: errorMessage,
+            //                 text: '',
+            //                 confirmButtonText: 'إغلاق'
+            //             });
+
+            //             $('.save_btn1, .save_btn2').prop('disabled',
+            //                 false); // Re-enable buttons on error
+            //         });
+            // });
+
+            // // Save button 2
+            // $('.save_btn2').on('click', function(e) {
+            //     e.preventDefault(); // Prevent default form submission
+
+            //     // Disable both buttons to prevent multiple clicks
+            //     $('.save_btn1, .save_btn2').prop('disabled', true);
+
+            //     let printColor = $(this).attr('printColor');
+            //     let isMoswada = $(this).attr('isMoswada');
+            //     let invoiceType = $(this).attr('invoiceType');
+            //     let outerClientId = $('#outer_client_id').val();
+
+            //     const discountType = document.getElementById('discount_type').value;
+            //     const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
+            //     const grandTotal = parseFloat(document.getElementById('grand_total').textContent) || 0;
+
+            //     if ((discountType === 'pound' || discountType === 'poundAfterTax') && discountValue >
+            //         grandTotal + discountValue) {
+            //         Swal.fire({
+            //             icon: 'warning',
+            //             title: 'تحذير',
+            //             text: 'لا يمكن أن يكون الخصم أكبر من الإجمالي!',
+            //             confirmButtonText: 'موافق'
+            //         });
+            //         $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
+            //         return false;
+            //     }
+
+            //     if (!outerClientId) {
+            //         Swal.fire({
+            //             icon: 'warning',
+            //             title: 'تحذير',
+            //             text: 'يجب اختيار العميل',
+            //             confirmButtonText: 'موافق'
+            //         });
+            //         $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
+            //         return false;
+            //     }
+
+            //     let hasProduct = false;
+            //     $('#products_table tbody tr').each(function() {
+            //         let quantity = $(this).find('input[name*="[quantity]"]').val();
+            //         let price = $(this).find('input[name*="[product_price]"]').val();
+            //         let unit = $(this).find('select[name*="[unit_id]"]').val();
+
+            //         if (quantity > 0 && price > 0 && unit) {
+            //             hasProduct = true;
+            //         }
+            //     });
+
+            //     if (!hasProduct) {
+            //         Swal.fire({
+            //             icon: 'warning',
+            //             title: 'تحذير',
+            //             text: 'يجب اختيار منتج واحد على الأقل، وتحديد الكمية، والسعر، والوحدة لكل منتج',
+            //             confirmButtonText: 'موافق'
+            //         });
+            //         $('.save_btn1, .save_btn2').prop('disabled', false); // Re-enable buttons
+            //         return false;
+            //     }
+
+            //     var formData = $('#myForm').serialize();
+
+            //     $.post("{{ url('/client/sale-bills/saveAll1') }}", formData)
+            //         .done(function(data) {
+            //             location.href = '/sale-bills/print/' + data + '/' + invoiceType + '/' +
+            //                 printColor + '/' + isMoswada;
+            //         })
+            //         .fail(function(jqXHR) {
+            //             let errorMessage = "حدث خطأ أثناء حفظ البيانات";
+            //             if (jqXHR.responseJSON) {
+            //                 errorMessage = jqXHR.responseJSON.message || jqXHR.responseJSON.error ||
+            //                     errorMessage;
+            //             } else if (jqXHR.responseText) {
+            //                 errorMessage = jqXHR.responseText;
+            //             }
+
+            //             Swal.fire({
+            //                 icon: 'error',
+            //                 title: errorMessage,
+            //                 text: '',
+            //                 confirmButtonText: 'إغلاق'
+            //             });
+
+            //             $('.save_btn1, .save_btn2').prop('disabled',
+            //                 false); // Re-enable buttons on error
+            //         });
+            // });
+
+            // $('#add').on('click', function(e) { // Add 'e' as the event parameter
+            //     e.preventDefault(); // Prevent default form submission
+
+            //     let outerClientId = $('#outer_client_id').val();
+
+            //     const discountType = document.getElementById('discount_type').value;
+            //     const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
+            //     const grandTotal = parseFloat(document.getElementById('grand_total').textContent) || 0;
+
+            //     // Check if discount exceeds grand total
+            //     if (
+            //         (discountType === 'pound' || discountType === 'poundAfterTax') &&
+            //         discountValue > grandTotal + discountValue
+            //     ) {
+            //         Swal.fire({
+            //             icon: 'warning',
+            //             title: 'تحذير',
+            //             text: 'لا يمكن أن يكون الخصم أكبر من الإجمالي!',
+            //             confirmButtonText: 'موافق'
+            //         });
+            //         return false; // Stop submission
+            //     }
+            //     // Ensure discount is less than or equal to the grand total
+            //     if (discountValue > grandTotal + discountValue) {
+            //         Swal.fire({
+            //             icon: 'warning',
+            //             title: 'تحذير',
+            //             text: 'يجب أن يكون الخصم أقل أو مساوياً للإجمالي!',
+            //             confirmButtonText: 'موافق'
+            //         });
+            //         return false; // Stop submission
+            //     }
+
+
+            //     // Check if the outer client ID is selected
+            //     if (!outerClientId) {
+            //         Swal.fire({
+            //             icon: 'warning',
+            //             title: 'تحذير',
+            //             text: 'يجب اختيار العميل',
+            //             confirmButtonText: 'موافق'
+            //         });
+            //         return false;
+            //     }
+
+            //     // Validate that at least one product is selected
+            //     let hasProduct = false;
+            //     $('#products_table tbody tr').each(function() {
+            //         let quantity = $(this).find('input[name*="[quantity]"]').val();
+            //         let price = $(this).find('input[name*="[product_price]"]').val();
+            //         let unit = $(this).find('select[name*="[unit_id]"]').val();
+
+            //         if (quantity > 0 && price > 0 && unit) {
+            //             hasProduct = true;
+            //         }
+            //     });
+
+            //     if (!hasProduct) {
+            //         Swal.fire({
+            //             icon: 'warning',
+            //             title: 'تحذير',
+            //             text: 'يجب اختيار منتج واحد على الأقل، وتحديد الكمية، والسعر، والوحدة لكل منتج',
+            //             confirmButtonText: 'موافق'
+            //         });
+            //         return false;
+            //     }
+
+            //     var formData = $('#myForm').serialize();
+            //     console.log(formData);
+
+            //     $.post("{{ url('/client/sale-bills/saveAll1') }}", formData)
+            //         .done(function(data) {
+            //             // Success handling
+            //             Swal.fire({
+            //                 icon: 'success',
+            //                 title: 'تم الحفظ بنجاح',
+            //                 text: 'سيتم توجيهك إلى صفحة الطباعة',
+            //                 confirmButtonText: 'حسنًا'
+            //             }).then(() => {
+            //                 // Redirect to the print page
+            //                 location.href = '/sale-bills/print/' + data;
+            //             });
+            //         })
+            //         .fail(function(jqXHR) {
+            //             // Default error message
+            //             let errorMessage = "حدث خطأ أثناء حفظ البيانات";
+
+            //             // Extract error message from response if available
+            //             if (jqXHR.responseJSON) {
+            //                 if (jqXHR.responseJSON.message) {
+            //                     errorMessage = jqXHR.responseJSON.message;
+            //                 } else if (jqXHR.responseJSON.error) {
+            //                     errorMessage = jqXHR.responseJSON.error;
+            //                 }
+            //             } else if (jqXHR.responseText) {
+            //                 errorMessage = jqXHR.responseText;
+            //             }
+
+            //             // Show error alert
+            //             Swal.fire({
+            //                 icon: 'error',
+            //                 title: errorMessage, // Use the extracted or default error message
+            //                 text: '',
+            //                 confirmButtonText: 'إغلاق'
+            //             });
+            //         });
+
+            // });
 
 
             $('.pay_cash').on('click', function() {
@@ -1064,114 +1465,7 @@
                 }
             });
 
-            $('#add').on('click', function(e) { // Add 'e' as the event parameter
-                e.preventDefault(); // Prevent default form submission
 
-                let outerClientId = $('#outer_client_id').val();
-
-                const discountType = document.getElementById('discount_type').value;
-                const discountValue = parseFloat(document.getElementById('discount_value').value) || 0;
-                const grandTotal = parseFloat(document.getElementById('grand_total').textContent) || 0;
-
-                // Check if discount exceeds grand total
-                if (
-                    (discountType === 'pound' || discountType === 'poundAfterTax') &&
-                    discountValue > grandTotal + discountValue
-                ) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'تحذير',
-                        text: 'لا يمكن أن يكون الخصم أكبر من الإجمالي!',
-                        confirmButtonText: 'موافق'
-                    });
-                    return false; // Stop submission
-                }
-                // Ensure discount is less than or equal to the grand total
-                if (discountValue > grandTotal + discountValue) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'تحذير',
-                        text: 'يجب أن يكون الخصم أقل أو مساوياً للإجمالي!',
-                        confirmButtonText: 'موافق'
-                    });
-                    return false; // Stop submission
-                }
-
-
-                // Check if the outer client ID is selected
-                if (!outerClientId) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'تحذير',
-                        text: 'يجب اختيار العميل',
-                        confirmButtonText: 'موافق'
-                    });
-                    return false;
-                }
-
-                // Validate that at least one product is selected
-                let hasProduct = false;
-                $('#products_table tbody tr').each(function() {
-                    let quantity = $(this).find('input[name*="[quantity]"]').val();
-                    let price = $(this).find('input[name*="[product_price]"]').val();
-                    let unit = $(this).find('select[name*="[unit_id]"]').val();
-
-                    if (quantity > 0 && price > 0 && unit) {
-                        hasProduct = true;
-                    }
-                });
-
-                if (!hasProduct) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'تحذير',
-                        text: 'يجب اختيار منتج واحد على الأقل، وتحديد الكمية، والسعر، والوحدة لكل منتج',
-                        confirmButtonText: 'موافق'
-                    });
-                    return false;
-                }
-
-                var formData = $('#myForm').serialize();
-                console.log(formData);
-
-                $.post("{{ url('/client/sale-bills/saveAll1') }}", formData)
-                    .done(function(data) {
-                        // Success handling
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'تم الحفظ بنجاح',
-                            text: 'سيتم توجيهك إلى صفحة الطباعة',
-                            confirmButtonText: 'حسنًا'
-                        }).then(() => {
-                            // Redirect to the print page
-                            location.href = '/sale-bills/print/' + data;
-                        });
-                    })
-                    .fail(function(jqXHR) {
-                        // Default error message
-                        let errorMessage = "حدث خطأ أثناء حفظ البيانات";
-
-                        // Extract error message from response if available
-                        if (jqXHR.responseJSON) {
-                            if (jqXHR.responseJSON.message) {
-                                errorMessage = jqXHR.responseJSON.message;
-                            } else if (jqXHR.responseJSON.error) {
-                                errorMessage = jqXHR.responseJSON.error;
-                            }
-                        } else if (jqXHR.responseText) {
-                            errorMessage = jqXHR.responseText;
-                        }
-
-                        // Show error alert
-                        Swal.fire({
-                            icon: 'error',
-                            title: errorMessage, // Use the extracted or default error message
-                            text: '',
-                            confirmButtonText: 'إغلاق'
-                        });
-                    });
-
-            });
 
 
         });
@@ -1565,7 +1859,7 @@
                 </select>
             </div>
         </td>
-         
+
                             <td>
                                 <div class="d-flex flex-column">
                                     <label class="form-check-inline">
@@ -1579,7 +1873,7 @@
                                     <input type="number" name="products[${rowIndex}][discount]" class="form-control discount w-100 mt-1" value="0" min="0" step="any">
                                 </div>
                             </td>
-                
+
         <td>
             <div class="input-group">
                 <select name="products[${rowIndex}][tax]" class="form-control tax_type w-100 mb-1">

@@ -203,6 +203,7 @@ return [
     'vehicles' => 'Vehicles',
     'Returned' => 'Returned',
     'Not Returned' => 'Not Returned',
+    'returns-pos-invoices' => 'Pos Returns',
 
 
 

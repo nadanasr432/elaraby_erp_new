@@ -47,13 +47,14 @@ use App\Http\Controllers\Client\SummaryController;
 use App\Http\Controllers\Client\VehicleController;
 use App\Http\Controllers\Client\CashBankController;
 use App\Http\Controllers\Client\CategoryController;
-use App\Http\Controllers\Client\EmployeeController;
 // use App\Http\Controllers\Client\JournalEntryController;
+use App\Http\Controllers\Client\EmployeeController;
 use App\Http\Controllers\Client\SaleBillController;
 use App\Http\Controllers\Client\SettingsController;
 use App\Http\Controllers\Client\ShipmentController;
 use App\Http\Controllers\Client\SupplierController;
 use App\Http\Controllers\Admin\Auth\LoginController;
+use App\Http\Controllers\Client\PosReturnController;
 use App\Http\Controllers\Client\QuotationController;
 use App\Http\Controllers\Client\SaleBillController1;
 use App\Http\Controllers\Client\CostCenterController;
@@ -67,13 +68,13 @@ use App\Http\Controllers\Client\ClientProfileController;
 use App\Http\Controllers\Client\PurchaseOrderController;
 use App\Http\Controllers\Client\CategoriesAssetController;
 use App\Http\Controllers\Client\ChargingStationController;
-use App\Http\Controllers\Client\TransportPolicyController;
-use App\Http\Controllers\Client\SaleBillPrintDemoController;
 
 Route::get('/test-zatca', function () {
     require_once app_path('Services/Zatca/TestZatca.php');
 });
 
+use App\Http\Controllers\Client\TransportPolicyController;
+use App\Http\Controllers\Client\SaleBillPrintDemoController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use App\Http\Controllers\Client\DischargingStationController;
 
@@ -158,6 +159,11 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             // Route for printing POS receipts
             Route::get('/pos-print/{pos_id?}', [PosController::class, 'print'])
                 ->name('pos.open.print');
+            Route::get('/pos-return-print/{pos_id?}', [PosReturnController::class, 'print'])
+                ->name('pos.return.print');
+
+            Route::post('/pos/{pos_id}/return', [PosReturnController::class, 'returnSpecificPos'])->name('pos.specific.return');
+
             Route::post('buy-bills/update-color', [BuyBillController::class, 'updateColor'])->name('buy-bills.update-color');
         });
     // *********  Admin Routes ******** //
@@ -1047,7 +1053,10 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::post('/pos/client/delete', [PosController::class, 'deleteClientPos'])->name('pos.client.delete');
             Route::post('/pos/{pos_id}/delete', [PosController::class, 'deleteSpecificPos'])->name('pos.specific.delete');
             Route::post('/company/counter/rearrange', [PosController::class, 'rearrangeCompanyCounter'])->name('company.counter.rearrange');
-
+            Route::get('/pos-returns-list', [PosReturnController::class, 'index'])
+            ->name('client.pos-returns.index');
+            Route::get('/pos-return-print/{return_id?}', [PosReturnController::class, 'print'])
+                ->name('pos-returns.print');
             // Journal routes voucher routes
             Route::get('/voucher/create', [VoucherController::class, 'create_voucher_entries'])->name('client.voucher.create');
             Route::get('/voucher/edit/{id}', [VoucherController::class, 'edit_voucher_entries'])->name('client.voucher.edit');
