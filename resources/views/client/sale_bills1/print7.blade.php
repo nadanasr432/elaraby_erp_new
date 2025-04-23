@@ -326,10 +326,40 @@
                         <img width="200" src="{{ $displayQRCodeAsBase64 }}" />
                     @endif
                 </div>
+                  @php
+                    
+                        $items = \App\Models\SaleBillElement::where('sale_bill_id', $sale_bill->id)
+                            ->where('company_id', $sale_bill->company_id)
+                            ->get();
+                
+                        $allReturned = true;
+                
+                        foreach ($items as $product) {
+                            $alreadyReturnedQty = \App\Models\SaleBillReturn::where('bill_id', $sale_bill->id)
+                                ->where('product_id', $product->product_id)
+                                ->sum('return_quantity');
+                
+                            if ($alreadyReturnedQty < $product->quantity) {
+                                $allReturned = false;
+                                break;
+                            }
+                        }
+                    @endphp
                 <div class="col-md-5  mx-auto text-center">
-                    @if (!$isMoswada)
+                    
+                    <!--<div class="txtheader mx-auto text-center">-->
+                    <!--    @if (!$isMoswada && !$allReturned)-->
+                    <!--        @lang('sales_bills.Tax invoice')-->
+                     
+                    <!--        @lang('sales_bills.Draft invoice')-->
+                    <!--    @endif-->
+                    <!--</div>-->
+
+                    @if (!$isMoswada && !$allReturned)
                         <span class="txtheader text-muted"> @lang('sales_bills.Tax invoice')</span>
-                    @else
+                       @elseif($allReturned)
+                              <span class="txtheader text-muted">@lang('sales_bills.Return invoice')</span>
+                        @else
                         <span class="txtheader text-muted">@lang('sales_bills.Draft invoice')</span>
                     @endif
                     <div class="d-flex justify-content-center mt-5 text-muted" style="font-size: 20px;font-weight:700">

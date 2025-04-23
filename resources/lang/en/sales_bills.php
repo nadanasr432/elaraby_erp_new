@@ -135,5 +135,6 @@ return [
     'purchases_tax_invoice' => 'Purchases Tax Invoice',
     "Supplier data"=>"Supplier data",
     "elements number"=>"elements number",
-    "product_name"=>"Product Name"
+    "product_name"=>"Product Name",
+    'Return invoice'=>'Return invoice'
 ];

@@ -235,4 +235,6 @@ return [
       'Returned' => 'مرتجع',
     'Not Returned' => 'غير مرتجع',
     'returns-pos-invoices' => 'مرتجعات نقطة البيع',
+    'Return invoice items'=>'ارجاع عناصر الفاتورة'
+
 ];
