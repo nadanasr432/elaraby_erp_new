@@ -73,6 +73,7 @@
                                                         fill="#F55549" />
                                                 </svg>
                                             </a>
+                                            
                                             <a href="{{ route('transport-policies.print', $policy) }}" class="btn btn-sm btn-info" target="_blank">
                                                 <i class="fas fa-print"></i>  @lang('main.print')
                                             </a>

@@ -647,9 +647,34 @@
         document.querySelector('.tile_stats_count.active').style.backgroundColor = newColor;
         document.querySelector('.card-header:first-child').style.backgroundColor = newColor;
         document.querySelector('.table thead').style.setProperty('background-color', newColor, 'important');
+        document.querySelector('.main-news').style.setProperty('background-color', newColor, 'important');
+
         document.querySelectorAll('table thead th').forEach(th => {
             th.style.setProperty('background-color', newColor, 'important');
         });
+
+        document.querySelectorAll('table thead').forEach(thead => {
+            thead.style.setProperty('background-color', newColor, 'important');
+        });
+
+
+        const hoverStyle = document.getElementById('tileHoverStyle');
+        if (hoverStyle) {
+            hoverStyle.remove(); 
+        }
+        const style = document.createElement('style');
+        style.id = 'tileHoverStyle';
+        style.innerHTML = `
+            .tile_stats_count:hover {
+                background-color: ${newColor} !important;
+                transform: scale(1.07) !important;
+                min-height: 105px !important;
+            }
+            .tile_stats_count:hover .col-9 span {
+                color: white !important;
+            }
+        `;
+        document.head.appendChild(style);
     });
 </script>
 
