@@ -7,11 +7,6 @@
     .bootstrap-select {
         width: 100% !important;
     }
-    .bootstrap-select .dropdown-toggle .filter-option {
-        text-align: right !important;
-        display: flex;
-        align-items: center;
-    }
 </style>
 @section('content')
     @if (count($errors) > 0)
@@ -48,7 +43,7 @@
                     </div>
 
                     <div class="col-12 no-print">
-                        <h5 class=" alert  custom-title">
+                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-danger">
                             تقرير مشتريات حسب المورد
                         </h5>
                     </div>
@@ -57,40 +52,38 @@
                     <form action="{{route('client.report3.post')}}" class="no-print" method="POST">
                         @csrf
                         @method('POST')
-                        <div class="row mb-3">
-                            <div class="col-lg-4 mb-3 no-print">
-                                <label for="" class="d-block">اسم المورد</label>
-                                <select required name="supplier_id" id="supplier_id" class="selectpicker form-control p-0"
-                                         data-live-search="true" title="اكتب او اختار اسم المورد">
+                        <div class="col-lg-3 pull-right no-print">
+                            <label for="" class="d-block">اسم المورد</label>
+                            <select required name="supplier_id" id="supplier_id" class="selectpicker"
+                                    data-style="btn-info" data-live-search="true" title="اكتب او اختار اسم المورد">
+                                <option
+                                    @if(isset($supplier_id) && $supplier_id == "all")
+                                    selected
+                                    @endif
+                                    value="all">كل الموردين
+                                </option>
+                                @foreach($suppliers as $supplier)
                                     <option
-                                        @if(isset($supplier_id) && $supplier_id == "all")
+                                        @if(isset($supplier_id) && $supplier->id == $supplier_id)
                                         selected
                                         @endif
-                                        value="all">كل الموردين
-                                    </option>
-                                    @foreach($suppliers as $supplier)
-                                        <option
-                                            @if(isset($supplier_id) && $supplier->id == $supplier_id)
-                                            selected
-                                            @endif
-                                            value="{{$supplier->id}}">{{$supplier->supplier_name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-lg-4 mb-3 no-print">
-                                <label for="" class="d-block">من تاريخ</label>
-                                <input type="date" @if(isset($from_date) && !empty($from_date)) value="{{$from_date}}"
-                                       @endif class="form-control" name="from_date"/>
-                            </div>
-                            <div class="col-lg-4 mb-3 no-print">
-                                <label for="" class="d-block">الى تاريخ</label>
-                                <input type="date" @if(isset($to_date) && !empty($to_date)) value="{{$to_date}}"
-                                       @endif  class="form-control" name="to_date"/>
-                            </div>
+                                        value="{{$supplier->id}}">{{$supplier->supplier_name}}</option>
+                                @endforeach
+                            </select>
                         </div>
-                        <div class="">
-                            <button class="btn btnn btn-md btn-warning py-1 px-3"
-                                     type="submit">
+                        <div class="col-lg-3 pull-right no-print">
+                            <label for="" class="d-block">من تاريخ</label>
+                            <input type="date" @if(isset($from_date) && !empty($from_date)) value="{{$from_date}}"
+                                   @endif class="form-control" name="from_date"/>
+                        </div>
+                        <div class="col-lg-3 pull-right no-print">
+                            <label for="" class="d-block">الى تاريخ</label>
+                            <input type="date" @if(isset($to_date) && !empty($to_date)) value="{{$to_date}}"
+                                   @endif  class="form-control" name="to_date"/>
+                        </div>
+                        <div class="col-lg-3 pull-right no-print">
+                            <button class="btn btn-md btn-danger"
+                                    style="font-size: 15px; height: 40px; margin-top: 25px;" type="submit">
                                 <i class="fa fa-check"></i>
                                 عرض التقرير
                             </button>

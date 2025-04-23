@@ -4,7 +4,9 @@
         height: 40px;
     }
 
-     
+    .bootstrap-select {
+        width: 80% !important;
+    }
 
     .form-control {
         height: 45px !important;

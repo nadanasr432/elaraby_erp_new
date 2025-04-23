@@ -280,29 +280,25 @@
                             @endphp
                             <tr class="even"
                                 style="font-size: 16px !important; height: 40px !important; text-align: center;">
-                                <td class="borderLeftH">{{ $prodTax + $product->quantity_price }}
-                                </td>
-                                <td class="borderLeftH">{{ $prodTax }}
+                                <td class="borderLeftH">{{ round($prodTax + $product->quantity_price,2) }}
+                                    </td>
+                                <td class="borderLeftH">{{ round($prodTax,2) }} 
                                 </td>
                                 <td class="borderLeftH" dir="rtl">
-                                    {{ $product->product_price }}
+                                    {{ round($product->product_price,2) }} 
                                 </td>
                                 <td class="borderLeftH" dir="rtl">
                                     {{ $product->quantity }}
-                                    {{ optional(optional($product->product)->unit)->unit_name ?? '-' }}
-                                    {{-- {{ isset($product->product->unit) ? $product->product->unit->unit_name : '-' }} --}}
-                                    {{-- {{ $product->product?->unit?->unit_name ?? '-' }} --}}
-
+                                    {{ $product->product->unit ? $product->product->unit->unit_name : '-' }}
                                 </td>
                                 <td class="borderLeftH" dir="rtl">
-                                    {{ $product->product_price }}
+                                    {{ round($product->product_price,2) }} 
                                 </td>
                                 <td class="borderLeftH" style="direction: rtl; unicode-bidi: embed;">
-                                    <div class="text-center" style="text-align: start !important;">
-                                        {!! $product->product?->description !!}</div>
+                                   <div class="text-center mt-3" style="text-align: start !important;">{!! $product->product->description !!}</div>
                                 </td>
 
-                                <td class="borderLeftH">{{ $product->product?->product_name }}</td>
+                                <td class="borderLeftH">{{ $product->product->product_name }}</td>
                                 <td class="borderLeftH">{{ $counter }}</td>
                             </tr>
                             @php $counter++; @endphp
@@ -321,7 +317,7 @@
                         <tr class="even"
                             style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 14px !important; height: 40px !important; text-align: center;">
                             <td dir="rtl">
-                                {{ $discount_value }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                {{ round($discount_value,2) }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                             </td>
                             <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Discount')</td>
                         </tr>
@@ -329,8 +325,7 @@
                         <tr
                             style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 40px !important; text-align: center;">
                             <td dir="rtl">
-                                {{ $totalQuotaitonPrice }} <img src="{{ asset('images/Sr_coin.svg') }}"
-                                    width="15px">
+                                {{ round($totalQuotaitonPrice ,2)}} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                             </td>
                             <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
                         </tr>
@@ -339,7 +334,7 @@
                         <tr class="even"
                             style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 14px !important; height: 40px !important; text-align: center;">
                             <td dir="rtl">
-                                {{ $taxValue }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                {{ round($taxValue,2) }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                             </td>
                             <td style="text-align: right;padding-right: 14px;">
                                 @lang('sales_bills.Total tax')
@@ -350,8 +345,7 @@
                         <tr
                             style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 40px !important; text-align: center;background: #222751;color:white;">
                             <td dir="rtl">
-                                {{ $totalQuotaitonPrice + $taxValue }} <img src="{{ asset('images/Sr_coin.svg') }}"
-                                    width="15px">
+                                {{ round($totalQuotaitonPrice + $taxValue,2) }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                             </td>
                             <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total including tax') </td>
                         </tr>

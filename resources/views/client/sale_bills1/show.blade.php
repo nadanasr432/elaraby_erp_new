@@ -11,7 +11,9 @@
         color: #444;
     }
 
-
+    .bootstrap-select {
+        width: 80% !important;
+    }
 
     .bill_details {
         margin-top: 30px !important;
@@ -244,8 +246,8 @@
                             <label> المبلغ المدفوع <span class="text-danger">*</span></label>
                             <input required class="form-control" name="amount" id="amount" type="text"
                                 value="{{ $saleBill->final_total - $saleBill->paid }}" dir="ltr">
-                            <input required class="form-control" name="outer_client_id" hidden id="outer_client_id"
-                                type="text" value="{{ $saleBill->outer_client_id }}" dir="ltr">
+                            <input required class="form-control" name="outer_client_id" hidden id="outer_client_id" type="text"
+                                value="{{ $saleBill->outer_client_id }}" dir="ltr">
                         </div>
                         <div class="col-md-4">
                             <label> طريقة الدفع <span class="text-danger">*</span></label>

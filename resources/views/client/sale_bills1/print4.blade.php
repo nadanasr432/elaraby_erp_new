@@ -244,9 +244,28 @@
                         <img class="logo" style="object-fit: scale-down;" width="204"
                             src="{{ asset($company->company_logo) }}">
                     </div>
-                    <div class="col-md-6 d-flex justify-content-end ">
+                   
+                         @php
+                    
+                        $items = \App\Models\SaleBillElement::where('sale_bill_id', $sale_bill->id)
+                            ->where('company_id', $sale_bill->company_id)
+                            ->get();
+                
+                        $allReturned = true;
+                
+                        foreach ($items as $product) {
+                            $alreadyReturnedQty = \App\Models\SaleBillReturn::where('bill_id', $sale_bill->id)
+                                ->where('product_id', $product->product_id)
+                                ->sum('return_quantity');
+                
+                            if ($alreadyReturnedQty < $product->quantity) {
+                                $allReturned = false;
+                                break;
+                            }
+                        }
+                    @endphp
                         <div class="txtheader text-center pr-4">
-                            @if (!$isMoswada)
+                            @if (!$isMoswada && !$allReturned)
                                 <span style="font-size:35px">
                                     {{ $company->company_name }}
                                 </span>
@@ -257,6 +276,16 @@
                                 <br>
                                 @lang('sales_bills.Tax bill')
                                 TaxInvoice
+                              @elseif($allReturned)
+                               <span style="font-size:35px">
+                                    {{ $company->company_name }}
+                                </span>
+                                <br>
+                                <span style="font-size:30px">
+                                    VAT :{{ $company->tax_number ?? '-' }}
+                                </span>
+                                <br>
+                               @lang('sales_bills.Return invoice')
                             @else
                                 @lang('sales_bills.Draft invoice')
                             @endif
@@ -266,18 +295,47 @@
             @else
                 <div class="row d-flex align-items-center">
                     <div class="col-md-6 d-flex justify-content-start ">
-                        <div class="txtheader text-center pl-3">
-                            @if (!$isMoswada)
-                                <span style="font-size:30px">
+                         @php
+                    
+                        $items = \App\Models\SaleBillElement::where('sale_bill_id', $sale_bill->id)
+                            ->where('company_id', $sale_bill->company_id)
+                            ->get();
+                
+                        $allReturned = true;
+                
+                        foreach ($items as $product) {
+                            $alreadyReturnedQty = \App\Models\SaleBillReturn::where('bill_id', $sale_bill->id)
+                                ->where('product_id', $product->product_id)
+                                ->sum('return_quantity');
+                
+                            if ($alreadyReturnedQty < $product->quantity) {
+                                $allReturned = false;
+                                break;
+                            }
+                        }
+                    @endphp
+                        <div class="txtheader text-center pr-4">
+                            @if (!$isMoswada && !$allReturned)
+                                <span style="font-size:35px">
                                     {{ $company->company_name }}
                                 </span>
                                 <br>
-                                <span style="font-size:35px">
+                                <span style="font-size:30px">
                                     VAT :{{ $company->tax_number ?? '-' }}
                                 </span>
                                 <br>
-                                TaxInvoice
                                 @lang('sales_bills.Tax bill')
+                                TaxInvoice
+                             @elseif($allReturned)
+                               <span style="font-size:35px">
+                                    {{ $company->company_name }}
+                                </span>
+                                <br>
+                                <span style="font-size:30px">
+                                    VAT :{{ $company->tax_number ?? '-' }}
+                                </span>
+                                <br>
+                               @lang('sales_bills.Return invoice')
                             @else
                                 @lang('sales_bills.Draft invoice')
                             @endif
@@ -460,14 +518,16 @@
                             <tr
                                 style="font-size: 16px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
                                 <th>#</th>
-                                <th>@lang('sales_bills.product name')</th>
-                                <th>@lang('sales_bills.unit price')</th>
+                                 @if ($company->extra_settings->show_model == 1)
+                                 <th>@lang('products.pmodel1')</th>@endif
+                                <th>@lang('sales_bills.product_name')</th>
                                 <th>@lang('sales_bills.Quantity')</th>
+                                <th>@lang('main.unit')</th>
+                                <th>@lang('sales_bills.unit price')</th>
                                 <th>@lang('sales_bills.The amount does not include tax')</th>
                                 <th>@lang('sales_bills.Tax')</th>
                                 <th>@lang('sales_bills.Discount')</th>
                                 <th>@lang('products.pdesc')</th>
-                                <th>@lang('products.pmodel1')</th>
                                 <th>@lang('sales_bills.total')</th>
 
                             </tr>
@@ -509,12 +569,17 @@
                                     <tr
                                         style="font-size: 16px !important; height: 34px !important; text-align: center; background: #f8f9fb">
                                         <td class="borderLeftH">{{ ++$i }}</td>
+                                        @if ($company->extra_settings->show_model == 1)
+                                            <td class="borderLeftH">{{ $element->product->product_model }}</td>
+                                        @endif
                                         <td class="borderLeftH">{{ $element->product->product_name }}</td>
-                                        <td class="borderLeftH">{{ $element->product_price }}</td>
                                         <td class="borderLeftH text-center">
-                                            <span>{{ $element->quantity }}</span>
-                                            <span>{{ $element->unit->unit_name }}</span>
+                                            {{ $element->quantity }}
                                         </td>
+                                        <td class="borderLeftH text-center">
+                                            {{ $element->unit->unit_name }}
+                                        </td>
+                                        <td class="borderLeftH">{{ $element->product_price }}</td>
                                         <td class="borderLeftH">
                                             {{ $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
                                         </td>
@@ -525,7 +590,6 @@
                                             <div class="text-center" style="text-align: start !important;">
                                                 {!! $element->product->description !!}</div>
                                         </td>
-                                        <td class="borderLeftH">{{ $element->product->product_model }}</td>
                                         <td class="borderLeftH">
                                             {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
                                         </td>
@@ -545,15 +609,16 @@
                             <tr
                                 style="font-size: 16px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
                                 <th>@lang('sales_bills.total')</th>
-                                <th>@lang('products.pmodel1')</th>
                                 <th>@lang('products.pdesc')</th>
-
                                 <th>@lang('sales_bills.Tax')</th>
                                 <th>@lang('sales_bills.Discount')</th>
                                 <th>@lang('sales_bills.The amount does not include tax')</th>
-                                <th>@lang('sales_bills.Quantity')</th>
                                 <th>@lang('sales_bills.unit price')</th>
-                                <th>@lang('sales_bills.product name')</th>
+                                <th>@lang('main.unit'))</th>
+                                <th>@lang('sales_bills.Quantity')</th>
+                                <th>@lang('sales_bills.product_name')</th>
+                                 @if ($company->extra_settings->show_model == 1)
+                                 <th>@lang('products.pmodel1')</th>@endif
                                 <th>#</th>
                             </tr>
 
@@ -598,7 +663,6 @@
                                         <td class="borderLeftH">
                                             {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
                                         </td>
-                                        <td class="borderLeftH">{{ $element->product->product_model }}</td>
                                         <td class="borderLeftH d-flex justify-content-center">
                                             <div class="text-center" style="text-align: start !important;">
                                                 {!! $element->product->description !!}</div>
@@ -610,12 +674,17 @@
                                         <td class="borderLeftH">
                                             {{ $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
                                         </td>
-                                        <td class="borderLeftH text-center">
-                                            <span>{{ $element->quantity }}</span>
-                                            <span>{{ $element->unit->unit_name }}</span>
-                                        </td>
                                         <td class="borderLeftH">{{ $element->product_price }}</td>
+                                        <td class="borderLeftH text-center">
+                                            {{ $element->unit->unit_name }}
+                                        </td>
+                                        <td class="borderLeftH text-center">
+                                            {{ $element->quantity }}
+                                        </td>
                                         <td class="borderLeftH">{{ $element->product->product_name }}</td>
+                                         @if ($company->extra_settings->show_model == 1)
+                                            <td class="borderLeftH">{{ $element->product->product_model }}</td>
+                                        @endif
                                         <td class="borderLeftH">{{ ++$i }}</td>
                                     </tr>
                                 @endforeach
@@ -629,10 +698,10 @@
             <?php
             if ($sale_bill->company_id == 20) {
                 echo "<p style='text-align: justify; direction: rtl; font-size: 12px; padding: 11px; background: #f3f3f3; margin: 2px 10px; border-radius: 6px; border: 1px solid #2d2d2d10;'>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </p>";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </p>";
             }
             ?>
             @if (app()->getLocale() == 'en')

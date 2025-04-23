@@ -5,7 +5,6 @@
         left: -90px !important;
         width: 220px;
     }
-
 </style>
 
 @section('content')
@@ -41,47 +40,142 @@
                                 <li><a data-action="collapse"><i class="la la-minus"></i></a></li>
                                 <li><a data-action="reload"><i class="la la-refresh"></i></a></li>
                                 <li><a data-action="expand"><i class="la la-expand"></i></a></li>
-                                {{-- <li><a data-action="close"><i class="la la-close"></i></a></li> --}}
+                                <!--<li><a data-action="close"><i class="la la-close"></i></a></li>-->
                             </ul>
                         </div>
                     </div>
-                   <div class="card-content collapse show">
-    <div class="card-body">
-        <form method="POST" action="{{ route('client.profile.update', Auth::user()->id) }}" class="row">
-            @csrf
-            @method('PATCH')
+                    <div class="card-content collapse show">
+                        <div class="card-body">
+                            <form method="POST" action="{{ route('client.profile.update', Auth::user()->id) }}"
+                                class="row">
+                                @csrf
+                                @method('PATCH')
 
-            <div class="form-group col-lg-6 mb-2">
-                <label for="name">{{ __('main.name') }}</label>
-                <input type="text" class="form-control" required value="{{ Auth::user()->name }}" placeholder="{{ __('main.name') }}" name="name">
-            </div>
-            <div class="form-group col-lg-6 mb-2">
-                <label for="email">{{ __('main.email') }}</label>
-                <input type="text" class="form-control text-left" dir="ltr" required value="{{ Auth::user()->email }}" placeholder="{{ __('main.email') }}" name="email">
-            </div>
+                                <div class="form-group col-lg-6 mb-2">
+                                    <label for="name">{{ __('main.name') }}</label>
+                                    <input type="text" class="form-control" required value="{{ Auth::user()->name }}"
+                                        placeholder="{{ __('main.name') }}" name="name">
+                                </div>
+                                <div class="form-group col-lg-6 mb-2">
+                                    <label for="email">{{ __('main.email') }}</label>
+                                    <input type="text" class="form-control text-left" dir="ltr" required
+                                        value="{{ Auth::user()->email }}" placeholder="{{ __('main.email') }}"
+                                        name="email">
+                                </div>
 
-            <div class="form-group col-lg-6 mb-2">
-                <label for="password">{{ __('main.password') }}</label>
-                <input type="password" class="form-control" style="text-align: left;" dir="ltr" required placeholder="{{ __('main.password') }}" name="password">
-            </div>
-            <div class="form-group col-lg-6 mb-2">
-                <label for="confirm-password">{{ __('main.confirm-password') }}</label>
-                <input type="password" class="form-control" style="text-align: left;" dir="ltr" required placeholder="{{ __('main.confirm-password') }}" name="confirm-password">
-            </div>
+                                <div class="form-group col-lg-6 mb-2">
+                                    <label for="password">{{ __('main.password') }}</label>
+                                    <input type="password" class="form-control" style="text-align: left;" dir="ltr"
+                                        required placeholder="{{ __('main.password') }}" name="password">
+                                </div>
+                                <div class="form-group col-lg-6 mb-2">
+                                    <label for="confirm-password">{{ __('main.confirm-password') }}</label>
+                                    <input type="password" class="form-control" style="text-align: left;" dir="ltr"
+                                        required placeholder="{{ __('main.confirm-password') }}" name="confirm-password">
+                                </div>
 
-            <div class="card-footer">
-                <div class="col-lg-12 text-center">
-                    <button type="reset" name="reset" class="btn btn-info btn-sm">
-                        <i class="la la-refresh"></i> {{ __('main.reset') }}
-                    </button>
-                    <button type="submit" name="submit" class="btn btn-success btn-sm">
-                        <i class="la la-check"></i> {{ __('main.update') }}
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
+                                <div class="card-footer">
+                                    <div class="col-lg-12 text-center">
+                                        <button type="reset" name="reset" class="btn btn-info btn-sm">
+                                            <i class="la la-refresh"></i> {{ __('main.reset') }}
+                                        </button>
+                                        <button type="submit" name="submit" class="btn btn-success btn-sm">
+                                            <i class="la la-check"></i> {{ __('main.update') }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            @php
+                                $company = \App\Models\Company::FindOrFail(Auth::user()->company_id);
+                            @endphp
+                            {{-- @if (!$company->zatca || !$company->zatca->onboarding_data)
+                                <form action="{{ route('zatca.onboard', $company) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary">Onboard with ZATCA</button>
+                                </form>
+                            @else
+                                <p>Company onboarded with ZATCA.</p>
+                            @endif --}}
+                            @if (!$company->onboarding_data)
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#zatcaOnboardModal">
+                                التسجيل مع زاتكا
+                            </button>
+
+                            <div class="modal fade" id="zatcaOnboardModal" tabindex="-1" aria-labelledby="zatcaOnboardModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form action="{{ route('zatca.onboard', $company) }}" method="POST" id="zatcaOnboardForm">
+                                            @csrf
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="zatcaOnboardModalLabel">التسجيل مع زاتكا</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label class="form-label">رمز التحقق (OTP)</label>
+                                                    <input type="text" name="otp" class="form-control" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">رقم تسجيل القيمة المضافة</label>
+                                                    <input type="text" name="vat_id" class="form-control" value="302049435900003" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">اسم المنظمة</label>
+                                                    <input type="text" name="organization" class="form-control" value="{{ $company->company_name }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">نوع العمل</label>
+                                                    <input type="text" name="business" class="form-control" value="{{ $company->business_field ?? "التجارة" }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">الدولة</label>
+                                                    <input type="text" name="country" class="form-control" value="SA" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">الفرع</label>
+                                                    <input type="text" name="branch" class="form-control" value="3020494359" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">العنوان</label>
+                                                    <input type="text" name="address" class="form-control" value="{{ $company->company_address }}" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">اسم الوحدة</label>
+                                                    <input type="text" name="unit_name" class="form-control"  value="Server"  required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">اسم التطبيق</label>
+                                                    <input type="text" name="app_name" class="form-control"  value="Elaraby" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">إصدار التطبيق</label>
+                                                    <input type="text" name="app_version" class="form-control"  value="1.3" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">الرقم التسلسلي لنسخة التطبيق</label>
+                                                    <input type="text" name="app_copy_sn" class="form-control" value="12" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label">وضع الإنتاج</label>
+                                                    <select name="is_production" class="form-control" required>
+                                                        <option value="false">لا</option>
+                                                        <option value="true">نعم</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                                                <button type="submit" class="btn btn-primary">إرسال</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        @else
+                            <p>الشركة مسجلة مع زاتكا.</p>
+                        @endif
+                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -100,58 +194,70 @@
                             </ul>
                         </div>
                     </div>
-                   <div class="card-content collapse show">
-    <div class="card-body">
-        <form method="POST" action="{{ route('client.profile.store', Auth::user()->id) }}" enctype="multipart/form-data" class="row">
-            @csrf
-            @method('PATCH')
+                    <div class="card-content collapse show">
+                        <div class="card-body">
+                            <form method="POST" action="{{ route('client.profile.store', Auth::user()->id) }}"
+                                enctype="multipart/form-data" class="row">
+                                @csrf
+                                @method('PATCH')
 
-            <div class="col-lg-12 mb-3">
-                <div class="col-lg-6 pull-right">
-                    <label>{{ __('main.gender') }}: <span class="text-danger">*</span></label>
-                    <select required name="gender" id="select-beast" class="form-control">
-                        <option value="">{{ __('main.gender') }}</option>
-                        <option @if ($profile->gender == 'male') selected @endif value="male">{{ __('main.male') }}</option>
-                        <option @if ($profile->gender == 'female') selected @endif value="female">{{ __('main.female') }}</option>
-                        <option @if ($profile->gender == 'other') selected @endif value="other">{{ __('main.other') }}</option>
-                    </select>
-                </div>
-                <div class="col-lg-6 pull-right">
-                    <label class="form-label d-block">{{ __('main.age') }}<span class="text-danger">*</span></label>
-                    <input value="{{ $profile->age }}" type="text" min="1" required max="100" name="age" class="form-control">
-                </div>
-                <div class="clearfix"></div>
-            </div>
+                                <div class="col-lg-12 mb-3">
+                                    <div class="col-lg-6 pull-right">
+                                        <label>{{ __('main.gender') }}: <span class="text-danger">*</span></label>
+                                        <select required name="gender" id="select-beast" class="form-control">
+                                            <option value="">{{ __('main.gender') }}</option>
+                                            <option @if ($profile->gender == 'male') selected @endif value="male">
+                                                {{ __('main.male') }}</option>
+                                            <option @if ($profile->gender == 'female') selected @endif value="female">
+                                                {{ __('main.female') }}</option>
+                                            <option @if ($profile->gender == 'other') selected @endif value="other">
+                                                {{ __('main.other') }}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-6 pull-right">
+                                        <label class="form-label d-block">{{ __('main.age') }}<span
+                                                class="text-danger">*</span></label>
+                                        <input value="{{ $profile->age }}" type="text" min="1" required
+                                            max="100" name="age" class="form-control">
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
 
-            <div class="col-lg-12 mb-3">
-                <div class="col-lg-6 pull-right">
-                    <label class="form-label d-block">{{ __('main.city') }}<span class="text-danger">*</span></label>
-                    <input value="{{ $profile->city_name }}" type="text" required name="city_name" class="form-control">
-                </div>
-                <div class="col-lg-6 pull-right">
-                    <label>{{ __('main.image') }}</label>
-                    <input accept=".jpg,.png,.jpeg" type="file" onchange="pic.src=window.URL.createObjectURL(this.files[0])" id="file" name="profile_pic" class="form-control">
-                </div>
-            </div>
+                                <div class="col-lg-12 mb-3">
+                                    <div class="col-lg-6 pull-right">
+                                        <label class="form-label d-block">{{ __('main.city') }}<span
+                                                class="text-danger">*</span></label>
+                                        <input value="{{ $profile->city_name }}" type="text" required
+                                            name="city_name" class="form-control">
+                                    </div>
+                                    <div class="col-lg-6 pull-right">
+                                        <label>{{ __('main.image') }}</label>
+                                        <input accept=".jpg,.png,.jpeg" type="file"
+                                            onchange="pic.src=window.URL.createObjectURL(this.files[0])" id="file"
+                                            name="profile_pic" class="form-control">
+                                    </div>
+                                </div>
 
-            <div class="col-lg-12 text-center mb-2">
-                <label for="" class="d-block">{{ __('main.preview') }}</label>
-                <img id="pic" src="{{ asset($profile->profile_pic) }}" style="width: 100px; height:100px;" />
-            </div>
+                                <div class="col-lg-12 text-center mb-2">
+                                    <label for="" class="d-block">{{ __('main.preview') }}</label>
+                                    <img id="pic" src="{{ asset($profile->profile_pic) }}"
+                                        style="width: 100px; height:100px;" />
+                                </div>
 
-            <div class="card-footer">
-                <div class="col-lg-12 text-center">
-                    <button type="reset" name="reset" id="reset-btn" class="btn btn-info btn-sm">
-                        <i class="la la-refresh"></i> {{ __('main.reset') }}
-                    </button>
-                    <button type="submit" name="submit" class="btn btn-success btn-sm">
-                        <i class="la la-check"></i> {{ __('main.update') }}
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
+                                <div class="card-footer">
+                                    <div class="col-lg-12 text-center">
+                                        <button type="reset" name="reset" id="reset-btn"
+                                            class="btn btn-info btn-sm">
+                                            <i class="la la-refresh"></i> {{ __('main.reset') }}
+                                        </button>
+                                        <button type="submit" name="submit" class="btn btn-success btn-sm">
+                                            <i class="la la-check"></i> {{ __('main.update') }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
 
                 </div>
             </div>

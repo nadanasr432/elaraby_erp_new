@@ -25,11 +25,10 @@
             <div class="card mg-b-20">
                 <div class="card-body">
                     <div class="col-12">
-                        <h5  class=" alert custom-title">
-                            اضافة مورد جديد </h5>
-                        <a class="btn btnn text-white px-3 py-1" style="background-color: ;" href="{{ route('client.suppliers.index') }}">
+                        <a class="btn btn-primary btn-sm pull-left" href="{{ route('client.suppliers.index') }}">
                             {{ __('main.back') }}</a>
-                        
+                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success">
+                            اضافة مورد جديد </h5>
                     </div>
                     <div class="clearfix"></div>
                     <br>
@@ -88,7 +87,7 @@
                                     @if ($supplier->prev_balance < 0) checked @endif type="radio" value="on"
                                     name="balance" /> عليه
 
-                                <input required value="{{ abs($supplier->prev_balance) }}" type="text" name="prev_balance"
+                                <input required value="{{ $supplier->prev_balance}}" type="text" name="prev_balance"
                                     class="form-control" dir="ltr" />
                             </div>
                             <div class="form-group pull-right col-lg-6" dir="ltr">

@@ -25,7 +25,7 @@
             <div class="card mg-b-20">
                 <div class="card-body">
                     <div class="col-12">
-                        <a class="btn btnn btn-primary btn-sm pull-left" href="{{ route('client.bonds.index') }}">
+                        <a class="btn btn-primary btn-sm pull-left" href="{{ route('client.bonds.index') }}">
                             {{ __('main.back') }}
                         </a>
                         <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success">
@@ -83,7 +83,7 @@
 
                             <div class="col-md-3" style="    margin-top: 20px;">
                                 <label> {{ __('bonds.amount') }} <span class="text-danger">*</span></label>
-                                <input required class="form-control" dir="ltr" id="amount" name="amount" type="number" step="any" min="0.001">
+                                <input required class="form-control" dir="ltr" id="amount" name="amount"  min="0.001" type="number" step="any">
                             </div>
 
 
@@ -96,7 +96,7 @@
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                            <button class="btn btnn btn-info pd-x-20" type="submit">{{ __('main.add') }}</button>
+                            <button class="btn btn-info pd-x-20" type="submit">{{ __('main.add') }}</button>
                         </div>
                     </form>
                 </div>

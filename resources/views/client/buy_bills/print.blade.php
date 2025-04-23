@@ -10,7 +10,7 @@ $tax_value_added = $company->tax_value_added;
 
 <head>
     <title>
-        <?php echo $buy_bill->supplier->supplier_name . ' - فاتورة رقم ' . $buy_bill->buy_bill_number; ?>
+        <?php echo $buy_bill->supplier->supplier_name . ' - فاتورة رقم ' . $buy_bill->company_counter; ?>
     </title>
 
     <meta charset="utf-8" />
@@ -258,7 +258,7 @@ $tax_value_added = $company->tax_value_added;
                         </tr>
                     </thead>
                     @php
-                        $billNum = $buy_bill->company_counter ? $buy_bill->company_counter : $buy_bill->buy_bill_number;
+                        $billNum = $buy_bill->company_counter ? $buy_bill->company_counter : $buy_bill->company_counter;
                     @endphp
                     <tbody style="font-size:18px !important;">
                         <tr class="even"
@@ -376,7 +376,7 @@ $tax_value_added = $company->tax_value_added;
                             $extras = $buy_bill->extras;
                             $billNum = $buy_bill->company_counter
                                 ? $buy_bill->company_counter
-                                : $buy_bill->buy_bill_number;
+                                : $buy_bill->company_counter;
 
                         @endphp
                         @foreach ($elements as $element)
@@ -543,8 +543,7 @@ $tax_value_added = $company->tax_value_added;
                                 style="text-align: {{ app()->getLocale() == 'ar' ? 'right' : 'left' }}; padding-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}: 14px;">
                                 {{ __('sales_bills.vat_value') }} ( {{ $tax_value_added }}% )
                             </td>
-                            <td> {{ $tax_value }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
-                            </td>
+                            <td> {{ $tax_value }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px"></td>
                         </tr>
 
                         <tr
@@ -553,16 +552,15 @@ $tax_value_added = $company->tax_value_added;
                                 style="text-align: {{ app()->getLocale() == 'ar' ? 'right' : 'left' }}; padding-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}: 14px;">
                                 {{ __('sales_bills.total_after_discount_and_tax') }}
                             </td>
-                            <td> {{ $after_total_all }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
-                            </td>
+                            <td> {{ $after_total_all }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px"></td>
                         </tr>
 
                         @php
-                            $cash = \App\Models\BuyCash::where('bill_id', $buy_bill->buy_bill_number)
+                            $cash = \App\Models\BuyCash::where('bill_id', $buy_bill->company_counter)
                                 ->where('company_id', $company_id)
                                 ->where('supplier_id', $buy_bill->supplier_id)
                                 ->first();
-                            $bank_cash = \App\Models\BankBuyCash::where('bill_id', $buy_bill->buy_bill_number)
+                            $bank_cash = \App\Models\BankBuyCash::where('bill_id', $buy_bill->company_counter)
                                 ->where('company_id', $company_id)
                                 ->where('supplier_id', $buy_bill->supplier_id)
                                 ->first();
@@ -581,8 +579,7 @@ $tax_value_added = $company->tax_value_added;
                                 style="text-align: {{ app()->getLocale() == 'ar' ? 'right' : 'left' }}; padding-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}: 14px;">
                                 {{ __('sales_bills.paid_amount') }}
                             </td>
-                            <td>{{ $paid_amount }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
-                            </td>
+                            <td>{{ $paid_amount }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px"></td>
                         </tr>
 
                         <tr
@@ -591,8 +588,7 @@ $tax_value_added = $company->tax_value_added;
                                 style="text-align: {{ app()->getLocale() == 'ar' ? 'right' : 'left' }}; padding-{{ app()->getLocale() == 'ar' ? 'left' : 'right' }}: 14px;">
                                 {{ __('sales_bills.remaining_amount') }}
                             </td>
-                            <td>{{ $rest }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
-                            </td>
+                            <td>{{ $rest }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px"></td>
                         </tr>
 
                     </table>

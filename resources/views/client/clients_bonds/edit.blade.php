@@ -24,14 +24,12 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <div class="col-12 d-flex flex-wrap justify-content-between">
-                        <h5 class="pull-right alert custom-title">
-                            {{ __('bonds.edit_client_bond') }} - {{ $clientBond->client}}
-                        </h5>
-                        <a class="btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.bonds.index') }}">
+                    <div class="col-12">
+                        <a class="btn btn-primary btn-sm pull-left" href="{{ route('client.bonds.index') }}">
                             {{ __('main.back') }}
                         </a>
-                        
+                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success">
+                            {{ __('bonds.edit_client_bond') }} - {{ $clientBond->client}}
                     </div>
 
                     <div class="clearfix"></div>
@@ -55,7 +53,7 @@
                         <div class="row mb-3">
                             <div class="col-md-3">
                                 <label>{{ __('bonds.client_name') }} <span class="text-danger">*</span></label>
-                                <select dir="rtl" id="client" required class="form-control selectpicker" data-style="btn-third"
+                                <select dir="rtl" id="client" required class="form-control selectpicker" data-style="btn-danger"
                                     data-live-search="true" name="client">
                                     <option value="none" disabled selected>{{ __('bonds.choose_client') }}</option>
                                     @foreach($outer_clients as $client)
@@ -86,7 +84,7 @@
 
                             <div class="col-md-3" style="    margin-top: 20px;">
                                 <label> {{ __('bonds.amount') }} <span class="text-danger">*</span></label>
-                                <input required class="form-control" dir="ltr" id="amount" name="amount" type="number" step="any" value="{{$clientBond->amount}}" min="0.001">
+                                <input required class="form-control" dir="ltr" id="amount" name="amount" type="number"  min="0.001" step="any" value="{{$clientBond->amount}}">
                             </div>
 
                             <div class="col-md-3" style="    margin-top: 20px;">
@@ -96,8 +94,8 @@
                                 </textarea>
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 text-end">
-                            <button class="btn btnn btn-warning px-3 py-1 " type="submit">{{ __('main.edit') }}</button>
+                        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                            <button class="btn btn-info pd-x-20" type="submit">{{ __('main.edit') }}</button>
                         </div>
                     </form>
                 </div>

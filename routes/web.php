@@ -5,9 +5,11 @@ use App\Models\Store;
 use App\Models\Branch;
 use App\Models\IntroMovie;
 use App\Models\Information;
+use App\Services\Zatca\TestZatca;
 use App\Http\Middleware\CheckStatus;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ZatcaController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\Admin\TypeController;
 use App\Http\Controllers\Client\PosController;
@@ -33,6 +35,7 @@ use App\Http\Controllers\Client\AssetsController;
 use App\Http\Controllers\Client\BranchController;
 use App\Http\Controllers\Client\ClientController;
 use App\Http\Controllers\Client\CouponController;
+use App\Http\Controllers\Client\DriverController;
 use App\Http\Controllers\Client\GroupeController;
 use App\Http\Controllers\Client\ReportController;
 use App\Http\Controllers\Client\BuyBillController;
@@ -41,13 +44,15 @@ use App\Http\Controllers\Client\CountryController;
 use App\Http\Controllers\Client\ExpenseController;
 use App\Http\Controllers\Client\ProductController;
 use App\Http\Controllers\Client\SummaryController;
+use App\Http\Controllers\Client\VehicleController;
 use App\Http\Controllers\Client\CashBankController;
 use App\Http\Controllers\Client\CategoryController;
 use App\Http\Controllers\Client\EmployeeController;
+// use App\Http\Controllers\Client\JournalEntryController;
 use App\Http\Controllers\Client\SaleBillController;
 use App\Http\Controllers\Client\SettingsController;
+use App\Http\Controllers\Client\ShipmentController;
 use App\Http\Controllers\Client\SupplierController;
-// use App\Http\Controllers\Client\JournalEntryController;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Client\QuotationController;
 use App\Http\Controllers\Client\SaleBillController1;
@@ -57,10 +62,20 @@ use App\Http\Controllers\Client\OuterClientController;
 use App\Http\Controllers\Client\SubCategoryController;
 use App\Http\Controllers\Client\BuildingRoleController;
 use App\Http\Controllers\Client\ImportExportController;
+use App\Http\Controllers\Client\VehicleOwnerController;
 use App\Http\Controllers\Client\ClientProfileController;
 use App\Http\Controllers\Client\PurchaseOrderController;
 use App\Http\Controllers\Client\CategoriesAssetController;
+use App\Http\Controllers\Client\ChargingStationController;
+use App\Http\Controllers\Client\TransportPolicyController;
 use App\Http\Controllers\Client\SaleBillPrintDemoController;
+
+Route::get('/test-zatca', function () {
+    require_once app_path('Services/Zatca/TestZatca.php');
+});
+
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use App\Http\Controllers\Client\DischargingStationController;
 
 Route::get('admin/createTokensForAllInvoices', [\App\Http\Controllers\Client\SaleBillController::class, 'createTokensForAllInvoices']);
 Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect::class, \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter::class, \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class]], function () {
@@ -144,7 +159,6 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::get('/pos-print/{pos_id?}', [PosController::class, 'print'])
                 ->name('pos.open.print');
             Route::post('buy-bills/update-color', [BuyBillController::class, 'updateColor'])->name('buy-bills.update-color');
-
         });
     // *********  Admin Routes ******** //
 
@@ -300,7 +314,15 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
                 'edit' => 'client.clients.edit',
                 'store' => 'client.clients.store',
             ]);
-
+            Route::resource('discharging-stations', DischargingStationController::class);
+            Route::resource('charging-stations', ChargingStationController::class);
+            Route::resource('drivers', DriverController::class);
+            Route::resource('shipments', ShipmentController::class);
+            Route::resource('vehicles', VehicleController::class);
+            Route::resource('vehicle-owners', VehicleOwnerController::class);
+            Route::resource('transport-policies', TransportPolicyController::class);
+            Route::get('transport-policies/{transportPolicy}/print', [TransportPolicyController::class, 'print'])
+                ->name('transport-policies.print');
             // ClientProfile Routes
             Route::get('profile/edit/{id}', [ClientProfileController::class, 'edit'])->name('client.profile.edit');
             Route::patch('profile/edit/{id}', [ClientProfileController::class, 'update'])->name('client.profile.update');
@@ -327,7 +349,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::get('pos-settings', [SettingsController::class, 'pos_settings'])->name('pos.settings');
             Route::get('pos-settings-edit/{id?}', [SettingsController::class, 'pos_settings_edit'])->name('pos.settings.edit');
             Route::patch('pos-settings-update', [SettingsController::class, 'pos_settings_update'])->name('pos.settings.update');
-
+            Route::post('/send-invoice-to-zatca', [SaleBillController1::class, 'sendInvoiceToZATCA'])->name('send.invoice.to.zatca');
+            Route::post('/company/{company}/zatca/onboard', [ZatcaController::class, 'onboard'])->name('zatca.onboard');
+            Route::post('/sale-bill/{saleBillId}/zatca/send', [ZatcaController::class, 'sendInvoice'])->name('zatca.send');
             // Branches Routes
             Route::resource('branches', BranchController::class)->names([
                 'index' => 'client.branches.index',
@@ -357,6 +381,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::post('clients-stores-transfer-post', [StoreController::class, 'transfer_post'])->name('client.stores.transfer.post');
 
             Route::post('get-products-by-store-id', [StoreController::class, 'get_products_by_store_id'])->name('get.products.by.store.id');
+            Route::get('/get-store-products', [ProductController::class, 'getStoreProducts'])->name('get.store.products');
+
+            Route::get('/get-store-products', [ProductController::class, 'getStoreProducts'])->name('get.store.products');
 
             // Safes Routes
             Route::resource('safes', SafeController::class)->names([
@@ -1017,7 +1044,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
 
             // pos-invoice -- فاتورة الاعداد
             Route::get('/prod_pos/{invID}', [PosController::class, 'prod_pos'])->name('pos.prod_pos');
-
+            Route::post('/pos/client/delete', [PosController::class, 'deleteClientPos'])->name('pos.client.delete');
+            Route::post('/pos/{pos_id}/delete', [PosController::class, 'deleteSpecificPos'])->name('pos.specific.delete');
+            Route::post('/company/counter/rearrange', [PosController::class, 'rearrangeCompanyCounter'])->name('company.counter.rearrange');
 
             // Journal routes voucher routes
             Route::get('/voucher/create', [VoucherController::class, 'create_voucher_entries'])->name('client.voucher.create');

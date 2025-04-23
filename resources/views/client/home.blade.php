@@ -853,9 +853,11 @@
                             {{ __('main.income-expenses-jan') }}
                         </h4>
                     </div>
-                    <div class="card-content">
+               
+                    <div class="card-content ">
                         <div id="container" style="min-width: 310px; height: 372px; margin: 0 auto"></div>
                     </div>
+                    
 
                 </div>
             </div>

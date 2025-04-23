@@ -17,13 +17,13 @@
             <div class="card mg-b-20">
                 <div class="card-body">
                     <div class="row">
-                        {{-- <div class="w-50">
-                            <h5 class="mb-4 w-100 alert alert-sm" style="text-align: left; font-size: 22px !important;">
-                                {{ __('sidebar.electronic-stamp') }}</h5>
-                            <img style="width: 200px; display: block;margin-right: auto; margin-top: 37px; margin-bottom: -12; border-radius: 8px; background: white; padding: 16px; border: 1px solid #c9c7c7;"
-                                src="{{ asset('assets/images/electronic_stamps/' . $electronicStamp->img) }}"
-                                alt="electronic_stamp">
-                        </div> --}}
+                        <!--{{-- <div class="w-50">-->
+                        <!--    <h5 class="mb-4 w-100 alert alert-sm" style="text-align: left; font-size: 22px !important;">-->
+                        <!--        {{ __('sidebar.electronic-stamp') }}</h5>-->
+                        <!--    <img style="width: 200px; display: block;margin-right: auto; margin-top: 37px; margin-bottom: -12; border-radius: 8px; background: white; padding: 16px; border: 1px solid #c9c7c7;"-->
+                        <!--        src="{{ asset('assets/images/electronic_stamps/' . $electronicStamp->img) }}"-->
+                        <!--        alt="electronic_stamp">-->
+                        <!--</div> --}}-->
                         <div class="w-100 mb-2 d-flex flex-column justify-content-center align-items-center">
                             <h5 class="w-100 alert alert-sm text-bold" style="text-align: center; font-size: 22px !important;color: black; font-weight: 600 !important;">
                                 {{ __('bonds.bond_for_supplier') }}</h5>
@@ -113,9 +113,12 @@
                             <h5 class="alert alert-sm" style="text-align: start; font-size: 22px !important;">
                                 {{ __('sidebar.electronic-stamp') }}
                             </h5>
-                            <img style="width: 200px; display: block; border-radius: 8px; background: white; padding: 16px; border: 1px solid #c9c7c7;"
-                                src="{{ asset('assets/images/electronic_stamps/' . $electronicStamp->img) }}"
-                                alt="electronic_stamp">
+                            @if(!empty($electronicStamp) && !empty($electronicStamp->img))
+                                <img style="width: 200px; display: block; border-radius: 8px; background: white; padding: 16px; border: 1px solid #c9c7c7;"
+                                    src="{{ asset('assets/images/electronic_stamps/' . $electronicStamp->img) }}"
+                                    alt="electronic_stamp">
+                            @endif
+
                         </div>
                         <div class="col-6" style="text-align:start;">
                             <span

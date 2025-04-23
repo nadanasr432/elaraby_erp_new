@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Bondsupplier;
 use Illuminate\Database\Eloquent\Model;
 
 class Supplier extends Model
@@ -12,7 +13,7 @@ class Supplier extends Model
         'prev_balance','shop_name','supplier_email','supplier_national','tax_number'
     ];
     public function notes(){
-        return $this->hasMany(SupplierNote::class, 'supplier_id', 'id');
+        return $this->hasMany('\App\Models\SupplierNote','supplier_id','id');
     }
     public function phones(){
         return $this->hasMany('\App\Models\SupplierPhone','supplier_id','id');
@@ -35,5 +36,8 @@ class Supplier extends Model
     public function accountingTree()
     {
         return $this->morphOne(accounting_tree::class, 'accountable');
+    }
+    public function bondSuppliers() {
+        return $this->hasMany(Bondsupplier::class, 'supplier', 'supplier_name');
     }
 }

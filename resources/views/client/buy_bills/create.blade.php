@@ -12,18 +12,14 @@
     }
 
     .bootstrap-select {
-        width: 100% !important;
+        width: 80% !important;
     }
 
     .bill_details {
         margin-top: 30px !important;
         min-height: 150px !important;
     }
-    .dropdown-toggle::after {
 
-position: absolute !important;
-
-}
 </style>
 @section('content')
     @if (session('success'))
@@ -54,7 +50,7 @@ position: absolute !important;
             </ul>
         </div>
     @endif
-    <form class="bg-white p-2" target="_blank" action="#" method="POST">
+    <form target="_blank" action="#" method="POST">
         @csrf
         @method('POST')
         @if (isset($open_buy_bill) && !empty($open_buy_bill))
@@ -62,8 +58,8 @@ position: absolute !important;
         @else
             <input type="hidden" value="{{ $pre_bill }}" id="buy_bill_number"/>
         @endif
-        <h6 class="alert text-end no-print mb-3 custom-title" dir="rtl">
-            
+        <h6 class="alert alert-info alert-sm text-center no-print mb-3" dir="rtl">
+            <center>
                 @if (isset($open_buy_bill) && !empty($open_buy_bill))
                     تعديل فاتورة مشتريات موردين
                 @else
@@ -78,75 +74,62 @@ position: absolute !important;
                         {{ $countBills }} )
                     @endif
                 </span>
-            
+            </center>
         </h6>
 
         <!------------------------------------------row1-------------------------------------->
         <div class="row firstrow p-0">
             <!------supplier_name------>
-            <div class="col-lg-4 ms-auto no-print">
-                <label for="supplier_id" class="d-block mb-1">{{ __('suppliers.supplier-name') }}</label>
-                
-                <div class="d-flex align-items-center justify-content-between gap-1" >
-                    <!-- Supplier Dropdown -->
-                    <select required name="supplier_id" id="supplier_id" class="selectpicker form-control w-100 flex-grow-1"
-                            data-style="btn-third" data-live-search="true" 
-                            title="{{ __('suppliers.supplier-name') }}">
-                        @foreach ($suppliers as $supplier)
-                            <option 
-                                @if (isset($open_buy_bill) && !empty($open_buy_bill) && $supplier->id == $open_buy_bill->supplier_id) 
-                                    selected value="{{ $open_buy_bill->supplier_id }}"
-                                @else 
-                                    value="{{ $supplier->id }}" 
-                                @endif>
-                                {{ $supplier->supplier_name }}
-                            </option>
-                        @endforeach
-                    </select>
-            
-                    <!-- Add Supplier Button -->
-                    <a target="_blank" href="{{ route('client.suppliers.create') }}" 
-                       role="button" class="btn open_popup h-100 text-white py-1" 
-                       style="display: inline;background-color: #222751">
-                        <i class="fa fa-plus"></i>
-                    </a>
-                </div>
+            <div class="col-lg-4 pull-right no-print">
+                <label for="" class="d-block">{{ __('suppliers.supplier-name') }}</label>
+                <select required name="supplier_id" id="supplier_id" class="selectpicker" data-style="btn-success"
+                        data-live-search="true" title="{{ __('suppliers.supplier-name') }}">
+                    @foreach ($suppliers as $supplier)
+                        <option
+                            @if (isset($open_buy_bill) && !empty($open_buy_bill) && $supplier->id == $open_buy_bill->supplier_id) selected
+                            value="{{ $open_buy_bill->supplier_id }}"
+                            @else
+                            value="{{ $supplier->id }}" @endif>
+                            {{ $supplier->supplier_name }}</option>
+                    @endforeach
+                </select>
+                <a target="_blank" href="{{ route('client.suppliers.create') }}" role="button"
+                   style="width: 15%;display: inline;" class="btn btn-sm btn-success open_popup">
+                    <i class="fa fa-plus"></i>
+                </a>
             </div>
-            
 
             <!------invoice_store------>
-            <div class="col-lg-4">
-                <label for="store_id" class="d-block"> {{ __('sales_bills.choose-store') }} </label>
-                
-                <div class="d-flex align-items-center gap-2 justify-content-between">
-                    <!-- Store Dropdown -->
-                    <div  class="w-100">
-                        <select name="store_id" id="store_id" class="selectpicker form-control flex-grow-1"
-                            data-style="btn-third" data-live-search="true"
-                            title="{{ __('sales_bills.choose-store') }}">
-                        @foreach ($stores as $store)
-                            <option value="{{ $store->id }}" {{ $loop->first ? 'selected' : '' }}>
-                                {{ $store->store_name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    </div>
-            
-                    <!-- Add Store Button -->
-                    <a target="_blank" href="{{ route('client.stores.create') }}" 
-                       role="button" class="btn open_popup  text-white py-1"
-                       style=" background-color: #222751;">
-                        <i class="fa fa-plus"></i>
-                    </a>
-                </div>
+            <div class="col-lg-4 pull-right">
+                <label for=""> {{ __('sales_bills.choose-store') }} </label><br>
+                <select name="store_id" id="store_id" class="selectpicker" data-style="btn-primary"
+                        data-live-search="true"
+                        title="{{ __('sales_bills.choose-store') }}">
+                    <?php $i = 0; ?>
+                    @foreach ($stores as $store)
+                        @if ($stores->count() == 1)
+                            <option selected value="{{ $store->id }}">{{ $store->store_name }}</option>
+                        @else
+                            @if ($i == 0)
+                                <option selected value="{{ $store->id }}">{{ $store->store_name }}</option>
+                            @else
+                                <option value="{{ $store->id }}">{{ $store->store_name }}</option>
+                            @endif
+                        @endif
+                        <?php $i++; ?>
+                    @endforeach
+                </select>
+                <a target="_blank" href="{{ route('client.stores.create') }}" role="button"
+                   style="width: 15%;display: inline;" class="btn btn-sm btn-primary open_popup">
+                    <i class="fa fa-plus"></i>
+                </a>
             </div>
-            
 
             <!------invoice_tax------>
             <div class="col-lg-4 pull-right">
                 <label> {{ __('sales_bills.choose-tax') }} </label><br>
-                <select name="value_added_tax" id="value_added_tax" class="selectpicker form-control"
-                        data-style="btn-third" title="{{ __('sales_bills.choose-store') }}">
+                <select name="value_added_tax" id="value_added_tax" class="selectpicker"
+                        data-style="btn-warning" title="{{ __('sales_bills.choose-store') }}">
                     <option value="0" selected>غير شامل الضريبة</option>
                     <option value="1">شامل الضريبة</option>
                 </select>
@@ -229,51 +212,49 @@ position: absolute !important;
         <hr class="no-print">
 
         <!------------------------------------------row3-------------------------------------->
-        <div class="row options no-print mt-2">
+        <div class="options no-print mt-2">
 
             <!------products------>
-            <div class="col-lg-4 d-grid gap-2">
-                <label for="product_id"> {{ __('main.product') }} </label>
-                
-                <div class="d-flex align-items-center justify-content-between">
-                    <select name="product_id" id="product_id" class="selectpicker form-control" data-style="btn-third"
-                            data-live-search="true" title="كود المنتج او الاسم">
-                        @foreach ($all_products as $product)
-                            <option value="{{ $product->id }}" data-tokens="{{ $product->code_universal }}">
-                                {{ $product->product_name }}
-                            </option>
-                        @endforeach
-                    </select>
-            
-                    <a target="_blank" href="{{ route('client.products.create') }}" role="button"
-                        class="btn btn-sm btn-warning open_popup py-1">
-                        <i class="fa fa-plus"></i>
-                    </a>
-                </div>
+            <div class="col-lg-4 pull-right">
+                <label for=""> {{ __('main.product') }} </label><br>
+                <select name="product_id" id="product_id" class="selectpicker" data-style="btn-success"
+                        data-live-search="true" title="كود المنتج او الاسم">
+                    @foreach ($all_products as $product)
+                        <option value="{{ $product->id }}"
+                                data-tokens="{{ $product->code_universal }}">
+                            {{ $product->product_name }}</option>
+                    @endforeach
+                </select>
+                <a target="_blank" href="{{ route('client.products.create') }}" role="button"
+                   style="width: 15%;display: inline;" class="btn btn-sm btn-warning open_popup">
+                    <i class="fa fa-plus"></i>
+                </a>
             </div>
-            
 
             <!------price------>
-            <div class="col-lg-4 ">
-                <label for="">{{ __('sales_bills.product-price') }}</label>
+            <div class="col-12 col-md-3">
+                <label for="product_price">{{ __('sales_bills.product-price') }}</label>
                 <input type="text" name="product_price" value="0" id="product_price" class="form-control"/>
             </div>
 
             <!------quantity and unit------>
-            <div class="col-lg-4 ">
+            <div class="col-12 col-md-6">
                 <label class="d-block" for=""> {{ __('main.quantity') }} </label>
-                <input style="width: 50%;" type="text" name="quantity" id="quantity"
-                       class="form-control d-inline float-left"/>
-                <select style="width: 50%;" class="form-control d-inline float-right" name="unit_id" id="unit_id">
-                    <option value="">{{ __('units.unit-name') }}</option>
-                    @foreach ($units as $unit)
-                        <option value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
-                    @endforeach
-                </select>
+                <div class="d-flex">
+                    <input type="text" name="quantity" id="quantity" class="form-control w-50"/>
+                    <select class="form-control w-50" name="unit_id" id="unit_id">
+                        <option value="">{{ __('units.unit-name') }}</option>
+                        @foreach ($units as $unit)
+                            <option value="{{ $unit->id }}">{{ $unit->unit_name }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
 
+
+
             <!------total price------>
-            <div class="col-lg-4 ">
+            <div class="col-lg-2 pull-right">
                 <label for=""> {{ __('main.total') }} </label>
                 <input type="text" name="quantity_price" id="quantity_price" class="form-control"/>
             </div>
@@ -283,9 +264,11 @@ position: absolute !important;
 
 
         <!------------------------------------------row4 buttons-------------------------------------->
-
-        <div class="col-lg-12 text-start">
-            <button type="button" id="add" class="btn btnn btn-md mt-3 text-white py-1"style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
+        <br><br>
+        <br><br>
+        <br><br>
+        <div class="col-lg-12 text-center">
+            <button type="button" id="add" class="btn btn-primary btn-md mt-3">
                 <i class="fa fa-plus"></i>
                 {{ __('sidebar.add-new-purchase-invoice') }}
             </button>
@@ -313,8 +296,9 @@ position: absolute !important;
                 </div>
             </div>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 bill_details bg-white p-2">
-            <h6 class="alert alert-sm text-start custom-title">
+        <div class="col-lg-12 col-md-12 col-sm-12 bill_details">
+            <h6 class="alert alert-sm alert-warning text-center">
+                <i class="fa fa-info-circle"></i>
                 بيانات عناصر فاتورة المشتريات رقم
 
                 @if (isset($open_buy_bill) && !empty($open_buy_bill))
@@ -401,7 +385,7 @@ position: absolute !important;
             }
             ?>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 after_totals  bg-white p-2">
+        <div class="col-lg-12 col-md-12 col-sm-12 after_totals">
             <?php
             if (isset($open_buy_bill) && !empty($open_buy_bill)) {
                 $tax_value_added = $company->tax_value_added;
@@ -460,14 +444,12 @@ position: absolute !important;
 
         <div class="clearfix no-print"></div>
         <hr class="no-print">
-        <div class="p-2 bg-white no-print" >
-            <div class=" row ">
-
-                <div class="col-lg-12 col-md-12 col-12 ">
+        <div class="row no-print" style="margin: 20px auto;">
+            <div class="col-lg-12">
+                <div class="col-lg-6 col-md-6 col-xs-6 pull-right">
                     <div class="form-group" dir="rtl">
                         <label for="discount">{{ __('sales_bills.discount-on-the-total-bill') }}</label> <br>
-                        <div class="d-flex">
-                            <?php
+                        <?php
                         if (isset($open_buy_bill) && !empty($open_buy_bill)) {
                             foreach ($extras as $key) {
                                 if ($key->action == 'discount') {
@@ -491,7 +473,8 @@ position: absolute !important;
                         }
                         ?>
                         @if (isset($open_buy_bill) && !empty($open_buy_bill))
-                            <select name="discount_type" id="discount_type" class="form-control mx-1">
+                            <select name="discount_type" id="discount_type" class="form-control"
+                                    style="width: 20%;display: inline;float: right; margin-left:5px;">
                                 <option @if (isset($buy_bill_discount_type) && $buy_bill_discount_type == 'pound') selected @endif value="pound">
                                     {{ $extra_settings->currency }}
                                 </option>
@@ -500,78 +483,76 @@ position: absolute !important;
                                 </option>
                             </select>
                             <input type="text" value="{{ isset($buy_bill_discount_value) ? $buy_bill_discount_value : 0 }}" name="discount_value"
-                                 id="discount_value"
-                                class="form-control mx-1"/>
-                            <button type="button" class="btn btn-warning text-center px-3"
-                                    
+                                   style="width: 50%;display: inline;float: right;" id="discount_value"
+                                   class="form-control "/>
+                            <button type="button" class="btn btn-md btn-info pull-right text-center"
+                                    style="display: inline !important;width: 20% !important; height: 40px;margin-right: 20px; "
                                     id="exec_discount">{{ __('main.apply') }}
                             </button>
                         @else
-                            <select name="discount_type" id="discount_type" class="form-control mx-1" disabled>
+                            <select name="discount_type" id="discount_type" class="form-control" disabled
+                                    style="width: 20%;display: inline;float: right; margin-left:5px;">
                                 <option value="pound">{{ $extra_settings->currency }}</option>
                                 <option value="percent">%</option>
                             </select>
                             <input type="text" value="0" name="discount_value"
-                                   disabled id="discount_value"
-                                   class="form-control mx-1"/>
-                            <button type="button"  class="btn btnn btn-warning text-center text-white px-3"
+                                   style="width: 50%;display: inline;float: right;" disabled id="discount_value"
+                                   class="form-control "/>
+                            <button type="button" disabled class="btn btn-md btn-info pull-right text-center"
+                                    style="display: inline !important;width: 20% !important; height: 40px;margin-right: 20px; "
                                     id="exec_discount">{{ __('main.apply') }}
                             </button>
                         @endif
                     </div>
                 </div>
-
-                </div>
-                <div class="col-lg-12 col-md-12 col-12">
+                <div class="col-lg-6 col-md-6 col-xs-6 pull-right">
                     <div class="form-group" dir="rtl">
                         <label for="extra">{{ __('main.shipping-expenses') }}</label> <br>
-                        <div class="d-flex">
-
                         @if (isset($open_buy_bill) && !empty($open_buy_bill))
-                            <select name="extra_type" id="extra_type" class="form-control mx-1"
-                                    >
+                            <select name="extra_type" id="extra_type" class="form-control"
+                                    style="width: 20%;display: inline;float: right;margin-left: 5px">
                                 <option @if (isset($buy_bill_extra_type) && $buy_bill_extra_type == 'pound') selected @endif value="pound">
                                     {{ $extra_settings->currency }}</option>
                                 <option @if (isset($buy_bill_extra_type) && $buy_bill_extra_type == 'percent') selected @endif value="percent">%
                                 </option>
                             </select>
                             <input value="{{ isset($buy_bill_extra_value) ? $buy_bill_extra_value : 0 }}" type="text" name="extra_value"
-                                   style="  " id="extra_value"
-                                   class="form-control mx-1"/>
-                            <button type="button" class="btn btn-warning text-center px-3"
+                                   style="width: 50%;display: inline;float: right;" id="extra_value"
+                                   class="form-control"/>
+                            <button type="button" class="btn btn-md btn-info pull-right text-center"
+                                    style="display: inline !important;width: 20% !important; height: 40px;margin-right: 20px; "
                                     id="exec_extra">
                                 {{ __('main.apply') }}
                             </button>
                         @else
-                            <select disabled name="extra_type" id="extra_type" class="form-control mx-1"
-                                   >
+                            <select disabled name="extra_type" id="extra_type" class="form-control"
+                                    style="width: 20%;display: inline;float: right;margin-left: 5px">
                                 <option value="pound">{{ $extra_settings->currency }}</option>
                                 <option value="percent">%</option>
                             </select>
                             <input disabled value="0" type="text" name="extra_value"
-                                    id="extra_value"
-                                   class="form-control mx-1"/>
-                            <button type="button" class="btn btnn btn-warning text-center px-3"
+                                   style="width: 50%;display: inline;float: right;" id="extra_value"
+                                   class="form-control"/>
+                            <button disabled type="button" class="btn btn-md btn-info pull-right text-center"
+                                    style="display: inline !important;width: 20% !important; height: 40px;margin-right: 20px; "
                                     id="exec_extra">
                                 {{ __('main.apply') }}
                             </button>
                         @endif
-                        </div>
                     </div>
                 </div>
-            </div>
-               
-                {{-- <div class="clearfix"></div> --}}
+                <div class="clearfix"></div>
+            </div> <!--  End Col-lg-12 -->
         </div><!--  End Row -->
     </form>
-    <div class="col-lg-12 no-print bg-white p-2 h-auto">
-        <button type="button" @if (!isset($open_buy_bill) || empty($open_buy_bill))  @endif data-toggle="modal"
-                data-target="#myModal2" class="btn btnn btn-md btn-warning px-3 py-1 my-1 text-white pay_btn mx-1">
+    <div class="col-lg-12 no-print" style="padding-top: 25px;height: 40px !important;">
+        <button type="button" @if (!isset($open_buy_bill) || empty($open_buy_bill)) disabled @endif data-toggle="modal"
+                data-target="#myModal2" class="btn btn-md btn-dark pay_btn pull-right">
             <i class="fa fa-money"></i>
             {{ __('pos.record-payment') }}
         </button>
 
-        <form class="d-inline " method="POST" action="{{ route('client.buy_bills.cancel') }}">
+        <form class="d-inline" method="POST" action="{{ route('client.buy_bills.cancel') }}">
             @csrf
             @method('POST')
             @if (isset($open_buy_bill) && !empty($open_buy_bill))
@@ -579,13 +560,13 @@ position: absolute !important;
             @else
                 <input type="hidden" value="{{ $pre_bill }}" name="buy_bill_number"/>
             @endif
-            <button style="background-color: #36c7d6" href="" type="submit" @if (!isset($open_buy_bill) || empty($open_buy_bill))  @endif
-            class="btn btnn btn-md text-white px-3 py-1 close_btn mx-1"><i class="fa fa-check"></i>
+            <button href="" type="submit" @if (!isset($open_buy_bill) || empty($open_buy_bill)) disabled @endif
+            class="btn btn-md close_btn btn-danger pull-right ml-3"><i class="fa fa-check"></i>
                 {{ __('main.cancel') }}
             </button>
         </form>
         <a href="javascript:;" role="button"
-           class="btn @if (!isset($open_buy_bill) || empty($open_buy_bill))  @endif save_btn btn-md btnn btn-warning px-3 py-1 my-1 mx-1"><i
+           class="btn @if (!isset($open_buy_bill) || empty($open_buy_bill)) disabled @endif save_btn btn-md btn-success pull-right ml-3"><i
                 class="fa fa-check"></i>
             {{ __('main.save') }}
         </a>

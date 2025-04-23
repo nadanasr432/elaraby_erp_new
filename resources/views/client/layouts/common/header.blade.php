@@ -173,6 +173,9 @@
     .modal-backdrop.show{
         z-index: 5;
     }
+    .modal-backdrop.show{
+        z-index: 5;
+    }
 </style>
 <nav
     class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-dark navbar-shadow no-print">
@@ -221,6 +224,7 @@
                         </a>
                     </li>
                     <!---------------------SIDEBAR TOGGLER------------------------------------------------->
+     
      
 
                     <!---------------------Messages------------------------------------------------>
@@ -457,6 +461,20 @@
                        
                     </li>
                     
+
+
+                    <li>
+                        <button type="button" class="rounded-pill shadow-sm w-auto" data-bs-toggle="modal"
+                            data-bs-target="#colorrModal"
+                            style="border-color: {{ old('page_color', $currentColor ?? 'transparent') }}; background-color: {{ old('page_color', $currentColor ?? 'transparent') }};">
+                            <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#222751">
+                                <path d="M512 256c0 .9 0 1.8 0 2.7c-.4 36.5-33.6 61.3-70.1 61.3L344 320c-26.5 0-48 21.5-48 48c0 3.4 .4 6.7 1 9.9c2.1 10.2 6.5 20 10.8 29.9c6.1 13.8 12.1 27.5 12.1 42c0 31.8-21.6 60.7-53.4 62c-3.5 .1-7 .2-10.6 .2C114.6 512 0 397.4 0 256S114.6 0 256 0S512 114.6 512 256zM128 288a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm0-96a32 32 0 1 0 0-64 32 32 0 1 0 0 64zM288 96a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm96 96a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"/>
+                            </svg>
+                        </button>
+                    
+                       
+                    </li>
+                    
                     <!---------------------ADDING SHORTCUTS------------------------------------------------>
                     <li class="mx-1">
                         <button id="dark-btn" class="bg-transparent border-0 d-none">
@@ -584,6 +602,32 @@
             </div>
         </div>
     </div>
+
+     <!-- Modal -->
+     <div class="modal fade z-50" id="colorrModal" tabindex="-1" aria-labelledby="colorrModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="colorrModalLabel">@lang('main.Select Print Color')</h5>
+                    <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{ url()->current() }}">
+                        @csrf
+                        <div class="mb-3 text-center">
+                            <input type="color" class="form-control form-control-color mx-auto"
+                                id="page_color" name="page_color"
+                                value="{{ old('page_color', $currentColor ?? '#222751') }}"
+                                title="Choose your color" style="width: 120px; height: 40px; cursor: pointer;">
+                        </div>
+                        <button type="submit" class="btn btn-secondary">@lang('main.save')</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+   
 
      <!-- Modal -->
      <div class="modal fade z-50" id="colorrModal" tabindex="-1" aria-labelledby="colorrModalLabel" aria-hidden="true">

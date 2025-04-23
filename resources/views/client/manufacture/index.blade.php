@@ -35,15 +35,16 @@
             <div class="card">
                 <!------HEADER----->
                 <div class="card-header border-bottom border-secondary p-1">
-                    <div class="d-flex justify-content-end w-100 mb-1">
-                        <div>
-                            <a class="mr-1 btn btnn text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.manufactures.create') }}">
+                    <div class="d-flex justify-content-between align-items-baseline">
+                        <div class="row">
+                            <a class="mr-1 btn btn-success btn-sm-new" href="{{ route('client.manufactures.create') }}">
                                 <i class="fa fa-plus"></i>
                                 {{ __('manufactures.addnewmanufacture') }}
                             </a>
+
                         </div>
+
                     </div>
-                    
                     <table class="table table-striped text-center" id="example-table">
                         <thead>
                             <tr style="background: #222751;">
@@ -85,7 +86,7 @@
                                             </button>
                                             <div class="dropdown-menu p-0" aria-labelledby="dropdownMenuButton"
                                                 x-placement="bottom-start"
-                                                >
+                                                style="position: absolute; transform: translate3d(0px, 29px, 0px); top: 0px; left: 0px; will-change: transform;">
                                                 <!--SHOW--->
                                                 <a href="{{ route('client.manufactures.show', $manufacture->id) }}"
                                                     class="dropdown-item" target="_blank"

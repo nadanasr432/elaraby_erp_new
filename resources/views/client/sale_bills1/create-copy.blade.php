@@ -12,7 +12,7 @@
     }
 
     .bootstrap-select {
-        width: 100% !important;
+        width: 80% !important;
     }
 
     .bill_details {
@@ -133,8 +133,7 @@
         <!--tax-->
         <div class="clearfix no-print"></div>
         <div class="col-lg-3 pl-0 pull-right no-print">
-            <label for="value_added_tax">
-                {{ __('sales_bills.prices-for-tax') }}
+            <label for="value_added_tax">{{ __('sales_bills.prices-for-tax') }}
                 <span class="text-danger font-weight-bold">*</span>
 
             </label>

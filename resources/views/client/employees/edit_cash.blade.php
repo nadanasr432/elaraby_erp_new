@@ -12,7 +12,7 @@
     }
 
     .bootstrap-select {
-        width: 100% !important;
+        width: 80% !important;
     }
 
 </style>
@@ -41,7 +41,7 @@
             <div class="card mg-b-20">
                 <div class="card-body">
                     <div class="col-12">
-                        <a class="btn btnn btn-primary btn-sm pull-left" href="{{ route('employees.cashs') }}">
+                        <a class="btn btn-primary btn-sm pull-left" href="{{ route('employees.cashs') }}">
                             {{ __('main.back') }}</a>
                         <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success">
                             تعديل مدفوعات موظف
@@ -106,7 +106,7 @@
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                            <button class="btn btnn btn-info pd-x-20" type="submit">تعديل</button>
+                            <button class="btn btn-info pd-x-20" type="submit">تعديل</button>
                         </div>
                     </form>
                 </div>

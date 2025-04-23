@@ -312,7 +312,7 @@
 .fa-certificate:before { content: "\f178"; }
 .fa-chain:before { content: "\f179"; }
 .fa-chain-broken:before { content: "\f17a"; }
-.fa-check:before { content: none; }
+.fa-check:before { content: "\f17b"; }
 .fa-check-circle:before { content: "\f17c"; }
 .fa-check-circle-o:before { content: "\f17d"; }
 .fa-check-square:before { content: "\f17e"; }

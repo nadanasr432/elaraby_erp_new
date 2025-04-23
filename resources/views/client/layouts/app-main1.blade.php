@@ -160,7 +160,8 @@
         .main-news {
             padding: 3px !important;
             background: #222751 !important;
-            color: white !important;
+            /*color: white !important;*/
+            color: rgb(122, 190, 122) !important
         }
 
         .main-news p {
@@ -262,10 +263,10 @@
             $.post("{{ route('getNumProductsOutOfStock') }}", {
                 "_token": "{{ csrf_token() }}"
             }, function(data) {
-                if (data >= 1) {
+                // if (data >= 1) {
                     $("#numOfProductsEnded").text(data);
-                    $("#numOfProductsEnded").show();
-                }
+                    // $("#numOfProductsEnded").show();
+                // }
             });
 
             //set products that are out of stock ===> ok i viewed it...

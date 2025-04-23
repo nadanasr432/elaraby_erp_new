@@ -25,7 +25,7 @@
             <div class="card mg-b-20">
                 <div class="card-body">
                     <div class="col-12">
-                        <h5 style="min-width: 300px;" class=" alert custom-title">تعديل
+                        <h5 style="min-width: 300px;" class="pull-left alert alert-sm alert-success">تعديل
                             الدور
                             [ {{ $role->name }} ]
                         </h5>
@@ -230,8 +230,8 @@
 
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 text-start">
-                            <button type="submit" class="btn btnn btn-warning py-1 px-3">تحديث</button>
+                        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                            <button type="submit" class="btn btn-info">تحديث</button>
                         </div>
                         <!-- /col -->
                     </div>

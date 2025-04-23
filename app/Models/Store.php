@@ -19,12 +19,6 @@ class Store extends Model
     public function gifts(){
         return $this->hasMany('\App\Models\Gift','store_id','id');
     }
-    // Store.php
-    public function saleBills()
-    {
-        return $this->hasMany(SaleBill::class);
-    }
-
     public function products(){
         return $this->hasMany('\App\Models\Product','store_id','id');
     }

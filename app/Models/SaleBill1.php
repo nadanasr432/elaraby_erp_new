@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Store;
 
 class SaleBill1 extends Model
 {
@@ -13,6 +14,7 @@ class SaleBill1 extends Model
     protected $table = "sale_bills";
     protected $fillable = [
         'token',
+        'uuid',
         'company_id',
         'company_counter',
         'client_id',
@@ -29,14 +31,20 @@ class SaleBill1 extends Model
         'store_id',
         'total_discount',
         'products_discount_type',
-        'total_tax'
+        'total_tax',
+        'zatca_status',
+        'zatca_hash',
     ];
+
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($billSale) {
             $billSale->sale_bill_number = self::generateSaleBillNumber($billSale->company_id);
+            if (empty($billSale->uuid)) {
+                $billSale->uuid = (string) \Illuminate\Support\Str::uuid();
+            }
         });
     }
     public static function generateSaleBillNumber($companyId)
@@ -46,6 +54,10 @@ class SaleBill1 extends Model
             ->first();
 
         return $lastBill ? $lastBill->sale_bill_number + 1 : 1;
+    }
+    public function store()
+    {
+        return $this->belongsTo(Store::class);
     }
     public function elements()
     {

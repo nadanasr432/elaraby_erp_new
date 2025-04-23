@@ -52,6 +52,7 @@ class RoleController extends Controller
             'company_id' => $company_id
         ]);
     
+        // Validate and sync permissions
         $permissions = $request->input('permission', []);
         $validPermissions = Permission::where('guard_name', 'client-web')->whereIn('name', $permissions)->pluck('name');
         $role->syncPermissions($validPermissions);
@@ -59,6 +60,7 @@ class RoleController extends Controller
         return redirect()->route('client.roles.index')
             ->with('success', 'تم اضافة الصلاحية بنجاح');
     }
+
 
     public function edit($id)
     {

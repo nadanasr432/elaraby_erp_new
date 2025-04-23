@@ -21,14 +21,13 @@
         <div class="col-md-12">
             <div class="card mg-b-20">
                 <div class="card-body">
-                    <div class="col-12 d-flex flex-wrap align-items-center justify-content-between">
-                        <h5  class=" alert alert-sm custom-title">
-                            {{ __('branches.edit-branche') }}
-                        </h5>
-                        <a class="btn btnn  text-white px-3 py-1" style="background-color: #36c7d6" href="{{ route('client.branches.index') }}">
+                    <div class="col-12">
+                        <a class="btn btn-primary btn-sm pull-left" href="{{ route('client.branches.index') }}">
                             {{ __('main.back') }}
                         </a>
-                        
+                        <h5 style="min-width: 300px;" class="pull-right alert alert-sm alert-success">
+                            {{ __('branches.edit-branche') }}
+                        </h5>
                     </div>
                     <div class="clearfix"></div>
                     <br>
@@ -69,8 +68,8 @@
                             </div>
 
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 text-start">
-                            <button class="btn pd-x-20 text-white px-4 btnn" style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);" type="submit">{{ __('main.update') }}</button>
+                        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                            <button class="btn btn-info pd-x-20" type="submit">{{ __('main.update') }}</button>
                         </div>
                     </form>
                 </div>

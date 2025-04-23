@@ -21,12 +21,14 @@
         <div class="col-xl-12">
             <div class="card">
                 <div class="card-header pb-0">
-                        <div class="col-lg-12 d-flex flex-wrap justify-content-between">
-                            <h5 class=" custom-title">{{ __('sidebar.list-of-supplier') }} </h5>
-
-                            <a class="btn btnn px-3 py-1 text-white" style="background-color: #36c7d6"  href="{{ route('client.suppliers.create') }}"><i
+                    <div class="d-flex justify-content-between">
+                        <div class="col-lg-12 margin-tb">
+                            <a class="btn pull-left btn-primary btn-sm" href="{{ route('client.suppliers.create') }}"><i
                                     class="fa fa-plus"></i> {{ __('sidebar.add-new-supplier') }} </a>
+                            <h5 class="pull-right alert alert-sm alert-success">{{ __('sidebar.list-of-supplier') }} </h5>
                         </div>
+                        <br>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -67,39 +69,33 @@
                                         <td>{{ $supplier->shop_name }}</td>
 
                                         <td>
-                                            @if ($supplier->prev_balance > 0)
+                                            @if (floatval($supplier->prev_balance) > 0)
                                                 {{ __('main.from') }}
                                                 {{ floatval($supplier->prev_balance) }}
-                                            @elseif($supplier->prev_balance < 0)
+                                            @elseif (floatval($supplier->prev_balance) < 0)
                                                 {{ __('main.on') }}
-                                                {{ floatval(abs($supplier->prev_balance)) }}
+                                                {{ abs(floatval($supplier->prev_balance)) }}
                                             @else
                                                 0
                                             @endif
+
                                         </td>
                                         <td style="width: 20% !important;">
                                             <a href="{{ route('client.suppliers.show', $supplier->id) }}"
-                                                class="" data-toggle="tooltip"
-                                                title="{{ __('main.show') }}" data-placement="top">
-                                                <svg width="19" height="16" viewBox="0 0 576 512" fill="#222751"><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"></path></svg>
-                                                </a>
+                                                class="btn btn-sm btn-success" data-toggle="tooltip"
+                                                title="{{ __('main.show') }}" data-placement="top"><i
+                                                    class="fa fa-eye"></i></a>
 
                                             <a href="{{ route('client.suppliers.edit', $supplier->id) }}"
-                                                class="" data-toggle="tooltip"
-                                                title="{{ __('main.edit') }}" data-placement="top">
-                                                <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M18.21 4.87258C18.6 4.48258 18.6 3.83258 18.21 3.46258L15.87 1.12258C15.5 0.732578 14.85 0.732578 14.46 1.12258L12.62 2.95258L16.37 6.70258M0.5 15.0826V18.8326H4.25L15.31 7.76258L11.56 4.01258L0.5 15.0826Z" fill="#4AA16A"/>
-                                                    </svg>
-                                                </a>
+                                                class="btn btn-sm btn-info" data-toggle="tooltip"
+                                                title="{{ __('main.edit') }}" data-placement="top"><i
+                                                    class="fa fa-edit"></i></a>
 
-                                            <a class="modal-effect delete_supplier"
+                                            <a class="modal-effect btn btn-sm btn-danger delete_supplier"
                                                 supplier_id="{{ $supplier->id }}"
                                                 supplier_name="{{ $supplier->supplier_name }}" data-toggle="modal"
-                                                href="#modaldemo9" title="{{ __('main.delete') }}">
-                                                    <svg width="17" height="20" viewBox="0 0 17 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M14.912 4.33301L14.111 17.95C14.0812 18.4594 13.8577 18.9381 13.4865 19.2881C13.1153 19.6382 12.6243 19.8331 12.114 19.833H4.886C4.37575 19.8331 3.88475 19.6382 3.5135 19.2881C3.14226 18.9381 2.91885 18.4594 2.889 17.95L2.09 4.33301H0V3.33301C0 3.2004 0.0526785 3.07322 0.146447 2.97945C0.240215 2.88569 0.367392 2.83301 0.5 2.83301H16.5C16.6326 2.83301 16.7598 2.88569 16.8536 2.97945C16.9473 3.07322 17 3.2004 17 3.33301V4.33301H14.912ZM6.5 0.333008H10.5C10.6326 0.333008 10.7598 0.385686 10.8536 0.479455C10.9473 0.573223 11 0.7004 11 0.833008V1.83301H6V0.833008C6 0.7004 6.05268 0.573223 6.14645 0.479455C6.24021 0.385686 6.36739 0.333008 6.5 0.333008ZM5.5 6.83301L6 15.833H7.5L7.1 6.83301H5.5ZM10 6.83301L9.5 15.833H11L11.5 6.83301H10Z" fill="#F55549"/>
-                                                    </svg>
-                                                </a>
+                                                href="#modaldemo9" title="{{ __('main.delete') }}"><i
+                                                    class="fa fa-trash"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -108,8 +104,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-12 d-flex justify-content-between align-items-center bg-white p-2">
-                <p class="alert custom-title alert-sm" dir="rtl">
+            <div class="col-lg-4 pull-right p-2">
+                <p class="alert alert-success alert-sm" dir="rtl">
                     {{ __('suppliers.total-suppliers-indebtedness') }} :
                     @if ($total_balances > 0)
                         {{ __('main.from') }}
@@ -121,21 +117,22 @@
                         0
                     @endif
                 </p>
-         
+            </div>
+            <div class="col-lg-4 pull-right p-2">
                 <a href="{{ route('client.suppliers.print') }}" target="_blank" role="button"
-                     dir="rtl" class="btn btnn px-3 py-1 text-white" style="background-color: #36c7d6" >
+                    class="btn-danger btn btn-md" dir="rtl">
                     <i class="fa fa-print"></i>
                     {{ __('suppliers.print-suppliers') }}
                 </a>
             </div>
 
             <div class="clearfix"></div>
-            <div class="bg-white">
+            <hr>
             <form class="d-inline" action="{{ route('suppliers.import') }}" method="POST"
-                enctype="multipart/form-data" >
+                enctype="multipart/form-data">
                 @csrf
-                <div class="row px-3 pb-3">
-                    <div class="col-lg-6  " style="border-left: 1px solid #ccc">
+                <div class="row">
+                    <div class="col-lg-6 pull-right p-1" style="border-left: 1px solid #ccc">
                         <a href="javascript:;" class="text-danger open_box">
                             <i class="fa fa-plus"></i>
                             {{ __('suppliers.customer-import-instructions') }} :
@@ -169,16 +166,15 @@
                         <label class="d-block mt-2" for="">{{ __('main.import-data') }}</label>
                         <input accept=".xlsx" required type="file" name="file" class="form-control">
                         <br>
-                        <button class="btn btnn btn-success">{{ __('main.click-to-import') }}</button>
+                        <button class="btn btn-success">{{ __('main.click-to-import') }}</button>
                     </div>
-                    <div class="col-lg-6  ">
+                    <div class="col-lg-6 pull-left p-1">
                         <label class="d-block" for="">{{ __('main.export-data') }}</label>
-                        <a class="btn btnn btn-warning"
+                        <a class="btn btn-warning"
                             href="{{ route('suppliers.export') }}">{{ __('main.click-to-export') }}</a>
                     </div>
                 </div>
             </form>
-            </div>
             <div class="clearfix"></div>
             <hr>
 

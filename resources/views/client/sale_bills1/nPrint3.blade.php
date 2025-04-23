@@ -222,16 +222,34 @@
                         <img class="logo" style="object-fit: scale-down;" width="204"
                             src="{{ asset($company->company_logo) }}">
                     </div>
+                    @php
+                    
+                        $items = \App\Models\SaleBillElement::where('sale_bill_id', $sale_bill->id)
+                            ->where('company_id', $sale_bill->company_id)
+                            ->get();
+                
+                        $allReturned = true;
+                
+                        foreach ($items as $product) {
+                            $alreadyReturnedQty = \App\Models\SaleBillReturn::where('bill_id', $sale_bill->id)
+                                ->where('product_id', $product->product_id)
+                                ->sum('return_quantity');
+                
+                            if ($alreadyReturnedQty < $product->quantity) {
+                                $allReturned = false;
+                                break;
+                            }
+                        }
+                    @endphp
                     <div class="txtheader mx-auto text-center">
-                        @if (!$isMoswada)
-                            @lang('sales_bills.Tax bill')
-                            <br>
-                            TaxInvoice
+                        @if (!$isMoswada && !$allReturned)
+                            @lang('sales_bills.Tax invoice')
+                        @elseif($allReturned)
+                            @lang('sales_bills.Return invoice')
                         @else
                             @lang('sales_bills.Draft invoice')
                         @endif
                     </div>
-
 
                     <div class="qrcode">
 
@@ -253,11 +271,30 @@
 
                     </div>
 
+                    @php
+                    
+                        $items = \App\Models\SaleBillElement::where('sale_bill_id', $sale_bill->id)
+                            ->where('company_id', $sale_bill->company_id)
+                            ->get();
+                
+                        $allReturned = true;
+                
+                        foreach ($items as $product) {
+                            $alreadyReturnedQty = \App\Models\SaleBillReturn::where('bill_id', $sale_bill->id)
+                                ->where('product_id', $product->product_id)
+                                ->sum('return_quantity');
+                
+                            if ($alreadyReturnedQty < $product->quantity) {
+                                $allReturned = false;
+                                break;
+                            }
+                        }
+                    @endphp
                     <div class="txtheader mx-auto text-center">
-                        @if (!$isMoswada)
-                            @lang('sales_bills.Tax bill')
-                            <br>
-                            TaxInvoice
+                        @if (!$isMoswada && !$allReturned)
+                            @lang('sales_bills.Tax invoice')
+                        @elseif($allReturned)
+                            @lang('sales_bills.Return invoice')
                         @else
                             @lang('sales_bills.Draft invoice')
                         @endif
@@ -440,9 +477,12 @@
                             <tr
                                 style="font-size: 15px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
                                 <th style="border: 1px solid white;padding: 6px;">#</th>
-                                <th style="border: 1px solid white;">@lang('sales_bills.product name') </th>
-                                <th style="border: 1px solid white;">@lang('sales_bills.unit price') </th>
+                                 @if ($company->extra_settings->show_model == 1)
+                                 <th style="border: 1px solid white;padding: 6px;">@lang('products.pmodel1')</th>@endif
+                                <th style="border: 1px solid white;">@lang('sales_bills.product_name') </th>
                                 <th style="border: 1px solid white;">@lang('sales_bills.Quantity')</th>
+                                <th style="border: 1px solid white;">@lang('main.unit')</th>
+                                <th style="border: 1px solid white;">@lang('sales_bills.unit price') </th>
                                 <th style="border: 1px solid white;">@lang('sales_bills.The amount does not include tax') </th>
                                 <th style="border: 1px solid white;">@lang('sales_bills.Tax')</th>
                                 <th style="border: 1px solid white;">@lang('sales_bills.Discount')</th>
@@ -493,14 +533,20 @@
                                     <tr
                                         style="font-size: 15px !important; height: 44px !important; text-align: center; {{ $currentColor }}">
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">{{ ++$i }}</td>
+                                        @if ($company->extra_settings->show_model == 1)
+                                            <td style="border: 1px solid rgba(161,161,161,0.63);">{{ $element->product->product_model }}</td>
+                                        @endif
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
                                             {{ $element->product->product_name }}</td>
-                                        <td style="border: 1px solid rgba(161,161,161,0.63);">
-                                            <img src="{{ asset('images/Sr_coin.svg') }}" width="15px"> {{ $element->product_price }} </td>
+                                       
                                         <td class="text-center" style="border: 1px solid rgba(161,161,161,0.63);">
-                                            <span>{{ $element->quantity }}</span>
-                                            <span>{{ $element->unit->unit_name }}</span>
+                                              {{ $element->quantity }}
                                         </td>
+                                        <td class="text-center" style="border: 1px solid rgba(161,161,161,0.63);">
+                                            {{ $element->unit->unit_name }}
+                                        </td>
+                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
+                                            <img src="{{ asset('images/Sr_coin.svg') }}" width="15px"> {{ $element->product_price }} </td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
                                           <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">  {{ $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
 
@@ -512,7 +558,8 @@
                                             {{ $element->discount_value }}{{ $element->discount_type == 'percent' ? ' %' : '' }}
                                         </td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
-                                            {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
+                                           <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                           {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
                                         </td>
                                     </tr>
                                 @endforeach
@@ -533,9 +580,12 @@
                                 <th style="border: 1px solid white;">@lang('sales_bills.Discount')</th>
                                 <th style="border: 1px solid white;">@lang('sales_bills.Tax')</th>
                                 <th style="border: 1px solid white;">@lang('sales_bills.The amount does not include tax') </th>
-                                <th style="border: 1px solid white;">@lang('sales_bills.Quantity')</th>
                                 <th style="border: 1px solid white;">@lang('sales_bills.unit price') </th>
-                                <th style="border: 1px solid white;">@lang('sales_bills.product name') </th>
+                                <th style="border: 1px solid white;">@lang('main.unit') </th>
+                                <th style="border: 1px solid white;">@lang('sales_bills.Quantity')</th>
+                                <th style="border: 1px solid white;">@lang('sales_bills.product_name') </th>
+                                 @if ($company->extra_settings->show_model == 1)
+                                 <th style="border: 1px solid white;padding: 6px;">@lang('products.pmodel1')</th>@endif
                                 <th style="border: 1px solid white;padding: 6px;">#</th>
                             </tr>
 
@@ -563,7 +613,7 @@
                                     <tr
                                         style="font-size: 15px !important; height: 44px !important; text-align: center; {{ $currentColor }}">
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
-                                            {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
+                                           <img src="{{ asset('images/Sr_coin.svg') }}" width="15px"> {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
 
                                         </td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
@@ -575,14 +625,19 @@
                                            <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">  {{ $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
                                            
                                         </td>
-                                        <td class="text-center" style="border: 1px solid rgba(161,161,161,0.63);">
-                                            <span>{{ $element->unit->unit_name }}</span>
-                                            <span>{{ $element->quantity }}</span>
-                                        </td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
                                          <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">   {{ $element->product_price }} </td>
+                                        <td class="text-center" style="border: 1px solid rgba(161,161,161,0.63);">
+                                            {{ $element->unit->unit_name }} 
+                                        </td>
+                                        <td class="text-center" style="border: 1px solid rgba(161,161,161,0.63);">
+                                            {{ $element->quantity }}
+                                        </td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
                                             {{ $element->product->product_name }}</td>
+                                            @if ($company->extra_settings->show_model == 1)
+                                            <td>{{ $element->product->product_model }}</td>
+                                        @endif
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">{{ ++$i }}</td>
                                     </tr>
                                 @endforeach

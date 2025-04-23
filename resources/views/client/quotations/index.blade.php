@@ -65,13 +65,13 @@
             <div class="card">
                 <!------HEADER----->
                 <div class="card-header border-bottom border-secondary p-1">
-                    <div class="d-flex flex-wrap justify-content-between align-items-center">
-                        <h3 class="custom-title font-weight-bold">
+                    <div class="d-flex justify-content-between align-items-baseline">
+                        <h3 class="pull-right font-weight-bold">
                             {{ __('sidebar.previous-quotes') }}
-                            <span class="badge" style="background-color:#36c7d6;">{{ count($all_quotations) }}</span>
+                            <span class="badge badge-success">{{ count($all_quotations) }}</span>
                         </h3>
-                        <div class="row px-2">
-                            <a class="btn btnn btn-primary pull-left p-1 mainBtnNewDes d-flex align-items-center"
+                        <div class="row mr-1">
+                            <a class="btn btn-primary pull-left p-1 mainBtnNewDes d-flex align-items-center"
                                 href="{{ route('client.quotations.create') }}">
                                 <span
                                     style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
@@ -84,8 +84,9 @@
                                 </span>
                                 {{ __('sidebar.addNewQuotation') }}
                             </a>
-                            <a onclick="history.back()" class="btn btnn  text-white d-flex align-items-center ml-1"
-                                style="background-color: #36c7d6" style="height: 37px; font-size: 11px !important;">
+                            <a onclick="history.back()"
+                                class="btn btn-danger pull-left text-white d-flex align-items-center ml-1"
+                                style="height: 37px; font-size: 11px !important;">
                                 <span
                                     style="border: 1px dashed;border-radius: 50%;margin-left: 10px;width: 20px;height: 20px;">
                                     <svg style="width: 10px;height: 15px;fill: #f5f1f1;margin-top: 1px;"
@@ -142,11 +143,11 @@
                                                 $quotation_discount_type = '';
                                                 $quotation_extra_value = 0;
                                                 $quotation_extra_type = '';
-                                                
+
                                                 foreach ($extras as $key) {
                                                     // Ensure the value is a number
                                                     $value = floatval($key->value);
-                                                
+
                                                     if ($key->action == 'discount') {
                                                         if ($key->action_type == 'pound') {
                                                             $quotation_discount_value = $value;
@@ -165,33 +166,33 @@
                                                         }
                                                     }
                                                 }
-                                                
+
                                                 if ($extras->isEmpty()) {
                                                     $quotation_discount_value = 0;
                                                     $quotation_extra_value = 0;
                                                     $quotation_discount_type = 'pound';
                                                     $quotation_extra_type = 'pound';
                                                 }
-                                                
+
                                                 // Calculate the extra value if it's a percentage
                                                 if ($quotation_extra_type == 'percent') {
                                                     $quotation_extra_value = ($quotation_extra_value / 100) * $sum;
                                                 }
-                                                
+
                                                 // Calculate the discount value if it's a percentage
                                                 if ($quotation_discount_type == 'percent') {
                                                     $quotation_discount_value = ($quotation_discount_value / 100) * $sum;
                                                 }
-                                                
+
                                                 // Calculate the total after applying extras and discounts
                                                 $after_discount = $sum - $quotation_discount_value + $quotation_extra_value;
-                                                
+
                                                 // Calculate the tax value added
                                                 $tax_value_added = $company->tax_value_added;
                                                 $percentage = ($tax_value_added / 100) * $after_discount;
                                                 $after_total = $after_discount + $percentage;
-                                                
-                                                echo floatval($after_total) . ' ' . $currency;
+
+                                                echo round($after_total,2) . ' ' . $currency;
                                                 ?>
                                                 <?php $total += floatval($after_total); ?>
                                             </td>
@@ -209,7 +210,8 @@
                                                         </svg>
                                                     </button>
                                                     <div class="dropdown-menu p-0" aria-labelledby="dropdownMenuButton"
-                                                        x-placement="bottom-start" style="top: 0px; right: -120px; ">
+                                                        x-placement="bottom-start"
+                                                        style="position: absolute; transform: translate3d(0px, 29px, 0px); top: 0px; left: 0px; will-change: transform;">
                                                         <!--SHOW--->
                                                         <a href="{{ route('client.quotations.view', $quotation->quotation_number) }}"
                                                             class="dropdown-item" target="_blank"
@@ -286,11 +288,9 @@
                                 </tbody>
                             </table>
                             <div class="mt-3 mb-2">
-                                <span
-                                    class="badge  p-1 font-weight-bold"style="background-color: #222751 !important; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
+                                <span class="badge badge-success p-1 font-weight-bold">
                                     @lang('sales_bills.Total prices of all offers')
-                                    ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}"
-                                        width="15px">
+                                    ( {{ floatval($total) }} ) <img src="{{ asset('images/Sr_coin.svg') }}" width="5%">
                                 </span>
                             </div>
                         @else

@@ -6,6 +6,23 @@
         font-weight: 500;
     }
 
+    .pricing-type {
+        font-size: 12px !important;
+        padding: 0 5px !important;
+        height: 30px !important;
+        border: 1px solid rgba(45, 45, 45, 0.11) !important;
+        background: none !important;
+        appearance: menulist !important;
+        -webkit-appearance: menulist !important;
+        -moz-appearance: menulist !important;
+    }
+
+    .pricing-type option {
+        padding: 5px !important;
+        background: white !important;
+        color: black !important;
+    }
+
     .rounded {
         border-radius: 5px !important;
     }
@@ -93,7 +110,7 @@
         color: white;
         background: #0A246A;
     }
-   
+
     .minusIcon {
         width: 19px;
         display: inline-block;
@@ -180,8 +197,8 @@
     }
 
     .products {
-        min-height: 640px !important;
-        max-height: 640px !important;
+        min-height: 64vh !important;
+        max-height: 64vh !important;
         overflow-y: scroll;
     }
 
@@ -225,20 +242,26 @@
     .inner.show {
         min-height: 159px !important;
     }
-    .payment .filter-option-inner-inner{
+
+    .payment .filter-option-inner-inner {
         color: #fff !important
     }
-    .searchproducts .filter-option{
+
+    .searchproducts .filter-option {
         background-color: #F4F5FA !important
     }
-    .filter-option{
+
+    .filter-option {
         display: flex;
-    align-items: center;
-    justify-content: end;
+        align-items: center;
+        justify-content: end;
     }
-    body.dark-mode .inputpos{
-color: #fff !important;
-}
+
+    body.dark-mode .edit_price,
+    body.dark-mode .edit_quantity,
+    body.dark-mode .edit_discount {
+        color: #fff !important;
+    }
 </style>
 @section('content')
     <div class="row mt-5 mb-5">
@@ -272,7 +295,7 @@ color: #fff !important;
                                 @endforeach
                             </div>
                             <div class="col-md-4 d-flex justify-content-end mb-1">
-                                <a href="#" class="btn btn-warning p-1" data-toggle="modal"
+                                <a href="#" class="btn btn-success p-1" data-toggle="modal"
                                     data-target="#addProductModal" title="{{ __('main.add_product') }}">
                                     <i class="fa fa-plus"></i>
                                 </a>
@@ -321,12 +344,12 @@ color: #fff !important;
                                                             </label>
                                                             <select required name="store_id" id="store"
                                                                 class="form-control">
-                                                                <option value="" >{{ __('products.choose_store') }}
+                                                                <option value="">{{ __('products.choose_store') }}
                                                                 </option>
                                                                 <?php $i = 0; ?>
                                                                 @foreach ($stores as $store)
                                                                     @if ($stores->count() == 1)
-                                                                        <option selected  value="{{ $store->id }}">
+                                                                        <option selected value="{{ $store->id }}">
                                                                             {{ $store->store_name }}</option>
                                                                     @else
                                                                         @if ($i == 0)
@@ -552,7 +575,7 @@ color: #fff !important;
                                                         <div class="form-group col-lg-6" dir="rtl"
                                                             id="searchContainer" style="display: none;">
                                                             <label class="col-lg-6">{{ __('Search Products') }}</label>
-                                                            <select class="selectpicker" data-style="btn-warning"
+                                                            <select class="selectpicker" data-style="btn-success"
                                                                 data-live-search="true" id="productSearch">
                                                                 <option value="" disabled selected>
                                                                     {{ __('Search Products') }}</option>
@@ -588,7 +611,7 @@ color: #fff !important;
 
 
 
-                                                    <button class="btn btn-md btn-warning w-100 font-weight-bold"
+                                                    <button class="btn btn-md btn-success w-100 font-weight-bold"
                                                         type="submit">{{ __('products.add') }}</button>
                                                 </form>
                                             </div>
@@ -650,12 +673,12 @@ color: #fff !important;
         </div>
 
         <div class="col-md-5 py-1 px-0">
-            <div class="inner-sectoin bg-white rounded px-2 pl-nos py-1" style="border: 1px solid #2d2d2d1f;">
-                <div class="section bg-white border-0">
+            <div class="inner-sectoin bg-white rounded pr-2 pl-nos pb-2 pt-1" style="border: 1px solid #2d2d2d1f;">
+                <div class="section">
                     <div class="mb-nos">
-                        <div class=" d-flex justify-content-between align-items-center my-1 p-1 bg-white" style="border: 1px solid #a1a1a11f; border-radius:5px;">
+                        <div class=" d-flex justify-content-between">
 
-                            <h5 class="font-weight-bold m-0">
+                            <h5 class="font-weight-bold">
                                 <svg style="margin-left: 5px;" fill="#0A246A" width="10"
                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                                     <path
@@ -669,357 +692,366 @@ color: #fff !important;
                                 <i class="fa fa-plus"></i>
                             </a>
                         </div>
-                    {{-- modal add client --}}
-                    <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog"
-                        aria-labelledby="addCustomerModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="addCustomerModalLabel">{{ __('home.add-customer') }}
-                                    </h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form class="parsley-style-1" id="selectForm2" name="selectForm2"
-                                        action="{{ route('pos.outer_clients.store', 'test') }}"
-                                        enctype="multipart/form-data" method="post">
-                                        {{ csrf_field() }}
-                                        <input type="hidden" name="company_id" value="{{ $company_id }}">
-                                        <div class="col-lg-6 col-xs-12 pull-right">
-                                            <div class="form-group pull-right" dir="rtl">
-                                                <label for="order">{{ __('clients.client-name') }} </label>
-                                                <input type="text" name="client_name" class="form-control" required>
-                                            </div>
-                                            <input type="hidden" name="notes[]" class="form-control"
-                                                style="width:90%; display: inline; float: right;" dir="rtl">
-                                        </div>
-                                        <div class="col-lg-6 col-xs-12  pull-left" style="display: none">
-                                            <div class="form-group  pull-right col-lg-6" dir="rtl">
-                                                <input style="margin-right:5px;margin-left:5px;"type="hidden"
-                                                    value="for" name="balance" /> {{ __('main.for') }}
-                                                <input style="margin-right:5px;margin-left:5px;" checked type="hidden"
-                                                    value="on" name="balance" />
-                                                {{ __('main.on') }}
-                                                <input required type="hidden"value="0" name="prev_balance"
-                                                    class="form-control" step="1" dir="ltr" />
-                                            </div>
-                                            <div class="form-group pull-right col-lg-6" dir="ltr">
-                                                <input type="hidden" name="phones[]" class="form-control"
-                                                    style="width:80%; display: inline; float: right;" dir="ltr">
-
-
-                                                <div class="dom1"></div>
-                                            </div>
-
-                                            <div class="form-group pull-right col-lg-12" dir="ltr">
-                                                <input type="hidden" name="addresses[]" class="form-control"
+                        {{-- modal add client --}}
+                        <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog"
+                            aria-labelledby="addCustomerModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="addCustomerModalLabel">{{ __('home.add-customer') }}
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form class="parsley-style-1" id="selectForm2" name="selectForm2"
+                                            action="{{ route('pos.outer_clients.store', 'test') }}"
+                                            enctype="multipart/form-data" method="post">
+                                            {{ csrf_field() }}
+                                            <input type="hidden" name="company_id" value="{{ $company_id }}">
+                                            <div class="col-lg-6 col-xs-12 pull-right">
+                                                <div class="form-group pull-right" dir="rtl">
+                                                    <label for="order">{{ __('clients.client-name') }} </label>
+                                                    <input type="text" name="client_name" class="form-control"
+                                                        required>
+                                                </div>
+                                                <input type="hidden" name="notes[]" class="form-control"
                                                     style="width:90%; display: inline; float: right;" dir="rtl">
-
-
-                                                <div class="dom3"></div>
                                             </div>
-                                        </div>
-                                        <div class="extras" style="display: none">
-                                            <div class="col-lg-12">
-                                                <div class="form-group  col-lg-4  pull-right" dir="rtl"
-                                                    style="display: none">
-                                                    <select name="client_category" class="form-control" required>
-                                                        <option value="">{{ __('clients.choose-type') }}
-                                                        </option>
-                                                        <option selected value="جملة">جملة</option>
-                                                        <option value="قطاعى">قطاعى</option>
-                                                    </select>
+                                            <div class="col-lg-6 col-xs-12  pull-left" style="display: none">
+                                                <div class="form-group  pull-right col-lg-6" dir="rtl">
+                                                    <input style="margin-right:5px;margin-left:5px;"type="hidden"
+                                                        value="for" name="balance" /> {{ __('main.for') }}
+                                                    <input style="margin-right:5px;margin-left:5px;" checked
+                                                        type="hidden" value="on" name="balance" />
+                                                    {{ __('main.on') }}
+                                                    <input required type="hidden"value="0" name="prev_balance"
+                                                        class="form-control" step="1" dir="ltr" />
                                                 </div>
-                                                <div class="form-group col-lg-4  pull-right" dir="rtl">
-                                                    <input type="hidden" name="client_email" dir="ltr"
-                                                        class="form-control">
+                                                <div class="form-group pull-right col-lg-6" dir="ltr">
+                                                    <input type="hidden" name="phones[]" class="form-control"
+                                                        style="width:80%; display: inline; float: right;" dir="ltr">
+
+
+                                                    <div class="dom1"></div>
                                                 </div>
 
-                                                <div class="form-group  pull-right col-lg-4" dir="rtl">
-                                                    <input type="hidden" name="shop_name" class="form-control"
-                                                        dir="rtl">
-                                                </div>
-                                                <div class="form-group  pull-right col-lg-4" dir="rtl"
-                                                    style="display: none">
-                                                    <select type="hidden" name="client_national" class="form-control">
-                                                        <option value="">{{ __('main.choose-country') }}
-                                                        </option>
-                                                        @foreach ($timezones as $timezone)
-                                                            <option @if ($timezone->country_name == 'السعودية') selected @endif
-                                                                value="{{ $timezone->country_name }}">
-                                                                {{ $timezone->country_name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <div class="form-group  pull-right col-lg-4" dir="rtl">
+                                                <div class="form-group pull-right col-lg-12" dir="ltr">
+                                                    <input type="hidden" name="addresses[]" class="form-control"
+                                                        style="width:90%; display: inline; float: right;" dir="rtl">
 
-                                                    <input type="hidden" name="tax_number" class="form-control"
-                                                        dir="ltr" />
-                                                </div>
 
+                                                    <div class="dom3"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-12 modal-footer d-flex justify-content-between">
-                                            <button class="btn btn-info" type="submit">{{ __('main.add') }}</button>
-                                            <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">{{ __('home.close') }}</button>
-                                        </div>
-                                    </form>
+                                            <div class="extras" style="display: none">
+                                                <div class="col-lg-12">
+                                                    <div class="form-group  col-lg-4  pull-right" dir="rtl"
+                                                        style="display: none">
+                                                        <select name="client_category" class="form-control" required>
+                                                            <option value="">{{ __('clients.choose-type') }}
+                                                            </option>
+                                                            <option selected value="جملة">جملة</option>
+                                                            <option value="قطاعى">قطاعى</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-lg-4  pull-right" dir="rtl">
+                                                        <input type="hidden" name="client_email" dir="ltr"
+                                                            class="form-control">
+                                                    </div>
+
+                                                    <div class="form-group  pull-right col-lg-4" dir="rtl">
+                                                        <input type="hidden" name="shop_name" class="form-control"
+                                                            dir="rtl">
+                                                    </div>
+                                                    <div class="form-group  pull-right col-lg-4" dir="rtl"
+                                                        style="display: none">
+                                                        <select type="hidden" name="client_national"
+                                                            class="form-control">
+                                                            <option value="">{{ __('main.choose-country') }}
+                                                            </option>
+                                                            @foreach ($timezones as $timezone)
+                                                                <option @if ($timezone->country_name == 'السعودية') selected @endif
+                                                                    value="{{ $timezone->country_name }}">
+                                                                    {{ $timezone->country_name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group  pull-right col-lg-4" dir="rtl">
+
+                                                        <input type="hidden" name="tax_number" class="form-control"
+                                                            dir="ltr" />
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 modal-footer d-flex justify-content-between">
+                                                <button class="btn btn-info" type="submit">{{ __('main.add') }}</button>
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">{{ __('home.close') }}</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <select id="outer_client_id" class="selectpicker w-100" data-style="btn-success"
+                            data-live-search="true" title="{{ __('pos.choose-client-name') }}">
+                            @foreach ($outer_clients as $outer_client)
+                                <option @if ($outer_client->client_name == 'Cash') selected @endif value="{{ $outer_client->id }}">
+                                    {{ $outer_client->client_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <select id="product_id" class="selectpicker searchproducts form-control w-100 mt-nos p-0 "
+                            data-live-search="true"
+                            title="{{ __('pos.search-for-products-by-code-name-or-using-a-barcode-device') }}">
+                            @foreach ($products as $product)
+                                <option value="{{ $product->id }}" data-tokens="{{ $product->code_universal }}"
+                                    product_name="{{ $product->product_name }}"
+                                    wholesale_price="{{ $product->wholesale_price }}"
+                                    product_price="{{ $product->sector_price }}">
+                                    {{ $product->product_name }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
-                    <select id="outer_client_id" class="selectpicker payment w-100" data-style="btn-warning"
-                        data-live-search="true" title="{{ __('pos.choose-client-name') }}" >
-                        @foreach ($outer_clients as $outer_client)
-                            <option @if ($outer_client->client_name == 'Cash') selected @endif value="{{ $outer_client->id }}">
-                                {{ $outer_client->client_name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <select id="product_id" class="selectpicker searchproducts form-control w-100 mt-nos p-0 " 
-                        data-live-search="true"
-                        title="{{ __('pos.search-for-products-by-code-name-or-using-a-barcode-device') }}"
-                        >
-                        @foreach ($products as $product)
-                            <option value="{{ $product->id }}" data-tokens="{{ $product->code_universal }}"
-                                product_name="{{ $product->product_name }}"
-                                product_price="{{ $product->sector_price }}">
-                                {{ $product->product_name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
 
-                <div class="table-responsive" style=" border:1px solid #f5f5f5;height: 370px; overflow:auto !important;">
-                    <table class="table table-striped table-bordered table-condensed table-hover posTable"
-                        style="margin-bottom: 0px; padding: 0px;border-collapse:separate;border-spacing:0 3px;">
-                        <thead style="background: #FF9149; color: #fff;top: -2px !important; position: relative;">
+                    <div class="table-responsive"
+                        style=" border:1px solid #FF9149;height: 370px; overflow:auto !important;">
+                        <table class="table table-striped table-bordered table-condensed table-hover posTable"
+                            style="margin-bottom: 0px; padding: 0px;border-collapse:separate;border-spacing:0 3px;">
+                            <thead style="background: #FF9149; color: #fff;top: -2px !important; position: relative;">
+                                <tr>
+                                    <th style="width: 30%!important;"> {{ __('main.product-name') }}</th>
+                                    <th style="width: 15%!important;"> {{ __('main.amount') }}</th>
+                                    <th style="width: 15%!important;">{{ __('main.quantity') }}</th>
+                                    <th style="width: 15%!important;">نوع السعر</th>
+                                    @if ($user->roles->flatMap->permissions->contains('name', 'الخصم'))
+                                        <th style="width: 15%!important;"> {{ __('main.discount') }}</th>
+                                    @endif
+                                    <th style="width: 6%!important;"> {{ __('main.total') }}</th>
+                                    <th style="width: 4%!important;text-align: center;">
+                                        @if (isset($pos_open) && $pos_open->editing)
+                                            {{ __('main.return') }}
+                                        @else
+                                            {{ __('main.delete') }}
+                                        @endif
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bill_details">
+                            </tbody>
+                        </table>
+                    </div>
+                    <table id="totalTable" style="width:100%; float:right; padding:5px; color:#000; background: #FFF;">
+                        <tbody>
                             <tr>
-                                <th style="width: 30%!important;"> {{ __('main.product-name') }}</th>
-                                <th style="width: 15%!important;"> {{ __('main.amount') }}</th>
-                                <th style="width: 15%!important;">{{ __('main.quantity') }}</th>
-                                <th style="width: 15%!important;"> {{ __('main.discount') }}</th>
-                                <th style="width: 6%!important;"> {{ __('main.total') }}</th>
-                                <th style="width: 4%!important;text-align: center;">
-                                    @if (isset($pos_open) && $pos_open->editing)
-                                        {{ __('main.return') }}
-                                    @else
-                                        {{ __('main.delete') }}
-                                    @endif
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="bill_details">
-                        </tbody>
-                    </table>
-                </div>
-                <table id="totalTable" style="width:100%; float:right; padding:5px; color:#000; background: #FFF;">
-                    <tbody>
-                        <tr>
-                            <td style="padding: 5px 10px;border-top: 1px solid #DDD;width: 30%;"> {{ __('main.items') }}
-                            </td>
-                            <td class="text-right"
-                                style="padding: 5px 10px;font-size: 14px; font-weight:bold;border-top: 1px solid #DDD;width: 30%;">
-                                <span id="items">0</span>
-                                (<span id="total_quantity">0</span>)
-                            </td>
-                            <td style="padding: 5px 10px;border-top: 1px solid #DDD;"> {{ __('main.total') }}</td>
-                            <td class="text-right"
-                                style="padding: 5px 10px;font-size: 14px; font-weight:bold;border-top: 1px solid #DDD;">
-                                <span id="sum">
-                                    @if (isset($pos_open) && !$pos_open_elements->isEmpty())
-                                        <?php
-                                        $sum = 0;
-                                        foreach ($pos_open_elements as $pos_open_element) {
-                                            $sum = $sum + $pos_open_element->quantity_price;
-                                        }
-                                        ?>
-                                        {{ $sum }}
-                                    @else
-                                        0
-                                    @endif
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            @if ($pos_settings->tax == '1')
-                                <td style="padding: 5px 10px;">
-                                    {{ __('main.order-tax') }}
-                                    <a href="#chooseTaxValue" data-toggle="modal" class="modal-effect">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                    <br>
-                                    <span class="text-danger noTaxAddedMsg font-weight-bold"
-                                        style="display: none;font-size: 11px;">(لم يتم اضافة ضريبة)</span>
+                                <td style="padding: 5px 10px;border-top: 1px solid #DDD;width: 30%;">
+                                    {{ __('main.items') }}
                                 </td>
-                                <td class="text-right" style="padding: 5px 10px;font-size: 14px; font-weight:bold;">
-                                    <span id="tds_2">
-                                        <span id="taxValueAmount">0</span>
-                                        ( <span id="posTaxValue">0</span> %)
-                                    </span>
+                                <td class="text-right"
+                                    style="padding: 5px 10px;font-size: 14px; font-weight:bold;border-top: 1px solid #DDD;width: 30%;">
+                                    <span id="items">0</span>
+                                    (<span id="total_quantity">0</span>)
                                 </td>
-                            @endif
-                            @if ($pos_settings->discount == '1')
-                                <td style="padding: 5px 10px;"> {{ __('main.discount') }}
-                                    <a href="#modaldemo7" style="font-size: 17px !important;" data-toggle="modal"
-                                        class="modal-effect">
-                                        <i class="fa fa-edit" style="font-size: 17px !important;"></i>
-                                    </a>
-                                </td>
-                                <td class="text-right" style="padding: 5px 10px;font-weight:bold;">
-                                    <span id="tds">
-                                        @if (isset($pos_open) && !empty($pos_open_discount))
+                                <td style="padding: 5px 10px;border-top: 1px solid #DDD;"> {{ __('main.total') }}</td>
+                                <td class="text-right"
+                                    style="padding: 5px 10px;font-size: 14px; font-weight:bold;border-top: 1px solid #DDD;">
+                                    <span id="sum">
+                                        @if (isset($pos_open) && !$pos_open_elements->isEmpty())
                                             <?php
-                                            $discount_value = $pos_open_discount->discount_value;
-                                            $discount_type = $pos_open_discount->discount_type;
                                             $sum = 0;
                                             foreach ($pos_open_elements as $pos_open_element) {
                                                 $sum = $sum + $pos_open_element->quantity_price;
                                             }
-                                            if ($discount_type == 'pound') {
-                                                echo $discount_value;
-                                            } else {
-                                                echo $discount_value = ($discount_value / 100) * $sum;
-                                                echo ' ( ' . $pos_open_discount->discount_value . ' % ) ';
+                                            ?>
+                                            {{ $sum }}
+                                        @else
+                                            0
+                                        @endif
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                @if ($pos_settings->tax == '1')
+                                    <td style="padding: 5px 10px;">
+                                        {{ __('main.order-tax') }}
+                                        <a href="#chooseTaxValue" data-toggle="modal" class="modal-effect">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <br>
+                                        <span class="text-danger noTaxAddedMsg font-weight-bold"
+                                            style="display: none;font-size: 11px;">(لم يتم اضافة ضريبة)</span>
+                                    </td>
+                                    <td class="text-right" style="padding: 5px 10px;font-size: 14px; font-weight:bold;">
+                                        <span id="tds_2">
+                                            <span id="taxValueAmount">0</span>
+                                            ( <span id="posTaxValue">0</span> %)
+                                        </span>
+                                    </td>
+                                @endif
+                                @if ($pos_settings->discount == '1')
+                                    <td style="padding: 5px 10px;"> {{ __('main.discount') }}
+                                        <a href="#modaldemo7" style="font-size: 17px !important;" data-toggle="modal"
+                                            class="modal-effect">
+                                            <i class="fa fa-edit" style="font-size: 17px !important;"></i>
+                                        </a>
+                                    </td>
+                                    <td class="text-right" style="padding: 5px 10px;font-weight:bold;">
+                                        <span id="tds">
+                                            @if (isset($pos_open) && !empty($pos_open_discount))
+                                                <?php
+                                                $discount_value = $pos_open_discount->discount_value;
+                                                $discount_type = $pos_open_discount->discount_type;
+                                                $sum = 0;
+                                                foreach ($pos_open_elements as $pos_open_element) {
+                                                    $sum = $sum + $pos_open_element->quantity_price;
+                                                }
+                                                if ($discount_type == 'pound') {
+                                                    echo $discount_value;
+                                                } else {
+                                                    echo $discount_value = ($discount_value / 100) * $sum;
+                                                    echo ' ( ' . $pos_open_discount->discount_value . ' % ) ';
+                                                }
+                                                ?>
+                                            @else
+                                                0
+                                            @endif
+                                        </span>
+                                    </td>
+                                @endif
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px 10px; border-top: 1px solid #666; border-bottom: 1px solid #333; font-weight:bold; background:#333; color:#FFF;"
+                                    colspan="2">
+                                    {{ __('main.total-amount') }}
+                                </td>
+                                <td class="text-right"
+                                    style="padding:5px 10px 5px 10px; font-size: 14px;border-top: 1px solid #666; border-bottom: 1px solid #333; font-weight:bold; background:#333; color:#FFF;"
+                                    colspan="2">
+                                    <span id="total" style="color: #fff !important;">
+                                        @if (isset($pos_open))
+                                            <?php
+                                            $sum = 0;
+                                            foreach ($pos_open_elements as $pos_open_element) {
+                                                $sum = $sum + $pos_open_element->quantity_price;
                                             }
+                                            if (isset($pos_open) && isset($pos_open_tax) && empty($pos_open_discount)) {
+                                                $tax_value = $pos_open_tax->tax_value;
+                                                $percent = ($tax_value / 100) * $sum;
+                                                $sum = $sum + $percent;
+                                            } elseif (isset($pos_open) && isset($pos_open_discount) && empty($pos_open_tax)) {
+                                                $discount_value = $pos_open_discount->discount_value;
+                                                $discount_type = $pos_open_discount->discount_type;
+                                                if ($discount_type == 'pound') {
+                                                    $sum = $sum - $discount_value;
+                                                } else {
+                                                    $discount_value = ($discount_value / 100) * $sum;
+                                                    $sum = $sum - $discount_value;
+                                                }
+                                            } elseif (isset($pos_open) && !empty($pos_open_discount) && !empty($pos_open_tax)) {
+                                                $tax_value = $pos_open_tax->tax_value;
+                                                $discount_value = $pos_open_discount->discount_value;
+                                                $discount_type = $pos_open_discount->discount_type;
+                                                if ($discount_type == 'pound') {
+                                                    $sum = $sum - $discount_value;
+                                                } else {
+                                                    $discount_value = ($discount_value / 100) * $sum;
+                                                    $sum = $sum - $discount_value;
+                                                }
+                                                $percent = ($tax_value / 100) * $sum;
+                                                $sum = $sum + $percent;
+                                            }
+                                            echo $sum;
                                             ?>
                                         @else
                                             0
                                         @endif
                                     </span>
                                 </td>
-                            @endif
-                        </tr>
-                        <tr>
-                            <td style="padding: 5px 10px; border-top: 1px solid #666; border-bottom: 1px solid #333; font-weight:bold;  color:#000000;"
-                                colspan="2">
-                                {{ __('main.total-amount') }}
-                            </td>
-                            <td class="text-right"
-                                style="padding:5px 10px 5px 10px; font-size: 14px;border-top: 1px solid #666; border-bottom: 1px solid #333; font-weight:bold; color:#000000;"
-                                colspan="2">
-                                <span id="total" style="color: #000000 ;">
-                                    @if (isset($pos_open))
-                                        <?php
-                                        $sum = 0;
-                                        foreach ($pos_open_elements as $pos_open_element) {
-                                            $sum = $sum + $pos_open_element->quantity_price;
-                                        }
-                                        if (isset($pos_open) && isset($pos_open_tax) && empty($pos_open_discount)) {
-                                            $tax_value = $pos_open_tax->tax_value;
-                                            $percent = ($tax_value / 100) * $sum;
-                                            $sum = $sum + $percent;
-                                        } elseif (isset($pos_open) && isset($pos_open_discount) && empty($pos_open_tax)) {
-                                            $discount_value = $pos_open_discount->discount_value;
-                                            $discount_type = $pos_open_discount->discount_type;
-                                            if ($discount_type == 'pound') {
-                                                $sum = $sum - $discount_value;
-                                            } else {
-                                                $discount_value = ($discount_value / 100) * $sum;
-                                                $sum = $sum - $discount_value;
-                                            }
-                                        } elseif (isset($pos_open) && !empty($pos_open_discount) && !empty($pos_open_tax)) {
-                                            $tax_value = $pos_open_tax->tax_value;
-                                            $discount_value = $pos_open_discount->discount_value;
-                                            $discount_type = $pos_open_discount->discount_type;
-                                            if ($discount_type == 'pound') {
-                                                $sum = $sum - $discount_value;
-                                            } else {
-                                                $discount_value = ($discount_value / 100) * $sum;
-                                                $sum = $sum - $discount_value;
-                                            }
-                                            $percent = ($tax_value / 100) * $sum;
-                                            $sum = $sum + $percent;
-                                        }
-                                        echo $sum;
-                                        ?>
-                                    @else
-                                        0
-                                    @endif
-                                </span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="clearfix"></div>
-                <div id="botbuttons" class="col-lg-12 text-center">
-                    <input type="hidden" name="biller" id="biller" value="3">
-                    <div class="row">
-                        <div class="col-lg-12 py-1" style="padding: 0;">
-                            <div class="d-flex flex-wrap flex-column">
-                                <div class="row g-2">
-                                  
-                                    @if ($pos_settings->suspension == '1')
-                                        <div class="col-lg-4 col-6 px-1 mt-2">
-                                            <a role="button" class="btn btn-warning w-100 font-weight-bold py-1" data-toggle="modal" href="#pendingPosInvModal">
-                                                <svg fill="white" width="8"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-                                                    <path d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z" />
-                                                </svg>
-                                                {{ __('pos.hold-invoice') }}
-                                            </a>
-                                        </div>
-                                    @endif
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="clearfix"></div>
+                    <div id="botbuttons" class="col-lg-12 text-center">
+                        <input type="hidden" name="biller" id="biller" value="3">
+                        <div class="row">
+                            <div class="col-lg-12" style="padding: 0;">
+                                <div class="btn-group btn-block" style="width: 100.4%;">
                                     @if ($pos_settings->cancel == '1')
-                                    {{-- <div class="col-4">
-                                        <a role="button" class="d-none btn btn-danger btn-flat w-100 font-weight-bold" data-toggle="modal" href="#modaldemo5">
-                                            <i class="fa fa-trash-o" ></i> {{ __('pos.cancel-invoice') }}
+                                        <a role="button"
+                                            class="d-none btn col-4 btn-danger btn-block btn-flat modal-effect mt-0 font-weight-bold"
+                                            data-toggle="modal" href="#modaldemo5">
+                                            <i class="fa fa-trash-o" style="font-size: 19px"></i>
+                                            {{ __('pos.cancel-invoice') }}
                                         </a>
-                                    </div> --}}
-                                    <div class="col-lg-4 col-6 px-1 mt-2">
-                                        <button class="deletePosInv btn  btn-flat w-100 font-weight-bold py-1" style="border:1px solid red; color: white; background-color: red; ">
-                                            <i class="fa fa-trash-o" style="color: white"></i> {{ __('pos.cancel-invoice') }}
+                                        <button
+                                            class="deletePosInv btn col-4 btn-danger btn-block btn-flat modal-effect mt-0 font-weight-bold">
+                                            <i class="fa fa-trash-o" style="font-size: 19px"></i>
+                                            {{ __('pos.cancel-invoice') }}
                                         </button>
-                                    </div>
-                                @endif
+                                    @endif
+                                    @if ($pos_settings->suspension == '1')
+                                        <a role="button" class="btn col-4 btn-warning modal-effect mt-0 font-weight-bold"
+                                            data-toggle="modal" href="#pendingPosInvModal">
+                                            <svg style="position: inherit; top: 4px; margin-left: 6px;" fill="white"
+                                                width="10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                                                <path
+                                                    d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z" />
+                                            </svg>
+                                            {{ __('pos.hold-invoice') }}
+                                        </a>
+                                    @endif
+
                                     @if ($pos_settings->payment == '1')
-                                    <div class="col-lg-4 col-6 px-1 mt-2">
                                         <a href="#recordPaymentModal" role="button" data-toggle="modal"
-                                            class="btn btn-warning w-100 font-weight-bold py-1" id="payment">
-                                            <i class="fa fa-money" ></i>
+                                            class="btn col-4 btn-success modal-effect mt-0 font-weight-bold"
+                                            id="payment" tabindex="-1">
+                                            <i class="fa fa-money"
+                                                style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
                                             {{ __('pos.record-payment') }}
                                         </a>
-                                    </div>
-
-                                @endif
-                      
-                                   
-                                    @if ($pos_settings->fast_finish == '1')
-                                        <div class="col-lg-4 col-6 px-1 mt-2">
-                                            <button type="button" id="finishBank" class="btn w-100 btn-md font-weight-bold py-1"  style="border:1px solid white; color: white; background-color:#36c7d6 ; ">
-                                                <i class="fa fa-check-circle-o" style="color: white"></i>
-                                                دفع شبكة سريع
-                                            </button>
-                                        </div>
-                                        <div class="col-lg-4 col-6 px-1 mt-2">
-                                            <button type="button" id="finish" class="btn btn-warning w-100 btn-md font-weight-bold py-1">
-                                                <i class="fa fa-check-circle-o" ></i>
-                                                دفع كاش سريع
-                                            </button>
-                                        </div>
-                                    @endif
-                       
-                                    @if ($pos_settings->print_save == '1')
-                                        <div class="col-lg-4 col-6 px-1 mt-2">
-                                            <button type="button" class="btn  w-100 btn-md font-weight-bold py-1"  style="border:1px solid white; color: white;background-color: #36c7d6 " id="save_pos">
-                                                <i class="fa fa-save" style="color: white"></i>
-                                                {{ __('pos.save-and-print') }}
-                                            </button>
-                                        </div>
                                     @endif
                                 </div>
                             </div>
-                            
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12" style="padding: 0;">
+                                <div class="btn-group btn-block">
+                                    @if ($pos_settings->fast_finish == '1')
+                                        <button type="button" id="finishBank"
+                                            style="background: #053e59d4;border-color:#053e59d4;height: 45px;padding-top: 5px;"
+                                            class="btn btn-dark btn-block btn-md modal-effect mt-0">
+                                            <i class="fa fa-check-circle-o"
+                                                style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
+                                            دفع شبكة سريع
+                                        </button>
+                                        <button type="button" id="finish" style="padding-top: 5px;"
+                                            class="btn btn-dark btn-block btn-md modal-effect mt-0">
+                                            <i class="fa fa-check-circle-o"
+                                                style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
+                                            دفع كاش سريع
+                                        </button>
+                                    @endif
+                                    @if ($pos_settings->print_save == '1')
+                                        <button type="button" class="btn text-white btn-block btn-md modal-effect mt-0"
+                                            style="background: #666ee8 !important;height: 45px;padding-top: 5px;"
+                                            id="save_pos" tabindex="-1">
+                                            <i class="fa fa-save"
+                                                style="font-size: 19px;position: inherit; top: 2px; margin-left: 6px;"></i>
+                                            {{ __('pos.save-and-print') }}
+                                        </button>
+                                    @endif
+
+                                </div>
+                            </div>
                         </div>
                     </div>
-                   
                 </div>
             </div>
         </div>
-    </div>
     </div>
 
 
@@ -1060,7 +1092,7 @@ color: #fff !important;
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-warning save_tax">حفظ</button>
+                    <button type="button" class="btn btn-success save_tax">حفظ</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
                 </div>
             </div>
@@ -1102,7 +1134,7 @@ color: #fff !important;
                         <i class="fa fa-plus" style="font-size: 16px"></i>
                         اضافة بنك جديد
                     </a>
-                    <button class="btn btn-warning rounded finishBank ml-1" type="button">
+                    <button class="btn btn-success rounded finishBank ml-1" type="button">
                         <i class="fa fa-check-circle-o"
                             style="font-size: 15px; margin-left: 2px; top: 2px; position: relative;"></i>
                         {{ __('banks.record-process') }}
@@ -1308,7 +1340,7 @@ color: #fff !important;
                     </div>
                     <hr>
                     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                        <button class="btn btn-warning pay_cash" style="height: 39px;">
+                        <button class="btn btn-success pay_cash" style="height: 39px;">
                             {{ __('banks.record-process') }}
                         </button>
                         <a href="{{ route('client.safes.create') }}" target="_blank"
@@ -1339,34 +1371,211 @@ color: #fff !important;
 
 <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="{{ asset('app-assets/js/theme-switcher.js') }}"></script>
+<script>
+    // تعريف المتغير في النطاق العام
+    window.canDiscount = @json($user->roles->flatMap->permissions->contains('name', 'الخصم'));
+    // console.log(window.canDiscount);
+    var productDiscount = 0;
+    // ==== (refresh | update) bill details =======//
+    function toValidNumber(value, defaultValue = 0) {
+        const parsed = parseFloat(value);
+        return isNaN(parsed) || !isFinite(parsed) ? defaultValue : parsed;
+    }
 
+    /**
+     * دالة لتحديث تفاصيل الفاتورة
+     */
+    function refreshBillDetails() {
+        let totalSum = 0;
+        let totalQty = 0;
+
+        $(".edit_price").each(function(index) {
+            const $row = $(this).closest('tr');
+            const productPrice = toValidNumber($($(".edit_price")[index]).val());
+            const productQty = toValidNumber($($(".edit_quantity")[index]).val());
+            // إذا لم يكن المستخدم مخولًا بالخصم، اجعل الخصم 0
+
+            const productDiscount = window.canDiscount ? toValidNumber($($(".edit_discount")[index]).val()) : 0;
+
+            // التحقق من القيم
+            if (productPrice < 0 || productQty < 0 || productDiscount < 0) {
+                console.warn(
+                    `قيم غير صالحة في الصف ${index + 1}: السعر=${productPrice}, الكمية=${productQty}, الخصم=${productDiscount}`
+                );
+                return; // تخطي هذا الصف
+            }
+
+            // حساب الإجمالي للصف
+            const rowTotal = (productPrice * productQty) - productDiscount;
+            if (isNaN(rowTotal)) {
+                console.error(`خطأ في حساب إجمالي الصف ${index + 1}: ${rowTotal}`);
+                return;
+            }
+
+            console.log(productDiscount, productPrice);
+            totalQty += productQty;
+            totalSum += rowTotal;
+
+            // تحديث السعر الإجمالي للصف
+            const element_id = $row.attr('id');
+            $(`#totalPrice-${element_id}`).text(rowTotal.toFixed(3));
+        });
+
+        // التحقق من الإجمالي النهائي
+        if (isNaN(totalSum)) {
+            console.error('الإجمالي الكلي غير صالح:', totalSum);
+            totalSum = 0;
+        }
+
+        $("#sum").text(totalSum.toFixed(3));
+
+        // حساب الضريبة
+        const posTaxValue = toValidNumber($("#posTaxValue").text());
+        const taxValueAmount = (totalSum / 100) * posTaxValue;
+        console.log('tax', taxValueAmount);
+
+        $("#taxValueAmount").text(taxValueAmount.toFixed(3));
+
+        // حساب الإجمالي مع الضريبة
+        const totalWithTax = totalSum + taxValueAmount;
+        $("#total").text(totalWithTax.toFixed(3));
+
+        $("#total_quantity").text(totalQty);
+        $("#items").text($('.bill_details tr').length);
+    }
+</script>
 <script>
     $(document).ready(function() {
+        let storedTax = localStorage.getItem('pos_tax_value');
+        // const productDiscount = window.canDiscount ? toValidNumber($($(".edit_discount")[index]).val()) : 0;
+
+        if (storedTax) {
+            $("#posTaxValue").text(storedTax);
+            $("#tax_value").val(storedTax);
+        } else {
+            $("#posTaxValue").text(0);
+            $("#tax_value").val(0);
+        }
+
+        // تهيئة القيم الأخرى
+        $("#sum").text(0);
+        $("#taxValueAmount").text(0);
+        $("#total").text(0);
+        $("#total_quantity").text(0);
+        $("#items").text(0);
+
+        // في بداية السكريبت، عيّن قيم افتراضية
+        posTaxValue = localStorage.getItem('pos_tax_value') || 0;
+        $("#posTaxValue").text(posTaxValue);
+        $("#taxValueAmount").text(0);
+        $("#total").text(0);
         setTimeout(function() {
             $(".app-content.content").show();
             $(".loader").hide();
         }, 700);
 
         //get tax value
-        let posTaxValue = localStorage.getItem('pos_tax_value');
+        posTaxValue = localStorage.getItem('pos_tax_value');
         if (!posTaxValue) {
             $(".noTaxAddedMsg").show();
         } else {
             $("#posTaxValue").text(posTaxValue);
         }
         //chk if الضريبة الانتقائية exists or not. if not add it
-        $.post("{{ route('pos.open.checkTaxEntka2ya') }}", function(res) {
-            if (res === 1)
-                window.location.reload();
+        $.post({
+            url: "{{ route('pos.open.checkTaxEntka2ya') }}",
+            data: {
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(res) {
+                if (res === 1)
+                    window.location.reload();
+            }
         });
 
-        //when selecting product from selectbox...
+
+        //when selecting product from selector...
         $('#product_id').on('change', function() {
-            let product_id = $(this).val();
-            let product_price = $(this).find(':selected').attr('product_price');
-            let product_name = $(this).find(':selected').attr('product_name');
+            const product_id = $(this).val();
+            const product_price = toValidNumber($(this).find(':selected').attr('product_price'));
+            const wholesale_price = toValidNumber($(this).find(':selected').attr('wholesale_price'),
+                product_price);
+            const product_name = $(this).find(':selected').attr('product_name');
+            const outer_client_id = $('#outer_client_id').val();
+
+            if (!outer_client_id) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'يجب اختيار العميل أولاً',
+                    timeout: 600,
+                    showConfirmButton: true,
+                    confirmButtonText: 'إغلاق',
+                    confirmButtonColor: '#ff4961',
+                });
+                return false;
+            }
+
+            if ($(`#${product_id}`).length === 0) {
+                const discountCell = window.canDiscount ?
+                    `<td style="padding:5px 1px 5px 1px !important;">
+                <input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)"
+                    id="edit_discount-${product_id}" class="edit_discount w-100" value="0" min="0">
+            </td>` :
+                    `<td style="display: none;">
+                <input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)"
+                    id="edit_discount-${product_id}" class="edit_discount w-100" value="0" readonly>
+            </td>`;
+
+                const productRow = `
+            <tr class="bg-white" id="${product_id}">
+                <td>${product_name}</td>
+                <td style="padding:5px 1px 5px 1px !important;">
+                    <input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)"
+                        id="edit_price-${product_id}" class="edit_price w-100 inputpos" value="${product_price}" min="0">
+                </td>
+                <td style="padding:5px 1px 5px 1px !important;">
+                    <input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)"
+                        id="edit_quantity-${product_id}" class="edit_quantity w-100" value="1" min="1">
+                </td>
+                <td style="padding:5px 1px 5px 1px !important;">
+                    <select class="form-control pricing-type" style="height: 30px !important; padding: 0 5px !important;">
+                        <option value="retail" selected>قطاعي</option>
+                        <option value="wholesale">جملة</option>
+                    </select>
+                </td>
+                ${discountCell}
+                <td id="totalPrice-${product_id}" class="totalPrice font-weight-bold">${product_price.toFixed(3)}</td>
+                <td class="no-print">
+                    <button class="btn btn-sm btn-danger remove_element">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </td>
+                <td class="original-price hidden">${product_price}</td>
+                <td class="wholesale-price hidden">${wholesale_price}</td>
+            </tr>`;
+
+                $('.bill_details').append(productRow);
+            } else {
+                const currentQty = toValidNumber($(`#edit_quantity-${product_id}`).val());
+                $(`#edit_quantity-${product_id}`).val(currentQty + 1);
+            }
+
+            const audioElement = document.createElement('audio');
+            audioElement.setAttribute('src', "{{ asset('app-assets/mp3/beep.mp3') }}");
+            audioElement.play();
+            $('#product_id').val('');
+
+            refreshBillDetails();
+        });
+        //when selecting product from selectbox...
+        $(document).on('click', '.product', function() {
+            let product_id = $(this).attr('product_id');
+            let product_price = $(this).attr('product_price');
+            let wholesale_price = $(this).attr('wholesale_price') ||
+                product_price; // Fallback to retail price if undefined
+            let product_name = $(this).attr('product_name');
             let outer_client_id = $('#outer_client_id').val();
+
             if (outer_client_id.length == 0) {
                 Swal.fire({
                     icon: 'error',
@@ -1375,27 +1584,55 @@ color: #fff !important;
                     showConfirmButton: true,
                     confirmButtonText: 'اغلاق',
                     confirmButtonColor: '#ff4961',
-                })
+                });
                 return false;
             }
 
             if ($("#" + product_id).length == 0) {
-                //add new row to the table..
-                var productRow = '<tr class="bg-white" id="' + product_id + '"> <td>' + product_name +
-                    '</td> <td style="padding:5px 1px 5px 1px !important;"><input type="number" class="inputpos" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_price-' +
-                    product_id + '" class="edit_price w-100" value="' + product_price +
-                    '"></td> <td style="padding:5px 1px 5px 1px !important;"><input class="inputpos" type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_quantity-' +
-                    product_id +
-                    '" class="edit_quantity w-100" value="1"></td> <td style="padding:5px 1px 5px 1px !important;"><input class="inputpos" type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_discount-' +
-                    product_id + '" class="edit_discount w-100" value="0"></td> <td id="totalPrice-' +
-                    product_id + '" class="totalPrice font-weight-bold">' + product_price +
-                    '</td> <td class="no-print"> <button class="btn btn-sm btn-danger remove_element"> <i class="fa fa-trash"></i> </button> </td> </tr>';
+                var discountCell = window.canDiscount ?
+                    '<td style="padding:5px 1px 5px 1px !important;">' +
+                    '<input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" ' +
+                    'id="edit_discount-' + product_id + '" class="edit_discount w-100" value="0">' +
+                    '</td>' :
+                    '<input type="number" hidden style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" ' +
+                    'id="edit_discount-' + product_id + '" class="edit_discount w-100" value="0">';
+
+
+                var productRow = '<tr class="bg-white" id="' + product_id + '">' +
+                    '<td>' + product_name + '</td>' +
+                    '<td style="padding:5px 1px 5px 1px !important;">' +
+                    '<input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" ' +
+                    'id="edit_price-' + product_id + '" class="edit_price w-100 inputpos" value="' +
+                    product_price + '">' +
+                    '</td>' +
+                    '<td style="padding:5px 1px 5px 1px !important;">' +
+                    '<input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" ' +
+                    'id="edit_quantity-' + product_id + '" class="edit_quantity w-100" value="1">' +
+                    '</td>' +
+                    '<td style="padding:5px 1px 5px 1px !important;">' +
+                    '<select class="form-control pricing-type" style="height: 30px !important; padding: 0 5px !important;">' +
+                    '<option value="retail" selected>قطاعي</option>' +
+                    '<option value="wholesale">جملة</option>' +
+                    '</select>' +
+                    '</td>' +
+                    discountCell +
+                    '<td id="totalPrice-' + product_id + '" class="totalPrice font-weight-bold">' +
+                    product_price + '</td>' +
+                    '<td class="no-print">' +
+                    '<button class="btn btn-sm btn-danger remove_element">' +
+                    '<i class="fa fa-trash"></i>' +
+                    '</button>' +
+                    '</td>' +
+                    '<td class="original-price hidden">' + product_price + '</td>' +
+                    '<td class="wholesale-price hidden">' + wholesale_price + '</td>' +
+                    '</tr>';
+
                 $('.bill_details').append(productRow);
             } else {
-                //update qty on table of products..
                 $('#edit_quantity-' + product_id).val(Number($('#edit_quantity-' + product_id).val()) +
                     1);
             }
+
             var audioElement = document.createElement('audio');
             audioElement.setAttribute('src', "{{ asset('app-assets/mp3/beep.mp3') }}");
             audioElement.play();
@@ -1403,46 +1640,54 @@ color: #fff !important;
 
             refreshBillDetails();
         });
-
-        //when selecting product from selectbox...
-        $(document).on('click', '.product', function() {
-            let product_id = $(this).attr('product_id');
-            let product_price = $(this).attr('product_price');
-            let product_name = $(this).attr('product_name');
-            let outer_client_id = $('#outer_client_id').val();
-            if (outer_client_id.length == 0) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'يجب اختيار العميل اولا',
-                    timeout: 600,
-                    showConfirmButton: true,
-                    confirmButtonText: 'اغلاق',
-                    confirmButtonColor: '#ff4961',
-                })
+        // Discount validation handler
+        $(document).on('keyup', '.edit_discount', function() {
+            // إذا لم يكن المستخدم مخولًا بالخصم، قم بتعيين القيمة إلى 0
+            if (!window.canDiscount) {
+                $(this).val('0');
                 return false;
             }
 
-            if ($("#" + product_id).length == 0) {
-                //add new row to the table..
-                var productRow = '<tr class="bg-white" id="' + product_id + '"> <td>' + product_name +
-                    '</td> <td style="padding:5px 1px 5px 1px !important;"><input type="number" class="inputpos" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_price-' +
-                    product_id + '" class="edit_price w-100" value="' + product_price +
-                    '"></td> <td style="padding:5px 1px 5px 1px !important;"><input type="number" class="inputpos" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_quantity-' +
-                    product_id +
-                    '" class="edit_quantity w-100" value="1"></td> <td style="padding:5px 1px 5px 1px !important;"><input class="inputpos" type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_discount-' +
-                    product_id + '" class="edit_discount w-100" value="0"></td> <td id="totalPrice-' +
-                    product_id + '" class="totalPrice font-weight-bold">' + product_price +
-                    '</td> <td class="no-print"> <button class="btn btn-sm btn-danger remove_element"> <i class="fa fa-trash"></i> </button> </td> </tr>';
-                $('.bill_details').append(productRow);
-            } else {
-                //update qty on table of products..
-                $('#edit_quantity-' + product_id).val(Number($('#edit_quantity-' + product_id).val()) +
-                    1);
+            let row = $(this).closest('tr');
+            let element_id = row.attr('id');
+            let edit_discount = parseFloat($(this).val()) || 0;
+            let edit_price = parseFloat($("#edit_price-" + element_id).val()) || 0;
+            let edit_quantity = parseFloat($("#edit_quantity-" + element_id).val()) || 0;
+
+            // حساب الحد الأقصى للخصم (السعر * الكمية)
+            let maxDiscount = edit_price * edit_quantity;
+
+            if (edit_discount > maxDiscount) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: 'الخصم لا يمكن أن يكون أكبر من السعر الإجمالي للمنتج',
+                    confirmButtonText: 'إغلاق',
+                    confirmButtonColor: '#d33',
+                });
+                $(this).val(0);
+                edit_discount = 0;
             }
-            var audioElement = document.createElement('audio');
-            audioElement.setAttribute('src', "{{ asset('app-assets/mp3/beep.mp3') }}");
-            audioElement.play();
-            $('#product_id').val('');
+
+            if (edit_quantity > 0) {
+                let totalPrice = (edit_quantity * edit_price) - edit_discount;
+                $("#totalPrice-" + element_id).text(totalPrice.toFixed(3));
+            }
+
+            refreshBillDetails();
+        });
+
+        // Price change handler to maintain original price reference
+        $(document).on('keyup', '.edit_price', function() {
+            let row = $(this).closest('tr');
+            let element_id = row.attr('id');
+            let new_price = Number($(this).val());
+            let original_price = Number(row.find('.original-price').text());
+
+            // If price changed significantly, update the original price reference
+            if (Math.abs(new_price - original_price) > 0.01) {
+                row.find('.original-price').text(new_price);
+            }
 
             refreshBillDetails();
         });
@@ -1548,7 +1793,9 @@ color: #fff !important;
                     let product_id = $($(".edit_price")[index]).parent().parent().attr('id');
                     var productPrice = $($(".edit_price")[index]).val();
                     var productQty = $($(".edit_quantity")[index]).val();
-                    var productDiscount = $($(".edit_discount")[index]).val();
+
+                    var productDiscount = window.canDiscount ? $($(".edit_discount")[index])
+                        .val() : 0;
                     totalSum = productPrice * productQty - productDiscount;
 
                     productsArr.push({
@@ -1656,32 +1903,35 @@ color: #fff !important;
                 allData = JSON.parse(allData);
                 (allData[1].data).forEach(function(product) {
                     let productElement =
-                    '<div class="card cproduct m-nos product" product_id="' + product.id +
-                    '" product_name="' + product.product_name + '" product_price="' + product.sector_price + 
-                    '" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important; border: 1px solid rgba(229, 229, 229, 0.4) !important; min-height: 172px !important; max-height: 172px !important; width: 12rem !important;margin-bottom: 5px !important;">' +
-                    '<div class="imgBox" style="height: 75px !important; width: 100% !important;">' +
-                    '<img style="height: 100% !important; width: 100% !important; object-fit: contain !important;" src="../../../' +
-                    (product.product_pic ? product.product_pic : 'images/logo.png') +
-                    '" class="card-img-top"> </div>' +
-                    '<div class="card-body cbod" style="padding: 6px !important;">' +
-                    '<h5 class="card-title ctitle" style="font-size: 12px !important;min-height: 33px !important;color: #0A246A !important; font-weight: 600 !important;">' +
-                    product.product_name +
-                    '</h5>' +
-                    '<p class="card-text ctxt" style="margin-bottom: 3px !important;">' +
-                    product.code_universal +
-                    '</p>' +
-                    '<div class="row col-12 justify-content-between m-0 pl-0">' +
-                    '<span class="text-warning font-weight-bold">' + product.sector_price + '</span>' +
-                    '<span class="row p-0 d-inline">' +
-                    '<span class="plusIcon">+</span>' +
-                    '<span class="m-nos font-weight-bold">1</span>' +
-                    '<span class="minusIcon">-</span>' +
-                    '</span>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>';
+                        '<div class="card cproduct m-nos product" product_id="' + product.id +
+                        '" product_name="' + product.product_name + '" product_price="' +
+                        product.sector_price + '" wholesale_price="' +
+                        product.wholesale_price +
+                        '" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important; border: 1px solid rgba(229, 229, 229, 0.4) !important; min-height: 172px !important; max-height: 172px !important; width: 12rem !important;margin-bottom: 5px !important;">' +
+                        '<div class="imgBox" style="height: 75px !important; width: 100% !important;">' +
+                        '<img style="height: 100% !important; width: 100% !important; object-fit: contain !important;" src="../../../' +
+                        (product.product_pic ? product.product_pic : 'images/logo.png') +
+                        '" class="card-img-top"> </div>' +
+                        '<div class="card-body cbod" style="padding: 6px !important;">' +
+                        '<h5 class="card-title ctitle" style="font-size: 12px !important;min-height: 33px !important;color: #0A246A !important; font-weight: 600 !important;">' +
+                        product.product_name +
+                        '</h5>' +
+                        '<p class="card-text ctxt" style="margin-bottom: 3px !important;">' +
+                        product.code_universal +
+                        '</p>' +
+                        '<div class="row col-12 justify-content-between m-0 pl-0">' +
+                        '<span class="text-warning font-weight-bold">' + product.sector_price +
+                        '</span>' +
+                        '<span class="row p-0 d-inline">' +
+                        '<span class="plusIcon">+</span>' +
+                        '<span class="m-nos font-weight-bold">1</span>' +
+                        '<span class="minusIcon">-</span>' +
+                        '</span>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>';
 
-                $(".products").append(productElement);
+                    $(".products").append(productElement);
 
                 });
                 (allData[0]).forEach(function(subcat) {
@@ -1772,106 +2022,129 @@ color: #fff !important;
         //############################PAYING BUTTONS ACTIONS #######################//
 
         //=================زر حفظ وطباعة بدون دفع===========
-       $('#save_pos').on('click', function () {
-    if (!chkInvHasProductsAndClient()) return false;
+        $('#save_pos').on('click', function() {
+            if (!chkInvHasProductsAndClient()) return false;
 
-    //---bill details---//
-    let billDetails = {
-        outer_client_id: $('#outer_client_id').val(),
-        tableNum: $('#tableNum').val(),
-        status: 'done',
-        value_added_tax: '0',
-        notes: $('#notes').val(),
-        total_amount: Number($("#total").text()),
-        tax_amount: Number($("#taxValueAmount").text()),
-        tax_value: Number($("#posTaxValue").text()),
-    };
+            // تعطيل الزر وتغيير النص لإظهار التحميل
+            const $button = $(this);
+            $button.prop('disabled', true).text('جاري الحفظ...');
 
-    //---products details---//
-    let productsArr = [];
-    let totalSum = 0;
-    let hasInvalidProduct = false;
+            // ---bill details---//
+            let billDetails = {
+                outer_client_id: $('#outer_client_id').val(),
+                tableNum: $('#tableNum').val(),
+                status: 'done',
+                value_added_tax: '0',
+                notes: $('#notes').val(),
+                total_amount: Number($("#total").text()),
+                tax_amount: Number($("#taxValueAmount").text()),
+                tax_value: Number($("#posTaxValue").text()),
+            };
 
-    $(".edit_price").each(function (index) {
-        let product_id = $($(".edit_price")[index]).parent().parent().attr('id');
-        let productPrice = Number($($(".edit_price")[index]).val());
-        let productQty = Number($($(".edit_quantity")[index]).val());
-        let productDiscount = Number($($(".edit_discount")[index]).val());
-        totalSum = productPrice * productQty - productDiscount;
+            // ---products details---//
+            let productsArr = [];
+            let totalSum = 0;
+            let hasInvalidProduct = false;
 
-        // Check if the product price is zero
-        if (productPrice === 0) {
-            hasInvalidProduct = true;
-            return false; // Break out of the loop
-        }
+            $(".edit_price").each(function(index) {
+                let product_id = $($(".edit_price")[index]).parent().parent().attr('id');
+                let productPrice = Number($($(".edit_price")[index]).val());
+                let productQty = Number($($(".edit_quantity")[index]).val());
+                let productDiscount = window.canDiscount ? Number($($(".edit_discount")[index])
+                    .val()) : 0;
+                totalSum = productPrice * productQty - productDiscount;
 
-        productsArr.push({
-            product_id: product_id,
-            product_price: productPrice,
-            quantity: productQty,
-            discount: productDiscount,
-            quantity_price: totalSum,
-        });
-    });
+                if (productPrice === 0) {
+                    hasInvalidProduct = true;
+                    return false;
+                }
 
-    // If any product has a price of 0, show an alert and stop the process
-    if (hasInvalidProduct) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'تنبيه',
-            text: 'لا يمكن حفظ الفاتورة لأن بعض المنتجات تحتوي على سعر 0!',
-            confirmButtonText: 'إغلاق',
-            confirmButtonColor: '#d33',
-        });
-        return false;
-    }
-
-    $.post("{{ route('pos.open.done') }}", {
-        "_token": "{{ csrf_token() }}",
-        billDetails: billDetails,
-        productsArr: productsArr
-    }, function (data) {
-        if (data.success == 1) {
-            Swal.fire({
-                icon: 'success',
-                title: 'تم حفظ الفاتورة بنجاح',
-                timeout: 1300,
-                showConfirmButton: true,
-                confirmButtonText: 'اغلاق',
-                confirmButtonColor: '#69d26f',
+                productsArr.push({
+                    product_id: product_id,
+                    product_price: productPrice,
+                    quantity: productQty,
+                    discount: productDiscount,
+                    quantity_price: totalSum,
+                });
             });
 
-            setTimeout(() => {
-                window.location.href = '/pos-print/' + data.pos_id;
-            }, 50);
-        }
-    }).fail(function (jqXHR) {
-        let errorMessage = jqXHR.responseJSON ? jqXHR.responseJSON.message : "An error occurred";
+            if (hasInvalidProduct) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'تنبيه',
+                    text: 'لا يمكن حفظ الفاتورة لأن بعض المنتجات تحتوي على سعر 0!',
+                    confirmButtonText: 'إغلاق',
+                    confirmButtonColor: '#d33',
+                });
+                // إعادة تمكين الزر في حالة الخطأ
+                $button.prop('disabled', false).text('حفظ وطباعة');
+                return false;
+            }
 
-        Swal.fire({
-            icon: 'error',
-            title: 'خطأ',
-            text: errorMessage,
-            confirmButtonText: 'إغلاق',
-            confirmButtonColor: '#d33',
+            $.post("{{ route('pos.open.done') }}", {
+                "_token": "{{ csrf_token() }}",
+                billDetails: billDetails,
+                productsArr: productsArr
+            }, function(data) {
+                if (data.success == 1) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'تم حفظ الفاتورة بنجاح',
+                        timeout: 1300,
+                        showConfirmButton: true,
+                        confirmButtonText: 'اغلاق',
+                        confirmButtonColor: '#69d26f',
+                    });
+
+                    setTimeout(() => {
+                        window.location.href = '/pos-print/' + data.pos_id;
+                    }, 50);
+                }
+            }).fail(function(jqXHR) {
+                let errorMessage = jqXHR.responseJSON ? jqXHR.responseJSON.message : "حدث خطأ";
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: errorMessage,
+                    confirmButtonText: 'إغلاق',
+                    confirmButtonColor: '#d33',
+                });
+                // إعادة تمكين الزر في حالة الفشل
+                $button.prop('disabled', false).text('حفظ وطباعة');
+            });
         });
-    });
-});
+        // function autoPrintInvoice(posId) {
+        //     var iframe = document.createElement('iframe');
+        //     iframe.style.display = "none";
+        //     iframe.src = '/pos-print/' + posId;
+        //     document.body.appendChild(iframe);
+
+        //     iframe.onload = function () {
+        //         iframe.contentWindow.print();
+        //         setTimeout(() => {
+        //             document.body.removeChild(iframe); // Clean up
+        //         }, 1000);
+        //     };
+        // }
         //==================================================
 
         //================دفع شبكة سريع================
         $('#finishBank').on('click', function() {
             if (!chkInvHasProductsAndClient()) return false;
+            // $(this).prop('disabled', true); // تعطيل الزر
             $("#finishBankModal").modal();
         });
 
-        //============= ACTION DB دفع شبكة سريع========
         $(".finishBank").click(function() {
-            // Validation
-            let bank_id = $('#fast_bank_id').val();
-            if (!chkIfExistsBanks(bank_id)) return false;
+            const $button = $(this);
+            $button.prop('disabled', true).text('جاري الدفع...');
 
-            //--- Bill details ---//
+            let bank_id = $('#fast_bank_id').val();
+            if (!chkIfExistsBanks(bank_id)) {
+                $button.prop('disabled', false).text('تأكيد الدفع');
+                return false;
+            }
+
             let billDetails = {
                 outer_client_id: $('#outer_client_id').val(),
                 tableNum: $('#tableNum').val(),
@@ -1884,14 +2157,14 @@ color: #fff !important;
                 bank_id: bank_id,
             };
 
-            //--- Products details ---//
             let productsArr = [];
             let totalSum = 0;
             $(".edit_price").each(function(index) {
                 let product_id = $($(".edit_price")[index]).parent().parent().attr('id');
                 var productPrice = $($(".edit_price")[index]).val();
                 var productQty = $($(".edit_quantity")[index]).val();
-                var productDiscount = $($(".edit_discount")[index]).val();
+                var productDiscount = window.canDiscount ? $($(".edit_discount")[index]).val() :
+                    0;
                 totalSum = productPrice * productQty - productDiscount;
 
                 productsArr.push({
@@ -1922,10 +2195,7 @@ color: #fff !important;
                         window.location.href = '/pos-print/' + response.pos_id;
                 }, 50);
             }).fail(function(jqXHR) {
-                // Extract the error message from the response
                 let errorMessage = jqXHR.responseJSON ? jqXHR.responseJSON.message : "حدث خطأ";
-
-                // Display the error message using Swal
                 Swal.fire({
                     icon: 'error',
                     title: 'خطأ',
@@ -1933,17 +2203,19 @@ color: #fff !important;
                     confirmButtonText: 'إغلاق',
                     confirmButtonColor: '#d33',
                 });
+                $button.prop('disabled', false).text('تأكيد الدفع');
+                $('#finishBank').prop('disabled', false); // إعادة تمكين زر فتح النافذة
             });
         });
-
         //=============================================
 
         //================دفع كاش سريع==================
         $('#finish').on('click', function() {
-            // validation //
             if (!chkInvHasProductsAndClient()) return false;
 
-            //---bill details---//
+            const $button = $(this);
+            $button.prop('disabled', true).text('جاري الدفع...');
+
             let billDetails = {
                 outer_client_id: $('#outer_client_id').val(),
                 tableNum: $('#tableNum').val(),
@@ -1955,14 +2227,14 @@ color: #fff !important;
                 tax_value: Number($("#posTaxValue").text()),
             };
 
-            //---products details---//
             let productsArr = [];
             let totalSum = 0;
             $(".edit_price").each(function(index) {
                 let product_id = $($(".edit_price")[index]).parent().parent().attr('id');
                 var productPrice = $($(".edit_price")[index]).val();
                 var productQty = $($(".edit_quantity")[index]).val();
-                var productDiscount = $($(".edit_discount")[index]).val();
+                var productDiscount = window.canDiscount ? $($(".edit_discount")[index]).val() :
+                    0;
                 totalSum = productPrice * productQty - productDiscount;
 
                 productsArr.push({
@@ -1993,10 +2265,7 @@ color: #fff !important;
                         window.location.href = '/pos-print/' + response.pos_id;
                 }, 50);
             }).fail(function(jqXHR) {
-                // Extracting the error message from the response
                 let errorMessage = jqXHR.responseJSON ? jqXHR.responseJSON.message : "حدث خطأ";
-
-                // Display the error message using Swal
                 Swal.fire({
                     icon: 'error',
                     title: 'خطأ',
@@ -2004,6 +2273,7 @@ color: #fff !important;
                     confirmButtonText: 'إغلاق',
                     confirmButtonColor: '#d33',
                 });
+                $button.prop('disabled', false).text('دفع كاش سريع');
             });
         });
 
@@ -2022,7 +2292,9 @@ color: #fff !important;
         $('.pay_cash').on('click', function() {
             if (!validateRecordPayment()) return false;
 
-            //---bill details---//
+            const $button = $(this);
+            $button.prop('disabled', true).text('جاري التسجيل...');
+
             let billDetails = {
                 outer_client_id: $('#outer_client_id').val(),
                 tableNum: $('#tableNum').val(),
@@ -2032,7 +2304,6 @@ color: #fff !important;
                 total_amount: Number($("#total").text()),
                 tax_amount: Number($("#taxValueAmount").text()),
                 tax_value: Number($("#posTaxValue").text()),
-                //====paying options=====//
                 payment_method: $('#payment_method').val(),
                 paid_amount: $('#amount').val(),
                 safe_id: $('#safe_id').val(),
@@ -2043,14 +2314,14 @@ color: #fff !important;
                 coupon_code: $('#couponcode').val(),
             };
 
-            //---products details---//
             let productsArr = [];
             let totalSum = 0;
             $(".edit_price").each(function(index) {
                 let product_id = $($(".edit_price")[index]).parent().parent().attr('id');
                 var productPrice = $($(".edit_price")[index]).val();
                 var productQty = $($(".edit_quantity")[index]).val();
-                var productDiscount = $($(".edit_discount")[index]).val();
+                var productDiscount = window.canDiscount ? $($(".edit_discount")[index]).val() :
+                    0;
                 totalSum = productPrice * productQty - productDiscount;
 
                 productsArr.push({
@@ -2059,8 +2330,9 @@ color: #fff !important;
                     quantity: productQty,
                     discount: productDiscount,
                     quantity_price: totalSum,
-                })
+                });
             });
+
             $.post("{{ route('client.store.cash.clients.pos') }}", {
                 "_token": "{{ csrf_token() }}",
                 billDetails: billDetails,
@@ -2079,10 +2351,7 @@ color: #fff !important;
                     window.location.href = '/pos-print/' + posID;
                 }, 50);
             }).fail(function(jqXHR) {
-                // Extract the error message from the response
                 let errorMessage = jqXHR.responseJSON ? jqXHR.responseJSON.message : "حدث خطأ";
-
-                // Display the error message using Swal
                 Swal.fire({
                     icon: 'error',
                     title: 'خطأ',
@@ -2090,9 +2359,8 @@ color: #fff !important;
                     confirmButtonText: 'إغلاق',
                     confirmButtonColor: '#d33',
                 });
+                $button.prop('disabled', false).text('تسجيل العملية');
             });
-
-
         });
         //=============================================
         //############################PAYING BUTTONS ACTIONS END####################//
@@ -2149,13 +2417,13 @@ color: #fff !important;
                         <tr class="bg-white" id="${product_id}">
                             <td>${product_name}</td>
                             <td style="padding:5px 1px !important;">
-                                <input type="number" class="inputpos" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_price-${product_id}" class="edit_price w-100" value="${product_price}">
+                                <input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_price-${product_id}" class="edit_price w-100" value="${product_price}">
                             </td>
                             <td style="padding:5px 1px !important;">
-                                <input type="number" class="inputpos" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_quantity-${product_id}" class="edit_quantity w-100" value="${quantity}">
+                                <input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_quantity-${product_id}" class="edit_quantity w-100" value="${quantity}">
                             </td>
                             <td style="padding:5px 1px !important;">
-                                <input type="number" class="inputpos" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_discount-${product_id}" class="edit_discount w-100" value="${discount}">
+                                <input type="number" style="height: 30px !important;background: none;border:1px solid rgba(45,45,45,0.11)" id="edit_discount-${product_id}" class="edit_discount w-100" value="${discount}">
                             </td>
                             <td id="totalPrice-${product_id}" class="totalPrice font-weight-bold">${product_price}</td>
                             <td class="no-print">
@@ -2213,19 +2481,49 @@ color: #fff !important;
         });
 
         //=============on change price===========//
-        $(document).on('keyup', '.edit_price', function() {
-            //----update row details----//
-            let element_id = $(this).parent().parent().attr('id');
-            let edit_price = $(this).val();
-            let edit_quantity = $("#edit_quantity-" + element_id).val();
-            let edit_discount = $("#edit_discount-" + element_id).val();
-            if (edit_price > 0) {
-                let totalPrice = (edit_quantity * edit_price) - edit_discount;
-                $("#totalPrice-" + element_id).text(totalPrice.toFixed(3));
-            } else {
-                
-                return false;
+        // $(document).on('keyup', '.edit_price', function() {
+        //     //----update row details----//
+        //     let element_id = $(this).parent().parent().attr('id');
+        //     let edit_price = $(this).val();
+        //     let edit_quantity = $("#edit_quantity-" + element_id).val();
+        //     let edit_discount = $("#edit_discount-" + element_id).val();
+        //     if (edit_price > 0) {
+        //         let totalPrice = (edit_quantity * edit_price) - edit_discount;
+        //         $("#totalPrice-" + element_id).text(totalPrice.toFixed(3));
+        //     } else {
+
+        //         return false;
+        //     }
+        //     refreshBillDetails();
+        // });
+        $(document).on('keyup change', '.edit_price, .edit_quantity, .edit_discount', function() {
+            const $row = $(this).closest('tr');
+            const element_id = $row.attr('id');
+
+            const edit_price = toValidNumber($(`#edit_price-${element_id}`).val());
+            const edit_quantity = toValidNumber($(`#edit_quantity-${element_id}`).val());
+            const edit_discount = window.canDiscount ? toValidNumber($(`#edit_discount-${element_id}`)
+                .val()) : 0;
+
+            // التحقق من أن الخصم لا يتجاوز السعر الإجمالي
+            const maxDiscount = edit_price * edit_quantity;
+            if (edit_discount > maxDiscount) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ',
+                    text: 'الخصم لا يمكن أن يكون أكبر من السعر الإجمالي للمنتج',
+                    confirmButtonText: 'إغلاق',
+                    confirmButtonColor: '#d33',
+                });
+                $(`#edit_discount-${element_id}`).val('0');
+                refreshBillDetails();
+                return;
             }
+
+            // تحديث السعر الإجمالي للصف
+            const totalPrice = (edit_quantity * edit_price) - edit_discount;
+            $(`#totalPrice-${element_id}`).text(totalPrice.toFixed(3));
+
             refreshBillDetails();
         });
         //=============================================
@@ -2241,7 +2539,7 @@ color: #fff !important;
                 let totalPrice = (edit_quantity * edit_price) - edit_discount;
                 $("#totalPrice-" + element_id).text(totalPrice.toFixed(3));
             } else {
-                
+
                 return false;
             }
             refreshBillDetails();
@@ -2259,7 +2557,7 @@ color: #fff !important;
                 let totalPrice = (edit_quantity * edit_price) - edit_discount;
                 $("#totalPrice-" + element_id).text(totalPrice.toFixed(3));
             } else {
-                
+
                 return false;
             }
             refreshBillDetails();
@@ -2335,27 +2633,6 @@ color: #fff !important;
 
         //==============================================
 
-        // ==== (refresh | update) bill details =======//
-        function refreshBillDetails() {
-            //----update bill details----//
-            let totalSum = 0;
-            let totalQty = 0;
-            $(".edit_price").each(function(index) {
-                var productPrice = Number($($(".edit_price")[index]).val());
-                var productQty = Number($($(".edit_quantity")[index]).val());
-                totalQty += productQty;
-                var productDiscount = Number($($(".edit_discount")[index]).val());
-                totalSum += productPrice * productQty - productDiscount;
-            });
-            $("#sum").text(totalSum.toFixed(3));
-            //------Calc Tax Value & total PriceWithTax-------//
-            let posTaxValue = Number($("#posTaxValue").text());
-            let taxValueAmount = totalSum / 100 * posTaxValue;
-            $("#taxValueAmount").text(taxValueAmount.toFixed(3));
-            $("#total").text((totalSum + taxValueAmount).toFixed(3));
-            $("#total_quantity").text(totalQty);
-            $("#items").text($('.bill_details tr').length);
-        }
 
         //===============================================
 
@@ -2567,6 +2844,52 @@ color: #fff !important;
             $('#end_date').attr('disabled', false);
         }
     });
+    //=============on change discount'===========//
+
+    // Handle price changes while maintaining original and wholesale prices
+    // Handle pricing type change (wholesale/retail)
+    // Handle pricing type change (wholesale/retail)
+    // $(document).on('change', '.pricing-type', function() {
+    //     let row = $(this).closest('tr');
+    //     let element_id = row.attr('id');
+    //     let pricingType = $(this).val();
+    //     let retailPrice = parseFloat(row.find('.original-price').text());
+    //     let wholesalePrice = parseFloat(row.find('.wholesale-price').text());
+
+    //     // Update the price input field based on the selected pricing type
+    //     if (pricingType == 'wholesale') {
+    //         $("#edit_price-" + element_id).val(wholesalePrice);
+    //     } else {
+    //         $("#edit_price-" + element_id).val(retailPrice);
+    //     }
+    //     // Also update the hidden original price reference
+    //     row.find('.original-price').text(pricingType === 'wholesale' ? wholesalePrice : retailPrice);
+
+    //     // Trigger price change to update totals
+    //     $("#edit_price-" + element_id).trigger('keyup');
+    // });
+    $(document).on('change', '.pricing-type', function() {
+        let row = $(this).closest('tr');
+        let element_id = row.attr('id');
+        let pricingType = $(this).val();
+
+        // Get the original prices (these should NEVER change)
+        let retailPrice = parseFloat(row.find('.original-price').text());
+        let wholesalePrice = parseFloat(row.find('.wholesale-price').text());
+        console.log('pricingType', pricingType, 'retailPrice', retailPrice, 'wholesalePrice',
+            wholesalePrice)
+        // Only update the displayed price, not the original prices
+        if (pricingType === 'wholesale') {
+            $("#edit_price-" + element_id).val(wholesalePrice);
+        } else {
+            $("#edit_price-" + element_id).val(retailPrice);
+        }
+
+        // Trigger change to update calculations
+        $("#edit_price-" + element_id).trigger('keyup');
+    });
+
+    //=============================================
     $(document).ready(function() {
         function performSearch() {
             var query = $('#productSearch').val();
@@ -2666,6 +2989,5 @@ color: #fff !important;
         });
 
         $('.selectpicker').selectpicker();
- });
+    });
 </script>
-
