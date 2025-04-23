@@ -20,7 +20,7 @@
                     <i class="sidebar-item-icon fa fa-dashboard"></i>
                     <span class="menu-title text-center">
                         {{ __('sidebar.clients-dashboard') }}
-                    </span>
+                    </span> 
                 </a>
             </li>
 
