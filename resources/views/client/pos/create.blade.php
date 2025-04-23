@@ -408,6 +408,8 @@
                                         ( <span id="posTaxValue">0</span> %)
                                     </span>
                                 </td>
+                                
+
                             @endif
                             @if ($pos_settings->discount == '1')
                                 <td style="padding: 5px 10px;"> {{ __('main.discount') }}
