@@ -271,7 +271,7 @@ footer.footer-light {
     background: #FFFFFF;
 }
 body.light-mode footer {
-    background: #222751 !important;
+    background: #222751 ;
     color: #FFFFFF;
 }
 body.dark-mode footer {
@@ -4884,6 +4884,13 @@ body:after {
 .note-toolbar.panel-heading {
     color: #333333;
     background-color: #F9F9F9;
+    border-bottom: 1px solid #DDDDDD;
+    padding: 0.25rem 1rem 0.55rem !important;
+}
+
+body.dark-mode .note-toolbar.panel-heading {
+    color: #333333;
+    background-color: #181b23f5;
     border-bottom: 1px solid #DDDDDD;
     padding: 0.25rem 1rem 0.55rem !important;
 }
