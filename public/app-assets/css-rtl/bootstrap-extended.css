@@ -218,7 +218,7 @@ pre code {
     border: none;
 }
 .table thead {
-    background-color: #222751 !important;
+    background-color: #222751 ;
 }
 body.dark-mode .table thead {
     background-color: #212631 !important;
@@ -275,9 +275,7 @@ body.dark-mode .table-bordered {
 body.light-mode .table td {
     color: #000 !important;
 }
-body.dark-mode .table th, .table td {
-    color: #fff !important;
-}
+
 body.dark-mode .table thead tr{
     background-color: #181b23f5 !important;
 }
