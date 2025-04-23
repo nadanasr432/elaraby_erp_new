@@ -27,19 +27,7 @@
         align-items: center;
         background: #222751;
     }
-    body.dark-mode .posNavigator>span {
-        border: 1px solid #212631;
-        padding: 7px 15px;
-        border-radius: 30px;
-        color: white;
-        font-size: 14px !important;
-        font-weight: bold;
-        font-family: 'Cairo';
-        transition: all 0.3s ease-in-out !important;
-        display: flex;
-        align-items: center;
-        background: #212631;
-    }
+
     @media screen and (max-width: 750px) {
         .posLi {
             right: 0 !important;
@@ -160,19 +148,6 @@
     .dataTables_wrapper .row .col-sm-12:nth-child(2) {
         text-align: left !important;
     }
-    body.dark-mode .navbar-container{
-        background-color: #2a303d !important
-    }
-    body.dark-mode .navbar-header{
-        background-color: #212631 !important 
-    }
-    body.dark-mode .date{
-        color: #fff !important
-
-    }
-    .modal-backdrop.show{
-        z-index: 5;
-    }
 </style>
 <nav
     class="header-navbar navbar-expand-md navbar navbar-with-menu navbar-without-dd-arrow fixed-top navbar-semi-dark navbar-shadow no-print">
@@ -213,7 +188,6 @@
                 <ul class="col-12 nav navbar-nav float-right"
                     style="display: flex; align-items: center;justify-content: left">
 
-                  
                     <!---------------------SIDEBAR TOGGLER------------------------------------------------->
                     <li class="nav-item d-none d-md-block float-right"
                         style="position: absolute; right: 0;margin-top: 5px;">
@@ -222,7 +196,7 @@
                         </a>
                     </li>
                     <!---------------------SIDEBAR TOGGLER------------------------------------------------->
-     
+
 
                     <!---------------------Messages------------------------------------------------>
                     <li class="nav-item d-none d-md-block float-right"
@@ -287,7 +261,7 @@
                     <!---------------------ADDING SHORTCUTS------------------------------------------------>
                     <li class="nav-item d-none d-md-block float-right"
                         style="position: absolute; right: 160px;margin-top: 10px;">
-                        <a style=" display: block; margin-left: 13px; border: 1px dashed #449f2d; padding: 1px 5px 11px 7px; border-radius: 31px;"
+                        <a style="background: white; display: block; margin-left: 13px; border: 1px dashed #449f2d; padding: 1px 5px 11px 7px; border-radius: 31px;"
                             class="nav-link nav-link-label" href="#" data-toggle="dropdown" aria-expanded="false">
                             <svg style="width: 15px;height: 15px;fill: #449f2d;" xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 448 512">
@@ -444,30 +418,9 @@
                             </li>
                         </ul>
                     </li>
-
-
-                    <li>
-                        <button type="button" class="rounded-pill shadow-sm w-auto" data-bs-toggle="modal"
-                            data-bs-target="#colorrModal"
-                            style="border-color: {{ old('page_color', $currentColor ?? 'transparent') }}; background-color: {{ old('page_color', $currentColor ?? 'transparent') }};">
-                            <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#222751">
-                                <path d="M512 256c0 .9 0 1.8 0 2.7c-.4 36.5-33.6 61.3-70.1 61.3L344 320c-26.5 0-48 21.5-48 48c0 3.4 .4 6.7 1 9.9c2.1 10.2 6.5 20 10.8 29.9c6.1 13.8 12.1 27.5 12.1 42c0 31.8-21.6 60.7-53.4 62c-3.5 .1-7 .2-10.6 .2C114.6 512 0 397.4 0 256S114.6 0 256 0S512 114.6 512 256zM128 288a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm0-96a32 32 0 1 0 0-64 32 32 0 1 0 0 64zM288 96a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm96 96a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"/>
-                            </svg>
-                        </button>
-                    
-                       
-                    </li>
-                    
                     <!---------------------ADDING SHORTCUTS------------------------------------------------>
-                    <li class="mx-1">
-                        <button id="dark-btn" class="bg-transparent border-0 d-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#3d4044" viewBox="0 0 512 512" class="icon icon-lg" role="img" aria-hidden="true"><path fill="var(--ci-primary-color, currentColor)" d="M268.279,496c-67.574,0-130.978-26.191-178.534-73.745S16,311.293,16,243.718A252.252,252.252,0,0,1,154.183,18.676a24.44,24.44,0,0,1,34.46,28.958,220.12,220.12,0,0,0,54.8,220.923A218.746,218.746,0,0,0,399.085,333.2h0a220.2,220.2,0,0,0,65.277-9.846,24.439,24.439,0,0,1,28.959,34.461A252.256,252.256,0,0,1,268.279,496ZM153.31,55.781A219.3,219.3,0,0,0,48,243.718C48,365.181,146.816,464,268.279,464a219.3,219.3,0,0,0,187.938-105.31,252.912,252.912,0,0,1-57.13,6.513h0a250.539,250.539,0,0,1-178.268-74.016,252.147,252.147,0,0,1-67.509-235.4Z" class="ci-primary"></path></svg>
-                        </button>
-                        <button id="light-btn" class="bg-transparent border-0 text-white">
-                   
-                            <svg xmlns="http://www.w3.org/2000/svg"  width="20" height="20" fill="#3d4044" viewBox="0 0 512 512" class="icon icon-lg" role="img" aria-hidden="true"><path fill="var(--ci-primary-color, currentColor)" d="M256,104c-83.813,0-152,68.187-152,152s68.187,152,152,152,152-68.187,152-152S339.813,104,256,104Zm0,272A120,120,0,1,1,376,256,120.136,120.136,0,0,1,256,376Z" class="ci-primary"></path><rect width="32" height="48" x="240" y="16" fill="var(--ci-primary-color, currentColor)" class="ci-primary"></rect><rect width="32" height="48" x="240" y="448" fill="var(--ci-primary-color, currentColor)" class="ci-primary"></rect><rect width="48" height="32" x="448" y="240" fill="var(--ci-primary-color, currentColor)" class="ci-primary"></rect><rect width="48" height="32" x="16" y="240" fill="var(--ci-primary-color, currentColor)" class="ci-primary"></rect><rect width="32" height="45.255" x="400" y="393.373" fill="var(--ci-primary-color, currentColor)" class="ci-primary" transform="rotate(-45 416 416)"></rect><rect width="32.001" height="45.255" x="80" y="73.373" fill="var(--ci-primary-color, currentColor)" class="ci-primary" transform="rotate(-45 96 96)"></rect><rect width="45.255" height="32" x="73.373" y="400" fill="var(--ci-primary-color, currentColor)" class="ci-primary" transform="rotate(-45.001 96.002 416.003)"></rect><rect width="45.255" height="32.001" x="393.373" y="80" fill="var(--ci-primary-color, currentColor)" class="ci-primary" transform="rotate(-45 416 96)"></rect></svg>
-                        </button>
-                    </li>
+
+
                     <!---------------------POS BTN--------------------------------------------------------->
                     <li class="nav-item d-md-block float-right posLi"
                         style="position: absolute; right: 200px;margin-top: 10px;">
@@ -489,7 +442,7 @@
 
                     </li>
 
-                   
+
                     <!---------------------POS BTN--------------------------------------------------------->
 
                     {{-- <li class="nav-item custom-nav d-flex justify-content-around "
@@ -509,7 +462,7 @@
                     <li class="dropdown dropdown-user nav-item">
                         <p style="color:black;font-size: 13px !important;margin-top: 10px;margin-left: 15px">
                             <img src="{{ asset('assets/svgs/weather.svg') }}" width="25" />
-                            <span class="date" style="color: #222751; font-size: 20px; font-family: Cairo; font-weight: 400;">
+                            <span style="color: #222751; font-size: 20px; font-family: Cairo; font-weight: 400;">
                                 {{ date('H:i:s', strtotime(date('H:i:s')) + 60 * 60) }}
                             </span>
                         </p>
@@ -585,77 +538,4 @@
             </div>
         </div>
     </div>
-
-     <!-- Modal -->
-     <div class="modal fade z-50" id="colorrModal" tabindex="-1" aria-labelledby="colorrModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="colorrModalLabel">@lang('main.Select Print Color')</h5>
-                    <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" action="{{ url()->current() }}">
-                        @csrf
-                        <div class="mb-3 text-center">
-                            <input type="color" class="form-control form-control-color mx-auto"
-                                id="page_color" name="page_color"
-                                value="{{ old('page_color', $currentColor ?? '#222751') }}"
-                                title="Choose your color" style="width: 120px; height: 40px; cursor: pointer;">
-                        </div>
-                        <button type="submit" class="btn btn-secondary">@lang('main.save')</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-   
 </nav>
-<script src="{{ asset('app-assets/js/theme-switcher.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    document.addEventListener('hidden.bs.modal', function () {
-        setTimeout(() => {
-            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-
-            document.body.classList.remove('modal-open');
-            document.body.style = ''; 
-        }, 100);
-    });
-
-    document.addEventListener('shown.bs.modal', function () {
-        const backdrops = document.querySelectorAll('.modal-backdrop');
-        if (backdrops.length > 1) {
-            for (let i = 1; i < backdrops.length; i++) {
-                backdrops[i].remove();
-            }
-        }
-    });
-</script>
-
-<script>
-    document.getElementById('page_color').addEventListener('input', function(event) {
-        let newColor = event.target.value;
-
-        document.querySelector('.main-menu').style.backgroundColor = newColor;
-        document.querySelector('.navbar-header').style.backgroundColor = newColor;
-        document.querySelector('.main-menu.menu-dark .navigation > li.active > a').style.backgroundColor = newColor;
-        document.querySelector('.main-news').style.backgroundColor = newColor;
-        document.querySelector('footer').style.backgroundColor = newColor;
-        document.querySelector('body.light-mode .addsalebill').style.backgroundColor = newColor;
-        document.querySelector('.tile_stats_count.active').style.backgroundColor = newColor;
-        document.querySelector('.card-header:first-child').style.backgroundColor = newColor;
-        document.querySelector('.table thead').style.setProperty('background-color', newColor, 'important');
-        document.querySelectorAll('table thead th').forEach(th => {
-            th.style.setProperty('background-color', newColor, 'important');
-        });
-    });
-</script>
-
-@if(old('page_color'))
-    <script>
-        var myModal = new bootstrap.Modal(document.getElementById('colorrModal'));
-        myModal.show();
-    </script>
-@endif

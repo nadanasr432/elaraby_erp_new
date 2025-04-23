@@ -138,5 +138,4 @@ return [
     "Supplier data" => "بيانات المورد",
     "elements number" => "عدد عناصر الفاتورة",
     'Return invoice'=>'فاتورة مرتجع'
-
 ];

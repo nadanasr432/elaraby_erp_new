@@ -204,6 +204,7 @@ return [
     'Returned' => 'Returned',
     'Not Returned' => 'Not Returned',
     'returns-pos-invoices' => 'Pos Returns',
+    'Return invoice items'=>'Return invoice items'
 
 
 

@@ -11,7 +11,7 @@
     <meta name="_token" content="{{ csrf_token() }}" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- include summernot<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>e css/js -->
+    <!-- include summernote css/js -->
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/treeview-rtl.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.min.css') }}">
@@ -230,6 +230,7 @@
     <script src="{{ asset('/') }}../js/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 
     <div class="modal" id="modaldemo">
