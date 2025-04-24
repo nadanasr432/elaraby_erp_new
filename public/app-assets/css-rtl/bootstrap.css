@@ -4,7 +4,7 @@
  * Copyright 2011-2018 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
-:root {
+ :root {
   --blue : #1E9FF2;
   --indigo : #6610F2;
   --purple : #6F42C1;
@@ -2706,7 +2706,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
       -ms-user-select : none;
           user-select : none;
   border : 1px solid transparent;
-  padding : 0.75rem 1rem;
+  padding : 1rem 1.2rem;
   font-size : 1rem;
   line-height : 1.25;
   border-radius : 0.25rem;
@@ -4575,6 +4575,45 @@ tbody.collapse.show {
   border : 1px solid rgba(0, 0, 0, 0.06);
   border-radius : 0.35rem;
 }
+.dropdown-menu body.dark-mode h3{
+  color: #000 !important;
+}
+
+
+body.dark-mode .card {
+  background-color: #212631;
+  color: #ffffff;
+  position : relative;
+  display : -webkit-box;
+  display : -webkit-flex;
+  display :    -moz-box;
+  display : -ms-flexbox;
+  display :         flex;
+  -webkit-box-orient : vertical;
+  -webkit-box-direction : normal;
+  -webkit-flex-direction : column;
+     -moz-box-orient : vertical;
+     -moz-box-direction : normal;
+      -ms-flex-direction : column;
+          flex-direction : column;
+  min-width : 0;
+  word-wrap : break-word;
+  -webkit-background-clip : border-box;
+          background-clip : border-box;
+  border : 1px solid rgba(0, 0, 0, 0.06);
+  border-radius : 0.35rem;
+}
+body.dark-mode .border-secondary {
+  background-color: #212631;
+  color: #ffffff;
+}
+body.light-mode .addsalebill{
+  background-color: #222751 ;
+  color: #fff;
+}
+body.dark-mode .addsalebill{
+  background-color: #2a303d !important;
+}
 .card > hr {
   margin-left : 0;
   margin-right : 0;
@@ -4625,10 +4664,13 @@ tbody.collapse.show {
   border-bottom : 1px solid rgba(0, 0, 0, 0.06);
 }
 .card-header:first-child {
+  /* background-color: #222751; */
+
   border-radius : -webkit-calc(0.35rem - 1px) -webkit-calc(0.35rem - 1px) 0 0;
   border-radius :    -moz-calc(0.35rem - 1px) -moz-calc(0.35rem - 1px) 0 0;
   border-radius :         calc(0.35rem - 1px) calc(0.35rem - 1px) 0 0;
 }
+
 .card-header + .list-group .list-group-item:first-child {
   border-top : 0;
 }
