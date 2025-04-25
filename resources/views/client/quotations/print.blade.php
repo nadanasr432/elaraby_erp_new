@@ -265,6 +265,9 @@
                             <th>@lang('sales_bills.unit price')</th>
                             <th>@lang('sales_bills.description')</th>
                             <th>@lang('sales_bills.product-name') </th>
+                            @if ($company->extra_settings->show_model == 1)
+                                <th>@lang('products.pmodel1')</th>
+                            @endif
                             <th>#</th>
                         </tr>
 
@@ -297,6 +300,9 @@
                                 <td class="borderLeftH" style="direction: rtl; unicode-bidi: embed;">
                                   <div class="text-center" style="text-align: start !important;">{!! $product->product->description !!}</div>                                </td>
                                 <td class="borderLeftH">{{ $product->product->product_name }}</td>
+                                @if ($company->extra_settings->show_model == 1)
+                                    <td class="borderLeftH">{{ $product->product->product_model }}</td>
+                                @endif
                                 <td class="borderLeftH">{{ $counter }}</td>
                             </tr>
                             @php $counter++; @endphp
