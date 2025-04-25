@@ -143,4 +143,5 @@ return [
     'total' => 'Total',
     'total_with_tax' => 'Total with Tax',
     'date' => 'Date',
+    'payment_method'=>'Payment method'
 ];

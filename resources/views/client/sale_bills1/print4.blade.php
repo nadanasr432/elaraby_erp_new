@@ -244,197 +244,197 @@
                         <img class="logo" style="object-fit: scale-down;" width="204"
                             src="{{ asset($company->company_logo) }}">
                     </div>
-                   
-                         @php
-                    
+
+                    @php
+
                         $items = \App\Models\SaleBillElement::where('sale_bill_id', $sale_bill->id)
                             ->where('company_id', $sale_bill->company_id)
                             ->get();
-                
+
                         $allReturned = true;
-                
+
                         foreach ($items as $product) {
                             $alreadyReturnedQty = \App\Models\SaleBillReturn::where('bill_id', $sale_bill->id)
                                 ->where('product_id', $product->product_id)
                                 ->sum('return_quantity');
-                
+
                             if ($alreadyReturnedQty < $product->quantity) {
                                 $allReturned = false;
                                 break;
                             }
                         }
                     @endphp
-                        <div class="txtheader text-center pr-4">
-                            @if (!$isMoswada && !$allReturned)
-                                <span style="font-size:35px">
-                                    {{ $company->company_name }}
-                                </span>
-                                <br>
-                                <span style="font-size:30px">
-                                    VAT :{{ $company->tax_number ?? '-' }}
-                                </span>
-                                <br>
-                                @lang('sales_bills.Tax bill')
-                                TaxInvoice
-                              @elseif($allReturned)
-                               <span style="font-size:35px">
-                                    {{ $company->company_name }}
-                                </span>
-                                <br>
-                                <span style="font-size:30px">
-                                    VAT :{{ $company->tax_number ?? '-' }}
-                                </span>
-                                <br>
-                               @lang('sales_bills.Return invoice')
-                            @else
-                                @lang('sales_bills.Draft invoice')
-                            @endif
-                        </div>
+                    <div class="txtheader text-center pr-4">
+                        @if (!$isMoswada && !$allReturned)
+                            <span style="font-size:35px">
+                                {{ $company->company_name }}
+                            </span>
+                            <br>
+                            <span style="font-size:30px">
+                                VAT :{{ $company->tax_number ?? '-' }}
+                            </span>
+                            <br>
+                            @lang('sales_bills.Tax bill')
+                            TaxInvoice
+                        @elseif($allReturned)
+                            <span style="font-size:35px">
+                                {{ $company->company_name }}
+                            </span>
+                            <br>
+                            <span style="font-size:30px">
+                                VAT :{{ $company->tax_number ?? '-' }}
+                            </span>
+                            <br>
+                            @lang('sales_bills.Return invoice')
+                        @else
+                            @lang('sales_bills.Draft invoice')
+                        @endif
                     </div>
                 </div>
-            @else
-                <div class="row d-flex align-items-center">
-                    <div class="col-md-6 d-flex justify-content-start ">
-                         @php
-                    
-                        $items = \App\Models\SaleBillElement::where('sale_bill_id', $sale_bill->id)
-                            ->where('company_id', $sale_bill->company_id)
-                            ->get();
-                
-                        $allReturned = true;
-                
-                        foreach ($items as $product) {
-                            $alreadyReturnedQty = \App\Models\SaleBillReturn::where('bill_id', $sale_bill->id)
-                                ->where('product_id', $product->product_id)
-                                ->sum('return_quantity');
-                
-                            if ($alreadyReturnedQty < $product->quantity) {
-                                $allReturned = false;
-                                break;
-                            }
+        </div>
+    @else
+        <div class="row d-flex align-items-center">
+            <div class="col-md-6 d-flex justify-content-start ">
+                @php
+
+                    $items = \App\Models\SaleBillElement::where('sale_bill_id', $sale_bill->id)
+                        ->where('company_id', $sale_bill->company_id)
+                        ->get();
+
+                    $allReturned = true;
+
+                    foreach ($items as $product) {
+                        $alreadyReturnedQty = \App\Models\SaleBillReturn::where('bill_id', $sale_bill->id)
+                            ->where('product_id', $product->product_id)
+                            ->sum('return_quantity');
+
+                        if ($alreadyReturnedQty < $product->quantity) {
+                            $allReturned = false;
+                            break;
                         }
-                    @endphp
-                        <div class="txtheader text-center pr-4">
-                            @if (!$isMoswada && !$allReturned)
-                                <span style="font-size:35px">
-                                    {{ $company->company_name }}
-                                </span>
-                                <br>
-                                <span style="font-size:30px">
-                                    VAT :{{ $company->tax_number ?? '-' }}
-                                </span>
-                                <br>
-                                @lang('sales_bills.Tax bill')
-                                TaxInvoice
-                             @elseif($allReturned)
-                               <span style="font-size:35px">
-                                    {{ $company->company_name }}
-                                </span>
-                                <br>
-                                <span style="font-size:30px">
-                                    VAT :{{ $company->tax_number ?? '-' }}
-                                </span>
-                                <br>
-                               @lang('sales_bills.Return invoice')
-                            @else
-                                @lang('sales_bills.Draft invoice')
-                            @endif
-                        </div>
-                    </div>
-
-
-                    <div class="logo col-md-6  d-flex justify-content-end">
-                        <img class="logo" style="object-fit: scale-down;" width="204"
-                            src="{{ asset($company->company_logo) }}">
-                    </div>
-
+                    }
+                @endphp
+                <div class="txtheader text-center pr-4">
+                    @if (!$isMoswada && !$allReturned)
+                        <span style="font-size:35px">
+                            {{ $company->company_name }}
+                        </span>
+                        <br>
+                        <span style="font-size:30px">
+                            VAT :{{ $company->tax_number ?? '-' }}
+                        </span>
+                        <br>
+                        @lang('sales_bills.Tax bill')
+                        TaxInvoice
+                    @elseif($allReturned)
+                        <span style="font-size:35px">
+                            {{ $company->company_name }}
+                        </span>
+                        <br>
+                        <span style="font-size:30px">
+                            VAT :{{ $company->tax_number ?? '-' }}
+                        </span>
+                        <br>
+                        @lang('sales_bills.Return invoice')
+                    @else
+                        @lang('sales_bills.Draft invoice')
+                    @endif
                 </div>
-            @endif
-            <hr class="mt-1 mb-2">
-            @if (app()->getLocale() == 'en')
-                <div class="products-details" style="padding: 0px 18px;">
-                    <table
-                        style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                        <thead style="font-size: 16px !important;">
-                            <tr
-                                style="font-size: 16px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
-                                <th>@lang('sales_bills.Release Date')</th>
-                                <th>@lang('sales_bills.invoice number')</th>
-                                <th>@lang('sales_bills.commercial register')</th>
-
-                            </tr>
-                        </thead>
-                        <tbody style="font-size: 16px !important;">
-
-                            <tr class="even"
-                                style="font-size: 16px !important; height: 40px !important; text-align: center;">
-                                <td>{{ $sale_bill->date }}</td>
-                                <td>{{ $sale_bill->company_counter }}</td>
-                                <td>{{ $company->civil_registration_number }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            @else
-                <div class="products-details" style="padding: 0px 18px;">
-                    <table
-                        style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                        <thead style="font-size: 16px !important;">
-                            <tr
-                                style="font-size: 16px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
-                                <th>@lang('sales_bills.commercial register')</th>
-                                <th>@lang('sales_bills.invoice number')</th>
-                                <th>@lang('sales_bills.Release Date')</th>
-                            </tr>
-                        </thead>
-                        <tbody style="font-size: 16px !important;">
-
-                            <tr class="even"
-                                style="font-size: 16px !important; height: 40px !important; text-align: center;">
-                                <td>{{ $company->civil_registration_number }}</td>
-                                <td>{{ $sale_bill->company_counter }}</td>
-                                <td>{{ $sale_bill->date }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            @endif
-            @if (app()->getLocale() == 'en')
-                <!------------FIRST ROW----------------->
-
-                <div class="products-details mt-2" style=" padding: 0px 16px;">
-                    <table
-                        style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                        <thead>
-                            <tr
-                                style="font-size: 16px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
-                                <th>@lang('sales_bills.client-name')</th>
-                                <th>@lang('sales_bills.Tax Number')</th>
-                                <th>@lang('sales_bills.phone')</th>
-                                <th>@lang('sales_bills.address')</th>
-
-                            </tr>
-
-                        </thead>
-                        <tbody style="font-size: 14px !important;">
-                            <tr class="even"
-                                style="font-size: 16px !important; height: 40px !important; text-align: center;">
-                                <td>
-                                    {{ $sale_bill->outerClient->shop_name ?? $sale_bill->outerClient->client_name }}
-                                </td>
-                                <td>
-                                    {{ $sale_bill->outerClient->tax_number ?? '-' }}</td>
-                                <td>
-                                    {{ $sale_bill->outerClient->phones[0]->client_phone ?? '-' }}</td>
-                                <td>
-                                    {{ $sale_bill->outerClient->addresses[0]->client_address ?? '-' }}</td>
-                            </tr>
-
-                        </tbody>
-                    </table>
+            </div>
 
 
-                    {{-- <div class="left pr-2 pl-2"
+            <div class="logo col-md-6  d-flex justify-content-end">
+                <img class="logo" style="object-fit: scale-down;" width="204"
+                    src="{{ asset($company->company_logo) }}">
+            </div>
+
+        </div>
+        @endif
+        <hr class="mt-1 mb-2">
+        @if (app()->getLocale() == 'en')
+            <div class="products-details" style="padding: 0px 18px;">
+                <table
+                    style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+                    <thead style="font-size: 16px !important;">
+                        <tr
+                            style="font-size: 16px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
+                            <th>@lang('sales_bills.Release Date')</th>
+                            <th>@lang('sales_bills.invoice number')</th>
+                            <th>@lang('sales_bills.commercial register')</th>
+
+                        </tr>
+                    </thead>
+                    <tbody style="font-size: 16px !important;">
+
+                        <tr class="even"
+                            style="font-size: 16px !important; height: 40px !important; text-align: center;">
+                            <td>{{ $sale_bill->date }}</td>
+                            <td>{{ $sale_bill->company_counter }}</td>
+                            <td>{{ $company->civil_registration_number }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        @else
+            <div class="products-details" style="padding: 0px 18px;">
+                <table
+                    style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+                    <thead style="font-size: 16px !important;">
+                        <tr
+                            style="font-size: 16px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
+                            <th>@lang('sales_bills.commercial register')</th>
+                            <th>@lang('sales_bills.invoice number')</th>
+                            <th>@lang('sales_bills.Release Date')</th>
+                        </tr>
+                    </thead>
+                    <tbody style="font-size: 16px !important;">
+
+                        <tr class="even"
+                            style="font-size: 16px !important; height: 40px !important; text-align: center;">
+                            <td>{{ $company->civil_registration_number }}</td>
+                            <td>{{ $sale_bill->company_counter }}</td>
+                            <td>{{ $sale_bill->date }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        @endif
+        @if (app()->getLocale() == 'en')
+            <!------------FIRST ROW----------------->
+
+            <div class="products-details mt-2" style=" padding: 0px 16px;">
+                <table
+                    style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+                    <thead>
+                        <tr
+                            style="font-size: 16px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
+                            <th>@lang('sales_bills.client-name')</th>
+                            <th>@lang('sales_bills.Tax Number')</th>
+                            <th>@lang('sales_bills.phone')</th>
+                            <th>@lang('sales_bills.address')</th>
+
+                        </tr>
+
+                    </thead>
+                    <tbody style="font-size: 14px !important;">
+                        <tr class="even"
+                            style="font-size: 16px !important; height: 40px !important; text-align: center;">
+                            <td>
+                                {{ $sale_bill->outerClient->shop_name ?? $sale_bill->outerClient->client_name }}
+                            </td>
+                            <td>
+                                {{ $sale_bill->outerClient->tax_number ?? '-' }}</td>
+                            <td>
+                                {{ $sale_bill->outerClient->phones[0]->client_phone ?? '-' }}</td>
+                            <td>
+                                {{ $sale_bill->outerClient->addresses[0]->client_address ?? '-' }}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+
+                {{-- <div class="left pr-2 pl-2"
                         style="right: -5px;position:relative;border-bottom: 1px solid #25252525;">
                         <table style="width: 100%;">
                             <tr class="d-flex bordernone">
@@ -466,567 +466,412 @@
                     </div> --}}
 
 
-                </div>
-            @else
-                <div class="products-details mt-2" style=" padding: 0px 16px;">
-                    <table
-                        style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                        <thead>
-                            <tr
-                                style="font-size: 16px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
+            </div>
+        @else
+            <div class="products-details mt-2" style=" padding: 0px 16px;">
+                <table
+                    style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+                    <thead>
+                        <tr
+                            style="font-size: 16px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
 
 
 
-                                <th>@lang('sales_bills.address')</th>
-                                <th>@lang('sales_bills.phone')</th>
-                                <th>@lang('sales_bills.Tax Number')</th>
-                                <th>@lang('sales_bills.client-name')</th>
+                            <th>@lang('sales_bills.address')</th>
+                            <th>@lang('sales_bills.phone')</th>
+                            <th>@lang('sales_bills.Tax Number')</th>
+                            <th>@lang('sales_bills.client-name')</th>
 
-                            </tr>
+                        </tr>
 
-                        </thead>
-                        <tbody style="font-size: 14px !important;">
-                            <tr class="even"
-                                style="font-size: 16px !important; height: 40px !important; text-align: center;">
+                    </thead>
+                    <tbody style="font-size: 14px !important;">
+                        <tr class="even"
+                            style="font-size: 16px !important; height: 40px !important; text-align: center;">
 
 
 
-                                <td>
-                                    {{ $sale_bill->outerClient->addresses[0]->client_address ?? '-' }}
-                                </td>
-                                <td>
-                                    {{ $sale_bill->outerClient->phones[0]->client_phone ?? '-' }}
-                                </td>
-                                <td>
-                                    {{ $sale_bill->outerClient->tax_number ?? '-' }}</td>
-                                <td>
-                                    {{ $sale_bill->outerClient->shop_name ?? $sale_bill->outerClient->client_name }}
-                                </td>
+                            <td>
+                                {{ $sale_bill->outerClient->addresses[0]->client_address ?? '-' }}
+                            </td>
+                            <td>
+                                {{ $sale_bill->outerClient->phones[0]->client_phone ?? '-' }}
+                            </td>
+                            <td>
+                                {{ $sale_bill->outerClient->tax_number ?? '-' }}</td>
+                            <td>
+                                {{ $sale_bill->outerClient->shop_name ?? $sale_bill->outerClient->client_name }}
+                            </td>
 
-                            </tr>
+                        </tr>
 
-                        </tbody>
-                    </table>
-                </div>
-            @endif
-            <!-------------------------------------->
-            @if (app()->getLocale() == 'en')
-                <div class="products-details mt-2" style=" padding: 0px 16px;">
-                    <table
-                        style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px !important;">
-                        <thead>
-                            <tr
-                                style="font-size: 16px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
-                                <th>#</th>
-                                 @if ($company->extra_settings->show_model == 1)
-                                 <th>@lang('products.pmodel1')</th>@endif
-                                <th>@lang('sales_bills.product_name')</th>
-                                <th>@lang('sales_bills.Quantity')</th>
-                                <th>@lang('main.unit')</th>
-                                <th>@lang('sales_bills.unit price')</th>
-                                <th>@lang('sales_bills.The amount does not include tax')</th>
-                                <th>@lang('sales_bills.Tax')</th>
-                                <th>@lang('sales_bills.Discount')</th>
-                                <th>@lang('products.pdesc')</th>
-                                <th>@lang('sales_bills.total')</th>
-
-                            </tr>
-
-                        </thead>
-                        <tbody style="font-size: 14px !important;">
-                            @php
-                                $extras = $sale_bill->extras;
-                            @endphp
-
-                            @if (!$elements->isEmpty())
-                                @php $i = 0; @endphp
-                                @foreach ($elements as $element)
-                                    @php
-                                        // Calculate Product Tax
-                                        $ProdTax = 0;
-                                        if ($company->tax_value_added && $company->tax_value_added != 0) {
-                                            $ProdTax = $sale_bill->value_added_tax
-                                                ? $element->quantity_price - ($element->quantity_price * 20) / 23
-                                                : ($element->quantity_price * 15) / 100;
-                                        }
-                                        $elementDiscount =
-                                            $element->discount_type == 'percent'
-                                                ? ($element->quantity_price * $element->discount_value) / 100
-                                                : $element->discount_value;
-                                        // Calculate Product Total
-                                        $ProdTotal = $element->quantity_price;
-                                        if ($company->tax_value_added && $company->tax_value_added != 0) {
-                                            $ProdTotal = $sale_bill->value_added_tax
-                                                ? $element->quantity_price
-                                                : $element->quantity_price + ($element->quantity_price * 15) / 100;
-                                        }
-                                        $productPrice =
-                                            $element->tax_type == 0
-                                                ? $element->product_price + $element->tax_value
-                                                : $element->product_price;
-                                    @endphp
-
-                                    <tr
-                                        style="font-size: 16px !important; height: 34px !important; text-align: center; background: #f8f9fb">
-                                        <td class="borderLeftH">{{ ++$i }}</td>
-                                        @if ($company->extra_settings->show_model == 1)
-                                            <td class="borderLeftH">{{ $element->product->product_model }}</td>
-                                        @endif
-                                        <td class="borderLeftH">{{ $element->product->product_name }}</td>
-                                        <td class="borderLeftH text-center">
-                                            {{ $element->quantity }}
-                                        </td>
-                                        <td class="borderLeftH text-center">
-                                            {{ $element->unit->unit_name }}
-                                        </td>
-                                        <td class="borderLeftH">{{ $element->product_price }}</td>
-                                        <td class="borderLeftH">
-                                            {{ $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
-                                        </td>
-                                        <td class="borderLeftH">{{ $element->tax_value }}</td>
-                                        <td>{{ $element->discount_value }}{{ $element->discount_type == 'percent' ? ' %' : '' }}
-                                        </td>
-                                        <td class="borderLeftH d-flex justify-content-center">
-                                            <div class="text-center" style="text-align: start !important;">
-                                                {!! $element->product->description !!}</div>
-                                        </td>
-                                        <td class="borderLeftH">
-                                            {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
-                                        </td>
-                                    </tr>
-                                @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @endif
+        <!-------------------------------------->
+        @if (app()->getLocale() == 'en')
+            <div class="products-details mt-2" style=" padding: 0px 16px;">
+                <table
+                    style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px !important;">
+                    <thead>
+                        <tr
+                            style="font-size: 16px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
+                            <th>#</th>
+                            @if ($company->extra_settings->show_model == 1)
+                                <th>@lang('products.pmodel1')</th>
                             @endif
+                            <th>@lang('sales_bills.product_name')</th>
+                            <th>@lang('sales_bills.Quantity')</th>
+                            <th>@lang('main.unit')</th>
+                            <th>@lang('sales_bills.unit price')</th>
+                            <th>@lang('sales_bills.The amount does not include tax')</th>
+                            <th>@lang('sales_bills.Tax')</th>
+                            <th>@lang('sales_bills.Discount')</th>
+                            <th>@lang('products.pdesc')</th>
+                            <th>@lang('sales_bills.total')</th>
 
+                        </tr>
 
-                        </tbody>
-                    </table>
-                </div>
-            @else
-                <div class="products-details mt-2" style=" padding: 0px 16px;">
-                    <table
-                        style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                        <thead>
-                            <tr
-                                style="font-size: 16px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
-                                <th>@lang('sales_bills.total')</th>
-                                <th>@lang('products.pdesc')</th>
-                                <th>@lang('sales_bills.Tax')</th>
-                                <th>@lang('sales_bills.Discount')</th>
-                                <th>@lang('sales_bills.The amount does not include tax')</th>
-                                <th>@lang('sales_bills.unit price')</th>
-                                <th>@lang('main.unit'))</th>
-                                <th>@lang('sales_bills.Quantity')</th>
-                                <th>@lang('sales_bills.product_name')</th>
-                                 @if ($company->extra_settings->show_model == 1)
-                                 <th>@lang('products.pmodel1')</th>@endif
-                                <th>#</th>
-                            </tr>
+                    </thead>
+                    <tbody style="font-size: 14px !important;">
+                        @php
+                            $extras = $sale_bill->extras;
+                        @endphp
 
-                        </thead>
-                        <tbody style="font-size: 14px !important;">
-                            @php
-                                $extras = $sale_bill->extras;
+                        @if (!$elements->isEmpty())
+                            @php $i = 0; @endphp
+                            @foreach ($elements as $element)
+                                @php
+                                    // Calculate Product Tax
+                                    $ProdTax = 0;
+                                    if ($company->tax_value_added && $company->tax_value_added != 0) {
+                                        $ProdTax = $sale_bill->value_added_tax
+                                            ? $element->quantity_price - ($element->quantity_price * 20) / 23
+                                            : ($element->quantity_price * 15) / 100;
+                                    }
+                                    $elementDiscount =
+                                        $element->discount_type == 'percent'
+                                            ? ($element->quantity_price * $element->discount_value) / 100
+                                            : $element->discount_value;
+                                    // Calculate Product Total
+                                    $ProdTotal = $element->quantity_price;
+                                    if ($company->tax_value_added && $company->tax_value_added != 0) {
+                                        $ProdTotal = $sale_bill->value_added_tax
+                                            ? $element->quantity_price
+                                            : $element->quantity_price + ($element->quantity_price * 15) / 100;
+                                    }
+                                    $productPrice =
+                                        $element->tax_type == 0
+                                            ? $element->product_price + $element->tax_value
+                                            : $element->product_price;
+                                @endphp
 
-                            @endphp
-
-                            @if (!$elements->isEmpty())
-                                @php $i = 0; @endphp
-                                @foreach ($elements as $element)
-                                    @php
-                                        $elementDiscount =
-                                            $element->discount_type == 'percent'
-                                                ? ($element->quantity_price * $element->discount_value) / 100
-                                                : $element->discount_value;
-                                        // Calculate Product Tax
-                                        $ProdTax = 0;
-                                        if ($company->tax_value_added && $company->tax_value_added != 0) {
-                                            $ProdTax = $sale_bill->value_added_tax
-                                                ? $element->quantity_price - ($element->quantity_price * 20) / 23
-                                                : ($element->quantity_price * 15) / 100;
-                                        }
-
-                                        // Calculate Product Total
-                                        $ProdTotal = $element->quantity_price;
-                                        if ($company->tax_value_added && $company->tax_value_added != 0) {
-                                            $ProdTotal = $sale_bill->value_added_tax
-                                                ? $element->quantity_price
-                                                : $element->quantity_price + ($element->quantity_price * 15) / 100;
-                                        }
-                                        $productPrice =
-                                            $element->tax_type == 0
-                                                ? $element->product_price + $element->tax_value
-                                                : $element->product_price;
-                                    @endphp
-
-                                    <tr
-                                        style="font-size: 16px !important; height: 34px !important; text-align: center; background: #f8f9fb">
-                                        <td class="borderLeftH">
-                                            {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
-                                        </td>
-                                        <td class="borderLeftH d-flex justify-content-center">
-                                            <div class="text-center" style="text-align: start !important;">
-                                                {!! $element->product->description !!}</div>
-                                        </td>
-                                        <td class="borderLeftH">{{ $element->tax_value }}</td>
-                                        <td class="borderLeftH">
-                                            {{ $element->discount_value }}{{ $element->discount_type == 'percent' ? ' %' : '' }}
-                                        </td>
-                                        <td class="borderLeftH">
-                                            {{ $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
-                                        </td>
-                                        <td class="borderLeftH">{{ $element->product_price }}</td>
-                                        <td class="borderLeftH text-center">
-                                            {{ $element->unit->unit_name }}
-                                        </td>
-                                        <td class="borderLeftH text-center">
-                                            {{ $element->quantity }}
-                                        </td>
-                                        <td class="borderLeftH">{{ $element->product->product_name }}</td>
-                                         @if ($company->extra_settings->show_model == 1)
-                                            <td class="borderLeftH">{{ $element->product->product_model }}</td>
-                                        @endif
-                                        <td class="borderLeftH">{{ ++$i }}</td>
-                                    </tr>
-                                @endforeach
-                            @endif
-
-
-                        </tbody>
-                    </table>
-                </div>
-            @endif
-            <?php
-            if ($sale_bill->company_id == 20) {
-                echo "<p style='text-align: justify; direction: rtl; font-size: 12px; padding: 11px; background: #f3f3f3; margin: 2px 10px; border-radius: 6px; border: 1px solid #2d2d2d10;'>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </p>";
-            }
-            ?>
-            @if (app()->getLocale() == 'en')
-                <div class="row px-4 pt-2 d-flex justify-content-between">
-                    <div class="products-details p-0 col-8 d-flex justify-content-start flex-column">
-                        <div class="qrcode d-flex justify-content-start">
-                            @if (!$isMoswada)
-                                <img width="200" src="{{ $displayQRCodeAsBase64 }}" />
-                            @endif
-                        </div>
-                        <div class="qrcode d-flex justify-content-start">
-                            <p
-                                style="text-align: right; padding-right: 14px; direction: rtl; padding-top: 15px; font-size: 20px; font-weight: bold;">
-                                @lang('sales_bills.phone'):
-                                {{ $company->phone_number ?? '-' }}-{{ $company->company_address ?? '-' }}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="products-details p-0 col-4"
-                        style="border: 1px solid #2d2d2d1c; border-radius: 7px; overflow: hidden; box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;">
-                        <table
-                            style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                            @if (!empty($discount) && $discount > 0)
                                 <tr
-                                    style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
-
-                                    <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.Discount')</td>
-                                    <td dir="rtl">
-                                        <!--{{ $discountNote ? $discountNote . ' || ' : '' }}-->
-                                        <!--{{-- ({{ round(($discountValue / $realtotal) * 100, 1) }}%) --}}-->
-                                        <!--{{ $discountValue }}-->
-                                        ({{ $sale_bill->total_discount }})
-                                        <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
-
-
+                                    style="font-size: 16px !important; height: 34px !important; text-align: center; background: #f8f9fb">
+                                    <td class="borderLeftH">{{ ++$i }}</td>
+                                    @if ($company->extra_settings->show_model == 1)
+                                        <td class="borderLeftH">{{ $element->product->product_model }}</td>
+                                    @endif
+                                    <td class="borderLeftH">{{ $element->product->product_name }}</td>
+                                    <td class="borderLeftH text-center">
+                                        {{ $element->quantity }}
+                                    </td>
+                                    <td class="borderLeftH text-center">
+                                        {{ $element->unit->unit_name }}
+                                    </td>
+                                    <td class="borderLeftH">{{ $element->product_price }}</td>
+                                    <td class="borderLeftH">
+                                        {{ $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
+                                    </td>
+                                    <td class="borderLeftH">{{ $element->tax_value }}</td>
+                                    <td>{{ $element->discount_value }}{{ $element->discount_type == 'percent' ? ' %' : '' }}
+                                    </td>
+                                    <td class="borderLeftH d-flex justify-content-center">
+                                        <div class="text-center" style="text-align: start !important;">
+                                            {!! $element->product->description !!}</div>
+                                    </td>
+                                    <td class="borderLeftH">
+                                        {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
                                     </td>
                                 </tr>
+                            @endforeach
+                        @endif
+
+
+                    </tbody>
+                </table>
+            </div>
+        @else
+            <div class="products-details mt-2" style=" padding: 0px 16px;">
+                <table
+                    style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+                    <thead>
+                        <tr
+                            style="font-size: 16px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
+                            <th>@lang('sales_bills.total')</th>
+                            <th>@lang('products.pdesc')</th>
+                            <th>@lang('sales_bills.Tax')</th>
+                            <th>@lang('sales_bills.Discount')</th>
+                            <th>@lang('sales_bills.The amount does not include tax')</th>
+                            <th>@lang('sales_bills.unit price')</th>
+                            <th>@lang('main.unit'))</th>
+                            <th>@lang('sales_bills.Quantity')</th>
+                            <th>@lang('sales_bills.product_name')</th>
+                            @if ($company->extra_settings->show_model == 1)
+                                <th>@lang('products.pmodel1')</th>
                             @endif
+                            <th>#</th>
+                        </tr>
+
+                    </thead>
+                    <tbody style="font-size: 14px !important;">
+                        @php
+                            $extras = $sale_bill->extras;
+
+                        @endphp
+
+                        @if (!$elements->isEmpty())
+                            @php $i = 0; @endphp
+                            @foreach ($elements as $element)
+                                @php
+                                    $elementDiscount =
+                                        $element->discount_type == 'percent'
+                                            ? ($element->quantity_price * $element->discount_value) / 100
+                                            : $element->discount_value;
+                                    // Calculate Product Tax
+                                    $ProdTax = 0;
+                                    if ($company->tax_value_added && $company->tax_value_added != 0) {
+                                        $ProdTax = $sale_bill->value_added_tax
+                                            ? $element->quantity_price - ($element->quantity_price * 20) / 23
+                                            : ($element->quantity_price * 15) / 100;
+                                    }
+
+                                    // Calculate Product Total
+                                    $ProdTotal = $element->quantity_price;
+                                    if ($company->tax_value_added && $company->tax_value_added != 0) {
+                                        $ProdTotal = $sale_bill->value_added_tax
+                                            ? $element->quantity_price
+                                            : $element->quantity_price + ($element->quantity_price * 15) / 100;
+                                    }
+                                    $productPrice =
+                                        $element->tax_type == 0
+                                            ? $element->product_price + $element->tax_value
+                                            : $element->product_price;
+                                @endphp
+
+                                <tr
+                                    style="font-size: 16px !important; height: 34px !important; text-align: center; background: #f8f9fb">
+                                    <td class="borderLeftH">
+                                        {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
+                                    </td>
+                                    <td class="borderLeftH d-flex justify-content-center">
+                                        <div class="text-center" style="text-align: start !important;">
+                                            {!! $element->product->description !!}</div>
+                                    </td>
+                                    <td class="borderLeftH">{{ $element->tax_value }}</td>
+                                    <td class="borderLeftH">
+                                        {{ $element->discount_value }}{{ $element->discount_type == 'percent' ? ' %' : '' }}
+                                    </td>
+                                    <td class="borderLeftH">
+                                        {{ $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
+                                    </td>
+                                    <td class="borderLeftH">{{ $element->product_price }}</td>
+                                    <td class="borderLeftH text-center">
+                                        {{ $element->unit->unit_name }}
+                                    </td>
+                                    <td class="borderLeftH text-center">
+                                        {{ $element->quantity }}
+                                    </td>
+                                    <td class="borderLeftH">{{ $element->product->product_name }}</td>
+                                    @if ($company->extra_settings->show_model == 1)
+                                        <td class="borderLeftH">{{ $element->product->product_model }}</td>
+                                    @endif
+                                    <td class="borderLeftH">{{ ++$i }}</td>
+                                </tr>
+                            @endforeach
+                        @endif
+
+
+                    </tbody>
+                </table>
+            </div>
+        @endif
+        <?php
+        if ($sale_bill->company_id == 20) {
+            echo "<p style='text-align: justify; direction: rtl; font-size: 12px; padding: 11px; background: #f3f3f3; margin: 2px 10px; border-radius: 6px; border: 1px solid #2d2d2d10;'>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </p>";
+        }
+        ?>
+        @if (app()->getLocale() == 'en')
+            <div class="row px-4 pt-2 d-flex justify-content-between">
+                <div class="products-details p-0 col-8 d-flex justify-content-start flex-column">
+                    <div class="qrcode d-flex justify-content-start">
+                        @if (!$isMoswada)
+                            <img width="200" src="{{ $displayQRCodeAsBase64 }}" />
+                        @endif
+                    </div>
+                    <div class="qrcode d-flex justify-content-start">
+                        <p
+                            style="text-align: right; padding-right: 14px; direction: rtl; padding-top: 15px; font-size: 20px; font-weight: bold;">
+                            @lang('sales_bills.phone'):
+                            {{ $company->phone_number ?? '-' }}-{{ $company->company_address ?? '-' }}
+                        </p>
+                    </div>
+                </div>
+                <div class="products-details p-0 col-4"
+                    style="border: 1px solid #2d2d2d1c; border-radius: 7px; overflow: hidden; box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;">
+                    <table
+                        style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+                        @if (!empty($discount) && $discount > 0)
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
-                                <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
-                                <td dir="rtl"> {{-- @if ($discount->action_type == 'poundAfterTax')
+
+                                <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.Discount')</td>
+                                <td dir="rtl">
+                                    <!--{{ $discountNote ? $discountNote . ' || ' : '' }}-->
+                                    <!--{{-- ({{ round(($discountValue / $realtotal) * 100, 1) }}%) --}}-->
+                                    <!--{{ $discountValue }}-->
+                                    ({{ $sale_bill->total_discount }})
+                                    <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+
+
+                                </td>
+                            </tr>
+                        @endif
+                        <tr
+                            style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                            <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
+                            <td dir="rtl"> {{-- @if ($discount->action_type == 'poundAfterTax')
                                         @if ($realtotal > 0)
                                             ({{ $realtotal }})
 
                                         @endif
                                     @else --}}
-                                    {{-- @if ($realtotal > 0) --}}
-                                    {{ number_format($sale_bill->final_total - $sale_bill->total_tax, 2) }}
-                                    {{-- @endif --}}
+                                {{-- @if ($realtotal > 0) --}}
+                                {{ number_format($sale_bill->final_total - $sale_bill->total_tax, 2) }}
+                                {{-- @endif --}}
 
-                                    {{-- @endif --}}</td>
+                                {{-- @endif --}}</td>
 
-                            </tr>
+                        </tr>
 
-                            @if (!empty($ifThereIsDiscountNote))
-                                <tr
-                                    style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
-                                    <td style="text-align: left;padding-right: 14px;">:@lang('sales_bills.Discount note') </td>
-                                    <td style="width: 50% !important;">{{ $ifThereIsDiscountNote }}</td>
-
-                                </tr>
-                            @endif
-
+                        @if (!empty($ifThereIsDiscountNote))
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                                <td style="text-align: left;padding-right: 14px;">:@lang('sales_bills.Discount note') </td>
+                                <td style="width: 50% !important;">{{ $ifThereIsDiscountNote }}</td>
 
-                                <td style="text-align: left;padding-right: 14px;">
-                                    @lang('sales_bills.Total tax')
-                                    ({{ $company->tax_value_added ?? '0' }}%)
-                                </td>
-                                @if ($company->tax_value_added && $company->tax_value_added != 0)
-                                    <td dir="rtl">{{ $totalTax }}</td>
-                                @else
-                                    <td dir="rtl">0</td>
-                                @endif
                             </tr>
+                        @endif
 
-                            <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: {{ $currentColor }};color:white;">
-                                <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.Total including tax')</td>
-                                {{-- @if ($company->tax_value_added && $company->tax_value_added != 0) --}}
-                                {{-- @if ($discount->action_type == 'poundAfterTax') --}}
-                                <td dir="rtl">
-                                    {{ $sale_bill->final_total }}
-                                </td>
-                                {{-- @else
+                        <tr
+                            style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+
+                            <td style="text-align: left;padding-right: 14px;">
+                                @lang('sales_bills.Total tax')
+                                ({{ $company->tax_value_added ?? '0' }}%)
+                            </td>
+                            @if ($company->tax_value_added && $company->tax_value_added != 0)
+                                <td dir="rtl">{{ $totalTax }}</td>
+                            @else
+                                <td dir="rtl">0</td>
+                            @endif
+                        </tr>
+
+                        <tr
+                            style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: {{ $currentColor }};color:white;">
+                            <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.Total including tax')</td>
+                            {{-- @if ($company->tax_value_added && $company->tax_value_added != 0) --}}
+                            {{-- @if ($discount->action_type == 'poundAfterTax') --}}
+                            <td dir="rtl">
+                                {{ $sale_bill->final_total }}
+                            </td>
+                            {{-- @else
                                         <td dir="rtl">
                                             {{ $sumWithTax }}
                                         </td>
                                     @endif --}}
-                                {{-- @else
+                            {{-- @else
                                     <td dir="rtl">
                                         {{ $sale_bill->final_total - $sale_bill->total_tax }}
                                     </td>
                                 @endif --}}
 
-                            </tr>
-                            <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
-                                <td style="text-align: left;padding-right: 14px;">
-                                    @lang('sales_bills.The amount paid')
-                                </td>
-                                <td dir="rtl">{{ $sale_bill->paid }} </td>
+                        </tr>
+                        <tr
+                            style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                            <td style="text-align: left;padding-right: 14px;">
+                                @lang('sales_bills.The amount paid')
+                            </td>
+                            <td dir="rtl">{{ $sale_bill->paid }} </td>
 
-                            </tr>
-                            <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
-                                <td style="text-align: left;padding-right: 14px;">
-                                    @lang('sales_bills.Residual')
-                                </td>
-                                <td dir="rtl">
-                                    {{ $sale_bill->rest }}
-                                </td>
+                        </tr>
+                        <tr
+                            style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                            <td style="text-align: left;padding-right: 14px;">
+                                @lang('sales_bills.Residual')
+                            </td>
+                            <td dir="rtl">
+                                {{ $sale_bill->rest }}
+                            </td>
 
-                            </tr>
-                        </table>
-                    </div>
-                    @if (!empty($sale_bill->notes))
-                        <div class="right border2 pr-2 pl-2"
-                            style="height: fit-content !important;margin-top: 11px; border-radius: 5px;">
-                            <table style="width: 100%;">
-                                <tr class=pt-2" style="height: 38px;">
-                                    <td class="text-left">:@lang('sales_bills.details')</td>
-                                </tr>
-                                <tr class="pt-2 d-flex justify-content-end"
-                                    style="border: none !important;padding-top: 7px !important;display: block;direction:rtl;">
-                                    <td>
-                                        <span class="tete">
-                                            {!! $sale_bill->notes !!}
-                                        </span>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    @endif
-                    @if (!empty($company->invoice_note))
-                        <div class="products-details p-2 col-6">
-                            <div class=" mx-auto text-right p-2" dir="rtl">
-                                {{ $company->invoice_note }}
-                                <br />
-                            </div>
-                        </div>
-                    @endif
-                    @if (!empty($company->basic_settings->sale_bill_condition))
-                        <div class="products-details py-2 px-0 col-12">
-                            <table
-                                style="width:100%;border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                                <tbody>
-                                    <tr
-                                        style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 44px !important; text-align: center;background: {{ $currentColor }};color:white;">
-                                        <td style="text-align: left;padding-left: 14px;font-size: 14px;"
-                                            colspan="2">
-                                            @lang('sales_bills.Terms and Conditions')
-                                        </td>
-                                    </tr>
-                                    <tr
-                                        style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 49px !important; text-align: center;background: #f8f9fb">
-                                        <td
-                                            style="text-align: left;padding-left: 14px;direction: rtl;padding-top: 15px;">
-                                            {!! $company->basic_settings->sale_bill_condition !!}</td>
+                        </tr>
+                        <tr
+                            style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                            <td style="text-align: left;padding-right: 14px;">
+                                @lang('sales_bills.payment_method')
+                            </td>
+                            <td dir="rtl">
+                                {{ $sale_bill->payment_method }}
+                            </td>
 
-                                    </tr>
-
-                                </tbody>
-                            </table>
-
-                        </div>
-                    @endif
-
+                        </tr>
+                    </table>
                 </div>
-            @else
-                <div class="row px-4 pt-2 d-flex justify-content-between">
-
-                    <div class="products-details p-0 col-4"
-                        style="border: 1px solid #2d2d2d1c; border-radius: 7px; overflow: hidden; box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;">
-                        <table
-                            style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                            @if (!empty($discount) && $discount > 0)
-                                <tr
-                                    style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
-                                    <td dir="rtl">
-                                        <!--{{ $discountNote ? $discountNote . ' || ' : '' }}-->
-                                        <!--{{-- ({{ round(($discountValue / $realtotal) * 100, 1) }}%) --}}-->
-                                        <!--{{ $discountValue }}-->
-                                        ({{ $sale_bill->total_discount }})
-                                        <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
-
-
-                                    </td>
-                                    <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Discount')</td>
-                                </tr>
-                            @endif
-                            <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
-                                <td dir="rtl"> {{-- @if ($discount->action_type == 'poundAfterTax')
-                                        @if ($realtotal > 0)
-                                            ({{ $realtotal }})
-
-                                        @endif
-                                    @else --}}
-                                    {{-- @if ($realtotal > 0) --}}
-                                    {{ number_format($sale_bill->final_total - $sale_bill->total_tax, 2) }}
-                                    {{-- @endif --}}
-
-                                    {{-- @endif --}} </td>
-                                <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
+                @if (!empty($sale_bill->notes))
+                    <div class="right border2 pr-2 pl-2"
+                        style="height: fit-content !important;margin-top: 11px; border-radius: 5px;">
+                        <table style="width: 100%;">
+                            <tr class=pt-2" style="height: 38px;">
+                                <td class="text-left">:@lang('sales_bills.details')</td>
                             </tr>
-
-                            @if (!empty($ifThereIsDiscountNote))
-                                <tr
-                                    style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
-                                    <td style="width: 50% !important;">{{ $ifThereIsDiscountNote }}</td>
-                                    <td style="text-align: right;padding-right: 14px;">:@lang('sales_bills.Discount note') </td>
-                                </tr>
-                            @endif
-
-                            <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
-                                @if ($company->tax_value_added && $company->tax_value_added != 0)
-                                    <td dir="rtl">{{ $totalTax }}</td>
-                                @else
-                                    <td dir="rtl">0</td>
-                                @endif
-                                <td style="text-align: right;padding-right: 14px;">
-                                    @lang('sales_bills.Total tax')
-                                    ({{ $company->tax_value_added ?? '0' }}%)
-                                </td>
-                            </tr>
-
-                            <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: {{ $currentColor }};color:white;">
-                                {{-- @if ($company->tax_value_added && $company->tax_value_added != 0) --}}
-                                {{-- @if ($discount->action_type == 'poundAfterTax') --}}
-                                <td dir="rtl">
-                                    {{ $sale_bill->final_total }}
-                                </td>
-                                {{-- @else
-                                        <td dir="rtl">
-                                            {{ $sumWithTax }}
-                                        </td>
-                                    @endif --}}
-                                {{-- @else
-                                    <td dir="rtl">
-                                        {{ $sale_bill->final_total - $sale_bill->total_tax }}
-                                    </td>
-                                @endif --}}
-                                <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total including tax')</td>
-                            </tr>
-                            <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
-                                <td dir="rtl">{{ $sale_bill->paid }} </td>
-                                <td style="text-align: right;padding-right: 14px;">
-                                    @lang('sales_bills.The amount paid')
-                                </td>
-                            </tr>
-                            <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
-                                <td dir="rtl">
-                                    {{ $sale_bill->rest }}
-                                </td>
-                                <td style="text-align: right;padding-right: 14px;">
-                                    @lang('sales_bills.Residual')
+                            <tr class="pt-2 d-flex justify-content-end"
+                                style="border: none !important;padding-top: 7px !important;display: block;direction:rtl;">
+                                <td>
+                                    <span class="tete">
+                                        {!! $sale_bill->notes !!}
+                                    </span>
                                 </td>
                             </tr>
                         </table>
                     </div>
-                    @if (!empty($sale_bill->notes))
-                        <div class="right border2 pr-2 pl-2"
-                            style="height: fit-content !important;margin-top: 11px; border-radius: 5px;">
-                            <table style="width: 100%;">
-                                <tr class=pt-2" style="height: 38px;">
-                                    <td class="text-right">:@lang('sales_bills.details')</td>
-                                </tr>
-                                <tr class="pt-2"
-                                    style="border: none !important;padding-top: 7px !important;display: block;direction:rtl;">
-                                    <td>
-                                        <span class="tete">
-                                            {!! $sale_bill->notes !!}
-                                        </span>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    @endif
-                    @if (!empty($company->invoice_note))
-                        <div class="products-details p-2 col-6">
-                            <div class=" mx-auto text-right p-2" dir="rtl">
-                                {{ $company->invoice_note }}
-                                <br />
-                            </div>
-                        </div>
-                    @endif
-                    <div class="products-details p-0 col-12 d-flex justify-content-end flex-column">
-                        <div class="qrcode d-flex justify-content-end">
-                            @if (!$isMoswada)
-                                <img width="200" src="{{ $displayQRCodeAsBase64 }}" />
-                            @endif
-                        </div>
-                        <div class="qrcode d-flex justify-content-end">
-                            <p
-                                style="text-align: left; padding-left: 14px; direction: rtl; padding-top: 15px; font-size: 20px; font-weight: bold;">
-                                {{ $company->company_address ?? '-' }} - @lang('sales_bills.phone'):
-                                {{ $company->phone_number ?? '-' }}
-                            </p>
+                @endif
+                @if (!empty($company->invoice_note))
+                    <div class="products-details p-2 col-6">
+                        <div class=" mx-auto text-right p-2" dir="rtl">
+                            {{ $company->invoice_note }}
+                            <br />
                         </div>
                     </div>
-
-                </div>
-
+                @endif
                 @if (!empty($company->basic_settings->sale_bill_condition))
-                    <div class="products-details py-2 px-2 col-12">
+                    <div class="products-details py-2 px-0 col-12">
                         <table
                             style="width:100%;border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
                             <tbody>
                                 <tr
                                     style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 44px !important; text-align: center;background: {{ $currentColor }};color:white;">
-                                    <td style="text-align: right;padding-right: 14px;font-size: 14px;" colspan="2">
+                                    <td style="text-align: left;padding-left: 14px;font-size: 14px;" colspan="2">
                                         @lang('sales_bills.Terms and Conditions')
                                     </td>
                                 </tr>
                                 <tr
                                     style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 49px !important; text-align: center;background: #f8f9fb">
-                                    <td
-                                        style="text-align: right;padding-right: 14px;direction: rtl;padding-top: 15px;">
+                                    <td style="text-align: left;padding-left: 14px;direction: rtl;padding-top: 15px;">
                                         {!! $company->basic_settings->sale_bill_condition !!}</td>
 
                                 </tr>
@@ -1037,15 +882,190 @@
                     </div>
                 @endif
 
-        </div>
-        @endif
-        <br>
-        @if (!empty($company->basic_settings->footer))
-            <div class="footerImg">
-                <img class="img-footer" src="{{ asset($company->basic_settings->footer) }}" />
             </div>
-            <br>
-        @endif
+        @else
+            <div class="row px-4 pt-2 d-flex justify-content-between">
+
+                <div class="products-details p-0 col-4"
+                    style="border: 1px solid #2d2d2d1c; border-radius: 7px; overflow: hidden; box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;">
+                    <table
+                        style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+                        @if (!empty($discount) && $discount > 0)
+                            <tr
+                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                                <td dir="rtl">
+                                    <!--{{ $discountNote ? $discountNote . ' || ' : '' }}-->
+                                    <!--{{-- ({{ round(($discountValue / $realtotal) * 100, 1) }}%) --}}-->
+                                    <!--{{ $discountValue }}-->
+                                    ({{ $sale_bill->total_discount }})
+                                    <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+
+
+                                </td>
+                                <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Discount')</td>
+                            </tr>
+                        @endif
+                        <tr
+                            style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                            <td dir="rtl"> {{-- @if ($discount->action_type == 'poundAfterTax')
+                                        @if ($realtotal > 0)
+                                            ({{ $realtotal }})
+
+                                        @endif
+                                    @else --}}
+                                {{-- @if ($realtotal > 0) --}}
+                                {{ number_format($sale_bill->final_total - $sale_bill->total_tax, 2) }}
+                                {{-- @endif --}}
+
+                                {{-- @endif --}} </td>
+                            <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
+                        </tr>
+
+                        @if (!empty($ifThereIsDiscountNote))
+                            <tr
+                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                                <td style="width: 50% !important;">{{ $ifThereIsDiscountNote }}</td>
+                                <td style="text-align: right;padding-right: 14px;">:@lang('sales_bills.Discount note') </td>
+                            </tr>
+                        @endif
+
+                        <tr
+                            style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                            @if ($company->tax_value_added && $company->tax_value_added != 0)
+                                <td dir="rtl">{{ $totalTax }}</td>
+                            @else
+                                <td dir="rtl">0</td>
+                            @endif
+                            <td style="text-align: right;padding-right: 14px;">
+                                @lang('sales_bills.Total tax')
+                                ({{ $company->tax_value_added ?? '0' }}%)
+                            </td>
+                        </tr>
+
+                        <tr
+                            style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: {{ $currentColor }};color:white;">
+                            {{-- @if ($company->tax_value_added && $company->tax_value_added != 0) --}}
+                            {{-- @if ($discount->action_type == 'poundAfterTax') --}}
+                            <td dir="rtl">
+                                {{ $sale_bill->final_total }}
+                            </td>
+                            {{-- @else
+                                        <td dir="rtl">
+                                            {{ $sumWithTax }}
+                                        </td>
+                                    @endif --}}
+                            {{-- @else
+                                    <td dir="rtl">
+                                        {{ $sale_bill->final_total - $sale_bill->total_tax }}
+                                    </td>
+                                @endif --}}
+                            <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total including tax')</td>
+                        </tr>
+                        <tr
+                            style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                            <td dir="rtl">{{ $sale_bill->paid }} </td>
+                            <td style="text-align: right;padding-right: 14px;">
+                                @lang('sales_bills.The amount paid')
+                            </td>
+                        </tr>
+                        <tr
+                            style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                            <td dir="rtl">
+                                {{ $sale_bill->rest }}
+                            </td>
+                            <td style="text-align: right;padding-right: 14px;">
+                                @lang('sales_bills.Residual')
+                            </td>
+                        </tr>
+                        <tr
+                            style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                            <td dir="rtl">
+                                {{ $sale_bill->payment_method }}
+
+                            </td>
+                            <td style="text-align: right;padding-right: 14px;">
+                                @lang('sales_bills.payment_method')
+                            </td>
+
+                        </tr>
+                    </table>
+                </div>
+                @if (!empty($sale_bill->notes))
+                    <div class="right border2 pr-2 pl-2"
+                        style="height: fit-content !important;margin-top: 11px; border-radius: 5px;">
+                        <table style="width: 100%;">
+                            <tr class=pt-2" style="height: 38px;">
+                                <td class="text-right">:@lang('sales_bills.details')</td>
+                            </tr>
+                            <tr class="pt-2"
+                                style="border: none !important;padding-top: 7px !important;display: block;direction:rtl;">
+                                <td>
+                                    <span class="tete">
+                                        {!! $sale_bill->notes !!}
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                @endif
+                @if (!empty($company->invoice_note))
+                    <div class="products-details p-2 col-6">
+                        <div class=" mx-auto text-right p-2" dir="rtl">
+                            {{ $company->invoice_note }}
+                            <br />
+                        </div>
+                    </div>
+                @endif
+                <div class="products-details p-0 col-12 d-flex justify-content-end flex-column">
+                    <div class="qrcode d-flex justify-content-end">
+                        @if (!$isMoswada)
+                            <img width="200" src="{{ $displayQRCodeAsBase64 }}" />
+                        @endif
+                    </div>
+                    <div class="qrcode d-flex justify-content-end">
+                        <p
+                            style="text-align: left; padding-left: 14px; direction: rtl; padding-top: 15px; font-size: 20px; font-weight: bold;">
+                            {{ $company->company_address ?? '-' }} - @lang('sales_bills.phone'):
+                            {{ $company->phone_number ?? '-' }}
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            @if (!empty($company->basic_settings->sale_bill_condition))
+                <div class="products-details py-2 px-2 col-12">
+                    <table
+                        style="width:100%;border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+                        <tbody>
+                            <tr
+                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 44px !important; text-align: center;background: {{ $currentColor }};color:white;">
+                                <td style="text-align: right;padding-right: 14px;font-size: 14px;" colspan="2">
+                                    @lang('sales_bills.Terms and Conditions')
+                                </td>
+                            </tr>
+                            <tr
+                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 16px !important; height: 49px !important; text-align: center;background: #f8f9fb">
+                                <td style="text-align: right;padding-right: 14px;direction: rtl;padding-top: 15px;">
+                                    {!! $company->basic_settings->sale_bill_condition !!}</td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            @endif
+
+    </div>
+    @endif
+    <br>
+    @if (!empty($company->basic_settings->footer))
+        <div class="footerImg">
+            <img class="img-footer" src="{{ asset($company->basic_settings->footer) }}" />
+        </div>
+        <br>
+    @endif
     </div>
     </div>
 

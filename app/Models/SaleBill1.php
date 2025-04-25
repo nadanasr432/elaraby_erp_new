@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Cash;
+use App\Models\Store;
+use App\Models\BankCash;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Store;
 
 class SaleBill1 extends Model
 {
@@ -92,4 +94,27 @@ class SaleBill1 extends Model
     {
         return $this->morphMany(Voucher::class, 'referable');
     }
+    public function getPaymentMethodAttribute()
+    {
+        $bankCash = BankCash::where('bill_id', $this->sale_bill_number)
+            ->where('company_id', $this->company_id)
+            ->where('client_id', $this->client_id)
+            ->where('outer_client_id', $this->outer_client_id)
+            ->first();
+
+        $cash = Cash::where('bill_id', $this->sale_bill_number)
+            ->where('company_id', $this->company_id)
+            ->where('client_id', $this->client_id)
+            ->where('outer_client_id', $this->outer_client_id)
+            ->first();
+
+        if ($bankCash) {
+            return 'تحويل بنكي';
+        } elseif ($cash) {
+            return 'نقدي';
+        } else {
+            return 'أجل';
+        }
+    }
+
 }
