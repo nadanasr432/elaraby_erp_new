@@ -28,7 +28,7 @@ class ProductController extends Controller
         // Fetch products explicitly tied to the company
         $products = Product::where('company_id', $company_id)
             ->where(function ($query) {
-                $query->where('first_balance', '>', 0)
+                $query->where('first_balance', '>=', 0)
                     ->orWhereNull('first_balance');
             })
             ->get();

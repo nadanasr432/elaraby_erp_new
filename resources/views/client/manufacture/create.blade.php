@@ -29,7 +29,7 @@
                         <h3 class="pull-right font-weight-bold ml-1">
                             {{ __('manufactures.addnewmanufacture') }}
                         </h3>
-                        <a class="btn btn-danger btn-sm pull-left p-1" href="http://arabygithub.test/ar/client/journal/get">
+                        <a class="btn btn-danger btn-sm pull-left p-1" href="{{route('client.manufactures.index')}}">
                             {{ __('products.back') }}
                         </a>
                     </div>

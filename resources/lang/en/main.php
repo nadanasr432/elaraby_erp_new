@@ -422,7 +422,11 @@ return [
     'Return All Items' => 'Return All Items',
     'return'=>'return',
     'sender'=>'sender',
-"receiver"=>"receiver"
+"receiver"=>"receiver",
+'Search Products' => 'Search Products',
+'manufacture'=>'Manufacture',
+'products'=>'Products'
+
 
  
 

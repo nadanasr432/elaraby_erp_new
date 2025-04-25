@@ -265,10 +265,10 @@
 
                             <!-- Add the select input and new table container -->
                             <div class="form-group col-lg-6" dir="rtl" id="searchContainer" style="display: none;">
-                                <label class="col-lg-6">{{ __('Search Products') }}</label>
+                                <label class="col-lg-6">@lang('main.Search Products')</label>
                                 <select class="selectpicker" data-style="btn-success" data-live-search="true"
                                     id="productSearch">
-                                    <option value="" disabled selected>{{ __('Search Products') }}</option>
+                                    <option value="" disabled selected>@lang('main.Search Products')</option>
                                     @foreach ($products as $product)
                                         <option value="{{ $product->id }}"
                                             data-product-name="{{ $product->product_name }}"
@@ -284,7 +284,7 @@
                                 <input class="form-check-input" type="checkbox" id="mySwitch" name="manufacture"
                                     value="0">
                                 <label class="form-check-label ml-4" for="mySwitch"
-                                    style="font-size: 18px !important">manufacture</label>
+                                    style="font-size: 18px !important">@lang('main.manufacture')</label>
                             </div>
                         </div>
 
