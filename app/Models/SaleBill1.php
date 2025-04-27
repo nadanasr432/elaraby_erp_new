@@ -94,27 +94,42 @@ class SaleBill1 extends Model
     {
         return $this->morphMany(Voucher::class, 'referable');
     }
-    public function getPaymentMethodAttribute()
+   public function getPaymentMethodAttribute()
     {
+        $voucher = $this->vouchers()
+            ->where('referable_id', $this->id)
+            ->where('referable_type', self::class)
+            ->first();
+    
+        if ($voucher && !empty($voucher->payment_method)) {
+            if ($voucher->payment_method === 'cash') {
+                return __('main.cash');
+            } elseif ($voucher->payment_method === 'bank') {
+                return __('main.bank');
+            }
+        }
+    
         $bankCash = BankCash::where('bill_id', $this->sale_bill_number)
             ->where('company_id', $this->company_id)
             ->where('client_id', $this->client_id)
             ->where('outer_client_id', $this->outer_client_id)
             ->first();
-
+    
         $cash = Cash::where('bill_id', $this->sale_bill_number)
             ->where('company_id', $this->company_id)
             ->where('client_id', $this->client_id)
             ->where('outer_client_id', $this->outer_client_id)
             ->first();
-
+    
         if ($bankCash) {
-            return 'تحويل بنكي';
+            return __('main.bank');
         } elseif ($cash) {
-            return 'نقدي';
+            return __('main.cash');
         } else {
-            return 'أجل';
+            return __('main.deferred');
         }
     }
+
+
 
 }
