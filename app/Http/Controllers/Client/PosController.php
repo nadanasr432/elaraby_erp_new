@@ -1679,16 +1679,17 @@ class PosController extends Controller
             ->where('company_id', $company_id)
             ->where('client_id', $client_id);
 
-        if ($request->has('filter') && $request->filter === 'today') {
+        if (($request->has('filter') || $request->filter === 'today') && !($request->filled(['date_from', 'date_to']) || $request->filter === 'all')) {
             $query->whereDate('created_at', Carbon::today());
-        } elseif ($request->has('filter') && $request->filter === 'all') {
+        } elseif ($request->filter === 'all') {
             // no date filter
-        } elseif ($request->has(['date_from', 'date_to'])) {
+        } elseif ($request->filled(['date_from', 'date_to'])) {
             $query->whereBetween('created_at', [
                 Carbon::parse($request->date_from)->startOfDay(),
-                Carbon::parse($request->date_to)->endOfDay(),
+                Carbon::parse($request->date_to)->endOfDay()
             ]);
         }
+
 
         $pos_sales = $query->get();
 
