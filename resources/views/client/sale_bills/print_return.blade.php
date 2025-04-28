@@ -149,10 +149,10 @@ $company = \App\Models\Company::FindOrFail($itemsInSaleBillReturn[0]->company_id
                 <i class="fa fa-eye-slash"></i>
                 @lang('sales_bills.Show or hide the footer')
             </button>
-            <button class="btn  btn-success" dir="ltr" onclick="sendToWhatsApp()">
-                <i class="fa fa-whatsapp"></i>
-                @lang('sales_bills.Send to whatsapp')
-            </button>
+            <!--<button class="btn  btn-success" dir="ltr" onclick="sendToWhatsApp()">-->
+            <!--    <i class="fa fa-whatsapp"></i>-->
+            <!--    @lang('sales_bills.Send to whatsapp')-->
+            <!--</button>-->
             <div class="col-md-3">
                 <div class="card shadow-sm border-light rounded p-3 mb-3">
                     <button type="button" class="btn  btn-primary rounded-pill shadow-sm w-100" data-bs-toggle="modal"
@@ -195,55 +195,42 @@ $company = \App\Models\Company::FindOrFail($itemsInSaleBillReturn[0]->company_id
                     <img class="img-footer" src="{{ asset($company->basic_settings->header) }}" />
                 </div>
             @endif
-           
+
             @if (app()->getLocale() == 'en')
-                <div class="header-container d-flex align-items-center">
+                <div class="header-container d-flex align-items-center p-3">
                     <div class="logo">
                         <img class="logo" style="object-fit: scale-down;" width="204"
                             src="{{ asset($company->company_logo) }}">
                     </div>
-                      
+
                     <div class="txtheader mx-auto text-center">
-                       @if (!empty($itemsInSaleBillReturn[0]->outer_client_id))
-                                فاتورة مرتجع رقم
-                                {{ $itemsInSaleBillReturn[0]->bill->company_counter }}
-                        @else                         
-                                فاتورة مرتجع رقم
-                                {{ $itemsInSaleBillReturn[0]->bill->company_counter }}                         
+                        @if (!empty($itemsInSaleBillReturn[0]->outer_client_id))
+                            فاتورة مرتجع رقم
+                            {{ $itemsInSaleBillReturn[0]->bill->company_counter }}
+                        @else
+                            فاتورة مرتجع رقم
+                            {{ $itemsInSaleBillReturn[0]->bill->company_counter }}
                         @endif
                     </div>
 
-                    <div class="qrcode ">
-                        {!! SimpleSoftwareIO\QrCode\Facades\QrCode::size(80)->generate(Request::url()) !!}
-                       
-
-                        <!--<img width="200"-->
-                        <!--    src="{{ asset($company->basic_settings->electronic_stamp) }}" />-->
+                    <div class="qrcode">
+                        <img width="130" src="data:image/png;base64,{!! base64_encode(QrCode::format('png')->size(80)->generate(Request::url())) !!}" />
                     </div>
-
 
                 </div>
             @else
-                <div class="header-container d-flex align-items-center">
+                <div class="header-container d-flex align-items-center p-3">
 
-                    <div class="qrcode ">
-                        {!! SimpleSoftwareIO\QrCode\Facades\QrCode::size(80)->generate(Request::url()) !!}
-                       
-
-                        <!--<img width="200"-->
-                        <!--    src="{{ asset($company->basic_settings->electronic_stamp) }}" />-->
+                    <div class="qrcode">
+                        <img width="130" src="data:image/png;base64,{!! base64_encode(QrCode::format('png')->size(80)->generate(Request::url())) !!}" />
                     </div>
                     <div class="txtheader mx-auto text-center">
-                       @if (!empty($itemsInSaleBillReturn[0]->outer_client_id))
-                            
-                                فاتورة مرتجع رقم
-                                {{ $itemsInSaleBillReturn[0]->bill->company_counter }}
-                           
+                        @if (!empty($itemsInSaleBillReturn[0]->outer_client_id))
+                            فاتورة مرتجع رقم
+                            {{ $itemsInSaleBillReturn[0]->bill->company_counter }}
                         @else
-                          
-                                فاتورة مرتجع رقم
-                                {{ $itemsInSaleBillReturn[0]->bill->company_counter }}
-                           
+                            فاتورة مرتجع رقم
+                            {{ $itemsInSaleBillReturn[0]->bill->company_counter }}
                         @endif
                     </div>
 
@@ -255,200 +242,283 @@ $company = \App\Models\Company::FindOrFail($itemsInSaleBillReturn[0]->company_id
                 </div>
             @endif
             <hr class="mt-1 mb-2">
-                <div class="products-details" style="padding: 0px 18px;">
-                    <table
-                        style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                        <thead style="font-size:18px !important;">
-                            <tr
-                                style="font-size:18px !important; background:{{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
-                                <th>@lang('sales_bills.Release Date')</th>
-                                <th>@lang('sales_bills.invoice number')</th>
-                                <th>@lang('sales_bills.commercial register')</th>
+            <div class="products-details" style="padding: 0px 18px;">
+                <table
+                    style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+                    <thead style="font-size:18px !important;">
+                        <tr
+                            style="font-size:18px !important; background:{{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
+                            <th>@lang('sales_bills.Release Date')</th>
+                            <th>@lang('sales_bills.invoice number')</th>
+                            <th>@lang('sales_bills.commercial register')</th>
 
-                            </tr>
-                        </thead>
-                        <tbody style="font-size:18px !important;">
+                        </tr>
+                    </thead>
+                    <tbody style="font-size:18px !important;">
 
-                            <tr class="even"
-                                style="font-size:18px !important; height: 40px !important; text-align: center;">
-                                <td>{{ $itemsInSaleBillReturn[0]->date }}</td>
-                                <td>               
-                                    {{ $itemsInSaleBillReturn[0]->bill->company_counter }}
-                                </td>
-                                <td>{{ $company->civil_registration_number }}</td>
-                            </tr>
-                        </tbody>
+                        <tr class="even"
+                            style="font-size:18px !important; height: 40px !important; text-align: center;">
+                            <td>{{ $itemsInSaleBillReturn[0]->date }}</td>
+                            <td>
+                                {{ $itemsInSaleBillReturn[0]->bill->company_counter }}
+                            </td>
+                            <td>{{ $company->civil_registration_number }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!------------FIRST ROW----------------->
+            <div class="invoice-information row justify-content-around mt-3" style="padding: 0px 24px;"
+                dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+                <div class="col-12 pr-2 pl-2">
+                    <table style="width: 100%;">
+                        <tr class="d-flex pt-1"
+                            style="background:{{ $currentColor }}; color: white; font-size: 16px; border-radius: 7px 7px 0 0; padding: 8px !important;">
+                            <td width="50%"
+                                class="{{ app()->getLocale() == 'ar' ? 'text-right' : 'text-left' }} pr-2">
+                                @lang('sales_bills.invoice from')
+                            </td>
+                            <td width="50%"
+                                class="{{ app()->getLocale() == 'ar' ? 'text-right' : 'text-left' }} pr-2">
+                                @lang('sales_bills.Customer data')
+                            </td>
+                        </tr>
                     </table>
                 </div>
-          
-                <!------------FIRST ROW----------------->
-                <div class="invoice-information row justify-content-around mt-3" style=" padding: 0px 24px;">
-                    <div class="col-12 pr-2 pl-2">
-                        <table style="width: 100%;">
-                            <tr class="d-flex pt-1"
-                                style="background:{{ $currentColor }}; color: white; font-size: 16px;border-radius: 7px 7px 0 0;padding: 8px !important;">
 
-                                <td width="50%" class="text-left pr-2">@lang('sales_bills.invoice from')</td>
-                                <td width="50%" class="text-left pr-2">@lang('sales_bills.Customer data')</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="right pr-2 pl-2"
-                        style="border-left: 1px solid #2d2d2d2d !important;border-bottom: 1px solid #25252525;left: -5px;">
+                <div class="right pr-2 pl-2"
+                    style="border-left: 1px solid #2d2d2d2d !important; border-bottom: 1px solid #25252525;">
+                    <table style="width: 100%;">
+                        <tr class="d-flex bordernone">
+                            <td width="40%" class="{{ app()->getLocale() == 'ar' ? 'text-right' : 'text-left' }}">
+                                @lang('main.name')
+                            </td>
+                            <td width="60%" class="{{ app()->getLocale() == 'ar' ? 'text-left' : 'text-right' }}">
+                                {{ $company->company_name }}
+                            </td>
+                        </tr>
+                        <tr class="d-flex pt-1 bordernone">
+                            <td width="40%" class="{{ app()->getLocale() == 'ar' ? 'text-right' : 'text-left' }}">
+                                @lang('sales_bills.Tax Number')
+                            </td>
+                            <td width="60%" class="{{ app()->getLocale() == 'ar' ? 'text-left' : 'text-right' }}">
+                                {{ $company->tax_number ?? '-' }}
+                            </td>
+                        </tr>
+                        <tr class="d-flex pt-1 bordernone">
+                            <td width="40%" class="{{ app()->getLocale() == 'ar' ? 'text-right' : 'text-left' }}">
+                                @lang('sales_bills.phone')
+                            </td>
+                            <td width="60%" class="{{ app()->getLocale() == 'ar' ? 'text-left' : 'text-right' }}">
+                                {{ $company->phone_number ?? '-' }}
+                            </td>
+                        </tr>
+                        <tr class="d-flex pt-1 bordernone">
+                            <td width="40%" class="{{ app()->getLocale() == 'ar' ? 'text-right' : 'text-left' }}">
+                                @lang('sales_bills.address')
+                            </td>
+                            <td width="60%" class="{{ app()->getLocale() == 'ar' ? 'text-left' : 'text-right' }}">
+                                {{ $company->company_address ?? '-' }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="left pr-2 pl-2" style="border-bottom: 1px solid #25252525;">
+                    @if (!empty($itemsInSaleBillReturn[0]->outer_client_id))
                         <table style="width: 100%;">
                             <tr class="d-flex bordernone">
-
-                                <td width="40%" class="text-left">@lang('main.name')</td>
-                                <td width="60%" class="text-right">{{ $company->company_name }}</td>
+                                <td width="40%"
+                                    class="{{ app()->getLocale() == 'ar' ? 'text-right' : 'text-left' }}">
+                                    @lang('sales_bills.client-name')
+                                </td>
+                                <td width="60%"
+                                    class="{{ app()->getLocale() == 'ar' ? 'text-left' : 'text-right' }} centerTd">
+                                    {{ $itemsInSaleBillReturn[0]->OuterClient->client_name }}
+                                </td>
                             </tr>
                             <tr class="d-flex pt-1 bordernone">
-
-                                <td width="40%" class="text-left">@lang('sales_bills.Tax Number') </td>
-                                <td width="60%" class="text-right">{{ $company->tax_number ?? '-' }}</td>
+                                <td width="40%"
+                                    class="{{ app()->getLocale() == 'ar' ? 'text-right' : 'text-left' }}">
+                                    @lang('sales_bills.Tax Number')
+                                </td>
+                                <td width="60%"
+                                    class="{{ app()->getLocale() == 'ar' ? 'text-left' : 'text-right' }}">
+                                    {{ $itemsInSaleBillReturn[0]->OuterClient->tax_number }}
+                                </td>
                             </tr>
                             <tr class="d-flex pt-1 bordernone">
-
-                                <td width="40%" class="text-left">@lang('sales_bills.phone')</td>
-                                <td width="60%" class="text-right">{{ $company->phone_number ?? '-' }}</td>
+                                <td width="40%"
+                                    class="{{ app()->getLocale() == 'ar' ? 'text-right' : 'text-left' }}">
+                                    @lang('sales_bills.phone')
+                                </td>
+                                <td width="60%"
+                                    class="{{ app()->getLocale() == 'ar' ? 'text-left' : 'text-right' }}">
+                                    @if (!empty($itemsInSaleBillReturn[0]->OuterClient->phones[0]))
+                                        {{ $itemsInSaleBillReturn[0]->OuterClient->phones[0]->client_phone }}
+                                    @endif
+                                </td>
                             </tr>
                             <tr class="d-flex pt-1 bordernone">
-
-                                <td width="40%" class="text-left">@lang('sales_bills.address')</td>
-                                <td width="60%" class="text-right">
-                                    {{ $company->company_address ?? '-' }}
+                                <td width="40%"
+                                    class="{{ app()->getLocale() == 'ar' ? 'text-right' : 'text-left' }}">
+                                    @lang('sales_bills.address')
+                                </td>
+                                <td width="60%"
+                                    class="{{ app()->getLocale() == 'ar' ? 'text-left' : 'text-right' }}">
+                                    @if (!empty($itemsInSaleBillReturn[0]->OuterClient->addresses[0]))
+                                        {{ $itemsInSaleBillReturn[0]->OuterClient->addresses[0]->client_address }}
+                                    @endif
                                 </td>
                             </tr>
                         </table>
-                    </div>
-                    <div class="left pr-2 pl-2"
-                        style="right: -5px;position:relative;border-bottom: 1px solid #25252525;">
-                        @if (!empty($itemsInSaleBillReturn[0]->outer_client_id))
-                            <table style="width: 100%;">
-                                <tr class="d-flex bordernone">
-
-                                    <td width="40%" class="text-left">@lang('sales_bills.client-name')</td>
-                                    <td width="60%" class="text-right centerTd">
-                                        {{ $itemsInSaleBillReturn[0]->OuterClient->client_name }}
-                                    </td>
-                                </tr>
-                                <tr class="d-flex pt-1 bordernone">
-
-                                    <td width="40%" class="text-left">@lang('sales_bills.Tax Number')</td>
-                                    <td width="60%" class="text-right">
-                                       {{ $itemsInSaleBillReturn[0]->OuterClient->tax_number }}</td>
-                                </tr>
-                                <tr class="d-flex pt-1 bordernone">
-
-                                    <td width="40%" class="text-left">@lang('sales_bills.phone')</td>
-                                    <td width="60%" class="text-right">
-                                         @if (!empty($itemsInSaleBillReturn[0]->OuterClient->phones[0]))
-                                                {{ $itemsInSaleBillReturn[0]->OuterClient->phones[0]->client_phone }}
-                                            @endif
-                                        </td>
-                                </tr>
-                                <tr class="d-flex pt-1 bordernone">
-
-                                    <td width="40%" class="text-left">@lang('sales_bills.address')</td>
-                                    <td width="60%" class="text-right">
-                                         @if (!empty($itemsInSaleBillReturn[0]->OuterClient->addresses[0]))
-                                                {{ $itemsInSaleBillReturn[0]->OuterClient->addresses[0]->client_address }}
-                                            @endif
-                                        </td>
-                                </tr>
-                            </table>
-                        @endif
-                    </div>
-
-
+                    @endif
                 </div>
-           
-            <!-------------------------------------->
-                <div class="products-details mt-2" style=" padding: 0px 16px;">
-                    <table class="invoice-information"
-                        style="width: 100%;background:#222751; border-radius: 8px !important; overflow: hidden;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                        <thead>
+            </div>
+            @php
+                $isArabic = app()->getLocale() === 'ar';
+            @endphp
+
+            <div class="products-details mt-2"
+                style="padding: 0px 16px; text-align: {{ $isArabic ? 'right' : 'left' }};">
+                <table class="invoice-information"
+                    style="width: 100%; background: #222751; border-radius: 8px !important; overflow: hidden; box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+                    <thead>
+                        <tr
+                            style="font-size: 18px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
+                            @if ($isArabic)
+                                <td>{{ __('sales_bills.date') }}</td>
+                                <td>{{ __('sales_bills.total_with_tax') }}</td>
+                                <td>{{ __('sales_bills.total') }}</td>
+                                <td>{{ __('sales_bills.return_quantity') }}</td>
+                                <td>{{ __('sales_bills.unit_price') }}</td>
+                                <td>{{ __('sales_bills.item') }}</td>
+                                <td>#</td>
+                            @else
+                                <td>#</td>
+                                <td>{{ __('sales_bills.item') }}</td>
+                                <td>{{ __('sales_bills.unit_price') }}</td>
+                                <td>{{ __('sales_bills.return_quantity') }}</td>
+                                <td>{{ __('sales_bills.total') }}</td>
+                                <td>{{ __('sales_bills.total_with_tax') }}</td>
+                                <td>{{ __('sales_bills.date') }}</td>
+                            @endif
+
+                        </tr>
+                    </thead>
+                    <tbody style="font-size: 14px !important;">
+                        @php
+                            $i = 0;
+                            $total = 0;
+                            $totalTax = 0;
+                        @endphp
+                        @foreach ($itemsInSaleBillReturn as $item)
                             <tr
-                                style="font-size:18px !important; background:{{ $currentColor }}; color: white; height: 44px !important; text-align: center;">          
-                                <td >م</td>
-                                <td >الصنف</td>
-                                <td >سعر الوحدة</td>
-                                <td >عدد المرتجع</td>
-                                <td >الاجمالي</td>
-                                <td >الاجمالي شامل الضريبة
-                                </td>
-                                <td >التاريخ</td>
-                            </tr>
-
-                        </thead>
-                        <tbody style="font-size: 14px !important;">
-                           @php
-                                    $i = 0;
-                                    $total = 0;
-                                    $totalTax = 0;
-                                @endphp
-                                @foreach ($itemsInSaleBillReturn as $item)
-
-                                    <tr
-                                        style="font-size:18px !important; height: 34px !important; text-align: center; background: #f8f9fb">
-                                      <td>{{ ++$i }}</td>
-                                        <td>{{ $item->product->product_name }}</td>
-                                        <td>{{ $item->product_price }}</td>
-                                        <td>{{ $item->return_quantity }}</td>
-                                        <td>{{ $item->quantity_price }}</td>
-                                        <td>
-                                            <?php
+                                style="font-size: 18px !important; height: 34px !important; text-align: center; background: #f8f9fb">
+                                @if ($isArabic)
+                                    <td>{{ $item->date }}</td>
+                                    <td>
+                                        @php
                                             if ($taxOption == 1) {
                                                 $total += $item->quantity_price;
                                                 $totalTax += $item->quantity_price - ($item->quantity_price * 20) / 23;
                                                 echo $item->quantity_price;
                                             } else {
                                                 $totalTax += ($item->quantity_price * 15) / 100;
-                                                $prodTotalPrice = $item->quantity_price + ($item->quantity_price * 15) / 100;
+                                                $prodTotalPrice =
+                                                    $item->quantity_price + ($item->quantity_price * 15) / 100;
                                                 $total += $prodTotalPrice;
                                                 echo $prodTotalPrice;
                                             }
-                                            ?>
-                                        </td>
-                                        <td>{{ $item->date }}</td>
-                                    </tr>
-                                @endforeach
-                            
-                        </tbody>
-
-                    </table>
-                </div>
-        
-  
-        
-                <div class="row px-4 pt-2 d-flex justify-content-between">
-
-                    <div class="products-details p-0 col-6"
-                        style="border: 1px solid #2d2d2d1c; border-radius: 7px; overflow: hidden; box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;">
-                        <table
-                            style="width: 100%;width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid;box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
-                                <tr
-                                    style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
-
-                                    <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.tax')</td>
-                                    <td dir="rtl">
-                                     
-                                        {{ round($totalTax, 3) }}
-                                         <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                        @endphp
                                     </td>
-                                </tr>
-                            <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:16px !important; height: 37px !important; text-align: center;background: #f8f9fb">
-                                <td style="text-align: left;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
+                                    <td>{{ $item->quantity_price }}</td>
+                                    <td>{{ $item->return_quantity }}</td>
+                                    <td>{{ $item->product_price }}</td>
+                                    <td>{{ $item->product->product_name }}</td>
+                                    <td>{{ ++$i }}</td>
+                                @else
+                                    <td>{{ ++$i }}</td>
+                                    <td>{{ $item->product->product_name }}</td>
+                                    <td>{{ $item->product_price }}</td>
+                                    <td>{{ $item->return_quantity }}</td>
+                                    <td>{{ $item->quantity_price }}</td>
+                                    <td>
+                                        @php
+                                            if ($taxOption == 1) {
+                                                $total += $item->quantity_price;
+                                                $totalTax += $item->quantity_price - ($item->quantity_price * 20) / 23;
+                                                echo $item->quantity_price;
+                                            } else {
+                                                $totalTax += ($item->quantity_price * 15) / 100;
+                                                $prodTotalPrice =
+                                                    $item->quantity_price + ($item->quantity_price * 15) / 100;
+                                                $total += $prodTotalPrice;
+                                                echo $prodTotalPrice;
+                                            }
+                                        @endphp
+                                    </td>
+                                    <td>{{ $item->date }}</td>
+                                @endif
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row px-4 pt-2 d-flex justify-content-between">
+
+                <div class="products-details p-0 col-6"
+                    style="border: 1px solid #2d2d2d1c; border-radius: 7px; overflow: hidden; box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;">
+                    @php
+                        $isArabic = app()->getLocale() === 'ar';
+                    @endphp
+
+                    <table
+                        style="width: 100%; border-radius: 8px !important; overflow: hidden; border: 1px solid; box-shadow: rgb(99 99 99 / 20%) 0px 2px 0px 0px;">
+
+                        {{-- Tax Row --}}
+                        <tr
+                            style="border-bottom:1px solid #2d2d2d30; font-weight: bold; font-size:16px !important; height: 37px !important; text-align: center; background: #f8f9fb">
+                            @if ($isArabic)
                                 <td dir="rtl">
-                                {{ round($total, 3) }}
+                                    {{ round($totalTax, 3) }}
                                     <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
                                 </td>
-                            </tr>
-                        </table>
-                    </div>
+                                <td style="text-align: right; padding-left: 14px;">@lang('sales_bills.tax')</td>
+                            @else
+                                <td style="text-align: left; padding-right: 14px;">@lang('sales_bills.tax')</td>
+                                <td dir="rtl">
+                                    {{ round($totalTax, 3) }}
+                                    <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                </td>
+                            @endif
+                        </tr>
+
+                        {{-- Total Without Tax Row --}}
+                        <tr
+                            style="border-bottom:1px solid #2d2d2d30; font-weight: bold; font-size:16px !important; height: 37px !important; text-align: center; background: #f8f9fb">
+                            @if ($isArabic)
+                                <td dir="rtl">
+                                    {{ round($total, 3) }}
+                                    <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                </td>
+                                <td style="text-align: right; padding-left: 14px;">@lang('sales_bills.Total including tax')</td>
+                            @else
+                                <td style="text-align: left; padding-right: 14px;">@lang('sales_bills.Total including tax')</td>
+                                <td dir="rtl">
+                                    {{ round($total, 3) }}
+                                    <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                </td>
+                            @endif
+                        </tr>
+                    </table>
 
                 </div>
-          
+
+            </div>
+
             <br>
             @if (!empty($company->basic_settings->footer))
                 <div class="footerImg">
@@ -458,7 +528,6 @@ $company = \App\Models\Company::FindOrFail($itemsInSaleBillReturn[0]->company_id
             @endif
         </div>
     </div>
-
 </body>
 <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
 

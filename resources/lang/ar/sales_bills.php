@@ -137,5 +137,13 @@ return [
     'purchases_tax_invoice' => 'فاتورة ضريبية مشتريات',
     "Supplier data" => "بيانات المورد",
     "elements number" => "عدد عناصر الفاتورة",
-    'Return invoice'=>'فاتورة مرتجع'
+    'Return invoice'=>'فاتورة مرتجع',
+     'item' => 'الصنف',
+    'unit_price' => 'سعر الوحدة',
+    'return_quantity' => 'عدد المرتجع',
+    'total' => 'الاجمالي',
+    'total_with_tax' => 'الاجمالي شامل الضريبة',
+    'date' => 'التاريخ',
+    'payment_method'=>'طريقة الدفع'
+
 ];

@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Cash;
+use App\Models\Store;
+use App\Models\BankCash;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Store;
 
 class SaleBill1 extends Model
 {
@@ -92,4 +94,42 @@ class SaleBill1 extends Model
     {
         return $this->morphMany(Voucher::class, 'referable');
     }
+   public function getPaymentMethodAttribute()
+    {
+        $voucher = $this->vouchers()
+            ->where('referable_id', $this->id)
+            ->where('referable_type', self::class)
+            ->first();
+    
+        if ($voucher && !empty($voucher->payment_method)) {
+            if ($voucher->payment_method === 'cash') {
+                return __('main.cash');
+            } elseif ($voucher->payment_method === 'bank') {
+                return __('main.bank');
+            }
+        }
+    
+        $bankCash = BankCash::where('bill_id', $this->sale_bill_number)
+            ->where('company_id', $this->company_id)
+            ->where('client_id', $this->client_id)
+            ->where('outer_client_id', $this->outer_client_id)
+            ->first();
+    
+        $cash = Cash::where('bill_id', $this->sale_bill_number)
+            ->where('company_id', $this->company_id)
+            ->where('client_id', $this->client_id)
+            ->where('outer_client_id', $this->outer_client_id)
+            ->first();
+    
+        if ($bankCash) {
+            return __('main.bank');
+        } elseif ($cash) {
+            return __('main.cash');
+        } else {
+            return __('main.deferred');
+        }
+    }
+
+
+
 }

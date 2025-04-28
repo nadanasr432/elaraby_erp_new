@@ -582,6 +582,16 @@
                                 (Residual) المتبقي
                             </td>
                         </tr>
+                        <tr
+                            style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                            <td  dir="rtl">
+                               {{ $sale_bill->payment_method }}
+                            </td>
+                            <td style="text-align: right;padding-right: 14px;">
+                                 (Payment method) طريقة الدفع
+                            </td>
+
+                        </tr>
                     </table>
                 </div>
                 @if (!empty($sale_bill->notes))

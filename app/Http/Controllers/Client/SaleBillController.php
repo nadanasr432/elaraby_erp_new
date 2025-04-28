@@ -2232,26 +2232,32 @@ class SaleBillController extends Controller
         $billIDS = DB::table('sale_bill_return')
             ->select('bill_id')
             ->groupBy('bill_id')
+            ->orderBy('created_at', 'desc')
             ->where('company_id', Auth::user()->company_id)
             ->get();
-
-        $returnSaleInvoices = [];
+    
+        $returnSaleInvoices = collect(); // استخدم Collection لسهولة الترتيب
+    
+        // Eager load related models
         foreach ($billIDS as $invID) {
-            // Order the returned bills from newest to oldest based on 'created_at'
-            $invoices = SaleBillReturn::where("bill_id", $invID->bill_id)
-                ->orderBy('created_at', 'desc') // Sorting by 'created_at' in descending order
+            $invoices = SaleBillReturn::with(['bill', 'outerClient']) // Eager load 'bill' and 'outerClient'
+                ->where("bill_id", $invID->bill_id)
                 ->get();
-
+    
             foreach ($invoices as $bill_return) {
                 $saleBill = SaleBill::find($bill_return->bill_id);
                 $bill_return->setAttribute('value_added_tax', $saleBill->value_added_tax ?? 0);
+    
+                $returnSaleInvoices->push($bill_return);
             }
-
-            array_push($returnSaleInvoices, $invoices);
         }
-
+    
+        // Sorting the collection directly by 'created_at' or 'date' field of the SaleBillReturn model
+        $returnSaleInvoices = $returnSaleInvoices->sortByDesc('date')->values();
+    
         return view('client.sale_bills.returns', compact('returnSaleInvoices'));
     }
+
 
 
     public function redirect()

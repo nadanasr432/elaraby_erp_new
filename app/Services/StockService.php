@@ -38,7 +38,7 @@ class StockService
             });
 
         $product = $product->product ?? $product;
-        if ($cumulative > 0 && $type != 'خدمية') {
+        if ($cumulative > 0 && $type == 'مجمع' && $type != 'خدمية') {
 
             throw new \ValueError(trans('sales_bills.Product qty executed', ['product' => $product?->name ?? $product->product_unit_name]));
         };

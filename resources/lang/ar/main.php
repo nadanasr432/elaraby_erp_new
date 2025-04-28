@@ -423,7 +423,11 @@ return [
 'Return All Items' => 'إرجاع جميع العناصر',    
     'return'=>"ارجاع",
      'sender'=>'المرسل',
-    "receiver"=>"المرسل اليه"
+    "receiver"=>"المرسل اليه",
+    'Search Products' => 'بحث عن المنتجات',
+    'manufacture'=>'مصنع',
+    'products'=>'المنتجات'
+
 
      
  

@@ -223,18 +223,18 @@
                             src="{{ asset($company->company_logo) }}">
                     </div>
                     @php
-                    
+
                         $items = \App\Models\SaleBillElement::where('sale_bill_id', $sale_bill->id)
                             ->where('company_id', $sale_bill->company_id)
                             ->get();
-                
+
                         $allReturned = true;
-                
+
                         foreach ($items as $product) {
                             $alreadyReturnedQty = \App\Models\SaleBillReturn::where('bill_id', $sale_bill->id)
                                 ->where('product_id', $product->product_id)
                                 ->sum('return_quantity');
-                
+
                             if ($alreadyReturnedQty < $product->quantity) {
                                 $allReturned = false;
                                 break;
@@ -272,18 +272,18 @@
                     </div>
 
                     @php
-                    
+
                         $items = \App\Models\SaleBillElement::where('sale_bill_id', $sale_bill->id)
                             ->where('company_id', $sale_bill->company_id)
                             ->get();
-                
+
                         $allReturned = true;
-                
+
                         foreach ($items as $product) {
                             $alreadyReturnedQty = \App\Models\SaleBillReturn::where('bill_id', $sale_bill->id)
                                 ->where('product_id', $product->product_id)
                                 ->sum('return_quantity');
-                
+
                             if ($alreadyReturnedQty < $product->quantity) {
                                 $allReturned = false;
                                 break;
@@ -477,8 +477,9 @@
                             <tr
                                 style="font-size: 15px !important; background: {{ $currentColor }}; color: white; height: 44px !important; text-align: center;">
                                 <th style="border: 1px solid white;padding: 6px;">#</th>
-                                 @if ($company->extra_settings->show_model == 1)
-                                 <th style="border: 1px solid white;padding: 6px;">@lang('products.pmodel1')</th>@endif
+                                @if ($company->extra_settings->show_model == 1)
+                                    <th style="border: 1px solid white;padding: 6px;">@lang('products.pmodel1')</th>
+                                @endif
                                 <th style="border: 1px solid white;">@lang('sales_bills.product_name') </th>
                                 <th style="border: 1px solid white;">@lang('sales_bills.Quantity')</th>
                                 <th style="border: 1px solid white;">@lang('main.unit')</th>
@@ -534,23 +535,27 @@
                                         style="font-size: 15px !important; height: 44px !important; text-align: center; {{ $currentColor }}">
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">{{ ++$i }}</td>
                                         @if ($company->extra_settings->show_model == 1)
-                                            <td style="border: 1px solid rgba(161,161,161,0.63);">{{ $element->product->product_model }}</td>
+                                            <td style="border: 1px solid rgba(161,161,161,0.63);">
+                                                {{ $element->product->product_model }}</td>
                                         @endif
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
                                             {{ $element->product->product_name }}</td>
-                                       
+
                                         <td class="text-center" style="border: 1px solid rgba(161,161,161,0.63);">
-                                              {{ $element->quantity }}
+                                            {{ $element->quantity }}
                                         </td>
                                         <td class="text-center" style="border: 1px solid rgba(161,161,161,0.63);">
                                             {{ $element->unit->unit_name }}
                                         </td>
-                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
-                                            <img src="{{ asset('images/Sr_coin.svg') }}" width="15px"> {{ $element->product_price }} </td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
-                                          <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">  {{ $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
+                                            <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                            {{ $element->product_price }}
+                                        </td>
+                                        <td style="border: 1px solid rgba(161,161,161,0.63);">
+                                            <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                            {{ $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
 
-                                            
+
                                         </td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
                                             {{ $element->tax_value }}</td>
@@ -558,8 +563,8 @@
                                             {{ $element->discount_value }}{{ $element->discount_type == 'percent' ? ' %' : '' }}
                                         </td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
-                                           <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
-                                           {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
+                                            <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                            {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
                                         </td>
                                     </tr>
                                 @endforeach
@@ -584,8 +589,9 @@
                                 <th style="border: 1px solid white;">@lang('main.unit') </th>
                                 <th style="border: 1px solid white;">@lang('sales_bills.Quantity')</th>
                                 <th style="border: 1px solid white;">@lang('sales_bills.product_name') </th>
-                                 @if ($company->extra_settings->show_model == 1)
-                                 <th style="border: 1px solid white;padding: 6px;">@lang('products.pmodel1')</th>@endif
+                                @if ($company->extra_settings->show_model == 1)
+                                    <th style="border: 1px solid white;padding: 6px;">@lang('products.pmodel1')</th>
+                                @endif
                                 <th style="border: 1px solid white;padding: 6px;">#</th>
                             </tr>
 
@@ -613,7 +619,8 @@
                                     <tr
                                         style="font-size: 15px !important; height: 44px !important; text-align: center; {{ $currentColor }}">
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
-                                           <img src="{{ asset('images/Sr_coin.svg') }}" width="15px"> {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
+                                            <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                            {{ $element->tax_type == 0 ? $element->quantity_price + $element->tax_value - $elementDiscount : $element->quantity_price - $elementDiscount }}
 
                                         </td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
@@ -622,20 +629,23 @@
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
                                             {{ $element->tax_value }}</td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
-                                           <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">  {{ $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
-                                           
+                                            <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                            {{ $element->tax_type == 2 ? $element->quantity_price - $element->tax_value : $element->quantity_price }}
+
                                         </td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
-                                         <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">   {{ $element->product_price }} </td>
+                                            <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                            {{ $element->product_price }}
+                                        </td>
                                         <td class="text-center" style="border: 1px solid rgba(161,161,161,0.63);">
-                                            {{ $element->unit->unit_name }} 
+                                            {{ $element->unit->unit_name }}
                                         </td>
                                         <td class="text-center" style="border: 1px solid rgba(161,161,161,0.63);">
                                             {{ $element->quantity }}
                                         </td>
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">
                                             {{ $element->product->product_name }}</td>
-                                            @if ($company->extra_settings->show_model == 1)
+                                        @if ($company->extra_settings->show_model == 1)
                                             <td>{{ $element->product->product_model }}</td>
                                         @endif
                                         <td style="border: 1px solid rgba(161,161,161,0.63);">{{ ++$i }}</td>
@@ -651,10 +661,10 @@
             <?php
             if ($sale_bill->company_id == 20) {
                 echo "<p style='text-align: justify; direction: rtl; font-size: 12px; padding: 11px; background: #f3f3f3; margin: 2px 10px; border-radius: 6px; border: 1px solid #2d2d2d10;'>
-                                                                                                                                                                                                                                                                                                                            <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
-                                                                                                                                                                                                                                                                                                                            شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
-                                                                                                                                                                                                                                                                                                                            (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
-                                                                                                                                                                                                                                                                                                                        </p>";
+                                                                                                                                                                                                                                                                                                                                        <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
+                                                                                                                                                                                                                                                                                                                                        شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
+                                                                                                                                                                                                                                                                                                                                        (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
+                                                                                                                                                                                                                                                                                                                                    </p>";
             }
             ?>
             @if (app()->getLocale() == 'en')
@@ -667,7 +677,7 @@
                                 <tr
                                     style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;{{ $currentColor }}">
                                     <td style="text-align: left;padding-left: 14px;">@lang('sales_bills.Discount')</td>
-                                    <td >
+                                    <td>
                                         <!--{{ $discountNote . '  ' ?? '' }}-->
                                         <!--{{ $discountValue }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">-->
                                         {{-- @if ($realtotal > 0)
@@ -687,8 +697,9 @@
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;{{ $currentColor }}">
                                 <td style="text-align: left;padding-left: 14px;">@lang('sales_bills.Total, excluding tax')</td>
-                                <td><img src="{{ asset('images/Sr_coin.svg') }}" width="15px"> {{ number_format($sale_bill->final_total - $sale_bill->total_tax, 2) }}
-                                    
+                                <td><img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                    {{ number_format($sale_bill->final_total - $sale_bill->total_tax, 2) }}
+
                                 </td>
 
                             </tr>
@@ -715,9 +726,10 @@
                                     ({{ $company->tax_value_added ?? '0' }}%)
                                 </td>
                                 @if ($company->tax_value_added && $company->tax_value_added != 0)
-                                    <td><img src="{{ asset('images/Sr_coin.svg') }}" width="15px"> {{ $totalTax }}  </td>
+                                    <td><img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                        {{ $totalTax }} </td>
                                 @else
-                                    <td><img src="{{ asset('images/Sr_coin.svg') }}" width="15px">  0 </td>
+                                    <td><img src="{{ asset('images/Sr_coin.svg') }}" width="15px"> 0 </td>
                                 @endif
 
                             </tr>
@@ -727,9 +739,10 @@
                                 <td style="text-align: left;padding-left: 14px;">@lang('sales_bills.Total including tax') </td>
                                 {{-- @if ($company->tax_value_added && $company->tax_value_added != 0) --}}
                                 {{-- @if ($discount->action_type == 'poundAfterTax') --}}
-                                <td >
-                                   <img src="{{ asset('images/Sr_coin.svg') }}" width="15px"> {{ $sale_bill->final_total }}
-                                    
+                                <td>
+                                    <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                    {{ $sale_bill->final_total }}
+
                                 </td>
                                 {{-- @else
                                         <td >
@@ -743,6 +756,16 @@
                                         
                                     </td>
                                 @endif --}}
+
+                            </tr>
+                            <tr
+                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;">
+                                <td style="text-align: left;padding-left: 14px;">
+                                    @lang('sales_bills.payment_method')
+                                </td>
+                                <td style="text-align: right;padding-right: 14px;">
+                                    {{ $sale_bill->payment_method }}
+                                </td>
 
                             </tr>
                         </table>
@@ -767,7 +790,7 @@
                     @endif
                     @if (!empty($company->invoice_note))
                         <div class="products-details p-2 col-6">
-                            <div class=" mx-auto text-left p-2" >
+                            <div class=" mx-auto text-left p-2">
                                 {{ $company->invoice_note }}
                                 <br />
                             </div>
@@ -804,7 +827,7 @@
                             @if (!empty($discount) && $discount > 0)
                                 <tr
                                     style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;{{ $currentColor }}">
-                                    <td >
+                                    <td>
                                         <!--{{ $discountNote . '  ' ?? '' }}-->
                                         <!--{{ $discountValue }} <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">-->
                                         {{-- @if ($realtotal > 0)
@@ -823,8 +846,9 @@
                             @endif
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;{{ $currentColor }}">
-                                <td> <img src="{{ asset('images/Sr_coin.svg') }}" width="15px"> {{ number_format($sale_bill->final_total - $sale_bill->total_tax, 2) }}
-                                   
+                                <td> <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                    {{ number_format($sale_bill->final_total - $sale_bill->total_tax, 2) }}
+
                                 </td>
                                 <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total, excluding tax')</td>
                             </tr>
@@ -846,9 +870,10 @@
                             <tr
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;{{ $currentColor }}">
                                 @if ($company->tax_value_added && $company->tax_value_added != 0)
-                                    <td><img src="{{ asset('images/Sr_coin.svg') }}" width="15px"> {{ $totalTax }}  </td>
+                                    <td><img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                        {{ $totalTax }} </td>
                                 @else
-                                    <td><img src="{{ asset('images/Sr_coin.svg') }}" width="15px"> 0  </td>
+                                    <td><img src="{{ asset('images/Sr_coin.svg') }}" width="15px"> 0 </td>
                                 @endif
                                 <td style="text-align: right;padding-right: 14px;">
                                     @lang('sales_bills.Total tax')
@@ -860,9 +885,10 @@
                                 style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;background: {{ $currentColor }};color:white;">
                                 {{-- @if ($company->tax_value_added && $company->tax_value_added != 0) --}}
                                 {{-- @if ($discount->action_type == 'poundAfterTax') --}}
-                                <td >
-                                   <img src="{{ asset('images/Sr_coin.svg') }}" width="15px"> {{ $sale_bill->final_total }}
-                                    
+                                <td>
+                                    <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">
+                                    {{ $sale_bill->final_total }}
+
                                 </td>
                                 {{-- @else
                                         <td >
@@ -877,6 +903,17 @@
                                     </td>
                                 @endif --}}
                                 <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total including tax') </td>
+                            </tr>
+                            <tr
+                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                                <td dir="rtl">
+                                    {{ $sale_bill->payment_method }}
+
+                                </td>
+                                <td style="text-align: right;padding-right: 14px;">
+                                    @lang('sales_bills.payment_method')
+                                </td>
+
                             </tr>
                         </table>
                     </div>

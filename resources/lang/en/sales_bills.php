@@ -136,5 +136,12 @@ return [
     "Supplier data"=>"Supplier data",
     "elements number"=>"elements number",
     "product_name"=>"Product Name",
-    'Return invoice'=>'Return invoice'
+    'Return invoice'=>'Return invoice',
+     'item' => 'Item',
+    'unit_price' => 'Unit Price',
+    'return_quantity' => 'Return Quantity',
+    'total' => 'Total',
+    'total_with_tax' => 'Total with Tax',
+    'date' => 'Date',
+    'payment_method'=>'Payment method'
 ];
