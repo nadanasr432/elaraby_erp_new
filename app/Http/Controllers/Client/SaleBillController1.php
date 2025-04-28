@@ -226,36 +226,17 @@ class SaleBillController1 extends Controller
         //get products that خدمية and update its stock
         $products = Product::with('category', 'stocks')
             ->where('company_id', $company_id)
-            ->where(function ($query) {
-                $query->where('first_balance', '>', 0)
-                    ->orWhereNull('first_balance');
+            ->when(!$company->ignore_quantity, function ($query) {
+                $query->where(function ($query) {
+                    $query->where('first_balance', '>', 0)
+                        ->orWhereNull('first_balance');
+                });
             })
-            // ->where(function ($query) {
-            //     $query->whereHas('stocks', function ($query) {
-            //         $query->selectRaw('SUM(remaining) as total_remaining')
-            //             ->having('total_remaining', '>', 0);
-            //     })
-            //         ->orWhereHas('category', function ($query) {
-            //             $query->where('category_type', 'خدمية');
-            //         });
-            // })
-            ->get()->map(function ($product) {
-                // Include the calculated total_remaining in the result
-                // $product->total_remaining = $product->stocks->sum('remaining');
-                $product->total_remaining = $product->first_balance;
+            ->get()->map(function ($product) use ($company) {
+                $product->total_remaining =  !$company->ignore_quantity ? $product->first_balance : 99999;
                 $product->category_type = $product->category->category_type;
                 return $product;
             });
-        // dd($products->toArray());
-        // if (!empty($products)) {
-        //     foreach ($products as $khadamy) {
-        //         if ($khadamy->category->category_type == "خدمية") {
-        //             $khadamy->first_balance = 100000;
-        //             $khadamy->update();
-        //         }
-        //     }
-        // }
-        ///////////////////////////////////////////////
 
         $categories = $company->categories;
         $user = Client::FindOrFail($client_id);
@@ -265,49 +246,48 @@ class SaleBillController1 extends Controller
             $flatStores = $stores->pluck('id')->toArray();
             // dd($flatStores);
 
-            $all_products = Product::where('company_id', $company_id)
-                ->where(function ($query) use ($flatStores) {
-                    // $query->whereHas('stocks', function ($query) use ($flatStores) {
-                    //     $query->whereIn('store_id', $flatStores)
-                    //         ->selectRaw('SUM(remaining) as total_remaining')
-                    //         ->having('total_remaining', '>', 0);
-                    // })
-                    $query->where(function ($q) {
-                        $q->where('first_balance', '>', 0)
-                            ->orWhereNull('first_balance');
-                    })
-                        ->orWhereHas('category', function ($query) {
-                            $query->where('category_type', 'خدمية');
-                        });
+            $all_products = Product::with('category') // Make sure to eager load category
+                ->where('company_id', $company_id)
+                ->when(!$company->ignore_quantity, function ($query) use ($flatStores) {
+                    $query->where(function ($query) use ($flatStores) {
+                        $query->where(function ($q) {
+                            $q->where('first_balance', '>', 0)
+                                ->orWhereNull('first_balance');
+                        })
+                            ->orWhereHas('category', function ($query) {
+                                $query->where('category_type', 'خدمية');
+                            });
+                    });
                 })
-                ->get()->map(function ($product) {
-                    // Include the calculated total_remaining in the result
-                    // $product->total_remaining = $product->stocks->sum('remaining');
-                    $product->total_remaining = $product->first_balance;
+                ->get()
+                ->map(function ($product) use ($company) {
+                    $product->total_remaining = !$company->ignore_quantity
+                        ? $product->first_balance
+                        : 99999;
                     $product->category_type = $product->category->category_type;
                     return $product;
                 });
         } else {
             $stores = $company->stores;
             $flatStores = $stores->pluck('id')->toArray();
-            $all_products = Product::where('company_id', $company_id)
-                ->where(function ($query) use ($flatStores) {
-                    // $query->whereHas('stocks', function ($query) use ($flatStores) {
-                    //     $query->whereIn('store_id', $flatStores)
-                    //         ->selectRaw('SUM(remaining) as total_remaining')
-                    //         ->having('total_remaining', '>', 0);
-                    // })
-                    $query->where(function ($q) {
-                        $q->where('first_balance', '>', 0)
-                            ->orWhereNull('first_balance');
-                    })
-                        ->orWhereHas('category', function ($query) {
-                            $query->where('category_type', 'خدمية');
-                        });
-                })->get()->map(function ($product) {
-                    // Include the calculated total_remaining in the result
-                    // $product->total_remaining = $product->stocks->sum('remaining');
-                    $product->total_remaining = $product->first_balance;
+            $all_products = Product::with('category') // Eager load category to prevent N+1 issues
+                ->where('company_id', $company_id)
+                ->when(!$company->ignore_quantity, function ($query) {
+                    $query->where(function ($query) {
+                        $query->where(function ($q) {
+                            $q->where('first_balance', '>', 0)
+                                ->orWhereNull('first_balance');
+                        })
+                            ->orWhereHas('category', function ($query) {
+                                $query->where('category_type', 'خدمية'); // 'Service' type
+                            });
+                    });
+                })
+                ->get()
+                ->map(function ($product) use ($company) {
+                    $product->total_remaining = !$company->ignore_quantity
+                        ? $product->first_balance
+                        : 99999; // Your special value when quantity is ignored
 
                     $product->category_type = $product->category->category_type;
                     return $product;
@@ -380,6 +360,169 @@ class SaleBillController1 extends Controller
             )
         );
     }
+    // public function create()
+    // {
+    //     $company_id = Auth::user()->company_id;
+    //     $company = Company::FindOrFail($company_id);
+    //     $client_id = Auth::user()->id;
+
+    //     //get products that خدمية and update its stock
+    //     $products = Product::with('category', 'stocks')
+    //         ->where('company_id', $company_id)
+    //         ->where(function ($query) {
+    //             $query->where('first_balance', '>', 0)
+    //                 ->orWhereNull('first_balance');
+    //         })
+    //         // ->where(function ($query) {
+    //         //     $query->whereHas('stocks', function ($query) {
+    //         //         $query->selectRaw('SUM(remaining) as total_remaining')
+    //         //             ->having('total_remaining', '>', 0);
+    //         //     })
+    //         //         ->orWhereHas('category', function ($query) {
+    //         //             $query->where('category_type', 'خدمية');
+    //         //         });
+    //         // })
+    //         ->get()->map(function ($product) {
+    //             // Include the calculated total_remaining in the result
+    //             // $product->total_remaining = $product->stocks->sum('remaining');
+    //             $product->total_remaining = $product->first_balance;
+    //             $product->category_type = $product->category->category_type;
+    //             return $product;
+    //         });
+    //     // dd($products->toArray());
+    //     // if (!empty($products)) {
+    //     //     foreach ($products as $khadamy) {
+    //     //         if ($khadamy->category->category_type == "خدمية") {
+    //     //             $khadamy->first_balance = 100000;
+    //     //             $khadamy->update();
+    //     //         }
+    //     //     }
+    //     // }
+    //     ///////////////////////////////////////////////
+
+    //     $categories = $company->categories;
+    //     $user = Client::FindOrFail($client_id);
+    //     if (!empty($user->branch_id)) {
+    //         $branch = Branch::FindOrFail($user->branch_id);
+    //         $stores = $branch->stores;
+    //         $flatStores = $stores->pluck('id')->toArray();
+    //         // dd($flatStores);
+
+    //         $all_products = Product::where('company_id', $company_id)
+    //             ->where(function ($query) use ($flatStores) {
+    //                 // $query->whereHas('stocks', function ($query) use ($flatStores) {
+    //                 //     $query->whereIn('store_id', $flatStores)
+    //                 //         ->selectRaw('SUM(remaining) as total_remaining')
+    //                 //         ->having('total_remaining', '>', 0);
+    //                 // })
+    //                 $query->where(function ($q) {
+    //                     $q->where('first_balance', '>', 0)
+    //                         ->orWhereNull('first_balance');
+    //                 })
+    //                     ->orWhereHas('category', function ($query) {
+    //                         $query->where('category_type', 'خدمية');
+    //                     });
+    //             })
+    //             ->get()->map(function ($product) {
+    //                 // Include the calculated total_remaining in the result
+    //                 // $product->total_remaining = $product->stocks->sum('remaining');
+    //                 $product->total_remaining = $product->first_balance;
+    //                 $product->category_type = $product->category->category_type;
+    //                 return $product;
+    //             });
+    //     } else {
+    //         $stores = $company->stores;
+    //         $flatStores = $stores->pluck('id')->toArray();
+    //         $all_products = Product::where('company_id', $company_id)
+    //             ->where(function ($query) use ($flatStores) {
+    //                 // $query->whereHas('stocks', function ($query) use ($flatStores) {
+    //                 //     $query->whereIn('store_id', $flatStores)
+    //                 //         ->selectRaw('SUM(remaining) as total_remaining')
+    //                 //         ->having('total_remaining', '>', 0);
+    //                 // })
+    //                 $query->where(function ($q) {
+    //                     $q->where('first_balance', '>', 0)
+    //                         ->orWhereNull('first_balance');
+    //                 })
+    //                     ->orWhereHas('category', function ($query) {
+    //                         $query->where('category_type', 'خدمية');
+    //                     });
+    //             })->get()->map(function ($product) {
+    //                 // Include the calculated total_remaining in the result
+    //                 // $product->total_remaining = $product->stocks->sum('remaining');
+    //                 $product->total_remaining = $product->first_balance;
+
+    //                 $product->category_type = $product->category->category_type;
+    //                 return $product;
+    //             });
+    //         // $all_products = $company->products;
+    //     }
+    //     $units = $company->units;
+    //     $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
+    //     if (in_array('مدير النظام', Auth::user()->role_name)) {
+    //         $outer_clients = OuterClient::where('company_id', $company_id)->get();
+    //     } else {
+    //         $outer_clients = OuterClient::where('company_id', $company_id)
+    //             ->where(function ($query) {
+    //                 $query->where('client_id', Auth::user()->id)
+    //                     ->orWhereNull('client_id');
+    //             })->get();
+    //     }
+    //     // $check = SaleBill1::where('company_id', $company_id)->count();
+    //     // if ($check == 0) {
+    //     //     $pre_bill = SaleBill1::withTrashed()
+    //     //         ->where('company_id', $company_id)
+    //     //         ->where('status', 'done')
+    //     //         ->count() + 1;
+    //     //     $pre_counter = 1;
+    //     // } else {
+    //     //     $old_pre_bill = SaleBill1::max('sale_bill_number');
+    //     //     $pre_bill = ++$old_pre_bill;
+    //     //     $old_pre_counter = SaleBill1::withTrashed()
+    //     //         ->where('company_id', $company_id)
+    //     //         ->where('status', 'done')
+    //     //         ->count();
+    //     //     $pre_counter = $old_pre_counter + 1;
+    //     // }
+    //     $check = Cash::all();
+    //     if ($check->isEmpty()) {
+    //         $pre_cash = 1;
+    //     } else {
+    //         $old_cash = Cash::max('cash_number');
+    //         $pre_cash = ++$old_cash;
+    //     }
+    //     $safes = $company->safes;
+    //     $banks = $company->banks;
+
+    //     $user = Auth::user();
+    //     $type_name = $user->company->subscription->type->type_name;
+    //     if ($type_name == "تجربة") {
+    //         $bills_count = "غير محدود";
+    //     } else {
+
+    //         $bills_count = $user->company->subscription->type->package->bills_count;
+    //     }
+    //     $company_bills_count = $company->sale_bills->count();
+    //     $open_sale_bill = "";
+    //     return view(
+    //         'client.sale_bills1.create',
+    //         compact(
+    //             'company',
+    //             'open_sale_bill',
+    //             'units',
+    //             'pre_cash',
+    //             'stores',
+    //             'safes',
+    //             'banks',
+    //             'outer_clients',
+    //             'categories',
+    //             'extra_settings',
+    //             'company_id',
+    //             'all_products',
+    //             // 'pre_bill',
+    //         )
+    //     );
+    // }
     public function toggleStatus(Request $request)
     {
         $saleBill = SaleBill1::withTrashed()->find($request->sale_bill_id);
@@ -654,9 +797,12 @@ class SaleBillController1 extends Controller
                 'price_type' => $product['price_type'],
                 'discount_type' => $product['discount_type'],
             ]);
+
             $product = Product::find($product['product_id']);
-            $product->first_balance -= $element->quantity;
-            $product->save();
+            if (!$company->ignore_quantity) {
+                $product->first_balance -= $element->quantity;
+                $product->save();
+            }
             /* if (isset($product['discount_type']) && $product['discount_type'] && $product['discount']) {
                 SaleBillExtra::create([
                     'sale_bill_id' => $saleBill->id,
@@ -1286,9 +1432,9 @@ class SaleBillController1 extends Controller
         $saleBill = SaleBill1::find($id);
         if (!$saleBill) {
             return redirect()->route('client.sale_bills.create1')
-            ->with('error', 'تم حذف الفاتورة');
+                ->with('error', 'تم حذف الفاتورة');
         }
-        logger( $saleBill?->company_id);
+        logger($saleBill?->company_id);
         $company_id = Auth::user()->company_id;
         $sale_bills_done = SaleBill1::where('company_id', $saleBill?->company_id)
             ->where('status', 'done')
@@ -1479,60 +1625,96 @@ class SaleBillController1 extends Controller
 
         # get stores, products, branches, units.
         $user = Client::FindOrFail($client_id);
-        if (!empty($user->branch_id)) {
-            $branch = Branch::FindOrFail($user->branch_id);
-            $stores = $branch->stores;
-            $flatStores = $stores->pluck('id')->toArray();
-            // dd($flatStores);
+        if (!in_array('مدير النظام', Auth::user()->role_name)) {
+            if (!empty($user->branch_id)) {
+                $branch = Branch::FindOrFail($user->branch_id);
+                $stores = $branch->stores;
+                $flatStores = $stores->pluck('id')->toArray();
+                // dd($flatStores);
 
-            $all_products = Product::where('company_id', $company_id)
-                ->where(function ($query) use ($flatStores) {
-                    // $query->whereHas('stocks', function ($query) use ($flatStores) {
-                    //     $query->whereIn('store_id', $flatStores)
-                    //         ->selectRaw('SUM(remaining) as total_remaining')
-                    //         ->having('total_remaining', '>', 0);
-                    // })
-                    $query->where(function ($q) {
-                        $q->where('first_balance', '>', 0)
-                            ->orWhereNull('first_balance');
+                $all_products = Product::where('company_id', $company_id)
+                    ->where(function ($query) use ($flatStores, $company) {
+                        // $query->whereHas('stocks', function ($query) use ($flatStores) {
+                        //     $query->whereIn('store_id', $flatStores)
+                        //         ->selectRaw('SUM(remaining) as total_remaining')
+                        //         ->having('total_remaining', '>', 0);
+                        // })
+                        if (!$company->ignore_quantity) {
+                            $query->where(function ($q) {
+                                $q->where('first_balance', '>', 0)
+                                    ->orWhereNull('first_balance');
+                            })->orWhereHas('category', function ($query) {
+                                $query->where('category_type', 'خدمية');
+                            });
+                        }
                     })
-                        ->orWhereHas('category', function ($query) {
-                            $query->where('category_type', 'خدمية');
-                        });
-                })
-                ->get()->map(function ($product) {
-                    // Include the calculated total_remaining in the result
-                    // $product->total_remaining = $product->stocks->sum('remaining');
-                    $product->total_remaining = $product->first_balance;
-                    $product->category_type = $product->category->category_type;
-                    return $product;
-                });
+                    ->get()->map(function ($product) use ($company) {
+                        // Include the calculated total_remaining in the result
+                        // $product->total_remaining = $product->stocks->sum('remaining');
+                        $product->total_remaining = !$company->ignore_quantity
+                            ? $product->first_balance
+                            : 99999;
+                        $product->category_type = $product->category->category_type;
+                        return $product;
+                    });
+            } else {
+                $stores = $company->stores;
+                $flatStores = $stores->pluck('id')->toArray();
+                $all_products = Product::where('company_id', $company_id)
+                    ->where(function ($query) use ($flatStores, $company) {
+                        // $query->whereHas('stocks', function ($query) use ($flatStores) {
+                        //     $query->whereIn('store_id', $flatStores)
+                        //         ->selectRaw('SUM(remaining) as total_remaining')
+                        //         ->having('total_remaining', '>', 0);
+                        // })
+                        if (!$company->ignore_quantity) {
+                            $query->where(function ($q) {
+                                $q->where('first_balance', '>', 0)
+                                    ->orWhereNull('first_balance');
+                            })->orWhereHas('category', function ($query) {
+                                $query->where('category_type', 'خدمية');
+                            });
+                        }
+                    })->get()->map(function ($product) use ($company) {
+                        // Include the calculated total_remaining in the result
+                        // $product->total_remaining = $product->stocks->sum('remaining');
+
+                        $product->total_remaining = !$company->ignore_quantity
+                            ? $product->first_balance
+                            : 99999;
+                        $product->category_type = $product->category->category_type;
+                        return $product;
+                    });
+                // $all_products = $company->products;
+
+            }
         } else {
             $stores = $company->stores;
-            $flatStores = $stores->pluck('id')->toArray();
             $all_products = Product::where('company_id', $company_id)
-                ->where(function ($query) use ($flatStores) {
+                ->where(function ($query) use ($company) {
                     // $query->whereHas('stocks', function ($query) use ($flatStores) {
                     //     $query->whereIn('store_id', $flatStores)
                     //         ->selectRaw('SUM(remaining) as total_remaining')
                     //         ->having('total_remaining', '>', 0);
                     // })
-                    $query->where(function ($q) {
-                        $q->where('first_balance', '>', 0)
-                            ->orWhereNull('first_balance');
-                    })
-                        ->orWhereHas('category', function ($query) {
+                    if (!$company->ignore_quantity) {
+                        $query->where(function ($q) {
+                            $q->where('first_balance', '>', 0)
+                                ->orWhereNull('first_balance');
+                        })->orWhereHas('category', function ($query) {
                             $query->where('category_type', 'خدمية');
                         });
-                })->get()->map(function ($product) {
+                    }
+                })
+                ->get()->map(function ($product) use ($company) {
                     // Include the calculated total_remaining in the result
                     // $product->total_remaining = $product->stocks->sum('remaining');
-                    $product->total_remaining = $product->first_balance;
-
+                    $product->total_remaining = !$company->ignore_quantity
+                        ? $product->first_balance
+                        : 99999;
                     $product->category_type = $product->category->category_type;
                     return $product;
                 });
-            // $all_products = $company->products;
         }
         $units = $company->units;
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();

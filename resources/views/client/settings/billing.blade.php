@@ -66,13 +66,13 @@
                 @method('PATCH')
                 <input type="hidden" name="company_id" value="{{ $company->id }}" />
                 <div class="row p-1">
-                    
+
                         <div class="col-md-4 pull-right">
                             <div class="form-group">
                                 <label >الرقم الضريبى</label>
                                 <input style="width:100%" type="text" class="form-control" dir="ltr"
                                     name="tax_number" id="tax_number"
-                                    @if ($company->tax_number) value="{{ $company->tax_number }}" 
+                                    @if ($company->tax_number) value="{{ $company->tax_number }}"
                                         disabled @endif />
                             </div>
                         </div>
@@ -113,6 +113,17 @@
                                     </option>
                                     <option @if ($company->all_users_access_main_branch == 'no') selected @endif value="no">لا
                                     </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4 pull-right">
+                            <div class="form-group" dir="ltr">
+                                <label class="d-block" for="ignore_quantity">
+                                    تجاهل الكمية في المخزون عند البيع
+                                </label>
+                                <select name="ignore_quantity" id="ignore_quantity" class="form-control">
+                                    <option value="1" {{ $company->ignore_quantity ? 'selected' : '' }}>نعم</option>
+                                    <option value="0" {{ !$company->ignore_quantity ? 'selected' : '' }}>لا</option>
                                 </select>
                             </div>
                         </div>

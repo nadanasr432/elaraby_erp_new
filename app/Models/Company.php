@@ -26,6 +26,7 @@ class Company extends Model
         'company_logo',
         'status',
         'notes',
+        'ignore_quantity',
         'all_users_access_main_branch'
     ];
 
