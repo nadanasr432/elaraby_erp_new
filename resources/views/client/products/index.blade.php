@@ -164,8 +164,8 @@
                                     <td>{{ floatval($product->wholesale_price ?? ' ') }}</td>
                                     <td>{{ floatval($product->sector_price ?? ' ') }}</td>
                                     <td>{{ floatval($product->purchasing_price ?? ' ') }}</td>
-                                    <td>{{ $product->first_balance > 0 ? $product->first_balance : 'خدمية' }}
-                                        @if (!empty($product->unit_id) && $product->first_balance > 0)
+                                    <td>{{ !($product->category->category_name == "خدمية") ? $product->first_balance : 'خدمية' }}
+                                        @if (!empty($product->unit_id) && $product->first_balance > 0 && !($product->category->category_name == "خدمية"))
                                             {{ $product->unit->unit_name ?? ' ' }}
                                         @endif
                                     </td>

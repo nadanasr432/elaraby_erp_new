@@ -82,10 +82,10 @@
             <div class="col-lg-3 pull-right">
                 <div class="form-group" dir="rtl">
                     <label for="return_quantity">الكمية المرتجعة</label>
-                    <input type="number" name="return_quantity" min="1" max="{{ $element->quantity }}"
+                    <input type="number" step="any" name="return_quantity" min="0" max="{{ $element->quantity }}"
                         value="{{ $element->quantity }}" id="return_quantity" class="form-control" required>
-                    <input type="number" hidden name="main_return_quantity" min="1" max="{{ $element->quantity }}"
-                        value="{{ $element->quantity }}" id="main_return_quantity" class="form-control" required>
+                    <input type="number" hidden name="main_return_quantity" min="0" max="{{ $element->quantity }}"
+                        value="{{ $element->quantity }}" id="main_return_quantity" step="any" class="form-control" required>
                     <span id="quantityError" class="text-danger" style="display: none;">الكمية المرتجعة لا يمكن أن تكون أكبر
                         من {{ $element->quantity }}</span>
                 </div>
@@ -196,15 +196,20 @@
             function calculateValues(return_quantity) {
                 return_quantity = parseFloat(return_quantity) || 0;
 
+                // Validate decimal input
+                if (isNaN(return_quantity)) {
+                    return;
+                }
+
                 let after_return = before_return + return_quantity;
-                $('#after_return').val(after_return);
+                $('#after_return').val(after_return.toFixed(2)); // Show 2 decimal places
 
                 let quantity_price = product_price * return_quantity;
-                $('#quantity_price').val(quantity_price);
+                $('#quantity_price').val(quantity_price.toFixed(2));
 
                 if (outer_client_id) {
                     let balance_after = (main_balance_after / main_return_quantity) * return_quantity;
-                    $('#balance_after').val(balance_after);
+                    $('#balance_after').val(balance_after.toFixed(2));
                 }
             }
 
@@ -214,21 +219,28 @@
 
             // Event Listener for Input Changes
             $('#return_quantity').on('input', function() {
-                let return_quantity = $(this).val();
-                calculateValues(return_quantity);
+                let value = $(this).val();
+
+                // Allow only numbers and one decimal point
+                if (!/^\d*\.?\d*$/.test(value)) {
+                    $(this).val(value.slice(0, -1));
+                    return;
+                }
+
+                calculateValues(value);
             });
 
             // Validate Return Quantity
-            document.getElementById('return_quantity').addEventListener('input', function() {
-                let maxQuantity = {{ $element->quantity }};
-                let inputField = this;
+            document.getElementById('return_quantity').addEventListener('change', function() {
+                let maxQuantity = parseFloat({{ $element->quantity }});
+                let inputValue = parseFloat(this.value) || 0;
                 let errorMessage = document.getElementById('quantityError');
 
-                if (parseInt(inputField.value) > maxQuantity) {
-                    inputField.setCustomValidity("الكمية المرتجعة لا يمكن أن تكون أكبر من " + maxQuantity);
+                if (inputValue > maxQuantity) {
+                    this.setCustomValidity("الكمية المرتجعة لا يمكن أن تكون أكبر من " + maxQuantity);
                     errorMessage.style.display = "block";
                 } else {
-                    inputField.setCustomValidity("");
+                    this.setCustomValidity("");
                     errorMessage.style.display = "none";
                 }
             });

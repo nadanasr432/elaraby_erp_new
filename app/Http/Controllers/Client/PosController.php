@@ -1679,7 +1679,7 @@ class PosController extends Controller
             ->where('company_id', $company_id)
             ->where('client_id', $client_id);
 
-        if (($request->has('filter') || $request->filter === 'today') && !($request->filled(['date_from', 'date_to']) || $request->filter === 'all')) {
+        if ((!$request->has('filter') || $request->filter === 'today') && !($request->filled(['date_from', 'date_to']) || $request->filter === 'all')) {
             $query->whereDate('created_at', Carbon::today());
         } elseif ($request->filter === 'all') {
             // no date filter

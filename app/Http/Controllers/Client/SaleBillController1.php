@@ -799,10 +799,10 @@ class SaleBillController1 extends Controller
             ]);
 
             $product = Product::find($product['product_id']);
-            if (!$company->ignore_quantity) {
+            // if (!$company->ignore_quantity) {
                 $product->first_balance -= $element->quantity;
                 $product->save();
-            }
+            // }
             /* if (isset($product['discount_type']) && $product['discount_type'] && $product['discount']) {
                 SaleBillExtra::create([
                     'sale_bill_id' => $saleBill->id,
@@ -1011,6 +1011,7 @@ class SaleBillController1 extends Controller
             );
 
             if ($payment_method == "cash") {
+             // dd('hi');
                 if ($saleBill->paid <= $saleBill->final_total) {
                     $cash = Cash::create([
                         'cash_number' => $data['cash_number'],

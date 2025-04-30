@@ -8,6 +8,16 @@
     #example-table_filter {
         text-align: left;
     }
+
+    /* Add this to your style section */
+    #exportExcelBtn {
+        background-color: #1d6f42;
+        color: white;
+    }
+
+    #exportExcelBtn:hover {
+        background-color: #165834;
+    }
 </style>
 <!-- JavaScript Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
@@ -91,7 +101,11 @@
                             <button id="rearrangeCompanyCounter" class="btn pull-left btn-success btn-sm mr-1">
                                 <i class="fa fa-sort-numeric-asc"></i> إعادة ترتيب العداد
                             </button>
-
+                            <!-- Add this button with your other action buttons -->
+                            <a class="btn pull-left btn-success btn-sm mr-1" id="exportExcelBtn" href="#">
+                                <i class="fa fa-file-excel"></i>
+                                تصدير اكسل شيت
+                            </a>
                             <h5 class="pull-right alert alert-sm alert-success">
                                 {{ __('sidebar.point-of-sale-reports') }}
                             </h5>
@@ -99,35 +113,36 @@
                         <br>
                     </div>
                 </div>
+
                 <!-- ********************************************************************* -->
 
                 <!-- **************************Search Form******************************** -->
                 {{-- Date range filter form --}}
                 <form action="{{ route('pos.sales.report') }}" method="GET"
-                class="searchFormDates row p-2 pl-3 align-items-end"
-                style="{{ request()->has(['date_from', 'date_to']) ? '' : 'display: none;' }}">
+                    class="searchFormDates row p-2 pl-3 align-items-end"
+                    style="{{ request()->has(['date_from', 'date_to']) ? '' : 'display: none;' }}">
 
-                <div class="col-3 form-group">
-                    <label>من</label>
-                    <input type="date" name="date_from" class="form-control" required
-                        value="{{ request('date_from') }}">
-                </div>
+                    <div class="col-3 form-group">
+                        <label>من</label>
+                        <input type="date" name="date_from" class="form-control" required
+                            value="{{ request('date_from') }}">
+                    </div>
 
-                <div class="col-3 form-group">
-                    <label>إلى</label>
-                    <input type="date" name="date_to" class="form-control" required
-                        value="{{ request('date_to') }}">
-                </div>
+                    <div class="col-3 form-group">
+                        <label>إلى</label>
+                        <input type="date" name="date_to" class="form-control" required
+                            value="{{ request('date_to') }}">
+                    </div>
 
-                <div class="col-1 form-group">
-                    <button type="submit" class="btn btn-success btn-sm">
-                        <svg style="width: 20px; fill: white;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                            <path
-                                d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z" />
-                        </svg>
-                    </button>
-                </div>
-            </form>
+                    <div class="col-1 form-group">
+                        <button type="submit" class="btn btn-success btn-sm">
+                            <svg style="width: 20px; fill: white;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                <path
+                                    d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z" />
+                            </svg>
+                        </button>
+                    </div>
+                </form>
 
                 <!-- ********************************************************************* -->
 
@@ -332,6 +347,8 @@
     </div>
 @endsection
 <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
+<!-- Add this script reference in your head or before your custom scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
     $(document).ready(function() {
         $("#getPosReportsWithDates").click(function() {
@@ -479,7 +496,45 @@
         $('.spinner-box').hide();
         //------show searchFormDates-----//
 
+        $('#exportExcelBtn').click(function() {
+            // Clone the table to avoid modifying the original
+            var table = $('#example-table').clone();
 
+            // Remove action column (10th column)
+            table.find('th:nth-child(10), td:nth-child(10)').remove();
+
+            // Reverse ALL columns (including headers)
+            var rows = table.find('tr');
+            rows.each(function() {
+                var cells = $(this).children('th, td').get();
+                $(this).empty().append(cells.reverse());
+            });
+
+            // Convert to workbook
+            var workbook = XLSX.utils.table_to_book(table[0], {
+                sheet: "POS Report"
+            });
+
+            // Set column widths (adjust as needed)
+            if (!workbook.Sheets["POS Report"]["!cols"]) {
+                workbook.Sheets["POS Report"]["!cols"] = [];
+            }
+            workbook.Sheets["POS Report"]["!cols"][0] = {
+                width: 15
+            }; // First column width
+            workbook.Sheets["POS Report"]["!cols"][1] = {
+                width: 20
+            }; // Second column width
+            // Add more column widths if needed
+
+            // Generate filename with current date
+            var date = new Date();
+            var dateStr = date.toISOString().split('T')[0];
+            var fileName = 'POS_Report_' + dateStr + '.xlsx';
+
+            // Export to Excel
+            XLSX.writeFile(workbook, fileName);
+        });
 
     });
 </script>

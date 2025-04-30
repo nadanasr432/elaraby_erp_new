@@ -142,7 +142,8 @@
                                     {{ __('products.pname_en') }}
                                 </label>
                                 <input type="text" name="product_name_en" id="order_name"
-                                    placeholder="{{ __('products.pname_en') }}" class="form-control" value="{{ $product->product_name_en }}">
+                                    placeholder="{{ __('products.pname_en') }}" class="form-control"
+                                    value="{{ $product->product_name_en }}">
                             </div>
                             <!---------------------->
 
@@ -312,24 +313,24 @@
 
 
     <script src="{{ asset('app-assets/js/jquery.min.js') }}"></script>
-<script src="https://cdn.ckeditor.com/ckeditor5/38.0.1/classic/ckeditor.js"></script>
-<script>
-    ClassicEditor.create(document.querySelector('#description'), {
-        language: 'ar', // Set language to Arabic
-        toolbar: [
-            'heading', 'bold', 'italic', 'underline', 'strikethrough', '|',
-            'alignment', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|',
-            'insertTable', 'tableColumn', 'tableRow', 'mergeTableCells', '|',
-            'undo', 'redo', 'fontColor', 'fontBackgroundColor', '|',
-            'mediaEmbed', 'imageUpload', 'codeBlock'
-        ],
-        alignment: {
-            options: ['left', 'center', 'right', 'justify'] // Configure alignment options
-        }
-    })
-    .catch(error => {
-        console.error(error);
-    });
+    <script src="https://cdn.ckeditor.com/ckeditor5/38.0.1/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor.create(document.querySelector('#description'), {
+                language: 'ar', // Set language to Arabic
+                toolbar: [
+                    'heading', 'bold', 'italic', 'underline', 'strikethrough', '|',
+                    'alignment', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|',
+                    'insertTable', 'tableColumn', 'tableRow', 'mergeTableCells', '|',
+                    'undo', 'redo', 'fontColor', 'fontBackgroundColor', '|',
+                    'mediaEmbed', 'imageUpload', 'codeBlock'
+                ],
+                alignment: {
+                    options: ['left', 'center', 'right', 'justify'] // Configure alignment options
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
         $("#selectForm2").submit(function(e) {
             e.preventDefault();
 
@@ -427,26 +428,18 @@
 
 
         $('#category').on('change', function() {
-            var category_name = $(this).val();
             var category_type = $(this).children("option:selected").attr('type');
+            var modelInput = $('#model');
+            var initialValue = modelInput.data('initial-value');
+
             if (category_type == 'خدمية') {
-                $('#first_balance').val("").attr('readonly', true);
-                $('#model').val("").attr('readonly', false);
-                // $('#order_universal').val("").attr('readonly', true);
-                $('#min_balance').attr('readonly', true);
-                $('#store').attr('disabled', true);
-                $('#start_date').attr('disabled', true);
-                $('#end_date').attr('disabled', true);
-                $('#purchasing_price').val("0").attr('readonly', true);
+                modelInput.attr('readonly', true);
             } else {
-                $('#first_balance').attr('readonly', false);
-                $('#model').attr('readonly', false);
-                $('#order_universal').attr('readonly', false);
-                $('#min_balance').attr('readonly', false);
-                $('#store').attr('disabled', false);
-                $('#start_date').attr('disabled', false);
-                $('#end_date').attr('disabled', false);
-                $('#purchasing_price').attr('disabled', false);
+                modelInput.attr('readonly', false);
+                // Restore original value if empty
+                if (!modelInput.val() && initialValue) {
+                    modelInput.val(initialValue);
+                }
             }
         });
 

@@ -25,7 +25,7 @@ class VoucherService
         );
     }
 
-    public static function createVoucher($saleBill, $companyId, $notation, $paymentMethod = "cash", $status = 1, $options = 1)
+    public static function createVoucher($saleBill, $companyId, $notation, $paymentMethod = "deferred", $status = 1, $options = 1)
     {
         return Voucher::updateOrCreate(
             [
