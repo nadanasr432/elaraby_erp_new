@@ -153,7 +153,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
                 ->name('client.sale_bills.sent');
 
             // Route for printing buy bills
-            Route::get('/buy-bills/print/{id?}', [BuyBillController::class, 'print'])
+            Route::get('/buy-bills/print/{id}', [BuyBillController::class, 'print'])
                 ->name('client.buy_bills.print');
 
             // Route for printing POS receipts

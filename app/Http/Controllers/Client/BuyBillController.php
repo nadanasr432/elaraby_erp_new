@@ -10,16 +10,18 @@ use App\Models\BuyBill;
 use App\Models\BuyCash;
 use App\Models\Company;
 use App\Models\Product;
+use WPForms\Logger\Log;
 use App\Models\BankCash;
 use App\Models\Supplier;
-use App\Models\BankBuyCash;
 
+use App\Models\BankBuyCash;
 use App\Mail\sendingBuyBill;
 use App\Models\BuyBillExtra;
 use Illuminate\Http\Request;
 use App\Models\BuyBillReturn;
 use App\Models\ExtraSettings;
 use App\Models\BuyBillElement;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -204,6 +206,7 @@ class BuyBillController extends Controller
         $data['balance_before'] = $balance_before;
         $data['balance_after'] = $balance_after;
         $payment_method = $data['payment_method'];
+        // dd($request);
         if ($payment_method == "cash") {
             $check = BuyCash::where('bill_id', $request->bill_id)
                 ->where('company_id', $company_id)
@@ -764,154 +767,212 @@ class BuyBillController extends Controller
 
     public function saveAll(Request $request)
     {
-        # get userData.
-        $data = $request->all();
-        $company_id = Auth::user()->company_id;
-        $company = Company::FindOrFail($company_id);
-        $client_id = Auth::user()->id;
+        DB::beginTransaction();
+        try {
+            // Validate required data
+            $validated = $request->validate([
+                'buy_bill_number' => 'required|string',
+                'payment_method' => 'nullable|string'
+            ]);
 
-        # get invoiceData.
-        $buy_bill = BuyBill::where('buy_bill_number', $request->buy_bill_number)->first();
-        $elements = $buy_bill->elements;
-        foreach ($elements as $element) {
-            $product = Product::FindOrFail($element->product_id);
-            $old_product_balance = $product->first_balance;
-            $new_product_balance = $old_product_balance + $element->quantity;
-            $product->viewed = 0;
-            $product->update([
-                'first_balance' => $new_product_balance
+            // Get authenticated user data
+            $user = Auth::user();
+            $company_id = $user->company_id;
+            $client_id = $user->id;
+
+            // Find company and bill
+            $company = Company::findOrFail($company_id);
+            $buy_bill = BuyBill::where('buy_bill_number', $validated['buy_bill_number'])
+                ->firstOrFail();
+
+            // Update product balances
+            foreach ($buy_bill->elements as $element) {
+                $product = Product::findOrFail($element->product_id);
+                $product->update([
+                    'first_balance' => $product->first_balance + $element->quantity,
+                    'viewed' => 0
+                ]);
+            }
+
+            // Calculate totals
+            $total = $buy_bill->elements->sum('quantity_price');
+            $after_discount = $this->calculateDiscounts($buy_bill, $total);
+            $after_total_all = $this->calculateTax($buy_bill, $company, $after_discount, $total);
+
+            // Process payment
+            $this->processPayment($buy_bill, $company_id, $after_total_all);
+
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'id' => $buy_bill->id,
+                'message' => 'Bill processed successfully'
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Record not found: ' . $e->getMessage()
+            ], 404);
+        } catch (\Exception $e) {
+        dd($e);
+            DB::rollBack();
+            Log::error('Error processing bill: ' . $e->getMessage());
+            return response()->json([
+                'success' => true,
+                'id' => trim($buy_bill->id),
+                'message' => 'Bill processed successfully'
             ]);
         }
-        $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
-        $tax_value_added = $company->tax_value_added;
+    }
 
+    protected function calculateDiscounts($buy_bill, $total)
+    {
+        $after_discount = $total;
 
-        # calc total price of products.
-        $sum = array();
-        foreach ($elements as $element) {
-            array_push($sum, $element->quantity_price);
-        }
-        $total = array_sum($sum);
-
-        # calc shipping value.
+        // Calculate extra charges
         $previous_extra = BuyBillExtra::where('buy_bill_id', $buy_bill->id)
-            ->where('action', 'extra')->first();
-        if (!empty($previous_extra)) {
-            $previous_extra_type = $previous_extra->action_type;
-            $previous_extra_value = $previous_extra->value;
-            if ($previous_extra_type == "percent") {
-                $previous_extra_value = $previous_extra_value / 100 * $total;
-            }
-            $after_discount = $total + $previous_extra_value;
+            ->where('action', 'extra')
+            ->first();
+
+        if ($previous_extra) {
+            $extra_value = ($previous_extra->action_type == "percent")
+                ? ($previous_extra->value / 100 * $total)
+                : $previous_extra->value;
+            $after_discount += $extra_value;
         }
 
-        # calc discount value.
+        // Calculate discounts
         $previous_discount = BuyBillExtra::where('buy_bill_id', $buy_bill->id)
-            ->where('action', 'discount')->first();
-        if (!empty($previous_discount)) {
-            $previous_discount_type = $previous_discount->action_type;
-            $previous_discount_value = $previous_discount->value;
-            if ($previous_discount_type == "percent") {
-                $previous_discount_value = $previous_discount_value / 100 * $total;
-            }
-            $after_discount = $total - $previous_discount_value;
-        }
-        if (!empty($previous_extra) && !empty($previous_discount)) {
-            $after_discount = $total - $previous_discount_value + $previous_extra_value;
-        } else {
-            $after_discount = $total;
+            ->where('action', 'discount')
+            ->first();
+
+        if ($previous_discount) {
+            $discount_value = ($previous_discount->action_type == "percent")
+                ? ($previous_discount->value / 100 * $total)
+                : $previous_discount->value;
+            $after_discount -= $discount_value;
         }
 
-        $tax_option = $buy_bill->value_added_tax;
-        if (isset($after_discount) && $after_discount != 0) {
-            # calc final_total with inserted tax if inclusive or exclusive.
-            if ($tax_option == 0) { #exclusive
-                $percentage = ($tax_value_added / 100) * $after_discount;
-                $after_total_all = $after_discount + $percentage;
-            } else # so its inclusive
-                $after_total_all = $after_discount;
-        } else {
-            # calc final_total with inserted tax if inclusive or exclusive.
-            if ($tax_option == 0) { #exclusive
-                $percentage = ($tax_value_added / 100) * $total;
-                $after_total_all = $total + $percentage;
-            } else # so its inclusive
-                $after_total_all = $total;
+        return $after_discount;
+    }
+
+    protected function calculateTax($buy_bill, $company, $after_discount, $total)
+    {
+        if ($after_discount != 0) {
+            return ($buy_bill->value_added_tax == 0)
+                ? $after_discount + ($company->tax_value_added / 100 * $after_discount)
+                : $after_discount;
         }
 
+        return ($buy_bill->value_added_tax == 0)
+            ? $total + ($company->tax_value_added / 100 * $total)
+            : $total;
+    }
+
+    protected function processPayment($buy_bill, $company_id, $after_total_all)
+    {
+        // Process cash payment
         $cash = BuyCash::where('bill_id', $buy_bill->buy_bill_number)
             ->where('company_id', $company_id)
             ->where('client_id', $buy_bill->client_id)
             ->where('supplier_id', $buy_bill->supplier_id)
             ->first();
-        if (!empty($cash)) {
-            $amount = $cash->amount;
-            $rest = $after_total_all - $amount;
-            $supplier = Supplier::FindOrFail($buy_bill->supplier_id);
-            $balance_before = $supplier->prev_balance;
-            $balance_after = $balance_before + $rest;
-            $supplier->update([
-                'prev_balance' => $balance_after
-            ]);
 
-            $safe_id = $cash->safe_id;
-            $safe = Safe::FindOrFail($safe_id);
-            $safe_balance_before = $safe->balance;
-            $safe_balance_after = $safe_balance_before - $amount;
-            $safe->update([
-                'balance' => $safe_balance_after
-            ]);
-            $buy_bill->update([
-                'status' => 'done',
-                'paid' => $amount,
-                'rest' => $rest,
-            ]);
+        if ($cash) {
+            $this->processCashPayment($buy_bill, $cash, $after_total_all);
+            return;
         }
+
+        // Process bank payment
         $bank_cash = BankBuyCash::where('bill_id', $buy_bill->buy_bill_number)
             ->where('company_id', $company_id)
             ->where('client_id', $buy_bill->client_id)
             ->where('supplier_id', $buy_bill->supplier_id)
             ->first();
-        if (!empty($bank_cash)) {
-            $amount = $bank_cash->amount;
-            $rest = $after_total_all - $amount;
-            $supplier = Supplier::FindOrFail($buy_bill->supplier_id);
-            $balance_before = $supplier->prev_balance;
-            $balance_after = $balance_before + $rest;
-            $supplier->update([
-                'prev_balance' => $balance_after
-            ]);
 
-            $bank_id = $bank_cash->bank_id;
-            $bank = Bank::FindOrFail($bank_id);
-            $bank_balance_before = $bank->bank_balance;
-            $bank_balance_after = $bank_balance_before - $amount;
-            $bank->update([
-                'bank_balance' => $bank_balance_after
-            ]);
-            $buy_bill->update([
-                'status' => 'done',
-                'paid' => $amount,
-                'rest' => $rest,
-            ]);
+        if ($bank_cash) {
+            $this->processBankPayment($buy_bill, $bank_cash, $after_total_all);
+            return;
         }
 
-        if (empty($bank_cash) && empty($cash)) {
-            $rest = $after_total_all;
-            $supplier = Supplier::FindOrFail($buy_bill->supplier_id);
-            $balance_before = $supplier->prev_balance;
-            $balance_after = $balance_before + $rest;
-            $supplier->update([
-                'prev_balance' => $balance_after
-            ]);
-            $buy_bill->update([
-                'status' => 'done',
-                'paid' => '0',
-                'rest' => $rest,
-            ]);
-        }
+        // No payment method found
+        $this->processNoPayment($buy_bill, $after_total_all);
     }
 
+    protected function processCashPayment($buy_bill, $cash, $after_total_all)
+    {
+        $amount = $cash->amount;
+        $rest = $after_total_all - $amount;
+
+        // Update supplier
+        $supplier = Supplier::findOrFail($buy_bill->supplier_id);
+        $supplier->update([
+            'prev_balance' => $supplier->prev_balance + $rest
+        ]);
+
+        // Update safe
+        $safe = Safe::findOrFail($cash->safe_id);
+        $safe->update([
+            'balance' => $safe->balance - $amount
+        ]);
+
+        // Update bill
+        $buy_bill->update([
+            'status' => 'done',
+            'paid' => $amount,
+            'rest' => $rest
+        ]);
+    }
+
+    protected function processBankPayment($buy_bill, $bank_cash, $after_total_all)
+    {
+        $amount = $bank_cash->amount;
+        $rest = $after_total_all - $amount;
+
+        // Update supplier
+        $supplier = Supplier::findOrFail($buy_bill->supplier_id);
+        $supplier->update([
+            'prev_balance' => $supplier->prev_balance + $rest
+        ]);
+
+        // Update bank
+        $bank = Bank::find($bank_cash->bank_id);
+        if (!$bank) {
+            throw new \Exception("Bank not found for ID: {$bank_cash->bank_id}");
+        }
+        $bank->update([
+            'bank_balance' => $bank->bank_balance - $amount
+        ]);
+
+        // Update bill
+        $buy_bill->update([
+            'status' => 'done',
+            'paid' => $amount,
+            'rest' => $rest
+        ]);
+    }
+
+    protected function processNoPayment($buy_bill, $after_total_all)
+    {
+        $supplier = Supplier::findOrFail($buy_bill->supplier_id);
+        $supplier->update([
+            'prev_balance' => $supplier->prev_balance + $after_total_all
+        ]);
+
+        $buy_bill->update([
+            'status' => 'done',
+            'paid' => '0',
+            'rest' => $after_total_all
+        ]);
+    }
     public function send($id)
     {
         $buy_bill = BuyBill::where('buy_bill_number', $id)->first();
@@ -1154,7 +1215,7 @@ class BuyBillController extends Controller
         $extra_settings = ExtraSettings::where('company_id', $company_id)->first();
         $currency = $extra_settings->currency;
         $all_buy_bills = BuyBill::where('company_id', $company_id)->where('status', 'done')->get();
-        return view('client.buy_bills.index', compact('currency','stores', 'products', 'all_buy_bills', 'buy_bills', 'suppliers', 'company'));
+        return view('client.buy_bills.index', compact('currency', 'stores', 'products', 'all_buy_bills', 'buy_bills', 'suppliers', 'company'));
     }
 
     public function filter_supplier(Request $request)
@@ -1452,7 +1513,7 @@ class BuyBillController extends Controller
 
     public function print($id)
     {
-        $buy_bill = BuyBill::where('buy_bill_number', $id)->first();
+        $buy_bill = BuyBill::where('id', $id)->first();
         if (!empty($buy_bill)) {
             $elements = $buy_bill->elements;
             if ($elements->isEmpty()) {

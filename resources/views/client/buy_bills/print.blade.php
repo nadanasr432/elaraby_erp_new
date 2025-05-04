@@ -556,20 +556,22 @@ $tax_value_added = $company->tax_value_added;
                         </tr>
 
                         @php
-                            $cash = \App\Models\BuyCash::where('bill_id', $buy_bill->company_counter)
+                            $cash = \App\Models\BuyCash::where('bill_id', $buy_bill->buy_bill_number)
                                 ->where('company_id', $company_id)
                                 ->where('supplier_id', $buy_bill->supplier_id)
                                 ->first();
-                            $bank_cash = \App\Models\BankBuyCash::where('bill_id', $buy_bill->company_counter)
+                            $bank_cash = \App\Models\BankBuyCash::where('bill_id', $buy_bill->buy_bill_number)
                                 ->where('company_id', $company_id)
                                 ->where('supplier_id', $buy_bill->supplier_id)
                                 ->first();
+                                // $paid_amount = $cash?->amount ?? $bank_cash?->amount;
+                                $paid_amount = $buy_bill->paid;
 
-                            $paid_amount = !empty($cash)
-                                ? $cash->amount
-                                : (!empty($bank_cash)
-                                    ? $bank_cash->amount
-                                    : 0);
+                            // $paid_amount = !empty($cash)
+                            //     ? $cash->amount
+                            //     : (!empty($bank_cash)
+                            //         ? $bank_cash->amount
+                            //         : 0);
                             $rest = $after_total_all - $paid_amount;
                         @endphp
 
