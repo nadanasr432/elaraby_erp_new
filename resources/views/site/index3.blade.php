@@ -32,7 +32,7 @@
                                 <span class="text-danger ">*</span>
                             </label>
                             <input value="{{ old('company_name') }}" required type="text" class="form-control text-right"
-                                dir="rtl" name="company_name" placeholder="{{ __('main.Aknana for business incubators and accelerators') }}"/>
+                                dir="rtl" name="company_name" placeholder="{{ __('main.company-name') }}"/>
                         </div>
                     </div>
                     <div class="col-lg-3 col-xs-12 pull-right text-right">

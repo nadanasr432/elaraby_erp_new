@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'elaraby-erp-integrated-accounting-and-business' => "Elaraby ERP Integrated Accounting and Business",
-    'elaraby-erp-manage-projects' => 'العربي اي ار بي المتكاملة لإدارة المشاريع والمحلات التجارية والمخازن والشركات عند بعد',
+    'world encryption-erp-integrated-accounting-and-business' => "World Encryption ERP Integrated Accounting and Business",
+    'world encryption-erp-manage-projects' => '   منصة موازنة المتكاملة لإدارة المشاريع والمحلات التجارية والمخازن والشركات عند بعد',
     'data-entry-and-output-analysis-and-export' => 'إدخال وإخراج البينات وتحليلها وتصديرها وطباعتها بشكل سريع جداً مبسط ومختصر',
     'save-your-time-and-effort-and-start-managing-your-business' => 'وفر وقتك والمجهود وإبدئ بإدارة عملك بشكل إحترافي ومتطور وسهل ايضا',
     'easy-to-use' => "سهل الإستعمال",
@@ -25,8 +25,8 @@ return [
     "we-offer-you-all-technical-solutions-to-start-your-business" => "نقدم لك كل الحلول التقنية لمباشرة عملك",
     "you-can-create-your-own-store-through-us" => "تستطيع انشاء متجر خاص بك من خلالنا",
     "click-here-and-create-your-own-app-website-and-store" => "انقر هنا و انشأ تطبيقك و موقعك الالكتروني و متجرك الخاص",
-    "what-is-elaraby-erp" => "ما هى العربي اي ار بي المتكاملة ؟؟",
-    "elaraby-erp-integrated-project-management-shops-and-warehouses" => "العربي اي ار بي المتكاملة لادارة المشاريع والمحلات التجارية والمخازن والشركات عند بعد. ادخال واخراج البينات وتحليلها وتصديرها
+    "what-is-world encryption-erp" => " ماهي منصة موازنة المتكاملة ؟؟",
+    "world encryption-erp-integrated-project-management-shops-and-warehouses" => "منصة موازنة المتكاملة لادارة المشاريع والمحلات التجارية والمخازن والشركات عند بعد. ادخال واخراج البينات وتحليلها وتصديرها
     وطباعتها كل ما يلزم المشروع في مكان واحد لكل الاجهزة",
     "what-is-benefits" => "ما هي مميزاته ؟",
     "save-your-time-and-effort-and-start-managing-your-business-professionally" => "وفر وقتك والمجهود وإبدئ بإدارة عملك بشكل إحترافي ومتطور وسهل ايضا كل ما يلزم المشروع خاصتك في مكان واحد لكل الاجهزة الان يمكنك إدارة عملك من أي مكان

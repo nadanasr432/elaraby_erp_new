@@ -113,7 +113,7 @@ return [
     'starts_with' => 'The :attribute must start with one of the following: :values.',
     'string' => 'The :attribute must be a string.',
     'timezone' => 'The :attribute must be a valid zone.',
-    'unique' => ':attribute مستخدم من قبل',
+    'unique' => 'مستخدم من قبل',
     'uploaded' => 'The :attribute failed to upload.',
     'url' => 'The :attribute format is invalid.',
     'uuid' => 'The :attribute must be a valid UUID.',
@@ -147,7 +147,6 @@ return [
     */
 
     'attributes' => [],
-        'transfer_amount_exceeds_balance' => 'لا يمكن لمبلغ التحويل أن يتجاوز الرصيد المتاح للخزنة المحددة.',
-
+    'transfer_amount_exceeds_balance' => 'لا يمكن لمبلغ التحويل أن يتجاوز الرصيد المتاح للخزنة المحددة.',
 
 ];

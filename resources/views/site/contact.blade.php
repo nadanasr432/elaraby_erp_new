@@ -65,9 +65,9 @@
                             </div>
                         </form>
                     </div>
-                    <div class="col-md-5 col-lg-6">
+                    <div class="col-md-">
                         <div class="padding-top padding-bottom contact-info">
-                            <div class="info-area">
+                            <div class="info-area" style="width:100% !important">
                                 <div class="info-item">
                                     <div class="info-thumb">
                                         <img src="{{ asset('images/contact01.png') }}" alt="contact">

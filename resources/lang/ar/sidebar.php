@@ -180,7 +180,7 @@ return [
     "new" => "جديد",
     "addNewQuotation" => "اضافة عرض سعر",
     "back" => "العودة",
-    "Add a new sales invoice" => "اضافة فاتورة مبيعات",
+    "Add a new sales invoice" => "اضافة فاتورة بيع جديدة",
     "invoice number" => "رقم الفاتورة",
     "customer name" => "اسم العميل",
     "Invoice date" => "تاريخ الفاتورة",
@@ -199,7 +199,7 @@ return [
 
     ///////////////////////////
     ///
-    "Add a new sales invoice" => "اضافة فاتورة مبيعات",
+    "Add a new sales invoice" => "اضافة فاتورة بيع جديدة",
     "invoice number" => "رقم الفاتورة",
     "customer name" => "اسم العميل",
     "Invoice date" => "تاريخ الفاتورة",
@@ -224,7 +224,7 @@ return [
     "products-deleted" => "المنتجات المحذوفه",
     "Total billing taxes" => " اجمالى ضرائب الفواتير",
     "Goods Receipt Order" => "سند أمر استلام بضاعة",
-    "transport_policy"=>"بوليصة النقل",
+    "transport_policy" => "بوليصة النقل",
     'transport-policies' => 'بوليصات النقل',
     'charging_stations' => 'محطات الشحن',
     'discharging_stations' => 'محطات التفريغ',
@@ -232,9 +232,10 @@ return [
     'shipments' => 'الشحنات',
     'vehicle-owners' => 'مالكي المركبات',
     'vehicles' => 'المركبات',
-      'Returned' => 'مرتجع',
+    'Returned' => 'مرتجع',
     'Not Returned' => 'غير مرتجع',
     'returns-pos-invoices' => 'مرتجعات نقطة البيع',
-    'Return invoice items'=>'ارجاع عناصر الفاتورة'
+    'Return invoice items' => 'ارجاع عناصر الفاتورة'
+
 
 ];

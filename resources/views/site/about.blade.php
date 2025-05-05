@@ -14,9 +14,9 @@
                 <div class="col-lg-6 pull-left">
                     <div class="event-about-content">
                         <div class="section-header-3 left-style m-0">
-                            <span class="cate">
-                                {{ $system->name }}
-                            </span>
+                            <!--<span class="cate">-->
+                            <!--    {{ $system->name }}-->
+                            <!--</span>-->
                             <h2 class="title">{{ __('about.know-a-lot-about-us') }}</h2>
                             <p>{{ __('about.the-company-was-founded-in-2010') }}</p>
                             <p>{{ __('about.this-program-was-designed-to-meet-the-needs-of-the-user') }} </p>
@@ -42,7 +42,7 @@
                         <div class="section-header-3 left-style">
                             <span class="cate">{{ __('about.take-a-quick-look-at') }}</span>
                             <h2 class="title">{{ __('about.vision-goal-and-mission') }}</h2>
-                            <p class="ml-0">
+                            <p class="ml-0 text-white">
                                 {{ __('about.we-hope-with-hope-to-include-companies-that-need-to-run-their-business') }}
                             </p>
                         </div>

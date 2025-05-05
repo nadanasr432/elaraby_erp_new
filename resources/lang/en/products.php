@@ -60,9 +60,8 @@ return [
     'mana' => 'Man',
     'mana' => 'Man',
     'addnewproductseveces' => 'Add new product service',
-    'pname_en'=>"Product name (English)",
-        "restore"=> "Restore",
-        "Start Date"=>"Start Date",
-    "End Date"=>"End Date"
-
+    'pname_en' => "Product name (English)",
+    "restore" => "Restore",
+    "Start Date" => "Start Date",
+    "End Date" => "End Date"
 ];

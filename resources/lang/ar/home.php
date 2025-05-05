@@ -7,7 +7,7 @@ return [
     "company-profile-completion-rate" => "معدل اكتمال بروفايل الشركة",
     "complete-the-company-information" => "استكمل معلومات الشركة",
     "add-first-product" => "اضافة اول منتج",
-    "close"=>"اغلاق",
+    "close" => "اغلاق",
     "add-first-customer" => "اضافة اول عميل",
     "add-first-supplier" => "اضافة اول مورد",
     "daily-opening-opening-point-of-sale" => "فتح اليومية ( فتح نقطة البيع )",
@@ -22,7 +22,7 @@ return [
     "debtor" => "مدين",
     'notes' => "الملاحظات",
     'account' => "الحساب",
-    'dateV'=> "تاريخ القيد",
+    'dateV' => "تاريخ القيد",
     "total-dues-to-suppliers" => "اجمالى مستحقات الموردين",
     "egmaly-elrased" => "اجمالي الرصيد",
     "net-external-balance" => "صافى الرصيد الخارجى",
@@ -68,4 +68,5 @@ return [
     "There are no current messages!" => "لا يوجد رسائل حالية!",
     "Notifications" => "الإشعارات",
     "No notifications yet!" => " لا يوجد اشعارات حتي الان!",
+
 ];

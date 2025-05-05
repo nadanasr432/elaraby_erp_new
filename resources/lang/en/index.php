@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'elaraby-erp-manage-projects' => 'Elaraby ERP integrated management of projects, shops, stores and companies at a distance',
+    'world encryption-erp-manage-projects' => 'Mooazna ERP integrated management of projects, shops, stores and companies at a distance',
     'data-entry-and-output-analysis-and-export' => 'Data entry and output, analysis, export and printing in a very fast, simplified and concise manner',
     'save-your-time-and-effort-and-start-managing-your-business' => 'Save your time and effort and start managing your business in a professional, advanced and easy way',
     'easy-to-use' => "Easy to use",
@@ -24,8 +24,8 @@ return [
     "we-offer-you-all-technical-solutions-to-start-your-business" => "We offer you all technical solutions to start your business",
     "you-can-create-your-own-store-through-us" => "You can create your own store through us",
     "click-here-and-create-your-own-app-website-and-store" => "Click here and create your own app, website and store",
-    "what-is-elaraby-erp" => "What is Elaraby ERP ?",
-    "elaraby-erp-integrated-project-management-shops-and-warehouses" => "Elaraby ERP integrated management of projects, shops, warehouses and companies at a distance. Entering and extracting data, analyzing it, exporting and printing all that is needed for the project in one place for all devices",
+    "what-is-world encryption-erp" => "What is Mooazna ?",
+    "world encryption-erp-integrated-project-management-shops-and-warehouses" => " Mooazna ERP integrated management of projects, shops, warehouses and companies at a distance. Entering and extracting data, analyzing it, exporting and printing all that is needed for the project in one place for all devices",
     "what-is-benefits" => "What is Benefits ?",
     "save-your-time-and-effort-and-start-managing-your-business-professionally" => "Save your time and effort and start managing your business in a professional, advanced and easy way. Everything you need for your project is in one place for all devices. Now you can manage your business from anywhere and at any moment. Just enter your email and start immediately.",
     "an-easy-to-use-control-panel-for-business-owners" => "A distinctive, easy-to-use control panel dedicated to company owners. It contains a side menu through which you can move between the different sections of the program",

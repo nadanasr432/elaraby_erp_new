@@ -86,16 +86,28 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
         return view('site.index', compact('intro_movie'));
     })->name('index');
 
+    Route::get('/privacy', function () {
+        // $intro_movie = IntroMovie::First();
+        return view('site.privacy');
+    })->name('privacy');
+
+    Route::get('/about', function () {
+        return view('site.about');
+    })->name('about');
+    Route::get('/Terms-Conditions', function () {
+        return view('site.terms_conditions');
+    })->name('terms_conditions');
+    Route::get('/contact', function () {
+        $informations = Information::First();
+        return view('site.contact', compact('informations'));
+    })->name('contact');
     Route::get('/about', function () {
         return view('site.about');
     })->name('about');
     Route::get('/privacypolicy', function () {
         return view('site.privacypolicy');
     })->name('privacypolicy');
-    Route::get('/contact', function () {
-        $informations = Information::First();
-        return view('site.contact', compact('informations'));
-    })->name('contact');
+
     Route::post('/send-message', [\App\Http\Controllers\Site\ContactController::class, 'send_message'])->name('send.message');
 
     Route::get('/step-3', function () {
@@ -329,6 +341,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::resource('transport-policies', TransportPolicyController::class);
             Route::get('transport-policies/{transportPolicy}/print', [TransportPolicyController::class, 'print'])
                 ->name('transport-policies.print');
+
+
             // ClientProfile Routes
             Route::get('profile/edit/{id}', [ClientProfileController::class, 'edit'])->name('client.profile.edit');
             Route::patch('profile/edit/{id}', [ClientProfileController::class, 'update'])->name('client.profile.update');
@@ -356,8 +370,10 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
             Route::get('pos-settings-edit/{id?}', [SettingsController::class, 'pos_settings_edit'])->name('pos.settings.edit');
             Route::patch('pos-settings-update', [SettingsController::class, 'pos_settings_update'])->name('pos.settings.update');
             Route::post('/send-invoice-to-zatca', [SaleBillController1::class, 'sendInvoiceToZATCA'])->name('send.invoice.to.zatca');
+
             Route::post('/company/{company}/zatca/onboard', [ZatcaController::class, 'onboard'])->name('zatca.onboard');
             Route::post('/sale-bill/{saleBillId}/zatca/send', [ZatcaController::class, 'sendInvoice'])->name('zatca.send');
+
             // Branches Routes
             Route::resource('branches', BranchController::class)->names([
                 'index' => 'client.branches.index',
@@ -1050,13 +1066,16 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => [\Mc
 
             // pos-invoice -- فاتورة الاعداد
             Route::get('/prod_pos/{invID}', [PosController::class, 'prod_pos'])->name('pos.prod_pos');
+
+
             Route::post('/pos/client/delete', [PosController::class, 'deleteClientPos'])->name('pos.client.delete');
             Route::post('/pos/{pos_id}/delete', [PosController::class, 'deleteSpecificPos'])->name('pos.specific.delete');
             Route::post('/company/counter/rearrange', [PosController::class, 'rearrangeCompanyCounter'])->name('company.counter.rearrange');
             Route::get('/pos-returns-list', [PosReturnController::class, 'index'])
-            ->name('client.pos-returns.index');
+                ->name('client.pos-returns.index');
             Route::get('/pos-return-print/{return_id?}', [PosReturnController::class, 'print'])
                 ->name('pos-returns.print');
+
             // Journal routes voucher routes
             Route::get('/voucher/create', [VoucherController::class, 'create_voucher_entries'])->name('client.voucher.create');
             Route::get('/voucher/edit/{id}', [VoucherController::class, 'edit_voucher_entries'])->name('client.voucher.edit');

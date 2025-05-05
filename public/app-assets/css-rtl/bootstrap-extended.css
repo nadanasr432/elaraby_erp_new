@@ -217,12 +217,7 @@ pre code {
 .table-borderless td, .table-borderless th {
     border: none;
 }
-.table thead {
-    background-color: #222751 ;
-}
-body.dark-mode .table thead {
-    background-color: #212631 !important;
-}
+
 .table thead th {
     vertical-align: bottom;
     border-bottom: 2px solid #E3EBF3;
@@ -256,20 +251,9 @@ body.dark-mode .table thead {
 }
 
 .table th, .table td {
-    padding: 0.45rem 2rem;
-    white-space: nowrap;
-}
-body.light-mode .table td {
-    color: #000 !important;
+    padding: 0.75rem 2rem;
 }
 
-body.dark-mode .table thead tr{
-    background-color: #181b23f5 !important;
-}
-body.dark-mode .dropdown-menu.dropdown-menu-right.show {
-    background-color: #2a303d !important;
-
-}
 .table.table-xl th, .table.table-xl td {
     padding: 1.25rem 2rem;
 }
