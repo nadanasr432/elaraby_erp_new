@@ -152,6 +152,18 @@
                 <i class="fa fa-whatsapp"></i>
                 @lang('sales_bills.Send to whatsapp')
             </button>
+            @if (!($sale_bill->zatca_status == 'sent') && $company->onboarding_data)
+                <form action="{{ route('zatca.send', $sale_bill->id) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-primary mt-3">@lang('sales_bills.Send to zatca')</button>
+                </form>
+            @endif
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissable fade show text-center">
+                    <button class="close" data-dismiss="alert" aria-label="Close">×</button>
+                    {{ session('success') }}
+                </div>
+            @endif
             <div class="col-md-3">
                 <div class="card shadow-sm border-light rounded p-3 mb-3">
                     <button type="button" class="btn  btn-primary rounded-pill shadow-sm w-100" data-bs-toggle="modal"
@@ -661,10 +673,10 @@
             <?php
             if ($sale_bill->company_id == 20) {
                 echo "<p style='text-align: justify; direction: rtl; font-size: 12px; padding: 11px; background: #f3f3f3; margin: 2px 10px; border-radius: 6px; border: 1px solid #2d2d2d10;'>
-                                                                                                                                                                                                                                                                                                                                        <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
-                                                                                                                                                                                                                                                                                                                                        شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
-                                                                                                                                                                                                                                                                                                                                        (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
-                                                                                                                                                                                                                                                                                                                                    </p>";
+                                                                                                                                                                                                                                                                                                                                                                                                    <span style='font-weight:bold;'>@lang('sales_bills.comments')</span> :
+                                                                                                                                                                                                                                                                                                                                                                                                    شروط الاسترجاع والاستبدال (السيراميك و البورسلين):1-يجب علي العميل احضار الفاتورة الأصلية عند الارجاع أو الإستبدال ويبين سبب الإرجاع أو الإستبدال,2- يتم ارجاع او تبديل البضاعة خلال (۳۰) ثلاثين يوما من تاريخ إصدار الفاتورة,3-عند ارجاع أي كمية يتم إعادة شرائها من العميل باقل من (۱۰% ) من قيمتها الأصلية,4-,يجب ان تكون البضاعة في حالتها الأصلية أي سليمة وخالية من أي عيوب وضمن عبواتها أي (كرتون كامل)  للاسترجاع أو الاستبدال و يتم معاينتها للتأكد من سلامتها من قبل موظف المستودع,5- يقوم العميل بنقل البضاعة المرتجعة على حسابه من الموقع إلى مستودعاتنا حصرا خلال أوقات دوام المستودع ما عدا يوم الجمعة ولا يتم قبول أي مرتجع في الصالات المخصصة للعرض و البيع, 6- تم استرجاع أو تبدیل مواد الغراء والروبة أو الأصناف التجارية أو الاستكات أو المغاسل أو الاكسسوارات خلال ٢٤ ساعة من تاريخ إصدارالفاتورة وبحالتها الأصلية ولا يتم استرجاع أجور القص وقيمة البضاعة التي تم قصها بناء على طلب العميل (المذكورة في الفاتورة).
+                                                                                                                                                                                                                                                                                                                                                                                                    (الرخام ):عند ارجاع أي كمية يتم إعادة شرائها من العميل بأقل (15 %) من قيمتها الأصلية مع إحضار الفاتورة الأصلية,يتم الإرجاع للبضاعة السليمة ضمن عبوتها الأصلية على أن تكون طبلية مقفلة من الرخام وخلال 30 يوما من تاريخ الفاتورة كحد أقصى ولا يقبل ارجاع طلبية مفتوحة من الرخام ولا نقبل بارجاع الرخام المقصوص حسب طلب العميل درج/ سلكو/ألواح
+                                                                                                                                                                                                                                                                                                                                                                                                </p>";
             }
             ?>
             @if (app()->getLocale() == 'en')
@@ -747,27 +759,28 @@
                                 {{-- @else
                                         <td >
                                           <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">  {{ $sumWithTax }}
-                                            
+
                                         </td>
                                     @endif --}}
                                 {{-- @else
                                     <td >
                                        <img src="{{ asset('images/Sr_coin.svg') }}" width="15px"> {{ $sale_bill->final_total - $sale_bill->total_tax }}
-                                        
+
                                     </td>
                                 @endif --}}
 
                             </tr>
-                            <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;">
-                                <td style="text-align: left;padding-left: 14px;">
-                                    @lang('sales_bills.payment_method')
-                                </td>
-                                <td style="text-align: right;padding-right: 14px;">
-                                    {{ $sale_bill->payment_method }}
-                                </td>
-
-                            </tr>
+                            @if ($company->payment_method)
+                                <tr
+                                    style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size: 15px !important; height: 44px !important; text-align: center;">
+                                    <td style="text-align: left;padding-left: 14px;">
+                                        @lang('sales_bills.payment_method')
+                                    </td>
+                                    <td style="text-align: right;padding-right: 14px;">
+                                        {{ $sale_bill->payment_method }}
+                                    </td>
+                                </tr>
+                            @endif
                         </table>
                     </div>
                     @if (!empty($sale_bill->notes))
@@ -893,28 +906,29 @@
                                 {{-- @else
                                         <td >
                                           <img src="{{ asset('images/Sr_coin.svg') }}" width="15px">  {{ $sumWithTax }}
-                                            
+
                                         </td>
                                     @endif --}}
                                 {{-- @else
                                     <td >
                                        <img src="{{ asset('images/Sr_coin.svg') }}" width="15px"> {{ $sale_bill->final_total - $sale_bill->total_tax }}
-                                        
+
                                     </td>
                                 @endif --}}
                                 <td style="text-align: right;padding-right: 14px;">@lang('sales_bills.Total including tax') </td>
                             </tr>
-                            <tr
-                                style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: #f8f9fb">
-                                <td dir="rtl">
-                                    {{ $sale_bill->payment_method }}
+                            @if ($company->payment_method)
+                                <tr
+                                    style="border-bottom:1px solid #2d2d2d30;font-weight: bold;font-size:18px !important; height: 37px !important; text-align: center;background: #f8f9fb">
+                                    <td dir="rtl">
+                                        {{ $sale_bill->payment_method }}
+                                    </td>
+                                    <td style="text-align: right;padding-right: 14px;">
+                                        @lang('sales_bills.payment_method')
+                                    </td>
 
-                                </td>
-                                <td style="text-align: right;padding-right: 14px;">
-                                    @lang('sales_bills.payment_method')
-                                </td>
-
-                            </tr>
+                                </tr>
+                            @endif
                         </table>
                     </div>
                     @if (!empty($sale_bill->notes))

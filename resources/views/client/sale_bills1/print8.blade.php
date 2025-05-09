@@ -267,6 +267,18 @@
             <i class="fa fa-whatsapp"></i>
             @lang('sales_bills.Send to whatsapp')
         </button>
+        @if (!($sale_bill->zatca_status == 'sent') && $company->onboarding_data)
+            <form action="{{ route('zatca.send', $sale_bill->id) }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-primary mt-3">@lang('sales_bills.Send to zatca')</button>
+            </form>
+        @endif
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissable fade show text-center">
+                <button class="close" data-dismiss="alert" aria-label="Close">×</button>
+                {{ session('success') }}
+            </div>
+        @endif
     </div>
     <div class="invoice-container border">
         <div class="row d-flex justify-content-between mt-4 mb-3">
@@ -293,24 +305,24 @@
                     <tr>
                         <td>
                             @php
-                    
-                        $items = \App\Models\SaleBillElement::where('sale_bill_id', $sale_bill->id)
-                            ->where('company_id', $sale_bill->company_id)
-                            ->get();
-                
-                        $allReturned = true;
-                
-                        foreach ($items as $product) {
-                            $alreadyReturnedQty = \App\Models\SaleBillReturn::where('bill_id', $sale_bill->id)
-                                ->where('product_id', $product->product_id)
-                                ->sum('return_quantity');
-                
-                            if ($alreadyReturnedQty < $product->quantity) {
-                                $allReturned = false;
-                                break;
-                            }
-                        }
-                    @endphp
+
+                                $items = \App\Models\SaleBillElement::where('sale_bill_id', $sale_bill->id)
+                                    ->where('company_id', $sale_bill->company_id)
+                                    ->get();
+
+                                $allReturned = true;
+
+                                foreach ($items as $product) {
+                                    $alreadyReturnedQty = \App\Models\SaleBillReturn::where('bill_id', $sale_bill->id)
+                                        ->where('product_id', $product->product_id)
+                                        ->sum('return_quantity');
+
+                                    if ($alreadyReturnedQty < $product->quantity) {
+                                        $allReturned = false;
+                                        break;
+                                    }
+                                }
+                            @endphp
                             <div class="col-md-5  mx-auto text-center">
                                 @if (!$isMoswada && !$allReturned)
                                     <span class="txtheader text-black"> Tax invoice - فاتورة ضريبية</span>
@@ -690,8 +702,9 @@
                         <td>الخصم Deduction</td>
                         <td>{{ $discountNote ? $discountNote . ' || ' : '' }}
                             {{-- @if ($discount->action_type == 'poundAfterTax') --}}
-                             <img src="{{ asset('images/Sr_coin.svg') }}" width="10px"> ({{ $sale_bill->total_discount }})
-                           
+                            <img src="{{ asset('images/Sr_coin.svg') }}" width="10px">
+                            ({{ $sale_bill->total_discount }})
+
                         </td>
                     </tr>
                     <tr style="font-weight: bold;">

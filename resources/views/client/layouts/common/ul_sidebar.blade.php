@@ -20,14 +20,14 @@
                     <i class="sidebar-item-icon fa fa-dashboard"></i>
                     <span class="menu-title text-center">
                         {{ __('sidebar.clients-dashboard') }}
-                    </span> 
+                    </span>
                 </a>
             </li>
 
 
             <!----------------------------------------products------------------------------------>
             @if (empty($package) || $package->products == '1')
-                @if ($screen_settings->products == '1')
+                @if ($screen_settings?->products == '1')
                     <li
                         class="nav-item {{ Request::is('*/branches*', '*/stores*', '*/categories*', '*/products*') ? 'active open' : '' }}">
                         <a href="javascript:;">
@@ -343,7 +343,7 @@
 
              <!------------------------------------SALES SECTION------------------------------------>
             <!--@if (empty($package) || $package->sales == '1')-->
-            <!--    @if ($screen_settings->sales == '1')-->
+            <!--    @if ($screen_settings?->sales == '1')-->
             <!--        <li class="nav-item {{ Request::is('*/quotations*', '*/sale_bills*') ? 'active open' : '' }}">-->
             <!--            <a href="javascript:;">-->
             <!--                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">-->
@@ -445,7 +445,7 @@
             <!----------------------------------------SALES SECTION------------------------------------>
             <!------------------------------------new SALES SECTION------------------------------------>
             @if (empty($package) || $package->sales == '1')
-                @if ($screen_settings->sales == '1')
+                @if ($screen_settings?->sales == '1')
                     <li
                         class="nav-item {{ Request::is('*/quotations*', '*/sale_bills*', '*/sale-bills-new*') ? 'active open' : '' }}">
                         <a href="javascript:;">
@@ -585,7 +585,7 @@
 
         <!----------------------------------------PURCHASES SECTION------------------------------------>
         @if (empty($package) || $package->purchases == '1')
-            @if ($screen_settings->purchases == '1')
+            @if ($screen_settings?->purchases == '1')
                 <li class="nav-item {{ Request::is('*/purchase_orders*', '*/buy_bills*') ? 'active open' : '' }}">
                     <a href="javascript:;">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
@@ -681,7 +681,7 @@
 
         <!----------------------------------------DEBTS SECTION------------------------------------>
         @if (empty($package) || $package->debt == '1')
-            @if ($screen_settings->debt == '1')
+            @if ($screen_settings?->debt == '1')
                 <li class="nav-item {{ Request::is('*/outer_clients*') ? 'active open' : '' }}">
                     <a href="javascript:;">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
@@ -845,7 +845,7 @@
 
         <!----------------------------------------Banks SECTION------------------------------------>
         @if (empty($package) || $package->banks_safes == '1')
-            @if ($screen_settings->banks_safes == '1')
+            @if ($screen_settings?->banks_safes == '1')
                 <li class="nav-item {{ Request::is('*/banks*', '*/safes*') ? 'active open' : '' }}">
                     <a href="javascript:;">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -1023,7 +1023,7 @@
 
         <!------------------------------------------FINANCE SECTION------------------------------------------>
         @if (empty($package) || $package->finance == '1')
-            @if ($screen_settings->finance == '1')
+            @if ($screen_settings?->finance == '1')
                 <li class="nav-item {{ Request::is('*/expenses*', '*/cash*') ? 'active open' : '' }}">
                     <a href="javascript:;">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -1304,7 +1304,7 @@
 
         <!---------------------------------marketing section--------------------------------->
         @if (empty($package) || $package->marketing == '1')
-            @if ($screen_settings->marketing == '1')
+            @if ($screen_settings?->marketing == '1')
                 <li class="nav-item {{ Request::is('*/gifts*', '*/emails*') ? 'active open' : '' }}">
                     <a href="javascript:;">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
@@ -1767,7 +1767,7 @@
         </li>
         <!---------------------------------accounting section--------------------------------->
         @if (empty($package) || $package->accounting == '1')
-            @if ($screen_settings->accounting == '1')
+            @if ($screen_settings?->accounting == '1')
                 @can('دفتر اليومية')
                     <li class="nav-item {{ Request::is('*/daily/get*') ? 'active open' : '' }}">
                         <a href="{{ url('/client/daily/get') }}">
@@ -1788,7 +1788,7 @@
 
         <!---------------------------------reports section--------------------------------->
         @if (empty($package) || $package->reports == '1')
-            @if ($screen_settings->reports == '1')
+            @if ($screen_settings?->reports == '1')
                 @can('تقارير عامة')
                     <li class="nav-item {{ Request::is('*/report*') ? 'active' : '' }}">
                         <a href="{{ route('client.reports') }}">
@@ -1808,7 +1808,7 @@
 
 
         @if (empty($package) || $package->reports == '1')
-            @if ($screen_settings->reports == '1')
+            @if ($screen_settings?->reports == '1')
                 @can('تقارير عامة')
                     {{-- <li class="nav-item {{ Request::is('*/HRM*') ? 'active' : '' }}">
                         <a href="https://hrm.elaraby-erp.net/admin/auth/login" target="_blank">
@@ -1825,7 +1825,7 @@
             @endif
         @endif
         @if (empty($package) || $package->settings == '1')
-            @if ($screen_settings->settings == '1')
+            @if ($screen_settings?->settings == '1')
                 @can('صلاحيات المستخدمين')
                     <li class="nav-item {{ Request::is('*/employees*', '*/roles*') ? 'active open' : '' }}">
                         <a href="javascript:;">
@@ -1884,7 +1884,7 @@
             @endif
             @endif
             @if (empty($package) || $package->settings == '1')
-                @if ($screen_settings->settings == '1')
+                @if ($screen_settings?->settings == '1')
                     @can('صلاحيات المستخدمين')
                         <li class="nav-item {{ Request::is('*/roles*') ? 'active open' : '' }}">
                             <a href="javascript:;">
@@ -1943,7 +1943,7 @@
                 @endif
             @endif
             @if (empty($package) || $package->settings == '1')
-                @if ($screen_settings->settings == '1')
+                @if ($screen_settings?->settings == '1')
                     <li class="nav-item {{ Request::is('*/roles*', '*settings*') ? 'active open' : '' }}">
                         <a href="javascript:;">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">

@@ -33,7 +33,6 @@
         border-top-right-radius: 5px !important;
         border-bottom-right-radius: 5px !important;
     }
-
 </style>
 @section('content')
     @if (session('success'))
@@ -67,66 +66,87 @@
                 <input type="hidden" name="company_id" value="{{ $company->id }}" />
                 <div class="row p-1">
 
-                        <div class="col-md-4 pull-right">
-                            <div class="form-group">
-                                <label >الرقم الضريبى</label>
-                                <input style="width:100%" type="text" class="form-control" dir="ltr"
-                                    name="tax_number" id="tax_number"
-                                    @if ($company->tax_number) value="{{ $company->tax_number }}"
+                    <div class="col-md-4 pull-right">
+                        <div class="form-group">
+                            <label>الرقم الضريبى</label>
+                            <input style="width:100%" type="text" class="form-control" dir="ltr" name="tax_number"
+                                id="tax_number"
+                                @if ($company->tax_number) value="{{ $company->tax_number }}"
                                         disabled @endif />
+                        </div>
+                    </div>
+                    <div class="col-md-4 pull-right">
+                        <div class="form-group">
+                            <label for="civil_register">السجل التجاري</label>
+                            <input type="text" class="form-control" dir="ltr" name="civil_registration_number"
+                                value="{{ $company->civil_registration_number }}" id="civil_registration_number" />
+                        </div>
+                    </div>
+                    <div class="col-md-4 pull-right">
+                        <div class="form-group" dir="ltr">
+                            <label for="tax_value_added">ضريبة القيمة المضافة</label>
+                            <div class="input-group">
+                                <span class="input-group-addon" style="font-size: 18px;font-weight: bold;">%</span>
+                                <input type="number" class="form-control input-spec"
+                                    value="{{ $company->tax_value_added }}" name="tax_value_added" id="tax_value_added" />
                             </div>
                         </div>
-                        <div class="col-md-4 pull-right">
-                            <div class="form-group">
-                                <label for="civil_register">السجل التجاري</label>
-                                <input type="text" class="form-control" dir="ltr" name="civil_registration_number"
-                                    value="{{ $company->civil_registration_number }}" id="civil_registration_number" />
-                            </div>
+                    </div>
+                    <div class="col-md-4 ">
+                        <div class="form-group">
+                            <label for="transport_license">رخصة النقل</label>
+                            <input type="text" class="form-control" dir="ltr" name="transport_license"
+                                value="{{ $company->transport_license }}" id="transport_license" />
                         </div>
-                        <div class="col-md-4 pull-right">
-                            <div class="form-group" dir="ltr">
-                                <label for="tax_value_added">ضريبة القيمة المضافة</label>
-                                <div class="input-group">
-                                    <span class="input-group-addon" style="font-size: 18px;font-weight: bold;">%</span>
-                                    <input type="number" class="form-control input-spec"
-                                        value="{{ $company->tax_value_added }}" name="tax_value_added"
-                                        id="tax_value_added" />
-                                </div>
-                            </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-md-4 pull-right">
+                        <div class="form-group" dir="ltr">
+                            <label class="d-block" for="">
+                                كل المستخدمين يرون منتجات
+                                الفرع الرئيسى فى نقاط البيع
+                            </label>
+                            <select name="all_users_access_main_branch" class="form-control">
+                                <option @if ($company->all_users_access_main_branch == 'yes') selected @endif value="yes">نعم
+                                </option>
+                                <option @if ($company->all_users_access_main_branch == 'no') selected @endif value="no">لا
+                                </option>
+                            </select>
                         </div>
-                        <div class="col-md-4 ">
-                            <div class="form-group">
-                                <label for="transport_license">رخصة النقل</label>
-                                <input type="text" class="form-control" dir="ltr" name="transport_license"
-                                    value="{{ $company->transport_license }}" id="transport_license" />
-                            </div>
+                    </div>
+                    <div class="col-md-4 pull-right">
+                        <div class="form-group" dir="ltr">
+                            <label class="d-block" for="ignore_quantity">
+                                تجاهل الكمية في المخزون عند البيع
+                            </label>
+                            <select name="ignore_quantity" id="ignore_quantity" class="form-control">
+                                <option value="1" {{ $company->ignore_quantity ? 'selected' : '' }}>نعم</option>
+                                <option value="0" {{ !$company->ignore_quantity ? 'selected' : '' }}>لا</option>
+                            </select>
                         </div>
-                        <div class="clearfix"></div>
-                        <div class="col-md-4 pull-right">
-                            <div class="form-group" dir="ltr">
-                                <label class="d-block" for="">
-                                    كل المستخدمين يرون منتجات
-                                    الفرع الرئيسى فى نقاط البيع
-                                </label>
-                                <select name="all_users_access_main_branch" class="form-control">
-                                    <option @if ($company->all_users_access_main_branch == 'yes') selected @endif value="yes">نعم
-                                    </option>
-                                    <option @if ($company->all_users_access_main_branch == 'no') selected @endif value="no">لا
-                                    </option>
-                                </select>
-                            </div>
+                    </div>
+                    <div class="col-md-4 pull-right">
+                        <div class="form-group" dir="ltr">
+                            <label class="d-block" for="payment_method">
+                                ظهور طريقة الدفع
+                            </label>
+                            <select name="payment_method" id="payment_method" class="form-control">
+                                <option value="1" {{ $company->payment_method ? 'selected' : '' }}>نعم</option>
+                                <option value="0" {{ !$company->payment_method ? 'selected' : '' }}>لا</option>
+                            </select>
                         </div>
-                        <div class="col-md-4 pull-right">
-                            <div class="form-group" dir="ltr">
-                                <label class="d-block" for="ignore_quantity">
-                                    تجاهل الكمية في المخزون عند البيع
-                                </label>
-                                <select name="ignore_quantity" id="ignore_quantity" class="form-control">
-                                    <option value="1" {{ $company->ignore_quantity ? 'selected' : '' }}>نعم</option>
-                                    <option value="0" {{ !$company->ignore_quantity ? 'selected' : '' }}>لا</option>
-                                </select>
-                            </div>
+                    </div>
+                    <div class="col-md-4 pull-right">
+                        <div class="form-group" dir="ltr">
+                            <label class="d-block" for="automate_zatca">
+                                ارسال الفواتير مباشرة لزاتكا
+                            </label>
+                            <select name="automate_zatca" id="automate_zatca" class="form-control">
+                                <option value="1" {{ $company->automate_zatca ? 'selected' : '' }}>نعم</option>
+                                <option value="0" {{ !$company->automate_zatca ? 'selected' : '' }}>لا</option>
+                            </select>
                         </div>
+                    </div>
                 </div>
                 <div class="col-lg-12 col-xs-12 pull-right">
                     <div class="form-group">
@@ -157,8 +177,8 @@
                                 <label for="tax_value">قيمة الضريبة</label>
                                 <div class="input-group">
                                     <span class="input-group-addon" style="font-size: 18px;font-weight: bold;">%</span>
-                                     <input required type="number" class="form-control input-spec" name="tax_value"
-                                    id="tax_value" min="0" oninput="this.value = Math.max(0, this.value)" />
+                                    <input required type="number" class="form-control input-spec" name="tax_value"
+                                        id="tax_value" min="0" oninput="this.value = Math.max(0, this.value)" />
                                 </div>
                             </div>
                         </div>

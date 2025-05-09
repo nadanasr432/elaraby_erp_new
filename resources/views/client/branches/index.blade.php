@@ -42,7 +42,7 @@
                                 @php
                                     $i = 0;
                                 @endphp
-                                @foreach ($branches as $branch)
+                                @foreach ($branches as $index => $branch)
                                     <tr>
                                         <td>{{ ++$i }}</td>
                                         <td>{{ $branch->branch_name }}</td>
@@ -55,10 +55,13 @@
                                                 title="{{ __('main.edit') }}" data-placement="top"><i
                                                     class="fa fa-edit"></i></a>
 
-                                            <a class="modal-effect btn btn-sm btn-danger delete_branch"
-                                                branch_id="{{ $branch->id }}" branch_name="{{ $branch->branch_name }}"
-                                                data-toggle="modal" href="#modaldemo9" title="delete"><i
-                                                    class="fa fa-trash"></i></a>
+                                                    @if ($index !== 0)
+                                                    <a class="modal-effect btn btn-sm btn-danger delete_branch"
+                                                        branch_id="{{ $branch->id }}" branch_name="{{ $branch->branch_name }}"
+                                                        data-toggle="modal" href="#modaldemo9" title="delete">
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
+                                                @endif
                                         </td>
                                     </tr>
                                 @endforeach

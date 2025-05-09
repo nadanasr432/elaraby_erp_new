@@ -144,6 +144,6 @@ return [
     'total' => 'الاجمالي',
     'total_with_tax' => 'الاجمالي شامل الضريبة',
     'date' => 'التاريخ',
-    'payment_method'=>'طريقة الدفع'
-
+    'payment_method'=>'طريقة الدفع',
+    "Send to zatca" => "أرسل إلى زاتكا",
 ];

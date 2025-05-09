@@ -27,6 +27,8 @@ class Company extends Model
         'status',
         'notes',
         'ignore_quantity',
+        'payment_method',
+        'automate_zatca',
         'all_users_access_main_branch'
     ];
 

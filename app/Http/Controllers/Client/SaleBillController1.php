@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Client;
 
-use Log;
 use Carbon\Carbon;
 use App\Models\Bank;
 use App\Models\Cash;
@@ -38,6 +37,7 @@ use App\Services\VoucherService;
 use App\Models\OuterClientAddress;
 use Illuminate\Support\Facades\DB;
 use Salla\ZATCA\Models\CSRRequest;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use Salla\ZATCA\Models\InvoiceSign;
 use App\Http\Controllers\Controller;
@@ -800,8 +800,8 @@ class SaleBillController1 extends Controller
 
             $product = Product::find($product['product_id']);
             // if (!$company->ignore_quantity) {
-                $product->first_balance -= $element->quantity;
-                $product->save();
+            $product->first_balance -= $element->quantity;
+            $product->save();
             // }
             /* if (isset($product['discount_type']) && $product['discount_type'] && $product['discount']) {
                 SaleBillExtra::create([
@@ -1011,7 +1011,7 @@ class SaleBillController1 extends Controller
             );
 
             if ($payment_method == "cash") {
-             // dd('hi');
+                // dd('hi');
                 if ($saleBill->paid <= $saleBill->final_total) {
                     $cash = Cash::create([
                         'cash_number' => $data['cash_number'],
@@ -1046,6 +1046,11 @@ class SaleBillController1 extends Controller
             }
         }
         DB::commit();
+        DB::commit();
+        if ($company->onboarding_data && $company->automate_zatca) {
+            Log::debug('Firing SaleBillCreated event', ['saleBillId' => $saleBill->id, 'timestamp' => now()->toDateTimeString()]);
+            event(new \App\Events\SaleBillCreated($saleBill));
+        }
         return $saleBill;
     }
     public function save(Request $request)

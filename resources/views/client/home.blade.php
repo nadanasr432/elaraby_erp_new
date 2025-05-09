@@ -624,7 +624,7 @@
                     @endcan
                 @endif
             @endif
-            @if ($pos_settings->status == 'closed')
+            @if ($pos_settings?->status == 'closed')
                 @if ($pos_status != 'none')
                     <div class="col-lg-3 pull-right">
                         <a data-toggle="modal" href="#modaldemo30" class="btn btn-md btn-success btn-block">

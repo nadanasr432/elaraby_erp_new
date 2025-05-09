@@ -290,6 +290,19 @@
                 <i class="fa fa-whatsapp"></i>
                 @lang('sales_bills.Send to whatsapp')
             </button>
+
+            @if (!($sale_bill->zatca_status == 'sent') && $company->onboarding_data)
+            <form action="{{ route('zatca.send', $sale_bill->id) }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-primary mt-3">@lang('sales_bills.Send to zatca')</button>
+            </form>
+        @endif
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissable fade show text-center">
+                <button class="close" data-dismiss="alert" aria-label="Close">×</button>
+                {{ session('success') }}
+            </div>
+        @endif
         </div>
         <div class="all-data" style="border-top: 1px solid #2d2d2d20;padding-top: 25px;">
 
@@ -327,18 +340,18 @@
                     @endif
                 </div>
                   @php
-                    
+
                         $items = \App\Models\SaleBillElement::where('sale_bill_id', $sale_bill->id)
                             ->where('company_id', $sale_bill->company_id)
                             ->get();
-                
+
                         $allReturned = true;
-                
+
                         foreach ($items as $product) {
                             $alreadyReturnedQty = \App\Models\SaleBillReturn::where('bill_id', $sale_bill->id)
                                 ->where('product_id', $product->product_id)
                                 ->sum('return_quantity');
-                
+
                             if ($alreadyReturnedQty < $product->quantity) {
                                 $allReturned = false;
                                 break;
@@ -346,11 +359,11 @@
                         }
                     @endphp
                 <div class="col-md-5  mx-auto text-center">
-                    
+
                     <!--<div class="txtheader mx-auto text-center">-->
                     <!--    @if (!$isMoswada && !$allReturned)-->
                     <!--        @lang('sales_bills.Tax invoice')-->
-                     
+
                     <!--        @lang('sales_bills.Draft invoice')-->
                     <!--    @endif-->
                     <!--</div>-->

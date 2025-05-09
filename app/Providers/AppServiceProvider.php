@@ -4,10 +4,13 @@ namespace App\Providers;
 
 use App\Models\Admin;
 use App\Models\Client;
-use App\Models\Company;
-use App\Models\ExtraSettings;
-use App\Models\Information;
 use App\Models\Screen;
+use App\Models\Company;
+use App\Models\SaleBill1;
+use App\Models\Information;
+use App\Models\ExtraSettings;
+use App\Services\ZatcaService;
+use App\Observers\SaleBill1Observer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -21,8 +24,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // $this->app->singleton(ZatcaService::class, function ($app) {
+        //     return new ZatcaService(); // Or pass dependencies if needed
+        // });
     }
+
 
     /**
      * Bootstrap any application services.
@@ -63,9 +69,9 @@ class AppServiceProvider extends ServiceProvider
                     $extra_settings = ExtraSettings::where('company_id', $company_id)
                         ->first();
                     View::share('extra', $extra_settings);
-
                 }
             }
         });
+        // SaleBill1::observe(SaleBill1Observer::class);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Cash;
 use App\Models\Store;
 use App\Models\BankCash;
+use App\Services\ZatcaService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -63,7 +64,7 @@ class SaleBill1 extends Model
     }
     public function elements()
     {
-        return $this->hasMany('\App\Models\SaleBillElement', 'sale_bill_id', 'id');
+        return $this->hasMany('\App\Models\SaleBillElement1', 'sale_bill_id', 'id');
     }
 
     public function extras()
@@ -94,7 +95,7 @@ class SaleBill1 extends Model
     {
         return $this->morphMany(Voucher::class, 'referable');
     }
-   public function getPaymentMethodAttribute()
+    public function getPaymentMethodAttribute()
     {
         $voucher = $this->vouchers()
             ->where('referable_id', $this->id)
@@ -130,6 +131,56 @@ class SaleBill1 extends Model
         }
     }
 
+    public function prepareBillData()
+    {
+        return [
+            'uuid' => $this->uuid,
+            'invoice_number' => $this->sale_bill_number,
+            'date' => $this->date,
+            'time' => $this->time,
+            'customer_name' => optional($this->client ?? $this->outerClient)->name ?? 'Unknown',
+            'payment_method' => $this->payment_method,
+            'store' => optional($this->store)->store_name,
+            'notes' => $this->notes,
+            'total' => $this->final_total,
+            'value_added_tax' => $this->value_added_tax,
+            'total_tax' => $this->total_tax,
+            'total_discount' => $this->total_discount,
+            'products' => $this->elements->map(function ($element) {
+                return [
+                    'product_name' => $element->product_name ?? '', // adjust based on your actual field
+                    'unit_price' => $element->unit_price,
+                    'quantity' => $element->qty,
+                    'discount' => $element->discount_value ?? 0,
+                    'tax' => $element->tax_value ?? 0,
+                    'total' => $element->quantity_price, // or whatever field represents row total
+                ];
+            }),
+        ];
+    }
+    public function getCompany()
+    {
+        return $this->company; // Assuming a relation exists
+    }
 
+    public function getLastHash()
+    {
+        // Fetch last invoice hash, e.g., from DB
+        return SaleBill1::latest()->value('zatca_hash');
+    }
+    // public function dispatchToZatca()
+    // {
+    //     $this->load([
+    //         'company',
+    //         'client',
+    //         'outerClient',
+    //         'elements.product',
+    //         'elements.unit',
+    //         'extras',
+    //         'vouchers'
+    //     ]);
 
+    //     // Call your ZATCA service
+    //     app(ZatcaService::class)->sendBill($this);
+    // }
 }

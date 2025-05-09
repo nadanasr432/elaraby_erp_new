@@ -123,7 +123,7 @@ class ZatcaController extends Controller
     // }
     public function sendInvoice(Request $request, $saleBillId)
     {
-        logger($saleBillId);
+        logger('id'.$saleBillId);
         $saleBill = SaleBill1::findOrFail($saleBillId);
         $company = $saleBill->company;
 
@@ -180,13 +180,13 @@ class ZatcaController extends Controller
         );
         logger($result);
 
-        if ($result['status'] === 'success') {
+        if ($result['status'] === 'REPORTED') {
             $saleBill->update([
                 'zatca_status' => 'sent',
                 'zatca_hash' => $result['hash'],
                 'uuid' => $bill['uuid'],
             ]);
-            return redirect()->back()->with('success', 'Invoice sent to ZATCA! Hash: ' . $result['hash']);
+            return redirect()->back()->with('success', 'تم الارسال الى زاتكا!  Hash: ' . $result['hash']);
         }
 
         return redirect()->back()->with('error', $result['error_message']);
@@ -196,7 +196,7 @@ class ZatcaController extends Controller
     {
         return $saleBill->elements->map(function ($element) {
             return [
-                'name' => $element->product?->name ?? 'Unknown Product',
+                'name' => $element->product?->product_name ?? 'Unknown Product',
                 'unit' => $element->unit?->code ?? 'pce', // Assuming Unit model has a code field
                 'quantity' => $element->quantity,
                 'price' => $element->product_price,
